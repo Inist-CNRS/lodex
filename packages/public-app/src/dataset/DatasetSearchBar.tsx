@@ -47,7 +47,7 @@ const DatasetSearchBar = ({
         return null;
     }
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing="2rem">
             <Grid item xs={showToggleFacetButton ? 11 : 12}>
                 <SearchBar
                     // @ts-expect-error TS2322

@@ -50,7 +50,7 @@ const ColorPickerParamsAdmin = ({
 
     const createColorPickers = () => {
         return (
-            <Box display="flex" flexWrap="wrap" gap={1}>
+            <Box display="flex" flexWrap="wrap" gap="1rem">
                 {colorItems.map((_, i) => (
                     <input
                         key={i}

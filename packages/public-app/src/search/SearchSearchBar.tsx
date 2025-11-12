@@ -72,7 +72,7 @@ export const SearchSearchBarComponent = ({
                 paddingInlineEnd: 3,
             }}
         >
-            <Grid container spacing={2}>
+            <Grid container spacing="2rem">
                 <Grid
                     item
                     xs={showToggleFacetButton ? 11 : 12}

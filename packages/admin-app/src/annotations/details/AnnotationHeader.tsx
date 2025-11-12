@@ -50,8 +50,8 @@ export function AnnotationHeader({ annotation }: AnnotationHeaderProps) {
     }, [translate, annotation]);
 
     return (
-        <Stack gap={1}>
-            <Stack direction="row" gap={1} alignItems="center">
+        <Stack gap="1rem">
+            <Stack direction="row" gap="1rem" alignItems="center">
                 <Typography variant="h1" fontSize={24} fontWeight={700}>
                     {/*
                      // @ts-expect-error TS18048 */}

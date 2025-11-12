@@ -42,7 +42,7 @@ function FieldRepresentation({
                 display="grid"
                 gridTemplateColumns={`${handleToggleSelectedField ? 'auto ' : ''}auto 1fr ${showNotAnnotableIcon ? ' auto' : ''}`}
                 alignItems="center"
-                gap={0.5}
+                gap="0.5rem"
             >
                 {handleToggleSelectedField && (
                     <Checkbox
@@ -125,7 +125,7 @@ function FieldRepresentation({
                             ? 'auto 1fr'
                             : '1fr'
                     }
-                    gap={0.5}
+                    gap="0.5rem"
                     color="text.secondary"
                 >
                     {/*

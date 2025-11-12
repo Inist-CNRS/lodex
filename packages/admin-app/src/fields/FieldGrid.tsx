@@ -217,7 +217,7 @@ const FieldGridItem = connect(
             height="100%"
             width="100%"
         >
-            <Stack direction="row" gap={1} alignItems="center">
+            <Stack direction="row" gap="1rem" alignItems="center">
                 <Box onClick={(e) => handleCopyToClipboard(e, field.name)}>
                     <FieldRepresentation
                         field={field}

@@ -130,7 +130,7 @@ const FilterComponent = ({
                 padding: '10px',
             }}
             justifyContent="space-around"
-            spacing={2}
+            spacing="2rem"
         >
             <Box>
                 <FilterIcon fontSize="large" sx={{ marginRight: '10px' }} />

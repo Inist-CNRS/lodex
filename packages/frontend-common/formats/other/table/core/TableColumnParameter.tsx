@@ -136,7 +136,7 @@ const TableColumnParameter: React.FC<TableColumnParameterProps> = ({
                     borderRadius: '2px',
                 }}
             >
-                <Box display="flex" gap={1}>
+                <Box display="flex" gap="1rem">
                     <TextField
                         select
                         label={translate('table_field')}

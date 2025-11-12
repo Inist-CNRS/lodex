@@ -75,7 +75,7 @@ export function TargetField({
                                 goToStep(COMMENT_STEP);
                             }}
                         >
-                            <Stack direction="row" spacing={1}>
+                            <Stack direction="row" spacing="1rem">
                                 <ListItemIcon>
                                     <CommentIcon
                                         // @ts-expect-error TS2769
@@ -118,7 +118,7 @@ export function TargetField({
                                     goToStep(COMMENT_STEP);
                                 }}
                             >
-                                <Stack direction="row" spacing={1}>
+                                <Stack direction="row" spacing="1rem">
                                     <ListItemIcon>
                                         <EditIcon
                                             // @ts-expect-error TS2769
@@ -158,7 +158,7 @@ export function TargetField({
                                     goToStep(COMMENT_STEP);
                                 }}
                             >
-                                <Stack direction="row" spacing={1}>
+                                <Stack direction="row" spacing="1rem">
                                     <ListItemIcon>
                                         <AddIcon
                                             // @ts-expect-error TS2769
@@ -205,7 +205,7 @@ export function TargetField({
                                     goToStep(COMMENT_STEP);
                                 }}
                             >
-                                <Stack direction="row" spacing={1}>
+                                <Stack direction="row" spacing="1rem">
                                     <ListItemIcon>
                                         <RemoveIcon
                                             // @ts-expect-error TS2769

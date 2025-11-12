@@ -201,15 +201,15 @@ export const EnrichmentForm = ({
     return (
         <FormProvider {...formMethods}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Box mt={3} display="flex" gap={6}>
+                <Box mt={3} display="flex" gap="6rem">
                     <Box sx={{ flex: 2 }}>
                         <Box>
                             <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
-                                gap={2}
-                                mb={2}
+                                gap="2rem"
+                                mb="2rem"
                             >
                                 <TextField
                                     name="name"
@@ -233,8 +233,8 @@ export const EnrichmentForm = ({
                                     display="flex"
                                     justifyContent="space-between"
                                     alignItems="center"
-                                    gap={2}
-                                    mb={2}
+                                    gap="2rem"
+                                    mb="2rem"
                                 >
                                     {translate('enrichment_error_count', {
                                         errorCount:
@@ -263,7 +263,7 @@ export const EnrichmentForm = ({
                                     display="flex"
                                     justifyContent="space-between"
                                     alignItems="center"
-                                    gap={2}
+                                    gap="2rem"
                                 >
                                     <Typography>
                                         {translate('enrichment_status')} :
@@ -304,7 +304,7 @@ export const EnrichmentForm = ({
                         </Box>
 
                         {formValues?.advancedMode && (
-                            <Box mb={2}>
+                            <Box mb="2rem">
                                 <FormSourceCodeField
                                     name="rule"
                                     label={translate('expand_rules')}
@@ -319,8 +319,8 @@ export const EnrichmentForm = ({
                                     display="flex"
                                     justifyContent="space-between"
                                     alignItems="center"
-                                    gap={2}
-                                    mb={2}
+                                    gap="2rem"
+                                    mb="2rem"
                                 >
                                     <TextField
                                         name="webServiceUrl"
@@ -344,7 +344,7 @@ export const EnrichmentForm = ({
                                     />
                                 </Box>
 
-                                <Box display="flex" gap={2} mb={2}>
+                                <Box display="flex" gap="2rem" mb="2rem">
                                     <AutoCompleteField
                                         clearIdentifier={() => {
                                             setValue('subPath', '');

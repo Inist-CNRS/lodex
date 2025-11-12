@@ -158,7 +158,7 @@ const SourceValueFromSubResource = ({
     };
 
     return (
-        <Box mt={5} display="flex" flexDirection="column" gap={2}>
+        <Box mt={5} display="flex" flexDirection="column" gap="2rem">
             <FormControl fullWidth>
                 <InputLabel id="select-subresource-label">
                     {translate('subRessource_tooltip')}

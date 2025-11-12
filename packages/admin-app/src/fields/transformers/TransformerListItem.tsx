@@ -108,7 +108,7 @@ const TransformerListItem = ({
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: 1,
+                padding: '1rem',
                 marginBottom: 2,
                 borderRadius: 1,
                 backgroundColor: 'neutralDark.veryLight',
@@ -124,8 +124,10 @@ const TransformerListItem = ({
                     alignItems: 'center',
                 }}
             >
-                <DragIndicatorIcon sx={{ cursor: 'grab', marginRight: 1 }} />
-                <Typography noWrap sx={{ marginRight: 1 }}>
+                <DragIndicatorIcon
+                    sx={{ cursor: 'grab', marginRight: '1rem' }}
+                />
+                <Typography noWrap sx={{ marginRight: '1rem' }}>
                     {/*
                      // @ts-expect-error TS2339 */}
                     {transformer?.operation}

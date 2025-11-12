@@ -53,7 +53,7 @@ export const DatasetOverviewSelectComponent = ({
     };
 
     return (
-        <Box display="flex" gap={1}>
+        <Box display="flex" gap="1rem">
             <TextField
                 select
                 value={datasetTitle || ''}

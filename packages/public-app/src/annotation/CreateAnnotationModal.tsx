@@ -277,7 +277,7 @@ export function CreateAnnotationModal({
                     sx: {
                         maxWidth: 'sm',
                         width: '100%',
-                        padding: 2,
+                        padding: '2rem',
                     },
                 }}
                 BackdropProps={{
@@ -296,8 +296,8 @@ export function CreateAnnotationModal({
                         />
                     )}
                 </form.Field>
-                <Stack gap={2}>
-                    <Stack direction="row" alignItems="center" gap={1}>
+                <Stack gap="2rem">
+                    <Stack direction="row" alignItems="center" gap="1rem">
                         <Box flexGrow={1}>
                             <LinearProgress
                                 variant="determinate"
@@ -312,7 +312,7 @@ export function CreateAnnotationModal({
                             <CloseIcon />
                         </IconButton>
                     </Stack>
-                    <Stack gap={1} direction="row" alignItems="center">
+                    <Stack gap="1rem" direction="row" alignItems="center">
                         <CreateAnnotationTitle
                             fieldLabel={field.label}
                             form={form}
@@ -333,7 +333,7 @@ export function CreateAnnotationModal({
                     <Box fullWidth role="tabpanel">
                         {currentStep === TARGET_STEP && (
                             <Stack
-                                spacing={2}
+                                spacing="2rem"
                                 aria-label={translate('annotation_step_target')}
                                 role="tab"
                             >
@@ -352,7 +352,7 @@ export function CreateAnnotationModal({
                         )}
                         {currentStep === VALUE_STEP && (
                             <Stack
-                                spacing={2}
+                                spacing="2rem"
                                 aria-label={translate('annotation_step_value')}
                                 role="tab"
                             >
@@ -364,7 +364,7 @@ export function CreateAnnotationModal({
                         )}
                         {currentStep === COMMENT_STEP && (
                             <Stack
-                                spacing={2}
+                                spacing="2rem"
                                 aria-label={translate(
                                     'annotation_step_comment',
                                 )}
@@ -377,7 +377,7 @@ export function CreateAnnotationModal({
                                         openHistory={openHistory}
                                     />
                                 )}
-                                <Stack spacing={2}>
+                                <Stack spacing="2rem">
                                     <AnnotationCommentStep
                                         form={form}
                                         // @ts-expect-error TS2559
@@ -390,13 +390,13 @@ export function CreateAnnotationModal({
 
                         {currentStep === AUTHOR_STEP && (
                             <Stack
-                                spacing={2}
+                                spacing="2rem"
                                 aria-label={translate('annotation_step_author')}
                                 role="tab"
                             >
                                 <Stack
                                     direction="row"
-                                    gap={1}
+                                    gap="1rem"
                                     alignItems="center"
                                 >
                                     <Typography>

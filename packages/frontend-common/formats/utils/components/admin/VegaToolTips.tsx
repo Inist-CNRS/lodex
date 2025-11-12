@@ -96,7 +96,12 @@ const VegaToolTips = ({
 
         if (checked) {
             return (
-                <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    flexGrow={1}
+                    gap="2rem"
+                >
                     <TextField
                         label={translate(
                             thirdValue ? 'tooltip_third_1' : 'tooltip_category',

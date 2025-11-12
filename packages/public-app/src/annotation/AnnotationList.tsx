@@ -207,7 +207,7 @@ export const AnnotationList = ({
 
     return (
         <Stack
-            gap={2}
+            gap="2rem"
             sx={{
                 padding: theme.spacing(2),
                 paddingTop: 0,
@@ -224,7 +224,7 @@ export const AnnotationList = ({
                     {getAnnotationTitle(annotations[0], translate)}
                 </Typography>
             </Stack>
-            <Stack direction="column" gap={1}>
+            <Stack direction="column" gap="1rem">
                 <Typography component="div">
                     {translate('annotation_filter_by_sender')}
                 </Typography>
@@ -381,11 +381,11 @@ export const AnnotationList = ({
                                 hidden={!annotationsOpen[annotation._id]}
                                 aria-hidden={!annotationsOpen[annotation._id]}
                             >
-                                <Stack gap={2}>
+                                <Stack gap="2rem">
                                     {annotation.isMine && (
                                         <Stack
                                             direction="row"
-                                            gap={1}
+                                            gap="1rem"
                                             sx={{
                                                 border: '1px solid',
                                                 borderColor:

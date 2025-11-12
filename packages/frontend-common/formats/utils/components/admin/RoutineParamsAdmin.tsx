@@ -105,7 +105,7 @@ const RoutineParamsAdmin = ({
     };
 
     return (
-        <Box display="flex" flexDirection="column" gap={2} width="100%">
+        <Box display="flex" flexDirection="column" gap="2rem" width="100%">
             {showMaxSize && (
                 <TextField
                     label={translate('max_fields')}
@@ -115,7 +115,7 @@ const RoutineParamsAdmin = ({
                 />
             )}
             {(showMinValue || showMaxValue) && (
-                <Box display="flex" gap={1}>
+                <Box display="flex" gap="1rem">
                     {showMinValue && (
                         <TextField
                             label={translate('min_value')}

@@ -34,7 +34,7 @@ export const ActionsComponent = ({
                 // @ts-expect-error TS2322
                 <RemoveButton field={currentEditedField} filter={filter} />
             )}
-            <Box display="flex" gap={1}>
+            <Box display="flex" gap="1rem">
                 <CancelButton
                     className="btn-exit-column-edition"
                     onClick={onCancel}

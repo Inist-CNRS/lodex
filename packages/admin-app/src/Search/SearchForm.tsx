@@ -306,7 +306,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                 </Box>
             </Box>
 
-            <Box display="flex" alignItems={'stretch'} gap={5}>
+            <Box display="flex" alignItems={'stretch'} gap="5rem">
                 <Box
                     display="flex"
                     flex={3}
@@ -428,7 +428,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                             clearText={translate('clear')}
                             isLoading={isPending}
                         />
-                        <Box display="flex" gap={2}>
+                        <Box display="flex" gap="2rem">
                             <SearchAutocomplete
                                 testId={`autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_1}`}
                                 translation={translate('resource_detail_first')}
@@ -451,7 +451,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                             />
                         </Box>
 
-                        <Box display="flex" gap={2}>
+                        <Box display="flex" gap="2rem">
                             <SearchAutocomplete
                                 testId={`autocomplete_resource_sort_field`}
                                 translation={translate('resource_sort_field')}

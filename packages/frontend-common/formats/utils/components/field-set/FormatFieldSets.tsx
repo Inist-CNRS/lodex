@@ -37,7 +37,7 @@ const FormatFieldSet = ({
                     display="flex"
                     flexWrap="wrap"
                     justifyContent="space-between"
-                    gap={2}
+                    gap="2rem"
                     style={formatAdminStyle.box}
                 >
                     {children}
