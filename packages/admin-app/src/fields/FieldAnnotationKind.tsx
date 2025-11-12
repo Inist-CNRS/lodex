@@ -19,7 +19,7 @@ export function FieldAnnotationKind() {
     }
 
     return (
-        <Stack gap={1}>
+        <Stack gap="1rem">
             <Typography
                 variant="h2"
                 sx={{

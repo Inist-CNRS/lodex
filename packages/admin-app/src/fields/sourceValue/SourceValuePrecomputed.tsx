@@ -94,7 +94,7 @@ const SourceValuePrecomputed = ({
     };
 
     return (
-        <Box mt={5} display="flex" flexDirection="column" gap={2}>
+        <Box mt={5} display="flex" flexDirection="column" gap="2rem">
             <Autocomplete
                 data-testid="source-value-from-precomputed"
                 fullWidth

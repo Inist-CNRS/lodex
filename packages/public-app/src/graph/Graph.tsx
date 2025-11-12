@@ -177,7 +177,7 @@ const Graph = ({
                                     title={
                                         <Stack
                                             direction="row"
-                                            gap={2}
+                                            gap="2rem"
                                             alignItems="center"
                                         >
                                             {graphField.label}

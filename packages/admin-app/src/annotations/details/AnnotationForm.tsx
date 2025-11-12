@@ -99,7 +99,7 @@ export const AnnotationForm = ({ annotation }: AnnotationFormProps) => {
 
     return (
         <Stack
-            gap={4}
+            gap="4rem"
             sx={{
                 height: '100%',
                 paddingBlockStart: '12px',
@@ -116,7 +116,7 @@ export const AnnotationForm = ({ annotation }: AnnotationFormProps) => {
             <AnnotationHeader annotation={annotation} />
             <Grid
                 container
-                spacing={2}
+                spacing="2rem"
                 sx={{
                     flexGrow: 1,
                 }}
@@ -146,8 +146,8 @@ export const AnnotationForm = ({ annotation }: AnnotationFormProps) => {
                         borderLeftColor: 'text.secondary',
                     }}
                 >
-                    <Stack gap={4}>
-                        <Stack direction="row" gap={2}>
+                    <Stack gap="4rem">
+                        <Stack direction="row" gap="2rem">
                             <Tooltip
                                 title={translate(
                                     'annotation_resource_not_found',
@@ -212,7 +212,7 @@ export const AnnotationForm = ({ annotation }: AnnotationFormProps) => {
                         id={annotation._id}
                         isSubmitting={isSubmitting}
                     />
-                    <Stack direction="row" gap={1}>
+                    <Stack direction="row" gap="1rem">
                         <Button
                             type="button"
                             disabled={isSubmitting}

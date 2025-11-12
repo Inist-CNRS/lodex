@@ -24,7 +24,7 @@ export function AnnotationInputs({ form }: AnnotationInputsProps) {
     });
     return (
         <Stack
-            gap={5}
+            gap="5rem"
             role="group"
             aria-label={translate('annotation_form_title')}
         >

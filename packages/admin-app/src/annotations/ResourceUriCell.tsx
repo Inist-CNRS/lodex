@@ -25,7 +25,7 @@ function ResourceUriCellInternal({
 }: ResourceUriCellInternalProps) {
     return (
         <Box
-            gap={1}
+            gap="1rem"
             sx={{
                 display: 'grid',
                 gridTemplateColumns: '1fr auto',

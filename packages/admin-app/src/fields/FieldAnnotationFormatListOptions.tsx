@@ -26,7 +26,7 @@ export function FieldAnnotationFormatListOptions() {
     }
 
     return (
-        <Stack gap={0.5}>
+        <Stack gap="0.5rem">
             <TextField
                 name="annotationFormatListOptions"
                 label={translate('field_annotation_format_list_options')}

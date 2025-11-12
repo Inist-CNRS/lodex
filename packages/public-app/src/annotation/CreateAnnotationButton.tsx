@@ -156,7 +156,7 @@ export function CreateAnnotationButton({
 
     return (
         <>
-            <Stack direction="row" alignItems="center" gap={1}>
+            <Stack direction="row" alignItems="center" gap="1rem">
                 <Tooltip
                     title={buttonLabel}
                     placement="top"

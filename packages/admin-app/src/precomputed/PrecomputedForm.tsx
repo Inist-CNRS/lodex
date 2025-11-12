@@ -267,15 +267,15 @@ export const PrecomputedForm = ({
     return (
         <FormProvider {...formMethods}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Box mt={3} display="flex" gap={6}>
+                <Box mt={3} display="flex" gap="6rem">
                     <Box sx={{ flex: 2 }}>
                         <Box>
                             <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
-                                gap={2}
-                                mb={2}
+                                gap="2rem"
+                                mb="2rem"
                             >
                                 <TextField
                                     name="name"
@@ -298,7 +298,7 @@ export const PrecomputedForm = ({
                                     display="flex"
                                     justifyContent="space-between"
                                     alignItems="center"
-                                    gap={2}
+                                    gap="2rem"
                                     sx={{ marginBottom: 2 }}
                                 >
                                     <Typography>
@@ -380,8 +380,8 @@ export const PrecomputedForm = ({
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
-                                gap={2}
-                                mb={2}
+                                gap="2rem"
+                                mb="2rem"
                             >
                                 <TextField
                                     name="webServiceUrl"
@@ -407,7 +407,7 @@ export const PrecomputedForm = ({
                                 />
                             </Box>
 
-                            <Box display="flex" gap={2} mb={2}>
+                            <Box display="flex" gap="2rem" mb="2rem">
                                 <SourceValueFromColumns
                                     name="sourceColumns"
                                     label={translate('sourceColumns')}

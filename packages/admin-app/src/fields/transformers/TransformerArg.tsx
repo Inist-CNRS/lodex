@@ -53,7 +53,12 @@ const TransformerArgs = ({
     };
 
     return (
-        <Box display="flex" flexDirection="column" gap={2} sx={{ paddingY: 2 }}>
+        <Box
+            display="flex"
+            flexDirection="column"
+            gap="2rem"
+            sx={{ paddingY: '2rem' }}
+        >
             {availableArgs.map((arg) => {
                 const value =
                     transformerArgs?.find(

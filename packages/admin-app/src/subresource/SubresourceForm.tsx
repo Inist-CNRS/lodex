@@ -94,7 +94,7 @@ export const SubresourceFormComponent = ({
         <FormProvider {...formMethods}>
             <Box sx={{ background: 'primary', padding: '20px' }}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Box display="flex" gap={2}>
+                    <Box display="flex" gap="2rem">
                         <TextField
                             name="name"
                             variant="outlined"

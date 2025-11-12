@@ -26,11 +26,11 @@ const SearchResultHeader = ({
             {displayStats && <SearchStats />}
             <Box
                 display="flex"
-                gap={2}
+                gap="2rem"
                 sx={{
                     gap: {
                         xs: 0,
-                        md: 2,
+                        md: '2rem',
                     },
                     flexDirection: {
                         xs: 'column',

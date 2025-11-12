@@ -10,7 +10,7 @@ import { hasFieldMultipleValues } from '../helpers/field';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
 import { ANNOTATION_GRID_COLUMNS, AnnotationValue } from './AnnotationValue';
 
-const ANNOTATION_GRID_SPACING = 1;
+const ANNOTATION_GRID_SPACING = '1rem';
 
 interface SectionProps {
     label: string;
@@ -24,7 +24,7 @@ function Section({ label, children, translateOptions }: SectionProps) {
     const translatedLabel = translate(label, translateOptions);
 
     return (
-        <Stack gap={1} aria-label={translatedLabel} role="region">
+        <Stack gap="1rem" aria-label={translatedLabel} role="region">
             <Typography variant="h2" fontSize={20} id={label} fontWeight={700}>
                 {translatedLabel}
             </Typography>
@@ -59,7 +59,7 @@ export function AnnotationItems({ annotation }: AnnotationItemsProps) {
     const { translate } = useTranslate();
 
     return (
-        <Stack gap={6}>
+        <Stack gap="6rem">
             <Section label="annotation_field_section">
                 {annotation.field ? (
                     <FieldRepresentation field={annotation.field} />
@@ -115,7 +115,7 @@ export function AnnotationItems({ annotation }: AnnotationItemsProps) {
             </Section>
 
             <Section label="annotation_contributor_section">
-                <Stack gap={1}>
+                <Stack gap="1rem">
                     <Typography>{annotation.authorName}</Typography>
                     {annotation.authorEmail && (
                         <Typography>

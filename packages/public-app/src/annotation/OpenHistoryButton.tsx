@@ -28,7 +28,7 @@ export const OpenHistoryButton = ({
 
     return (
         <Stack
-            gap={0.5}
+            gap="0.5rem"
             paddingBlockEnd={2}
             borderBottom={1}
             // @ts-expect-error TS2339

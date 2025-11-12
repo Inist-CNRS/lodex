@@ -152,7 +152,7 @@ const SparqlTextFieldAdmin = ({
         const SubAdminComponent = getAdminComponent(result.sub);
 
         return (
-            <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
+            <Box display="flex" flexDirection="column" flexGrow={1} gap="2rem">
                 <TextField
                     fullWidth
                     label={polyglot.t('sparql_attribute')}
