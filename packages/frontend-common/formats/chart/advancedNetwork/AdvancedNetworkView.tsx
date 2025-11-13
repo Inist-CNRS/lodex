@@ -1,7 +1,4 @@
-import compose from 'recompose/compose';
-
 import type { Field } from '../../../fields/types';
-import injectData from '../../injectData';
 import {
     useFormatNetworkData,
     type AdvancedNetworkData,
@@ -15,7 +12,7 @@ interface NetworkProps {
     field: Field;
 }
 
-const Network = ({ formatData: _, colorSet, field }: NetworkProps) => {
+const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
     const { nodes, links } = useFormatNetworkData({
         // @TODO replace with real formatData when available
         formatData: jsonFormatData as AdvancedNetworkData[],
@@ -25,8 +22,17 @@ const Network = ({ formatData: _, colorSet, field }: NetworkProps) => {
                 : true,
     });
 
-    return <NetworkBase colorSet={colorSet} nodes={nodes} links={links} />;
+    return (
+        <NetworkBase
+            colorSet={colorSet}
+            nodes={nodes}
+            links={links}
+            forcePosition
+            linkCurvature={0.25}
+        />
+    );
 };
 
-// @ts-expect-error TS2345
-export default compose(injectData())(Network);
+// export default compose(injectData())(Network);
+
+export default AdvancedNetwork;

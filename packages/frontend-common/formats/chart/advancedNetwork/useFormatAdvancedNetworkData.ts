@@ -1,4 +1,3 @@
-import { scaleLinear } from 'd3-scale';
 import { useMemo } from 'react';
 import type {
     ForceGraphProps,
@@ -42,7 +41,6 @@ export type UseFormatNetworkDataParams = {
 
 export function useFormatNetworkData({
     formatData,
-    displayWeighted = true,
 }: UseFormatNetworkDataParams): {
     nodes: Node[];
     links: Link[];
@@ -63,7 +61,10 @@ export function useFormatNetworkData({
                 }
             >
         >(
-            (acc, { id, value: { label, targets, viz$position } }) => ({
+            (
+                acc,
+                { id, value: { label, targets, viz$position, viz$color } },
+            ) => ({
                 ...acc,
                 [id]: {
                     id,
@@ -79,41 +80,51 @@ export function useFormatNetworkData({
                     z: viz$position.z
                         ? parseFloat(viz$position.z) * 100
                         : undefined,
+                    color: viz$color
+                        ? {
+                              r: parseInt(viz$color.r, 10),
+                              g: parseInt(viz$color.g, 10),
+                              b: parseInt(viz$color.b, 10),
+                          }
+                        : undefined,
                 },
             }),
             {},
         );
 
-        const nodes = Object.values(nodesDic).map(({ targets, ...node }) => ({
-            ...node,
-            neighbors: targets
-                ? targets.map(({ id: targetId }) => nodesDic[targetId])
-                : [],
-            links: targets
-                ? targets.map(({ id: targetId }) => ({
-                      source: node.id,
-                      target: targetId,
-                      value: 1,
-                  }))
-                : [],
-        }));
-
-        const radiusList = nodes.map(({ radius }) => radius);
-        const max = Math.max(...radiusList);
-        const min = Math.min(...radiusList);
-
-        const nodeScale = scaleLinear().domain([min, max]).range([1, 10]);
+        const nodes = Object.values(nodesDic)
+            .map(({ targets, ...node }) => ({
+                ...node,
+                radius: node.radius / 2,
+                color: node.color
+                    ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, 0.5)`
+                    : undefined,
+                neighbors: targets
+                    ? targets.map(({ id: targetId }) => nodesDic[targetId])
+                    : [],
+                links: targets
+                    ? targets.map(({ id: targetId }) => ({
+                          source: node.id,
+                          target: targetId,
+                          value: 1,
+                          color: node.color
+                              ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, 0.25)`
+                              : undefined,
+                      }))
+                    : [],
+            }))
+            .sort((a, b) => a.radius - b.radius);
 
         const links = nodes.flatMap<Link>(({ links }) => links);
 
         return {
             nodes: nodes.map((node) => ({
                 ...node,
-                radius: displayWeighted ? nodeScale(node.radius) : 1,
+                radius: node.radius,
             })),
             links,
         };
-    }, [formatData, displayWeighted]);
+    }, [formatData]);
 }
 
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];

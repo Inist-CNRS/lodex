@@ -39,12 +39,14 @@ export function useFormatNetworkData({
             {},
         );
 
-        const nodes = Object.values(nodesDic);
+        const nodes = Object.values(nodesDic).sort(
+            (a, b) => a.radius - b.radius,
+        );
         const radiusList = nodes.map(({ radius }) => radius);
         const max = Math.max(...radiusList);
         const min = Math.min(...radiusList);
 
-        const nodeScale = scaleLinear().domain([min, max]).range([1, 10]);
+        const nodeScale = scaleLinear().domain([min, max]).range([10, 100]);
 
         const weightList = sanitizedFormatData.map(({ weight }) => weight);
 
@@ -59,7 +61,7 @@ export function useFormatNetworkData({
             ({ source, target, weight }) => ({
                 source,
                 target,
-                value: displayWeighted ? linkScale(weight) : 1,
+                value: displayWeighted ? linkScale(weight) : 10,
             }),
         );
 

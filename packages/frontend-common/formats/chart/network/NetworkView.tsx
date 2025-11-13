@@ -20,6 +20,8 @@ import {
 } from './useFormatNetworkData';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
+import { compose } from 'recompose';
+import injectData from '../../injectData';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
@@ -37,16 +39,24 @@ type NetworkBaseProps = {
     colorSet?: string[];
     nodes: Node[];
     links: Link[];
+    forcePosition?: boolean;
+    linkCurvature?: number;
 };
 
-export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
+export const NetworkBase = ({
+    colorSet,
+    nodes,
+    links,
+    forcePosition,
+    linkCurvature,
+}: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
         height: 0,
     });
-    const [cooldownTime, setCooldownTime] = useState(0);
+    const [cooldownTime, setCooldownTime] = useState(10000);
     const [selectedNode, setSelectedNode] = useState<NodeObject | null>(null);
     const [highlightedNodes, setHighlightedNodes] = useState<NodeObject[]>([]);
     const [highlightedLinks, setHighlightedLinks] = useState<Link[]>([]);
@@ -68,7 +78,7 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
     }, []);
 
     useEffect(() => {
-        setCooldownTime(0);
+        setCooldownTime(10000);
         setSelectedNode(null);
         setHighlightedNodes([]);
         setHighlightedLinks([]);
@@ -129,15 +139,7 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
         setHighlightedLinks(node.links ?? []);
 
         if (!fgRef.current) return;
-        fgRef.current.zoomToFit(
-            300,
-            10,
-            (n) =>
-                n.id === node.id ||
-                node.neighbors.some(
-                    (neighbor: { id: string }) => neighbor.id === n.id,
-                ),
-        );
+        fgRef.current.zoomToFit(500, 150, (n) => n.id === node.id);
     };
 
     return (
@@ -174,6 +176,9 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
                             width={width}
                             height={height}
                             graphData={{ nodes, links }}
+                            nodeLabel={(node) => {
+                                return node.label;
+                            }}
                             nodeCanvasObject={(node, ctx, globalScale) => {
                                 if (
                                     highlightedNodes.length === 0 ||
@@ -186,41 +191,34 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
                                 } else {
                                     ctx.globalAlpha = 0.1;
                                 }
-                                const fontSize = 12 / globalScale;
-                                const circleRadius = node.radius;
+                                const circleRadius = node.radius / globalScale;
 
-                                ctx.font = `${fontSize}px Sans-Serif`;
-                                ctx.textAlign = 'center';
-                                ctx.textBaseline = 'middle';
-                                ctx.fillStyle = 'black';
                                 ctx.strokeStyle = 'white';
-                                ctx.strokeText(
-                                    node.label,
-                                    node.x!,
-                                    node.y + circleRadius + fontSize,
-                                );
-                                ctx.fillText(
-                                    node.label,
-                                    // @ts-expect-error TS2345
-                                    node.x,
-                                    node.y + circleRadius + fontSize,
-                                );
-
-                                // @ts-expect-error TS18048
-                                ctx.fillStyle = colorSet[0];
+                                ctx.fillStyle =
+                                    node.color ??
+                                    (colorSet
+                                        ? `${colorSet![0]}7f`
+                                        : '#000000e6');
                                 ctx.beginPath();
                                 ctx.arc(
-                                    // @ts-expect-error TS2345
-                                    node.x,
-                                    node.y,
+                                    node.x!,
+                                    node.y!,
                                     circleRadius,
                                     0,
                                     2 * Math.PI,
                                     false,
                                 );
                                 ctx.fill();
+
+                                const fontSize = Math.max(circleRadius / 2, 2);
+                                ctx.font = `${fontSize}px Sans-Serif`;
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillStyle = 'black';
+                                ctx.fillText(node.label, node.x!, node.y!);
                                 ctx.globalAlpha = 1;
                             }}
+                            linkColor={(link) => link.color}
                             linkVisibility={(link) =>
                                 highlightedLinks.length === 0 ||
                                 highlightedLinks.some(
@@ -235,8 +233,9 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
-                            cooldownTime={cooldownTime}
-                            cooldownTicks={0}
+                            cooldownTime={forcePosition ? 0 : cooldownTime}
+                            cooldownTicks={forcePosition ? 0 : undefined}
+                            linkCurvature={linkCurvature}
                         />
                     </Suspense>
 
@@ -273,5 +272,5 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
     return <NetworkBase colorSet={colorSet} nodes={nodes} links={links} />;
 };
 
-// export default compose(injectData())(Network);
-export default Network;
+// @ts-expect-error TS2345
+export default compose(injectData())(Network);
