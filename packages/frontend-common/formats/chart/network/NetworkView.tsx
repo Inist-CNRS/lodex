@@ -62,7 +62,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
             if (node)
                 setDimensions({
                     width: node.clientWidth,
-                    height: node.clientHeight,
+                    height: node.clientHeight - 91, // 91 is the height of the autocomplete + margins
                 });
         });
         resizeObserver.observe(node);
@@ -125,6 +125,8 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
     }, [width, height, x, k, y]);
 
     const handleNodeClick = (node: NodeObject | null) => {
+        // freeze the chart so that it does not rearrange itself every time we interact with it
+        setCooldownTime(0);
         if (!node || selectedNode?.id === node?.id) {
             setSelectedNode(null);
             setHighlightedNodes([]);
@@ -138,7 +140,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
         if (!fgRef.current) return;
         fgRef.current.zoomToFit(
             300,
-            100,
+            10,
             (n) =>
                 n.id === node.id ||
                 node.neighbors.some(
@@ -154,6 +156,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <AutoComplete
+                        style={{ margin: '1rem' }}
                         label={translate('select_node')}
                         value={selectedNode?.id || null}
                         onChange={(_event, value) =>
