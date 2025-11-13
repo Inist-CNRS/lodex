@@ -120,9 +120,9 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
 
     useEffect(() => {
         if (!fgRef.current) return;
-        fgRef.current.zoom(k, 0); // set zoom level without changing position
-        fgRef.current.centerAt(x, y, 0); // set position without animation
-    }, [width, height]); // We only want to re-zoom on container resize
+        fgRef.current.zoom(k, 0);
+        fgRef.current.centerAt(x, y, 0);
+    }, [width, height, x, k, y]);
 
     const handleNodeClick = (node: NodeObject | null) => {
         if (!node || selectedNode?.id === node?.id) {
@@ -169,6 +169,8 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                     >
                         <ForceGraph2D
                             onZoomEnd={({ k, x, y }) => {
+                                // We want to preserve the zoom level and position when switching from and to fullscreen
+                                // so we skip the default value (k=1, x=0, y=0) that correspond to a reset zoom
                                 if (x === 0 && y === 0 && k === 1) return;
                                 setK(k);
                                 setX(x);
