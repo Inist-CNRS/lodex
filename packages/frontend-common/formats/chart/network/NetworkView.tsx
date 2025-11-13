@@ -1,4 +1,11 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import {
+    lazy,
+    Suspense,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import compose from 'recompose/compose';
 
 import Loading from '../../../components/Loading';
@@ -7,7 +14,13 @@ import { useTranslate } from '../../../i18n/I18NContext';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
-import { useFormatNetworkData, type NetworkData } from './useFormatNetworkData';
+import {
+    useFormatNetworkData,
+    type Link,
+    type NetworkData,
+} from './useFormatNetworkData';
+import { AutoComplete } from '../../../form-fields/AutoCompleteField';
+import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
@@ -29,14 +42,18 @@ interface NetworkProps {
 
 const Network = ({ formatData, colorSet, field }: NetworkProps) => {
     const { translate } = useTranslate();
+    const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
         height: 0,
     });
     const [cooldownTime, setCooldownTime] = useState(10000);
-    const [selectedNode, setSelectedNode] = useState(null);
-    const [highlightedNodes, setHighlightedNodes] = useState([]);
-    const [highlightedLinks, setHighlightedLinks] = useState([]);
+    const [selectedNode, setSelectedNode] = useState<NodeObject | null>(null);
+    const [highlightedNodes, setHighlightedNodes] = useState<NodeObject[]>([]);
+    const [highlightedLinks, setHighlightedLinks] = useState<Link[]>([]);
+    const [x, setX] = useState(0);
+    const [y, setY] = useState(0);
+    const [k, setK] = useState(1);
 
     // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
@@ -45,7 +62,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
             if (node)
                 setDimensions({
                     width: node.clientWidth,
-                    height: node.clientHeight,
+                    height: node.clientHeight - 91, // 91 is the height of the autocomplete + margins
                 });
         });
         resizeObserver.observe(node);
@@ -72,15 +89,12 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
         setCooldownTime(0);
         if (selectedNode) {
             if (!node) {
-                // @ts-expect-error TS2322
                 setHighlightedNodes([selectedNode, ...selectedNode.neighbors]);
-                // @ts-expect-error TS2339
-                setHighlightedLinks(selectedNode.links);
+                setHighlightedLinks(selectedNode!.links ?? []);
                 return;
             }
             if (
                 highlightedNodes.some(
-                    // @ts-expect-error TS2339
                     (highlightedNode) => highlightedNode.id === node.id,
                 )
             ) {
@@ -89,9 +103,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
 
             setHighlightedNodes([
                 selectedNode,
-                // @ts-expect-error TS2322
                 ...selectedNode.neighbors,
-                // @ts-expect-error TS2322
                 node,
             ]);
             return;
@@ -102,14 +114,19 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
             setHighlightedLinks([]);
             return;
         }
-        // @ts-expect-error TS2322
         setHighlightedNodes([node, ...node.neighbors]);
         setHighlightedLinks(node.links);
     };
 
-    // @ts-expect-error TS7006
-    const handleNodeClick = (node) => {
-        // @ts-expect-error TS2339
+    useEffect(() => {
+        if (!fgRef.current) return;
+        fgRef.current.zoom(k, 0);
+        fgRef.current.centerAt(x, y, 0);
+    }, [width, height, x, k, y]);
+
+    const handleNodeClick = (node: NodeObject | null) => {
+        // freeze the chart so that it does not rearrange itself every time we interact with it
+        setCooldownTime(0);
         if (!node || selectedNode?.id === node?.id) {
             setSelectedNode(null);
             setHighlightedNodes([]);
@@ -117,9 +134,19 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
             return;
         }
         setSelectedNode(node);
-        // @ts-expect-error TS2322
         setHighlightedNodes([node, ...node.neighbors]);
-        setHighlightedLinks(node.links);
+        setHighlightedLinks(node.links ?? []);
+
+        if (!fgRef.current) return;
+        fgRef.current.zoomToFit(
+            300,
+            10,
+            (n) =>
+                n.id === node.id ||
+                node.neighbors.some(
+                    (neighbor: { id: string }) => neighbor.id === n.id,
+                ),
+        );
     };
 
     return (
@@ -128,10 +155,31 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                 {/*
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
+                    <AutoComplete
+                        style={{ margin: '1rem' }}
+                        label={translate('select_node')}
+                        value={selectedNode?.id || null}
+                        onChange={(_event, value) =>
+                            handleNodeClick(
+                                nodes.find((node) => node.id === value) || null,
+                            )
+                        }
+                        getOptionLabel={(option: string) => option}
+                        options={nodes.map((node) => node.id as string)}
+                    />
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
                         <ForceGraph2D
+                            onZoomEnd={({ k, x, y }) => {
+                                // We want to preserve the zoom level and position when switching from and to fullscreen
+                                // so we skip the default value (k=1, x=0, y=0) that correspond to a reset zoom
+                                if (x === 0 && y === 0 && k === 1) return;
+                                setK(k);
+                                setX(x);
+                                setY(y);
+                            }}
+                            ref={fgRef}
                             width={width}
                             height={height}
                             graphData={{ nodes, links }}
@@ -140,7 +188,6 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                                     highlightedNodes.length === 0 ||
                                     highlightedNodes.some(
                                         (highlightNode) =>
-                                            // @ts-expect-error TS2339
                                             highlightNode.id === node.id,
                                     )
                                 ) {
@@ -155,6 +202,12 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 ctx.fillStyle = 'black';
+                                ctx.strokeStyle = 'white';
+                                ctx.strokeText(
+                                    node.label,
+                                    node.x!,
+                                    node.y + circleRadius + fontSize,
+                                );
                                 ctx.fillText(
                                     node.label,
                                     // @ts-expect-error TS2345
@@ -181,10 +234,8 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                                 highlightedLinks.length === 0 ||
                                 highlightedLinks.some(
                                     (highlightedLink) =>
-                                        // @ts-expect-error TS2339
                                         highlightedLink.source ===
                                             link.source &&
-                                        // @ts-expect-error TS2339
                                         highlightedLink.target === link.target,
                                 )
                                     ? true
