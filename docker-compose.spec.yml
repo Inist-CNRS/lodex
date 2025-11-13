@@ -4,7 +4,6 @@ services:
     api:
         build:
             context: .
-            dockerfile: Dockerfile.spec
             args:
                 node_env: e2e
         environment:
@@ -14,17 +13,13 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: 'true'
-            REDIS_URL: 'redis://redis:6379'
-            WORKERS_URL: 'http://workers:31976'
+            REDIS_URL: 'redis://localhost:6379'
+            WORKERS_URL: 'http://localhost:31976'
         links:
             - mongo
-            - redis
-            - workers
             - maildev
         depends_on:
             - mongo
-            - redis
-            - workers
             - maildev
         ports:
             - "3000:3000"
@@ -62,50 +57,12 @@ services:
                 limits:
                     cpus: '2'
                     memory: 1G
-
-    redis:
-        image: redis:6
-        ports:
-            - "6379:6379"
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 1G
-
-    workers:
-        image: node:22.12-bookworm
-        volumes:
-            - .:/app
-            - ./.cache:/root/.cache
-        working_dir: /app
-        environment:
-            npm_config_cache: /app/.npm
-            CYPRESS_CACHE_FOLDER: /app/.cache
-            DEBUG: ${DEBUG}
-            NODE_OPTIONS: ${NODE_OPTIONS}
-            http_proxy: ${http_proxy}
-            https_proxy: ${https_proxy}
-            no_proxy: 'localhost,127.0.0.1'
-            EZS_TITLE: 'Lodex internals workers'
-            EZS_DESCRIPTION: 'All scripts through a webserver'
-            EZS_METRICS: 'true'
-            EZS_CONCURRENCY: '4'
-            EZS_CONTINUE_DELAY: '60'
-            EZS_NSHARDS: '31'
-            EZS_CACHE: 'false'
-        ports:
-            - "31976:31976"
-        command: npm run production:workers
+    data-computer:
+        image: cnrsinist/ws-data-computer:2.18.1
+        extra_hosts: # for linux hosts since version 20.10
+            - host.docker.internal:host-gateway
         links:
-            - mongo
-        depends_on:
-            - mongo
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2G
+            - api
 
     maildev:
         image: maildev/maildev

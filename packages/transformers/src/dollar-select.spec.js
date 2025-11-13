@@ -5,7 +5,7 @@ import statements from '.';
 ezs.use(statements);
 
 describe('$SELECT', () => {
-    test('with valid parameter', done => {
+    test('with valid parameter', (done) => {
         const script = `
             [$SELECT]
             field = c
@@ -25,7 +25,7 @@ describe('$SELECT', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 expect(chunk).toEqual(expect.any(Object));
                 output.push(chunk);
             })

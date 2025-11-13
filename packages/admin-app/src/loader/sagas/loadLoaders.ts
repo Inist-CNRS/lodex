@@ -1,0 +1,35 @@
+import { call, takeEvery, select, put } from 'redux-saga/effects';
+
+import {
+    PRE_LOAD_LOADERS,
+    loadLoaders,
+    loadLoadersError,
+    loadLoadersSuccess,
+} from '../index';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
+import { fromLoaders } from '../../selectors';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+
+export function* handleLoadLoaders() {
+    // @ts-expect-error TS7057
+    const loadersAlreadyLoaded = yield select(fromLoaders.areLoadersLoaded);
+    if (loadersAlreadyLoaded) {
+        return;
+    }
+
+    yield put(loadLoaders());
+    // @ts-expect-error TS7057
+    const request = yield select(fromUser.getLoadLoadersRequest);
+    const { response, error } = yield call(fetchSaga, request);
+
+    if (error) {
+        yield put(loadLoadersError(error));
+        return;
+    }
+
+    yield put(loadLoadersSuccess(response));
+}
+
+export default function* () {
+    yield takeEvery(PRE_LOAD_LOADERS, handleLoadLoaders);
+}

@@ -5,7 +5,7 @@ import statements from '.';
 ezs.use(statements);
 
 describe('$VALUE', () => {
-    test('with valid parameter', done => {
+    test('with valid parameter', (done) => {
         const script = `
             [$VALUE]
             field = aaa
@@ -24,7 +24,7 @@ describe('$VALUE', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 expect(chunk).toEqual(expect.any(Object));
                 res.push(chunk);
             })

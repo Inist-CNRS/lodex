@@ -1,0 +1,63 @@
+import { shallow } from 'enzyme';
+import { Button } from '@mui/material';
+
+import { FacetValueList } from './FacetValueList';
+import SortButton from '@lodex/frontend-common/components/SortButton';
+
+describe('FacetValueList', () => {
+    const defaultProps = {
+        name: 'facet',
+        label: 'my facet',
+        facetValues: [],
+        total: 51,
+        currentPage: '1',
+        perPage: 10,
+        filter: null,
+        inverted: false,
+        sort: {
+            sortDir: 'DESC',
+            sortBy: 'count',
+        },
+        p: {
+            // @ts-expect-error TS7006
+            t: (v) => v,
+        },
+        page: 'dataset',
+        changeFacetValue: jest.fn(),
+        invertFacet: jest.fn(),
+        sortFacetValue: jest.fn(),
+    };
+
+    beforeEach(() => {
+        defaultProps.changeFacetValue.mockClear();
+        defaultProps.invertFacet.mockClear();
+        defaultProps.sortFacetValue.mockClear();
+    });
+
+    it('should allow to sort', () => {
+        // @ts-expect-error TS2322
+        const wrapper = shallow(<FacetValueList {...defaultProps} />);
+
+        const sortButtons = wrapper.find(SortButton);
+
+        expect(sortButtons).toHaveLength(2);
+
+        sortButtons.at(0).dive().dive().find(Button).simulate('click');
+
+        expect(defaultProps.sortFacetValue).toHaveBeenCalledTimes(1);
+
+        expect(defaultProps.sortFacetValue).toHaveBeenCalledWith({
+            name: 'facet',
+            nextSortBy: 'value',
+        });
+
+        sortButtons.at(1).dive().dive().find(Button).simulate('click');
+
+        expect(defaultProps.sortFacetValue).toHaveBeenCalledTimes(2);
+
+        expect(defaultProps.sortFacetValue).toHaveBeenCalledWith({
+            name: 'facet',
+            nextSortBy: 'count',
+        });
+    });
+});

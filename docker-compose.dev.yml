@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    node:
+    api:
         image: node:22.12-bookworm
         extra_hosts: # for linux hosts since version 20.10
             - host.docker.internal:host-gateway
@@ -32,7 +32,7 @@ services:
         ports:
             - "3000:3000"
             - "9229:9229" # Enable Nodemon inspect to attach to Docker Node
-        command: npm run development:api
+        command: npm run development:backend
         deploy:
             resources:
                 limits:
@@ -48,6 +48,9 @@ services:
             NODE_ENV: development
         ports:
             - "8080:8080"
+            - "8081:8081"
+            - "8082:8082"
+            - "8083:8083"
         command: npm run development:app
         deploy:
             resources:
@@ -109,6 +112,12 @@ services:
                 limits:
                     cpus: '2'
                     memory: 2G
+    data-computer:
+        image: cnrsinist/ws-data-computer:2.18.1
+        extra_hosts: # for linux hosts since version 20.10
+            - host.docker.internal:host-gateway
+        links:
+            - api
 
     maildev:
         image: maildev/maildev

@@ -21,6 +21,8 @@
     <% if (custom.sousTheme == 'termino') { %>
     <link rel="stylesheet" href="<%= theme.current.href %>/css/termino.css" />
     <% } %>
+    <link rel="stylesheet" href="<%= lodex.base.href %>/css/LeafletMap.css"/>
+    <link rel="stylesheet" href="<%= lodex.base.href %>/css/ReactToastify.css"/>
     <style><%= theme.cssVariable %>
         <% if (custom.BanniereSimple) {%>        
     /* import config theme banniere simple*/
@@ -119,6 +121,16 @@
         <div class="footer4 container"><a href:"https://www.inist.fr"><img src="https://www.istex.fr/wp-content/themes/istex/img/Opere_par_Inist_120.png" alt="opéré par CNRS Inist"></a>
         </div>
     </footer>
+    <% if (isDev) { %>
+        <script type="module">
+            import RefreshRuntime from '<%= lodex.base.href %>/@react-refresh'
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+        </script>
+        <script type="module" src="<%= lodex.base.href %>/@vite/client"></script>
+    <% } %>
     <!-- Footer - bloc-8 END -->
     <script src="<%= theme.current.href %>/js/jquery-3.6.0.min.js"></script>
     <script src="<%= theme.current.href %>/js/responsiveMenu.js"></script>
@@ -128,7 +140,7 @@
         window.__TENANT__ = '<%= lodex.tenant %>';
         window.ISTEX_API_URL = '<%= lodex.istexApi %>';
     </script>
-    <script src="<%= lodex.base.href %>/index.js"></script>
+    <script type="module" type="module" src="<%= lodex.base.href %>/public/index.js"></script>
         <% if (custom.matomoID && custom.matomoHost) { %>
         <!-- Piwik -->
         <script>

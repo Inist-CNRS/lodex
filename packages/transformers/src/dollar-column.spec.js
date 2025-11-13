@@ -5,7 +5,7 @@ import statements from '.';
 ezs.use(statements);
 
 describe('$COLUMN', () => {
-    test('with valid parameter', done => {
+    test('with valid parameter', (done) => {
         const script = `
             [$COLUMN]
             field = d
@@ -25,7 +25,7 @@ describe('$COLUMN', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 expect(chunk).toEqual(expect.any(Object));
                 output.push(chunk);
             })
@@ -39,7 +39,7 @@ describe('$COLUMN', () => {
             });
     });
 
-    test('with valid parameter', done => {
+    test('with valid parameter', (done) => {
         const script = `
             [$COLUMN]
             field = d
@@ -63,7 +63,7 @@ describe('$COLUMN', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 expect(chunk).toEqual(expect.any(Object));
                 output.push(chunk);
             })

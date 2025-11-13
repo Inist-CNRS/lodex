@@ -32,8 +32,6 @@ module.exports = {
             '*.markdown',
             '*.md',
             '*.mkd',
-            '.ts',
-            '*.ts',
             '*.jst',
             '*.coffee',
             '*.tgz',

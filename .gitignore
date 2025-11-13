@@ -51,9 +51,6 @@ typings
 cypress/videos
 cypress/screenshots
 
-# Webpack Bundle Analyzer
-stats.json
-
 ## Webstorm
 .idea
 
@@ -70,3 +67,6 @@ src/app/custom/themes/istex/ICONO/mainAI-carre-1080x1080.jpg:Zone.Identifier
 
 # Test MongoDB
 globalConfig.json
+
+# bundle analyzer result
+stats.html

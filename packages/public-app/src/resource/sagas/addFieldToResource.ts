@@ -1,0 +1,42 @@
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+
+import {
+    addFieldToResourceSuccess,
+    addFieldToResourceError,
+    getNewResourceFieldFormData,
+    ADD_FIELD_TO_RESOURCE,
+} from '../index';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+
+// @ts-expect-error TS7031
+export function* handleAddFieldToResource({ payload: uri }) {
+    // @ts-expect-error TS7057
+    const formData = yield select(getNewResourceFieldFormData);
+    if (!formData.field) {
+        yield put(
+            addFieldToResourceError(
+                new Error('You need to select a field or create a new one'),
+            ),
+        );
+        return;
+    }
+    // @ts-expect-error TS7057
+    const request = yield select(fromUser.getAddFieldToResourceRequest, {
+        ...formData,
+        uri,
+    });
+    const { error, response } = yield call(fetchSaga, request);
+
+    if (error) {
+        yield put(addFieldToResourceError(error));
+        return;
+    }
+
+    yield put(addFieldToResourceSuccess(response));
+}
+
+export default function* watchAddFieldToResource() {
+    // @ts-expect-error TS2769
+    yield takeLatest(ADD_FIELD_TO_RESOURCE, handleAddFieldToResource);
+}

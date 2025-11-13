@@ -1,0 +1,27 @@
+// You can find aspect ratio preview at: https://www.w3schools.com/howto/howto_css_aspect_ratio.asp
+export const ASPECT_RATIO_1_1 = '1 / 1' as const;
+export const ASPECT_RATIO_3_2 = '3 / 2' as const;
+export const ASPECT_RATIO_4_3 = '4 / 3' as const;
+export const ASPECT_RATIO_8_5 = '8 / 5' as const;
+export const ASPECT_RATIO_16_6 = '16 / 6' as const;
+export const ASPECT_RATIO_16_9 = '16 / 9' as const;
+export const ASPECT_RATIO_NONE = 'none' as const;
+
+export const ASPECT_RATIOS = [
+    ASPECT_RATIO_1_1,
+    ASPECT_RATIO_3_2,
+    ASPECT_RATIO_4_3,
+    ASPECT_RATIO_8_5,
+    ASPECT_RATIO_16_6,
+    ASPECT_RATIO_16_9,
+    ASPECT_RATIO_NONE,
+];
+
+export type AspectRatio =
+    | typeof ASPECT_RATIO_1_1
+    | typeof ASPECT_RATIO_3_2
+    | typeof ASPECT_RATIO_4_3
+    | typeof ASPECT_RATIO_8_5
+    | typeof ASPECT_RATIO_16_6
+    | typeof ASPECT_RATIO_16_9
+    | typeof ASPECT_RATIO_NONE;

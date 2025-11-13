@@ -2,21 +2,30 @@ module.exports = {
     apps: [
         {
             name: 'lodex',
-            script: 'src/api/index.js',
-            interpreter_args:
-                '--max-http-header-size=32768 --require @babel/register',
+            script: './src',
+            interpreter: 'node',
+            interpreter_args: '--import tsx --max-http-header-size=32768',
             exec_mode: 'cluster',
+            cwd: './packages/api',
             wait_ready: true,
             listen_timeout: 10000,
+            env: {
+                NODE_CONFIG_DIR: '../../config',
+            },
             err_file: '/dev/null',
             out_file: '/dev/null',
         },
         {
             name: 'worker',
-            script: 'workers',
-            interpreter_args: '--require @babel/register',
+            script: './src',
+            cwd: './packages/workers',
+            interpreter: 'node',
+            interpreter_args: '--import tsx',
             exec_mode: 'fork',
             instances: 1,
+            env: {
+                NODE_CONFIG_DIR: '../../config',
+            },
             err_file: '/dev/null',
             out_file: '/dev/null',
         },

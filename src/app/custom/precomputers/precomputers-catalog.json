@@ -5,7 +5,7 @@
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-homogenise",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-homogenise%20-%20Homog%C3%A9n%C3%A9ise%20les%20valeurs%20d%27un%20champ#/homogenise/post-v1-homogenise",
         "objectifTDM": "https://services.istex.fr/homogeneisation-automatique-de-mots-cles/",
-        "type": "homogénéisation"
+        "type": "homogeneisation"
     },
     {
         "id": "post-v1-datatableExtract",
@@ -13,9 +13,9 @@
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-table",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-table%20-%20Extract%20tables%20from%20pdf%20files#/data-table/post-v1-table-extraction",
         "objectifTDM": "https://services.istex.fr/detection-et-extraction-de-tableaux-dans-un-article-scientifique/",
-        "type": "prétraitement"
+        "type": "pretraitement"
     },
-  {
+    {
         "id": "post-v1-graph-segment",
         "url": "https://data-computer.services.istex.fr/v1/graph-segment",
         "code": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252fgraph-segment",

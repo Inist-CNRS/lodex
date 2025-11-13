@@ -1,0 +1,10 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "target": "es2024",
+        "lib": ["ES2024", "dom"],
+        "types": ["cypress", "node", "@testing-library/cypress"]
+    },
+    "include": ["**/*.ts", "**/*.js"],
+    "exclude": []
+}

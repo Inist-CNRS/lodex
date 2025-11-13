@@ -5,7 +5,7 @@ import statements from '.';
 ezs.use(statements);
 
 describe('chaining transformer', () => {
-    test('with to transformers', done => {
+    test('with to transformers', (done) => {
         const script = `
             [$PREFIX]
             field = b
@@ -31,7 +31,7 @@ describe('chaining transformer', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 expect(chunk).toEqual(expect.any(Object));
                 output.push(chunk);
             })

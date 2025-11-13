@@ -1,0 +1,92 @@
+import reducer, {
+    updateProgress,
+    errorProgress,
+    clearProgress,
+} from './reducer';
+import { publish } from '../publish';
+import { uploadFile } from '../upload';
+import { ProgressStatus } from '@lodex/common';
+
+describe('progress reducer', () => {
+    describe('UPDATE_PROGRESS', () => {
+        it('should update progress data', () => {
+            const state = {};
+
+            expect(
+                reducer(
+                    // @ts-expect-error TS2345
+                    state,
+                    updateProgress({
+                        status: 'status',
+                        target: 'target',
+                        progress: 'progress',
+                        symbol: 'symbol',
+                    }),
+                ),
+            ).toEqual({
+                status: 'status',
+                target: 'target',
+                progress: 'progress',
+                error: undefined,
+                symbol: 'symbol',
+            });
+        });
+    });
+
+    describe('PUBLISH', () => {
+        it('should start progress', () => {
+            const state = {};
+
+            // @ts-expect-error TS2345
+            expect(reducer(state, publish())).toEqual({
+                status: 'STARTING',
+                error: undefined,
+                progress: undefined,
+                target: undefined,
+                isBackground: true,
+            });
+        });
+    });
+
+    describe('UPLOAD_FILE', () => {
+        it('should start progress', () => {
+            const state = {};
+
+            // @ts-expect-error TS2345
+            expect(reducer(state, uploadFile())).toEqual({
+                status: 'STARTING',
+                error: undefined,
+                progress: undefined,
+                target: undefined,
+            });
+        });
+    });
+
+    describe('ERROR_PROGRESS', () => {
+        it('should set error in progress', () => {
+            const state = {};
+
+            // @ts-expect-error TS2345
+            expect(reducer(state, errorProgress())).toEqual({
+                error: true,
+                status: ProgressStatus.ERROR,
+                progress: undefined,
+                target: undefined,
+            });
+        });
+    });
+
+    describe('CLEAR_PROGRESS', () => {
+        it('should clear progress', () => {
+            const state = {};
+
+            // @ts-expect-error TS2345
+            expect(reducer(state, clearProgress())).toEqual({
+                error: false,
+                status: ProgressStatus.PENDING,
+                progress: undefined,
+                target: undefined,
+            });
+        });
+    });
+});

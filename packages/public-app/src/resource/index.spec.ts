@@ -1,0 +1,423 @@
+import reducer, {
+    defaultState,
+    LOAD_RESOURCE,
+    LOAD_RESOURCE_SUCCESS,
+    LOAD_RESOURCE_ERROR,
+    SAVE_RESOURCE,
+    saveResourceSuccess,
+    SAVE_RESOURCE_ERROR,
+    HIDE_RESOURCE_SUCCESS,
+    ADD_FIELD_TO_RESOURCE,
+    ADD_FIELD_TO_RESOURCE_SUCCESS,
+    ADD_FIELD_TO_RESOURCE_ERROR,
+    changeFieldStatus,
+    changeFieldStatusSuccess,
+    changeFieldStatusError,
+    selectVersion,
+    addFieldToResourceOpen,
+    addFieldToResourceCancel,
+    fromResource,
+    type ResourceState,
+} from './index';
+import { PropositionStatus } from '@lodex/common';
+import type { Action } from 'redux-actions';
+
+describe('resourceReducer', () => {
+    it('should initialize with correct state', () => {
+        const state = reducer(undefined, { type: '@@INIT' } as Action<unknown>);
+        expect(state).toEqual(defaultState);
+    });
+
+    it('should handle LOAD_RESOURCE_SUCCESS', () => {
+        const state = reducer(
+            {
+                key: 'value',
+            } as unknown as ResourceState,
+            {
+                type: LOAD_RESOURCE_SUCCESS,
+                payload: { data: 'resource', versions: [1, 2] },
+            },
+        );
+        expect(state).toEqual({
+            key: 'value',
+            resource: { data: 'resource', versions: [1, 2] },
+            selectedVersion: 1,
+            error: null,
+            loading: false,
+            saving: false,
+        });
+    });
+
+    it('should handle LOAD_RESOURCE_ERROR', () => {
+        const state = reducer(
+            {
+                key: 'value',
+            } as unknown as ResourceState,
+            {
+                type: LOAD_RESOURCE_ERROR,
+                payload: { message: 'error' },
+            },
+        );
+        expect(state).toEqual({
+            key: 'value',
+            error: 'error',
+            loading: false,
+            saving: false,
+        });
+    });
+
+    it('should handle LOAD_RESOURCE', () => {
+        const state = reducer(
+            {
+                key: 'value',
+            } as unknown as ResourceState,
+            { type: LOAD_RESOURCE } as Action<unknown>,
+        );
+        expect(state).toEqual({
+            key: 'value',
+            error: null,
+            resource: null,
+            selectedVersion: 0,
+            loading: true,
+            saving: false,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE and ADD_FIELD_TO_RESOURCE', () => {
+        [SAVE_RESOURCE, ADD_FIELD_TO_RESOURCE].forEach((type) => {
+            const state = reducer(
+                {
+                    key: 'value',
+                } as unknown as ResourceState,
+                { type } as Action<unknown>,
+            );
+            expect(state).toEqual({
+                key: 'value',
+                error: null,
+                saving: true,
+            });
+        });
+    });
+
+    it('should handle SAVE_RESOURCE_SUCCESS', () => {
+        const state: ResourceState = {
+            data: 'value',
+            resource: {
+                data: 'new resource',
+                versions: [1, 2],
+            },
+        } as unknown as ResourceState;
+        expect(
+            reducer(
+                state,
+                saveResourceSuccess({
+                    data: 'new resource',
+                    versions: [1, 2, 3],
+                }),
+            ),
+        ).toEqual({
+            data: 'value',
+            resource: { data: 'new resource', versions: [1, 2, 3] },
+            selectedVersion: 2,
+            error: null,
+            saving: false,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE_SUCCESS with no resource change', () => {
+        const state = {
+            data: 'value',
+            resource: { data: 'resource', versions: [1] },
+        } as unknown as ResourceState;
+        expect(reducer(state, saveResourceSuccess())).toEqual({
+            data: 'value',
+            resource: { data: 'resource', versions: [1] },
+            selectedVersion: 0,
+            error: null,
+            saving: false,
+        });
+    });
+
+    it('should handle HIDE_RESOURCE_SUCCESS', () => {
+        const state = reducer(
+            {
+                key: 'value',
+                resource: {
+                    data: 'value',
+                },
+            } as unknown as ResourceState,
+            {
+                type: HIDE_RESOURCE_SUCCESS,
+                payload: { reason: 'reason', removedAt: 'date' },
+            },
+        );
+        expect(state).toEqual({
+            key: 'value',
+            error: null,
+            saving: false,
+            hiding: false,
+            resource: {
+                data: 'value',
+                reason: 'reason',
+                removedAt: 'date',
+            },
+        });
+    });
+
+    it('should handle ADD_FIELD_TO_RESOURCE_SUCCESS', () => {
+        const state = reducer(
+            {
+                key: 'value',
+            } as unknown as ResourceState,
+            {
+                type: ADD_FIELD_TO_RESOURCE_SUCCESS,
+                payload: {
+                    resource: {
+                        versions: ['v1', 'v2'],
+                    },
+                },
+            },
+        );
+        expect(state).toEqual({
+            key: 'value',
+            resource: {
+                versions: ['v1', 'v2'],
+            },
+            selectedVersion: 1,
+            error: null,
+            saving: false,
+            addingField: null,
+            loading: false,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE_ERROR, ADD_FIELD_TO_RESOURCE_ERROR', () => {
+        [SAVE_RESOURCE_ERROR, ADD_FIELD_TO_RESOURCE_ERROR].forEach((type) => {
+            const state = reducer(
+                {
+                    key: 'value',
+                } as unknown as ResourceState,
+                { type, payload: { message: 'boom' } },
+            );
+            expect(state).toEqual({
+                key: 'value',
+                error: 'boom',
+                saving: false,
+            });
+        });
+    });
+
+    it('should handle CHANGE_FIELD_STATUS', () => {
+        const state = {
+            resource: {
+                data: 'value',
+                contributions: [
+                    { fieldName: 'field', status: 'status', other: 'data' },
+                    { fieldName: 'target', status: 'status', other: 'data' },
+                    { fieldName: 'miss', status: 'status', other: 'data' },
+                ],
+            },
+        } as unknown as ResourceState;
+
+        expect(
+            reducer(
+                state,
+                changeFieldStatus({ field: 'target', status: 'new status' }),
+            ),
+        ).toEqual({
+            moderating: true,
+            resource: {
+                data: 'value',
+                contributions: [
+                    { fieldName: 'field', status: 'status', other: 'data' },
+                    {
+                        fieldName: 'target',
+                        status: 'new status',
+                        other: 'data',
+                    },
+                    { fieldName: 'miss', status: 'status', other: 'data' },
+                ],
+            },
+        });
+    });
+
+    it('should handle CHANGE_FIELD_STATUS_SUCCESS', () => {
+        const state = {
+            data: 'value',
+        } as unknown as ResourceState;
+
+        expect(reducer(state, changeFieldStatusSuccess())).toEqual({
+            data: 'value',
+            error: null,
+            moderating: false,
+        });
+    });
+
+    it('should handle CHANGE_FIELD_STATUS_ERROR', () => {
+        const state = {
+            data: 'value',
+            resource: {
+                contributions: [
+                    { fieldName: 'field', status: 'status', other: 'data' },
+                    {
+                        fieldName: 'target',
+                        status: 'updated status',
+                        other: 'data',
+                    },
+                    { fieldName: 'miss', status: 'status', other: 'data' },
+                ],
+            },
+        } as unknown as ResourceState;
+
+        const action: Action<unknown> = changeFieldStatusError({
+            error: 'boom',
+            field: 'target',
+            prevStatus: 'previous status',
+        });
+
+        expect(reducer(state, action)).toEqual({
+            data: 'value',
+            error: 'boom',
+            moderating: false,
+            resource: {
+                contributions: [
+                    { fieldName: 'field', status: 'status', other: 'data' },
+                    {
+                        fieldName: 'target',
+                        status: 'previous status',
+                        other: 'data',
+                    },
+                    { fieldName: 'miss', status: 'status', other: 'data' },
+                ],
+            },
+        });
+    });
+
+    it('should handle SELECT_VERSION action', () => {
+        const state = {
+            data: 'value',
+        } as unknown as ResourceState;
+
+        expect(reducer(state, selectVersion('version'))).toEqual({
+            data: 'value',
+            selectedVersion: 'version',
+        });
+    });
+
+    it('should handle ADD_FIELD_TO_RESOURCE_OPEN action', () => {
+        const state = {
+            data: 'value',
+        } as unknown as ResourceState;
+
+        expect(reducer(state, addFieldToResourceOpen())).toEqual({
+            data: 'value',
+            error: null,
+            addingField: true,
+        });
+    });
+
+    it('should handle ADD_FIELD_TO_RESOURCE_CANCEL action', () => {
+        const state = {
+            data: 'value',
+        } as unknown as ResourceState;
+
+        expect(reducer(state, addFieldToResourceCancel())).toEqual({
+            data: 'value',
+            error: null,
+            addingField: false,
+        });
+    });
+
+    describe('selector', () => {
+        describe('getResourceProposedFields', () => {
+            it('should return list of fields with status proposed', () => {
+                const state: ResourceState = {
+                    resource: {
+                        contributions: [
+                            {
+                                fieldName: 'validatedField',
+                                status: PropositionStatus.VALIDATED,
+                            },
+                            {
+                                fieldName: 'proposedField',
+                                status: PropositionStatus.PROPOSED,
+                            },
+                            {
+                                fieldName: 'othervalidatedField',
+                                status: PropositionStatus.VALIDATED,
+                            },
+                            {
+                                fieldName: 'otherProposedField',
+                                status: PropositionStatus.PROPOSED,
+                            },
+                            {
+                                fieldName: 'rejectedField',
+                                status: PropositionStatus.REJECTED,
+                            },
+                        ],
+                    },
+                } as ResourceState;
+                expect(fromResource.getResourceProposedFields(state)).toEqual([
+                    'proposedField',
+                    'otherProposedField',
+                ]);
+            });
+        });
+
+        describe('getResourceContributorsCatalog', () => {
+            it('should return contributor name keyed with their field', () => {
+                const state = {
+                    resource: {
+                        contributions: [
+                            {
+                                fieldName: 'field1',
+                                contributor: { name: 'contributor1' },
+                            },
+                            {
+                                fieldName: 'field2',
+                                contributor: { name: 'contributor2' },
+                            },
+                            {
+                                fieldName: 'field3',
+                                contributor: { name: 'contributor3' },
+                            },
+                            {
+                                fieldName: 'field4',
+                                contributor: { name: 'contributor4' },
+                            },
+                        ],
+                    },
+                } as ResourceState;
+
+                expect(
+                    fromResource.getResourceContributorsCatalog(state),
+                ).toEqual({
+                    field1: 'contributor1',
+                    field2: 'contributor2',
+                    field3: 'contributor3',
+                    field4: 'contributor4',
+                });
+            });
+        });
+
+        describe('getResourceLastVersion', () => {
+            it('should return lasst items in versions for resource + uri', () => {
+                const state = {
+                    resource: {
+                        uri: 'uri',
+                        versions: [
+                            { data: 'version1' },
+                            { data: 'version2' },
+                            { data: 'version3' },
+                        ],
+                    },
+                } as ResourceState;
+
+                expect(fromResource.getResourceLastVersion(state)).toEqual({
+                    uri: 'uri',
+                    data: 'version3',
+                });
+            });
+        });
+    });
+});

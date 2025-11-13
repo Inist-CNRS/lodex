@@ -1,0 +1,106 @@
+import { useMemo } from 'react';
+import compose from 'recompose/compose';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import { Grid, Paper } from '@mui/material';
+
+import injectData from '../../injectData';
+import ClusteredChart from './ClusteredChart';
+import { flip } from '../../utils/chartsUtils';
+import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
+
+interface ClusteredChartViewProps {
+    field: unknown;
+    resource: object;
+    data?: any;
+    colors: string;
+    xTitle?: string;
+    yTitle?: string;
+    flipAxis?: boolean;
+}
+
+/**
+ * Clustered chart view components use to render the chart with given parameters
+ * @param data {{values: Array<{_id: string, source: string, target: string, weight: string}>}}
+ * @param colors {string}
+ * @param xTitle {string}
+ * @param yTitle {string}
+ * @param flipAxis {boolean}
+ * @returns {JSX.Element}
+ */
+const ClusteredChartView = ({
+    data,
+    colors,
+    xTitle,
+    yTitle,
+    flipAxis,
+}: ClusteredChartViewProps) => {
+    const { values } = data;
+
+    const topics = useMemo(() => {
+        return _.chain(values)
+            .map((value) => flip(flipAxis, value.target, value.source))
+            .uniq()
+            .sort((a, b) =>
+                a.localeCompare(b, 'fr', {
+                    sensitivity: 'accent',
+                    numeric: true,
+                    usage: 'sort',
+                    ignorePunctuation: true,
+                }),
+            )
+            .value();
+    }, [flipAxis, values]);
+
+    return (
+        <div style={{ margin: '12px' }}>
+            <FormatFullScreenMode>
+                <Grid
+                    container
+                    justifyContent="center"
+                    rowSpacing={1}
+                    columnSpacing={1}
+                >
+                    {topics.map((topic) => (
+                        <Grid key={topic} item xs={6}>
+                            <Paper style={{ padding: '6px' }}>
+                                <ClusteredChart
+                                    data={values}
+                                    topic={topic}
+                                    params={{
+                                        colors,
+                                        xTitle,
+                                        yTitle,
+                                        flipAxis,
+                                    }}
+                                />
+                            </Paper>
+                        </Grid>
+                    ))}
+                </Grid>
+            </FormatFullScreenMode>
+        </div>
+    );
+};
+
+// @ts-expect-error TS7006
+const mapStateToProps = (state, { formatData }) => {
+    if (!formatData) {
+        return {
+            data: {
+                values: [],
+            },
+        };
+    }
+    return {
+        data: {
+            values: formatData,
+        },
+    };
+};
+
+export default compose(
+    injectData(),
+    connect(mapStateToProps),
+    // @ts-expect-error TS2345
+)(ClusteredChartView);

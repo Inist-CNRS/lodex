@@ -1,0 +1,35 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@testing-library/jest-dom';
+import { render } from '@testing-library/react';
+
+import { MemoryRouter } from 'react-router-dom';
+
+import TitleView from './TitleView';
+
+const queryClient = new QueryClient();
+
+const resource = { foo: 'Run you fools!' };
+const field = { name: 'foo' };
+
+function TestTitleView() {
+    return (
+        <MemoryRouter>
+            <QueryClientProvider client={queryClient}>
+                <TitleView
+                    resource={resource}
+                    // @ts-expect-error TS2739
+                    field={field}
+                    level={1}
+                    colors={'#ff6347'}
+                />
+            </QueryClientProvider>
+        </MemoryRouter>
+    );
+}
+
+describe('<TitleView />', () => {
+    it('should render', () => {
+        const screen = render(<TestTitleView />);
+        expect(screen.getByRole('heading')).toHaveTextContent('Run you fools!');
+    });
+});

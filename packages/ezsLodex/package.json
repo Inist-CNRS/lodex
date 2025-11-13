@@ -4,6 +4,10 @@
     "name": "@ezs/lodex",
     "description": "ezs dedicated statements for Lodex",
     "version": "1.17.0",
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch --preserveWatchOutput"
+    },
     "dependencies": {
         "lodash": "4.17.21",
         "mongodb": "6.12.0",
@@ -16,7 +20,7 @@
     "directories": {
         "test": "test"
     },
-    "main": "./src/index.js",
+    "main": "./lib/index.js",
     "peerDependencies": {
         "@ezs/core": "*"
     }
