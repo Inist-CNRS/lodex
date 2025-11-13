@@ -68,7 +68,7 @@ export function useFormatNetworkData({
                 [id]: {
                     id,
                     label,
-                    radius: targets.length,
+                    radius: targets?.length + 1 || 1,
                     targets,
                 },
             }),
@@ -77,12 +77,16 @@ export function useFormatNetworkData({
 
         const nodes = Object.values(nodesDic).map(({ targets, ...node }) => ({
             ...node,
-            neighbors: targets.map(({ id: targetId }) => nodesDic[targetId]),
-            links: targets.map(({ id: targetId }) => ({
-                source: node.id,
-                target: targetId,
-                value: 1,
-            })),
+            neighbors: targets
+                ? targets.map(({ id: targetId }) => nodesDic[targetId])
+                : [],
+            links: targets
+                ? targets.map(({ id: targetId }) => ({
+                      source: node.id,
+                      target: targetId,
+                      value: 1,
+                  }))
+                : [],
         }));
 
         const radiusList = nodes.map(({ radius }) => radius);

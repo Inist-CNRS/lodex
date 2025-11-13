@@ -41,7 +41,7 @@ type NetworkBaseProps = {
     links: Link[];
 };
 
-const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
+export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({

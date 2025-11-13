@@ -33,6 +33,7 @@ import lodexField from './lodex/field';
 import cartography from './vega-lite/component/cartography';
 import heatmap from './vega-lite/component/heatmap';
 import network from './chart/network';
+import advancedNetwork from './chart/advancedNetwork';
 import venn from './chart/venn';
 import leaflet from './chart/leaflet';
 import redirect from './url/redirect';
@@ -418,6 +419,16 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux',
+        isUrlValue: false,
+    },
+    {
+        name: 'formaAdvancedNetwork',
+        description: 'formatAdvancedNetworkDescription',
+        componentName: 'advancedNetwork',
+        component: advancedNetwork,
+        type: 'chart',
+        isValueAnnotable: false,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux-avance',
         isUrlValue: false,
     },
     {
