@@ -29,6 +29,80 @@ export type AutoCompleteProps = Partial<
 
 type NotUndefined<T> = T extends undefined ? never : T;
 
+export const AutoComplete = ({
+    className,
+    error,
+    getOptionLabel,
+    disabled,
+    value,
+    onChange,
+    onInputChange,
+    InputProps,
+    label,
+    variant,
+    allowNewItem = false,
+    options,
+    hint,
+    ...props
+}: Omit<
+    MuiAutocompleteProps<any, false, false, true>,
+    'getOptionLabel' | 'renderInput'
+> & {
+    error?: string;
+    hint?: string;
+    label: string;
+    InputProps?: MuiTextFieldProps;
+    variant?: MuiTextFieldProps['variant'];
+    allowNewItem?: boolean;
+    getOptionLabel: (option: any) => string;
+}) => {
+    const { translate } = useTranslate();
+    return (
+        <FormControl className={className} fullWidth error={!!error}>
+            <MuiAutocomplete
+                {...props}
+                getOptionLabel={getOptionLabel}
+                disabled={disabled}
+                value={value}
+                onChange={onChange}
+                onInputChange={onInputChange}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        {...InputProps}
+                        error={!!error}
+                        label={label}
+                        placeholder={label}
+                        variant={variant}
+                        aria-label="input-path"
+                        helperText={
+                            allowNewItem && value
+                                ? `(${translate('actually')} ${
+                                      getOptionLabel?.(value) ?? value
+                                  })`
+                                : undefined
+                        }
+                    />
+                )}
+                renderOption={(props, option) => {
+                    return (
+                        <ListItem {...props}>
+                            <Typography>{getOptionLabel(option)}</Typography>
+                        </ListItem>
+                    );
+                }}
+                options={options}
+                noOptionsText={translate('no_option')}
+            />
+            {error ? (
+                <FormHelperText error>{error}</FormHelperText>
+            ) : (
+                <FormHelperText>{hint}</FormHelperText>
+            )}
+        </FormControl>
+    );
+};
+
 export const AutoCompleteField = ({
     name,
     clearIdentifier,
@@ -92,48 +166,21 @@ export const AutoCompleteField = ({
     );
 
     return (
-        <FormControl className={className} fullWidth error={!!error}>
-            <MuiAutocomplete
-                {...props}
-                getOptionLabel={getOptionLabel}
-                disabled={disabled}
-                value={field.value || null}
-                onChange={handleValueChosen}
-                onInputChange={handleInputValueChange}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        {...InputProps}
-                        error={!!error}
-                        label={label}
-                        placeholder={label}
-                        variant={variant}
-                        aria-label="input-path"
-                        helperText={
-                            allowNewItem && field.value
-                                ? `(${translate('actually')} ${
-                                      getOptionLabel?.(field.value) ??
-                                      field.value
-                                  })`
-                                : undefined
-                        }
-                    />
-                )}
-                renderOption={(props, option) => {
-                    return (
-                        <ListItem {...props}>
-                            <Typography>{getOptionLabel(option)}</Typography>
-                        </ListItem>
-                    );
-                }}
-                options={options}
-                noOptionsText={translate('no_option')}
-            />
-            {error ? (
-                <FormHelperText error>{error}</FormHelperText>
-            ) : (
-                <FormHelperText>{hint}</FormHelperText>
-            )}
-        </FormControl>
+        <AutoComplete
+            className={className}
+            fullWidth
+            error={error}
+            value={field.value || null}
+            onChange={handleValueChosen}
+            onInputChange={handleInputValueChange}
+            disabled={disabled}
+            getOptionLabel={getOptionLabel}
+            label={label}
+            options={options}
+            variant={variant}
+            InputProps={InputProps}
+            allowNewItem={allowNewItem}
+            hint={hint}
+        />
     );
 };
