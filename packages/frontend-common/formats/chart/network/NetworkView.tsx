@@ -197,6 +197,12 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 ctx.fillStyle = 'black';
+                                ctx.strokeStyle = 'white';
+                                ctx.strokeText(
+                                    node.label,
+                                    node.x!,
+                                    node.y + circleRadius + fontSize,
+                                );
                                 ctx.fillText(
                                     node.label,
                                     // @ts-expect-error TS2345
