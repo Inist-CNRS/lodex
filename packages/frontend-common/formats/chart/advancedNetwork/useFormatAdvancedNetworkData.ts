@@ -63,22 +63,33 @@ export function useFormatNetworkData({
         >(
             (
                 acc,
-                { id, value: { label, targets, viz$position, viz$color } },
+                {
+                    id,
+                    value: {
+                        label,
+                        targets,
+                        viz$position,
+                        viz$color,
+                        viz$size,
+                    },
+                },
             ) => ({
                 ...acc,
                 [id]: {
                     id,
                     label,
-                    radius: targets?.length + 1 || 1,
+                    radius: viz$size.value
+                        ? parseFloat(viz$size.value) * 1000
+                        : 1,
                     targets,
                     x: viz$position.x
-                        ? parseFloat(viz$position.x) * 100
+                        ? parseFloat(viz$position.x) * 1000
                         : undefined,
                     y: viz$position.y
-                        ? parseFloat(viz$position.y) * 100
+                        ? parseFloat(viz$position.y) * 1000
                         : undefined,
                     z: viz$position.z
-                        ? parseFloat(viz$position.z) * 100
+                        ? parseFloat(viz$position.z) * 1000
                         : undefined,
                     color: viz$color
                         ? {
