@@ -139,7 +139,13 @@ export const NetworkBase = ({
         setHighlightedLinks(node.links ?? []);
 
         if (!fgRef.current) return;
-        fgRef.current.zoomToFit(500, 150, (n) => n.id === node.id);
+        fgRef.current.zoomToFit(
+            500,
+            100,
+            (n) =>
+                n.id === node.id ||
+                node.neighbors.some((neighbor: Node) => neighbor.id === n.id),
+        );
     };
 
     return (
