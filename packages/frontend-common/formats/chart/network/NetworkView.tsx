@@ -6,12 +6,10 @@ import {
     useRef,
     useState,
 } from 'react';
-import compose from 'recompose/compose';
 
 import Loading from '../../../components/Loading';
 import type { Field } from '../../../fields/types';
 import { useTranslate } from '../../../i18n/I18NContext';
-import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import {
@@ -48,7 +46,7 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
         width: 0,
         height: 0,
     });
-    const [cooldownTime, setCooldownTime] = useState(10000);
+    const [cooldownTime, setCooldownTime] = useState(0);
     const [selectedNode, setSelectedNode] = useState<NodeObject | null>(null);
     const [highlightedNodes, setHighlightedNodes] = useState<NodeObject[]>([]);
     const [highlightedLinks, setHighlightedLinks] = useState<Link[]>([]);
@@ -70,7 +68,7 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
     }, []);
 
     useEffect(() => {
-        setCooldownTime(10000);
+        setCooldownTime(0);
         setSelectedNode(null);
         setHighlightedNodes([]);
         setHighlightedLinks([]);
@@ -238,6 +236,7 @@ export const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
                             cooldownTime={cooldownTime}
+                            cooldownTicks={0}
                         />
                     </Suspense>
 
@@ -274,5 +273,5 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
     return <NetworkBase colorSet={colorSet} nodes={nodes} links={links} />;
 };
 
-// @ts-expect-error TS2345
-export default compose(injectData())(Network);
+// export default compose(injectData())(Network);
+export default Network;
