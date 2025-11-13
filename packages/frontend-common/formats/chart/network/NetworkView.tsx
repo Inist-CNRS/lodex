@@ -18,6 +18,7 @@ import {
     useFormatNetworkData,
     type Link,
     type NetworkData,
+    type Node,
 } from './useFormatNetworkData';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
@@ -34,13 +35,13 @@ const styles = {
     },
 };
 
-interface NetworkProps {
+type NetworkBaseProps = {
     colorSet?: string[];
-    formatData?: NetworkData[];
-    field: Field;
-}
+    nodes: Node[];
+    links: Link[];
+};
 
-const Network = ({ formatData, colorSet, field }: NetworkProps) => {
+const NetworkBase = ({ colorSet, nodes, links }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({
@@ -73,15 +74,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
         setSelectedNode(null);
         setHighlightedNodes([]);
         setHighlightedLinks([]);
-    }, [formatData]);
-
-    const { nodes, links } = useFormatNetworkData({
-        formatData,
-        displayWeighted:
-            typeof field?.format?.args?.displayWeighted === 'boolean'
-                ? field.format.args.displayWeighted
-                : true,
-    });
+    }, [nodes, links]);
 
     // @ts-expect-error TS7006
     const handleNodeHover = (node) => {
@@ -261,6 +254,24 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
             </FormatFullScreenMode>
         </div>
     );
+};
+
+interface NetworkProps {
+    colorSet?: string[];
+    formatData?: NetworkData[];
+    field: Field;
+}
+
+const Network = ({ formatData, colorSet, field }: NetworkProps) => {
+    const { nodes, links } = useFormatNetworkData({
+        formatData,
+        displayWeighted:
+            typeof field?.format?.args?.displayWeighted === 'boolean'
+                ? field.format.args.displayWeighted
+                : true,
+    });
+
+    return <NetworkBase colorSet={colorSet} nodes={nodes} links={links} />;
 };
 
 // @ts-expect-error TS2345
