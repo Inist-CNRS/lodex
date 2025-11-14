@@ -139,13 +139,7 @@ export const NetworkBase = ({
         setHighlightedLinks(node.links ?? []);
 
         if (!fgRef.current) return;
-        fgRef.current.zoomToFit(
-            500,
-            100,
-            (n) =>
-                n.id === node.id ||
-                node.neighbors.some((neighbor: Node) => neighbor.id === n.id),
-        );
+        fgRef.current.zoomToFit(500, 200, (n) => n.id === node.id);
     };
 
     return (
@@ -216,12 +210,14 @@ export const NetworkBase = ({
                                 );
                                 ctx.fill();
 
-                                const fontSize = Math.max(circleRadius / 2, 2);
+                                const fontSize = Math.max(circleRadius / 2, 3);
                                 ctx.font = `${fontSize}px Sans-Serif`;
+
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 ctx.fillStyle = 'black';
                                 ctx.fillText(node.label, node.x!, node.y!);
+
                                 ctx.globalAlpha = 1;
                             }}
                             linkColor={(link) => link.color}
@@ -242,6 +238,48 @@ export const NetworkBase = ({
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
                             linkCurvature={linkCurvature}
+                            nodePointerAreaPaint={(
+                                node,
+                                color,
+                                ctx,
+                                globalScale,
+                            ) => {
+                                const circleRadius = node.radius / globalScale;
+
+                                ctx.strokeStyle = color;
+                                ctx.fillStyle = color;
+                                ctx.beginPath();
+                                ctx.arc(
+                                    node.x!,
+                                    node.y!,
+                                    circleRadius,
+                                    0,
+                                    2 * Math.PI,
+                                    false,
+                                );
+                                ctx.fill();
+
+                                const fontSize = Math.max(circleRadius / 2, 3);
+                                ctx.font = `${fontSize}px Sans-Serif`;
+
+                                const textWidth = ctx.measureText(
+                                    node.label,
+                                ).width;
+                                const bckgDimensions: [number, number] = [
+                                    textWidth,
+                                    fontSize,
+                                ].map((n) => n + fontSize * 0.2) as [
+                                    number,
+                                    number,
+                                ]; // some padding
+
+                                ctx.fillRect(
+                                    node.x! - bckgDimensions[0] / 2,
+                                    node.y! - bckgDimensions[1] / 2,
+                                    ...bckgDimensions,
+                                );
+                            }}
+                            linkPointerAreaPaint={() => {}}
                         />
                     </Suspense>
 
