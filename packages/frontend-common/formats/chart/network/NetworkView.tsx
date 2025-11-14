@@ -8,8 +8,10 @@ import {
 } from 'react';
 import compose from 'recompose/compose';
 
+import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
 import Loading from '../../../components/Loading';
 import type { Field } from '../../../fields/types';
+import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
@@ -19,8 +21,6 @@ import {
     type Link,
     type NetworkData,
 } from './useFormatNetworkData';
-import { AutoComplete } from '../../../form-fields/AutoCompleteField';
-import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
@@ -166,6 +166,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                         }
                         getOptionLabel={(option: string) => option}
                         options={nodes.map((node) => node.id as string)}
+                        name="search"
                     />
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
