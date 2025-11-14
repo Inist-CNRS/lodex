@@ -3,6 +3,7 @@ import {
     Suspense,
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from 'react';
@@ -142,6 +143,33 @@ export const NetworkBase = ({
         fgRef.current.zoomToFit(500, 200, (n) => n.id === node.id);
     };
 
+    const sortedNodes = useMemo(() => {
+        return nodes.sort((a, b) => {
+            if (!selectedNode) {
+                return a.radius - b.radius;
+            }
+            if (a.id === selectedNode?.id) {
+                return 1;
+            }
+            if (b.id === selectedNode?.id) {
+                return -1;
+            }
+            const isAHighlighted = highlightedNodes.some(
+                (highlightNode) => highlightNode.id === a.id,
+            );
+            const isBHighlighted = highlightedNodes.some(
+                (highlightNode) => highlightNode.id === b.id,
+            );
+            if (isAHighlighted && !isBHighlighted) {
+                return 1;
+            }
+            if (!isAHighlighted || isBHighlighted) {
+                return -1;
+            }
+            return a.radius - b.radius;
+        });
+    }, [nodes, highlightedNodes, selectedNode]);
+
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
             <FormatFullScreenMode>
@@ -176,15 +204,7 @@ export const NetworkBase = ({
                             width={width}
                             height={height}
                             graphData={{
-                                nodes: selectedNode
-                                    ? [
-                                          ...nodes.filter(
-                                              (node) =>
-                                                  node.id !== selectedNode.id,
-                                          ),
-                                          selectedNode,
-                                      ]
-                                    : nodes,
+                                nodes: sortedNodes,
                                 links,
                             }}
                             nodeLabel={(node) => {
@@ -192,6 +212,7 @@ export const NetworkBase = ({
                             }}
                             nodeCanvasObject={(node, ctx, globalScale) => {
                                 const isSelected = node.id === selectedNode?.id;
+
                                 if (
                                     highlightedNodes.length === 0 ||
                                     highlightedNodes.some(
@@ -206,7 +227,7 @@ export const NetworkBase = ({
                                 const circleRadius = node.radius / globalScale;
 
                                 if (isSelected) {
-                                    ctx.fillStyle = '#888888';
+                                    ctx.fillStyle = '#880000';
                                     ctx.beginPath();
                                     ctx.arc(
                                         node.x!,
@@ -220,9 +241,9 @@ export const NetworkBase = ({
                                 }
 
                                 ctx.fillStyle = node.color
-                                    ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, ${isSelected ? 1 : 0.5})`
+                                    ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, ${isSelected ? 1 : 0.75})`
                                     : colorSet
-                                      ? `${colorSet![0]}7f`
+                                      ? `${colorSet![0]}${isSelected ? 'ff' : '7f'}`
                                       : '#000000e6';
                                 ctx.beginPath();
                                 ctx.arc(

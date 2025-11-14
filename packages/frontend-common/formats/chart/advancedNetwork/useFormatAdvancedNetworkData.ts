@@ -105,24 +105,22 @@ export function useFormatAdvancedNetworkData({
             {},
         );
 
-        const nodes = Object.values(nodesDic)
-            .map(({ targets, ...node }) => ({
-                ...node,
-                radius: node.radius / 2,
-                color: node.color,
-                neighbors: targets
-                    ? targets.map(({ id: targetId }) => nodesDic[targetId])
-                    : [],
-                links: targets
-                    ? targets.map(({ id: targetId }) => ({
-                          source: node.id,
-                          target: targetId,
-                          value: 1,
-                          color: node.color,
-                      }))
-                    : [],
-            }))
-            .sort((a, b) => a.radius - b.radius);
+        const nodes = Object.values(nodesDic).map(({ targets, ...node }) => ({
+            ...node,
+            radius: node.radius / 2,
+            color: node.color,
+            neighbors: targets
+                ? targets.map(({ id: targetId }) => nodesDic[targetId])
+                : [],
+            links: targets
+                ? targets.map(({ id: targetId }) => ({
+                      source: node.id,
+                      target: targetId,
+                      value: 1,
+                      color: node.color,
+                  }))
+                : [],
+        }));
 
         const links = nodes.flatMap<Link>(({ links }) => links);
 
@@ -133,7 +131,7 @@ export function useFormatAdvancedNetworkData({
             })),
             links,
         };
-    }, [formatData]);
+    }, [displayWeighted, formatData]);
 }
 
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];

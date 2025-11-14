@@ -39,9 +39,7 @@ export function useFormatNetworkData({
             {},
         );
 
-        const nodes = Object.values(nodesDic).sort(
-            (a, b) => a.radius - b.radius,
-        );
+        const nodes = Object.values(nodesDic);
         const radiusList = nodes.map(({ radius }) => radius);
         const max = Math.max(...radiusList);
         const min = Math.min(...radiusList);
