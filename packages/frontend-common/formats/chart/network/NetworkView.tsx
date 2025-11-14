@@ -59,8 +59,8 @@ export const NetworkBase = ({
     });
     const [cooldownTime, setCooldownTime] = useState(10000);
     const [selectedNode, setSelectedNode] = useState<NodeObject | null>(null);
+    const [hoveredNode, setHoveredNode] = useState<NodeObject | null>(null);
     const [highlightedNodes, setHighlightedNodes] = useState<string[]>([]);
-    const [highlightedLinks, setHighlightedLinks] = useState<Link[]>([]);
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
     const [k, setK] = useState(1);
@@ -81,21 +81,21 @@ export const NetworkBase = ({
     useEffect(() => {
         setCooldownTime(10000);
         setSelectedNode(null);
+        setHoveredNode(null);
         setHighlightedNodes([]);
-        setHighlightedLinks([]);
     }, [nodes, links]);
 
     // @ts-expect-error TS7006
     const handleNodeHover = (node) => {
         // freeze the chart so that it does not rearrange itself every time we interact with it
         setCooldownTime(0);
+        setHoveredNode(node);
         if (selectedNode) {
             if (!node) {
                 setHighlightedNodes([
                     selectedNode.id,
                     ...selectedNode.neighbors,
                 ]);
-                setHighlightedLinks(selectedNode!.links ?? []);
                 return;
             }
             if (
@@ -116,11 +116,9 @@ export const NetworkBase = ({
 
         if (!node) {
             setHighlightedNodes([]);
-            setHighlightedLinks([]);
             return;
         }
         setHighlightedNodes([node.id, ...node.neighbors]);
-        setHighlightedLinks(node.links);
     };
 
     useEffect(() => {
@@ -135,12 +133,10 @@ export const NetworkBase = ({
         if (!node || selectedNode?.id === node?.id) {
             setSelectedNode(null);
             setHighlightedNodes([]);
-            setHighlightedLinks([]);
             return;
         }
         setSelectedNode(node);
         setHighlightedNodes([node.id, ...node.neighbors]);
-        setHighlightedLinks(node.links ?? []);
 
         if (!fgRef.current) return;
         fgRef.current.zoomToFit(500, 200, (n) => n.id === node.id);
@@ -274,17 +270,25 @@ export const NetworkBase = ({
                                     ? `rgba(${link.color.r}, ${link.color.g}, ${link.color.b}, 0.25)`
                                     : '#99999999'
                             }
-                            linkVisibility={(link) =>
-                                !selectedNode ||
-                                highlightedLinks.some(
-                                    (highlightedLink) =>
-                                        highlightedLink.source ===
-                                            link.source &&
-                                        highlightedLink.target === link.target,
-                                )
-                                    ? true
-                                    : false
-                            }
+                            linkVisibility={(link) => {
+                                console.log({
+                                    selectedNode,
+                                    hoveredNode,
+                                    highlightedNodes,
+                                });
+                                if (!selectedNode && !hoveredNode) {
+                                    return true;
+                                }
+
+                                return [
+                                    ...(selectedNode?.links ?? []),
+                                    ...(hoveredNode?.links ?? []),
+                                ].some(
+                                    (l) =>
+                                        l.source === link.source &&
+                                        l.target === link.target,
+                                );
+                            }}
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
