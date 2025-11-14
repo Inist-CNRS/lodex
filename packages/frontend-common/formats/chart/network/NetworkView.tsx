@@ -64,18 +64,31 @@ export const NetworkBase = ({
     const [y, setY] = useState(0);
     const [k, setK] = useState(1);
 
-    const highlightedNodes = useMemo(() => {
+    const linksBySourceId = useMemo(() => {
+        return links.reduce<Record<string, Link[]>>(
+            (acc, link) => ({
+                ...acc,
+                [link.source as string]: [
+                    ...(acc[link.source as string] || []),
+                    link,
+                ],
+            }),
+            {},
+        );
+    }, [links]);
+
+    const highlightedNodeIds = useMemo(() => {
         return [
             selectedNode?.id,
             hoveredNode?.id,
-            ...(hoveredNode?.links || []).map(
-                (l: { target: string }) => l.target,
-            ),
-            ...(selectedNode?.links || []).map(
-                (l: { target: string }) => l.target,
-            ),
+            ...(linksBySourceId[selectedNode?.id as string]?.map(
+                (l) => l.target.id,
+            ) || []),
+            ...(linksBySourceId[hoveredNode?.id as string]?.map(
+                (l) => l.target.id,
+            ) || []),
         ].filter((id): id is string => !!id);
-    }, [hoveredNode, selectedNode]);
+    }, [hoveredNode?.id, linksBySourceId, selectedNode?.id]);
 
     // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
@@ -133,10 +146,10 @@ export const NetworkBase = ({
             if (b.id === selectedNode?.id) {
                 return -1;
             }
-            const isAHighlighted = highlightedNodes.some(
+            const isAHighlighted = highlightedNodeIds.some(
                 (highlightNodeId) => highlightNodeId === a.id,
             );
-            const isBHighlighted = highlightedNodes.some(
+            const isBHighlighted = highlightedNodeIds.some(
                 (highlightNodeId) => highlightNodeId === b.id,
             );
             if (isAHighlighted && !isBHighlighted) {
@@ -147,7 +160,7 @@ export const NetworkBase = ({
             }
             return a.radius - b.radius;
         });
-    }, [nodes, highlightedNodes, selectedNode]);
+    }, [nodes, highlightedNodeIds, selectedNode]);
 
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
@@ -193,8 +206,8 @@ export const NetworkBase = ({
                                 const isSelected = node.id === selectedNode?.id;
 
                                 if (
-                                    highlightedNodes.length === 0 ||
-                                    highlightedNodes.some(
+                                    highlightedNodeIds.length === 0 ||
+                                    highlightedNodeIds.some(
                                         (highlightNodeId) =>
                                             highlightNodeId === node.id,
                                     )
@@ -255,13 +268,9 @@ export const NetworkBase = ({
                                     return true;
                                 }
 
-                                return [
-                                    ...(selectedNode?.links ?? []),
-                                    ...(hoveredNode?.links ?? []),
-                                ].some(
-                                    (l) =>
-                                        l.source === link.source &&
-                                        l.target === link.target,
+                                return (
+                                    selectedNode?.id === link.source!.id ||
+                                    hoveredNode?.id === link.source!.id
                                 );
                             }}
                             onNodeClick={handleNodeClick}

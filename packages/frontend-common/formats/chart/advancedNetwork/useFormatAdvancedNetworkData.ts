@@ -54,78 +54,60 @@ export function useFormatAdvancedNetworkData({
             };
         }
 
-        const nodesDic = formatData.reduce<
-            Record<
-                string,
-                Node & {
-                    targets: AdvancedNetworkData['value']['targets'];
-                }
-            >
+        const fullNodes = formatData.map<
+            Node & {
+                targets: AdvancedNetworkData['value']['targets'];
+            }
         >(
-            (
-                acc,
-                {
-                    id,
-                    value: {
-                        label,
-                        targets,
-                        viz$position,
-                        viz$color,
-                        viz$size,
-                    },
-                },
-            ) => ({
-                ...acc,
-                [id]: {
-                    id,
-                    label,
-                    radius:
-                        viz$size.value && displayWeighted
-                            ? parseFloat(viz$size.value) * 1000
-                            : 100,
-                    targets,
-                    x: viz$position.x
-                        ? parseFloat(viz$position.x) * 1000
-                        : undefined,
-                    y: viz$position.y
-                        ? parseFloat(viz$position.y) * 1000
-                        : undefined,
-                    z: viz$position.z
-                        ? parseFloat(viz$position.z) * 1000
-                        : undefined,
-                    color: viz$color
-                        ? {
-                              r: parseInt(viz$color.r, 10),
-                              g: parseInt(viz$color.g, 10),
-                              b: parseInt(viz$color.b, 10),
-                          }
-                        : undefined,
-                },
+            ({
+                id,
+                value: { label, targets, viz$position, viz$color, viz$size },
+            }) => ({
+                id,
+                label,
+                radius:
+                    viz$size.value && displayWeighted
+                        ? parseFloat(viz$size.value) * 1000
+                        : 100,
+                targets,
+                x: viz$position.x
+                    ? parseFloat(viz$position.x) * 1000
+                    : undefined,
+                y: viz$position.y
+                    ? parseFloat(viz$position.y) * 1000
+                    : undefined,
+                z: viz$position.z
+                    ? parseFloat(viz$position.z) * 1000
+                    : undefined,
+                color: viz$color
+                    ? {
+                          r: parseInt(viz$color.r, 10),
+                          g: parseInt(viz$color.g, 10),
+                          b: parseInt(viz$color.b, 10),
+                      }
+                    : undefined,
             }),
-            {},
         );
 
-        const nodes = Object.values(nodesDic).map(({ targets, ...node }) => ({
+        const nodes = fullNodes.map(({ targets, ...node }) => ({
             ...node,
             radius: node.radius / 2,
             color: node.color,
-            links: targets
-                ? targets.map(({ id: targetId }) => ({
-                      source: node.id,
-                      target: targetId,
-                      value: 1,
-                      color: node.color,
-                  }))
-                : [],
         }));
 
-        const links = nodes.flatMap<Link>(({ links }) => links);
+        const links = fullNodes.flatMap(({ id: sourceId, targets, color }) =>
+            targets
+                ? targets.map(({ id: targetId }) => ({
+                      source: sourceId,
+                      target: targetId,
+                      value: 1,
+                      color,
+                  }))
+                : [],
+        );
 
         return {
-            nodes: nodes.map((node) => ({
-                ...node,
-                radius: node.radius,
-            })),
+            nodes,
             links,
         };
     }, [displayWeighted, formatData]);
