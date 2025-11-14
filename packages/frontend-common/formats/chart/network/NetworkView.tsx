@@ -175,7 +175,18 @@ export const NetworkBase = ({
                             ref={fgRef}
                             width={width}
                             height={height}
-                            graphData={{ nodes, links }}
+                            graphData={{
+                                nodes: selectedNode
+                                    ? [
+                                          ...nodes.filter(
+                                              (node) =>
+                                                  node.id !== selectedNode.id,
+                                          ),
+                                          selectedNode,
+                                      ]
+                                    : nodes,
+                                links,
+                            }}
                             nodeLabel={(node) => {
                                 return node.label;
                             }}
