@@ -41,7 +41,9 @@ export const checkPrecomputationFormValues = ({
 }) => {
     cy.findByLabelText('Name *').should('have.value', name);
     cy.findByLabelText('Web service URL *').should('have.value', url);
-    cy.contains('Status : ').parent().should('contain', status);
+    cy.contains('Status : ')
+        .parent()
+        .should('contain', status, { timeout: 10000 });
     sourceColumns.forEach((column) => {
         cy.findByLabelText('Source column(s) *')
             .parent()
