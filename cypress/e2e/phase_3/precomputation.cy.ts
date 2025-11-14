@@ -51,6 +51,7 @@ describe('Precomputation', () => {
             status: 'Not started',
         });
         cy.findByRole('button', { name: 'Run' }).click();
+        cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
             url: 'http://data-computer:31976/v1/statistics',
@@ -81,6 +82,7 @@ describe('Precomputation', () => {
         });
         cy.waitForNetworkIdle(500);
         cy.findByRole('button', { name: 'Run' }).click();
+        cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
             url: 'http://data-computer:31976/v1/statistics',
