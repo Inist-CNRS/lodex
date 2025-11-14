@@ -71,17 +71,6 @@ export function useFormatNetworkData({
                 return;
             }
 
-            if (!a.neighbors) {
-                a.neighbors = [];
-            }
-
-            if (!b.neighbors) {
-                b.neighbors = [];
-            }
-
-            a.neighbors.push(b.id);
-            b.neighbors.push(a.id);
-
             if (!a.links) {
                 a.links = [];
             }
