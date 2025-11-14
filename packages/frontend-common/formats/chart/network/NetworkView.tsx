@@ -251,7 +251,7 @@ export const NetworkBase = ({
                                     : '#99999999'
                             }
                             linkVisibility={(link) =>
-                                highlightedLinks.length === 0 ||
+                                !selectedNode ||
                                 highlightedLinks.some(
                                     (highlightedLink) =>
                                         highlightedLink.source ===
