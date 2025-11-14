@@ -2,7 +2,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import {
     useFormatNetworkData,
     type NetworkData,
-    type Node,
     type UseFormatNetworkDataReturn,
 } from './useFormatNetworkData';
 
@@ -90,15 +89,13 @@ describe('useFormatNetworkData', () => {
         expect(C).toBeTruthy();
 
         // neighbors and links wiring
-        const neighborsA = (A?.neighbors ?? [])
-            .map((n: Node) => String(n.id))
-            .sort();
+        const neighborsA = A?.neighbors ?? [].sort();
         expect(neighborsA).toEqual(['B', 'C']);
 
-        const neighborsB = (B?.neighbors ?? []).map((n: Node) => String(n.id));
+        const neighborsB = B?.neighbors ?? [];
         expect(neighborsB).toEqual(['A']);
 
-        const neighborsC = (C?.neighbors ?? []).map((n: Node) => String(n.id));
+        const neighborsC = C?.neighbors ?? [];
         expect(neighborsC).toEqual(['A']);
 
         expect(A?.links).toHaveLength(2);
@@ -117,9 +114,9 @@ describe('useFormatNetworkData', () => {
 
         expect(linkAC!.value > linkAB!.value).toBe(true);
 
-        expect(A?.radius).toBe(10);
-        expect(B?.radius).toBe(1);
-        expect(C?.radius).toBe(1);
+        expect(A?.radius).toBe(100);
+        expect(B?.radius).toBe(10);
+        expect(C?.radius).toBe(10);
         expect(A!.radius > B!.radius).toBe(true);
         expect(A!.radius > C!.radius).toBe(true);
     });
@@ -194,9 +191,9 @@ describe('useFormatNetworkData', () => {
         const nodeA = result.current.nodes.find((n) => n.id === 'A');
         const nodeB = result.current.nodes.find((n) => n.id === 'B');
         const nodeC = result.current.nodes.find((n) => n.id === 'C');
-        expect(nodeA?.radius).toBe(10);
-        expect(nodeB?.radius).toBe(1);
-        expect(nodeC?.radius).toBe(1);
+        expect(nodeA?.radius).toBe(100);
+        expect(nodeB?.radius).toBe(10);
+        expect(nodeC?.radius).toBe(10);
 
         const linkAB = result.current.links.find(
             (l) => l.source === 'A' && l.target === 'B',

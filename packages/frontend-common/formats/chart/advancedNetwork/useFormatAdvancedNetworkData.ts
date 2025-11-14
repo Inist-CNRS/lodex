@@ -109,9 +109,7 @@ export function useFormatAdvancedNetworkData({
             ...node,
             radius: node.radius / 2,
             color: node.color,
-            neighbors: targets
-                ? targets.map(({ id: targetId }) => nodesDic[targetId])
-                : [],
+            neighbors: targets ? targets.map(({ id }) => id) : [],
             links: targets
                 ? targets.map(({ id: targetId }) => ({
                       source: node.id,
@@ -137,7 +135,7 @@ export function useFormatAdvancedNetworkData({
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];
 
 export type NodeType = {
-    neighbors?: Node[];
+    neighbors?: string[];
     links?: Link[];
     radius: number;
 };

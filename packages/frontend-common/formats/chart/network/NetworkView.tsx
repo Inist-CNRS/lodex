@@ -59,7 +59,7 @@ export const NetworkBase = ({
     });
     const [cooldownTime, setCooldownTime] = useState(10000);
     const [selectedNode, setSelectedNode] = useState<NodeObject | null>(null);
-    const [highlightedNodes, setHighlightedNodes] = useState<NodeObject[]>([]);
+    const [highlightedNodes, setHighlightedNodes] = useState<string[]>([]);
     const [highlightedLinks, setHighlightedLinks] = useState<Link[]>([]);
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
@@ -91,22 +91,25 @@ export const NetworkBase = ({
         setCooldownTime(0);
         if (selectedNode) {
             if (!node) {
-                setHighlightedNodes([selectedNode, ...selectedNode.neighbors]);
+                setHighlightedNodes([
+                    selectedNode.id,
+                    ...selectedNode.neighbors,
+                ]);
                 setHighlightedLinks(selectedNode!.links ?? []);
                 return;
             }
             if (
                 highlightedNodes.some(
-                    (highlightedNode) => highlightedNode.id === node.id,
+                    (highlightedNodeId) => highlightedNodeId === node.id,
                 )
             ) {
                 return;
             }
 
             setHighlightedNodes([
-                selectedNode,
+                selectedNode.id,
                 ...selectedNode.neighbors,
-                node,
+                node.id,
             ]);
             return;
         }
@@ -116,7 +119,7 @@ export const NetworkBase = ({
             setHighlightedLinks([]);
             return;
         }
-        setHighlightedNodes([node, ...node.neighbors]);
+        setHighlightedNodes([node.id, ...node.neighbors]);
         setHighlightedLinks(node.links);
     };
 
@@ -136,7 +139,7 @@ export const NetworkBase = ({
             return;
         }
         setSelectedNode(node);
-        setHighlightedNodes([node, ...node.neighbors]);
+        setHighlightedNodes([node.id, ...node.neighbors]);
         setHighlightedLinks(node.links ?? []);
 
         if (!fgRef.current) return;
@@ -155,10 +158,10 @@ export const NetworkBase = ({
                 return -1;
             }
             const isAHighlighted = highlightedNodes.some(
-                (highlightNode) => highlightNode.id === a.id,
+                (highlightNodeId) => highlightNodeId === a.id,
             );
             const isBHighlighted = highlightedNodes.some(
-                (highlightNode) => highlightNode.id === b.id,
+                (highlightNodeId) => highlightNodeId === b.id,
             );
             if (isAHighlighted && !isBHighlighted) {
                 return 1;
@@ -216,8 +219,8 @@ export const NetworkBase = ({
                                 if (
                                     highlightedNodes.length === 0 ||
                                     highlightedNodes.some(
-                                        (highlightNode) =>
-                                            highlightNode.id === node.id,
+                                        (highlightNodeId) =>
+                                            highlightNodeId === node.id,
                                     )
                                 ) {
                                     ctx.globalAlpha = 1;

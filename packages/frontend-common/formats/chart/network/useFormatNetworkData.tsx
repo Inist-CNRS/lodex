@@ -59,7 +59,7 @@ export function useFormatNetworkData({
             ({ source, target, weight }) => ({
                 source,
                 target,
-                value: displayWeighted ? linkScale(weight) : 10,
+                value: displayWeighted ? linkScale(weight) : 1,
             }),
         );
 
@@ -79,8 +79,8 @@ export function useFormatNetworkData({
                 b.neighbors = [];
             }
 
-            a.neighbors.push(b);
-            b.neighbors.push(a);
+            a.neighbors.push(b.id);
+            b.neighbors.push(a.id);
 
             if (!a.links) {
                 a.links = [];
@@ -117,7 +117,8 @@ export type UseFormatNetworkDataParams = {
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];
 
 export type NodeType = {
-    neighbors?: Node[];
+    id: string;
+    neighbors?: string[];
     links?: Link[];
     radius: number;
 };
