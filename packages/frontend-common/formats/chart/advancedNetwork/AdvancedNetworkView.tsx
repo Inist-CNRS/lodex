@@ -1,6 +1,6 @@
 import type { Field } from '../../../fields/types';
 import {
-    useFormatNetworkData,
+    useFormatAdvancedNetworkData,
     type AdvancedNetworkData,
 } from './useFormatAdvancedNetworkData';
 import { NetworkBase } from '../network/NetworkView';
@@ -13,7 +13,7 @@ interface NetworkProps {
 }
 
 const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
-    const { nodes, links } = useFormatNetworkData({
+    const { nodes, links } = useFormatAdvancedNetworkData({
         // @TODO replace with real formatData when available
         formatData: jsonFormatData as AdvancedNetworkData[],
         displayWeighted:

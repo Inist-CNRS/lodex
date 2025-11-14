@@ -39,8 +39,9 @@ export type UseFormatNetworkDataParams = {
     displayWeighted: boolean;
 };
 
-export function useFormatNetworkData({
+export function useFormatAdvancedNetworkData({
     formatData,
+    displayWeighted,
 }: UseFormatNetworkDataParams): {
     nodes: Node[];
     links: Link[];
@@ -78,9 +79,10 @@ export function useFormatNetworkData({
                 [id]: {
                     id,
                     label,
-                    radius: viz$size.value
-                        ? parseFloat(viz$size.value) * 1000
-                        : 1,
+                    radius:
+                        viz$size.value && displayWeighted
+                            ? parseFloat(viz$size.value) * 1000
+                            : 100,
                     targets,
                     x: viz$position.x
                         ? parseFloat(viz$position.x) * 1000
