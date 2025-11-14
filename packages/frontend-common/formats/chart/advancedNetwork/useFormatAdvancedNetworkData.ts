@@ -109,9 +109,7 @@ export function useFormatAdvancedNetworkData({
             .map(({ targets, ...node }) => ({
                 ...node,
                 radius: node.radius / 2,
-                color: node.color
-                    ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, 0.5)`
-                    : undefined,
+                color: node.color,
                 neighbors: targets
                     ? targets.map(({ id: targetId }) => nodesDic[targetId])
                     : [],
@@ -120,9 +118,7 @@ export function useFormatAdvancedNetworkData({
                           source: node.id,
                           target: targetId,
                           value: 1,
-                          color: node.color
-                              ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, 0.25)`
-                              : undefined,
+                          color: node.color,
                       }))
                     : [],
             }))

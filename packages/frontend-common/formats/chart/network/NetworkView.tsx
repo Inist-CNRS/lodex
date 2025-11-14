@@ -191,6 +191,7 @@ export const NetworkBase = ({
                                 return node.label;
                             }}
                             nodeCanvasObject={(node, ctx, globalScale) => {
+                                const isSelected = node.id === selectedNode?.id;
                                 if (
                                     highlightedNodes.length === 0 ||
                                     highlightedNodes.some(
@@ -204,12 +205,25 @@ export const NetworkBase = ({
                                 }
                                 const circleRadius = node.radius / globalScale;
 
-                                ctx.strokeStyle = 'white';
-                                ctx.fillStyle =
-                                    node.color ??
-                                    (colorSet
-                                        ? `${colorSet![0]}7f`
-                                        : '#000000e6');
+                                if (isSelected) {
+                                    ctx.fillStyle = '#888888';
+                                    ctx.beginPath();
+                                    ctx.arc(
+                                        node.x!,
+                                        node.y!,
+                                        circleRadius + 4 / globalScale,
+                                        0,
+                                        2 * Math.PI,
+                                        false,
+                                    );
+                                    ctx.fill();
+                                }
+
+                                ctx.fillStyle = node.color
+                                    ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, ${isSelected ? 1 : 0.5})`
+                                    : colorSet
+                                      ? `${colorSet![0]}7f`
+                                      : '#000000e6';
                                 ctx.beginPath();
                                 ctx.arc(
                                     node.x!,
@@ -222,7 +236,7 @@ export const NetworkBase = ({
                                 ctx.fill();
 
                                 const fontSize = Math.max(circleRadius / 2, 3);
-                                ctx.font = `${fontSize}px Sans-Serif`;
+                                ctx.font = `${isSelected ? 'bold ' : ''}${fontSize}px Sans-Serif`;
 
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
@@ -231,7 +245,11 @@ export const NetworkBase = ({
 
                                 ctx.globalAlpha = 1;
                             }}
-                            linkColor={(link) => link.color}
+                            linkColor={(link) =>
+                                link.color
+                                    ? `rgba(${link.color.r}, ${link.color.g}, ${link.color.b}, 0.25)`
+                                    : '#99999999'
+                            }
                             linkVisibility={(link) =>
                                 highlightedLinks.length === 0 ||
                                 highlightedLinks.some(
