@@ -1,15 +1,15 @@
 import { MongoClient } from 'mongodb';
-import {
-    getPage,
-    getRemovedPage,
-    editResource,
-    removeResource,
-    restoreResource,
-    createResource,
-    completeFilters,
-} from './publishedDataset';
 import createAnnotationModel from '../../models/annotation';
 import createPublishedDatasetModel from '../../models/publishedDataset';
+import {
+    completeFilters,
+    createResource,
+    editResource,
+    getPage,
+    getRemovedPage,
+    removeResource,
+    restoreResource,
+} from './publishedDataset';
 
 describe('publishedDataset', () => {
     describe('getPage', () => {
@@ -541,6 +541,440 @@ describe('publishedDataset', () => {
                     total: 8,
                     fullTotal: 9,
                 });
+            });
+        });
+    });
+
+    describe('getPageByField', () => {
+        let connection: MongoClient;
+        let db;
+        let publishedDatasetModel: Awaited<
+            ReturnType<typeof createPublishedDatasetModel>
+        >;
+
+        beforeAll(async () => {
+            // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
+            connection = await MongoClient.connect(process.env.MONGO_URL, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
+            db = connection.db();
+            publishedDatasetModel = await createPublishedDatasetModel(db);
+        });
+
+        afterAll(async () => {
+            await connection.close();
+        });
+
+        beforeEach(async () => {
+            await publishedDatasetModel.deleteMany({});
+        });
+
+        it.each([
+            {
+                testName:
+                    'should return 400 when field name is invalid (too short)',
+                fieldName: 'abc',
+                requestBody: {
+                    value: 'test',
+                    page: 0,
+                    perPage: 10,
+                },
+                expectedError: 'invalid_field_name',
+            },
+            {
+                testName:
+                    'should return 400 when field name is invalid (has special chars)',
+                fieldName: 'te$t',
+                requestBody: {
+                    value: 'test',
+                    page: 0,
+                    perPage: 10,
+                },
+                expectedError: 'invalid_field_name',
+            },
+            {
+                testName: 'should return 400 when request body is invalid',
+                fieldName: 'test',
+                requestBody: {
+                    invalidField: 'invalid',
+                    page: 'not a number',
+                },
+                expectedError: 'invalid_request',
+            },
+        ])('$testName', async ({ fieldName, requestBody, expectedError }) => {
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                request: {
+                    body: requestBody,
+                },
+            } as any;
+
+            const { getPageByField } = await import('./publishedDataset');
+            await getPageByField(ctx, fieldName);
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body).toEqual({
+                error: expectedError,
+            });
+        });
+
+        it.each([
+            {
+                testName: 'should return resources matching string field value',
+                fieldName: 'tags',
+                value: 'javascript',
+                testData: [
+                    {
+                        uri: 'uri1',
+                        versions: [{ name: 'Resource 1', tags: 'javascript' }],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [{ name: 'Resource 2', tags: 'python' }],
+                    },
+                ],
+                expectedTotal: 1,
+                expectedData: [{ uri: 'uri1', tags: 'javascript' }],
+            },
+            {
+                testName:
+                    'should return resources matching value in string array field',
+                fieldName: 'cats',
+                value: 'tech',
+                testData: [
+                    {
+                        uri: 'uri1',
+                        versions: [{ cats: ['tech', 'web'] }],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [{ cats: ['web', 'frontend'] }],
+                    },
+                ],
+                expectedTotal: 1,
+                expectedData: [{ uri: 'uri1', cats: ['tech', 'web'] }],
+            },
+            {
+                testName:
+                    'should return resources matching value in string[][] field',
+                fieldName: 'matr',
+                value: 'a',
+                testData: [
+                    {
+                        uri: 'uri1',
+                        versions: [
+                            {
+                                matr: [
+                                    ['a', 'b'],
+                                    ['c', 'd'],
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [
+                            {
+                                matr: [
+                                    ['e', 'f'],
+                                    ['g', 'h'],
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                expectedTotal: 1,
+                expectedData: [
+                    {
+                        uri: 'uri1',
+                        matr: [
+                            ['a', 'b'],
+                            ['c', 'd'],
+                        ],
+                    },
+                ],
+            },
+            {
+                testName: 'should find value in nested arrays (string[][])',
+                fieldName: 'matr',
+                value: 'h',
+                testData: [
+                    {
+                        uri: 'uri1',
+                        versions: [
+                            {
+                                matr: [
+                                    ['a', 'b'],
+                                    ['c', 'd'],
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [
+                            {
+                                matr: [
+                                    ['e', 'f'],
+                                    ['g', 'h'],
+                                ],
+                            },
+                        ],
+                    },
+                ],
+                expectedTotal: 1,
+                expectedData: [
+                    {
+                        uri: 'uri2',
+                        matr: [
+                            ['e', 'f'],
+                            ['g', 'h'],
+                        ],
+                    },
+                ],
+            },
+        ])(
+            '$testName',
+            async ({
+                fieldName,
+                value,
+                testData,
+                expectedTotal,
+                expectedData,
+            }) => {
+                await publishedDatasetModel.insertBatch(testData);
+
+                const ctx = {
+                    publishedDataset: publishedDatasetModel,
+                    request: {
+                        body: {
+                            value,
+                            page: 0,
+                            perPage: 10,
+                        },
+                    },
+                } as any;
+
+                const { getPageByField } = await import('./publishedDataset');
+                await getPageByField(ctx, fieldName);
+
+                expect(ctx.body.total).toBe(expectedTotal);
+                expect(ctx.body.data).toHaveLength(expectedTotal);
+                expect(ctx.body.data).toEqual(
+                    expect.arrayContaining(
+                        expectedData.map((data) =>
+                            expect.objectContaining(data),
+                        ),
+                    ),
+                );
+            },
+        );
+
+        it.each([
+            {
+                testName: 'should support pagination for string field values',
+                fieldName: 'tags',
+                value: 'javascript',
+                perPage: 1,
+                testData: [
+                    { uri: 'uri1', versions: [{ tags: 'javascript' }] },
+                    { uri: 'uri2', versions: [{ tags: 'javascript' }] },
+                    { uri: 'uri3', versions: [{ tags: 'python' }] },
+                ],
+            },
+            {
+                testName: 'should support pagination for string[] field values',
+                fieldName: 'cats',
+                value: 'tech',
+                perPage: 1,
+                testData: [
+                    { uri: 'uri1', versions: [{ cats: ['tech', 'web'] }] },
+                    { uri: 'uri2', versions: [{ cats: ['tech', 'data'] }] },
+                ],
+            },
+            {
+                testName:
+                    'should support pagination for string[][] field values',
+                fieldName: 'matr',
+                value: 'a',
+                perPage: 1,
+                testData: [
+                    {
+                        uri: 'uri1',
+                        versions: [{ matr: [['a', 'b']] }],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [{ matr: [['a', 'c']] }],
+                    },
+                ],
+            },
+        ])('$testName', async ({ fieldName, value, perPage, testData }) => {
+            await publishedDatasetModel.insertBatch(testData);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                request: {
+                    body: {
+                        value,
+                        page: 0,
+                        perPage,
+                    },
+                },
+            } as any;
+
+            const { getPageByField } = await import('./publishedDataset');
+            await getPageByField(ctx, fieldName);
+
+            const totalResults = ctx.body.total;
+            expect(ctx.body.data).toHaveLength(Math.min(perPage, totalResults));
+
+            // Get second page
+            ctx.request.body.page = 1;
+            await getPageByField(ctx, fieldName);
+
+            expect(ctx.body.total).toBe(totalResults);
+            const remainingItems = Math.max(0, totalResults - perPage);
+            expect(ctx.body.data).toHaveLength(
+                Math.min(perPage, remainingItems),
+            );
+        });
+
+        it.each([
+            {
+                testName:
+                    'should return empty array when no resources match string value',
+                fieldName: 'tags',
+                value: 'nonexistent',
+                testData: [{ uri: 'uri1', versions: [{ tags: 'python' }] }],
+            },
+            {
+                testName:
+                    'should return empty array when no resources match string[] value',
+                fieldName: 'cats',
+                value: 'nonexistent',
+                testData: [
+                    { uri: 'uri1', versions: [{ cats: ['tech', 'web'] }] },
+                ],
+            },
+            {
+                testName:
+                    'should return empty array when no resources match string[][] value',
+                fieldName: 'matr',
+                value: 'zzz',
+                testData: [{ uri: 'uri1', versions: [{ matr: [['a', 'b']] }] }],
+            },
+        ])('$testName', async ({ fieldName, value, testData }) => {
+            await publishedDatasetModel.insertBatch(testData);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                request: {
+                    body: {
+                        value,
+                        page: 0,
+                        perPage: 10,
+                    },
+                },
+            } as any;
+
+            const { getPageByField } = await import('./publishedDataset');
+            await getPageByField(ctx, fieldName);
+
+            expect(ctx.body.total).toBe(0);
+            expect(ctx.body.data).toHaveLength(0);
+        });
+
+        it.each([
+            {
+                testName:
+                    'should support sorting in ascending order with a filter value',
+                sortDir: 'ASC' as const,
+                expectedFirst: 'Resource 1',
+                expectedLast: 'Resource 2',
+            },
+            {
+                testName:
+                    'should support sorting in descending order with a filter value',
+                sortDir: 'DESC' as const,
+                expectedFirst: 'Resource 2',
+                expectedLast: 'Resource 1',
+            },
+        ])('$testName', async ({ sortDir, expectedFirst, expectedLast }) => {
+            await publishedDatasetModel.insertBatch([
+                {
+                    uri: 'uri1',
+                    versions: [{ name: 'Resource 1', tags: 'javascript' }],
+                },
+                {
+                    uri: 'uri2',
+                    versions: [{ name: 'Resource 2', tags: 'javascript' }],
+                },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                request: {
+                    body: {
+                        value: 'javascript',
+                        page: 0,
+                        perPage: 5,
+                        sort: {
+                            sortBy: 'name',
+                            sortDir,
+                        },
+                    },
+                },
+            } as any;
+
+            const { getPageByField } = await import('./publishedDataset');
+            await getPageByField(ctx, 'tags');
+
+            expect(ctx.body.data).toHaveLength(2);
+            expect(ctx.body.data[0].name).toBe(expectedFirst);
+            expect(ctx.body.data[1].name).toBe(expectedLast);
+        });
+
+        it('should return only the latest version of each resource', async () => {
+            await publishedDatasetModel.insertBatch([
+                {
+                    uri: 'uri1',
+                    versions: [
+                        {
+                            name: 'Version 1',
+                            tags: 'javascript',
+                        },
+                        {
+                            name: 'Version 2',
+                            tags: 'updated',
+                        },
+                    ],
+                },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                request: {
+                    body: {
+                        value: 'javascript',
+                        page: 0,
+                        perPage: 10,
+                    },
+                },
+            } as any;
+
+            const { getPageByField } = await import('./publishedDataset');
+            await getPageByField(ctx, 'tags');
+
+            // The query uses versions.0 (first version), but returns the latest version
+            // So this finds resources where the FIRST version has tags='javascript'
+            // but returns the LATEST version of those resources
+            expect(ctx.body.total).toBe(1);
+            expect(ctx.body.data[0]).toMatchObject({
+                uri: 'uri1',
+                name: 'Version 2', // Latest version is returned
+                tags: 'updated',
             });
         });
     });

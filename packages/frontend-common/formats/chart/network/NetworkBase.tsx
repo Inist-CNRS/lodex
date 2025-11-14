@@ -2,20 +2,22 @@ import {
     lazy,
     Suspense,
     useCallback,
+    useContext,
     useEffect,
     useMemo,
     useRef,
     useState,
 } from 'react';
 
+import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
 import Loading from '../../../components/Loading';
+import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { SearchPaneContext } from '../../../search/SearchPaneContext';
+import { addTransparency } from '../../utils/colorHelpers';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import { type Link, type Node } from './useFormatNetworkData';
-import { AutoComplete } from '../../../form-fields/AutoCompleteField';
-import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
-import { addTransparency } from '../../utils/colorHelpers';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
@@ -123,6 +125,7 @@ type NetworkBaseProps = {
     linkCurvature?: number;
     highlightMode?: 'ingoing' | 'outgoing' | 'all';
     showArrows?: boolean;
+    fieldToFilter?: string | null;
 };
 
 export const NetworkBase = ({
@@ -133,8 +136,10 @@ export const NetworkBase = ({
     linkCurvature,
     highlightMode = 'all',
     showArrows = false,
+    fieldToFilter,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
+    const searchPane = useContext(SearchPaneContext);
     const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -244,11 +249,21 @@ export const NetworkBase = ({
     const handleNodeClick = (node: NodeObject | null) => {
         // freeze the chart so that it does not rearrange itself every time we interact with it
         setCooldownTime(0);
+
         if (!node || selectedNode?.id === node?.id) {
             setSelectedNode(null);
+            searchPane?.setFilter(null);
             return;
         }
         setSelectedNode(node);
+
+        const nodeId = node.id?.toString();
+        if (fieldToFilter && nodeId) {
+            searchPane?.setFilter({
+                field: fieldToFilter,
+                value: nodeId,
+            });
+        }
 
         if (!fgRef.current) return;
         fgRef.current.zoomToFit(500, 200, (n) => n.id === node.id);

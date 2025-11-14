@@ -447,7 +447,6 @@
 "text_color"	"Text Color"	"Couleur du texte"
 "formatNetwork"	"Graph - Relation Network"	"Graphique -  Réseaux de relation"
 "formatNetworkDescription"	"Allows to visualize networks as for example the countries which publish between them (in affiliation)..."	"Permet de visualiser des réseaux comme par exemple les pays qui publient entre eux (dans affiliation)…"
-
 "formatAdvancedNetwork"	"Graph - Advanced Network"	"Graphique - Réseaux Avancés"
 "formatAdvancedNetworkDescription"	"Allows to visualize advanced networks in gexf fomat"	"Permet de visualiser des réseaux en format gexf"
 "formatDirectedNetwork"	"Graph - Directed Network"	"Graphique - Réseaux Dirigés"
@@ -1459,3 +1458,4 @@
 "hidden"	"Hidden"	"Masqué"
 "select_precomputed_data"	"Select precomputed data"	"Sélectionner les données précalculés"
 "select_node"	"Select node"	"Sélectionner un noeud"
+"field_to_filter"	"Field used for search during value selection"	"Champ utilisé pour la recherche lors de la sélection d'une valeur"

@@ -1,12 +1,12 @@
+import { compose } from 'recompose';
 import type { Field } from '../../../fields/types';
+import injectData from '../../injectData';
+import { NetworkBase } from '../network/NetworkBase';
+import jsonFormatData from './dataGraphGexf.json';
 import {
     useFormatAdvancedNetworkData,
     type AdvancedNetworkData,
 } from './useFormatAdvancedNetworkData';
-import jsonFormatData from './dataGraphGexf.json';
-import { compose } from 'recompose';
-import injectData from '../../injectData';
-import { NetworkBase } from '../network/NetworkBase';
 
 interface NetworkProps {
     colorSet?: string[];
@@ -24,6 +24,10 @@ const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
                 : true,
     });
 
+    const fieldToFilter =
+        typeof field.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
     return (
         <NetworkBase
             colorSet={colorSet}
@@ -32,6 +36,7 @@ const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
             forcePosition
             linkCurvature={0.25}
             highlightMode="outgoing"
+            fieldToFilter={fieldToFilter}
         />
     );
 };

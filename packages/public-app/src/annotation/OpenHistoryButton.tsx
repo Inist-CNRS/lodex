@@ -1,8 +1,8 @@
 import { useTheme } from '@emotion/react';
 import { Link, Stack, Typography } from '@mui/material';
 
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 interface OpenHistoryButtonProps {
@@ -28,11 +28,14 @@ export const OpenHistoryButton = ({
 
     return (
         <Stack
-            gap="0.5rem"
-            paddingBlockEnd={2}
-            borderBottom={1}
-            // @ts-expect-error TS2339
-            borderColor={theme.palette.grey[500]}
+            sx={{
+                gap: '0.5rem',
+                paddingBlockEnd: '1rem',
+                borderBottomStyle: 'solid',
+                borderBottomWidth: '1px',
+                // @ts-expect-error TS2339
+                borderBottomColor: theme.palette.grey[500],
+            }}
         >
             <>
                 <Typography

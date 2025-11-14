@@ -10,14 +10,14 @@ import {
     useTheme,
 } from '@mui/material';
 
-import CommentIcon from '@mui/icons-material/Comment';
-import { useField } from '@tanstack/react-form';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
 } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import CommentIcon from '@mui/icons-material/Comment';
+import { useField } from '@tanstack/react-form';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 
 interface TargetFieldProps {
@@ -58,7 +58,7 @@ export function TargetField({
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 2,
+                            gap: '1rem',
                         }}
                     >
                         <MenuItem

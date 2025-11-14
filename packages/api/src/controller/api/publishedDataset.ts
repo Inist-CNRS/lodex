@@ -1,12 +1,16 @@
 import Koa from 'koa';
-import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 
 import { PropositionStatus, autoGenerateUriTransformer } from '@lodex/common';
-import ark from './ark';
-import updateFacetValue from '../../services/updateFacetValue';
-import { ObjectId } from 'mongodb';
 import { uniq } from 'lodash';
+import { ObjectId } from 'mongodb';
+import updateFacetValue from '../../services/updateFacetValue';
+import ark from './ark';
+import {
+    fieldNameSchema,
+    getPageByFieldSchema,
+} from './publishedDataset.schema';
 
 const app = new Koa();
 
@@ -138,6 +142,78 @@ export const getPage = async (ctx: any) => {
             ...doc.versions[doc.versions.length - 1],
             uri: doc.uri,
         })),
+    };
+};
+
+export const getPageByField = async (ctx: Koa.Context, field: string) => {
+    const fieldNameResult = fieldNameSchema.safeParse(field);
+    if (!fieldNameResult.success) {
+        ctx.status = 400;
+        ctx.body = {
+            error: 'invalid_field_name',
+        };
+        return;
+    }
+
+    const fieldName = fieldNameResult.data;
+
+    const parseBodyResult = getPageByFieldSchema.safeParse(ctx.request.body);
+    if (!parseBodyResult.success) {
+        ctx.status = 400;
+        ctx.body = {
+            error: 'invalid_request',
+        };
+        return;
+    }
+
+    const { value, page, perPage, sort } = parseBodyResult.data;
+
+    const filter = value
+        ? {
+              $or: [
+                  { [`versions.0.${fieldName}`]: value },
+                  {
+                      [`versions.0.${fieldName}`]: {
+                          $elemMatch: { $eq: value },
+                      },
+                  },
+                  {
+                      [`versions.0.${fieldName}`]: {
+                          $elemMatch: {
+                              $elemMatch: { $eq: value },
+                          },
+                      },
+                  },
+              ],
+          }
+        : {
+              field,
+          };
+
+    let qb = ctx.publishedDataset
+        .find(filter)
+        .limit(perPage)
+        .skip(page * perPage);
+
+    if (sort) {
+        qb = qb.sort({
+            [`versions.0.${sort.sortBy}`]: sort.sortDir === 'ASC' ? 1 : -1,
+        });
+    }
+
+    const [data, total] = await Promise.all([
+        qb.toArray(),
+        ctx.publishedDataset.count(filter),
+    ]);
+
+    ctx.body = {
+        total,
+        data: data.map(
+            (doc: { uri: string; versions: Record<string, unknown>[] }) => ({
+                ...doc.versions.at(-1),
+                uri: doc.uri,
+            }),
+        ),
     };
 };
 
@@ -311,6 +387,7 @@ app.use(route.put('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
 app.use(route.get('/:status', getPropositionPage));
+app.use(route.post('/field/:fieldId', getPageByField));
 app.use(
     route.put(
         '/:uri/change_contribution_status/:name/:status',

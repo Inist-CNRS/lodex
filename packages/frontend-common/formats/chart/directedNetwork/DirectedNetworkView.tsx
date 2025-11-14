@@ -1,9 +1,9 @@
 import type { Field } from '../../../fields/types';
-import { NetworkBase } from '../network/NetworkBase';
 import {
     useFormatAdvancedNetworkData,
     type AdvancedNetworkData,
 } from '../advancedNetwork/useFormatAdvancedNetworkData';
+import { NetworkBase } from '../network/NetworkBase';
 import jsonFormatData from './topRefExtract.json';
 
 interface DirectedNetworkProps {
@@ -26,6 +26,10 @@ const DirectedNetwork = ({
                 : true,
     });
 
+    const fieldToFilter =
+        typeof field.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
     return (
         <NetworkBase
             colorSet={colorSet}
@@ -33,6 +37,7 @@ const DirectedNetwork = ({
             links={links}
             linkCurvature={0.25}
             showArrows
+            fieldToFilter={fieldToFilter}
         />
     );
 };

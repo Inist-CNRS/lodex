@@ -1,8 +1,8 @@
-import type { Field } from '../../../fields/types';
-import { useFormatNetworkData, type NetworkData } from './useFormatNetworkData';
 import { compose } from 'recompose';
+import type { Field } from '../../../fields/types';
 import injectData from '../../injectData';
 import { NetworkBase } from './NetworkBase';
+import { useFormatNetworkData, type NetworkData } from './useFormatNetworkData';
 
 interface NetworkProps {
     colorSet?: string[];
@@ -19,7 +19,19 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                 : true,
     });
 
-    return <NetworkBase colorSet={colorSet} nodes={nodes} links={links} />;
+    const fieldToFilter =
+        typeof field.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
+
+    return (
+        <NetworkBase
+            colorSet={colorSet}
+            nodes={nodes}
+            links={links}
+            fieldToFilter={fieldToFilter}
+        />
+    );
 };
 
 // @ts-expect-error TS2345
