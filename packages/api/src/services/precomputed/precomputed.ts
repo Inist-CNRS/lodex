@@ -162,6 +162,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
     webServiceRetrieveURL.pathname = '/v1/retrieve-json';
     webServiceRetrieveURL.search = '';
     webServiceRetrieveURL.hash = '';
+    const importedDate = new Date();
     const connectionStringURI = mongoConnectionString(tenant);
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
@@ -190,6 +191,18 @@ export const getComputedFromWebservice = async (ctx: any) => {
                 feed.send(data);
             }),
         )
+        .pipe(ezs('assign', {
+            path: [
+                'lodexStamp.importedDate',
+                'lodexStamp.precomputedId',
+                'lodexStamp.webServiceURL',
+            ],
+            value: [
+                importedDate.toDateString(),
+                precomputedId,
+                webServiceUrl,
+            ]
+        }))
         .pipe(ezs('group', { length: 100 })) // like import see. services/saveStream.js#L30
         .pipe(
             ezs('LodexSaveDocuments', {
