@@ -3,10 +3,10 @@ import {
     useFormatAdvancedNetworkData,
     type AdvancedNetworkData,
 } from './useFormatAdvancedNetworkData';
-import { NetworkBase } from '../network/NetworkView';
 import jsonFormatData from './dataGraphGexf.json';
 import { compose } from 'recompose';
 import injectData from '../../injectData';
+import { NetworkBase } from '../network/NetworkBase';
 
 interface NetworkProps {
     colorSet?: string[];

@@ -1,4 +1,4 @@
-import { compareNodes, isLinkVisible } from './NetworkView';
+import { compareNodes, isLinkVisible } from './NetworkBase';
 
 describe('NetworkView', () => {
     describe('compareNodes', () => {
