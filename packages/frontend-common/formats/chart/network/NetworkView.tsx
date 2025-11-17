@@ -82,10 +82,10 @@ export const NetworkBase = ({
             selectedNode?.id,
             hoveredNode?.id,
             ...(linksBySourceId[selectedNode?.id as string]?.map(
-                (l) => l.target.id,
+                (l) => (l.target! as NodeObject).id,
             ) || []),
             ...(linksBySourceId[hoveredNode?.id as string]?.map(
-                (l) => l.target.id,
+                (l) => (l.target! as NodeObject).id,
             ) || []),
         ].filter((id): id is string => !!id);
     }, [hoveredNode?.id, linksBySourceId, selectedNode?.id]);
@@ -269,8 +269,10 @@ export const NetworkBase = ({
                                 }
 
                                 return (
-                                    selectedNode?.id === link.source!.id ||
-                                    hoveredNode?.id === link.source!.id
+                                    selectedNode?.id ===
+                                        (link.source! as NodeObject).id ||
+                                    hoveredNode?.id ===
+                                        (link.source! as NodeObject).id
                                 );
                             }}
                             onNodeClick={handleNodeClick}

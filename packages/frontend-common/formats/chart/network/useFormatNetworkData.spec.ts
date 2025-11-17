@@ -50,7 +50,7 @@ describe('useFormatNetworkData', () => {
             );
 
             expect(result.current.nodes.length).toBe(2);
-            expect(result.current.links.length).toBe(1);
+            expect(result.current.links.length).toBe(2);
 
             const nodeIds = new Set(
                 result.current.nodes.map((n) => String(n.id)),
@@ -59,7 +59,7 @@ describe('useFormatNetworkData', () => {
         },
     );
 
-    it('builds nodes with neighbors and links, and scales values monotonically', () => {
+    it('builds nodes and scales values monotonically', () => {
         const data: NetworkData[] = [
             { source: 'A', target: 'B', weight: 1 },
             { source: 'A', target: 'C', weight: 3 },
@@ -76,7 +76,7 @@ describe('useFormatNetworkData', () => {
 
         // structure
         expect(graph.nodes).toHaveLength(3);
-        expect(graph.links).toHaveLength(2);
+        expect(graph.links).toHaveLength(4);
 
         const getNode = (id: string) =>
             graph.nodes.find((n) => String(n.id) === id);
@@ -87,20 +87,6 @@ describe('useFormatNetworkData', () => {
         expect(A).toBeTruthy();
         expect(B).toBeTruthy();
         expect(C).toBeTruthy();
-
-        // neighbors and links wiring
-        const neighborsA = A?.neighbors ?? [].sort();
-        expect(neighborsA).toEqual(['B', 'C']);
-
-        const neighborsB = B?.neighbors ?? [];
-        expect(neighborsB).toEqual(['A']);
-
-        const neighborsC = C?.neighbors ?? [];
-        expect(neighborsC).toEqual(['A']);
-
-        expect(A?.links).toHaveLength(2);
-        expect(B?.links).toHaveLength(1);
-        expect(C?.links).toHaveLength(1);
 
         const linkAB = graph.links.find(
             (l) => String(l.source) === 'A' && String(l.target) === 'B',
@@ -121,6 +107,32 @@ describe('useFormatNetworkData', () => {
         expect(A!.radius > C!.radius).toBe(true);
     });
 
+    it('should build bidirectional links', () => {
+        const data: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
+
+        const { result } = renderHook(() =>
+            useFormatNetworkData({ formatData: data, displayWeighted: true }),
+        );
+
+        expect(result.current.links).toHaveLength(2);
+
+        expect(result.current.links).toStrictEqual([
+            {
+                source: 'A',
+                target: 'B',
+                value: expect.any(Number),
+            },
+            {
+                source: 'B',
+                target: 'A',
+                value: expect.any(Number),
+            },
+        ]);
+        expect(result.current.links[0]?.value).toBe(
+            result.current.links[1]?.value,
+        );
+    });
+
     it('updates output when formatData changes', () => {
         const data1: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
         const data2: NetworkData[] = [
@@ -138,12 +150,79 @@ describe('useFormatNetworkData', () => {
         );
 
         expect(result.current.nodes).toHaveLength(2);
-        expect(result.current.links).toHaveLength(1);
+        expect(result.current.links).toHaveLength(2);
+
+        expect(result.current.nodes).toStrictEqual([
+            {
+                id: 'A',
+                label: 'A',
+                radius: expect.any(Number),
+            },
+            {
+                id: 'B',
+                label: 'B',
+                radius: expect.any(Number),
+            },
+        ]);
+
+        expect(result.current.links).toStrictEqual([
+            {
+                source: 'A',
+                target: 'B',
+                value: expect.any(Number),
+            },
+            {
+                source: 'B',
+                target: 'A',
+                value: expect.any(Number),
+            },
+        ]);
 
         rerender({ d: data2 });
 
         expect(result.current.nodes).toHaveLength(3);
-        expect(result.current.links).toHaveLength(2);
+        expect(result.current.links).toHaveLength(4);
+
+        expect(result.current.nodes).toStrictEqual([
+            {
+                id: 'A',
+                label: 'A',
+                radius: expect.any(Number),
+            },
+            {
+                id: 'B',
+                label: 'B',
+                radius: expect.any(Number),
+            },
+            {
+                id: 'C',
+                label: 'C',
+                radius: expect.any(Number),
+            },
+        ]);
+
+        expect(result.current.links).toStrictEqual([
+            {
+                source: 'A',
+                target: 'B',
+                value: expect.any(Number),
+            },
+            {
+                source: 'B',
+                target: 'C',
+                value: expect.any(Number),
+            },
+            {
+                source: 'B',
+                target: 'A',
+                value: expect.any(Number),
+            },
+            {
+                source: 'C',
+                target: 'B',
+                value: expect.any(Number),
+            },
+        ]);
     });
 
     it('uses radius=1 for nodes and value=1 for links when displayWeighted is false', () => {

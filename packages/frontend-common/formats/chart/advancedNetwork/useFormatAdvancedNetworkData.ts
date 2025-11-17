@@ -1,9 +1,6 @@
 import { useMemo } from 'react';
-import type {
-    ForceGraphProps,
-    LinkObject,
-    NodeObject,
-} from 'react-force-graph-2d';
+import type { ForceGraphProps } from 'react-force-graph-2d';
+import type { Link, Node } from '../network/useFormatNetworkData';
 
 export type AdvancedNetworkData = {
     id: string;
@@ -114,15 +111,3 @@ export function useFormatAdvancedNetworkData({
 }
 
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];
-
-export type NodeType = {
-    links?: Link[];
-    radius: number;
-};
-
-export type LinkType = {
-    value: number;
-};
-
-export type Node = NodeObject<NodeType>;
-export type Link = LinkObject<NodeType, LinkType>;

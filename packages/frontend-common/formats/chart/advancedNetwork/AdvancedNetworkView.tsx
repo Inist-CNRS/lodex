@@ -33,6 +33,6 @@ const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
     );
 };
 
-// export default compose(injectData())(Network);
+// export default compose(injectData())(AdvancedNetwork);
 
 export default AdvancedNetwork;

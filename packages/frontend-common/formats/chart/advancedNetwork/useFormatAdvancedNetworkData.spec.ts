@@ -81,21 +81,6 @@ describe('useFormatAdvancedNetworkData', () => {
                 label: 'Node A',
                 radius: expect.any(Number),
                 color: { r: 255, g: 0, b: 0 },
-                links: [
-                    {
-                        source: 'A',
-                        target: 'B',
-                        value: expect.any(Number),
-                        color: { r: 255, g: 0, b: 0 },
-                    },
-                    {
-                        source: 'A',
-                        target: 'C',
-                        value: expect.any(Number),
-                        color: { r: 255, g: 0, b: 0 },
-                    },
-                ],
-                neighbors: ['B', 'C'],
                 x: 0,
                 y: 0,
                 z: 0,
@@ -105,15 +90,6 @@ describe('useFormatAdvancedNetworkData', () => {
                 label: 'Node B',
                 radius: expect.any(Number),
                 color: { r: 0, g: 255, b: 0 },
-                links: [
-                    {
-                        source: 'B',
-                        target: 'A',
-                        value: expect.any(Number),
-                        color: { r: 0, g: 255, b: 0 },
-                    },
-                ],
-                neighbors: ['A'],
                 x: 1000,
                 y: 1000,
                 z: 0,
@@ -123,15 +99,6 @@ describe('useFormatAdvancedNetworkData', () => {
                 label: 'Node C',
                 radius: expect.any(Number),
                 color: { r: 0, g: 0, b: 255 },
-                links: [
-                    {
-                        source: 'C',
-                        target: 'A',
-                        value: expect.any(Number),
-                        color: { r: 0, g: 0, b: 255 },
-                    },
-                ],
-                neighbors: ['A'],
                 x: 2000,
                 y: 2000,
                 z: 0,
@@ -178,6 +145,67 @@ describe('useFormatAdvancedNetworkData', () => {
                     g: 0,
                     b: 255,
                 },
+            },
+        ]);
+    });
+
+    it('should set default radius when displayWeighted is false ignoring viz$size', () => {
+        const data: AdvancedNetworkData[] = [
+            {
+                id: 'A',
+                value: {
+                    label: 'Node A',
+                    targets: [{ id: 'B' }],
+                    viz$position: { x: '0', y: '0', z: '0' },
+                    viz$color: { r: '255', g: '0', b: '0', a: '1' },
+                    viz$size: { value: '789' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+            {
+                id: 'B',
+                value: {
+                    label: 'Node B',
+                    targets: [{ id: 'A' }],
+                    viz$position: { x: '1', y: '1', z: '0' },
+                    viz$color: { r: '0', g: '255', b: '0', a: '0' },
+                    viz$size: { value: '487' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatAdvancedNetworkData({
+                formatData: data,
+                displayWeighted: false,
+            }),
+        );
+
+        expect(result.current.nodes).toStrictEqual([
+            {
+                id: 'A',
+                label: 'Node A',
+                radius: 50,
+                color: { r: 255, g: 0, b: 0 },
+                x: 0,
+                y: 0,
+                z: 0,
+            },
+            {
+                id: 'B',
+                label: 'Node B',
+                radius: 50,
+                color: { r: 0, g: 255, b: 0 },
+                x: 1000,
+                y: 1000,
+                z: 0,
             },
         ]);
     });
