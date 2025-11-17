@@ -45,6 +45,49 @@ type NetworkBaseProps = {
     directed?: boolean;
 };
 
+export const compareNodes = ({
+    a,
+    b,
+    selectedNode,
+    hoveredNode,
+    highlightedNodeIds,
+}: {
+    a: Node;
+    b: Node;
+    selectedNode: NodeObject | null;
+    hoveredNode: NodeObject | null;
+    highlightedNodeIds: string[];
+}) => {
+    if (!selectedNode && !hoveredNode) {
+        return a.radius - b.radius;
+    }
+    if (a.id === hoveredNode?.id) {
+        return 1;
+    }
+    if (b.id === hoveredNode?.id) {
+        return -1;
+    }
+    if (a.id === selectedNode?.id) {
+        return 1;
+    }
+    if (b.id === selectedNode?.id) {
+        return -1;
+    }
+    const isAHighlighted = highlightedNodeIds.some(
+        (highlightNodeId) => highlightNodeId === a.id,
+    );
+    const isBHighlighted = highlightedNodeIds.some(
+        (highlightNodeId) => highlightNodeId === b.id,
+    );
+    if (isAHighlighted && !isBHighlighted) {
+        return 1;
+    }
+    if (!isAHighlighted && isBHighlighted) {
+        return -1;
+    }
+    return a.radius - b.radius;
+};
+
 export const NetworkBase = ({
     colorSet,
     nodes,
@@ -138,36 +181,15 @@ export const NetworkBase = ({
     };
 
     const sortedNodes = useMemo(() => {
-        return nodes.sort((a, b) => {
-            if (!selectedNode && !hoveredNode) {
-                return a.radius - b.radius;
-            }
-            if (a.id === hoveredNode?.id) {
-                return 1;
-            }
-            if (b.id === hoveredNode?.id) {
-                return -1;
-            }
-            if (a.id === selectedNode?.id) {
-                return 1;
-            }
-            if (b.id === selectedNode?.id) {
-                return -1;
-            }
-            const isAHighlighted = highlightedNodeIds.some(
-                (highlightNodeId) => highlightNodeId === a.id,
-            );
-            const isBHighlighted = highlightedNodeIds.some(
-                (highlightNodeId) => highlightNodeId === b.id,
-            );
-            if (isAHighlighted && !isBHighlighted) {
-                return 1;
-            }
-            if (!isAHighlighted || isBHighlighted) {
-                return -1;
-            }
-            return a.radius - b.radius;
-        });
+        return nodes.sort((a, b) =>
+            compareNodes({
+                a,
+                b,
+                selectedNode,
+                hoveredNode,
+                highlightedNodeIds,
+            }),
+        );
     }, [nodes, highlightedNodeIds, selectedNode, hoveredNode]);
 
     return (
