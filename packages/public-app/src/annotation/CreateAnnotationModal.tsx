@@ -276,8 +276,7 @@ export function CreateAnnotationModal({
                     },
                     sx: {
                         maxWidth: 'sm',
-                        width: '100%',
-                        padding: '2rem',
+                        padding: '1rem',
                     },
                 }}
                 BackdropProps={{
