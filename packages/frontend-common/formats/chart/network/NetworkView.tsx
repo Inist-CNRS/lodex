@@ -139,8 +139,14 @@ export const NetworkBase = ({
 
     const sortedNodes = useMemo(() => {
         return nodes.sort((a, b) => {
-            if (!selectedNode) {
+            if (!selectedNode && !hoveredNode) {
                 return a.radius - b.radius;
+            }
+            if (a.id === hoveredNode?.id) {
+                return 1;
+            }
+            if (b.id === hoveredNode?.id) {
+                return -1;
             }
             if (a.id === selectedNode?.id) {
                 return 1;
@@ -162,7 +168,7 @@ export const NetworkBase = ({
             }
             return a.radius - b.radius;
         });
-    }, [nodes, highlightedNodeIds, selectedNode]);
+    }, [nodes, highlightedNodeIds, selectedNode, hoveredNode]);
 
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
