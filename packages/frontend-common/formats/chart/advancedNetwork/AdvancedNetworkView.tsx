@@ -5,6 +5,8 @@ import {
 } from './useFormatAdvancedNetworkData';
 import { NetworkBase } from '../network/NetworkView';
 import jsonFormatData from './dataGraphGexf.json';
+import { compose } from 'recompose';
+import injectData from '../../injectData';
 
 interface NetworkProps {
     colorSet?: string[];
@@ -34,6 +36,6 @@ const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
     );
 };
 
-// export default compose(injectData())(AdvancedNetwork);
-
-export default AdvancedNetwork;
+export default compose<NetworkProps, NetworkProps>(injectData())(
+    AdvancedNetwork,
+);
