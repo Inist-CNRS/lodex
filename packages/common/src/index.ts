@@ -9,7 +9,6 @@ export * from './tools/tenantTools';
 export * from './tools/toast';
 export * from './transformers';
 export * from './types/dataSource';
-export * from './types/enrichment';
 export * from './types/precomputation';
 export * from './types/precomputed';
 export * from './validator/annotation.validator';
