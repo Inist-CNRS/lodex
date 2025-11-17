@@ -42,6 +42,7 @@ type NetworkBaseProps = {
     links: Link[];
     forcePosition?: boolean;
     linkCurvature?: number;
+    directed?: boolean;
 };
 
 export const NetworkBase = ({
@@ -50,6 +51,7 @@ export const NetworkBase = ({
     links,
     forcePosition,
     linkCurvature,
+    directed = false,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const fgRef = useRef<ForceGraphMethods>();
@@ -266,6 +268,19 @@ export const NetworkBase = ({
                             linkVisibility={(link) => {
                                 if (!selectedNode && !hoveredNode) {
                                     return true;
+                                }
+
+                                if (!directed) {
+                                    return (
+                                        selectedNode?.id ===
+                                            (link.source! as NodeObject).id ||
+                                        selectedNode?.id ===
+                                            (link.target! as NodeObject).id ||
+                                        hoveredNode?.id ===
+                                            (link.target! as NodeObject).id ||
+                                        hoveredNode?.id ===
+                                            (link.source! as NodeObject).id
+                                    );
                                 }
 
                                 return (

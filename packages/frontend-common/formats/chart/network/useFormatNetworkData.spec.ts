@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import {
     useFormatNetworkData,
     type NetworkData,
@@ -50,7 +50,7 @@ describe('useFormatNetworkData', () => {
             );
 
             expect(result.current.nodes.length).toBe(2);
-            expect(result.current.links.length).toBe(2);
+            expect(result.current.links.length).toBe(1);
 
             const nodeIds = new Set(
                 result.current.nodes.map((n) => String(n.id)),
@@ -76,7 +76,7 @@ describe('useFormatNetworkData', () => {
 
         // structure
         expect(graph.nodes).toHaveLength(3);
-        expect(graph.links).toHaveLength(4);
+        expect(graph.links).toHaveLength(2);
 
         const getNode = (id: string) =>
             graph.nodes.find((n) => String(n.id) === id);
@@ -107,32 +107,6 @@ describe('useFormatNetworkData', () => {
         expect(A!.radius > C!.radius).toBe(true);
     });
 
-    it('should build bidirectional links', () => {
-        const data: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
-
-        const { result } = renderHook(() =>
-            useFormatNetworkData({ formatData: data, displayWeighted: true }),
-        );
-
-        expect(result.current.links).toHaveLength(2);
-
-        expect(result.current.links).toStrictEqual([
-            {
-                source: 'A',
-                target: 'B',
-                value: expect.any(Number),
-            },
-            {
-                source: 'B',
-                target: 'A',
-                value: expect.any(Number),
-            },
-        ]);
-        expect(result.current.links[0]?.value).toBe(
-            result.current.links[1]?.value,
-        );
-    });
-
     it('updates output when formatData changes', () => {
         const data1: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
         const data2: NetworkData[] = [
@@ -150,7 +124,7 @@ describe('useFormatNetworkData', () => {
         );
 
         expect(result.current.nodes).toHaveLength(2);
-        expect(result.current.links).toHaveLength(2);
+        expect(result.current.links).toHaveLength(1);
 
         expect(result.current.nodes).toStrictEqual([
             {
@@ -171,17 +145,12 @@ describe('useFormatNetworkData', () => {
                 target: 'B',
                 value: expect.any(Number),
             },
-            {
-                source: 'B',
-                target: 'A',
-                value: expect.any(Number),
-            },
         ]);
 
         rerender({ d: data2 });
 
         expect(result.current.nodes).toHaveLength(3);
-        expect(result.current.links).toHaveLength(4);
+        expect(result.current.links).toHaveLength(2);
 
         expect(result.current.nodes).toStrictEqual([
             {
@@ -210,16 +179,6 @@ describe('useFormatNetworkData', () => {
             {
                 source: 'B',
                 target: 'C',
-                value: expect.any(Number),
-            },
-            {
-                source: 'B',
-                target: 'A',
-                value: expect.any(Number),
-            },
-            {
-                source: 'C',
-                target: 'B',
                 value: expect.any(Number),
             },
         ]);

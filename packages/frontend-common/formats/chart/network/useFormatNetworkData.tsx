@@ -55,19 +55,13 @@ export function useFormatNetworkData({
             .domain([minWeight, maxWeight])
             .range([1, 20]);
 
-        const links = sanitizedFormatData
-            .map<Link>(({ source, target, weight }) => ({
+        const links = sanitizedFormatData.map<Link>(
+            ({ source, target, weight }) => ({
                 source,
                 target,
                 value: displayWeighted ? linkScale(weight) : 1,
-            }))
-            .concat(
-                sanitizedFormatData.map<Link>(({ source, target, weight }) => ({
-                    source: target,
-                    target: source,
-                    value: displayWeighted ? linkScale(weight) : 1,
-                })),
-            );
+            }),
+        );
 
         return {
             nodes: nodes.map((node) => ({
