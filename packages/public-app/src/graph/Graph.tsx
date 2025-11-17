@@ -119,6 +119,7 @@ const Graph = ({
 
     useEffect(() => {
         preLoadDatasetPage();
+        setBrowseResultDrawerStatus(DRAWER_CLOSED);
     }, [name, preLoadDatasetPage]); // Run when name changes
 
     const handleToggleFacets = () => {
