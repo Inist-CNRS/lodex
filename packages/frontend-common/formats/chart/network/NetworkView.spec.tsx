@@ -1,4 +1,4 @@
-import { compareNodes } from './NetworkView';
+import { compareNodes, isLinkVisible } from './NetworkView';
 
 describe('NetworkView', () => {
     describe('compareNodes', () => {
@@ -206,6 +206,118 @@ describe('NetworkView', () => {
             const sortedNodeIds = sortedNodes.map((node) => node.id);
 
             expect(sortedNodeIds).toStrictEqual(['2', '6', '5', '1', '3', '4']);
+        });
+    });
+
+    describe('isLinkVisible', () => {
+        describe('when directed', () => {
+            it('should return true when no selectedNode nor hoveredNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: true,
+                        selectedNode: null,
+                        hoveredNode: null,
+                    }),
+                ).toBe(true);
+            });
+            it('should return true when link source is selectedNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                const selectedNode = { id: '1' };
+                const hoveredNode = { id: '3' };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: true,
+                        selectedNode,
+                        hoveredNode,
+                    }),
+                ).toBe(true);
+            });
+
+            it('should return false when link target is selectedNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                const selectedNode = { id: '2' };
+                const hoveredNode = { id: '3' };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: true,
+                        selectedNode,
+                        hoveredNode,
+                    }),
+                ).toBe(false);
+            });
+
+            it('should return false when neither source nor target are selectedNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                const selectedNode = { id: '3' };
+                const hoveredNode = { id: '4' };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: true,
+                        selectedNode,
+                        hoveredNode,
+                    }),
+                ).toBe(false);
+            });
+        });
+
+        describe('when not directed', () => {
+            it('should return true when no selectedNode nor hoveredNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: false,
+                        selectedNode: null,
+                        hoveredNode: null,
+                    }),
+                ).toBe(true);
+            });
+            it('should return true when link source is selectedNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                const selectedNode = { id: '1' };
+                const hoveredNode = { id: '3' };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: false,
+                        selectedNode,
+                        hoveredNode,
+                    }),
+                ).toBe(true);
+            });
+
+            it('should return true when link target is selectedNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                const selectedNode = { id: '2' };
+                const hoveredNode = { id: '3' };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: false,
+                        selectedNode,
+                        hoveredNode,
+                    }),
+                ).toBe(true);
+            });
+
+            it('should return false when neither source nor target are selectedNode', () => {
+                const link = { source: { id: '1' }, target: { id: '2' } };
+                const selectedNode = { id: '3' };
+                const hoveredNode = { id: '4' };
+                expect(
+                    isLinkVisible({
+                        link,
+                        directed: false,
+                        selectedNode,
+                        hoveredNode,
+                    }),
+                ).toBe(false);
+            });
         });
     });
 });

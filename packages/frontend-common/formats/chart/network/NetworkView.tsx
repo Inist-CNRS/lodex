@@ -88,6 +88,43 @@ export const compareNodes = ({
     return a.radius - b.radius;
 };
 
+export const isLinkVisible = ({
+    link,
+    directed,
+    selectedNode,
+    hoveredNode,
+}: {
+    link: {
+        source: {
+            id: string;
+        };
+        target: {
+            id: string;
+        };
+    };
+    directed?: boolean;
+    selectedNode: { id: string } | null;
+    hoveredNode: { id: string } | null;
+}) => {
+    if (!selectedNode && !hoveredNode) {
+        return true;
+    }
+
+    if (!directed) {
+        return (
+            selectedNode?.id === (link.source! as NodeObject).id ||
+            selectedNode?.id === (link.target! as NodeObject).id ||
+            hoveredNode?.id === (link.target! as NodeObject).id ||
+            hoveredNode?.id === (link.source! as NodeObject).id
+        );
+    }
+
+    return (
+        selectedNode?.id === (link.source! as NodeObject).id ||
+        hoveredNode?.id === (link.source! as NodeObject).id
+    );
+};
+
 export const NetworkBase = ({
     colorSet,
     nodes,
@@ -293,31 +330,21 @@ export const NetworkBase = ({
                                     ? `rgba(${link.color.r}, ${link.color.g}, ${link.color.b}, 0.25)`
                                     : '#99999999'
                             }
-                            linkVisibility={(link) => {
-                                if (!selectedNode && !hoveredNode) {
-                                    return true;
-                                }
-
-                                if (!directed) {
-                                    return (
-                                        selectedNode?.id ===
-                                            (link.source! as NodeObject).id ||
-                                        selectedNode?.id ===
-                                            (link.target! as NodeObject).id ||
-                                        hoveredNode?.id ===
-                                            (link.target! as NodeObject).id ||
-                                        hoveredNode?.id ===
-                                            (link.source! as NodeObject).id
-                                    );
-                                }
-
-                                return (
-                                    selectedNode?.id ===
-                                        (link.source! as NodeObject).id ||
-                                    hoveredNode?.id ===
-                                        (link.source! as NodeObject).id
-                                );
-                            }}
+                            linkVisibility={(link) =>
+                                isLinkVisible({
+                                    link: link as {
+                                        source: { id: string };
+                                        target: { id: string };
+                                    },
+                                    directed,
+                                    selectedNode: selectedNode as {
+                                        id: string;
+                                    } | null,
+                                    hoveredNode: hoveredNode as {
+                                        id: string;
+                                    } | null,
+                                })
+                            }
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
