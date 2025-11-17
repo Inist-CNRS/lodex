@@ -362,6 +362,7 @@ export const EnrichmentForm = ({
                                                                 ''
                                                         ]
                                                       : null;
+                                            console.log(dataSource);
                                             return (
                                                 <ListItem
                                                     {...props}

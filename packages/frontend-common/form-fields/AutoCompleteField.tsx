@@ -8,7 +8,7 @@ import {
     type AutocompleteProps as MuiAutocompleteProps,
     type TextFieldProps as MuiTextFieldProps,
 } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useController } from 'react-hook-form';
 import { useTranslate } from '../i18n/I18NContext';
 
@@ -44,6 +44,7 @@ export const AutoComplete = ({
     allowNewItem = false,
     options,
     hint,
+    renderOption,
     ...props
 }: Omit<
     MuiAutocompleteProps<any, false, false, true>,
@@ -59,6 +60,28 @@ export const AutoComplete = ({
     getOptionLabel: (option: any) => string;
 }) => {
     const { translate } = useTranslate();
+    const renderOptionMemo = useMemo<
+        MuiAutocompleteProps<any, false, false, true>['renderOption']
+    >(() => {
+        if (renderOption) {
+            return renderOption;
+        }
+
+        return (props, option) => {
+            const label = getOptionLabel(option);
+            return (
+                <ListItem
+                    {...props}
+                    key={props.key}
+                    role="option"
+                    aria-label={label}
+                >
+                    <Typography>{label}</Typography>
+                </ListItem>
+            );
+        };
+    }, [renderOption, getOptionLabel]);
+
     return (
         <FormControl
             className={className}
@@ -68,20 +91,8 @@ export const AutoComplete = ({
             aria-label={`aria-group-${name}`}
         >
             <MuiAutocomplete
-                renderOption={(props, option) => {
-                    const label = getOptionLabel(option);
-                    return (
-                        <ListItem
-                            {...props}
-                            key={props.key}
-                            role="option"
-                            aria-label={label}
-                        >
-                            <Typography>{label}</Typography>
-                        </ListItem>
-                    );
-                }}
                 {...props}
+                renderOption={renderOptionMemo}
                 getOptionLabel={getOptionLabel}
                 disabled={disabled}
                 value={value}
@@ -132,6 +143,7 @@ export const AutoCompleteField = ({
     InputProps,
     getOptionLabel: getOptionLabelProp,
     onInputChange,
+    renderOption,
     ...props
 }: AutoCompleteProps) => {
     const { translate } = useTranslate();
@@ -196,6 +208,7 @@ export const AutoCompleteField = ({
             InputProps={InputProps}
             allowNewItem={allowNewItem}
             hint={hint}
+            renderOption={renderOption}
         />
     );
 };

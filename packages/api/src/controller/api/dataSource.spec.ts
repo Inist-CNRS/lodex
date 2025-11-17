@@ -10,9 +10,9 @@ describe('dataSource', () => {
         const ctx = {
             body: '',
             dataset: {
-                getExcerpt: jest.fn().mockResolvedValue([
-                    { uri: 'uri://123', title: 'Document 1' },
-                    { uri: 'uri://456', title: 'Document 2' },
+                getColumnsWithSubPaths: jest.fn().mockResolvedValue([
+                    { name: 'uri', subPaths: [] },
+                    { name: 'title', subPaths: [] },
                 ]),
             },
             precomputed: {
@@ -28,14 +28,17 @@ describe('dataSource', () => {
                         status: 'RUNNING',
                     },
                 ]),
-                getSample: jest.fn().mockImplementation((id: string) => {
-                    if (id === 'precomputed-id-1') {
-                        return Promise.resolve([
-                            { id: 1, value: { name: 'X' } },
-                        ]);
-                    }
-                    return Promise.resolve([]);
-                }),
+                getColumnsWithSubPaths: jest
+                    .fn()
+                    .mockImplementation((id: string) => {
+                        if (id === 'precomputed-id-1') {
+                            return Promise.resolve([
+                                { name: 'id', subPaths: [] },
+                                { name: 'value', subPaths: ['name'] },
+                            ]);
+                        }
+                        return Promise.resolve([]);
+                    }),
             },
         } satisfies ListDataSourceContext;
 

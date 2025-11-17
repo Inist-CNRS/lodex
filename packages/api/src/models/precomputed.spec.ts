@@ -60,6 +60,124 @@ describe('PrecomputedModel', () => {
         });
     });
 
+    describe('getColumnsWithSubPaths', () => {
+        it.each([
+            {
+                description: 'object fields with nested properties',
+                documents: [
+                    { id: 1, value: { name: 'X', age: 30 } },
+                    { id: 2, value: { name: 'Y', city: 'Paris' } },
+                    { id: 3, simple: 'text' },
+                ],
+                expected: [
+                    { name: 'id', subPaths: [] },
+                    { name: 'simple', subPaths: [] },
+                    { name: 'value', subPaths: ['age', 'city', 'name'] },
+                ],
+            },
+            {
+                description: 'primitive fields only',
+                documents: [
+                    { col1: 'value1', col2: 10, col3: true },
+                    { col1: 'value2', col2: 20, col3: false },
+                ],
+                expected: [
+                    { name: 'col1', subPaths: [] },
+                    { name: 'col2', subPaths: [] },
+                    { name: 'col3', subPaths: [] },
+                ],
+            },
+            {
+                description: 'multiple nested objects',
+                documents: [
+                    {
+                        author: { name: 'John', email: 'john@example.com' },
+                        metadata: {
+                            created: '2025-01-01',
+                            updated: '2025-01-02',
+                        },
+                        title: 'Document',
+                    },
+                ],
+                expected: [
+                    { name: 'author', subPaths: ['email', 'name'] },
+                    { name: 'metadata', subPaths: ['created', 'updated'] },
+                    { name: 'title', subPaths: [] },
+                ],
+            },
+            {
+                description: 'arrays (should not extract subPaths)',
+                documents: [
+                    { tags: ['tag1', 'tag2'], items: [{ id: 1 }, { id: 2 }] },
+                ],
+                expected: [
+                    { name: 'items', subPaths: [] },
+                    { name: 'tags', subPaths: [] },
+                ],
+            },
+            {
+                description: 'mixed types across documents',
+                documents: [
+                    { field1: { nested: 'value' } },
+                    { field1: 'string' },
+                    { field1: 123 },
+                ],
+                expected: [{ name: 'field1', subPaths: ['nested'] }],
+            },
+            {
+                description: 'deeply nested objects (only first level)',
+                documents: [
+                    {
+                        data: {
+                            level1: {
+                                level2: {
+                                    level3: 'deep',
+                                },
+                            },
+                            simple: 'value',
+                        },
+                    },
+                ],
+                expected: [{ name: 'data', subPaths: ['level1', 'simple'] }],
+            },
+        ])(
+            'should extract columns with subPaths for $description',
+            async ({ documents, expected }) => {
+                const collectionId = new ObjectId().toString();
+                const collection = db.collection(`pc_${collectionId}`);
+                await collection.insertMany(documents);
+
+                const columns =
+                    await precomputedCollection.getColumnsWithSubPaths(
+                        collectionId,
+                    );
+
+                expect(columns).toEqual(expected);
+            },
+        );
+
+        it('should return an empty array for a non-existent collection', async () => {
+            const columns = await precomputedCollection.getColumnsWithSubPaths(
+                new ObjectId().toString(),
+            );
+            expect(columns).toEqual([]);
+        });
+
+        it('should exclude _id field', async () => {
+            const collectionId = new ObjectId().toString();
+            const collection = db.collection(`pc_${collectionId}`);
+            await collection.insertMany([{ col1: 'value1' }]);
+
+            const columns =
+                await precomputedCollection.getColumnsWithSubPaths(
+                    collectionId,
+                );
+
+            expect(columns).toEqual([{ name: 'col1', subPaths: [] }]);
+            expect(columns.find((c) => c.name === '_id')).toBeUndefined();
+        });
+    });
+
     describe('resultFindLimitFromSkip', () => {
         const collectionId = new ObjectId().toString();
         const documents = Array.from({ length: 10 }, (_, i) => ({

@@ -4,30 +4,10 @@ import route from 'koa-route';
 
 const app = new Koa();
 
-const getColumnsFromSample = (
-    sample?: Record<string, unknown>,
-): DataSource['columns'] => {
-    if (!sample) {
-        return [];
-    }
-
-    return Object.keys(sample).map((name: string) => ({
-        name,
-        subPaths:
-            sample[name] &&
-            typeof sample[name] === 'object' &&
-            !Array.isArray(sample[name])
-                ? Object.keys(sample[name])
-                : [],
-    }));
-};
-
 export const listDataSource = async (ctx: ListDataSourceContext) => {
-    const [precomputed, excerpt] = await Promise.all([
+    const [precomputed, datasetColumns] = await Promise.all([
         ctx.precomputed.findAll(),
-        ctx.dataset
-            .getExcerpt()
-            .then((rows: Record<string, unknown>[]) => rows.at(0)),
+        ctx.dataset.getColumnsWithSubPaths(),
     ]);
 
     const precomputedWithColumns = await Promise.all(
@@ -43,16 +23,15 @@ export const listDataSource = async (ctx: ListDataSourceContext) => {
                     };
                 }
 
-                const sample = await ctx.precomputed
-                    .getSample(_id)
-                    .then((rows) => rows.at(0));
+                const columns =
+                    await ctx.precomputed.getColumnsWithSubPaths(_id);
 
                 return {
                     id: _id.toString(),
                     name,
                     status,
-                    columns: getColumnsFromSample(sample),
-                    isEmpty: !sample,
+                    columns,
+                    isEmpty: columns.length === 0,
                 };
             },
         ),
@@ -62,17 +41,20 @@ export const listDataSource = async (ctx: ListDataSourceContext) => {
         {
             id: 'dataset',
             name: 'dataset',
-            columns: getColumnsFromSample(excerpt),
-            status: excerpt ? TaskStatus.FINISHED : undefined,
-            isEmpty: !excerpt,
+            columns: datasetColumns,
+            status: datasetColumns.length > 0 ? TaskStatus.FINISHED : undefined,
+            isEmpty: datasetColumns.length === 0,
         },
         ...precomputedWithColumns,
     ] satisfies DataSource[];
 };
 
 export type ListDataSourceContext = Pick<Koa.Context, 'body'> & {
-    dataset: Pick<Koa.Context['dataset'], 'getExcerpt'>;
-    precomputed: Pick<Koa.Context['precomputed'], 'findAll' | 'getSample'>;
+    dataset: Pick<Koa.Context['dataset'], 'getColumnsWithSubPaths'>;
+    precomputed: Pick<
+        Koa.Context['precomputed'],
+        'findAll' | 'getColumnsWithSubPaths'
+    >;
 };
 
 export const previewDataSource = async (

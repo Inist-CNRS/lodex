@@ -71,6 +71,9 @@ export type PrecomputedCollection = Collection<PreComputation> & {
     getResultColumns: (
         precomputedId: string,
     ) => Promise<{ key: string; type: string }[]>;
+    getColumnsWithSubPaths: (
+        id: ObjectId | string,
+    ) => Promise<{ name: string; subPaths: string[] }[]>;
     updateResult: (params: {
         precomputedId: string;
         id: string;
@@ -377,6 +380,94 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         ) as Promise<Record<string, unknown> | null>;
     };
 
+    const getColumnsWithSubPaths = async (
+        id: ObjectId | string,
+    ): Promise<{ name: string; subPaths: string[] }[]> => {
+        const pipeline = [
+            { $limit: 1000 },
+            {
+                $project: {
+                    fields: { $objectToArray: '$$ROOT' },
+                },
+            },
+            { $unwind: '$fields' },
+            {
+                $match: {
+                    'fields.k': { $ne: '_id' },
+                },
+            },
+            {
+                $group: {
+                    _id: '$fields.k',
+                    subPaths: {
+                        $addToSet: {
+                            $cond: {
+                                if: {
+                                    $and: [
+                                        {
+                                            $eq: [
+                                                { $type: '$fields.v' },
+                                                'object',
+                                            ],
+                                        },
+                                        {
+                                            $ne: [
+                                                { $isArray: '$fields.v' },
+                                                true,
+                                            ],
+                                        },
+                                    ],
+                                },
+                                then: { $objectToArray: '$fields.v' },
+                                else: null,
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: '$_id',
+                    subPaths: {
+                        $reduce: {
+                            input: '$subPaths',
+                            initialValue: [],
+                            in: {
+                                $cond: {
+                                    if: { $eq: ['$$this', null] },
+                                    then: '$$value',
+                                    else: {
+                                        $setUnion: [
+                                            '$$value',
+                                            {
+                                                $map: {
+                                                    input: '$$this',
+                                                    as: 'kv',
+                                                    in: '$$kv.k',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            { $sort: { name: 1 } },
+        ];
+
+        try {
+            return await db
+                .collection(`pc_${id}`)
+                .aggregate<{ name: string; subPaths: string[] }>(pipeline)
+                .toArray();
+        } catch (error) {
+            return [];
+        }
+    };
+
     const cancelByIds = async (ids: string[]) => {
         if (ids.length === 0) {
             return;
@@ -408,6 +499,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         resultFindLimitFromSkip,
         resultCount,
         getResultColumns,
+        getColumnsWithSubPaths,
         updateResult,
         cancelByIds,
     });
