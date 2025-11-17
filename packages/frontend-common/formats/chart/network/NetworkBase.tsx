@@ -15,6 +15,7 @@ import MouseIcon from '../../utils/components/MouseIcon';
 import { type Link, type Node } from './useFormatNetworkData';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
+import { addTransparency } from '../../utils/colorHelpers';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
@@ -292,9 +293,15 @@ export const NetworkBase = ({
                                 }
 
                                 ctx.fillStyle = node.color
-                                    ? `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, ${isSelected ? 1 : 0.75})`
+                                    ? addTransparency(
+                                          node.color,
+                                          isSelected ? 1 : 0.75,
+                                      )
                                     : colorSet
-                                      ? `${colorSet![0]}${isSelected ? 'ff' : '7f'}`
+                                      ? addTransparency(
+                                            colorSet[0],
+                                            isSelected ? 1 : 0.75,
+                                        )
                                       : '#000000e6';
                                 ctx.beginPath();
                                 ctx.arc(
@@ -319,7 +326,7 @@ export const NetworkBase = ({
                             }}
                             linkColor={(link) =>
                                 link.color
-                                    ? `rgba(${link.color.r}, ${link.color.g}, ${link.color.b}, 0.25)`
+                                    ? addTransparency(link.color, 0.25)
                                     : '#99999999'
                             }
                             linkVisibility={(link) =>

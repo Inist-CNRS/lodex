@@ -89,6 +89,7 @@ export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];
 export type NodeType = {
     id: string;
     radius: number;
+    color?: string;
 };
 
 export type LinkType = {

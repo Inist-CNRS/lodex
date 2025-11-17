@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { ForceGraphProps } from 'react-force-graph-2d';
 import type { Link, Node } from '../network/useFormatNetworkData';
+import { rgbToHex } from '../../utils/colorHelpers';
 
 export type AdvancedNetworkData = {
     id: string;
@@ -77,11 +78,11 @@ export function useFormatAdvancedNetworkData({
                     ? parseFloat(viz$position.z) * 1000
                     : undefined,
                 color: viz$color
-                    ? {
+                    ? rgbToHex({
                           r: parseInt(viz$color.r, 10),
                           g: parseInt(viz$color.g, 10),
                           b: parseInt(viz$color.b, 10),
-                      }
+                      })
                     : undefined,
             }),
         );
