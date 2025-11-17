@@ -1,14 +1,14 @@
+import { URI_FIELD_NAME, moveUriToFirstPosition } from '@lodex/common';
+import JSONStream from 'jsonstream';
 import chunk from 'lodash/chunk';
 import groupBy from 'lodash/groupBy';
 import omit from 'lodash/omit';
 import uniqWith from 'lodash/uniqWith';
-import JSONStream from 'jsonstream';
-import { Transform } from 'stream';
 import { ObjectId } from 'mongodb';
-import { getCreatedCollection } from './utils';
-import { URI_FIELD_NAME, moveUriToFirstPosition } from '@lodex/common';
+import { Transform } from 'stream';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
+import { getCreatedCollection } from './utils';
 
 export default async (db: any) => {
     const collection: any = await getCreatedCollection(db, 'dataset');
@@ -227,6 +227,93 @@ export default async (db: any) => {
             console.warn(
                 'Unable to create datagrid indexes, columns are invalid.',
             );
+        }
+    };
+
+    collection.getColumnsWithSubPaths = async (): Promise<
+        { name: string; subPaths: string[] }[]
+    > => {
+        const pipeline = [
+            { $limit: 1000 },
+            {
+                $project: {
+                    fields: { $objectToArray: '$$ROOT' },
+                },
+            },
+            { $unwind: '$fields' },
+            {
+                $match: {
+                    'fields.k': { $ne: '_id' },
+                },
+            },
+            {
+                $group: {
+                    _id: '$fields.k',
+                    subPaths: {
+                        $addToSet: {
+                            $cond: {
+                                if: {
+                                    $and: [
+                                        {
+                                            $eq: [
+                                                { $type: '$fields.v' },
+                                                'object',
+                                            ],
+                                        },
+                                        {
+                                            $ne: [
+                                                { $isArray: '$fields.v' },
+                                                true,
+                                            ],
+                                        },
+                                    ],
+                                },
+                                then: { $objectToArray: '$fields.v' },
+                                else: null,
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: '$_id',
+                    subPaths: {
+                        $reduce: {
+                            input: '$subPaths',
+                            initialValue: [],
+                            in: {
+                                $cond: {
+                                    if: { $eq: ['$$this', null] },
+                                    then: '$$value',
+                                    else: {
+                                        $setUnion: [
+                                            '$$value',
+                                            {
+                                                $map: {
+                                                    input: '$$this',
+                                                    as: 'kv',
+                                                    in: '$$kv.k',
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            { $sort: { name: 1 } },
+        ];
+
+        try {
+            const result: Array<{ name: string; subPaths: string[] }> =
+                await collection.aggregate(pipeline).toArray();
+            return result;
+        } catch (error) {
+            return [];
         }
     };
 

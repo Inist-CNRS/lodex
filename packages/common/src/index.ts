@@ -8,7 +8,9 @@ export * from './tools/parseValue';
 export * from './tools/tenantTools';
 export * from './tools/toast';
 export * from './transformers';
+export * from './types/dataSource';
 export * from './types/precomputation';
+export * from './types/precomputed';
 export * from './validator/annotation.validator';
 
 export * from './externals';
@@ -20,6 +22,6 @@ export * from './prefixes';
 export * from './progressStatus';
 export * from './propositionStatus';
 export * from './scope';
-export * from './taskStatusType.ts';
+export * from './taskStatusType';
 export * from './uris';
 export * from './validateFields';

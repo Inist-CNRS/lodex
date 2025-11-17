@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactJson from 'react-json-view';
+import { toast } from '@lodex/common';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { Save as SaveIcon } from '@mui/icons-material';
-import datasetApi from '../api/dataset';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
     Box,
@@ -13,9 +13,9 @@ import {
     MenuItem,
     useTheme,
 } from '@mui/material';
-import { toast } from '@lodex/common';
-import CancelButton from '@lodex/frontend-common/components/CancelButton';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import React from 'react';
+import ReactJson from 'react-json-view';
+import datasetApi from '../api/dataset';
 
 const style = {
     container: {
@@ -246,7 +246,6 @@ const ParsingEditCell = ({
                 // @ts-expect-error TS18046
                 throw new Error(translate(e.message));
             }
-            console.log({ cell });
             await datasetApi.updateData({
                 precomputedId,
                 // @ts-expect-error TS2339

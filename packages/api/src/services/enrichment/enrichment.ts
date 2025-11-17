@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import path from 'path';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
+import type Koa from 'koa';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/compile'. Did you mean to ... Remove this comment to see the full error message
 import { checkFusible, createFusible, enableFusible } from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
@@ -11,12 +12,43 @@ import progress from '../progress';
 
 import { ProgressStatus, TaskStatus } from '@lodex/common';
 import from from 'from';
-import { CancelWorkerError } from '../../workers';
 import { jobLogger } from '../../workers/tools';
+
+import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
 
-const getSourceData = async (ctx: any, sourceColumn: any) => {
-    const excerptLines = await ctx.dataset.getExcerpt(
+const DATASET_COLLECTION = 'dataset';
+
+const getSource = (ctx: Koa.Context, dataSource?: string): Source => {
+    const collectionName =
+        !dataSource || dataSource === DATASET_COLLECTION
+            ? DATASET_COLLECTION
+            : `pc_${dataSource}`;
+
+    const collection = ctx.db.collection(collectionName);
+    return {
+        collectionName,
+        idField: collectionName === DATASET_COLLECTION ? 'uri' : '_id',
+        count: async (filter) => {
+            return collection.count(filter);
+        },
+        getExcerpt: async (filter) => {
+            return collection.find(filter).limit(10).toArray();
+        },
+    };
+};
+
+type Source = {
+    collectionName: string;
+    idField: string;
+    count(filter?: Record<string, unknown>): Promise<number>;
+    getExcerpt(
+        filter?: Record<string, unknown>,
+    ): Promise<Record<string, unknown>[]>;
+};
+
+const getSourceData = async (source: Source, sourceColumn: string) => {
+    const excerptLines = await source.getExcerpt(
         sourceColumn
             ? {
                   [sourceColumn]: { $ne: null },
@@ -24,15 +56,15 @@ const getSourceData = async (ctx: any, sourceColumn: any) => {
             : {},
     );
 
-    if (!excerptLines) {
-        return null;
-    }
-
-    if (excerptLines.length === 0) {
+    if (!excerptLines?.length) {
         return null;
     }
 
     const sourceData = excerptLines[0][sourceColumn];
+    if (typeof sourceData !== 'string') {
+        return sourceData;
+    }
+
     try {
         return JSON.parse(sourceData);
     } catch {
@@ -51,7 +83,8 @@ export const createEnrichmentRule = async (ctx: any, enrichment: any) => {
         throw new Error(`Missing parameters`);
     }
 
-    const data = await getSourceData(ctx, enrichment.sourceColumn);
+    const source = getSource(ctx, enrichment.dataSource);
+    const data = await getSourceData(source, enrichment.sourceColumn);
     const rule = getEnrichmentRuleModel(data, enrichment, BATCH_SIZE);
 
     return {
@@ -68,14 +101,15 @@ const cleanWebServiceRule = (rule: any) => {
 export const getEnrichmentDataPreview = async (ctx: any) => {
     const { enrichmentBatchSize } = ctx.configTenant;
     const BATCH_SIZE = Number(enrichmentBatchSize || 10);
-    const { sourceColumn, subPath, rule } = ctx.request.body;
+    const { dataSource, sourceColumn, subPath, rule } = ctx.request.body;
     let previewRule = rule;
+    const source = getSource(ctx, dataSource);
     if (!sourceColumn && !rule) {
         throw new Error(`Missing parameters`);
     }
 
     if (!previewRule) {
-        const data = await getSourceData(ctx, sourceColumn);
+        const data = await getSourceData(source, sourceColumn);
         previewRule = getEnrichmentRuleModel(
             data,
             {
@@ -88,7 +122,7 @@ export const getEnrichmentDataPreview = async (ctx: any) => {
         previewRule = cleanWebServiceRule(previewRule);
     }
     const commands = createEzsRuleCommands(previewRule);
-    const excerptLines = await ctx.dataset.getExcerpt();
+    const excerptLines = await source.getExcerpt();
     const result = [];
     try {
         for (let index = 0; index < excerptLines.length; index += BATCH_SIZE) {
@@ -159,16 +193,6 @@ export const getEnrichmentRuleModel = (
         console.error('Error:', e.stack);
         throw e;
     }
-};
-
-export const getEnrichmentDatasetCandidate = async (id: any, ctx: any) => {
-    const enrichment = await ctx.enrichment.findOneById(id);
-    const [entry] = await ctx.dataset
-        .find({ [enrichment.name]: { $exists: false } })
-        .limit(1)
-        .toArray();
-
-    return entry;
 };
 
 const createEzsRuleCommands = (rule: any) => ezs.compileScript(rule).get();
@@ -257,6 +281,7 @@ const processEnrichmentPipeline = (
     ctx: any,
 ) =>
     new Promise<number>((resolve: any, reject: any) => {
+        const source = getSource(ctx, enrichment.dataSource);
         const { enrichmentBatchSize } = ctx.configTenant;
         const BATCH_SIZE = Number(enrichmentBatchSize || 10);
         const environment = {
@@ -267,43 +292,44 @@ const processEnrichmentPipeline = (
         };
         let errorCount = 0;
         const script = `
-    [use]
-    plugin = lodex
+[use]
+plugin = lodex
 
-    [LodexRunQuery]
-    collection = dataset
+[LodexRunQuery]
+collection = ${source.collectionName}
 
-    [breaker]
-    fusible = ${fusible}
+[breaker]
+fusible = ${fusible}
 
-    [replace]
-    path = id
-    value = get('uri')
+[replace]
+path = id
+value = get('${source.idField}')
 
-    path = value
-    value = self().omit(['_id', 'uri'])
+path = value
+value = self().omit(['_id', '${source.idField}'])
 
-    ${enrichment.rule}
+${enrichment.rule}
 
-    [catch]
-    stop = false
-    [LodexHomogenizedObject]
+[catch]
+stop = false
+[LodexHomogenizedObject]
 
-    [group]
-    length = ${BATCH_SIZE}
+[group]
+length = ${BATCH_SIZE}
     
-    # Ensures that EZS does not write to the database if the job has been canceled
-    [breaker]
-    fusible = ${fusible}
+# Ensures that EZS does not write to the database if the job has been canceled
+[breaker]
+fusible = ${fusible}
 
-    [LodexUpdateDocuments]
-    collection = dataset
-    field = ${enrichment.name}
+[LodexUpdateDocuments]
+idField = ${source.idField}
+collection = ${source.collectionName}
+field = ${enrichment.name}
 
-    [breaker]
-    fusible = ${fusible}
+[breaker]
+fusible = ${fusible}
 
-    [ungroup]
+[ungroup]
     `;
         const input = new PassThrough({ objectMode: true });
         input
@@ -316,6 +342,7 @@ const processEnrichmentPipeline = (
                 }
                 progress.incrementProgress(ctx.tenant, 1);
                 const { id, value, error } = data;
+
                 let logData;
                 if (id) {
                     logData = JSON.stringify({
@@ -331,7 +358,7 @@ const processEnrichmentPipeline = (
                     errorCount += 1;
                     logData = JSON.stringify({
                         level: 'error',
-                        message: `[Instance: ${ctx.tenant}] ${error}`,
+                        message: `[Instance: ${ctx.tenant}] ${error ?? 'ID missing for enrichment row'}`,
                         timestamp: new Date(),
                         status: TaskStatus.IN_PROGRESS,
                     });
@@ -409,7 +436,9 @@ export const startEnrichment = async (ctx: any) => {
           }
         : undefined;
 
-    const dataSetSize = await ctx.dataset.count(filter);
+    const source = getSource(ctx, enrichment.dataSource);
+
+    const dataSetSize = await source.count(filter);
     progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
         status: ProgressStatus.ENRICHING,

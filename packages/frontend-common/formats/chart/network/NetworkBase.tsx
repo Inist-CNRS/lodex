@@ -239,6 +239,7 @@ export const NetworkBase = ({
                         }
                         getOptionLabel={(option: string) => option}
                         options={nodes.map((node) => node.id as string)}
+                        name="search"
                     />
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}

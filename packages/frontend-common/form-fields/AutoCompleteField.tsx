@@ -1,14 +1,14 @@
-import { useCallback } from 'react';
 import {
-    Autocomplete as MuiAutocomplete,
     FormControl,
-    TextField,
-    ListItem,
-    Typography,
     FormHelperText,
+    ListItem,
+    Autocomplete as MuiAutocomplete,
+    TextField,
+    Typography,
     type AutocompleteProps as MuiAutocompleteProps,
     type TextFieldProps as MuiTextFieldProps,
 } from '@mui/material';
+import { useCallback, useMemo } from 'react';
 import { useController } from 'react-hook-form';
 import { useTranslate } from '../i18n/I18NContext';
 
@@ -30,6 +30,7 @@ export type AutoCompleteProps = Partial<
 type NotUndefined<T> = T extends undefined ? never : T;
 
 export const AutoComplete = ({
+    name,
     className,
     error,
     getOptionLabel,
@@ -43,6 +44,7 @@ export const AutoComplete = ({
     allowNewItem = false,
     options,
     hint,
+    renderOption,
     ...props
 }: Omit<
     MuiAutocompleteProps<any, false, false, true>,
@@ -51,16 +53,46 @@ export const AutoComplete = ({
     error?: string;
     hint?: string;
     label: string;
+    name: string;
     InputProps?: MuiTextFieldProps;
     variant?: MuiTextFieldProps['variant'];
     allowNewItem?: boolean;
     getOptionLabel: (option: any) => string;
 }) => {
     const { translate } = useTranslate();
+    const renderOptionMemo = useMemo<
+        MuiAutocompleteProps<any, false, false, true>['renderOption']
+    >(() => {
+        if (renderOption) {
+            return renderOption;
+        }
+
+        return (props, option) => {
+            const label = getOptionLabel(option);
+            return (
+                <ListItem
+                    {...props}
+                    key={props.key}
+                    role="option"
+                    aria-label={label}
+                >
+                    <Typography>{label}</Typography>
+                </ListItem>
+            );
+        };
+    }, [renderOption, getOptionLabel]);
+
     return (
-        <FormControl className={className} fullWidth error={!!error}>
+        <FormControl
+            className={className}
+            fullWidth
+            error={!!error}
+            role="group"
+            aria-label={`aria-group-${name}`}
+        >
             <MuiAutocomplete
                 {...props}
+                renderOption={renderOptionMemo}
                 getOptionLabel={getOptionLabel}
                 disabled={disabled}
                 value={value}
@@ -84,13 +116,6 @@ export const AutoComplete = ({
                         }
                     />
                 )}
-                renderOption={(props, option) => {
-                    return (
-                        <ListItem {...props}>
-                            <Typography>{getOptionLabel(option)}</Typography>
-                        </ListItem>
-                    );
-                }}
                 options={options}
                 noOptionsText={translate('no_option')}
             />
@@ -118,6 +143,7 @@ export const AutoCompleteField = ({
     InputProps,
     getOptionLabel: getOptionLabelProp,
     onInputChange,
+    renderOption,
     ...props
 }: AutoCompleteProps) => {
     const { translate } = useTranslate();
@@ -175,12 +201,14 @@ export const AutoCompleteField = ({
             onInputChange={handleInputValueChange}
             disabled={disabled}
             getOptionLabel={getOptionLabel}
+            name={name}
             label={label}
             options={options}
             variant={variant}
             InputProps={InputProps}
             allowNewItem={allowNewItem}
             hint={hint}
+            renderOption={renderOption}
         />
     );
 };

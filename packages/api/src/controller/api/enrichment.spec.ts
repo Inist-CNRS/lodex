@@ -1,12 +1,13 @@
+import type Koa from 'koa';
+import { workerQueues } from '../../workers';
+import { cancelJob, getActiveJob } from '../../workers/tools';
 import {
-    postEnrichment,
-    putEnrichment,
     deleteEnrichment,
     launchAllEnrichment,
+    postEnrichment,
+    putEnrichment,
     retryEnrichmentOnFailedRow,
 } from './enrichment';
-import { getActiveJob, cancelJob } from '../../workers/tools';
-import { workerQueues } from '../../workers';
 
 jest.mock('../../workers/tools', () => ({
     getActiveJob: jest.fn(),
@@ -81,8 +82,24 @@ describe('Enrichment controller', () => {
                 request: {
                     body: {
                         webServiceUrl: 'dummy.url',
+                        dataSource: 'dataset',
                         sourceColumn: 'dummyColumn',
                     },
+                } as Koa.Request,
+                db: {
+                    collection: jest
+                        .fn()
+                        .mockImplementation((collectionName) => ({
+                            collectionName,
+                            idField: '_id',
+                            count: () => Promise.resolve(1),
+                            find: () => ({
+                                limit: () => ({
+                                    toArray: () =>
+                                        Promise.resolve([{ _id: 42 }]),
+                                }),
+                            }),
+                        })),
                 },
                 enrichment: {
                     findOneById: jest.fn(() =>
@@ -92,17 +109,26 @@ describe('Enrichment controller', () => {
                         Promise.resolve('updated enrichment'),
                     ),
                 },
-                dataset: { removeAttribute: jest.fn(), getExcerpt: jest.fn() },
+                dataset: { removeAttribute: jest.fn() },
                 configTenant: {},
-            };
+
+                status: 200,
+                body: null,
+            } satisfies Partial<Koa.Context>;
 
             await putEnrichment(ctx, 42);
 
+            expect(ctx.status).toBe(200);
+
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
             expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
-            expect(ctx.enrichment.update.mock.calls[0][0]).toBe(42);
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
+            expect(ctx.enrichment.update).toHaveBeenCalledWith(
+                42,
+                expect.objectContaining({
+                    webServiceUrl: 'dummy.url',
+                    sourceColumn: 'dummyColumn',
+                }),
+            );
             expect(ctx.body).toBe('updated enrichment');
             return;
         });
