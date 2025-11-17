@@ -44,7 +44,7 @@ export function useFormatNetworkData({
         const max = Math.max(...radiusList);
         const min = Math.min(...radiusList);
 
-        const nodeScale = scaleLinear().domain([min, max]).range([1, 10]);
+        const nodeScale = scaleLinear().domain([min, max]).range([10, 100]);
 
         const weightList = sanitizedFormatData.map(({ weight }) => weight);
 
@@ -62,36 +62,6 @@ export function useFormatNetworkData({
                 value: displayWeighted ? linkScale(weight) : 1,
             }),
         );
-
-        links.forEach((link) => {
-            const a = nodes.find((node) => node.id === link.source);
-            const b = nodes.find((node) => node.id === link.target);
-            if (!a || !b) {
-                console.warn('Node not found for link', link);
-                return;
-            }
-
-            if (!a.neighbors) {
-                a.neighbors = [];
-            }
-
-            if (!b.neighbors) {
-                b.neighbors = [];
-            }
-
-            a.neighbors.push(b);
-            b.neighbors.push(a);
-
-            if (!a.links) {
-                a.links = [];
-            }
-
-            if (!b.links) {
-                b.links = [];
-            }
-            a.links.push(link);
-            b.links.push(link);
-        });
 
         return {
             nodes: nodes.map((node) => ({
@@ -117,9 +87,9 @@ export type UseFormatNetworkDataParams = {
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];
 
 export type NodeType = {
-    neighbors?: Node[];
-    links?: Link[];
+    id: string;
     radius: number;
+    color?: string;
 };
 
 export type LinkType = {

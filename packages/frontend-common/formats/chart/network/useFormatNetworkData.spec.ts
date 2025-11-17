@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import {
     useFormatNetworkData,
     type NetworkData,
-    type Node,
     type UseFormatNetworkDataReturn,
 } from './useFormatNetworkData';
 
@@ -60,7 +59,7 @@ describe('useFormatNetworkData', () => {
         },
     );
 
-    it('builds nodes with neighbors and links, and scales values monotonically', () => {
+    it('builds nodes and scales values monotonically', () => {
         const data: NetworkData[] = [
             { source: 'A', target: 'B', weight: 1 },
             { source: 'A', target: 'C', weight: 3 },
@@ -89,22 +88,6 @@ describe('useFormatNetworkData', () => {
         expect(B).toBeTruthy();
         expect(C).toBeTruthy();
 
-        // neighbors and links wiring
-        const neighborsA = (A?.neighbors ?? [])
-            .map((n: Node) => String(n.id))
-            .sort();
-        expect(neighborsA).toEqual(['B', 'C']);
-
-        const neighborsB = (B?.neighbors ?? []).map((n: Node) => String(n.id));
-        expect(neighborsB).toEqual(['A']);
-
-        const neighborsC = (C?.neighbors ?? []).map((n: Node) => String(n.id));
-        expect(neighborsC).toEqual(['A']);
-
-        expect(A?.links).toHaveLength(2);
-        expect(B?.links).toHaveLength(1);
-        expect(C?.links).toHaveLength(1);
-
         const linkAB = graph.links.find(
             (l) => String(l.source) === 'A' && String(l.target) === 'B',
         );
@@ -117,9 +100,9 @@ describe('useFormatNetworkData', () => {
 
         expect(linkAC!.value > linkAB!.value).toBe(true);
 
-        expect(A?.radius).toBe(10);
-        expect(B?.radius).toBe(1);
-        expect(C?.radius).toBe(1);
+        expect(A?.radius).toBe(100);
+        expect(B?.radius).toBe(10);
+        expect(C?.radius).toBe(10);
         expect(A!.radius > B!.radius).toBe(true);
         expect(A!.radius > C!.radius).toBe(true);
     });
@@ -143,10 +126,62 @@ describe('useFormatNetworkData', () => {
         expect(result.current.nodes).toHaveLength(2);
         expect(result.current.links).toHaveLength(1);
 
+        expect(result.current.nodes).toStrictEqual([
+            {
+                id: 'A',
+                label: 'A',
+                radius: expect.any(Number),
+            },
+            {
+                id: 'B',
+                label: 'B',
+                radius: expect.any(Number),
+            },
+        ]);
+
+        expect(result.current.links).toStrictEqual([
+            {
+                source: 'A',
+                target: 'B',
+                value: expect.any(Number),
+            },
+        ]);
+
         rerender({ d: data2 });
 
         expect(result.current.nodes).toHaveLength(3);
         expect(result.current.links).toHaveLength(2);
+
+        expect(result.current.nodes).toStrictEqual([
+            {
+                id: 'A',
+                label: 'A',
+                radius: expect.any(Number),
+            },
+            {
+                id: 'B',
+                label: 'B',
+                radius: expect.any(Number),
+            },
+            {
+                id: 'C',
+                label: 'C',
+                radius: expect.any(Number),
+            },
+        ]);
+
+        expect(result.current.links).toStrictEqual([
+            {
+                source: 'A',
+                target: 'B',
+                value: expect.any(Number),
+            },
+            {
+                source: 'B',
+                target: 'C',
+                value: expect.any(Number),
+            },
+        ]);
     });
 
     it('uses radius=1 for nodes and value=1 for links when displayWeighted is false', () => {
@@ -194,9 +229,9 @@ describe('useFormatNetworkData', () => {
         const nodeA = result.current.nodes.find((n) => n.id === 'A');
         const nodeB = result.current.nodes.find((n) => n.id === 'B');
         const nodeC = result.current.nodes.find((n) => n.id === 'C');
-        expect(nodeA?.radius).toBe(10);
-        expect(nodeB?.radius).toBe(1);
-        expect(nodeC?.radius).toBe(1);
+        expect(nodeA?.radius).toBe(100);
+        expect(nodeB?.radius).toBe(10);
+        expect(nodeC?.radius).toBe(10);
 
         const linkAB = result.current.links.find(
             (l) => l.source === 'A' && l.target === 'B',
