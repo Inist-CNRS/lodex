@@ -68,9 +68,12 @@ describe('Precomputation', () => {
         );
 
         cy.contains('1–25 of 30').should('be.visible');
-        cy.findAllByRole('columnheader').should('have.length', 3);
+        cy.findAllByRole('columnheader').should('have.length', 4);
         cy.findByRole('columnheader', { name: 'id' }).should('be.visible');
         cy.findByRole('columnheader', { name: 'value' }).should('be.visible');
+        cy.findByRole('columnheader', { name: 'lodexStamp' }).should(
+            'be.visible',
+        );
     });
 
     it('should allow to edit precomputed data cells', () => {
