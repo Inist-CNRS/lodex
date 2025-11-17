@@ -58,9 +58,7 @@ module.exports = {
             '*fixture*',
             // ... glob patterns here
         ],
-        ignore: [
-            // ... glob patterns to ignore here
-        ],
+        ignore: ['**/services/enrichment/*.txt'],
     },
 
     modclean: {
