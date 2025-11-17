@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import type { ForceGraphProps } from 'react-force-graph-2d';
 import type { Link, Node } from '../network/useFormatNetworkData';
 import { rgbToHex } from '../../utils/colorHelpers';
+import { scaleLinear } from 'd3-scale';
 
 export type AdvancedNetworkData = {
     id: string;
@@ -16,19 +17,21 @@ export type AdvancedNetworkData = {
         viz$size: {
             value: string;
         };
-        viz$position: {
+        viz$position?: {
             x: string;
             y: string;
             z: string;
         };
-        targets: {
+        targets?: {
             id: string;
         }[];
     };
 
     attributes: {
-        alpha: string;
-        zorder: string;
+        alpha?: string;
+        zorder?: string;
+        count?: string;
+        status?: string;
     };
 };
 
@@ -65,16 +68,16 @@ export function useFormatAdvancedNetworkData({
                 label,
                 radius:
                     viz$size.value && displayWeighted
-                        ? parseFloat(viz$size.value) * 1000
+                        ? parseFloat(viz$size.value)
                         : 100,
                 targets,
-                x: viz$position.x
+                x: viz$position?.x
                     ? parseFloat(viz$position.x) * 1000
                     : undefined,
-                y: viz$position.y
+                y: viz$position?.y
                     ? parseFloat(viz$position.y) * 1000
                     : undefined,
-                z: viz$position.z
+                z: viz$position?.z
                     ? parseFloat(viz$position.z) * 1000
                     : undefined,
                 color: viz$color
@@ -86,12 +89,47 @@ export function useFormatAdvancedNetworkData({
                     : undefined,
             }),
         );
+        const maxRadius = Math.max(
+            ...fullNodes.map((node) => node.radius ?? 0),
+        );
+        const minRadius = Math.min(
+            ...fullNodes.map((node) => node.radius ?? 0),
+        );
 
-        const nodes = fullNodes.map(({ targets, ...node }) => ({
-            ...node,
-            radius: node.radius / 2,
-            color: node.color,
-        }));
+        const scaleRadius = scaleLinear()
+            .domain([minRadius, maxRadius])
+            .range([10, 100]);
+
+        const maxX = Math.max(
+            ...fullNodes.map((node) => (node.x !== undefined ? node.x : 0)),
+        );
+        const minX = Math.min(
+            ...fullNodes.map((node) => (node.x !== undefined ? node.x : 0)),
+        );
+        const maxY = Math.max(
+            ...fullNodes.map((node) => (node.y !== undefined ? node.y : 0)),
+        );
+        const minY = Math.min(
+            ...fullNodes.map((node) => (node.y !== undefined ? node.y : 0)),
+        );
+
+        const scalePositionX = scaleLinear()
+            .domain([minX, maxX])
+            .range([-900, 900]);
+        const scalePositionY = scaleLinear()
+            .domain([minY, maxY])
+            .range([-500, 500]);
+
+        const nodes = fullNodes.map(
+            ({ targets, radius, x, y, z, ...node }) => ({
+                ...node,
+                radius: scaleRadius(radius),
+                x: x !== undefined ? scalePositionX(x) : undefined,
+                y: y !== undefined ? scalePositionY(y) : undefined,
+                z,
+                color: node.color,
+            }),
+        );
 
         const links = fullNodes.flatMap(({ id: sourceId, targets, color }) =>
             targets

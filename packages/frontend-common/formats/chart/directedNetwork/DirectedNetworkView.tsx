@@ -1,22 +1,24 @@
 import type { Field } from '../../../fields/types';
+import { NetworkBase } from '../network/NetworkBase';
 import {
     useFormatAdvancedNetworkData,
     type AdvancedNetworkData,
-} from './useFormatAdvancedNetworkData';
-import jsonFormatData from './dataGraphGexf.json';
-import { compose } from 'recompose';
-import injectData from '../../injectData';
-import { NetworkBase } from '../network/NetworkBase';
+} from '../advancedNetwork/useFormatAdvancedNetworkData';
+import jsonFormatData from './topRefExtract.json';
 
-interface NetworkProps {
+interface DirectedNetworkProps {
     colorSet?: string[];
     formatData?: AdvancedNetworkData[];
     field: Field;
 }
 
-const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
+const DirectedNetwork = ({
+    formatData: _,
+    colorSet,
+    field,
+}: DirectedNetworkProps) => {
+    // @TODO replace with data from props when routine available available
     const { nodes, links } = useFormatAdvancedNetworkData({
-        // @TODO replace with real formatData when available
         formatData: jsonFormatData as AdvancedNetworkData[],
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
@@ -29,13 +31,14 @@ const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
             colorSet={colorSet}
             nodes={nodes}
             links={links}
-            forcePosition
             linkCurvature={0.25}
-            highlightLinkMode="outgoing"
+            showArrows
         />
     );
 };
 
-export default compose<NetworkProps, NetworkProps>(injectData())(
-    AdvancedNetwork,
-);
+export default DirectedNetwork;
+
+// export default compose<DirectedNetworkProps, DirectedNetworkProps>(
+//     injectData(),
+// )(DirectedNetwork);

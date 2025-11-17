@@ -34,6 +34,7 @@ import cartography from './vega-lite/component/cartography';
 import heatmap from './vega-lite/component/heatmap';
 import network from './chart/network';
 import advancedNetwork from './chart/advancedNetwork';
+import directedNetwork from './chart/directedNetwork';
 import venn from './chart/venn';
 import leaflet from './chart/leaflet';
 import redirect from './url/redirect';
@@ -422,13 +423,23 @@ export const FORMATS_CATALOG = [
         isUrlValue: false,
     },
     {
-        name: 'formaAdvancedNetwork',
+        name: 'formatAdvancedNetwork',
         description: 'formatAdvancedNetworkDescription',
         componentName: 'advancedNetwork',
         component: advancedNetwork,
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux-avance',
+        isUrlValue: false,
+    },
+    {
+        name: 'formatDirectedNetwork',
+        description: 'formatDirectedNetworkDescription',
+        componentName: 'directedNetwork',
+        component: directedNetwork,
+        type: 'chart',
+        isValueAnnotable: false,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux-diriges',
         isUrlValue: false,
     },
     {

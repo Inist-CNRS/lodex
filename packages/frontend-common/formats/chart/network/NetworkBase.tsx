@@ -29,15 +29,6 @@ const styles = {
     },
 };
 
-type NetworkBaseProps = {
-    colorSet?: string[];
-    nodes: Node[];
-    links: Link[];
-    forcePosition?: boolean;
-    linkCurvature?: number;
-    directed?: boolean;
-};
-
 export const compareNodes = ({
     a,
     b,
@@ -83,7 +74,7 @@ export const compareNodes = ({
 
 export const isLinkVisible = ({
     link,
-    directed,
+    highlightLinkMode,
     selectedNode,
     hoveredNode,
 }: {
@@ -95,7 +86,7 @@ export const isLinkVisible = ({
             id: string;
         };
     };
-    directed?: boolean;
+    highlightLinkMode?: 'ingoing' | 'outgoing' | 'all';
     selectedNode: { id: string } | null;
     hoveredNode: { id: string } | null;
 }) => {
@@ -103,12 +94,18 @@ export const isLinkVisible = ({
         return true;
     }
 
-    if (!directed) {
+    if (highlightLinkMode === 'all') {
         return (
             selectedNode?.id === (link.source! as NodeObject).id ||
             selectedNode?.id === (link.target! as NodeObject).id ||
             hoveredNode?.id === (link.target! as NodeObject).id ||
             hoveredNode?.id === (link.source! as NodeObject).id
+        );
+    }
+    if (highlightLinkMode === 'ingoing') {
+        return (
+            selectedNode?.id === (link.target! as NodeObject).id ||
+            hoveredNode?.id === (link.target! as NodeObject).id
         );
     }
 
@@ -118,13 +115,24 @@ export const isLinkVisible = ({
     );
 };
 
+type NetworkBaseProps = {
+    colorSet?: string[];
+    nodes: Node[];
+    links: Link[];
+    forcePosition?: boolean;
+    linkCurvature?: number;
+    highlightLinkMode?: 'ingoing' | 'outgoing' | 'all';
+    showArrows?: boolean;
+};
+
 export const NetworkBase = ({
     colorSet,
     nodes,
     links,
     forcePosition,
     linkCurvature,
-    directed = false,
+    highlightLinkMode = 'all',
+    showArrows = false,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const fgRef = useRef<ForceGraphMethods>();
@@ -335,7 +343,7 @@ export const NetworkBase = ({
                                         source: { id: string };
                                         target: { id: string };
                                     },
-                                    directed,
+                                    highlightLinkMode,
                                     selectedNode: selectedNode as {
                                         id: string;
                                     } | null,
@@ -392,6 +400,8 @@ export const NetworkBase = ({
                                 );
                             }}
                             linkPointerAreaPaint={() => {}}
+                            linkDirectionalParticleWidth={showArrows ? 4 : 0}
+                            linkDirectionalParticles={showArrows ? 4 : 0}
                         />
                     </Suspense>
 
