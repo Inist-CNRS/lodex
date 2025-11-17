@@ -210,13 +210,13 @@ describe('NetworkView', () => {
     });
 
     describe('isLinkVisible', () => {
-        describe('when directed', () => {
+        describe('highlightMode = outgoing', () => {
             it('should return true when no selectedNode nor hoveredNode', () => {
                 const link = { source: { id: '1' }, target: { id: '2' } };
                 expect(
                     isLinkVisible({
                         link,
-                        directed: true,
+                        highlightMode: 'outgoing',
                         selectedNode: null,
                         hoveredNode: null,
                     }),
@@ -229,7 +229,7 @@ describe('NetworkView', () => {
                 expect(
                     isLinkVisible({
                         link,
-                        directed: true,
+                        highlightMode: 'outgoing',
                         selectedNode,
                         hoveredNode,
                     }),
@@ -243,7 +243,7 @@ describe('NetworkView', () => {
                 expect(
                     isLinkVisible({
                         link,
-                        directed: true,
+                        highlightMode: 'outgoing',
                         selectedNode,
                         hoveredNode,
                     }),
@@ -257,7 +257,7 @@ describe('NetworkView', () => {
                 expect(
                     isLinkVisible({
                         link,
-                        directed: true,
+                        highlightMode: 'outgoing',
                         selectedNode,
                         hoveredNode,
                     }),
@@ -265,13 +265,13 @@ describe('NetworkView', () => {
             });
         });
 
-        describe('when not directed', () => {
+        describe('highlightMode = all', () => {
             it('should return true when no selectedNode nor hoveredNode', () => {
                 const link = { source: { id: '1' }, target: { id: '2' } };
                 expect(
                     isLinkVisible({
                         link,
-                        directed: false,
+                        highlightMode: 'all',
                         selectedNode: null,
                         hoveredNode: null,
                     }),
@@ -284,7 +284,7 @@ describe('NetworkView', () => {
                 expect(
                     isLinkVisible({
                         link,
-                        directed: false,
+                        highlightMode: 'all',
                         selectedNode,
                         hoveredNode,
                     }),
@@ -298,7 +298,7 @@ describe('NetworkView', () => {
                 expect(
                     isLinkVisible({
                         link,
-                        directed: false,
+                        highlightMode: 'all',
                         selectedNode,
                         hoveredNode,
                     }),
@@ -312,7 +312,7 @@ describe('NetworkView', () => {
                 expect(
                     isLinkVisible({
                         link,
-                        directed: false,
+                        highlightMode: 'all',
                         selectedNode,
                         hoveredNode,
                     }),

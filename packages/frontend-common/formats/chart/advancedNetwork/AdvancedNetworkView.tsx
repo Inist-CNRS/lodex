@@ -31,7 +31,7 @@ const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
             links={links}
             forcePosition
             linkCurvature={0.25}
-            highlightLinkMode="outgoing"
+            highlightMode="outgoing"
         />
     );
 };
