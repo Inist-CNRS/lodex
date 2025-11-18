@@ -81,8 +81,8 @@ describe('useFormatAdvancedNetworkData', () => {
                 label: 'Node A',
                 radius: expect.any(Number),
                 color: '#ff0000',
-                x: 0,
-                y: 0,
+                x: -900,
+                y: -500,
                 z: 0,
             },
             {
@@ -90,8 +90,8 @@ describe('useFormatAdvancedNetworkData', () => {
                 label: 'Node B',
                 radius: expect.any(Number),
                 color: '#00ff00',
-                x: 1000,
-                y: 1000,
+                x: 0,
+                y: 0,
                 z: 0,
             },
             {
@@ -99,8 +99,8 @@ describe('useFormatAdvancedNetworkData', () => {
                 label: 'Node C',
                 radius: expect.any(Number),
                 color: '#0000ff',
-                x: 2000,
-                y: 2000,
+                x: 900,
+                y: 500,
                 z: 0,
             },
         ]);
@@ -133,7 +133,7 @@ describe('useFormatAdvancedNetworkData', () => {
         ]);
     });
 
-    it('should set default radius when displayWeighted is false ignoring viz$size', () => {
+    it('should set default radius (100 + 10 / 2 => 55) when displayWeighted is false ignoring viz$size', () => {
         const data: AdvancedNetworkData[] = [
             {
                 id: 'A',
@@ -176,19 +176,19 @@ describe('useFormatAdvancedNetworkData', () => {
             {
                 id: 'A',
                 label: 'Node A',
-                radius: 50,
+                radius: 55,
                 color: '#ff0000',
-                x: 0,
-                y: 0,
+                x: -900,
+                y: -500,
                 z: 0,
             },
             {
                 id: 'B',
                 label: 'Node B',
-                radius: 50,
+                radius: 55,
                 color: '#00ff00',
-                x: 1000,
-                y: 1000,
+                x: 900,
+                y: 500,
                 z: 0,
             },
         ]);

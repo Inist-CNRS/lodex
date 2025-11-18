@@ -29,15 +29,6 @@ const styles = {
     },
 };
 
-type NetworkBaseProps = {
-    colorSet?: string[];
-    nodes: Node[];
-    links: Link[];
-    forcePosition?: boolean;
-    linkCurvature?: number;
-    directed?: boolean;
-};
-
 export const compareNodes = ({
     a,
     b,
@@ -83,7 +74,7 @@ export const compareNodes = ({
 
 export const isLinkVisible = ({
     link,
-    directed,
+    highlightMode,
     selectedNode,
     hoveredNode,
 }: {
@@ -95,7 +86,7 @@ export const isLinkVisible = ({
             id: string;
         };
     };
-    directed?: boolean;
+    highlightMode?: 'ingoing' | 'outgoing' | 'all';
     selectedNode: { id: string } | null;
     hoveredNode: { id: string } | null;
 }) => {
@@ -103,12 +94,18 @@ export const isLinkVisible = ({
         return true;
     }
 
-    if (!directed) {
+    if (highlightMode === 'all') {
         return (
             selectedNode?.id === (link.source! as NodeObject).id ||
             selectedNode?.id === (link.target! as NodeObject).id ||
             hoveredNode?.id === (link.target! as NodeObject).id ||
             hoveredNode?.id === (link.source! as NodeObject).id
+        );
+    }
+    if (highlightMode === 'ingoing') {
+        return (
+            selectedNode?.id === (link.target! as NodeObject).id ||
+            hoveredNode?.id === (link.target! as NodeObject).id
         );
     }
 
@@ -118,13 +115,24 @@ export const isLinkVisible = ({
     );
 };
 
+type NetworkBaseProps = {
+    colorSet?: string[];
+    nodes: Node[];
+    links: Link[];
+    forcePosition?: boolean;
+    linkCurvature?: number;
+    highlightMode?: 'ingoing' | 'outgoing' | 'all';
+    showArrows?: boolean;
+};
+
 export const NetworkBase = ({
     colorSet,
     nodes,
     links,
     forcePosition,
     linkCurvature,
-    directed = false,
+    highlightMode = 'all',
+    showArrows = false,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const fgRef = useRef<ForceGraphMethods>();
@@ -152,18 +160,54 @@ export const NetworkBase = ({
         );
     }, [links]);
 
+    const linksByTargetId = useMemo(() => {
+        return links.reduce<Record<string, Link[]>>(
+            (acc, link) => ({
+                ...acc,
+                [link.target as string]: [
+                    ...(acc[link.target as string] || []),
+                    link,
+                ],
+            }),
+            {},
+        );
+    }, [links]);
+
     const highlightedNodeIds = useMemo(() => {
         return [
             selectedNode?.id,
             hoveredNode?.id,
-            ...(linksBySourceId[selectedNode?.id as string]?.map(
-                (l) => (l.target! as NodeObject).id,
-            ) || []),
-            ...(linksBySourceId[hoveredNode?.id as string]?.map(
-                (l) => (l.target! as NodeObject).id,
-            ) || []),
+            ...(['all', 'outgoing'].includes(highlightMode)
+                ? linksBySourceId[selectedNode?.id as string]?.map(
+                      (l) => (l.target! as NodeObject).id,
+                  ) || []
+                : []),
+
+            ...(['all', 'ingoing'].includes(highlightMode)
+                ? linksByTargetId[selectedNode?.id as string]?.map(
+                      (l) => (l.source! as NodeObject).id,
+                  ) || []
+                : []),
+
+            ...(['all', 'outgoing'].includes(highlightMode)
+                ? linksBySourceId[hoveredNode?.id as string]?.map(
+                      (l) => (l.target! as NodeObject).id,
+                  ) || []
+                : []),
+
+            ...(['all', 'ingoing'].includes(highlightMode)
+                ? linksByTargetId[hoveredNode?.id as string]?.map(
+                      (l) => (l.source! as NodeObject).id,
+                  ) || []
+                : []),
         ].filter((id): id is string => !!id);
-    }, [hoveredNode?.id, linksBySourceId, selectedNode?.id]);
+    }, [
+        hoveredNode?.id,
+        linksBySourceId,
+        selectedNode?.id,
+        linksByTargetId,
+        highlightMode,
+    ]);
 
     // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
@@ -277,7 +321,10 @@ export const NetworkBase = ({
                                 } else {
                                     ctx.globalAlpha = 0.1;
                                 }
-                                const circleRadius = node.radius / globalScale;
+                                const circleRadius = Math.max(
+                                    node.radius / globalScale,
+                                    1.5,
+                                );
 
                                 if (isSelected) {
                                     ctx.fillStyle = '#880000';
@@ -336,7 +383,7 @@ export const NetworkBase = ({
                                         source: { id: string };
                                         target: { id: string };
                                     },
-                                    directed,
+                                    highlightMode,
                                     selectedNode: selectedNode as {
                                         id: string;
                                     } | null,
@@ -393,6 +440,8 @@ export const NetworkBase = ({
                                 );
                             }}
                             linkPointerAreaPaint={() => {}}
+                            linkDirectionalParticleWidth={showArrows ? 4 : 0}
+                            linkDirectionalParticles={showArrows ? 4 : 0}
                         />
                     </Suspense>
 
