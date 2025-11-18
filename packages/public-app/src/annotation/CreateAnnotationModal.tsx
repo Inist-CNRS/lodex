@@ -275,7 +275,7 @@ export function CreateAnnotationModal({
                         form.handleSubmit();
                     },
                     sx: {
-                        maxWidth: 'sm',
+                        minWidth: '600px',
                         padding: '1rem',
                     },
                 }}
