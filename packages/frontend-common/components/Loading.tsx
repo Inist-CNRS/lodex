@@ -17,10 +17,11 @@ const styles = {
 
 interface LoadingProps {
     children: React.ReactNode;
+    className?: string;
 }
 
-const Loading = ({ children }: LoadingProps) => (
-    <div className="loading" style={styles.container}>
+const Loading = ({ children, className = 'loading' }: LoadingProps) => (
+    <div className={className} style={styles.container}>
         <div style={styles.textContainer}>
             <CircularProgress
                 variant="indeterminate"
