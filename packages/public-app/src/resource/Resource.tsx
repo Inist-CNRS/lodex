@@ -136,7 +136,6 @@ export const ResourceComponent = ({
 
     if (loading) {
         return (
-            // @ts-expect-error TS2322
             <Loading className="resource">
                 {translate('loading_resource')}
             </Loading>

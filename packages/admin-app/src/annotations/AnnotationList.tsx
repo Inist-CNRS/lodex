@@ -36,19 +36,12 @@ const AnnotationListToolBar = ({
     const { translate } = useTranslate();
 
     return (
-        // @ts-expect-error TS2322
         <GridToolbarContainer sx={{ gap: 1 }}>
             <Tooltip title={translate(`column_tooltip`)}>
-                {/*
-                 // @ts-expect-error TS2741 */}
                 <GridToolbarColumnsButton />
             </Tooltip>
-            {/* 
-            // @ts-expect-error TS2322 */}
             <GridToolbarFilterButton />
             <Tooltip title={translate(`density_tooltip`)}>
-                {/*
-                 // @ts-expect-error TS2741 */}
                 <GridToolbarDensitySelector />
             </Tooltip>
             <Box sx={{ flexGrow: 1 }} />
@@ -387,9 +380,9 @@ export const AnnotationList = () => {
     return (
         <DataGrid
             loading={isPending || isFetching}
+            // @ts-expect-error TS2322
             columns={columns}
             checkboxSelection
-            // @ts-expect-error TS2322
             onSelectionModelChange={setSelectedRowIds}
             selectionModel={selectedRowIds}
             rows={data?.data || []}

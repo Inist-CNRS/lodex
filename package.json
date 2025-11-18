@@ -103,7 +103,7 @@
         "@lodex/api": "file:packages/api",
         "@mui/icons-material": "5.14.19",
         "@mui/material": "^5.5.2",
-        "@mui/x-data-grid": "^5.8.0",
+        "@mui/x-data-grid": "^6.20.4",
         "@recuperateur/async-busboy": "file:./packages/@recuperateur/async-busboy",
         "@recuperateur/resumablejs": "file:./packages/@recuperateur/resumablejs",
         "@tanstack/react-form": "^0.41.2",

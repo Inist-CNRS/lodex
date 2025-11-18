@@ -43,16 +43,10 @@ const CustomToolbar = ({ handleLogout }: CustomToolbarProps) => {
         <>
             <GridToolbarContainer>
                 <Tooltip title={'Colonnes'}>
-                    {/*
-                     // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
-                {/*
-                     // @ts-expect-error TS2741 */}
                 <GridToolbarFilterButton />
                 <Tooltip title={'Densité'}>
-                    {/*
-                     // @ts-expect-error TS2741 */}
                     <GridToolbarDensitySelector />
                 </Tooltip>
                 <Tooltip title="Ajoute une instance">

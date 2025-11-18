@@ -19,7 +19,11 @@ const getData = async ({
     sort,
 }: {
     precomputedId?: string;
-    filter?: Record<string, unknown>;
+    filter?: {
+        field: string;
+        operator: string;
+        value: string;
+    };
     skip?: number;
     limit?: number;
     sort?: {
@@ -53,7 +57,11 @@ const getData = async ({
 };
 
 const getDataset = async (params: {
-    filter?: Record<string, unknown>;
+    filter?: {
+        field: string;
+        operator: string;
+        value: string;
+    };
     skip?: number;
     limit?: number;
     sort?: {

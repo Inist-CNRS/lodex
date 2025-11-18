@@ -57,16 +57,10 @@ export const PrecomputedList = ({
         return (
             <GridToolbarContainer>
                 <Tooltip title={translate(`column_tooltip`)}>
-                    {/*
-                     // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <GridToolbarFilterButton />
                 <Tooltip title={translate(`density_tooltip`)}>
-                    {/*
-                     // @ts-expect-error TS2741 */}
                     <GridToolbarDensitySelector />
                 </Tooltip>
                 <Tooltip title={translate(`add_more_precomputed`)}>
@@ -141,8 +135,8 @@ export const PrecomputedList = ({
                 autoHeight
                 width="100%"
                 onRowClick={handleRowClick}
-                components={{
-                    Toolbar: CustomToolbar,
+                slots={{
+                    toolbar: CustomToolbar,
                 }}
                 sx={{
                     '& .MuiDataGrid-cell:hover': {

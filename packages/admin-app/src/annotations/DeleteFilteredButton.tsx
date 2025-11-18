@@ -46,8 +46,8 @@ export function DeleteFilteredButton() {
         try {
             // @ts-expect-error TS2345
             await mutateAsync({
-                filterBy: filter?.columnField,
-                filterOperator: filter?.operatorValue,
+                filterBy: filter?.field,
+                filterOperator: filter?.operator,
                 filterValue: filter?.value,
             });
 

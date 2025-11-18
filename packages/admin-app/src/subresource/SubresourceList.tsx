@@ -22,16 +22,10 @@ const CustomToolbar = () => {
     return (
         <GridToolbarContainer ref={ref}>
             <Tooltip title={translate(`column_tooltip`)}>
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <GridToolbarColumnsButton touchRippleRef={ref} />
             </Tooltip>
-            {/*
-             // @ts-expect-error TS2739 */}
             <GridToolbarFilterButton />
             <Tooltip title={translate(`density_tooltip`)}>
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <GridToolbarDensitySelector touchRippleRef={ref} />
             </Tooltip>
             <Tooltip title={translate(`add_more_subresource`)}>

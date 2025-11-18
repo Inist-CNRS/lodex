@@ -4,14 +4,13 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
     DataGrid,
     getGridBooleanOperators,
-    getGridNumericColumnOperators,
+    getGridNumericOperators,
     getGridStringOperators,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
     type GridCellParams,
-    type GridColumns,
     type GridEventListener,
     type GridFilterModel,
     type GridRenderCellParams,
@@ -62,19 +61,18 @@ const styles = {
         position: 'relative',
         flex: '1 1 auto',
         display: 'flex',
-        height: 'calc(100vh - 90px)',
+        height: 'calc(100vh - 170px)',
     },
     enrichedColumn: {
         backgroundColor: 'primary.light',
     },
     footer: {
-        overflow: 'hidden',
-        height: 30,
         alignItems: 'center',
         position: 'relative',
         display: 'flex',
         justifyContent: 'space-between',
         zIndex: 2,
+        height: '30px',
     },
     columnToggle: {
         display: 'flex',
@@ -109,7 +107,7 @@ const styles = {
 const getFiltersOperatorsForType = (type: string) => {
     switch (type) {
         case 'number':
-            return getGridNumericColumnOperators().filter(
+            return getGridNumericOperators().filter(
                 (operator: { value: string }) =>
                     operator.value === '=' ||
                     operator.value === '<' ||
@@ -149,29 +147,11 @@ const CustomToolbar = ({
     return (
         <GridToolbarContainer sx={{ gap: 1 }}>
             <Tooltip title={translate(`column_tooltip`)}>
-                <GridToolbarColumnsButton
-                    onPointerEnterCapture={null}
-                    onPointerLeaveCapture={null}
-                    onResize={null}
-                    onResizeCapture={null}
-                    placeholder={null}
-                />
+                <GridToolbarColumnsButton />
             </Tooltip>
-            <GridToolbarFilterButton
-                onPointerEnterCapture={null}
-                onPointerLeaveCapture={null}
-                onResize={null}
-                onResizeCapture={null}
-                placeholder={null}
-            />
+            <GridToolbarFilterButton />
             <Tooltip title={translate(`density_tooltip`)}>
-                <GridToolbarDensitySelector
-                    onPointerEnterCapture={null}
-                    onPointerLeaveCapture={null}
-                    onResize={null}
-                    onResizeCapture={null}
-                    placeholder={null}
-                />
+                <GridToolbarDensitySelector />
             </Tooltip>
             <Tooltip title={translate(`add_more_data`)}>
                 <Button
@@ -215,8 +195,6 @@ const CustomFooter = ({
     onPageChange,
     columns,
     enrichments,
-    setLimit,
-    setSkip,
 }: {
     showEnrichmentColumns: boolean;
     setShowEnrichmentColumns: (show: boolean) => void;
@@ -226,24 +204,21 @@ const CustomFooter = ({
     rowCount: number;
     skip: number;
     limit: number;
-    onPageChange: (page: number) => void;
+    onPageChange: (params: { page: number; pageSize: number }) => void;
     columns: {
         key: string;
     }[];
     enrichments?: {
         name: string;
     }[];
-    setLimit: (limit: number) => void;
-    setSkip: (skip: number) => void;
 }) => {
     const { translate } = useTranslate();
 
     const handleChangeRowsPerPage = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
-            setLimit(parseInt(e.target.value, 10));
-            setSkip(0);
+            onPageChange({ page: 0, pageSize: parseInt(e.target.value, 10) });
         },
-        [setLimit, setSkip],
+        [onPageChange],
     );
 
     const numberOfColumns = useCallback(
@@ -333,7 +308,7 @@ const CustomFooter = ({
                                     page={skip / limit}
                                     rowsPerPage={limit}
                                     onPageChange={(_e, page) =>
-                                        onPageChange(page)
+                                        onPageChange({ page, pageSize: limit })
                                     }
                                     rowsPerPageOptions={[25, 50, 100]}
                                     labelRowsPerPage={translate(
@@ -360,15 +335,15 @@ export const ParsingResultComponent = ({
     const { translate } = useTranslate();
 
     const { search } = useLocation();
-    const initialFilterModel = useMemo(() => {
+    const initialFilterModel: GridFilterModel = useMemo((): GridFilterModel => {
         const searchParams = new URLSearchParams(search);
         const searchParamsFilteredUri = searchParams.get('uri');
         if (searchParamsFilteredUri) {
             return {
                 items: [
                     {
-                        columnField: 'uri',
-                        operatorValue: 'contains',
+                        field: 'uri',
+                        operator: 'contains',
                         value: searchParamsFilteredUri,
                     },
                 ],
@@ -394,7 +369,7 @@ export const ParsingResultComponent = ({
         null,
     );
 
-    const columnsToShow: GridColumns<any> = useMemo((): GridColumns<any> => {
+    const columnsToShow = useMemo(() => {
         const enrichmentsNames = enrichments.map(
             (enrichment) => enrichment.name,
         );
@@ -496,7 +471,11 @@ export const ParsingResultComponent = ({
             skip,
             limit,
             filter: filterModel.items.at(0) as
-                | Record<string, unknown>
+                | {
+                      field: string;
+                      operator: string;
+                      value: string;
+                  }
                 | undefined,
             sort,
         });
@@ -505,8 +484,9 @@ export const ParsingResultComponent = ({
     }, [skip, limit, filterModel, sort, precomputedId]);
 
     const onPageChange = useCallback(
-        (page: number) => {
+        ({ page, pageSize }: { page: number; pageSize: number }) => {
             setSkip(page * limit);
+            setLimit(pageSize);
         },
         [limit],
     );
@@ -572,26 +552,19 @@ export const ParsingResultComponent = ({
         <Box sx={styles.container}>
             <DataGrid
                 columns={columnsToShow}
+                paginationMode="server"
+                sortingMode="server"
+                filterMode="server"
                 rows={rows}
                 getRowId={getRowId}
-                rowCount={rowCount}
-                pageSize={limit}
                 checkboxSelection
-                paginationMode="server"
-                onPageChange={onPageChange}
-                onPageSizeChange={setLimit}
-                sortingMode="server"
                 onSortModelChange={handleSortModelChange}
-                filterMode="server"
                 filterModel={filterModel}
                 onFilterModelChange={handleFilterModelChange}
-                rowsPerPageOptions={[10, 25, 50]}
-                disableSelectionOnClick={true}
                 onCellClick={handleCellClick}
-                selectionModel={selectedRowIds}
-                onSelectionModelChange={setSelectedRowIds}
-                components={{
-                    Footer: () => (
+                onRowSelectionModelChange={setSelectedRowIds}
+                slots={{
+                    footer: () => (
                         <CustomFooter
                             fetchDataset={fetchDataset}
                             limit={limit}
@@ -604,11 +577,9 @@ export const ParsingResultComponent = ({
                             skip={skip}
                             columns={columns}
                             enrichments={enrichments}
-                            setLimit={setLimit}
-                            setSkip={setSkip}
                         />
                     ),
-                    Toolbar: () => (
+                    toolbar: () => (
                         <CustomToolbar
                             fetchDataset={fetchDataset}
                             filterModel={filterModel}

@@ -45,7 +45,7 @@ export default ({
     limit?: number;
     skip?: number;
     uri?: string;
-    filter?: { columnField?: string; operatorValue?: string; value?: string };
+    filter?: { field?: string; operator?: string; value?: string };
     locale?: string;
 } = {}) =>
     compose(
@@ -62,8 +62,8 @@ export default ({
         addKeyToLiteral('limit', limit),
         addKeyToLiteral('skip', skip),
         addKeyToLiteral('uri', uri),
-        addKeyToLiteral('filterBy', filter.columnField),
-        addKeyToLiteral('filterOperator', filter.operatorValue),
+        addKeyToLiteral('filterBy', filter.field),
+        addKeyToLiteral('filterOperator', filter.operator),
         addKeyToLiteral('filterValue', filter.value),
         addKeyToLiteral('locale', locale),
     )({});
