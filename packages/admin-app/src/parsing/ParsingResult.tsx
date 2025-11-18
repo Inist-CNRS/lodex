@@ -51,6 +51,7 @@ import { DeleteFilteredButton } from './DeleteFilteredButton';
 import { DeleteManyButton } from './DeleteManyButton';
 import ParsingEditCell from './ParsingEditCell';
 import type { State } from '../reducers';
+import { CellWithTooltip } from '../annotations/CellWithTooltip';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -436,9 +437,9 @@ export const ParsingResultComponent = ({
                             return <Chip sx={styles.errorChip} label="Error" />;
                         }
                         return (
-                            <div title={JSON.stringify(params.value)}>
-                                {JSON.stringify(params.value)}
-                            </div>
+                            <CellWithTooltip
+                                value={JSON.stringify(params.value)}
+                            />
                         );
                     },
                 };
@@ -479,7 +480,7 @@ export const ParsingResultComponent = ({
                 | undefined,
             sort,
         });
-        setRowCount(datasCount);
+        setRowCount(datasCount ?? 0);
         setDatas(datas);
     }, [skip, limit, filterModel, sort, precomputedId]);
 
@@ -552,16 +553,17 @@ export const ParsingResultComponent = ({
         <Box sx={styles.container}>
             <DataGrid
                 columns={columnsToShow}
-                paginationMode="server"
-                sortingMode="server"
-                filterMode="server"
                 rows={rows}
                 getRowId={getRowId}
                 checkboxSelection
                 onSortModelChange={handleSortModelChange}
+                paginationMode="server"
+                sortingMode="server"
+                filterMode="server"
                 filterModel={filterModel}
                 onFilterModelChange={handleFilterModelChange}
                 onCellClick={handleCellClick}
+                pagination
                 onRowSelectionModelChange={setSelectedRowIds}
                 slots={{
                     footer: () => (
