@@ -389,6 +389,7 @@ export const AnnotationList = () => {
             getRowId={({ _id }) => _id}
             rowCount={data?.fullTotal || 0}
             pageSize={perPage}
+            rowBuffer={perPage}
             paginationMode="server"
             sortingMode="server"
             filterMode="server"

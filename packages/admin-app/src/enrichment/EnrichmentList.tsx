@@ -222,6 +222,7 @@ export const EnrichmentList = ({
                         },
                     },
                 ]}
+                rowBuffer={100}
                 rows={enrichments}
                 getRowId={(row) => row._id}
                 autoHeight

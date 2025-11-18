@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 // @ts-expect-error TS2882
 import 'react-toastify/dist/ReactToastify.css';
@@ -78,6 +78,13 @@ type TenantsProps = {
     handleLogout(): void;
 };
 
+const formatValue = (value: string | null) => {
+    if (value == null) {
+        return '-';
+    }
+    return value;
+};
+
 const Tenants = ({ handleLogout }: TenantsProps) => {
     const [tenantToDelete, setTenantToDelete] = useState<null | Tenant>(null);
     const [tenantToUpdate, setTenantToUpdate] = useState<Tenant | null>(null);
@@ -89,212 +96,209 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
         error,
     } = useTenants(handleLogout);
 
-    const formatValue = (value: string | null) => {
-        if (value == null) {
-            return '-';
-        }
-        return value;
-    };
-
-    // Define the columns for the datagrid
-    const columns = [
-        { field: '_id', headerName: 'ID', width: 200 },
-        {
-            field: 'name',
-            headerName: 'Nom',
-            flex: 4,
-            // @ts-expect-error TS7006
-            renderCell: (params) => {
-                const name = params.row.name;
-                return (
-                    <Box
-                        sx={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            outline: 'none',
-                            textDecoration: 'none',
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '0 16px',
-                            '&:focus': {
-                                borderBottom: '1px solid',
-                                background: '#D9F3FF',
-                            },
-                            '&:hover': {
-                                borderBottom: '1px solid',
-                                background: '#D9F3FF',
-                                textDecoration: 'none',
-                            },
-                        }}
-                    >
-                        <Link
-                            href={`${baseUrl}/instance/${name}`}
-                            target="_blank"
-                            title={params.value}
-                            color="primary"
+    const columns = useMemo(
+        () => [
+            { field: '_id', headerName: 'ID', width: 200 },
+            {
+                field: 'name',
+                headerName: 'Nom',
+                flex: 4,
+                // @ts-expect-error TS7006
+                renderCell: (params) => {
+                    const name = params.row.name;
+                    return (
+                        <Box
                             sx={{
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
                                 outline: 'none',
                                 textDecoration: 'none',
-                                height: '100%',
                                 width: '100%',
+                                height: '100%',
                                 display: 'flex',
                                 alignItems: 'center',
                                 padding: '0 16px',
                                 '&:focus': {
-                                    textDecoration: 'none',
+                                    borderBottom: '1px solid',
+                                    background: '#D9F3FF',
                                 },
                                 '&:hover': {
+                                    borderBottom: '1px solid',
+                                    background: '#D9F3FF',
                                     textDecoration: 'none',
                                 },
                             }}
                         >
-                            {params.value}
-                        </Link>
-                        <IconButton
-                            size="large"
-                            href={`${baseUrl}/instance/${name}/admin`}
-                            target="_blank"
-                            color="primary"
+                            <Link
+                                href={`${baseUrl}/instance/${name}`}
+                                target="_blank"
+                                title={params.value}
+                                color="primary"
+                                sx={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    outline: 'none',
+                                    textDecoration: 'none',
+                                    height: '100%',
+                                    width: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    padding: '0 16px',
+                                    '&:focus': {
+                                        textDecoration: 'none',
+                                    },
+                                    '&:hover': {
+                                        textDecoration: 'none',
+                                    },
+                                }}
+                            >
+                                {params.value}
+                            </Link>
+                            <IconButton
+                                size="large"
+                                href={`${baseUrl}/instance/${name}/admin`}
+                                target="_blank"
+                                color="primary"
+                            >
+                                <AdminPanelSettingsIcon />
+                            </IconButton>
+                        </Box>
+                    );
+                },
+            },
+            {
+                field: 'description',
+                headerName: 'Description',
+                flex: 4,
+                // @ts-expect-error TS7006
+                valueFormatter: (params) => {
+                    return formatValue(params.value);
+                },
+                // @ts-expect-error TS7006
+                renderCell: (params) => {
+                    return (
+                        <Typography
+                            sx={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                            }}
+                            title={params.value}
                         >
-                            <AdminPanelSettingsIcon />
+                            {params.value}
+                        </Typography>
+                    );
+                },
+            },
+            {
+                field: 'author',
+                headerName: 'Auteur',
+                flex: 2,
+                // @ts-expect-error TS7006
+                valueFormatter: (params) => {
+                    return formatValue(params.value);
+                },
+            },
+            {
+                field: 'createdAt',
+                headerName: 'Créée le',
+                flex: 2,
+                // @ts-expect-error TS7006
+                valueFormatter: (params) => {
+                    if (params.value == null) {
+                        return '-';
+                    }
+
+                    // Format the date
+                    const date = new Date(params.value);
+                    return date.toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    });
+                },
+            },
+            {
+                field: 'dataset',
+                headerName: 'Données',
+                flex: 2,
+                sortable: true,
+                // @ts-expect-error TS7006
+                valueFormatter: (params) => {
+                    if (!params.value) {
+                        return '-';
+                    }
+
+                    return params.value;
+                },
+            },
+            {
+                field: 'published',
+                headerName: 'Données publiées',
+                flex: 2,
+                sortable: true,
+                // @ts-expect-error TS7006
+                valueFormatter: (params) => {
+                    return params.value ? 'Oui' : 'Non';
+                },
+            },
+            {
+                field: 'totalSize',
+                headerName: 'Taille Base de données',
+                flex: 2,
+                sortable: true,
+                // @ts-expect-error TS7006
+                valueFormatter: (params) => {
+                    return sizeConverter(params.value);
+                },
+            },
+            {
+                field: 'update',
+                headerName: 'Modifier',
+                flex: 1,
+                // @ts-expect-error TS7006
+                renderCell: (params) => {
+                    return (
+                        <IconButton
+                            color="warning"
+                            size="large"
+                            onClick={() => setTenantToUpdate(params.row)}
+                            title={`Editer ${params.row.name}`}
+                        >
+                            <EditIcon />
                         </IconButton>
-                    </Box>
-                );
+                    );
+                },
             },
-        },
-        {
-            field: 'description',
-            headerName: 'Description',
-            flex: 4,
-            // @ts-expect-error TS7006
-            valueFormatter: (params) => {
-                return formatValue(params.value);
+            {
+                field: 'delete',
+                headerName: 'Supprimer',
+                flex: 1,
+                // @ts-expect-error TS7006
+                renderCell: (params) => {
+                    if (params.row.name === 'default') {
+                        return null;
+                    }
+                    return (
+                        <IconButton
+                            color="error"
+                            size="large"
+                            onClick={() => {
+                                setTenantToDelete(params.row);
+                            }}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    );
+                },
             },
-            // @ts-expect-error TS7006
-            renderCell: (params) => {
-                return (
-                    <Typography
-                        sx={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                        }}
-                        title={params.value}
-                    >
-                        {params.value}
-                    </Typography>
-                );
-            },
-        },
-        {
-            field: 'author',
-            headerName: 'Auteur',
-            flex: 2,
-            // @ts-expect-error TS7006
-            valueFormatter: (params) => {
-                return formatValue(params.value);
-            },
-        },
-        {
-            field: 'createdAt',
-            headerName: 'Créée le',
-            flex: 2,
-            // @ts-expect-error TS7006
-            valueFormatter: (params) => {
-                if (params.value == null) {
-                    return '-';
-                }
+        ],
+        [setTenantToDelete, setTenantToUpdate],
+    );
 
-                // Format the date
-                const date = new Date(params.value);
-                return date.toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                });
-            },
-        },
-        {
-            field: 'dataset',
-            headerName: 'Données',
-            flex: 2,
-            sortable: true,
-            // @ts-expect-error TS7006
-            valueFormatter: (params) => {
-                if (!params.value) {
-                    return '-';
-                }
-
-                return params.value;
-            },
-        },
-        {
-            field: 'published',
-            headerName: 'Données publiées',
-            flex: 2,
-            sortable: true,
-            // @ts-expect-error TS7006
-            valueFormatter: (params) => {
-                return params.value ? 'Oui' : 'Non';
-            },
-        },
-        {
-            field: 'totalSize',
-            headerName: 'Taille Base de données',
-            flex: 2,
-            sortable: true,
-            // @ts-expect-error TS7006
-            valueFormatter: (params) => {
-                return sizeConverter(params.value);
-            },
-        },
-        {
-            field: 'update',
-            headerName: 'Modifier',
-            flex: 1,
-            // @ts-expect-error TS7006
-            renderCell: (params) => {
-                return (
-                    <IconButton
-                        color="warning"
-                        size="large"
-                        onClick={() => setTenantToUpdate(params.row)}
-                        title={`Editer ${params.row.name}`}
-                    >
-                        <EditIcon />
-                    </IconButton>
-                );
-            },
-        },
-        {
-            field: 'delete',
-            headerName: 'Supprimer',
-            flex: 1,
-            // @ts-expect-error TS7006
-            renderCell: (params) => {
-                if (params.row.name === 'default') {
-                    return null;
-                }
-                return (
-                    <IconButton
-                        color="error"
-                        size="large"
-                        onClick={() => {
-                            setTenantToDelete(params.row);
-                        }}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
-                );
-            },
-        },
-    ];
+    // Define the columns for the datagrid
 
     // Handle error state
     if (isError) {
@@ -322,6 +326,7 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
                     rows={tenants}
                     columns={columns}
                     loading={isLoading}
+                    rowBuffer={100}
                     components={{
                         Toolbar: () => (
                             <CustomToolbar handleLogout={handleLogout} />

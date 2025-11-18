@@ -131,6 +131,7 @@ export const PrecomputedList = ({
                 ]}
                 // @ts-expect-error TS2322
                 rows={precomputedList}
+                rowBuffer={100}
                 getRowId={(row) => row._id}
                 autoHeight
                 width="100%"

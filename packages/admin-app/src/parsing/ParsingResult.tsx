@@ -560,6 +560,7 @@ export const ParsingResultComponent = ({
                 paginationMode="server"
                 sortingMode="server"
                 filterMode="server"
+                rowBuffer={limit}
                 filterModel={filterModel}
                 onFilterModelChange={handleFilterModelChange}
                 onCellClick={handleCellClick}

@@ -83,6 +83,7 @@ export const SubresourceList = () => {
                     },
                 ]}
                 rows={subresources}
+                rowBuffer={100}
                 getRowId={(row) => row._id}
                 autoHeight
                 onRowClick={handleRowClick}
