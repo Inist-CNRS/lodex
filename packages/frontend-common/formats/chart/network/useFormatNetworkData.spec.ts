@@ -144,6 +144,7 @@ describe('useFormatNetworkData', () => {
                 source: 'A',
                 target: 'B',
                 value: expect.any(Number),
+                label: expect.any(Number),
             },
         ]);
 
@@ -175,11 +176,13 @@ describe('useFormatNetworkData', () => {
                 source: 'A',
                 target: 'B',
                 value: expect.any(Number),
+                label: expect.any(Number),
             },
             {
                 source: 'B',
                 target: 'C',
                 value: expect.any(Number),
+                label: expect.any(Number),
             },
         ]);
     });
