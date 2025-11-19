@@ -65,6 +65,7 @@ export const SubresourceList = () => {
     return (
         <Box>
             <DataGrid
+                rowBuffer={100}
                 columns={[
                     {
                         field: 'name',

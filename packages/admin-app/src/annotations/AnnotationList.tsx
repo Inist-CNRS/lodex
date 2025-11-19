@@ -386,6 +386,7 @@ export const AnnotationList = () => {
 
     return (
         <DataGrid
+            rowBuffer={50}
             loading={isPending || isFetching}
             columns={columns}
             checkboxSelection
