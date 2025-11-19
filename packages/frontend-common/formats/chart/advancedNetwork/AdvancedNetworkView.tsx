@@ -1,12 +1,11 @@
-import { compose } from 'recompose';
 import type { Field } from '../../../fields/types';
-import injectData from '../../injectData';
-import { NetworkBase } from '../network/NetworkBase';
-import jsonFormatData from './dataGraphGexf.json';
 import {
     useFormatAdvancedNetworkData,
     type AdvancedNetworkData,
 } from './useFormatAdvancedNetworkData';
+import { compose } from 'recompose';
+import injectData from '../../injectData';
+import { NetworkBase } from '../network/NetworkBase';
 
 interface NetworkProps {
     colorSet?: string[];
@@ -14,10 +13,9 @@ interface NetworkProps {
     field: Field;
 }
 
-const AdvancedNetwork = ({ formatData: _, colorSet, field }: NetworkProps) => {
+const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
     const { nodes, links } = useFormatAdvancedNetworkData({
-        // @TODO replace with real formatData when available
-        formatData: jsonFormatData as AdvancedNetworkData[],
+        formatData,
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
                 ? field.format.args.displayWeighted
