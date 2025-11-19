@@ -282,7 +282,9 @@ export const NetworkBase = ({
                             )
                         }
                         getOptionLabel={(option: string) => option}
-                        options={nodes.map((node) => node.id as string)}
+                        options={nodes
+                            .map((node) => node.id as string)
+                            .sort((a, b) => a.localeCompare(b))}
                         name="search"
                     />
                     <Suspense
