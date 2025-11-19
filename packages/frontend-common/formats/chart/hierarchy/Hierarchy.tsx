@@ -533,13 +533,16 @@ class Hierarchy extends PureComponent<HierarchyProps> {
     handleMouseOver(event, node) {
         const leafG = d3.select(event.target);
 
+        const x = Math.min(event.layerX, 0);
+        const y = Math.min(event.layerY - 28, 0);
+
         leafG.select('rect').attr('stroke-width', '2');
         this.tooltip().style('opacity', 1);
 
         this.tooltip()
             .html(`${node.id} : ${node.data.weight.toFixed(0)} document(s)`)
-            .style('left', event.layerX + 'px')
-            .style('top', event.layerY - 28 + 'px');
+            .style('left', x + 'px')
+            .style('top', y + 'px');
     }
 
     // @ts-expect-error TS7006
@@ -554,6 +557,13 @@ class Hierarchy extends PureComponent<HierarchyProps> {
     // @ts-expect-error TS7006
     handleMouseOverInternalNode(event, node) {
         const nodeG = d3.select(event.target);
+        const x = Math.max(
+            event.layerX - nodeG.node()
+                ? nodeG.node().getComputedTextLength() * 0.5
+                : 0,
+            0,
+        );
+        const y = Math.max(event.layerY - 28, 0);
         this.tooltip().style('opacity', 1);
         this.tooltip()
             .html(
@@ -562,13 +572,8 @@ class Hierarchy extends PureComponent<HierarchyProps> {
                     0,
                 )}`,
             )
-            .style(
-                'left',
-                event.layerX - nodeG.node()
-                    ? nodeG.node().getComputedTextLength() * 0.5
-                    : 0 + 'px',
-            )
-            .style('top', event.layerY - 28 + 'px');
+            .style('left', x + 'px')
+            .style('top', y + 'px');
         nodeG.select('circle').attr('r', 8);
     }
 
