@@ -22,5 +22,11 @@
         "url": "/api/run/values-precomputed-nofilter/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
         "recommendedWith": ["BarChart", "BubbleChart", "PieChart"]
+    },
+    {
+        "id": "r-raw-precomputed-nofilter",
+        "url": "/api/run/raw-precomputed-nofilter/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
+        "recommendedWith": ["BarChart", "BubbleChart", "PieChart"]
     }
 ]
