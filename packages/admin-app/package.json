@@ -9,7 +9,8 @@
         "build": "vite build"
     },
     "dependencies": {
-        "@lodex/frontend-common": "file:../frontend-common"
+        "@lodex/frontend-common": "file:../frontend-common",
+        "@tanstack/react-pacer": "0.17.3"
     },
     "devDependencies": {
         "@types/node": "^24.9.1",

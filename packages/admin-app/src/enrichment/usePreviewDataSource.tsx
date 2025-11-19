@@ -5,57 +5,47 @@ import { useMemo } from 'react';
 
 export function usePreviewDataSource({
     dataSource,
-    sourceColumn,
-    subPath,
+    ...rest
 }: UsePreviewDataSourceParams) {
     const { fetch } = useApiClient();
 
-    const { isLoading, data } = useQuery({
-        queryKey: ['dataSource', 'preview', dataSource?.id],
+    const { isLoading, data: previewData } = useQuery<
+        Record<string, unknown>[],
+        unknown
+    >({
+        queryKey: [
+            'dataSource',
+            'preview',
+            dataSource?.id,
+            JSON.stringify(rest),
+        ],
         async queryFn() {
             if (!dataSource) {
                 return [];
             }
 
-            return fetch<Record<string, unknown>[]>({
-                url: `/api/dataSource/${dataSource.id}/preview`,
+            return fetch({
+                url: '/api/dataSource/preview',
+                method: 'POST',
+                body: JSON.stringify({ dataSource: dataSource.id, ...rest }),
             });
         },
     });
 
-    const previewData = useMemo(() => {
-        return (
-            data?.map((row) => {
-                if (sourceColumn) {
-                    if (
-                        subPath &&
-                        typeof row[sourceColumn] === 'object' &&
-                        row[sourceColumn] !== null
-                    ) {
-                        return (row[sourceColumn] as Record<string, unknown>)[
-                            subPath
-                        ];
-                    }
-
-                    return row[sourceColumn] as Record<string, unknown>;
-                }
-
-                return row;
-            }) ?? []
-        );
-    }, [data, sourceColumn, subPath]);
-
     return useMemo(
         () => ({
             isPreviewPending: isLoading,
-            previewData,
+            previewData: previewData ?? [],
         }),
         [isLoading, previewData],
     );
 }
 
-type UsePreviewDataSourceParams = {
+export type UsePreviewDataSourceParams = {
     dataSource?: DataSource;
+
     sourceColumn?: string;
     subPath?: string;
+
+    rule?: string;
 };

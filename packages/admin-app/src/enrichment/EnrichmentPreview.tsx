@@ -1,14 +1,19 @@
 import PreviewIcon from '@mui/icons-material/Preview';
 
-import { Box, Typography } from '@mui/material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { Box, Typography } from '@mui/material';
 
 type EnrichmentPreviewProps = {
+    isPending?: boolean;
     lines: unknown[];
     sourceColumn?: string;
 };
 
-const EnrichmentPreview = ({ lines, sourceColumn }: EnrichmentPreviewProps) => {
+const EnrichmentPreview = ({
+    isPending,
+    lines,
+    sourceColumn,
+}: EnrichmentPreviewProps) => {
     const { translate } = useTranslate();
     return (
         <Box
@@ -55,12 +60,20 @@ const EnrichmentPreview = ({ lines, sourceColumn }: EnrichmentPreviewProps) => {
                             </Typography>
                         </Box>
                     ))}
-                {lines.length === 0 && (
+                {isPending ? (
                     <Box textAlign={'center'} mb={2}>
                         <Typography variant="body1">
-                            {translate('preview_no_data')}
+                            {translate('loading')}
                         </Typography>
                     </Box>
+                ) : (
+                    lines.length === 0 && (
+                        <Box textAlign={'center'} mb={2}>
+                            <Typography variant="body1">
+                                {translate('preview_no_data')}
+                            </Typography>
+                        </Box>
+                    )
                 )}
             </Box>
             <Box mb={1}>
