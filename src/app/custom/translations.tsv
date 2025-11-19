@@ -977,7 +977,7 @@
 "r-segments-precomputed-nofilter_title"	"segments-precomputed-nofilter"	"segments-precomputed-nofilter"
 "r-values-precomputed-nofilter_description" "Allows the use of pre-calculated values (id; value). Use for data that cannot be filtered by document."	"Permet l'utilisation de valeurs pré-calculées (id; value). A utiliser pour les données ne pouvants pas être filtrées par documents."
 "r-values-precomputed-nofilter_title"	"values-precomputed-nofilter"	"values-precomputed-nofilter"
-"r-raw-precomputed-nofilter_description" "Allows the use of pre-calculated values in raw format. Use for data that cannot be filtered by document."	"Permet l'utilisation de valeurs pré-calculées au format par défaut. A utiliser pour les données ne pouvants pas être filtrées par documents."
+"r-raw-precomputed-nofilter_description"    "Allows the use of pre-calculated values in raw format. Use for data that cannot be filtered by document."	"Permet l'utilisation de valeurs pré-calculées au format par défaut. A utiliser pour les données ne pouvants pas être filtrées par documents."
 "r-raw-precomputed-nofilter_title"	"raw-precomputed-nofilter"	"raw-precomputed-nofilter"
 "add_file_success"	"File %{name} successfully added"	"Fichier %{name} ajouté avec succès"
 "cancelled_import"	"Import has been successfully cancelled"	"L'import a été annulé avec succès"
