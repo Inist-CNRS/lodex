@@ -149,8 +149,11 @@ const deleteManyDatasetRows = async (ids) => {
     });
 };
 
-// @ts-expect-error TS7006
-const deleteFilteredDatasetRows = async (filter) => {
+const deleteFilteredDatasetRows = async (filter: {
+    operator: string;
+    field: string;
+    value: string;
+}) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getDeleteFilteredDatasetRowRequest({ token }, filter);

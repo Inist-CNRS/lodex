@@ -86,11 +86,10 @@ export const AnnotationList = () => {
             setFilter({});
             return;
         }
-        const { columnField, operatorValue, value } = filterModel.items[0];
+        const { field, operator, value } = filterModel.items[0];
         setFilter({
-            filterBy:
-                columnField === 'resource' ? 'resource.title' : columnField,
-            filterOperator: operatorValue,
+            filterBy: field === 'resource' ? 'resource.title' : field,
+            filterOperator: operator,
             filterValue: value,
         });
         setPage(0);

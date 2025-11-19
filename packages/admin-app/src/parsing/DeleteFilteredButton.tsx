@@ -13,7 +13,11 @@ import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import datasetApi from '../api/dataset';
 
 interface DeleteFilteredButtonProps {
-    filter: object;
+    filter: {
+        operator: string;
+        field: string;
+        value?: string;
+    };
     reloadDataset(...args: unknown[]): unknown;
 }
 
@@ -47,7 +51,13 @@ export function DeleteFilteredButton({
 
     const handleDelete = async () => {
         setIsLoading(true);
-        const res = await datasetApi.deleteFilteredDatasetRows(filter);
+        const res = await datasetApi.deleteFilteredDatasetRows(
+            filter as {
+                operator: string;
+                field: string;
+                value: string;
+            },
+        );
 
         if (res.status === 'deleted') {
             toast(translate('parsing_delete_rows_success'), {
@@ -70,7 +80,6 @@ export function DeleteFilteredButton({
         handleCloseModal();
     };
 
-    // @ts-expect-error TS2339
     if (filter.value === undefined || rowCount === 0) {
         return null;
     }

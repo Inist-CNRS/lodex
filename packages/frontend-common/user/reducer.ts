@@ -573,20 +573,20 @@ export const getDeleteManyDatasetRowRequest = (
 export const getDeleteFilteredDatasetRowRequest = (
     state: UserState,
     {
-        columnField,
-        operatorValue,
+        field,
+        operator,
         value,
     }: {
-        columnField: string;
-        operatorValue: string;
+        field: string;
+        operator: string;
         value: string;
     },
 ) => {
     return getRequest(state, {
         url: `/api/dataset/batch-delete-filter?filterBy=${encodeURIComponent(
-            columnField,
+            field,
         )}&filterOperator=${encodeURIComponent(
-            operatorValue,
+            operator,
         )}&filterValue=${encodeURIComponent(value)}`,
         method: 'DELETE',
     });
