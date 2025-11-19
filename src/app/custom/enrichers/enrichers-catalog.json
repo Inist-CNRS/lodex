@@ -16,22 +16,6 @@
         "type": "validation"
     },
     {
-        "id": "post-v1-9SD-identify",
-        "url": "https://loterre-resolvers.services.istex.fr/v1/9SD/identify",
-        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-9SD-identify",
-        "objectifTDM": "https://services.istex.fr/associer-un-pays-ou-subdivision-au-vocabulaire-loterre-correspondant/",
-        "type": "geography"
-    },
-    {
-        "id": "post-v1-D63-identify",
-        "url": "https://loterre-resolvers.services.istex.fr/v1/D63/identify",
-        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-D63-identify",
-        "objectifTDM": "https://services.istex.fr/associer-un-terme-au-vocabulaire-des-communes-de-france/",
-        "type": "geography"
-    },
-    {
         "id": "post-v1-astroTag",
         "url": "https://astro-ner.services.istex.fr/v1/tagger",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/astro-ner/v1",
@@ -288,6 +272,54 @@
         "type": "other"
     },
     {
+        "id": "post-v1-9SD-identify-exemple",
+        "url": "https://loterre-resolvers.services.istex.fr/v1/identify?loterreID=9SD",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-identify",
+        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
+        "type": "geography"
+    },
+        {
+        "id": "post-v1-9SD-expand-exemple",
+        "url": "https://loterre-resolvers.services.istex.fr/v1/expand?loterreID=9SD",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-expand",
+        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
+        "type": "geography"
+    },
+            {
+        "id": "post-v1-9SD-annotate-exemple",
+        "url": "https://loterre-resolvers.services.istex.fr/v1/annotate?loterreID=9SD",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-annotate",
+        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
+        "type": "geography"
+    },
+        {
+        "id": "post-v1-Loterre-identify-generic",
+        "url": "https://loterre-resolvers.services.istex.fr/v1/identify?loterreID=identifiant",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-identify",
+        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
+        "type": "geography"
+    },
+        {
+        "id": "post-v1-Loterre-expand-generic",
+        "url": "https://loterre-resolvers.services.istex.fr/v1/expand?loterreID=identifiant",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-expand",
+        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
+        "type": "geography"
+    },
+            {
+        "id": "post-v1-Loterre-annotate",
+        "url": "https://loterre-resolvers.services.istex.fr/v1/annotate?loterreID=identifiant",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-annotate",
+        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
+        "type": "geography"
+    },
+    {
         "id": "post-v1-en-classify-3",
         "url": "https://domains-classifier.services.istex.fr/v1/en/classify",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/domains-classifier",
@@ -358,6 +390,14 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=irc3-species%20-%20Recherche%20de%20noms%20d%27esp%C3%A8ces#/default/post_v1_irc3sp",
         "objectifTDM": "https://services.istex.fr/irc3-species-recherche-despeces-animales/",
         "type": "entites nommees"
+    },
+            {
+        "id": "post-v1-tam",
+        "url": "https://tabbr-mine.services.istex.fr/v1/mine",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/tabbr-mine",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=tabbr-mine%20-%20D%C3%A9tection%20d%27abr%C3%A9viations%20tortur%C3%A9es#/default/post_v1_mine",
+        "objectifTDM": "https://services.istex.fr/service-dextraction-dabreviations-torturees/",
+        "type": "classification"
     },
     {
         "id": "post-v2-teeft-en",
