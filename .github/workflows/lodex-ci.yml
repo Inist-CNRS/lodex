@@ -95,6 +95,7 @@ jobs:
               with:
                   name: cypress-screenshots
                   path: cypress/screenshots
+                  overwrite: true
     lint:
         runs-on: ubuntu-22.04
 

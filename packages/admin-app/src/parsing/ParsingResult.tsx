@@ -215,12 +215,9 @@ const CustomFooter = ({
 }) => {
     const { translate } = useTranslate();
 
-    const handleChangeRowsPerPage = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            onPageChange({ page: 0, pageSize: parseInt(e.target.value, 10) });
-        },
-        [onPageChange],
-    );
+    const handleChangeRowsPerPage = (e: ChangeEvent<HTMLInputElement>) => {
+        onPageChange({ page: 0, pageSize: parseInt(e.target.value, 10) });
+    };
 
     const numberOfColumns = useCallback(
         (columnType: string) => {
@@ -500,10 +497,9 @@ export const ParsingResultComponent = ({
         [],
     );
 
-    const handleFilteredRowsDeleted = useCallback(() => {
+    const handleFilteredRowsDeleted = () => {
         handleFilterModelChange({ items: [] });
-    }, [handleFilterModelChange]);
-
+    };
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDataColumns(precomputedId);
@@ -518,28 +514,22 @@ export const ParsingResultComponent = ({
         fetchDataset();
     }, [skip, limit, filterModel, sort, fetchDataset]);
 
-    const handleSortModelChange = useCallback(
-        (sortModel: GridSortModel) => {
-            setSort({
-                sortBy: sortModel[0]?.field,
-                sortDir: sortModel[0]?.sort,
-            });
-        },
-        [setSort],
-    );
+    const handleSortModelChange = (sortModel: GridSortModel) => {
+        setSort({
+            sortBy: sortModel[0]?.field,
+            sortDir: sortModel[0]?.sort,
+        });
+    };
 
-    const handleCellClick: GridEventListener<'cellClick'> = useCallback(
-        (params) => {
-            if (params.field === '__check__') {
-                return;
-            }
-            setSelectedCell(params);
-            setToggleDrawer(true);
-        },
-        [setSelectedCell, setToggleDrawer],
-    );
+    const handleCellClick: GridEventListener<'cellClick'> = (params) => {
+        if (params.field === '__check__') {
+            return;
+        }
+        setSelectedCell(params);
+        setToggleDrawer(true);
+    };
 
-    const getRowId = useCallback((row: { _id: string }) => row._id, []);
+    const getRowId = (row: { _id: string }) => row._id;
 
     if (loadingParsingResult) {
         return (
