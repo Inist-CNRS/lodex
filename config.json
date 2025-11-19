@@ -34,6 +34,7 @@
         "segments-precomputed-nofilter",
         "values-precomputed",
         "values-precomputed-nofilter",
+        "raw-precomputed-nofilter",
         "group-and-sum-with",
         "hello-world",
         "istex-facet",
