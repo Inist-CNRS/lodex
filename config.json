@@ -114,7 +114,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "alternativePrecomputedBaseUrl": "https://055ce69ad2b8.ngrok-free.app",
+    "alternativePrecomputedBaseUrl": "http://api:3000",
     "activateBullDashboard": false,
     "themes": [
         "voscouleurs",
