@@ -520,6 +520,7 @@ export const ParsingResultComponent = ({
                 onSortModelChange={handleSortModelChange}
                 filterMode="server"
                 filterModel={filterModel}
+                rowBuffer={limit ?? 100}
                 onFilterModelChange={handleFilterModelChange}
                 rowsPerPageOptions={[10, 25, 50]}
                 disableSelectionOnClick={true}
