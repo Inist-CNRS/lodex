@@ -60,6 +60,7 @@ export function useFormatNetworkData({
                 source,
                 target,
                 value: displayWeighted ? linkScale(weight) : 1,
+                label: weight,
             }),
         );
 

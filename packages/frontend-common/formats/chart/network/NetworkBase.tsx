@@ -282,7 +282,9 @@ export const NetworkBase = ({
                             )
                         }
                         getOptionLabel={(option: string) => option}
-                        options={nodes.map((node) => node.id as string)}
+                        options={nodes
+                            .map((node) => node.id as string)
+                            .sort((a, b) => a.localeCompare(b))}
                         name="search"
                     />
                     <Suspense
@@ -395,6 +397,8 @@ export const NetworkBase = ({
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
+                            linkWidth={(l) => l.value ?? 1}
+                            linkLabel={(l) => l.label ?? ''}
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
                             linkCurvature={linkCurvature}
@@ -439,7 +443,6 @@ export const NetworkBase = ({
                                     ...bckgDimensions,
                                 );
                             }}
-                            linkPointerAreaPaint={() => {}}
                             linkDirectionalParticleWidth={showArrows ? 4 : 0}
                             linkDirectionalParticles={showArrows ? 4 : 0}
                         />
