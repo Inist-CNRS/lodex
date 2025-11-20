@@ -389,6 +389,9 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     .search-result-title {
     color: var(--info-main);
 }
+.search-result-pane {
+    background-color: white !important;
+}
 /*static-page reprend prop page home*/
 .static-page {
     display: flex;

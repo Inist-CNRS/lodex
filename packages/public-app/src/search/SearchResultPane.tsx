@@ -35,7 +35,7 @@ export function SearchResultPane() {
     };
 
     return (
-        <Stack sx={sx}>
+        <Stack sx={sx} className="search-result-pane">
             {filter && (
                 <Stack
                     sx={{
