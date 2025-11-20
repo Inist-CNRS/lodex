@@ -45,6 +45,7 @@ export const AutoComplete = ({
     options,
     hint,
     renderOption,
+    sx,
     ...props
 }: Omit<
     MuiAutocompleteProps<any, false, false, true>,
@@ -89,6 +90,7 @@ export const AutoComplete = ({
             error={!!error}
             role="group"
             aria-label={`aria-group-${name}`}
+            sx={sx}
         >
             <MuiAutocomplete
                 {...props}

@@ -3,32 +3,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardHeader, IconButton, Stack } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import classnames from 'classnames';
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import { Settings } from '@mui/icons-material';
 import { preLoadPublication } from '@lodex/frontend-common/fields/reducer';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import type { Field } from '@lodex/frontend-common/fields/types';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     fromCharacteristic,
     fromFields,
     fromUser,
 } from '@lodex/frontend-common/sharedSelectors';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import { Settings } from '@mui/icons-material';
+import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
 import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
 import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
 import DatasetSearchBar from '../dataset/DatasetSearchBar';
 import DatasetStats from '../dataset/DatasetStats';
+import Drawer, { DRAWER_CLOSED, DRAWER_CLOSING, DRAWER_OPEN } from '../Drawer';
 import FacetList from '../facet/FacetList';
 import Format from '../Format';
 import { getEditFieldRedirectUrl } from '../Property';
 import CompositeProperty from '../Property/CompositeProperty';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
-import type { Field } from '@lodex/frontend-common/fields/types';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
-import Drawer, { DRAWER_CLOSED, DRAWER_CLOSING, DRAWER_OPEN } from '../Drawer';
 import BrowseResult from './BrowseResult';
+import { GraphContextProvider } from './GraphContext';
 
 const styles = stylesToClassname(
     {
@@ -136,8 +137,13 @@ const Graph = ({
         window.open(redirectUrl, '_blank');
     };
 
+    const graphActionRef = useRef<HTMLDivElement | null>(null);
+
     return (
-        <>
+        <GraphContextProvider
+            portalContainer={graphActionRef}
+            field={graphField}
+        >
             {/* // 
             @ts-expect-error TS2339 */}
             <div className={classnames(className, styles.container)}>
@@ -176,35 +182,45 @@ const Graph = ({
                                     className="title"
                                     sx={muiStyles.graphTitle}
                                     title={
-                                        <Stack
-                                            direction="row"
-                                            gap="2rem"
-                                            alignItems="center"
-                                        >
-                                            {graphField.label}
+                                        <Stack direction="row" gap="2rem">
+                                            <Stack
+                                                direction="row"
+                                                gap="0.5rem"
+                                                alignItems="center"
+                                            >
+                                                {graphField.label}
 
-                                            {isAdmin && (
-                                                // @ts-expect-error TS2769
-                                                <IconButton
-                                                    onClick={() =>
-                                                        handleEditField(
-                                                            graphField,
-                                                        )
-                                                    }
-                                                    classnames={
-                                                        'edit-field-icon'
-                                                    }
-                                                >
-                                                    <Settings
-                                                        sx={{
-                                                            fontSize: '1.2rem',
-                                                        }}
-                                                    />
-                                                </IconButton>
-                                            )}
-                                            <CreateAnnotationButton
-                                                field={graphField}
-                                                resource={resource}
+                                                {isAdmin && (
+                                                    // @ts-expect-error TS2769
+                                                    <IconButton
+                                                        onClick={() =>
+                                                            handleEditField(
+                                                                graphField,
+                                                            )
+                                                        }
+                                                        classnames={
+                                                            'edit-field-icon'
+                                                        }
+                                                    >
+                                                        <Settings
+                                                            sx={{
+                                                                fontSize:
+                                                                    '1.2rem',
+                                                            }}
+                                                        />
+                                                    </IconButton>
+                                                )}
+                                                <CreateAnnotationButton
+                                                    field={graphField}
+                                                    resource={resource}
+                                                />
+                                            </Stack>
+                                            <Stack
+                                                flex="1"
+                                                direction="row"
+                                                gap="0.5rem"
+                                                justifyContent="flex-end"
+                                                ref={graphActionRef}
                                             />
                                         </Stack>
                                     }
@@ -256,7 +272,7 @@ const Graph = ({
                     }
                 />
             </Drawer>
-        </>
+        </GraphContextProvider>
     );
 };
 
