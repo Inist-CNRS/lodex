@@ -364,7 +364,7 @@ export const Network3DBase = ({
 
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
-            <FormatFullScreenMode>
+            <FormatFullScreenMode fill="#fffffd">
                 {/*
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
@@ -493,7 +493,7 @@ export const Network3DBase = ({
                             left: 0,
                         }}
                     >
-                        {<MouseIcon />}
+                        {<MouseIcon fill="#fffffd" />}
                     </div>
                 </div>
             </FormatFullScreenMode>
