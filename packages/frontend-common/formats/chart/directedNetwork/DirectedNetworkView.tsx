@@ -4,7 +4,8 @@ import {
     type AdvancedNetworkData,
 } from '../advancedNetwork/useFormatAdvancedNetworkData';
 import { NetworkBase } from '../network/NetworkBase';
-import jsonFormatData from './topRefExtract.json';
+import { compose } from 'recompose';
+import injectData from '../../injectData';
 
 interface DirectedNetworkProps {
     colorSet?: string[];
@@ -13,13 +14,13 @@ interface DirectedNetworkProps {
 }
 
 const DirectedNetwork = ({
-    formatData: _,
+    formatData,
     colorSet,
     field,
 }: DirectedNetworkProps) => {
     // @TODO replace with data from props when routine available available
     const { nodes, links } = useFormatAdvancedNetworkData({
-        formatData: jsonFormatData as AdvancedNetworkData[],
+        formatData,
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
                 ? field.format.args.displayWeighted
@@ -42,8 +43,6 @@ const DirectedNetwork = ({
     );
 };
 
-export default DirectedNetwork;
-
-// export default compose<DirectedNetworkProps, DirectedNetworkProps>(
-//     injectData(),
-// )(DirectedNetwork);
+export default compose<DirectedNetworkProps, DirectedNetworkProps>(
+    injectData(),
+)(DirectedNetwork);
