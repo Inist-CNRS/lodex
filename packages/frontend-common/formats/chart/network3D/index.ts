@@ -1,5 +1,5 @@
 import DefaultFormat from '../../utils/components/default-format';
-import Component from './NetworkView';
+import Component from './Network3DView';
 import AdminComponent, { defaultArgs } from './NetworkAdmin';
 import Icon from './NetworkIcon';
 

@@ -9,7 +9,7 @@ import {
     useState,
 } from 'react';
 
-import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
+import type { NodeObject, ForceGraphMethods } from 'react-force-graph-3d';
 import Loading from '../../../components/Loading';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -18,6 +18,16 @@ import { addTransparency } from '../../utils/colorHelpers';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import type { Link, Node } from '../network/useFormatNetworkData';
+import {
+    SphereGeometry,
+    Mesh,
+    MeshLambertMaterial,
+    Group,
+    Vector3,
+    // @ts-expect-error TS7016
+} from 'three';
+
+import SpriteText from 'three-spritetext';
 
 const ForceGraph3D = lazy(() => import('react-force-graph-3d'));
 
@@ -138,9 +148,14 @@ export const Network3DBase = ({
     showArrows = false,
     fieldToFilter,
 }: NetworkBaseProps) => {
+    const fgRef = useRef<ForceGraphMethods>();
+    const nodeObjectsRef = useRef<
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        Map<string, { group: Group; sprite: any; node: Node }>
+    >(new Map());
+    const animationFrameRef = useRef<number>();
     const { translate } = useTranslate();
     const searchPane = useContext(SearchPaneContext);
-    const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
         height: 0,
@@ -148,9 +163,52 @@ export const Network3DBase = ({
     const [cooldownTime, setCooldownTime] = useState(10000);
     const [selectedNode, setSelectedNode] = useState<NodeObject | null>(null);
     const [hoveredNode, setHoveredNode] = useState<NodeObject | null>(null);
-    const [x, setX] = useState(0);
-    const [y, setY] = useState(0);
-    const [k, setK] = useState(1);
+
+    // Function to get camera coordinates
+    const getCameraPosition = () => {
+        if (!fgRef.current) return null;
+
+        const camera = fgRef.current.camera();
+        return {
+            x: camera.position.x,
+            y: camera.position.y,
+            z: camera.position.z,
+        };
+    };
+
+    // Function to update all sprite positions based on current camera position
+    const updateSpritePositions = useCallback(() => {
+        const cameraPosition = getCameraPosition();
+        if (!cameraPosition) return;
+
+        nodeObjectsRef.current.forEach(({ sprite, node, group }) => {
+            const sphereRadius = Math.max(node.radius, 0.5);
+
+            // Get the world position of the node (group)
+            const nodeWorldPos = new Vector3();
+            group.getWorldPosition(nodeWorldPos);
+
+            // Calculate direction from node position to camera
+            const cameraVector = new Vector3(
+                cameraPosition.x - nodeWorldPos.x,
+                cameraPosition.y - nodeWorldPos.y,
+                cameraPosition.z - nodeWorldPos.z,
+            );
+
+            // Normalize and scale by radius + 1
+            const direction = cameraVector.normalize();
+            const offset = direction.multiplyScalar(sphereRadius + 1);
+
+            // Set sprite position relative to the group (node center)
+            sprite.position.set(offset.x, offset.y, offset.z);
+        });
+    }, []);
+
+    // Animation loop to continuously update sprite positions
+    const animate = useCallback(() => {
+        updateSpritePositions();
+        animationFrameRef.current = requestAnimationFrame(animate);
+    }, [updateSpritePositions]);
 
     const linksBySourceId = useMemo(() => {
         return links.reduce<Record<string, Link[]>>(
@@ -231,7 +289,19 @@ export const Network3DBase = ({
         setCooldownTime(10000);
         setSelectedNode(null);
         setHoveredNode(null);
+        // Clear node objects map when nodes change
+        nodeObjectsRef.current.clear();
     }, [nodes, links]);
+
+    // Start animation loop when component mounts, cleanup on unmount
+    useEffect(() => {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, [animate]);
 
     // @ts-expect-error TS7006
     const handleNodeHover = (node) => {
@@ -239,12 +309,6 @@ export const Network3DBase = ({
         setCooldownTime(0);
         setHoveredNode(node);
     };
-
-    useEffect(() => {
-        if (!fgRef.current) return;
-        fgRef.current.zoom(k, 0);
-        fgRef.current.centerAt(x, y, 0);
-    }, [width, height, x, k, y]);
 
     const handleNodeClick = (node: NodeObject | null) => {
         // freeze the chart so that it does not rearrange itself every time we interact with it
@@ -265,8 +329,25 @@ export const Network3DBase = ({
             });
         }
 
-        if (!fgRef.current) return;
-        fgRef.current.zoomToFit(500, 175, (n) => n.id === node.id);
+        if (!fgRef.current) {
+            return;
+        }
+        const distance = 80;
+        const distRatio = 1 + distance / Math.hypot(node.x!, node.y!, node.z!);
+
+        fgRef.current.cameraPosition(
+            {
+                x: (node.x ?? 0) * distRatio,
+                y: (node.y ?? 0) * distRatio,
+                z: (node.z ?? 0) * distRatio,
+            },
+            {
+                x: node.x ?? 0,
+                y: node.y ?? 0,
+                z: node.z ?? 0,
+            },
+            1000,
+        );
     };
 
     const sortedNodes = useMemo(() => {
@@ -306,15 +387,56 @@ export const Network3DBase = ({
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
                         <ForceGraph3D
-                            // onZoomEnd={({ k, x, y }) => {
-                            //     // We want to preserve the zoom level and position when switching from and to fullscreen
-                            //     // so we skip the default value (k=1, x=0, y=0) that correspond to a reset zoom
-                            //     if (x === 0 && y === 0 && k === 1) return;
-                            //     setK(k);
-                            //     setX(x);
-                            //     setY(y);
-                            // }}
-                            // ref={fgRef}
+                            ref={fgRef}
+                            nodeVal={(n) => n.radius}
+                            nodeColor={() => colorSet![0]}
+                            nodeThreeObject={(node: Node) => {
+                                // Create a group to hold both sphere and text
+                                const group = new Group();
+
+                                // Create the sphere
+                                const sphere = new SphereGeometry(
+                                    Math.max(node.radius, 0.5),
+                                );
+                                const sphereMesh = new Mesh(
+                                    sphere,
+                                    new MeshLambertMaterial({
+                                        color:
+                                            node.color ??
+                                            colorSet?.[0] ??
+                                            '#ffffff',
+                                    }),
+                                );
+
+                                // Create the text sprite
+                                const sprite = new SpriteText(
+                                    node.label ?? node.id,
+                                );
+                                sprite.color = 'white';
+                                sprite.textHeight = node.radius;
+                                sprite.strokeColor = 'black';
+                                sprite.strokeWidth = 0.5;
+
+                                // Disable depth writing so text appears on top of sphere
+                                // but still respects depth testing for other objects
+                                // @ts-expect-error SpriteText material property
+                                sprite.material.depthWrite = false;
+                                // @ts-expect-error SpriteText renderOrder property
+                                sprite.renderOrder = 999;
+
+                                // Add both to the group
+                                group.add(sphereMesh);
+                                group.add(sprite);
+
+                                // Store reference for dynamic positioning
+                                nodeObjectsRef.current.set(node.id as string, {
+                                    group,
+                                    sprite,
+                                    node,
+                                });
+
+                                return group;
+                            }}
                             width={width}
                             height={height}
                             graphData={{
@@ -324,68 +446,6 @@ export const Network3DBase = ({
                             nodeLabel={(node) => {
                                 return node.label;
                             }}
-                            // nodeCanvasObject={(node, ctx) => {
-                            //     const isSelected = node.id === selectedNode?.id;
-
-                            //     if (
-                            //         highlightedNodeIds.length === 0 ||
-                            //         highlightedNodeIds.some(
-                            //             (highlightNodeId) =>
-                            //                 highlightNodeId === node.id,
-                            //         )
-                            //     ) {
-                            //         ctx.globalAlpha = 1;
-                            //     } else {
-                            //         ctx.globalAlpha = 0.1;
-                            //     }
-                            //     const circleRadius = Math.max(node.radius, 1.5);
-
-                            //     if (isSelected) {
-                            //         ctx.fillStyle = '#880000';
-                            //         ctx.beginPath();
-                            //         ctx.arc(
-                            //             node.x!,
-                            //             node.y!,
-                            //             circleRadius + 1,
-                            //             0,
-                            //             2 * Math.PI,
-                            //             false,
-                            //         );
-                            //         ctx.fill();
-                            //     }
-
-                            //     ctx.fillStyle = node.color
-                            //         ? addTransparency(
-                            //               node.color,
-                            //               isSelected ? 1 : 0.75,
-                            //           )
-                            //         : colorSet
-                            //           ? addTransparency(
-                            //                 colorSet[0],
-                            //                 isSelected ? 1 : 0.75,
-                            //             )
-                            //           : '#000000e6';
-                            //     ctx.beginPath();
-                            //     ctx.arc(
-                            //         node.x!,
-                            //         node.y!,
-                            //         circleRadius,
-                            //         0,
-                            //         2 * Math.PI,
-                            //         false,
-                            //     );
-                            //     ctx.fill();
-
-                            //     const fontSize = Math.max(circleRadius / 2, 3);
-                            //     ctx.font = `${isSelected ? 'bold ' : ''}${fontSize}px Sans-Serif`;
-
-                            //     ctx.textAlign = 'center';
-                            //     ctx.textBaseline = 'middle';
-                            //     ctx.fillStyle = 'black';
-                            //     ctx.fillText(node.label, node.x!, node.y!);
-
-                            //     ctx.globalAlpha = 1;
-                            // }}
                             linkColor={(link) =>
                                 link.color
                                     ? addTransparency(link.color, 0.25)
@@ -414,42 +474,6 @@ export const Network3DBase = ({
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
                             linkCurvature={linkCurvature}
-                            // nodePointerAreaPaint={(node, color, ctx) => {
-                            //     const circleRadius = node.radius;
-
-                            //     ctx.strokeStyle = color;
-                            //     ctx.fillStyle = color;
-                            //     ctx.beginPath();
-                            //     ctx.arc(
-                            //         node.x!,
-                            //         node.y!,
-                            //         circleRadius,
-                            //         0,
-                            //         2 * Math.PI,
-                            //         false,
-                            //     );
-                            //     ctx.fill();
-
-                            //     const fontSize = Math.max(circleRadius / 2, 3);
-                            //     ctx.font = `${fontSize}px Sans-Serif`;
-
-                            //     const textWidth = ctx.measureText(
-                            //         node.label,
-                            //     ).width;
-                            //     const bckgDimensions: [number, number] = [
-                            //         textWidth,
-                            //         fontSize,
-                            //     ].map((n) => n + fontSize * 0.2) as [
-                            //         number,
-                            //         number,
-                            //     ]; // some padding
-
-                            //     ctx.fillRect(
-                            //         node.x! - bckgDimensions[0] / 2,
-                            //         node.y! - bckgDimensions[1] / 2,
-                            //         ...bckgDimensions,
-                            //     );
-                            // }}
                             linkDirectionalParticleWidth={showArrows ? 4 : 0}
                             linkDirectionalParticles={showArrows ? 4 : 0}
                         />

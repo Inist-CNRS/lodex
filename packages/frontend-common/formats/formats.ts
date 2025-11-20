@@ -50,6 +50,7 @@ import flowMap from './vega/component/flow-map';
 import clusteredChart from './chart/clustered-chart';
 import json from './other/json';
 import TreeMap from './vega/component/tree-map';
+import network3D from './chart/network3D';
 
 export const FORMATS_CATALOG = [
     {
@@ -420,6 +421,16 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux',
+        isUrlValue: false,
+    },
+    {
+        name: 'formatNetwork3D',
+        description: 'formatNetwork3DDescription',
+        componentName: 'network3D',
+        component: network3D,
+        type: 'chart',
+        isValueAnnotable: false,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux-3d',
         isUrlValue: false,
     },
     {
