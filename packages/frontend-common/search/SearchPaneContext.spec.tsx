@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import {
     act,
     fireEvent,
@@ -9,6 +8,46 @@ import {
 import { MemoryRouter, useHistory } from 'react-router-dom';
 import { SearchPaneContextProvider } from './SearchPaneContext';
 import { useSearchPaneContext } from './useSearchPaneContext';
+
+function TestContent() {
+    const { setFilter } = useSearchPaneContext();
+    const history = useHistory();
+
+    return (
+        <>
+            <button
+                type="button"
+                onClick={() =>
+                    setFilter({
+                        field: 'testColumn',
+                        value: 'testValue',
+                    })
+                }
+            >
+                Set Filter
+            </button>
+            <button type="button" onClick={() => history.push('/page2')}>
+                Navigate to /page2
+            </button>
+        </>
+    );
+}
+
+function TestResultsPane() {
+    const { filter, setFilter } = useSearchPaneContext();
+
+    return (
+        <dialog open={!!filter}>
+            <button type="button" onClick={() => setFilter(null)}>
+                Clear Filter
+            </button>
+            <dl role="group" aria-label={filter?.field}>
+                <dt role="listitem">{filter?.field}</dt>
+                <dd>{JSON.stringify(filter?.value)}</dd>
+            </dl>
+        </dialog>
+    );
+}
 
 describe('SearchPaneContext', () => {
     it('sould not render the resultsPane when filter is null', () => {
@@ -114,43 +153,3 @@ describe('SearchPaneContext', () => {
         });
     });
 });
-
-function TestContent() {
-    const { setFilter } = useSearchPaneContext();
-    const history = useHistory();
-
-    return (
-        <>
-            <button
-                type="button"
-                onClick={() =>
-                    setFilter({
-                        field: 'testColumn',
-                        value: 'testValue',
-                    })
-                }
-            >
-                Set Filter
-            </button>
-            <button type="button" onClick={() => history.push('/page2')}>
-                Navigate to /page2
-            </button>
-        </>
-    );
-}
-
-function TestResultsPane() {
-    const { filter, setFilter } = useSearchPaneContext();
-
-    return (
-        <dialog open={!!filter}>
-            <button type="button" onClick={() => setFilter(null)}>
-                Clear Filter
-            </button>
-            <dl role="group" aria-label={filter?.field}>
-                <dt role="listitem">{filter?.field}</dt>
-                <dd>{JSON.stringify(filter?.value)}</dd>
-            </dl>
-        </dialog>
-    );
-}

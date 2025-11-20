@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const fieldNameSchema = z.string().regex(/^[a-zA-Z0-9_]{4}$/);
+export const fieldNameSchema = z.string().regex(/^[a-zA-Z0-9]{4}$/);
 
 export const getPageByFieldSchema = z.object({
     value: z.string().or(z.number()).nullish(),
@@ -20,5 +20,6 @@ export const getPageByFieldSchema = z.object({
                 .nullish()
                 .transform((val) => val ?? 'ASC'),
         })
-        .nullish(),
+        .nullish()
+        .transform((value) => value ?? { sortBy: '_id', sortDir: 'ASC' }),
 });

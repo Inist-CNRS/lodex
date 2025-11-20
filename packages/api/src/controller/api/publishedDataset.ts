@@ -190,19 +190,16 @@ export const getPageByField = async (ctx: Koa.Context, field: string) => {
               field,
           };
 
-    let qb = ctx.publishedDataset
-        .find(filter)
-        .limit(perPage)
-        .skip(page * perPage);
-
-    if (sort) {
-        qb = qb.sort({
-            [`versions.0.${sort.sortBy}`]: sort.sortDir === 'ASC' ? 1 : -1,
-        });
-    }
-
     const [data, total] = await Promise.all([
-        qb.toArray(),
+        ctx.publishedDataset
+            .find(filter)
+            .limit(perPage)
+            .skip(page * perPage)
+            .sort({
+                [sort.sortBy === '_id' ? '_id' : `versions.0.${sort.sortBy}`]:
+                    sort.sortDir === 'ASC' ? 1 : -1,
+            })
+            .toArray(),
         ctx.publishedDataset.count(filter),
     ]);
 

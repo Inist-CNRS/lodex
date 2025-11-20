@@ -1,6 +1,6 @@
+import { useListField } from '@lodex/frontend-common/fields/api/useListField';
 import type { SearchPaneFilter } from '@lodex/frontend-common/search/SearchPaneContext';
 import { useMemo } from 'react';
-import { useListField } from './useListField';
 import { useListPublishedDatasetByFieldValue } from './useListPublishedDatasetByFieldValue';
 
 export function useListSearchResult(
