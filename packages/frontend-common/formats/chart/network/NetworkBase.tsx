@@ -10,6 +10,7 @@ import {
 } from 'react';
 
 import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
+import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import Loading from '../../../components/Loading';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -287,21 +288,26 @@ export const NetworkBase = ({
                 {/*
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
-                    <AutoComplete
-                        style={{ margin: '1rem' }}
-                        label={translate('select_node')}
-                        value={selectedNode?.id || null}
-                        onChange={(_event, value) =>
-                            handleNodeClick(
-                                nodes.find((node) => node.id === value) || null,
-                            )
-                        }
-                        getOptionLabel={(option: string) => option}
-                        options={nodes
-                            .map((node) => node.id as string)
-                            .sort((a, b) => a.localeCompare(b))}
-                        name="search"
-                    />
+                    <GraphAction>
+                        <AutoComplete
+                            label={translate('select_node')}
+                            value={selectedNode?.id || null}
+                            onChange={(_event, value) =>
+                                handleNodeClick(
+                                    nodes.find((node) => node.id === value) ||
+                                        null,
+                                )
+                            }
+                            getOptionLabel={(option: string) => option}
+                            options={nodes
+                                .map((node) => node.id as string)
+                                .sort((a, b) => a.localeCompare(b))}
+                            name="search"
+                            sx={{
+                                maxWidth: '384px',
+                            }}
+                        />
+                    </GraphAction>
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
