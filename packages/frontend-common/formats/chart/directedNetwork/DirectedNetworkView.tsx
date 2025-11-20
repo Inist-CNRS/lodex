@@ -18,7 +18,6 @@ const DirectedNetwork = ({
     colorSet,
     field,
 }: DirectedNetworkProps) => {
-    // @TODO replace with data from props when routine available available
     const { nodes, links } = useFormatAdvancedNetworkData({
         formatData,
         displayWeighted:
