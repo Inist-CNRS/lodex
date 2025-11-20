@@ -267,7 +267,7 @@ export const NetworkBase = ({
         }
 
         if (!fgRef.current) return;
-        fgRef.current.zoomToFit(500, 200, (n) => n.id === node.id);
+        fgRef.current.zoomToFit(500, 175, (n) => n.id === node.id);
     };
 
     const sortedNodes = useMemo(() => {
@@ -330,7 +330,7 @@ export const NetworkBase = ({
                             nodeLabel={(node) => {
                                 return node.label;
                             }}
-                            nodeCanvasObject={(node, ctx, globalScale) => {
+                            nodeCanvasObject={(node, ctx) => {
                                 const isSelected = node.id === selectedNode?.id;
 
                                 if (
@@ -344,10 +344,7 @@ export const NetworkBase = ({
                                 } else {
                                     ctx.globalAlpha = 0.1;
                                 }
-                                const circleRadius = Math.max(
-                                    node.radius / globalScale,
-                                    1.5,
-                                );
+                                const circleRadius = Math.max(node.radius, 1.5);
 
                                 if (isSelected) {
                                     ctx.fillStyle = '#880000';
@@ -355,7 +352,7 @@ export const NetworkBase = ({
                                     ctx.arc(
                                         node.x!,
                                         node.y!,
-                                        circleRadius + 4 / globalScale,
+                                        circleRadius + 1,
                                         0,
                                         2 * Math.PI,
                                         false,
@@ -423,13 +420,8 @@ export const NetworkBase = ({
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
                             linkCurvature={linkCurvature}
-                            nodePointerAreaPaint={(
-                                node,
-                                color,
-                                ctx,
-                                globalScale,
-                            ) => {
-                                const circleRadius = node.radius / globalScale;
+                            nodePointerAreaPaint={(node, color, ctx) => {
+                                const circleRadius = node.radius;
 
                                 ctx.strokeStyle = color;
                                 ctx.fillStyle = color;

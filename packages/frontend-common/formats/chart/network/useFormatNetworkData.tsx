@@ -44,7 +44,7 @@ export function useFormatNetworkData({
         const max = Math.max(...radiusList);
         const min = Math.min(...radiusList);
 
-        const nodeScale = scaleLinear().domain([min, max]).range([10, 100]);
+        const nodeScale = scaleLinear().domain([min, max]).range([1, 20]);
 
         const weightList = sanitizedFormatData.map(({ weight }) => weight);
 
