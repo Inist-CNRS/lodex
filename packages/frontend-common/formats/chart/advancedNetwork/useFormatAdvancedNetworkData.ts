@@ -62,7 +62,7 @@ export function useFormatAdvancedNetworkData({
         >(
             ({
                 id,
-                value: { label, targets, viz$position, viz$color, viz$size },
+                value: { label, targets, viz$position, viz$color, viz$size = {} },
             }) => ({
                 id,
                 label,
