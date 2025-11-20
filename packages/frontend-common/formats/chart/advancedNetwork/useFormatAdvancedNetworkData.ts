@@ -5,7 +5,7 @@ import { rgbToHex } from '../../utils/colorHelpers';
 import { scaleLinear } from 'd3-scale';
 
 export type AdvancedNetworkData = {
-    id: string;
+    _id: string;
     value: {
         label: string;
         viz$color: {
@@ -61,10 +61,10 @@ export function useFormatAdvancedNetworkData({
             }
         >(
             ({
-                id,
+                _id,
                 value: { label, targets, viz$position, viz$color, viz$size },
             }) => ({
-                id,
+                id: _id,
                 label,
                 radius:
                     viz$size.value && displayWeighted

@@ -22,7 +22,7 @@ describe('useFormatAdvancedNetworkData', () => {
     it('correctly formats nodes and links with color size and positions', () => {
         const data: AdvancedNetworkData[] = [
             {
-                id: 'A',
+                _id: 'A',
                 value: {
                     label: 'Node A',
                     targets: [{ id: 'B' }, { id: 'C' }],
@@ -36,7 +36,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 },
             },
             {
-                id: 'B',
+                _id: 'B',
                 value: {
                     label: 'Node B',
                     targets: [{ id: 'A' }],
@@ -50,7 +50,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 },
             },
             {
-                id: 'C',
+                _id: 'C',
                 value: {
                     label: 'Node C',
                     targets: [{ id: 'A' }],
@@ -136,7 +136,7 @@ describe('useFormatAdvancedNetworkData', () => {
     it('should set default radius (100 + 10 / 2 => 55) when displayWeighted is false ignoring viz$size', () => {
         const data: AdvancedNetworkData[] = [
             {
-                id: 'A',
+                _id: 'A',
                 value: {
                     label: 'Node A',
                     targets: [{ id: 'B' }],
@@ -150,7 +150,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 },
             },
             {
-                id: 'B',
+                _id: 'B',
                 value: {
                     label: 'Node B',
                     targets: [{ id: 'A' }],
