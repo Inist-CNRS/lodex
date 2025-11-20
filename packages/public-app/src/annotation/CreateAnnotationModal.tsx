@@ -1,3 +1,10 @@
+import {
+    ANNOTATION_KIND_ADDITION,
+    ANNOTATION_KIND_CORRECTION,
+    annotationCreationSchema,
+} from '@lodex/common';
+import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import CloseIcon from '@mui/icons-material/Close';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import {
@@ -11,18 +18,12 @@ import {
 } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import { useEffect, useMemo, useState } from 'react';
-import {
-    ANNOTATION_KIND_ADDITION,
-    ANNOTATION_KIND_CORRECTION,
-    annotationCreationSchema,
-} from '@lodex/common';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { CreateAnnotationTitle } from './CreateAnnotationTitle';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
 import { AuthorRememberMeField } from './fields/AuthorRememberMeField';
+import { IsContributorNamePublicField } from './fields/IsContributorNamePublicField';
 import { TargetField } from './fields/TargetField';
 import { ValueField } from './fields/ValueField';
 import { NextButton } from './NextButton';
@@ -38,7 +39,6 @@ import {
 } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
-import { IsContributorNamePublicField } from './fields/IsContributorNamePublicField';
 
 // @ts-expect-error TS7006
 const isRequiredFieldValid = (formState, fieldName) => {
@@ -275,7 +275,8 @@ export function CreateAnnotationModal({
                         form.handleSubmit();
                     },
                     sx: {
-                        maxWidth: 'sm',
+                        maxWidth: '600px',
+                        width: '100%',
                         padding: '1rem',
                     },
                 }}
@@ -295,7 +296,7 @@ export function CreateAnnotationModal({
                         />
                     )}
                 </form.Field>
-                <Stack gap="2rem">
+                <Stack gap="1rem">
                     <Stack direction="row" alignItems="center" gap="1rem">
                         <Box flexGrow={1}>
                             <LinearProgress
@@ -332,7 +333,7 @@ export function CreateAnnotationModal({
                     <Box fullWidth role="tabpanel">
                         {currentStep === TARGET_STEP && (
                             <Stack
-                                spacing="2rem"
+                                spacing="1rem"
                                 aria-label={translate('annotation_step_target')}
                                 role="tab"
                             >
@@ -389,7 +390,7 @@ export function CreateAnnotationModal({
 
                         {currentStep === AUTHOR_STEP && (
                             <Stack
-                                spacing="2rem"
+                                spacing="1rem"
                                 aria-label={translate('annotation_step_author')}
                                 role="tab"
                             >

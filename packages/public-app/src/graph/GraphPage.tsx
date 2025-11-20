@@ -2,7 +2,10 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
+import { SearchPaneContextProvider } from '@lodex/frontend-common/search/SearchPaneContext';
 import getTitle from '@lodex/frontend-common/utils/getTitle';
+import { Stack } from '@mui/material';
+import { SearchResultPane } from '../search/SearchResultPane';
 import Graph from './Graph';
 
 type GraphPageProps = {
@@ -15,7 +18,11 @@ const GraphPage = ({ name, tenant }: GraphPageProps) => (
         <Helmet>
             <title>{getTitle(tenant, 'Resources')}</title>
         </Helmet>
-        <Graph className="graph-page" name={name} />
+        <Stack direction="row">
+            <SearchPaneContextProvider resultsPane={<SearchResultPane />}>
+                <Graph className="graph-page" name={name} />
+            </SearchPaneContextProvider>
+        </Stack>
     </>
 );
 

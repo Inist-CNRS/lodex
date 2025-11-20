@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { FormControlLabel, Switch } from '@mui/material';
+import { FieldSelector } from '../../../fields/form/FieldSelector';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
@@ -21,6 +22,7 @@ type NetworkArgs = {
     };
     displayWeighted?: boolean;
     colors?: string;
+    fieldToFilter?: string | null;
 };
 
 export const defaultArgs = {
@@ -33,6 +35,7 @@ export const defaultArgs = {
     },
     displayWeighted: true,
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
+    fieldToFilter: null,
 };
 
 type NetworkAdminProps = {
@@ -108,6 +111,15 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                     checked={args.displayWeighted ?? true}
                     onChange={handleChangeDisplayWeighted}
                     label={translate('display_weighted')}
+                />
+                <FieldSelector
+                    value={args?.fieldToFilter ?? null}
+                    onChange={(fieldToFilter) =>
+                        onChange({
+                            ...args,
+                            fieldToFilter: fieldToFilter || null,
+                        })
+                    }
                 />
                 <ColorPickerParamsAdmin
                     colors={args.colors}
