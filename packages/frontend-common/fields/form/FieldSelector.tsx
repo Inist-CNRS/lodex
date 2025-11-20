@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { AutoComplete } from '../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../i18n/I18NContext';
-import { useListFields } from '../api/useListField';
+import { useListField } from '../api/useListField';
 
 export function FieldSelector({ value, onChange }: FieldSelectorProps) {
     const { translate } = useTranslate();
 
-    const { isListFieldPending, fields } = useListFields();
+    const { isFieldListPending, fields } = useListField();
 
     const fieldsByName = useMemo(() => {
         return fields.reduce<Record<string, (typeof fields)[0]>>(
@@ -36,7 +36,7 @@ export function FieldSelector({ value, onChange }: FieldSelectorProps) {
         <AutoComplete
             name="fieldToFilter"
             label={translate('field_to_filter')}
-            disabled={isListFieldPending}
+            disabled={isFieldListPending}
             options={options}
             getOptionLabel={getOptionLabel}
             value={value}
