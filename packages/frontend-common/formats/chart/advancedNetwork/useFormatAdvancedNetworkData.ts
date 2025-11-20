@@ -89,6 +89,7 @@ export function useFormatAdvancedNetworkData({
                     : undefined,
             }),
         );
+
         const maxRadius = Math.max(
             ...fullNodes.map((node) => node.radius ?? 0),
         );
@@ -131,14 +132,22 @@ export function useFormatAdvancedNetworkData({
             }),
         );
 
+        const nodesById = nodes.reduce<Record<string, Node>>((acc, node) => {
+            acc[node.id] = node;
+            return acc;
+        }, {});
+
         const links = fullNodes.flatMap(({ id: sourceId, targets, color }) =>
             targets
-                ? targets.map(({ id: targetId }) => ({
-                      source: sourceId,
-                      target: targetId,
-                      value: 1,
-                      color,
-                  }))
+                ? targets
+                      .map(({ id: targetId }) => ({
+                          source: sourceId,
+                          target: targetId,
+                          value: 1,
+                          color,
+                      }))
+                      // remove orphan link when retrieving only a subset of nodes
+                      .filter((link) => nodesById[link.target] !== undefined)
                 : [],
         );
 
