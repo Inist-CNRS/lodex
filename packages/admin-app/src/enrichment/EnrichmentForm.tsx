@@ -7,6 +7,7 @@ import { TextField } from '@lodex/frontend-common/form-fields/TextField';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
 import { Box, Button, FormGroup, ListItem, Typography } from '@mui/material';
+import { useDebouncedValue } from '@tanstack/react-pacer/debouncer';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
@@ -29,7 +30,10 @@ import {
 } from './index';
 import RunButton from './RunButton';
 import { useListDataSource } from './useListDataSource.tsx';
-import { usePreviewDataSource } from './usePreviewDataSource.tsx';
+import {
+    usePreviewDataSource,
+    type UsePreviewDataSourceParams,
+} from './usePreviewDataSource.tsx';
 
 type NewEnrichment = Omit<Partial<Enrichment>, '_id'>;
 
@@ -92,15 +96,32 @@ export const EnrichmentForm = ({
         return selectedColumn?.subPaths ?? [];
     }, [selectedColumn]);
 
-    const { previewData } = usePreviewDataSource({
-        dataSource: selectedDataSource,
-        sourceColumn: formValues.sourceColumn,
-        subPath: formValues.subPath,
+    const [debouncedFormValues] = useDebouncedValue<
+        NewEnrichment,
+        UsePreviewDataSourceParams
+    >(formValues, {
+        wait: 300,
     });
 
+    const previewDataSourceParams = useMemo(() => {
+        if (debouncedFormValues?.advancedMode) {
+            return {
+                dataSource: selectedDataSource,
+                rule: debouncedFormValues?.rule,
+            };
+        }
+        return {
+            dataSource: selectedDataSource,
+            sourceColumn: debouncedFormValues?.sourceColumn,
+            subPath: debouncedFormValues?.subPath,
+        };
+    }, [debouncedFormValues, selectedDataSource]);
+
+    const { previewData, isPreviewPending } = usePreviewDataSource(
+        previewDataSourceParams,
+    );
+
     const handleDataSourceChange = (value: string) => {
-        setValue('sourceColumn', '');
-        setValue('subPath', '');
         setValue('dataSource', value);
     };
 
@@ -279,6 +300,55 @@ export const EnrichmentForm = ({
                                 </>
                             )}
                         </Box>
+
+                        <Box mb="1rem">
+                            <AutoCompleteField
+                                clearIdentifier={() => {
+                                    handleDataSourceChange('');
+                                }}
+                                options={dataSources}
+                                name="dataSource"
+                                label={translate('dataSource')}
+                                required
+                                disabled={isDataSourceListPending}
+                                value={formValues?.dataSource ?? ''}
+                                onChange={(_, newValue) => {
+                                    handleDataSourceChange(newValue);
+                                }}
+                                getOptionLabel={getDataSourceLabel}
+                                renderOption={(props, option) => {
+                                    const dataSource =
+                                        getDataSourceById(option);
+                                    if (!dataSource) {
+                                        return null;
+                                    }
+
+                                    const statusLabel = dataSource.isEmpty
+                                        ? 'enrichment_status_empty'
+                                        : dataSource.status &&
+                                            dataSource.status !==
+                                                TaskStatus.FINISHED
+                                          ? labelByStatus[
+                                                dataSource.status ?? ''
+                                            ]
+                                          : null;
+                                    return (
+                                        <ListItem
+                                            {...props}
+                                            key={dataSource.id}
+                                            disabled={dataSource.isEmpty}
+                                        >
+                                            <Typography>
+                                                {dataSource.name}{' '}
+                                                {statusLabel &&
+                                                    `(${translate(statusLabel)})`}
+                                            </Typography>
+                                        </ListItem>
+                                    );
+                                }}
+                            />
+                        </Box>
+
                         <Box>
                             <FormGroup>
                                 <SwitchField
@@ -330,56 +400,6 @@ export const EnrichmentForm = ({
                                 </Box>
 
                                 <Box display="flex" gap="2rem" mb="2rem">
-                                    <AutoCompleteField
-                                        clearIdentifier={() => {
-                                            handleDataSourceChange('');
-                                        }}
-                                        options={dataSources}
-                                        name="dataSource"
-                                        label={translate('dataSource')}
-                                        required
-                                        disabled={isDataSourceListPending}
-                                        value={formValues?.dataSource ?? ''}
-                                        onChange={(_, newValue) => {
-                                            handleDataSourceChange(newValue);
-                                        }}
-                                        getOptionLabel={getDataSourceLabel}
-                                        renderOption={(props, option) => {
-                                            const dataSource =
-                                                getDataSourceById(option);
-                                            if (!dataSource) {
-                                                return null;
-                                            }
-
-                                            const statusLabel =
-                                                dataSource.isEmpty
-                                                    ? 'enrichment_status_empty'
-                                                    : dataSource.status &&
-                                                        dataSource.status !==
-                                                            TaskStatus.FINISHED
-                                                      ? labelByStatus[
-                                                            dataSource.status ??
-                                                                ''
-                                                        ]
-                                                      : null;
-                                            console.log(dataSource);
-                                            return (
-                                                <ListItem
-                                                    {...props}
-                                                    key={dataSource.id}
-                                                    disabled={
-                                                        dataSource.isEmpty
-                                                    }
-                                                >
-                                                    <Typography>
-                                                        {dataSource.name}{' '}
-                                                        {statusLabel &&
-                                                            `(${translate(statusLabel)})`}
-                                                    </Typography>
-                                                </ListItem>
-                                            );
-                                        }}
-                                    />
                                     <AutoCompleteField
                                         clearIdentifier={() => {
                                             handleSourceColumnChange('');
@@ -455,6 +475,7 @@ export const EnrichmentForm = ({
                     </Box>
                     <Box width="25rem">
                         <EnrichmentPreview
+                            isPending={isPreviewPending}
                             lines={previewData}
                             sourceColumn={selectedColumn?.name}
                         />

@@ -1,6 +1,9 @@
 import { TaskStatus, type DataSource } from '@lodex/common';
 import Koa from 'koa';
+import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
+import { getEnrichmentDataPreview } from '../../services/enrichment/enrichment';
+import { previewDataSourceSchema } from './dataSource.schema';
 
 const app = new Koa();
 
@@ -57,24 +60,49 @@ export type ListDataSourceContext = Pick<Koa.Context, 'body'> & {
     >;
 };
 
-export const previewDataSource = async (
-    ctx: PreviewDataSourceContext,
-    id: string,
-) => {
-    if (id === 'dataset') {
-        ctx.body = await ctx.dataset.getExcerpt();
+export const previewDataSource = async (ctx: PreviewDataSourceContext) => {
+    const previewDataSourceConfig = previewDataSourceSchema.safeParse(
+        ctx.request.body,
+    );
+
+    if (!previewDataSourceConfig.success) {
+        ctx.status = 400;
+        ctx.body = { error: 'invalid_request' };
         return;
     }
 
-    ctx.body = await ctx.precomputed.getSample(id);
+    const { dataSource } = previewDataSourceConfig.data;
+
+    if (
+        !('rule' in previewDataSourceConfig.data) &&
+        !('sourceColumn' in previewDataSourceConfig.data)
+    ) {
+        ctx.body =
+            dataSource === 'dataset'
+                ? await ctx.dataset.getExcerpt()
+                : await ctx.precomputed.getSample(dataSource);
+        return;
+    }
+
+    try {
+        const previewData = await getEnrichmentDataPreview(ctx);
+        ctx.body = previewData;
+    } catch (e) {
+        ctx.status = 500;
+        ctx.body = { error: 'internal_error' };
+    }
 };
 
-export type PreviewDataSourceContext = Pick<Koa.Context, 'body'> & {
+export type PreviewDataSourceContext = Pick<
+    Koa.Context,
+    'request' | 'body' | 'status'
+> & {
     dataset: Pick<Koa.Context['dataset'], 'getExcerpt'>;
     precomputed: Pick<Koa.Context['precomputed'], 'getSample'>;
 };
 
 app.use(route.get('/', listDataSource));
-app.use(route.get('/:id/preview', previewDataSource));
+app.use(koaBodyParser());
+app.use(route.post('/preview', previewDataSource));
 
 export default app;
