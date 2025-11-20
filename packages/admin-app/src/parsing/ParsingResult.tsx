@@ -48,7 +48,7 @@ const styles = {
         position: 'relative',
         flex: '1 1 auto',
         display: 'flex',
-        height: 'calc(100vh - 90px)',
+        height: 'calc(100vh - 170px)',
     },
     enrichedColumn: {
         backgroundColor: 'primary.light',
