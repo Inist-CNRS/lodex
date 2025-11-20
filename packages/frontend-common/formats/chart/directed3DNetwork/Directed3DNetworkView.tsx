@@ -1,20 +1,24 @@
-import { compose } from 'recompose';
 import type { Field } from '../../../fields/types';
-import injectData from '../../injectData';
 import {
-    useFormatNetworkData,
-    type NetworkData,
-} from '../network/useFormatNetworkData';
-import { Network3DBase } from './Network3DBase';
+    useFormatAdvancedNetworkData,
+    type AdvancedNetworkData,
+} from '../advancedNetwork/useFormatAdvancedNetworkData';
+import { compose } from 'recompose';
+import injectData from '../../injectData';
+import { Network3DBase } from '../network3D/Network3DBase';
 
-interface NetworkProps {
+interface Directed3DNetworkProps {
     colorSet?: string[];
-    formatData?: NetworkData[];
+    formatData?: AdvancedNetworkData[];
     field: Field;
 }
 
-const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
-    const { nodes, links } = useFormatNetworkData({
+const Directed3DNetwork = ({
+    formatData,
+    colorSet,
+    field,
+}: Directed3DNetworkProps) => {
+    const { nodes, links } = useFormatAdvancedNetworkData({
         formatData,
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
@@ -27,16 +31,18 @@ const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
         typeof field.format?.args?.fieldToFilter === 'string'
             ? field.format.args.fieldToFilter
             : null;
-
     return (
         <Network3DBase
             colorSet={colorSet}
             nodes={nodes}
             links={links}
+            linkCurvature={0.25}
+            showArrows
             fieldToFilter={fieldToFilter}
         />
     );
 };
 
-// @ts-expect-error TS2345
-export default compose(injectData())(Network3D);
+export default compose<Directed3DNetworkProps, Directed3DNetworkProps>(
+    injectData(),
+)(Directed3DNetwork);

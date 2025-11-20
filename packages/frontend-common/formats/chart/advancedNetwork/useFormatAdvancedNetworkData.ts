@@ -38,11 +38,15 @@ export type AdvancedNetworkData = {
 export type UseFormatNetworkDataParams = {
     formatData?: AdvancedNetworkData[];
     displayWeighted: boolean;
+    minRadius?: number;
+    maxRadius?: number;
 };
 
 export function useFormatAdvancedNetworkData({
     formatData,
     displayWeighted,
+    minRadius = 1,
+    maxRadius = 20,
 }: UseFormatNetworkDataParams): {
     nodes: Node[];
     links: Link[];
@@ -89,16 +93,16 @@ export function useFormatAdvancedNetworkData({
                     : undefined,
             }),
         );
-        const maxRadius = Math.max(
+        const maxNodeRadius = Math.max(
             ...fullNodes.map((node) => node.radius ?? 0),
         );
-        const minRadius = Math.min(
+        const minNodeRadius = Math.min(
             ...fullNodes.map((node) => node.radius ?? 0),
         );
 
         const scaleRadius = scaleLinear()
-            .domain([minRadius, maxRadius])
-            .range([1, 20]);
+            .domain([minNodeRadius, maxNodeRadius])
+            .range([minRadius, maxRadius]);
 
         const maxX = Math.max(
             ...fullNodes.map((node) => (node.x !== undefined ? node.x : 0)),

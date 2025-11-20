@@ -394,6 +394,14 @@ export const Network3DBase = ({
                                 // Create a group to hold both sphere and text
                                 const group = new Group();
 
+                                // Determine if this node should be dimmed
+                                const isHighlighted =
+                                    highlightedNodeIds.length === 0 ||
+                                    highlightedNodeIds.includes(
+                                        node.id as string,
+                                    );
+                                const opacity = isHighlighted ? 1.0 : 0.1;
+
                                 // Create the sphere
                                 const sphere = new SphereGeometry(
                                     Math.max(node.radius, 0.5),
@@ -405,6 +413,8 @@ export const Network3DBase = ({
                                             node.color ??
                                             colorSet?.[0] ??
                                             '#ffffff',
+                                        opacity: opacity,
+                                        transparent: true,
                                     }),
                                 );
 
@@ -416,13 +426,10 @@ export const Network3DBase = ({
                                 sprite.textHeight = node.radius;
                                 sprite.strokeColor = 'black';
                                 sprite.strokeWidth = 0.5;
-
-                                // Disable depth writing so text appears on top of sphere
-                                // but still respects depth testing for other objects
                                 // @ts-expect-error SpriteText material property
-                                sprite.material.depthWrite = false;
-                                // @ts-expect-error SpriteText renderOrder property
-                                sprite.renderOrder = 999;
+                                sprite.material.opacity = opacity;
+                                // @ts-expect-error SpriteText material property
+                                sprite.material.transparent = true;
 
                                 // Add both to the group
                                 group.add(sphereMesh);
