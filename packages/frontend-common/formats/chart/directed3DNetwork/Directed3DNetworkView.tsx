@@ -18,13 +18,21 @@ const Directed3DNetwork = ({
     colorSet,
     field,
 }: Directed3DNetworkProps) => {
+    const {
+        minRadius,
+        maxRadius,
+    }: {
+        minRadius?: number;
+        maxRadius?: number;
+    } = field?.format?.args ?? {};
     const { nodes, links } = useFormatAdvancedNetworkData({
         formatData,
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
                 ? field.format.args.displayWeighted
                 : true,
-        minRadius: 5,
+        minRadius,
+        maxRadius,
     });
 
     const fieldToFilter =

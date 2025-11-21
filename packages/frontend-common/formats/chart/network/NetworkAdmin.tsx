@@ -1,6 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, type ChangeEvent } from 'react';
 
-import { FormControlLabel, Switch } from '@mui/material';
+import {
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Radio,
+    RadioGroup,
+    Switch,
+    TextField,
+} from '@mui/material';
 import { FieldSelector } from '../../../fields/form/FieldSelector';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -21,6 +29,9 @@ type NetworkArgs = {
         uri?: string;
     };
     displayWeighted?: boolean;
+    zoomAdjustNodeSize?: boolean;
+    minRadius?: number;
+    maxRadius?: number;
     colors?: string;
     fieldToFilter?: string | null;
 };
@@ -34,6 +45,9 @@ export const defaultArgs = {
         uri: undefined,
     },
     displayWeighted: true,
+    zoomAdjustNodeSize: false,
+    minRadius: 1,
+    maxRadius: 20,
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
     fieldToFilter: null,
 };
@@ -77,6 +91,36 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
         [onChange, args],
     );
 
+    const handleChangeZoomAdjustNodeSize = useCallback(
+        (_: unknown, checked: string) => {
+            onChange({
+                ...args,
+                zoomAdjustNodeSize: checked === 'true',
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleChangeMinRadius = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                minRadius: Number(e.target.value),
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleChangeMaxRadius = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                maxRadius: Number(e.target.value),
+            });
+        },
+        [onChange, args],
+    );
+
     const handleColors = useCallback(
         (colors: string) => {
             onChange({
@@ -111,6 +155,42 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                     checked={args.displayWeighted ?? true}
                     onChange={handleChangeDisplayWeighted}
                     label={translate('display_weighted')}
+                />
+                <FormControl fullWidth>
+                    <FormLabel>{translate('zoom_adjust_node_size')}</FormLabel>
+                    <RadioGroup
+                        value={args.zoomAdjustNodeSize ?? false}
+                        onChange={handleChangeZoomAdjustNodeSize}
+                    >
+                        <FormControlLabel
+                            value={true}
+                            control={<Radio />}
+                            label={translate('zoom_adapt_radius')}
+                        />
+                        <FormControlLabel
+                            value={false}
+                            control={<Radio />}
+                            label={translate('zoom_fixed_radius')}
+                        />
+                    </RadioGroup>
+                </FormControl>
+                <TextField
+                    type="number"
+                    label={translate('minRadius')}
+                    sx={{
+                        flex: 1,
+                    }}
+                    onChange={handleChangeMinRadius}
+                    value={args.minRadius}
+                />
+                <TextField
+                    type="number"
+                    label={translate('maxRadius')}
+                    sx={{
+                        flex: 1,
+                    }}
+                    onChange={handleChangeMaxRadius}
+                    value={args.maxRadius}
                 />
                 <FieldSelector
                     value={args?.fieldToFilter ?? null}

@@ -11,18 +11,30 @@ interface NetworkProps {
 }
 
 const Network = ({ formatData, colorSet, field }: NetworkProps) => {
+    const {
+        zoomAdjustNodeSize,
+        minRadius,
+        maxRadius,
+    }: {
+        zoomAdjustNodeSize?: boolean;
+        minRadius?: number;
+        maxRadius?: number;
+    } = field?.format?.args ?? {};
+
+    const fieldToFilter =
+        typeof field.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
+
     const { nodes, links } = useFormatNetworkData({
         formatData,
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
                 ? field.format.args.displayWeighted
                 : true,
+        minRadius,
+        maxRadius,
     });
-
-    const fieldToFilter =
-        typeof field.format?.args?.fieldToFilter === 'string'
-            ? field.format.args.fieldToFilter
-            : null;
 
     return (
         <NetworkBase
@@ -30,6 +42,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
             nodes={nodes}
             links={links}
             fieldToFilter={fieldToFilter}
+            zoomAdjustNodeSize={zoomAdjustNodeSize}
         />
     );
 };

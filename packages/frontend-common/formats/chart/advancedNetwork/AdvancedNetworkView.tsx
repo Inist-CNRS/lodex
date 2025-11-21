@@ -14,12 +14,23 @@ interface NetworkProps {
 }
 
 const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
+    const {
+        zoomAdjustNodeSize,
+        minRadius,
+        maxRadius,
+    }: {
+        zoomAdjustNodeSize?: boolean;
+        minRadius?: number;
+        maxRadius?: number;
+    } = field?.format?.args ?? {};
     const { nodes, links } = useFormatAdvancedNetworkData({
         formatData,
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
                 ? field.format.args.displayWeighted
                 : true,
+        minRadius,
+        maxRadius,
     });
 
     const fieldToFilter =
@@ -35,6 +46,7 @@ const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
             linkCurvature={0.25}
             highlightMode="outgoing"
             fieldToFilter={fieldToFilter}
+            zoomAdjustNodeSize={zoomAdjustNodeSize}
         />
     );
 };

@@ -28,6 +28,7 @@ import {
 } from 'three';
 
 import SpriteText from 'three-spritetext';
+import { compareNodes, isLinkVisible } from '../network/NetworkBase';
 
 const ForceGraph3D = lazy(() => import('react-force-graph-3d'));
 
@@ -39,92 +40,6 @@ const styles = {
         height: '100%',
         maxHeight: typeof window !== 'undefined' ? window.innerHeight - 96 : 0,
     },
-};
-
-export const compareNodes = ({
-    a,
-    b,
-    selectedNode,
-    hoveredNode,
-    highlightedNodeIds,
-}: {
-    a: Node;
-    b: Node;
-    selectedNode: NodeObject | null;
-    hoveredNode: NodeObject | null;
-    highlightedNodeIds: string[];
-}) => {
-    if (!selectedNode && !hoveredNode) {
-        return a.radius - b.radius;
-    }
-    if (a.id === hoveredNode?.id) {
-        return 1;
-    }
-    if (b.id === hoveredNode?.id) {
-        return -1;
-    }
-    if (a.id === selectedNode?.id) {
-        return 1;
-    }
-    if (b.id === selectedNode?.id) {
-        return -1;
-    }
-    const isAHighlighted = highlightedNodeIds.some(
-        (highlightNodeId) => highlightNodeId === a.id,
-    );
-    const isBHighlighted = highlightedNodeIds.some(
-        (highlightNodeId) => highlightNodeId === b.id,
-    );
-    if (isAHighlighted && !isBHighlighted) {
-        return 1;
-    }
-    if (!isAHighlighted && isBHighlighted) {
-        return -1;
-    }
-    return a.radius - b.radius;
-};
-
-export const isLinkVisible = ({
-    link,
-    highlightMode,
-    selectedNode,
-    hoveredNode,
-}: {
-    link: {
-        source: {
-            id: string;
-        };
-        target: {
-            id: string;
-        };
-    };
-    highlightMode?: 'ingoing' | 'outgoing' | 'all';
-    selectedNode: { id: string } | null;
-    hoveredNode: { id: string } | null;
-}) => {
-    if (!selectedNode && !hoveredNode) {
-        return true;
-    }
-
-    if (highlightMode === 'all') {
-        return (
-            selectedNode?.id === (link.source! as NodeObject).id ||
-            selectedNode?.id === (link.target! as NodeObject).id ||
-            hoveredNode?.id === (link.target! as NodeObject).id ||
-            hoveredNode?.id === (link.source! as NodeObject).id
-        );
-    }
-    if (highlightMode === 'ingoing') {
-        return (
-            selectedNode?.id === (link.target! as NodeObject).id ||
-            hoveredNode?.id === (link.target! as NodeObject).id
-        );
-    }
-
-    return (
-        selectedNode?.id === (link.source! as NodeObject).id ||
-        hoveredNode?.id === (link.source! as NodeObject).id
-    );
 };
 
 type NetworkBaseProps = {
