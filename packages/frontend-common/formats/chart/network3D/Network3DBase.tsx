@@ -364,7 +364,7 @@ export const Network3DBase = ({
 
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
-            <FormatFullScreenMode fill="#fffffd">
+            <FormatFullScreenMode>
                 {/*
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
@@ -388,6 +388,7 @@ export const Network3DBase = ({
                     >
                         <ForceGraph3D
                             ref={fgRef}
+                            backgroundColor="white"
                             nodeVal={(n) => n.radius}
                             nodeColor={() => colorSet![0]}
                             nodeThreeObject={(node: Node) => {
@@ -422,9 +423,9 @@ export const Network3DBase = ({
                                 const sprite = new SpriteText(
                                     node.label ?? node.id,
                                 );
-                                sprite.color = 'white';
+                                sprite.color = 'black';
                                 sprite.textHeight = node.radius;
-                                sprite.strokeColor = 'black';
+                                sprite.strokeColor = 'white';
                                 sprite.strokeWidth = 0.5;
                                 // @ts-expect-error SpriteText material property
                                 sprite.material.opacity = opacity;
@@ -454,9 +455,7 @@ export const Network3DBase = ({
                                 return node.label;
                             }}
                             linkColor={(link) =>
-                                link.color
-                                    ? addTransparency(link.color, 0.25)
-                                    : '#99999999'
+                                addTransparency(link.color ?? '#777777', 0.25)
                             }
                             linkVisibility={(link) =>
                                 isLinkVisible({
@@ -493,7 +492,7 @@ export const Network3DBase = ({
                             left: 0,
                         }}
                     >
-                        {<MouseIcon fill="#fffffd" />}
+                        {<MouseIcon />}
                     </div>
                 </div>
             </FormatFullScreenMode>
