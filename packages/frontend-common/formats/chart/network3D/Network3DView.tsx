@@ -1,6 +1,7 @@
 import { compose } from 'recompose';
 import type { Field } from '../../../fields/types';
 import injectData from '../../injectData';
+import { useColorOverrides } from '../network/useColorOverrides';
 import {
     useFormatNetworkData,
     type NetworkData,
@@ -10,10 +11,23 @@ import { Network3DBase } from './Network3DBase';
 interface NetworkProps {
     colorSet?: string[];
     formatData?: NetworkData[];
-    field: Field;
+    field: Field<{
+        isAdvancedColorMode?: boolean;
+        colorScale?: { color: string; values: string }[];
+        displayWeighted?: boolean;
+        fieldToFilter?: string;
+        zoomAdjustNodeSize?: boolean;
+        minRadius?: number;
+        maxRadius?: number;
+    }>;
 }
 
 const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
+    const colorOverrides = useColorOverrides(
+        field?.format?.args?.isAdvancedColorMode,
+        field?.format?.args?.colorScale,
+    );
+
     const {
         minRadius,
         maxRadius,
@@ -30,6 +44,7 @@ const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
                 : true,
         minRadius,
         maxRadius,
+        colorOverrides,
     });
 
     const fieldToFilter =

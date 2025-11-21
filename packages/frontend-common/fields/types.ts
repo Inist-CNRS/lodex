@@ -1,4 +1,4 @@
-export type Field = {
+export type Field<T extends object = { [key: string]: unknown }> = {
     _id: string;
     name: string;
     label?: string;
@@ -10,9 +10,7 @@ export type Field = {
     sortOrder?: 'asc' | 'desc';
     format?: {
         name: string;
-        args?: {
-            [key: string]: unknown;
-        };
+        args?: T;
     };
 };
 

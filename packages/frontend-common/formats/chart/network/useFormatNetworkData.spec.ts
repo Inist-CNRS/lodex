@@ -131,11 +131,13 @@ describe('useFormatNetworkData', () => {
                 id: 'A',
                 label: 'A',
                 radius: expect.any(Number),
+                color: undefined,
             },
             {
                 id: 'B',
                 label: 'B',
                 radius: expect.any(Number),
+                color: undefined,
             },
         ]);
 
@@ -158,16 +160,19 @@ describe('useFormatNetworkData', () => {
                 id: 'A',
                 label: 'A',
                 radius: expect.any(Number),
+                color: undefined,
             },
             {
                 id: 'B',
                 label: 'B',
                 radius: expect.any(Number),
+                color: undefined,
             },
             {
                 id: 'C',
                 label: 'C',
                 radius: expect.any(Number),
+                color: undefined,
             },
         ]);
 
@@ -244,5 +249,94 @@ describe('useFormatNetworkData', () => {
         );
         expect(linkAB?.value).toBe(1);
         expect(linkAC?.value).toBe(20);
+    });
+
+    it('assigns colors from colorOverrides to nodes', () => {
+        const data: NetworkData[] = [
+            { source: 'A', target: 'B', weight: 1 },
+            { source: 'B', target: 'C', weight: 2 },
+        ];
+
+        const colorOverrides = {
+            A: '#FF0000',
+            C: '#00FF00',
+        };
+
+        const { result } = renderHook(() =>
+            useFormatNetworkData({
+                formatData: data,
+                displayWeighted: true,
+                colorOverrides,
+            }),
+        );
+
+        const nodeA = result.current.nodes.find((n) => n.id === 'A');
+        const nodeB = result.current.nodes.find((n) => n.id === 'B');
+        const nodeC = result.current.nodes.find((n) => n.id === 'C');
+
+        expect(nodeA?.color).toBe('#FF0000');
+        expect(nodeB?.color).toBeUndefined();
+        expect(nodeC?.color).toBe('#00FF00');
+    });
+
+    it('returns undefined colors when colorOverrides is empty', () => {
+        const data: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
+
+        const { result } = renderHook(() =>
+            useFormatNetworkData({
+                formatData: data,
+                displayWeighted: true,
+                colorOverrides: {},
+            }),
+        );
+
+        for (const node of result.current.nodes) {
+            expect(node.color).toBeUndefined();
+        }
+    });
+
+    it('returns undefined colors when colorOverrides is not provided', () => {
+        const data: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
+
+        const { result } = renderHook(() =>
+            useFormatNetworkData({
+                formatData: data,
+                displayWeighted: true,
+            }),
+        );
+
+        for (const node of result.current.nodes) {
+            expect(node.color).toBeUndefined();
+        }
+    });
+
+    it('updates colors when colorOverrides changes', () => {
+        const data: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
+
+        const { result, rerender } = renderHook(
+            ({ overrides }) =>
+                useFormatNetworkData({
+                    formatData: data,
+                    displayWeighted: true,
+                    colorOverrides: overrides,
+                }),
+            { initialProps: { overrides: {} } },
+        );
+
+        expect(
+            result.current.nodes.find((n) => n.id === 'A')?.color,
+        ).toBeUndefined();
+
+        rerender({ overrides: { A: '#FF0000' } });
+
+        expect(result.current.nodes.find((n) => n.id === 'A')?.color).toBe(
+            '#FF0000',
+        );
+
+        rerender({ overrides: { A: '#0000FF' } });
+
+        expect(result.current.nodes.find((n) => n.id === 'A')?.color).toBe(
+            '#0000FF',
+        );
     });
 });
