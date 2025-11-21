@@ -17,7 +17,7 @@ import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
 
-const DATASET_COLLECTION = 'dataset';
+export const DATASET_COLLECTION = 'dataset';
 
 const getSource = (ctx: Koa.Context, dataSource?: string): Source => {
     const collectionName =
