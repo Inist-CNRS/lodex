@@ -1478,3 +1478,8 @@
 "select_precomputed_data"	"Select precomputed data"	"Sélectionner les données précalculés"
 "select_node"	"Select node"	"Sélectionner un noeud"
 "field_to_filter"	"Field used for search during value selection"	"Champ utilisé pour la recherche lors de la sélection d'une valeur"
+"default_color"	"Default color"	"Couleur par défaut"
+"advanced_color_mode"	"Define from data"	"Définir en fonction des données"
+"add_value"	"Add value"	"Ajouter une valeur"
+"values"	"Values"	"Valeurs"
+"one_value_per_line"	"One value per line"	"Une valeur par ligne"

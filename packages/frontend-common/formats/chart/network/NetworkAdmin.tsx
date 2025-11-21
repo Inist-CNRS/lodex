@@ -1,24 +1,28 @@
-import React, { useCallback, type ChangeEvent } from 'react';
-
 import {
     FormControl,
     FormControlLabel,
+    FormGroup,
     FormLabel,
     Radio,
     RadioGroup,
     Switch,
     TextField,
+    Typography,
 } from '@mui/material';
+import React, { useCallback, type ChangeEvent } from 'react';
+
 import { FieldSelector } from '../../../fields/form/FieldSelector';
+import { ArrayInput } from '../../../form-fields/ArrayInput';
+import { ColorPickerInput } from '../../../form-fields/ColorPickerInput';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
-import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { ColorScaleInput, type ColorScaleItemMaybe } from './ColorScaleInput';
 
 type NetworkArgs = {
     params?: {
@@ -34,9 +38,11 @@ type NetworkArgs = {
     maxRadius?: number;
     colors?: string;
     fieldToFilter?: string | null;
+    isAdvancedColorMode?: boolean;
+    colorScale?: ColorScaleItemMaybe[];
 };
 
-export const defaultArgs = {
+export const defaultArgs: NetworkArgs = {
     params: {
         maxSize: 200,
         orderBy: 'value/asc',
@@ -121,7 +127,27 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
         [onChange, args],
     );
 
-    const handleColors = useCallback(
+    const handleToggleAdvancedColors = useCallback(
+        (isAdvancedColorMode: boolean) => {
+            onChange({
+                ...args,
+                isAdvancedColorMode,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleColorScaleChange = useCallback(
+        (colorScale: ColorScaleItemMaybe[]) => {
+            onChange({
+                ...args,
+                colorScale,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleDefaultColorChange = useCallback(
         (colors: string) => {
             onChange({
                 ...args,
@@ -201,11 +227,45 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                         })
                     }
                 />
-                <ColorPickerParamsAdmin
-                    colors={args.colors}
-                    onChange={handleColors}
-                    monochromatic={true}
-                />
+
+                <FormGroup
+                    aria-label={translate('Color')}
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                    }}
+                >
+                    <Typography variant="h3" sx={{ fontSize: '1rem' }}>
+                        {translate('Color')}
+                    </Typography>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={args.isAdvancedColorMode ?? false}
+                                onChange={(_, checked) =>
+                                    handleToggleAdvancedColors(checked)
+                                }
+                            />
+                        }
+                        label={translate('advanced_color_mode')}
+                    />
+
+                    {args.isAdvancedColorMode && (
+                        <ArrayInput
+                            Component={ColorScaleInput}
+                            value={args.colorScale ?? []}
+                            onChange={handleColorScaleChange}
+                        />
+                    )}
+
+                    <ColorPickerInput
+                        label={translate('default_color')}
+                        value={args.colors}
+                        onChange={handleDefaultColorChange}
+                    />
+                </FormGroup>
             </FormatChartParamsFieldSet>
         </FormatGroupedFieldSet>
     );
