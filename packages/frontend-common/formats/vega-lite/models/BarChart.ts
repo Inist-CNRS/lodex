@@ -280,7 +280,10 @@ class BarChart extends BasicChart {
         if (!this.labels) {
             return {
                 background: 'transparent',
-                mark: model.mark,
+                mark: {
+                    ...model.mark,
+                    cursor: 'pointer',
+                },
                 encoding: encoding,
                 // @ts-expect-error TS2339
                 padding: this.padding,
@@ -309,7 +312,10 @@ class BarChart extends BasicChart {
                 background: 'transparent',
                 layer: [
                     {
-                        mark: model.mark,
+                        mark: {
+                            ...model.mark,
+                            cursor: 'pointer',
+                        },
                         encoding: encoding,
                     },
                     {

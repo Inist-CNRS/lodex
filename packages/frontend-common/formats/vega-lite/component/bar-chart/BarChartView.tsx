@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
@@ -18,6 +18,7 @@ import { CustomActionVegaLite } from '../../../utils/components/vega-lite-compon
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import type { Field } from '../../../../fields/types';
+import { SearchPaneContext } from '../../../../search/SearchPaneContext';
 
 const styles = {
     container: {
@@ -52,43 +53,41 @@ interface BarChartViewProps {
 
 const BarChartView = ({
     advancedMode,
-
     advancedModeSpec,
-
     field,
-
     data,
-
     direction,
-
     params,
-
     scale,
-
     colors,
-
     axisRoundValue,
-
     tooltip,
-
     tooltipCategory,
-
     tooltipValue,
-
     labels,
-
     labelOverlap,
-
     barSize,
-
     diagonalCategoryAxis,
-
     diagonalValueAxis,
-
     aspectRatio,
 }: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
+    const searchPane = useContext(SearchPaneContext);
+
+    const fieldToFilter =
+        typeof field?.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
+
+    const handleClick = (data: { _id: string }) => {
+        if (fieldToFilter && data && data._id) {
+            searchPane?.setFilter({
+                field: fieldToFilter,
+                value: data._id,
+            });
+        }
+    };
 
     const spec = useMemo(() => {
         if (advancedMode) {
@@ -160,6 +159,7 @@ const BarChartView = ({
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
+                onClick={fieldToFilter ? handleClick : undefined}
             />
         </div>
     );

@@ -34,6 +34,7 @@ import {
     type AspectRatio,
 } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
+import { FieldSelector } from '../../../../fields/form/FieldSelector';
 
 export const defaultArgs = {
     params: {
@@ -43,6 +44,7 @@ export const defaultArgs = {
     advancedMode: false,
     advancedModeSpec: null,
     colors: MULTICHROMATIC_DEFAULT_COLORSET,
+    fieldToFilter: null,
     axisRoundValue: true,
     diagonalCategoryAxis: false,
     diagonalValueAxis: false,
@@ -69,6 +71,7 @@ type BarChartArgs = {
     params?: BarChartParams;
     advancedMode?: boolean;
     advancedModeSpec?: string | null;
+    fieldToFilter?: string | null;
     colors?: string;
     axisRoundValue?: boolean;
     diagonalCategoryAxis?: boolean;
@@ -374,6 +377,16 @@ const BarChartAdmin = ({
                                 tooltipValue ?? defaultArgs.tooltipValue
                             }
                             thirdValue={false}
+                        />
+
+                        <FieldSelector
+                            value={args?.fieldToFilter ?? null}
+                            onChange={(fieldToFilter) =>
+                                onChange({
+                                    ...args,
+                                    fieldToFilter: fieldToFilter || null,
+                                })
+                            }
                         />
                         <ColorPickerParamsAdmin
                             colors={colors}

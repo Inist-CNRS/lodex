@@ -22,6 +22,7 @@ interface CustomActionVegaLiteProps {
     injectType: number;
     aspectRatio?: AspectRatio;
     p: unknown;
+    onClick?: (data: any) => void;
 }
 
 /**
@@ -37,6 +38,7 @@ function CustomActionVegaLite({
     injectType,
     disableZoom = false,
     p: polyglot,
+    onClick,
 }: CustomActionVegaLiteProps) {
     const actions = useVegaActions(user);
     const graphParentRef = useVegaCsvExport(data);
@@ -68,6 +70,16 @@ function CustomActionVegaLite({
             throw new Error('Invalid data injection type');
     }
 
+    const handleNewView = (view: any) => {
+        if (onClick) {
+            view.addEventListener('click', (event: any, item: any) => {
+                if (item && item.datum) {
+                    onClick(item.datum);
+                }
+            });
+        }
+    };
+
     const vegaGraphElement = (
         // @ts-expect-error TS2786
         <Vega
@@ -85,6 +97,7 @@ function CustomActionVegaLite({
             spec={deepClone(specWithData)}
             actions={actions}
             mode="vega-lite"
+            onNewView={handleNewView}
             i18n={{
                 // @ts-expect-error TS18046
                 SVG_ACTION: polyglot.t('vega_export_svg'),
