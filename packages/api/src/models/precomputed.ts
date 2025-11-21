@@ -485,6 +485,15 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         );
     };
 
+    const removeResultColumn = async (
+        precomputedId: string,
+        columnKey: string,
+    ): Promise<void> => {
+        await db
+            .collection(`pc_${precomputedId}`)
+            .updateMany({}, { $unset: { [columnKey]: '' } });
+    };
+
     return Object.assign(collection, {
         findOneById,
         findAll,
@@ -502,5 +511,6 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         getColumnsWithSubPaths,
         updateResult,
         cancelByIds,
+        removeResultColumn,
     });
 };

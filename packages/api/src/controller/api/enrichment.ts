@@ -5,6 +5,7 @@ import { v1 as uuid } from 'uuid';
 
 import {
     createEnrichmentRule,
+    DATASET_COLLECTION,
     getEnrichmentDataPreview,
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
@@ -82,6 +83,11 @@ export const putEnrichment = async (ctx: any, id: any) => {
 export const deleteEnrichment = async (ctx: any, id: any) => {
     try {
         const enrichment = await ctx.enrichment.findOneById(id);
+        if (!enrichment) {
+            ctx.status = 404;
+            ctx.body = { error: 'Enrichment not found' };
+            return;
+        }
         const activeJob = await getActiveJob(ctx.tenant);
         if (
             activeJob?.data?.jobType === ENRICHER &&
@@ -89,8 +95,19 @@ export const deleteEnrichment = async (ctx: any, id: any) => {
         ) {
             cancelJob(ctx, ENRICHER);
         }
+
+        if (
+            !enrichment!.dataSource ||
+            enrichment!.dataSource === DATASET_COLLECTION
+        ) {
+            await ctx.dataset.removeAttribute(enrichment.name);
+        } else {
+            await ctx.precomputed.removeResultColumn(
+                enrichment!.dataSource,
+                enrichment!.name,
+            );
+        }
         await ctx.enrichment.delete(id);
-        await ctx.dataset.removeAttribute(enrichment.name);
         ctx.status = 200;
         ctx.body = { message: 'ok' };
     } catch (error) {

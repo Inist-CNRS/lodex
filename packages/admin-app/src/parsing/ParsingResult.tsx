@@ -229,7 +229,8 @@ export const ParsingResultComponent = ({
                             if (
                                 typeof params.value === 'string' &&
                                 (params.value.startsWith('[Error]') ||
-                                    params.value.startsWith('ERROR'))
+                                    params.value.startsWith('ERROR') ||
+                                    params.value.startsWith('TypeError'))
                             ) {
                                 return (
                                     <Chip sx={styles.errorChip} label="Error" />

@@ -161,6 +161,9 @@ describe('Enrichment controller', () => {
                     delete: jest.fn(),
                 },
                 dataset: { removeAttribute: jest.fn() },
+                precomputed: {
+                    removeResultColumn: jest.fn(),
+                },
                 configTenant: {},
             };
             // @ts-expect-error TS(2339): Property 'mockResolvedValue' does not exist on typ... Remove this comment to see the full error message
@@ -172,10 +175,92 @@ describe('Enrichment controller', () => {
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
             expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
+            expect(ctx.precomputed.removeResultColumn).toHaveBeenCalledTimes(0);
             expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
             expect(cancelJob).toHaveBeenCalled();
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(200);
+        });
+        it('should delete existing dataset data based on the enrichment name and then delete it when DataSource is "dataset"', async () => {
+            const ctx = {
+                enrichment: {
+                    findOneById: jest.fn(() => ({
+                        name: 'NAME',
+                        dataSource: 'dataset',
+                    })),
+                    delete: jest.fn(),
+                },
+                dataset: { removeAttribute: jest.fn() },
+                precomputed: {
+                    removeResultColumn: jest.fn(),
+                },
+                configTenant: {},
+            };
+            // @ts-expect-error TS(2339): Property 'mockResolvedValue' does not exist on typ... Remove this comment to see the full error message
+            getActiveJob.mockResolvedValue({
+                data: { id: 42, jobType: 'enricher' },
+            });
+
+            await deleteEnrichment(ctx, 42);
+
+            expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
+            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
+            expect(ctx.precomputed.removeResultColumn).toHaveBeenCalledTimes(0);
+            expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
+            expect(cancelJob).toHaveBeenCalled();
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
+            expect(ctx.status).toBe(200);
+        });
+        it('should delete existing precomputed data based on the enrichment dataSource and name and then delete it', async () => {
+            const ctx = {
+                enrichment: {
+                    findOneById: jest.fn(() => ({
+                        name: 'NAME',
+                        dataSource: 'precomputed-1',
+                    })),
+                    delete: jest.fn(),
+                },
+                dataset: { removeAttribute: jest.fn() },
+                precomputed: {
+                    removeResultColumn: jest.fn(),
+                },
+                configTenant: {},
+            };
+            // @ts-expect-error TS(2339): Property 'mockResolvedValue' does not exist on typ... Remove this comment to see the full error message
+            getActiveJob.mockResolvedValue({
+                data: { id: 42, jobType: 'enricher' },
+            });
+
+            await deleteEnrichment(ctx, 42);
+
+            expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
+            expect(ctx.dataset.removeAttribute).toHaveBeenCalledTimes(0);
+            expect(ctx.precomputed.removeResultColumn).toHaveBeenCalledWith(
+                'precomputed-1',
+                'NAME',
+            );
+            expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
+            expect(cancelJob).toHaveBeenCalled();
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
+            expect(ctx.status).toBe(200);
+        });
+
+        it('should return a 404 if the enrichment does not exist', async () => {
+            const ctx = {
+                enrichment: {
+                    findOneById: jest.fn(() => null),
+                    delete: jest.fn(),
+                },
+                dataset: { removeAttribute: jest.fn() },
+                configTenant: {},
+            };
+
+            await deleteEnrichment(ctx, 42);
+
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
+            expect(ctx.status).toBe(404);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
+            expect(ctx.body).toEqual({ error: 'Enrichment not found' });
         });
 
         it('should return a 403 on error if an error occured', async () => {
