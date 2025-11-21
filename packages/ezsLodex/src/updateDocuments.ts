@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import mongoDatabase from './mongoDatabase.js';
 
 export const createFunction = () =>
@@ -5,6 +6,7 @@ export const createFunction = () =>
         if (this.isLast()) {
             return feed.close();
         }
+
         const idField = this.getParam('idField', 'uri');
         const field = this.getParam(
             'field',
@@ -22,12 +24,13 @@ export const createFunction = () =>
         );
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
+
         const fieldname = fields.shift();
         const items = [].concat(data);
         const query = items.map(({ id, value }: any) => ({
             updateOne: {
                 filter: {
-                    [idField]: id,
+                    [idField]: idField === '_id' ? new ObjectId(id) : id,
                 },
                 update: { $set: { [fieldname]: value } },
             },
