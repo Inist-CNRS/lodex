@@ -251,7 +251,7 @@ describe('useFormatAdvancedNetworkData', () => {
             {
                 id: 'A',
                 label: 'Node A',
-                radius: 55,
+                radius: 10.5,
                 color: '#ff0000',
                 x: -900,
                 y: -500,
@@ -260,7 +260,7 @@ describe('useFormatAdvancedNetworkData', () => {
             {
                 id: 'B',
                 label: 'Node B',
-                radius: 55,
+                radius: 10.5,
                 color: '#00ff00',
                 x: 900,
                 y: 500,
