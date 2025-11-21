@@ -12,6 +12,7 @@ export function useFormatNetworkData({
     displayWeighted = true,
     minRadius = 1,
     maxRadius = 20,
+    colorOverrides = {},
 }: UseFormatNetworkDataParams) {
     return useMemo(() => {
         if (!formatData) {
@@ -72,10 +73,11 @@ export function useFormatNetworkData({
             nodes: nodes.map((node) => ({
                 ...node,
                 radius: displayWeighted ? nodeScale(node.radius) : 1,
+                color: colorOverrides[node.id] ?? undefined,
             })),
             links,
         };
-    }, [formatData, displayWeighted]);
+    }, [formatData, displayWeighted, colorOverrides]);
 }
 
 export type NetworkData = {
@@ -89,6 +91,7 @@ export type UseFormatNetworkDataParams = {
     displayWeighted: boolean;
     minRadius?: number;
     maxRadius?: number;
+    colorOverrides?: Record<string, string>;
 };
 
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];
