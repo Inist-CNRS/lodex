@@ -381,6 +381,12 @@ export const processEnrichment = async (
 ) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
     await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.IN_PROGRESS);
+    if (enrichment.dataSource && enrichment.dataSource !== DATASET_COLLECTION) {
+        await ctx.precomputed.removeResultColumn(
+            enrichment.dataSource,
+            enrichment.name,
+        );
+    }
 
     const fusible = await createFusible();
     await enableFusible(fusible);
