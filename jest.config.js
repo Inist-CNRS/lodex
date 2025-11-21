@@ -1,5 +1,5 @@
 const transform = {
-    '\\.[jt]sx?$': [
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': [
         'babel-jest',
         {
             configFile: `${__dirname}/babel.config.js`,
@@ -43,7 +43,10 @@ module.exports = {
                 '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
             },
             moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
-            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
+            transformIgnorePatterns: [
+                '<rootDir>/node_modules/d3',
+                '<rootDir>/node_modules/three-spritetext',
+            ],
             transform,
             testEnvironment: 'jsdom',
             workerIdleMemoryLimit,
@@ -64,7 +67,10 @@ module.exports = {
                 '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
             },
             moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
-            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
+            transformIgnorePatterns: [
+                '<rootDir>/node_modules/d3',
+                '<rootDir>/node_modules/three-spritetext',
+            ],
             transform,
             testEnvironment: 'jsdom',
             workerIdleMemoryLimit,
@@ -85,7 +91,10 @@ module.exports = {
                 '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
             },
             moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
-            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
+            transformIgnorePatterns: [
+                '<rootDir>/node_modules/d3',
+                '<rootDir>/node_modules/three-spritetext',
+            ],
             transform,
             testEnvironment: 'jsdom',
             workerIdleMemoryLimit,
@@ -117,7 +126,10 @@ module.exports = {
             workerIdleMemoryLimit,
             moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
             testEnvironment: 'jsdom',
-            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
+            transformIgnorePatterns: [
+                '<rootDir>/node_modules/d3',
+                '<rootDir>/node_modules/three-spritetext',
+            ],
         },
         {
             displayName: 'workers',

@@ -2,24 +2,26 @@ import type { Field } from '../../../fields/types';
 import {
     useFormatAdvancedNetworkData,
     type AdvancedNetworkData,
-} from './useFormatAdvancedNetworkData';
+} from '../advancedNetwork/useFormatAdvancedNetworkData';
 import { compose } from 'recompose';
 import injectData from '../../injectData';
-import { NetworkBase } from '../network/NetworkBase';
+import { Network3DBase } from '../network3D/Network3DBase';
 
-interface NetworkProps {
+interface Directed3DNetworkProps {
     colorSet?: string[];
     formatData?: AdvancedNetworkData[];
     field: Field;
 }
 
-const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
+const Directed3DNetwork = ({
+    formatData,
+    colorSet,
+    field,
+}: Directed3DNetworkProps) => {
     const {
-        zoomAdjustNodeSize,
         minRadius,
         maxRadius,
     }: {
-        zoomAdjustNodeSize?: boolean;
         minRadius?: number;
         maxRadius?: number;
     } = field?.format?.args ?? {};
@@ -38,19 +40,17 @@ const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
             ? field.format.args.fieldToFilter
             : null;
     return (
-        <NetworkBase
+        <Network3DBase
             colorSet={colorSet}
             nodes={nodes}
             links={links}
-            forcePosition
             linkCurvature={0.25}
-            highlightMode="outgoing"
+            showArrows
             fieldToFilter={fieldToFilter}
-            zoomAdjustNodeSize={zoomAdjustNodeSize}
         />
     );
 };
 
-export default compose<NetworkProps, NetworkProps>(injectData())(
-    AdvancedNetwork,
-);
+export default compose<Directed3DNetworkProps, Directed3DNetworkProps>(
+    injectData(),
+)(Directed3DNetwork);

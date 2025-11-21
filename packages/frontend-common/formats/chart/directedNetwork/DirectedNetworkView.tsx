@@ -18,12 +18,24 @@ const DirectedNetwork = ({
     colorSet,
     field,
 }: DirectedNetworkProps) => {
+    const {
+        zoomAdjustNodeSize,
+        minRadius,
+        maxRadius,
+    }: {
+        zoomAdjustNodeSize?: boolean;
+        minRadius?: number;
+        maxRadius?: number;
+    } = field?.format?.args ?? {};
+
     const { nodes, links } = useFormatAdvancedNetworkData({
         formatData,
         displayWeighted:
             typeof field?.format?.args?.displayWeighted === 'boolean'
                 ? field.format.args.displayWeighted
                 : true,
+        maxRadius,
+        minRadius,
     });
 
     const fieldToFilter =
@@ -38,6 +50,7 @@ const DirectedNetwork = ({
             linkCurvature={0.25}
             showArrows
             fieldToFilter={fieldToFilter}
+            zoomAdjustNodeSize={zoomAdjustNodeSize}
         />
     );
 };

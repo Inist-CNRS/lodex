@@ -14,9 +14,13 @@ import { useTranslate } from '../../../i18n/I18NContext';
 
 interface FormatFullScreenModeProps {
     children: React.ReactNode;
+    fill?: string;
 }
 
-const FormatFullScreenMode = ({ children }: FormatFullScreenModeProps) => {
+const FormatFullScreenMode = ({
+    children,
+    fill,
+}: FormatFullScreenModeProps) => {
     const { translate } = useTranslate();
     const [open, setOpen] = useState(false);
 
@@ -43,7 +47,11 @@ const FormatFullScreenMode = ({ children }: FormatFullScreenModeProps) => {
                         bottom: 8,
                     }}
                 >
-                    <OpenInFullIcon />
+                    <OpenInFullIcon
+                        sx={{
+                            color: fill || 'var(--text-main)',
+                        }}
+                    />
                 </IconButton>
             </Tooltip>
 

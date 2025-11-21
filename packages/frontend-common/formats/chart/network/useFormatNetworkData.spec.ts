@@ -100,9 +100,9 @@ describe('useFormatNetworkData', () => {
 
         expect(linkAC!.value > linkAB!.value).toBe(true);
 
-        expect(A?.radius).toBe(100);
-        expect(B?.radius).toBe(10);
-        expect(C?.radius).toBe(10);
+        expect(A?.radius).toBe(20);
+        expect(B?.radius).toBe(1);
+        expect(C?.radius).toBe(1);
         expect(A!.radius > B!.radius).toBe(true);
         expect(A!.radius > C!.radius).toBe(true);
     });
@@ -232,9 +232,9 @@ describe('useFormatNetworkData', () => {
         const nodeA = result.current.nodes.find((n) => n.id === 'A');
         const nodeB = result.current.nodes.find((n) => n.id === 'B');
         const nodeC = result.current.nodes.find((n) => n.id === 'C');
-        expect(nodeA?.radius).toBe(100);
-        expect(nodeB?.radius).toBe(10);
-        expect(nodeC?.radius).toBe(10);
+        expect(nodeA?.radius).toBe(20);
+        expect(nodeB?.radius).toBe(1);
+        expect(nodeC?.radius).toBe(1);
 
         const linkAB = result.current.links.find(
             (l) => l.source === 'A' && l.target === 'B',

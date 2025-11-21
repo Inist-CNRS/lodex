@@ -1,14 +1,6 @@
 import React, { useCallback, type ChangeEvent } from 'react';
 
-import {
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Radio,
-    RadioGroup,
-    Switch,
-    TextField,
-} from '@mui/material';
+import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { FieldSelector } from '../../../fields/form/FieldSelector';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -29,7 +21,6 @@ type NetworkArgs = {
         uri?: string;
     };
     displayWeighted?: boolean;
-    zoomAdjustNodeSize?: boolean;
     minRadius?: number;
     maxRadius?: number;
     colors?: string;
@@ -46,8 +37,8 @@ export const defaultArgs = {
     },
     displayWeighted: true,
     zoomAdjustNodeSize: false,
-    minRadius: 1,
-    maxRadius: 20,
+    minRadius: 5,
+    maxRadius: 25,
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
     fieldToFilter: null,
 };
@@ -86,16 +77,6 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
             onChange({
                 ...args,
                 displayWeighted: checked,
-            });
-        },
-        [onChange, args],
-    );
-
-    const handleChangeZoomAdjustNodeSize = useCallback(
-        (_: unknown, checked: string) => {
-            onChange({
-                ...args,
-                zoomAdjustNodeSize: checked === 'true',
             });
         },
         [onChange, args],
@@ -155,25 +136,11 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                     checked={args.displayWeighted ?? true}
                     onChange={handleChangeDisplayWeighted}
                     label={translate('display_weighted')}
+                    sx={{
+                        width: '100%',
+                    }}
                 />
-                <FormControl fullWidth>
-                    <FormLabel>{translate('zoom_adjust_node_size')}</FormLabel>
-                    <RadioGroup
-                        value={args.zoomAdjustNodeSize ?? false}
-                        onChange={handleChangeZoomAdjustNodeSize}
-                    >
-                        <FormControlLabel
-                            value={true}
-                            control={<Radio />}
-                            label={translate('zoom_adapt_radius')}
-                        />
-                        <FormControlLabel
-                            value={false}
-                            control={<Radio />}
-                            label={translate('zoom_fixed_radius')}
-                        />
-                    </RadioGroup>
-                </FormControl>
+
                 <TextField
                     type="number"
                     label={translate('minRadius')}

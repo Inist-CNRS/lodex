@@ -38,11 +38,15 @@ export type AdvancedNetworkData = {
 export type UseFormatNetworkDataParams = {
     formatData?: AdvancedNetworkData[];
     displayWeighted: boolean;
+    minRadius?: number;
+    maxRadius?: number;
 };
 
 export function useFormatAdvancedNetworkData({
     formatData,
     displayWeighted,
+    minRadius = 1,
+    maxRadius = 20,
 }: UseFormatNetworkDataParams): {
     nodes: Node[];
     links: Link[];
@@ -77,15 +81,9 @@ export function useFormatAdvancedNetworkData({
                         ? parseFloat(viz$size.value)
                         : 100,
                 targets,
-                x: viz$position?.x
-                    ? parseFloat(viz$position.x) * 1000
-                    : undefined,
-                y: viz$position?.y
-                    ? parseFloat(viz$position.y) * 1000
-                    : undefined,
-                z: viz$position?.z
-                    ? parseFloat(viz$position.z) * 1000
-                    : undefined,
+                x: viz$position?.x ? parseFloat(viz$position.x) : undefined,
+                y: viz$position?.y ? parseFloat(viz$position.y) : undefined,
+                z: viz$position?.z ? parseFloat(viz$position.z) : undefined,
                 color: viz$color
                     ? rgbToHex({
                           r: parseInt(viz$color.r, 10),
@@ -95,17 +93,16 @@ export function useFormatAdvancedNetworkData({
                     : undefined,
             }),
         );
-
-        const maxRadius = Math.max(
+        const maxNodeRadius = Math.max(
             ...fullNodes.map((node) => node.radius ?? 0),
         );
-        const minRadius = Math.min(
+        const minNodeRadius = Math.min(
             ...fullNodes.map((node) => node.radius ?? 0),
         );
 
         const scaleRadius = scaleLinear()
-            .domain([minRadius, maxRadius])
-            .range([10, 100]);
+            .domain([minNodeRadius, maxNodeRadius])
+            .range([minRadius, maxRadius]);
 
         const maxX = Math.max(
             ...fullNodes.map((node) => (node.x !== undefined ? node.x : 0)),

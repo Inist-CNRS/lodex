@@ -10,6 +10,8 @@ import type {
 export function useFormatNetworkData({
     formatData,
     displayWeighted = true,
+    minRadius = 1,
+    maxRadius = 20,
 }: UseFormatNetworkDataParams) {
     return useMemo(() => {
         if (!formatData) {
@@ -44,7 +46,9 @@ export function useFormatNetworkData({
         const max = Math.max(...radiusList);
         const min = Math.min(...radiusList);
 
-        const nodeScale = scaleLinear().domain([min, max]).range([10, 100]);
+        const nodeScale = scaleLinear()
+            .domain([min, max])
+            .range([minRadius, maxRadius]);
 
         const weightList = sanitizedFormatData.map(({ weight }) => weight);
 
@@ -83,6 +87,8 @@ export type NetworkData = {
 export type UseFormatNetworkDataParams = {
     formatData?: NetworkData[];
     displayWeighted: boolean;
+    minRadius?: number;
+    maxRadius?: number;
 };
 
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];

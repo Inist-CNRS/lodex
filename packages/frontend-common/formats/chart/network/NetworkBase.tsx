@@ -127,6 +127,7 @@ type NetworkBaseProps = {
     highlightMode?: 'ingoing' | 'outgoing' | 'all';
     showArrows?: boolean;
     fieldToFilter?: string | null;
+    zoomAdjustNodeSize?: boolean;
 };
 
 export const NetworkBase = ({
@@ -138,6 +139,7 @@ export const NetworkBase = ({
     highlightMode = 'all',
     showArrows = false,
     fieldToFilter,
+    zoomAdjustNodeSize = false,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const searchPane = useContext(SearchPaneContext);
@@ -267,7 +269,7 @@ export const NetworkBase = ({
         }
 
         if (!fgRef.current) return;
-        fgRef.current.zoomToFit(500, 200, (n) => n.id === node.id);
+        fgRef.current.zoomToFit(500, 175, (n) => n.id === node.id);
     };
 
     const sortedNodes = useMemo(() => {
@@ -344,10 +346,9 @@ export const NetworkBase = ({
                                 } else {
                                     ctx.globalAlpha = 0.1;
                                 }
-                                const circleRadius = Math.max(
-                                    node.radius / globalScale,
-                                    1.5,
-                                );
+                                const circleRadius = zoomAdjustNodeSize
+                                    ? Math.max(node.radius, 1.5) / globalScale
+                                    : Math.max(node.radius, 1.5);
 
                                 if (isSelected) {
                                     ctx.fillStyle = '#880000';
@@ -355,7 +356,10 @@ export const NetworkBase = ({
                                     ctx.arc(
                                         node.x!,
                                         node.y!,
-                                        circleRadius + 4 / globalScale,
+                                        circleRadius +
+                                            (zoomAdjustNodeSize
+                                                ? 1 / globalScale
+                                                : 1),
                                         0,
                                         2 * Math.PI,
                                         false,
@@ -429,7 +433,9 @@ export const NetworkBase = ({
                                 ctx,
                                 globalScale,
                             ) => {
-                                const circleRadius = node.radius / globalScale;
+                                const circleRadius = zoomAdjustNodeSize
+                                    ? Math.max(node.radius, 1.5) / globalScale
+                                    : Math.max(node.radius, 1.5);
 
                                 ctx.strokeStyle = color;
                                 ctx.fillStyle = color;

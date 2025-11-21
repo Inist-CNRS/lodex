@@ -35,6 +35,7 @@ import heatmap from './vega-lite/component/heatmap';
 import network from './chart/network';
 import advancedNetwork from './chart/advancedNetwork';
 import directedNetwork from './chart/directedNetwork';
+import directed3DNetwork from './chart/directed3DNetwork';
 import venn from './chart/venn';
 import leaflet from './chart/leaflet';
 import redirect from './url/redirect';
@@ -50,6 +51,7 @@ import flowMap from './vega/component/flow-map';
 import clusteredChart from './chart/clustered-chart';
 import json from './other/json';
 import TreeMap from './vega/component/tree-map';
+import network3D from './chart/network3D';
 
 export const FORMATS_CATALOG = [
     {
@@ -423,6 +425,16 @@ export const FORMATS_CATALOG = [
         isUrlValue: false,
     },
     {
+        name: 'formatNetwork3D',
+        description: 'formatNetwork3DDescription',
+        componentName: 'network3D',
+        component: network3D,
+        type: 'chart',
+        isValueAnnotable: false,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux-3d',
+        isUrlValue: false,
+    },
+    {
         name: 'formatAdvancedNetwork',
         description: 'formatAdvancedNetworkDescription',
         componentName: 'advancedNetwork',
@@ -440,6 +452,16 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux-diriges',
+        isUrlValue: false,
+    },
+    {
+        name: 'formatDirected3DNetwork',
+        description: 'formatDirected3DNetworkDescription',
+        componentName: 'directed3DNetwork',
+        component: directed3DNetwork,
+        type: 'chart',
+        isValueAnnotable: false,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux-diriges-3d',
         isUrlValue: false,
     },
     {
