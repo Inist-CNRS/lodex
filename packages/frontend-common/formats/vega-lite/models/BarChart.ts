@@ -253,7 +253,7 @@ class BarChart extends BasicChart {
             color: model.encoding.color,
         };
 
-        let params: any[] = model.params || [];
+        let params: any[] = model.params;
 
         if (this.enableSelection) {
             // @ts-expect-error TS2339
@@ -289,7 +289,7 @@ class BarChart extends BasicChart {
                 value: 0,
             };
 
-            params = params.concat([
+            params = (params ?? []).concat([
                 {
                     name: 'highlight',
                     select: {
@@ -332,12 +332,16 @@ class BarChart extends BasicChart {
         // @ts-expect-error TS2339
         if (!this.labels) {
             return {
-                params,
+                ...(params ? { params } : {}),
                 background: 'transparent',
                 mark: {
                     ...model.mark,
-                    cursor: this.enableSelection ? 'pointer' : undefined,
-                    stroke: this.enableSelection ? 'black' : undefined,
+                    ...(this.enableSelection
+                        ? {
+                              cursor: 'pointer',
+                              stroke: 'black',
+                          }
+                        : {}),
                 },
                 encoding: encoding,
                 // @ts-expect-error TS2339
@@ -364,16 +368,18 @@ class BarChart extends BasicChart {
             }
 
             return {
-                params,
+                ...(this.enableSelection ? { params } : {}),
                 background: 'transparent',
                 layer: [
                     {
                         mark: {
                             ...model.mark,
-                            cursor: this.enableSelection
-                                ? 'pointer'
-                                : undefined,
-                            stroke: this.enableSelection ? 'black' : undefined,
+                            ...(this.enableSelection
+                                ? {
+                                      cursor: 'pointer',
+                                      stroke: 'black',
+                                  }
+                                : {}),
                         },
                         encoding: encoding,
                     },

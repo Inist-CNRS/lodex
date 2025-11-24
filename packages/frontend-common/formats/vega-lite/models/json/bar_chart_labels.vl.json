@@ -5,8 +5,7 @@
     "fontSize": 10,
     "fontWeight": "bold",
     "baseline": "middle",
-    "align": "left",
-    "stroke": "black"
+    "align": "left"
   },
   "encoding": {
     "x": {

@@ -1,7 +1,6 @@
 {
   "mark": {
-    "type": "bar",
-    "stroke": "black"
+    "type": "bar"
   },
   "encoding": {
     "x": {
