@@ -45,8 +45,6 @@ export const FormatComponent = ({
         [field, isList],
     );
 
-    console.log({ field });
-
     return (
         <ErrorBoundary
             fallback={
