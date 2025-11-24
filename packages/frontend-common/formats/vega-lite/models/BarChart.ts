@@ -14,11 +14,13 @@ import barChartLabelsVL from './json/bar_chart_labels.vl.json';
 import deepClone from 'lodash/cloneDeep';
 
 class BarChart extends BasicChart {
+    enableSelection: boolean;
     /**
      * Init all required parameters
      */
-    constructor() {
+    constructor({ enableSelection = false }: { enableSelection?: boolean }) {
         super();
+        this.enableSelection = enableSelection;
         // @ts-expect-error TS2339
         this.padding = 18;
         // @ts-expect-error TS2339
@@ -251,6 +253,57 @@ class BarChart extends BasicChart {
             color: model.encoding.color,
         };
 
+        let params: any[] = model.params || [];
+
+        if (this.enableSelection) {
+            // @ts-expect-error TS2339
+            encoding.fillOpacity = {
+                condition: [
+                    {
+                        param: 'select',
+                        value: 1,
+                    },
+                    {
+                        param: 'highlight',
+                        empty: false,
+                        value: 1,
+                    },
+                ],
+                value: 0.3,
+            };
+
+            // @ts-expect-error TS2339
+            encoding.strokeWidth = {
+                condition: [
+                    {
+                        param: 'select',
+                        empty: false,
+                        value: 2,
+                    },
+                    {
+                        param: 'highlight',
+                        empty: false,
+                        value: 1,
+                    },
+                ],
+                value: 0,
+            };
+
+            params = params.concat([
+                {
+                    name: 'highlight',
+                    select: {
+                        type: 'point',
+                        on: 'pointerover',
+                    },
+                },
+                {
+                    name: 'select',
+                    select: 'point',
+                },
+            ]);
+        }
+
         // @ts-expect-error TS2339
         if (this.tooltip.toggle) {
             // @ts-expect-error TS2339
@@ -268,7 +321,7 @@ class BarChart extends BasicChart {
                     step: this.size,
                 };
             } else {
-                // @ts-expect-error TS2339
+                // @ts-expect-error TS2322
                 encoding.size = {
                     // @ts-expect-error TS2339
                     value: this.size,
@@ -279,10 +332,12 @@ class BarChart extends BasicChart {
         // @ts-expect-error TS2339
         if (!this.labels) {
             return {
+                params,
                 background: 'transparent',
                 mark: {
                     ...model.mark,
-                    cursor: 'pointer',
+                    cursor: this.enableSelection ? 'pointer' : undefined,
+                    stroke: this.enableSelection ? 'black' : undefined,
                 },
                 encoding: encoding,
                 // @ts-expect-error TS2339
@@ -309,12 +364,16 @@ class BarChart extends BasicChart {
             }
 
             return {
+                params,
                 background: 'transparent',
                 layer: [
                     {
                         mark: {
                             ...model.mark,
-                            cursor: 'pointer',
+                            cursor: this.enableSelection
+                                ? 'pointer'
+                                : undefined,
+                            stroke: this.enableSelection ? 'black' : undefined,
                         },
                         encoding: encoding,
                     },

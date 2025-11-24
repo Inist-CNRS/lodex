@@ -14,12 +14,12 @@ export const SearchPaneContext = createContext<
 
 export type SearchPaneFilter = {
     field: string;
-    value: string;
+    value: string | null;
 };
 
 export type SearchPaneContextType = {
     filter: SearchPaneFilter | null;
-    setFilter(filter: SearchPaneFilter | null): void;
+    setFilter: React.Dispatch<React.SetStateAction<SearchPaneFilter | null>>;
 };
 
 export function SearchPaneContextProvider({

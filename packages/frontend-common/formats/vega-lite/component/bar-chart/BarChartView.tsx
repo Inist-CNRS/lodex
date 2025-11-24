@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
@@ -57,7 +57,6 @@ const BarChartView = ({
     field,
     data,
     direction,
-    params,
     scale,
     colors,
     axisRoundValue,
@@ -73,21 +72,28 @@ const BarChartView = ({
 }: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
-    const searchPane = useContext(SearchPaneContext);
+    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
+        setFilter: () => {},
+        filter: null,
+    };
+    console.log({ filter });
 
     const fieldToFilter =
         typeof field?.format?.args?.fieldToFilter === 'string'
             ? field.format.args.fieldToFilter
             : null;
 
-    const handleClick = (data: { _id: string }) => {
-        if (fieldToFilter && data && data._id) {
-            searchPane?.setFilter({
-                field: fieldToFilter,
-                value: data._id,
-            });
-        }
-    };
+    const handleClick = useCallback(
+        (data: { _id: string }) => {
+            if (fieldToFilter) {
+                setFilter({
+                    field: fieldToFilter,
+                    value: data?._id ?? null,
+                });
+            }
+        },
+        [fieldToFilter, setFilter],
+    );
 
     const spec = useMemo(() => {
         if (advancedMode) {
@@ -104,7 +110,9 @@ const BarChartView = ({
             }
         }
 
-        const specBuilder = new BarChart();
+        const specBuilder = new BarChart({
+            enableSelection: !!fieldToFilter,
+        });
 
         specBuilder.setAxisDirection(lodexDirectionToIdDirection(direction));
 
@@ -127,11 +135,8 @@ const BarChartView = ({
         width,
         advancedMode,
         advancedModeSpec,
-        field,
-        // @ts-expect-error TS18048
-        data.values,
+        data?.values,
         direction,
-        params,
         scale,
         colors,
         axisRoundValue,
@@ -143,6 +148,7 @@ const BarChartView = ({
         barSize,
         diagonalCategoryAxis,
         diagonalValueAxis,
+        fieldToFilter,
     ]);
 
     if (!spec) {
@@ -159,7 +165,7 @@ const BarChartView = ({
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
-                onClick={fieldToFilter ? handleClick : undefined}
+                onClick={handleClick}
             />
         </div>
     );

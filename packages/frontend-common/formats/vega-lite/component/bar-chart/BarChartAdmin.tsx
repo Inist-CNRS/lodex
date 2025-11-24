@@ -136,7 +136,9 @@ const BarChartAdmin = ({
             return advancedModeSpec;
         }
 
-        const specBuilder = new BarChart();
+        const specBuilder = new BarChart({
+            enableSelection: args.fieldToFilter ? true : false,
+        });
         specBuilder.setAxisDirection(lodexDirectionToIdDirection(direction));
         specBuilder.setScale(lodexScaleToIdScale(scale));
         specBuilder.setColor(colors);
@@ -170,6 +172,7 @@ const BarChartAdmin = ({
         tooltip,
         tooltipCategory,
         tooltipValue,
+        args.fieldToFilter,
     ]);
 
     const toggleAdvancedMode = useCallback(
