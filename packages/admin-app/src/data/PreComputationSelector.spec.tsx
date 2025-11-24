@@ -1,7 +1,5 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, userEvent } from '../test-utils';
 import { PreComputationSelector } from './PreComputationSelector';
-import fetch from '@lodex/frontend-common/fetch/fetch';
 import { TaskStatus, type TaskStatusType } from '@lodex/common';
 import { waitFor } from '@testing-library/dom';
 
@@ -10,49 +8,49 @@ jest.mock('@lodex/frontend-common/fetch/fetch');
 describe('PreComputationSelector', () => {
     it('should render all precomputation disabling those that are not done', async () => {
         const user = userEvent.setup();
-        const queryClient = new QueryClient();
+        // const queryClient = new QueryClient();
         const precomputations: {
-            _id: string;
+            id: string;
             name: string;
             status: TaskStatusType | undefined | '';
         }[] = [
             {
-                _id: 'precomp1',
+                id: 'precomp1',
                 name: 'Precomp 1',
                 status: '',
             },
             {
-                _id: 'precomp2',
+                id: 'precomp2',
                 name: 'Precomp 2',
                 status: TaskStatus.FINISHED,
             },
             {
-                _id: 'precomp3',
+                id: 'precomp3',
                 name: 'Precomp 3',
                 status: TaskStatus.CANCELED,
             },
             {
-                _id: 'precomp4',
+                id: 'precomp4',
                 name: 'Precomp 4',
                 status: TaskStatus.ERROR,
             },
             {
-                _id: 'precomp5',
+                id: 'precomp5',
                 name: 'Precomp 5',
                 status: TaskStatus.IN_PROGRESS,
             },
             {
-                _id: 'precomp6',
+                id: 'precomp6',
                 name: 'Precomp 6',
                 status: TaskStatus.ON_HOLD,
             },
             {
-                _id: 'precomp7',
+                id: 'precomp7',
                 name: 'Precomp 7',
                 status: TaskStatus.PAUSED,
             },
             {
-                _id: 'precomp8',
+                id: 'precomp8',
                 name: 'Precomp 8',
                 status: TaskStatus.PENDING,
             },
@@ -79,17 +77,15 @@ describe('PreComputationSelector', () => {
                 disabled: true,
             },
         ];
-        jest.mocked(fetch).mockResolvedValueOnce({
-            response: precomputations,
-        });
         const screen = render(
-            <QueryClientProvider client={queryClient}>
-                <PreComputationSelector
-                    disabled={false}
-                    value={null}
-                    onChange={() => {}}
-                />
-            </QueryClientProvider>,
+            <PreComputationSelector
+                disabled={false}
+                value={null}
+                onChange={() => {}}
+                data={precomputations}
+                isLoading={false}
+                error={false}
+            />,
         );
 
         await waitFor(() =>

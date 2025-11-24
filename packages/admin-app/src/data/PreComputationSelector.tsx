@@ -1,10 +1,6 @@
 import { MenuItem, Select } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 import { useEffect, useMemo } from 'react';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { getRequest } from '@lodex/frontend-common/user/reducer';
 import {
     FINISHED,
     labelByStatus,
@@ -15,46 +11,24 @@ type PreComputationSelectorProps = {
     disabled?: boolean;
     value: string | null;
     onChange: (value: string) => void;
+    data: {
+        id: string;
+        name: string;
+        status: TaskStatusType | undefined | '';
+    }[];
+    error?: boolean;
+    isLoading?: boolean;
 };
 
 export const PreComputationSelector = ({
     disabled,
     value,
     onChange,
+    data,
+    error,
+    isLoading,
 }: PreComputationSelectorProps) => {
     const { translate } = useTranslate();
-    const { data, error, isLoading } = useQuery(
-        ['fetchPrecomputations'],
-        async () => {
-            const { token } = getUserSessionStorageInfo();
-            const request = getRequest(
-                { token },
-                {
-                    method: 'GET',
-                    url: `/api/precomputed`,
-                },
-            );
-            const { response } = await fetch(request);
-
-            // Fetch precomputations from API
-            return response.map(
-                ({
-                    name,
-                    _id,
-                    status,
-                }: {
-                    name: string;
-                    _id: string;
-                    status: TaskStatusType | undefined | '';
-                }) => ({
-                    name,
-                    id: _id,
-                    status,
-                }),
-            );
-        },
-    );
-
     const defaultValue = useMemo(() => {
         if (isLoading || error || !data || data.length === 0) {
             return null;
