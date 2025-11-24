@@ -9,7 +9,14 @@ import {
     useState,
 } from 'react';
 
-import type { NodeObject, ForceGraphMethods } from 'react-force-graph-3d';
+import type { ForceGraphMethods, NodeObject } from 'react-force-graph-3d';
+import {
+    Group,
+    Mesh,
+    MeshLambertMaterial,
+    SphereGeometry,
+    Vector3, // @ts-expect-error TS7016
+} from 'three';
 import Loading from '../../../components/Loading';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -18,17 +25,11 @@ import { addTransparency } from '../../utils/colorHelpers';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import type { Link, Node } from '../network/useFormatNetworkData';
-import {
-    SphereGeometry,
-    Mesh,
-    MeshLambertMaterial,
-    Group,
-    Vector3,
-    // @ts-expect-error TS7016
-} from 'three';
 
 import SpriteText from 'three-spritetext';
+import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import { compareNodes, isLinkVisible } from '../network/NetworkBase';
+import { NetworkCaption } from '../network/NetworkCaption';
 
 const ForceGraph3D = lazy(() => import('react-force-graph-3d'));
 
@@ -51,6 +52,8 @@ type NetworkBaseProps = {
     highlightMode?: 'ingoing' | 'outgoing' | 'all';
     showArrows?: boolean;
     fieldToFilter?: string | null;
+    captions?: Record<string, string>;
+    captionTitle?: string;
 };
 
 export const Network3DBase = ({
@@ -62,6 +65,8 @@ export const Network3DBase = ({
     highlightMode = 'all',
     showArrows = false,
     fieldToFilter,
+    captions,
+    captionTitle,
 }: NetworkBaseProps) => {
     const fgRef = useRef<ForceGraphMethods>();
     const nodeObjectsRef = useRef<
@@ -283,21 +288,26 @@ export const Network3DBase = ({
                 {/*
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
-                    <AutoComplete
-                        style={{ margin: '1rem' }}
-                        label={translate('select_node')}
-                        value={selectedNode?.id || null}
-                        onChange={(_event, value) =>
-                            handleNodeClick(
-                                nodes.find((node) => node.id === value) || null,
-                            )
-                        }
-                        getOptionLabel={(option: string) => option}
-                        options={nodes
-                            .map((node) => node.id as string)
-                            .sort((a, b) => a.localeCompare(b))}
-                        name="search"
-                    />
+                    <GraphAction>
+                        <AutoComplete
+                            label={translate('select_node')}
+                            value={selectedNode?.id || null}
+                            onChange={(_event, value) =>
+                                handleNodeClick(
+                                    nodes.find((node) => node.id === value) ||
+                                        null,
+                                )
+                            }
+                            getOptionLabel={(option: string) => option}
+                            options={nodes
+                                .map((node) => node.id as string)
+                                .sort((a, b) => a.localeCompare(b))}
+                            name="search"
+                            sx={{
+                                maxWidth: '384px',
+                            }}
+                        />
+                    </GraphAction>
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
@@ -409,6 +419,11 @@ export const Network3DBase = ({
                     >
                         {<MouseIcon />}
                     </div>
+
+                    <NetworkCaption
+                        captions={captions}
+                        captionTitle={captionTitle}
+                    />
                 </div>
             </FormatFullScreenMode>
         </div>

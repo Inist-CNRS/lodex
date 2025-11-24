@@ -21,7 +21,6 @@ import {
     setup,
 } from './field';
 
-import _ from 'lodash';
 import {
     Overview,
     SCOPE_COLLECTION,
@@ -29,6 +28,7 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '@lodex/common';
+import _ from 'lodash';
 
 jest.mock('../../services/indexSearchableFields');
 
@@ -368,6 +368,141 @@ describe('field routes', () => {
                 fieldData,
             );
         });
+
+        it.each([
+            { formatName: 'network' as const },
+            { formatName: 'network3D' as const },
+        ])(
+            'should transform $formatName format with advanced color mode',
+            async ({ formatName }) => {
+                const fieldData = {
+                    scope: 'dataset',
+                    label: 'Network Field',
+                    position: 0,
+                    format: {
+                        name: formatName,
+                        args: {
+                            isAdvancedColorMode: true,
+                            captionTitle: 'Legend',
+                            colorScale: [
+                                {
+                                    color: '#FF0000',
+                                    caption: 'Red Items',
+                                    values: 'A\nB',
+                                },
+                                {
+                                    color: undefined,
+                                    caption: 'Default',
+                                    values: 'C',
+                                },
+                            ],
+                        },
+                    },
+                };
+
+                const ctx: any = {
+                    request: {
+                        body: fieldData,
+                    },
+                    field: fieldModel,
+                };
+
+                await postField(ctx);
+
+                expect(ctx.body).toMatchObject({
+                    scope: 'dataset',
+                    label: 'Network Field',
+                    format: {
+                        name: formatName,
+                        args: {
+                            isAdvancedColorMode: true,
+                            captionTitle: 'Legend',
+                            colorScale: [
+                                {
+                                    color: '#FF0000',
+                                    caption: 'Red Items',
+                                    values: 'A\nB',
+                                },
+                                {
+                                    color: '#000000',
+                                    caption: 'Default',
+                                    values: 'C',
+                                },
+                            ],
+                        },
+                    },
+                });
+
+                expect(ctx.body).toHaveProperty('_id');
+            },
+        );
+
+        it.each([
+            { formatName: 'network' as const },
+            { formatName: 'network3D' as const },
+        ])(
+            'should filter out items without values in $formatName format',
+            async ({ formatName }) => {
+                const fieldData = {
+                    scope: 'dataset',
+                    label: 'Network Field',
+                    position: 0,
+                    format: {
+                        name: formatName,
+                        args: {
+                            isAdvancedColorMode: true,
+                            captionTitle: 'Legend',
+                            colorScale: [
+                                {
+                                    color: '#FF0000',
+                                    caption: 'Red Items',
+                                    values: 'A\nB',
+                                },
+                                {
+                                    color: '#00FF00',
+                                    caption: 'No values',
+                                    values: undefined,
+                                },
+                                {
+                                    color: '#0000FF',
+                                    caption: 'Empty values',
+                                    values: '',
+                                },
+                                {
+                                    color: '#000000',
+                                    caption: 'Valid',
+                                    values: 'C',
+                                },
+                                undefined,
+                            ],
+                        },
+                    },
+                };
+
+                const ctx: any = {
+                    request: {
+                        body: fieldData,
+                    },
+                    field: fieldModel,
+                };
+
+                await postField(ctx);
+
+                // Should only keep items with valid values
+                expect(ctx.body.format.args.colorScale).toEqual([
+                    {
+                        color: '#FF0000',
+                        caption: 'Red Items',
+                        values: 'A\nB',
+                    },
+                    {
+                        color: '#000000',
+                        caption: 'Valid',
+                        values: 'C',
+                    },
+                ]);
+            },
+        );
     });
 
     describe('patchField', () => {
@@ -417,6 +552,114 @@ describe('field routes', () => {
             await patchField(ctx, insertedFields[0]._id);
             expect(ctx.publishFacets).toHaveBeenCalledTimes(0);
         });
+
+        it.each(['network', 'network3D'])(
+            'should transform field for %s format',
+            async (formatName) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const ctx: any = {
+                    request: {
+                        body: {
+                            label: 'network field',
+                            format: {
+                                name: formatName,
+                                args: {
+                                    isAdvancedColorMode: true,
+                                    colorScale: [
+                                        { values: 'val1' },
+                                        {
+                                            values: 'val2',
+                                            caption: 'Caption 2',
+                                        },
+                                    ],
+                                    captionTitle: 'My Caption Title',
+                                },
+                            },
+                        },
+                    },
+                    publishFacets: jest.fn(),
+                    field: fieldModel,
+                    publishedDataset: publishedDatasetModel,
+                };
+
+                await patchField(ctx, insertedFields[0]._id);
+
+                expect(ctx.body.format.args.colorScale).toEqual([
+                    {
+                        values: 'val1',
+                        color: '#000000',
+                        caption: null,
+                    },
+                    {
+                        values: 'val2',
+                        color: '#000000',
+                        caption: 'Caption 2',
+                    },
+                ]);
+                expect(ctx.body.format.args.captionTitle).toBe(
+                    'My Caption Title',
+                );
+            },
+        );
+
+        it.each(['network', 'network3D'])(
+            'should filter out items without values in %s format',
+            async (formatName) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const ctx: any = {
+                    request: {
+                        body: {
+                            name: 'network field',
+                            format: {
+                                name: formatName,
+                                args: {
+                                    isAdvancedColorMode: true,
+                                    colorScale: [
+                                        {
+                                            values: 'val1',
+                                            color: '#FF0000',
+                                            caption: 'Valid 1',
+                                        },
+                                        {
+                                            values: undefined,
+                                            color: '#00FF00',
+                                            caption: 'No values',
+                                        },
+                                        {
+                                            values: '',
+                                            color: '#0000FF',
+                                            caption: 'Empty values',
+                                        },
+                                        { values: 'val2', caption: 'Valid 2' },
+                                        undefined,
+                                    ],
+                                    captionTitle: 'My Caption Title',
+                                },
+                            },
+                        },
+                    },
+                    publishFacets: jest.fn(),
+                    field: fieldModel,
+                    publishedDataset: publishedDatasetModel,
+                };
+
+                await patchField(ctx, insertedFields[0]._id);
+
+                // Should only keep items with valid values
+                expect(ctx.body.format.args.colorScale).toEqual([
+                    {
+                        values: 'val1',
+                        color: '#FF0000',
+                        caption: 'Valid 1',
+                    },
+                    {
+                        values: 'val2',
+                        color: '#000000',
+                        caption: 'Valid 2',
+                    },
+                ]);
+            },
+        );
     });
 
     describe('patchOverview', () => {

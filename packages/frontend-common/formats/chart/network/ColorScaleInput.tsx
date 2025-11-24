@@ -24,6 +24,10 @@ export function ColorScaleInput({
         setValue({ ...value, values });
     };
 
+    const handleCaptionChange = (caption: string) => {
+        setValue({ ...value, caption });
+    };
+
     const handleColorChange = (color: string) => {
         setValue({ ...value, color });
     };
@@ -39,10 +43,19 @@ export function ColorScaleInput({
                 value={value?.color ?? ''}
                 onChange={handleColorChange}
             />
+            <TextField
+                label={translate('caption')}
+                value={value?.caption ?? ''}
+                onChange={(e) => handleCaptionChange(e.target.value)}
+                sx={{
+                    width: '100%',
+                    maxWidth: '256px',
+                }}
+            />
             <FormControl
                 sx={{
                     width: '100%',
-                    maxWidth: '384px',
+                    maxWidth: '512px',
                 }}
             >
                 <TextField
@@ -66,6 +79,7 @@ export function ColorScaleInput({
 
 export type ColorScaleItem = {
     color?: string;
+    caption?: string;
     values?: string;
 };
 

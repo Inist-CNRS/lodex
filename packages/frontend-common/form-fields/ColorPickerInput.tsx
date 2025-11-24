@@ -31,6 +31,7 @@ export function ColorPickerInput({
             direction="row"
             sx={{
                 width: '100%',
+                minWidth: '192px',
             }}
             role="group"
             aria-label={label}
