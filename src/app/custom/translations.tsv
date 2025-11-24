@@ -410,7 +410,6 @@
 "bad_list_format"	"The field '%{label}' has a format which only support an array of values, please try an another format for this field."	"Le champ '%{label}' possède un format qui n'est compatible qu'avec une liste de valeurs, essayez plutôt un autre format pour ce champ."
 "field_width"	"width"	"largeur"
 "filter_value"	"filter %{field}"	"%{field} filtre"
-"minimum_2_characters"	"Minimum 2 characters required"	"Minimum 2 caractères requis"
 "exclude"	"exclude"	"exclure"
 "count"	"count"	"compter"
 "no_chart_data"	"no data to visualize"	"aucune donnée à visualiser"

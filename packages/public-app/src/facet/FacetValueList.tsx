@@ -24,7 +24,6 @@ import FacetActionsContext from './FacetActionsContext';
 import FacetValueAll from './FacetValueAll';
 
 const DEBOUNCE_DELAY = 300;
-const MIN_SEARCH_LENGTH = 2;
 const LOADING_DELAY = 200;
 
 const styles = {
@@ -83,11 +82,14 @@ export const useDebouncedSearch = (
             }
 
             const trimmedValue = filterValue.trim();
-            if (
-                trimmedValue.length > 0 &&
-                trimmedValue.length < MIN_SEARCH_LENGTH
-            ) {
+            if (trimmedValue.length === 0) {
                 setIsSearching(false);
+                changeFacetValue({
+                    name,
+                    currentPage: 0,
+                    perPage,
+                    filter: filterValue,
+                });
                 return;
             }
 
@@ -239,13 +241,7 @@ export const FacetValueList = ({
                         </InputAdornment>
                     ),
                 }}
-                helperText={
-                    localFilter &&
-                    localFilter.length > 0 &&
-                    localFilter.length < MIN_SEARCH_LENGTH
-                        ? translate('minimum_2_characters')
-                        : ''
-                }
+                helperText={''}
             />
             <div>
                 <div style={styles.listHeader}>
@@ -271,8 +267,7 @@ export const FacetValueList = ({
                     </div>
                 </div>
                 <div>
-                    {/*
-                     // @ts-expect-error TS2322 */}
+                    {/* @ts-expect-error - legacy typing issue */}
                     {filter && <FacetValueAll name={name} page={page} />}
                     {facetValues.map((facetValue) => {
                         return (
@@ -301,8 +296,7 @@ export const FacetValueList = ({
 // @ts-expect-error TS7006
 export const ConnectFacetValueList = (props) => (
     <FacetActionsContext.Consumer>
-        {/*
-         // @ts-expect-error TS2339 */}
+        {/* @ts-expect-error - legacy typing issue */}
         {({ changeFacetValue, invertFacet, sortFacetValue }) => (
             <FacetValueList
                 {...props}
