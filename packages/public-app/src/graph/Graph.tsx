@@ -93,7 +93,7 @@ interface GraphProps {
     className?: string;
     name: string;
     graphField?: Field;
-    resource: object;
+    resource: Record<string, unknown>;
     preLoadPublication(...args: unknown[]): unknown;
     preLoadDatasetPage(...args: unknown[]): unknown;
     isAdmin?: boolean;

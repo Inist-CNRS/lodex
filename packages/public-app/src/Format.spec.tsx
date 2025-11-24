@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 
 import { FormatComponent as Format } from './Format';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 describe('<Format />', () => {
     const className = 'a_css_class';
@@ -14,7 +15,7 @@ describe('<Format />', () => {
     const wrapper = shallow(
         <Format
             className={className}
-            field={field}
+            field={field as Field}
             fieldStatus={null}
             fields={fields}
             resource={resource}
