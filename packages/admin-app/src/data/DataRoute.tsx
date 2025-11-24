@@ -6,7 +6,7 @@ import { fromParsing, fromPublication } from '../selectors';
 import Upload from '../upload/Upload';
 import { preLoadLoaders } from '../loader';
 import withInitialData from '../withInitialData';
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import {
     Redirect,
@@ -157,10 +157,24 @@ export const DataRouteComponent = ({
                     path={`${path}/precomputation`}
                     exact
                     component={() =>
-                        selectedPrecomputation && (
+                        selectedPrecomputation ? (
                             <ParsingResult
                                 precomputedId={selectedPrecomputation}
                             />
+                        ) : (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    minHeight: '200px',
+                                    p: 2,
+                                }}
+                            >
+                                <Typography variant="caption">
+                                    {translate('no_precomputed_data')}
+                                </Typography>
+                            </Box>
                         )
                     }
                 />
