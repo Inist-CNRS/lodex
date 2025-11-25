@@ -1,3 +1,4 @@
+import { Box, useTheme } from '@mui/material';
 import {
     createContext,
     useEffect,
@@ -28,6 +29,7 @@ export function SearchPaneContextProvider({
 }: SearchPaneContextProviderProps): ReactElement {
     const { pathname } = useLocation();
     const [filter, setFilter] = useState<SearchPaneFilter | null>(null);
+    const theme = useTheme();
 
     const contextValue = useMemo<SearchPaneContextType | undefined>(() => {
         return {
@@ -42,7 +44,17 @@ export function SearchPaneContextProvider({
 
     return (
         <SearchPaneContext.Provider value={contextValue}>
-            {children}
+            <Box
+                sx={{
+                    marginRight: filter?.value ? '384px' : 0,
+                    transition: theme.transitions.create('margin', {
+                        easing: theme.transitions.easing.easeOut,
+                        duration: theme.transitions.duration.enteringScreen,
+                    }),
+                }}
+            >
+                {children}
+            </Box>
             {resultsPane}
         </SearchPaneContext.Provider>
     );

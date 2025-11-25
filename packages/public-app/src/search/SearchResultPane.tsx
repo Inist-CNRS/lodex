@@ -1,13 +1,21 @@
 import { useSearchPaneContext } from '@lodex/frontend-common/search/useSearchPaneContext';
-import { Skeleton, Stack, Typography, type SxProps } from '@mui/material';
+import {
+    Drawer,
+    IconButton,
+    Skeleton,
+    Stack,
+    Typography,
+    type SxProps,
+} from '@mui/material';
 import SearchResult from './SearchResult';
 import { useListSearchResult } from './useListSearchResult';
+import { Close } from '@mui/icons-material';
 
 const SIDE_PANE_WIDTH = 384;
 const SIDE_PANE_PADDING = 16;
 
 export function SearchResultPane() {
-    const { filter } = useSearchPaneContext();
+    const { filter, setFilter } = useSearchPaneContext();
 
     const {
         isListSearchResultPending,
@@ -35,8 +43,15 @@ export function SearchResultPane() {
     };
 
     return (
-        <Stack sx={sx} className="search-result-pane">
-            {filter && (
+        <Drawer
+            open={!!filter?.value}
+            anchor="right"
+            variant="persistent"
+            sx={{
+                zIndex: 1100,
+            }}
+        >
+            <Stack sx={sx} className="search-result-pane">
                 <Stack
                     sx={{
                         gap: '1rem',
@@ -50,14 +65,24 @@ export function SearchResultPane() {
                             justifyContent: 'center',
                         }}
                     >
-                        <Typography
-                            variant="h2"
-                            sx={{
-                                fontSize: '1.25rem',
-                            }}
-                        >
-                            {filter?.value}
-                        </Typography>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography
+                                variant="h2"
+                                sx={{
+                                    fontSize: '1.25rem',
+                                }}
+                            >
+                                {filter?.value}
+                            </Typography>
+                            <IconButton
+                                sx={{
+                                    paddingTop: 0,
+                                }}
+                                onClick={() => setFilter(null)}
+                            >
+                                <Close />
+                            </IconButton>
+                        </Stack>
                         {isListSearchResultPending ? (
                             <Skeleton height={16} width={80} />
                         ) : (
@@ -93,7 +118,7 @@ export function SearchResultPane() {
                               ))}
                     </Stack>
                 </Stack>
-            )}
-        </Stack>
+            </Stack>
+        </Drawer>
     );
 }

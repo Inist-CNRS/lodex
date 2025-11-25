@@ -51,7 +51,7 @@ describe('SearchResultPane', () => {
         render(<SearchResultPane />);
 
         expect(screen.queryByRole('heading')).not.toBeInTheDocument();
-        expect(screen.queryByText(/results/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/results/i)).not.toBeVisible();
     });
 
     it('should render filter value and results count when filter is set', () => {

@@ -56,11 +56,11 @@ export const BubbleView = ({
             if (fieldToFilter) {
                 setFilter({
                     field: fieldToFilter,
-                    value: name ?? null,
+                    value: name !== filter?.value ? name ?? null : null,
                 });
             }
         },
-        [fieldToFilter, setFilter],
+        [fieldToFilter, setFilter, filter?.value],
     );
 
     return (
