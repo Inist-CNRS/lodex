@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type RefObject } from 'react';
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
 import { StyleSheet, css } from 'aphrodite/no-important';
@@ -85,6 +85,7 @@ class Hierarchy extends PureComponent<HierarchyProps> {
     _isMounted = false;
     mouseIcon = '';
     centerIcon = '';
+    divContainer: RefObject<HTMLDivElement>;
 
     // @ts-expect-error TS7006
     constructor(props) {
@@ -95,7 +96,6 @@ class Hierarchy extends PureComponent<HierarchyProps> {
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
         this.centerGraphClick = this.centerGraphClick.bind(this);
-        // @ts-expect-error TS2339
         this.divContainer = React.createRef();
         // @ts-expect-error TS2339
         this.svgContainer = React.createRef();
@@ -136,8 +136,7 @@ class Hierarchy extends PureComponent<HierarchyProps> {
 
     setGraph() {
         if (this.props.formatData) {
-            // @ts-expect-error TS2339
-            this.setState({ width: this.divContainer.current.clientWidth });
+            this.setState({ width: this.divContainer?.current?.clientWidth });
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
@@ -177,21 +176,19 @@ class Hierarchy extends PureComponent<HierarchyProps> {
 
                     this.update();
                 }
-                // @ts-expect-error TS2339
-                const current = this.divContainer.current;
+                const { clientWidth, clientHeight } = this.divContainer
+                    .current ?? {
+                    clientWidth: 0,
+                    clientHeight: 0,
+                };
                 const gBbox = this.g().node().getBBox();
 
-                if (
-                    current.clientWidth / gBbox.width <
-                    current.clientHeight / gBbox.height
-                ) {
+                if (clientWidth / gBbox.width < clientHeight / gBbox.height) {
                     // @ts-expect-error TS2339
-                    this.initialPosition.scale =
-                        current.clientWidth / gBbox.width;
+                    this.initialPosition.scale = clientWidth / gBbox.width;
                 } else {
                     // @ts-expect-error TS2339
-                    this.initialPosition.scale =
-                        current.clientHeight / gBbox.height;
+                    this.initialPosition.scale = clientHeight / gBbox.height;
                 }
 
                 // @ts-expect-error TS2339
@@ -533,8 +530,12 @@ class Hierarchy extends PureComponent<HierarchyProps> {
     handleMouseOver(event, node) {
         const leafG = d3.select(event.target);
 
-        const x = Math.min(event.layerX, 0);
-        const y = Math.min(event.layerY - 28, 0);
+        // Get container bounds for proper positioning
+        const containerRect =
+            this.divContainer.current?.getBoundingClientRect();
+        const { left, top } = containerRect ?? { left: 0, top: 0 };
+        const x = event.clientX - left;
+        const y = event.clientY - top - 28;
 
         leafG.select('rect').attr('stroke-width', '2');
         this.tooltip().style('opacity', 1);
@@ -557,13 +558,18 @@ class Hierarchy extends PureComponent<HierarchyProps> {
     // @ts-expect-error TS7006
     handleMouseOverInternalNode(event, node) {
         const nodeG = d3.select(event.target);
-        const x = Math.max(
-            event.layerX - nodeG.node()
-                ? nodeG.node().getComputedTextLength() * 0.5
-                : 0,
-            0,
-        );
-        const y = Math.max(event.layerY - 28, 0);
+
+        // Get container bounds for proper positioning
+        const containerRect =
+            this.divContainer.current?.getBoundingClientRect();
+
+        const { left, top } = containerRect ?? { left: 0, top: 0 };
+        const textLength =
+            nodeG.node() && nodeG.node().getComputedTextLength
+                ? nodeG.node().getComputedTextLength()
+                : 0;
+        const x = Math.max(event.clientX - left - textLength * 0.5, 0);
+        const y = Math.max(event.clientY - top - 28, 0);
         this.tooltip().style('opacity', 1);
         this.tooltip()
             .html(
@@ -635,7 +641,6 @@ class Hierarchy extends PureComponent<HierarchyProps> {
         let y = -source.y;
 
         const divContainerBoundingRect = d3
-            // @ts-expect-error TS2339
             .select(this.divContainer.current)
             .node()
             .getBoundingClientRect();
@@ -730,13 +735,11 @@ class Hierarchy extends PureComponent<HierarchyProps> {
     }
 
     removeGraph() {
-        // @ts-expect-error TS2339
         d3.select(this.divContainer.current)
             .selectAll('#d3DivContainer')
             .selectAll('div')
             .remove();
 
-        // @ts-expect-error TS2339
         d3.select(this.divContainer.current)
             .selectAll('#d3DivContainer')
             .remove();
@@ -820,7 +823,6 @@ class Hierarchy extends PureComponent<HierarchyProps> {
 
         return (
             <div
-                // @ts-expect-error TS2339
                 ref={this.divContainer}
                 style={{
                     overflow: 'hidden',
