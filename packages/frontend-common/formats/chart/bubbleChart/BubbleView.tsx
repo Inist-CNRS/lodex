@@ -47,7 +47,7 @@ export const BubbleView = ({
             ? field.format.args.fieldToFilter
             : null;
 
-    const { setFilter } = useContext(SearchPaneContext) ?? {
+    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
         setFilter: () => {},
     };
 
@@ -75,7 +75,8 @@ export const BubbleView = ({
                         name={key}
                         value={value}
                         color={getColor(colorSet, index)}
-                        onClick={handleClick}
+                        onClick={fieldToFilter ? handleClick : undefined}
+                        isSelected={key === filter?.value}
                     />
                 ))}
             </div>
