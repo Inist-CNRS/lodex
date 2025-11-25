@@ -112,6 +112,7 @@ const HeatMapAdmin = ({
                 },
                 flip: !!flipAxis,
                 orderBy: lodexOrderToIdOrder(params.orderBy || ''),
+                selectionEnabled: !!fieldToFilter,
             }),
             null,
             2,
