@@ -1,21 +1,21 @@
-import { buildHeatMapSpec } from './HeatMap';
-import heatmapVL from './json/heatmap.vl.json';
+import defaultSpec from './json/bubble_plot.vl.json';
 import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
+import { buildBubblePlotSpec } from './BubblePlot';
 
-describe('HeatMap', () => {
+describe('BubblePlot', () => {
     it('should return default heatMap spec', function () {
         expect(
-            buildHeatMapSpec({
+            buildBubblePlotSpec({
                 flip: false,
                 tooltip: {
                     toggle: false,
                 },
             }),
-        ).toStrictEqual(heatmapVL);
+        ).toStrictEqual(defaultSpec);
     });
 
     it('should flip axis when flip is true', function () {
-        const spec = buildHeatMapSpec({
+        const spec = buildBubblePlotSpec({
             flip: true,
             tooltip: {
                 toggle: false,
@@ -23,23 +23,23 @@ describe('HeatMap', () => {
         });
 
         expect(spec).toStrictEqual({
-            ...heatmapVL,
+            ...defaultSpec,
             encoding: {
-                ...heatmapVL.encoding,
+                ...defaultSpec.encoding,
                 x: {
-                    ...heatmapVL.encoding.x,
-                    field: heatmapVL.encoding.y.field,
+                    ...defaultSpec.encoding.x,
+                    field: defaultSpec.encoding.y.field,
                 },
                 y: {
-                    ...heatmapVL.encoding.y,
-                    field: heatmapVL.encoding.x.field,
+                    ...defaultSpec.encoding.y,
+                    field: defaultSpec.encoding.x.field,
                 },
             },
         });
     });
 
     it('should set orderBy correctly', function () {
-        const specAsc = buildHeatMapSpec({
+        const specAsc = buildBubblePlotSpec({
             flip: false,
             orderBy: LABEL_ASC,
             tooltip: {
@@ -48,21 +48,21 @@ describe('HeatMap', () => {
         });
 
         expect(specAsc).toStrictEqual({
-            ...heatmapVL,
+            ...defaultSpec,
             encoding: {
-                ...heatmapVL.encoding,
+                ...defaultSpec.encoding,
                 x: {
-                    ...heatmapVL.encoding.x,
+                    ...defaultSpec.encoding.x,
                     sort: 'x',
                 },
                 y: {
-                    ...heatmapVL.encoding.y,
+                    ...defaultSpec.encoding.y,
                     sort: 'y',
                 },
             },
         });
 
-        const specDesc = buildHeatMapSpec({
+        const specDesc = buildBubblePlotSpec({
             flip: false,
             orderBy: LABEL_DESC,
             tooltip: {
@@ -71,15 +71,15 @@ describe('HeatMap', () => {
         });
 
         expect(specDesc).toStrictEqual({
-            ...heatmapVL,
+            ...defaultSpec,
             encoding: {
-                ...heatmapVL.encoding,
+                ...defaultSpec.encoding,
                 x: {
-                    ...heatmapVL.encoding.x,
+                    ...defaultSpec.encoding.x,
                     sort: '-x',
                 },
                 y: {
-                    ...heatmapVL.encoding.y,
+                    ...defaultSpec.encoding.y,
                     sort: '-y',
                 },
             },
@@ -88,7 +88,7 @@ describe('HeatMap', () => {
 
     it('should set colors correctly', function () {
         const colors = ['#ff0000', '#00ff00', '#0000ff'];
-        const spec = buildHeatMapSpec({
+        const spec = buildBubblePlotSpec({
             colors,
             flip: false,
             tooltip: {
@@ -97,32 +97,22 @@ describe('HeatMap', () => {
         });
 
         expect(spec).toStrictEqual({
-            ...heatmapVL,
-            layer: [
-                {
-                    ...heatmapVL.layer[0],
-                    encoding: {
-                        ...heatmapVL.layer[0].encoding,
-                        color: {
-                            ...heatmapVL.layer[0].encoding.color,
-                            scale: {
-                                ...heatmapVL.layer[0].encoding.color.scale,
-                                range: colors,
-                            },
-                            condition: {
-                                ...heatmapVL.layer[0].encoding.color.condition,
-                                value: '#0000ff',
-                            },
-                        },
+            ...defaultSpec,
+            encoding: {
+                ...defaultSpec.encoding,
+                color: {
+                    ...defaultSpec.encoding.color,
+                    scale: {
+                        ...defaultSpec.encoding.color.scale,
+                        range: colors,
                     },
                 },
-                heatmapVL.layer[1],
-            ],
+            },
         });
     });
 
     it('should set tooltip titles correctly', function () {
-        const spec = buildHeatMapSpec({
+        const spec = buildBubblePlotSpec({
             flip: false,
             tooltip: {
                 toggle: true,
@@ -133,9 +123,9 @@ describe('HeatMap', () => {
         });
 
         expect(spec).toStrictEqual({
-            ...heatmapVL,
+            ...defaultSpec,
             encoding: {
-                ...heatmapVL.encoding,
+                ...defaultSpec.encoding,
                 tooltip: [
                     {
                         source: {

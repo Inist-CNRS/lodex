@@ -1,4 +1,11 @@
 {
+  "width": "container",
+  "height": "container",
+  "background": "transparent",
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
   "transform": [
     {
       "filter": {
@@ -40,7 +47,8 @@
         "orient": "top",
         "labelAlign": "left",
         "labelPadding": 10,
-        "title": ""
+        "title": "",
+        "labelAngle": -45
       },
       "type": "nominal",
       "sort": "x"

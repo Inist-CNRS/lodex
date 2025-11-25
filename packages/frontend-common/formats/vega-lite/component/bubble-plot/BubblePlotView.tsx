@@ -11,10 +11,10 @@ import {
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../utils/chartsUtils';
-import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import type { Field } from '../../../../fields/types';
+import { buildBubblePlotSpec } from '../../models/BubblePlot';
 
 const styles = {
     container: {
@@ -83,23 +83,21 @@ const BubblePlotView = ({
             }
         }
 
-        const specBuilder = new BubblePlot();
-
-        specBuilder.setColor(colors);
-        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
-        specBuilder.flipAxis(flipAxis);
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipSource);
-        specBuilder.setTooltipTarget(tooltipTarget);
-        specBuilder.setTooltipValue(tooltipWeight);
-
-        // @ts-expect-error TS2554
-        return specBuilder.buildSpec(width);
+        return buildBubblePlotSpec({
+            colors: colors ? colors.split(' ') : [],
+            orderBy: lodexOrderToIdOrder(params?.orderBy),
+            flip: flipAxis || false,
+            tooltip: {
+                toggle: tooltip || false,
+                sourceTitle: tooltipSource,
+                targetTitle: tooltipTarget,
+                weightTitle: tooltipWeight,
+            },
+        });
     }, [
         width,
         advancedMode,
         advancedModeSpec,
-        field,
         colors,
         params,
         flipAxis,

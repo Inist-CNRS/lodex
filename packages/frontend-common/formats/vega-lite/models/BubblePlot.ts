@@ -1,26 +1,33 @@
-import HeatMap from './HeatMap';
+import { commonWithBubblePlot } from './HeatMap';
 import bubblePlotVL from './json/bubble_plot.vl.json';
 import deepClone from 'lodash/cloneDeep';
 
-class BubblePlot extends HeatMap {
-    constructor() {
-        super();
-        // @ts-expect-error TS2339
-        this.model = deepClone(bubblePlotVL);
+export const buildBubblePlotSpec = ({
+    colors,
+    tooltip = {},
+    flip = false,
+    orderBy,
+}: {
+    colors?: string[];
+    tooltip?: {
+        toggle?: boolean;
+        sourceTitle?: string;
+        targetTitle?: string;
+        weightTitle?: string;
+    };
+    flip?: boolean;
+    orderBy?: number;
+}) => {
+    const model = deepClone(bubblePlotVL);
+
+    if (colors) {
+        model.encoding.color.scale.range = colors;
     }
 
-    buildSpec() {
-        // @ts-expect-error TS2339
-        this.model.encoding.color.scale.range = this.colors;
-
-        // @ts-expect-error TS2339
-        this.model.encoding.x.axis.labelAngle = -35;
-
-        this.commonWithBubblePlot();
-
-        // @ts-expect-error TS2339
-        return this.model;
-    }
-}
-
-export default BubblePlot;
+    return commonWithBubblePlot({
+        model,
+        tooltip,
+        flip,
+        orderBy,
+    });
+};

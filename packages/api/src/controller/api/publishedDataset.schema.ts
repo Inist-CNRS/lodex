@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const fieldNameSchema = z.string().regex(/^[a-zA-Z0-9]{4}$/);
 
 export const getPageByFieldSchema = z.object({
-    value: z.string().or(z.number()).nullish(),
+    value: z.string().or(z.array(z.string())).or(z.number()).nullish(),
     page: z
         .number()
         .nullish()
