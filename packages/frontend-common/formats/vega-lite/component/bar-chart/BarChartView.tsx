@@ -72,11 +72,9 @@ const BarChartView = ({
 }: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
-    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
+    const { setFilter } = useContext(SearchPaneContext) ?? {
         setFilter: () => {},
-        filter: null,
     };
-    console.log({ filter });
 
     const fieldToFilter =
         typeof field?.format?.args?.fieldToFilter === 'string'
