@@ -52,7 +52,12 @@ describe('useDebouncedSearch hook', () => {
             jest.advanceTimersByTime(500);
         });
 
-        expect(defaultChange).not.toHaveBeenCalled();
+        expect(defaultChange).toHaveBeenCalledWith({
+            currentPage: 0,
+            filter: 'a',
+            name: 'test',
+            perPage: 10,
+        });
 
         // type two chars -> should trigger
         act(() => {
