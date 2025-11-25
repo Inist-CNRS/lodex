@@ -7,7 +7,7 @@ import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 interface DatasetColumnProps {
     column: unknown;
     columns: unknown[];
-    resource: object;
+    resource: Record<string, unknown>;
 }
 
 const DatasetColumn = ({ column, columns, resource }: DatasetColumnProps) => (
