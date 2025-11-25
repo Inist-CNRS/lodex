@@ -8,7 +8,6 @@ jest.mock('@lodex/frontend-common/fetch/fetch');
 describe('PreComputationSelector', () => {
     it('should render all precomputation disabling those that are not done', async () => {
         const user = userEvent.setup();
-        // const queryClient = new QueryClient();
         const precomputations: {
             id: string;
             name: string;

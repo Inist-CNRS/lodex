@@ -18,11 +18,7 @@ import {
 } from 'react-router';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { PreComputationSelector } from './PreComputationSelector';
-import { useQuery } from '@tanstack/react-query';
-import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
-import { getRequest } from '@lodex/frontend-common/user/reducer';
-import fetch from '@lodex/frontend-common/fetch/fetch';
-import type { TaskStatusType } from '@lodex/common';
+import { useFetchPrecomputations } from './useFetchPrecomputations';
 
 interface DataRouteComponentProps {
     canUploadFile: boolean;
@@ -70,38 +66,8 @@ export const DataRouteComponent = ({
         );
     };
 
-    const {
-        data: precomputations,
-        error: precomputationsError,
-        isLoading: isPrecomputationsLoading,
-    } = useQuery(['fetchPrecomputations'], async () => {
-        const { token } = getUserSessionStorageInfo();
-        const request = getRequest(
-            { token },
-            {
-                method: 'GET',
-                url: `/api/precomputed`,
-            },
-        );
-        const { response } = await fetch(request);
-
-        // Fetch precomputations from API
-        return response.map(
-            ({
-                name,
-                _id,
-                status,
-            }: {
-                name: string;
-                _id: string;
-                status: TaskStatusType | undefined | '';
-            }) => ({
-                name,
-                id: _id,
-                status,
-            }),
-        );
-    });
+    const { isPrecomputationsLoading, precomputations, precomputationsError } =
+        useFetchPrecomputations();
 
     if (canUploadFile) {
         // @ts-expect-error TS2322
@@ -137,7 +103,7 @@ export const DataRouteComponent = ({
                                     disabled={tab !== 'precomputation'}
                                     value={selectedPrecomputation}
                                     onChange={setSelectedPrecomputation}
-                                    data={precomputations}
+                                    data={precomputations || []}
                                     isLoading={isPrecomputationsLoading}
                                     error={!!precomputationsError}
                                 />
