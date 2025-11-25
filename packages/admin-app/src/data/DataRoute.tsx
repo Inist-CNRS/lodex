@@ -6,7 +6,7 @@ import { fromParsing, fromPublication } from '../selectors';
 import Upload from '../upload/Upload';
 import { preLoadLoaders } from '../loader';
 import withInitialData from '../withInitialData';
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import {
     Redirect,
@@ -18,6 +18,7 @@ import {
 } from 'react-router';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { PreComputationSelector } from './PreComputationSelector';
+import { useFetchPrecomputations } from './useFetchPrecomputations';
 
 interface DataRouteComponentProps {
     canUploadFile: boolean;
@@ -64,6 +65,10 @@ export const DataRouteComponent = ({
             `${pathname.split('/').slice(0, -1).join('/')}/${newTab}${search}`,
         );
     };
+
+    const { isPrecomputationsLoading, precomputations, precomputationsError } =
+        useFetchPrecomputations();
+
     if (canUploadFile) {
         // @ts-expect-error TS2322
         return <Upload className="admin" isFirstFile={canUploadFile} />;
@@ -82,6 +87,12 @@ export const DataRouteComponent = ({
             >
                 <Tab label={translate('dataset')} value="dataset" />
                 <Tab
+                    disabled={
+                        isPrecomputationsLoading ||
+                        !!precomputationsError ||
+                        !precomputations ||
+                        precomputations.length === 0
+                    }
                     label={
                         <Grid container justifyContent="center">
                             <Grid item xs={6} alignContent="center">
@@ -92,6 +103,9 @@ export const DataRouteComponent = ({
                                     disabled={tab !== 'precomputation'}
                                     value={selectedPrecomputation}
                                     onChange={setSelectedPrecomputation}
+                                    data={precomputations || []}
+                                    isLoading={isPrecomputationsLoading}
+                                    error={!!precomputationsError}
                                 />
                             </Grid>
                         </Grid>
@@ -109,10 +123,24 @@ export const DataRouteComponent = ({
                     path={`${path}/precomputation`}
                     exact
                     component={() =>
-                        selectedPrecomputation && (
+                        selectedPrecomputation ? (
                             <ParsingResult
                                 precomputedId={selectedPrecomputation}
                             />
+                        ) : (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    minHeight: '200px',
+                                    p: 2,
+                                }}
+                            >
+                                <Typography variant="caption">
+                                    {translate('no_precomputed_data')}
+                                </Typography>
+                            </Box>
                         )
                     }
                 />

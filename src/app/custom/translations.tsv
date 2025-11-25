@@ -1478,3 +1478,4 @@
 "select_precomputed_data"	"Select precomputed data"	"Sélectionner les données précalculés"
 "select_node"	"Select node"	"Sélectionner un noeud"
 "field_to_filter"	"Field used for search during value selection"	"Champ utilisé pour la recherche lors de la sélection d'une valeur"
+"no_precomputed_data"	"No precomputed data to display"	"Aucun prècalculs à afficher"
