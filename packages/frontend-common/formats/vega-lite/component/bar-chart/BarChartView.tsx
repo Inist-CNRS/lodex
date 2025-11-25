@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
@@ -18,6 +18,7 @@ import { CustomActionVegaLite } from '../../../utils/components/vega-lite-compon
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import type { Field } from '../../../../fields/types';
+import { SearchPaneContext } from '../../../../search/SearchPaneContext';
 
 const styles = {
     container: {
@@ -52,43 +53,45 @@ interface BarChartViewProps {
 
 const BarChartView = ({
     advancedMode,
-
     advancedModeSpec,
-
     field,
-
     data,
-
     direction,
-
-    params,
-
     scale,
-
     colors,
-
     axisRoundValue,
-
     tooltip,
-
     tooltipCategory,
-
     tooltipValue,
-
     labels,
-
     labelOverlap,
-
     barSize,
-
     diagonalCategoryAxis,
-
     diagonalValueAxis,
-
     aspectRatio,
 }: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
+    const { setFilter } = useContext(SearchPaneContext) ?? {
+        setFilter: () => {},
+    };
+
+    const fieldToFilter =
+        typeof field?.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
+
+    const handleClick = useCallback(
+        (data: { _id: string }) => {
+            if (fieldToFilter) {
+                setFilter({
+                    field: fieldToFilter,
+                    value: data?._id ?? null,
+                });
+            }
+        },
+        [fieldToFilter, setFilter],
+    );
 
     const spec = useMemo(() => {
         if (advancedMode) {
@@ -105,7 +108,9 @@ const BarChartView = ({
             }
         }
 
-        const specBuilder = new BarChart();
+        const specBuilder = new BarChart({
+            enableSelection: !!fieldToFilter,
+        });
 
         specBuilder.setAxisDirection(lodexDirectionToIdDirection(direction));
 
@@ -128,11 +133,8 @@ const BarChartView = ({
         width,
         advancedMode,
         advancedModeSpec,
-        field,
-        // @ts-expect-error TS18048
-        data.values,
+        data?.values,
         direction,
-        params,
         scale,
         colors,
         axisRoundValue,
@@ -144,6 +146,7 @@ const BarChartView = ({
         barSize,
         diagonalCategoryAxis,
         diagonalValueAxis,
+        fieldToFilter,
     ]);
 
     if (!spec) {
@@ -160,6 +163,7 @@ const BarChartView = ({
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
+                onClick={handleClick}
             />
         </div>
     );

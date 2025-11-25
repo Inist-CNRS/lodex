@@ -1,7 +1,6 @@
 import { Vega } from 'react-vega';
 
 import { connect } from 'react-redux';
-import deepClone from 'lodash/cloneDeep';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
@@ -13,6 +12,7 @@ import { translate } from '../../../../i18n/I18NContext';
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';
+import { useCallback } from 'react';
 
 interface CustomActionVegaLiteProps {
     disableZoom?: boolean;
@@ -22,6 +22,7 @@ interface CustomActionVegaLiteProps {
     injectType: number;
     aspectRatio?: AspectRatio;
     p: unknown;
+    onClick?: (event: any) => void;
 }
 
 /**
@@ -37,6 +38,7 @@ function CustomActionVegaLite({
     injectType,
     disableZoom = false,
     p: polyglot,
+    onClick,
 }: CustomActionVegaLiteProps) {
     const actions = useVegaActions(user);
     const graphParentRef = useVegaCsvExport(data);
@@ -68,6 +70,18 @@ function CustomActionVegaLite({
             throw new Error('Invalid data injection type');
     }
 
+    const handleNewView = useCallback(
+        (view: any) => {
+            if (!onClick) return;
+
+            // @ts-expect-error TS7006 Vega event types
+            view.addEventListener('click', (_event, item) => {
+                onClick(item?.datum ?? null);
+            });
+        },
+        [onClick],
+    );
+
     const vegaGraphElement = (
         // @ts-expect-error TS2786
         <Vega
@@ -82,9 +96,10 @@ function CustomActionVegaLite({
                       }
                     : { width: '100%', aspectRatio }
             }
-            spec={deepClone(specWithData)}
+            spec={specWithData}
             actions={actions}
             mode="vega-lite"
+            onNewView={handleNewView}
             i18n={{
                 // @ts-expect-error TS18046
                 SVG_ACTION: polyglot.t('vega_export_svg'),
