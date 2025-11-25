@@ -106,6 +106,7 @@ export default defineConfig([
             ...react.configs.flat.recommended.rules,
             'react/react-in-jsx-scope': 'off',
             'react/jsx-uses-react': 'off',
+            'no-console': ['error', { allow: ['warn', 'error'] }],
         },
         plugins: { react },
         languageOptions: {
