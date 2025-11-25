@@ -6,7 +6,14 @@ import { SwitchField } from '@lodex/frontend-common/form-fields/SwitchField';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
-import { Box, Button, FormGroup, ListItem, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    FormGroup,
+    ListItem,
+    Stack,
+    Typography,
+} from '@mui/material';
 import { useDebouncedValue } from '@tanstack/react-pacer/debouncer';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -208,100 +215,88 @@ export const EnrichmentForm = ({
         <FormProvider {...formMethods}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Box mt={3} display="flex" gap="3rem">
-                    <Box sx={{ flex: 2 }}>
-                        <Box>
+                    <Stack sx={{ flex: 2 }} gap={2}>
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap="1rem"
+                            mb="1rem"
+                        >
+                            <TextField
+                                name="name"
+                                label={translate('fieldName')}
+                                required
+                                fullWidth
+                                validate={(value) => {
+                                    if (!value) {
+                                        return translate(
+                                            'This field is required',
+                                        );
+                                    }
+                                }}
+                            />
+                            {enrichmentId && <RunButton id={enrichmentId} />}
+                        </Box>
+                        {enrichmentId && (
                             <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
                                 gap="1rem"
-                                mb="1rem"
                             >
-                                <TextField
-                                    name="name"
-                                    label={translate('fieldName')}
-                                    required
-                                    fullWidth
-                                    validate={(value) => {
-                                        if (!value) {
-                                            return translate(
-                                                'This field is required',
-                                            );
-                                        }
+                                {translate('enrichment_error_count', {
+                                    errorCount: initialValues.errorCount ?? 0,
+                                })}
+                                <Button
+                                    color="primary"
+                                    onClick={(event) => {
+                                        onRetryEnrichment({
+                                            id: enrichmentId,
+                                        });
+                                        event.preventDefault();
+                                        event.stopPropagation();
                                     }}
-                                />
-                                {enrichmentId && (
-                                    <RunButton id={enrichmentId} />
-                                )}
+                                    disabled={
+                                        (initialValues.errorCount ?? 0) === 0
+                                    }
+                                >
+                                    {translate('retry')}
+                                </Button>
                             </Box>
-                            {enrichmentId && (
-                                <>
-                                    <Box
-                                        display="flex"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                        gap="1rem"
-                                        mb="1rem"
-                                    >
-                                        {translate('enrichment_error_count', {
-                                            errorCount:
-                                                initialValues.errorCount ?? 0,
-                                        })}
-                                        <Button
-                                            color="primary"
-                                            onClick={(event) => {
-                                                onRetryEnrichment({
-                                                    id: enrichmentId,
-                                                });
-                                                event.preventDefault();
-                                                event.stopPropagation();
-                                            }}
-                                            disabled={
-                                                (initialValues.errorCount ??
-                                                    0) === 0
-                                            }
-                                        >
-                                            {translate('retry')}
-                                        </Button>
-                                    </Box>
-                                    <Box
-                                        display="flex"
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                        gap="1rem"
-                                    >
-                                        <Typography>
-                                            {translate('enrichment_status')} :
-                                            &nbsp;
-                                            <EnrichmentStatus
-                                                id={enrichmentId}
-                                            />
-                                        </Typography>
-                                        <Button
-                                            sx={{
-                                                paddingRight: 0,
-                                                paddingLeft: 0,
-                                                textDecoration: 'underline',
-                                            }}
-                                            onClick={() =>
-                                                setOpenEnrichmentLogs(true)
-                                            }
-                                        >
-                                            {translate('see_logs')}
-                                        </Button>
-                                        <EnrichmentLogsDialogComponent
-                                            isOpen={openEnrichmentLogs}
-                                            logs={enrichmentLogs}
-                                            handleClose={() =>
-                                                setOpenEnrichmentLogs(false)
-                                            }
-                                        />
-                                    </Box>
-                                </>
-                            )}
-                        </Box>
+                        )}
+                        {enrichmentId && (
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                gap="1rem"
+                            >
+                                <Typography>
+                                    {translate('enrichment_status')} : &nbsp;
+                                    <EnrichmentStatus id={enrichmentId} />
+                                </Typography>
+                                <Button
+                                    sx={{
+                                        paddingRight: 0,
+                                        paddingLeft: 0,
+                                        textDecoration: 'underline',
+                                    }}
+                                    onClick={() => setOpenEnrichmentLogs(true)}
+                                >
+                                    {translate('see_logs')}
+                                </Button>
+                                <EnrichmentLogsDialogComponent
+                                    isOpen={openEnrichmentLogs}
+                                    logs={enrichmentLogs}
+                                    handleClose={() =>
+                                        setOpenEnrichmentLogs(false)
+                                    }
+                                />
+                            </Box>
+                        )}
 
-                        <Box mb="0.5rem">
+                        <Box>
                             <AutoCompleteField
                                 clearIdentifier={() => {
                                     handleDataSourceChange('');
@@ -349,78 +344,71 @@ export const EnrichmentForm = ({
                             />
                         </Box>
 
-                        <Box>
-                            <FormGroup>
-                                <SwitchField
-                                    name="advancedMode"
-                                    label={translate('advancedMode')}
-                                />
-                            </FormGroup>
-                        </Box>
+                        <FormGroup>
+                            <SwitchField
+                                name="advancedMode"
+                                label={translate('advancedMode')}
+                            />
+                        </FormGroup>
 
                         {formValues?.advancedMode && (
-                            <Box mb="1rem">
-                                <FormSourceCodeField
-                                    name="rule"
-                                    label={translate('expand_rules')}
-                                    width="100%"
+                            <FormSourceCodeField
+                                name="rule"
+                                label={translate('expand_rules')}
+                                width="100%"
+                            />
+                        )}
+
+                        {!formValues?.advancedMode && (
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                gap="1rem"
+                            >
+                                <TextField
+                                    name="webServiceUrl"
+                                    label={translate('webServiceUrl')}
+                                    required
+                                    fullWidth
+                                />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => setOpenCatalog(true)}
+                                    style={{ height: '100%' }}
+                                >
+                                    <ListAltIcon fontSize="medium" />
+                                </Button>
+                                <EnrichmentCatalogConnected
+                                    isOpen={openCatalog}
+                                    handleClose={() => setOpenCatalog(false)}
                                 />
                             </Box>
                         )}
 
                         {!formValues?.advancedMode && (
-                            <Box>
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                    gap="1rem"
-                                    mb="1rem"
-                                >
-                                    <TextField
-                                        name="webServiceUrl"
-                                        label={translate('webServiceUrl')}
-                                        required
-                                        fullWidth
-                                    />
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => setOpenCatalog(true)}
-                                        style={{ height: '100%' }}
-                                    >
-                                        <ListAltIcon fontSize="medium" />
-                                    </Button>
-                                    <EnrichmentCatalogConnected
-                                        isOpen={openCatalog}
-                                        handleClose={() =>
-                                            setOpenCatalog(false)
-                                        }
-                                    />
-                                </Box>
-
-                                <Box display="flex" gap="1rem" mb="1rem">
-                                    <AutoCompleteField
-                                        clearIdentifier={() => {
-                                            handleSourceColumnChange('');
-                                        }}
-                                        options={datasetFields}
-                                        name="sourceColumn"
-                                        label={translate('sourceColumn')}
-                                        required
-                                        disabled={!selectedDataSource}
-                                        value={formValues?.sourceColumn ?? ''}
-                                        onChange={(_, newValue) => {
-                                            handleSourceColumnChange(newValue);
-                                        }}
-                                    />
-                                    <AutoCompleteField
-                                        name="subPath"
-                                        label={translate('subPath')}
-                                        options={subPathOptions}
-                                        disabled={!selectedColumn}
-                                    />
-                                </Box>
+                            <Box display="flex" gap="1rem" mb="1rem">
+                                <AutoCompleteField
+                                    clearIdentifier={() => {
+                                        handleSourceColumnChange('');
+                                    }}
+                                    options={datasetFields}
+                                    name="sourceColumn"
+                                    label={translate('sourceColumn')}
+                                    required
+                                    disabled={!selectedDataSource}
+                                    value={formValues?.sourceColumn ?? ''}
+                                    onChange={(_, newValue) => {
+                                        handleSourceColumnChange(newValue);
+                                    }}
+                                />
+                                <AutoCompleteField
+                                    name="subPath"
+                                    label={translate('subPath')}
+                                    options={subPathOptions}
+                                    disabled={!selectedColumn}
+                                />
                             </Box>
                         )}
 
@@ -472,7 +460,7 @@ export const EnrichmentForm = ({
                                 </Button>
                             </Box>
                         </Box>
-                    </Box>
+                    </Stack>
                     <Box width="25rem">
                         <EnrichmentPreview
                             isPending={isPreviewPending}
