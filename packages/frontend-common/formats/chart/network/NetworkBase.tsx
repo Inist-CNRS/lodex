@@ -269,7 +269,7 @@ export const NetworkBase = ({
         }
 
         if (!fgRef.current) return;
-        fgRef.current.zoomToFit(500, 175, (n) => n.id === node.id);
+        fgRef.current.zoomToFit(500, 100, (n) => n.id === node.id);
     };
 
     const sortedNodes = useMemo(() => {
@@ -332,6 +332,7 @@ export const NetworkBase = ({
                             nodeLabel={(node) => {
                                 return node.label;
                             }}
+                            nodeVal={(node) => node.radius}
                             nodeCanvasObject={(node, ctx, globalScale) => {
                                 const isSelected = node.id === selectedNode?.id;
 
