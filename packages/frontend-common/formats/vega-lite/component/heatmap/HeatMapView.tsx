@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import HeatMap from '../../models/HeatMap';
+import { buildHeatMapSpec } from '../../models/HeatMap';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
@@ -15,6 +15,7 @@ import { useSizeObserver } from '../../../utils/chartsHooks';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import injectData from '../../../injectData';
 import type { Field } from '../../../../fields/types';
+import { SearchPaneContext } from '../../../../search/SearchPaneContext';
 
 const styles = {
     container: {
@@ -23,7 +24,7 @@ const styles = {
 };
 
 interface HeatMapViewProps {
-    field?: unknown;
+    field?: Field;
     resource?: Field;
     data?: {
         values: any;
@@ -42,31 +43,41 @@ interface HeatMapViewProps {
 
 const HeatMapView = ({
     advancedMode,
-
     advancedModeSpec,
-
     field,
-
     data,
-
     colorScheme,
-
     params,
-
     flipAxis,
-
     tooltip,
-
     tooltipSource,
-
     tooltipTarget,
-
     tooltipWeight,
-
     aspectRatio,
 }: HeatMapViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
+
+    const { setFilter } = useContext(SearchPaneContext) ?? {
+        setFilter: () => {},
+    };
+
+    const fieldToFilter =
+        typeof field?.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
+
+    const handleClick = useCallback(
+        (data: { source: string; target: string }) => {
+            if (fieldToFilter) {
+                setFilter({
+                    field: fieldToFilter,
+                    value: data ? [data.target, data.source] : null,
+                });
+            }
+        },
+        [fieldToFilter, setFilter],
+    );
 
     const spec = useMemo(() => {
         if (advancedMode) {
@@ -83,31 +94,28 @@ const HeatMapView = ({
             }
         }
 
-        const specBuilder = new HeatMap();
-
-        // @ts-expect-error TS18048
-        specBuilder.setColor(colorScheme.join(' '));
-        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
-        specBuilder.flipAxis(flipAxis);
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipSource);
-        specBuilder.setTooltipTarget(tooltipTarget);
-        specBuilder.setTooltipValue(tooltipWeight);
-
-        // @ts-expect-error TS2554
-        return specBuilder.buildSpec(width);
+        return buildHeatMapSpec({
+            colors: colorScheme || [],
+            tooltip: {
+                toggle: tooltip || false,
+                sourceTitle: tooltipSource,
+                targetTitle: tooltipTarget,
+                weightTitle: tooltipWeight,
+            },
+            flip: flipAxis || false,
+            orderBy: lodexOrderToIdOrder(params.orderBy),
+        });
     }, [
-        width,
         advancedMode,
-        advancedModeSpec,
-        field,
         colorScheme,
-        params,
+        params.orderBy,
         flipAxis,
         tooltip,
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
+        width,
+        advancedModeSpec,
     ]);
 
     if (!spec) {
@@ -124,6 +132,7 @@ const HeatMapView = ({
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
+                onClick={handleClick}
             />
         </div>
     );
@@ -152,7 +161,10 @@ export const HeatMapAdminView = connect((_state, props) => {
             values: props.dataset.values ?? [],
         },
     };
+    // @ts-expect-error TS2345
 })(HeatMapView);
 
-// @ts-expect-error TS2345
-export default compose(injectData(), connect(mapStateToProps))(HeatMapView);
+export default compose<HeatMapViewProps, HeatMapViewProps>(
+    injectData(),
+    connect(mapStateToProps),
+)(HeatMapView);

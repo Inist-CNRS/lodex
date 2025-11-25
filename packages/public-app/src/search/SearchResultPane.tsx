@@ -72,7 +72,9 @@ export function SearchResultPane() {
                                     fontSize: '1.25rem',
                                 }}
                             >
-                                {filter?.value}
+                                {Array.isArray(filter?.value)
+                                    ? filter.value.join(' × ')
+                                    : filter?.value}
                             </Typography>
                             <IconButton
                                 sx={{

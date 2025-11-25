@@ -639,6 +639,31 @@ describe('publishedDataset', () => {
             },
             {
                 testName:
+                    'should return resources matching string[] field value',
+                fieldName: 'tags',
+                value: ['javascript', 'python'],
+                testData: [
+                    {
+                        uri: 'uri1',
+                        versions: [{ name: 'Resource 1', tags: 'javascript' }],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [{ name: 'Resource 2', tags: 'java' }],
+                    },
+                    {
+                        uri: 'uri3',
+                        versions: [{ name: 'Resource 2', tags: 'python' }],
+                    },
+                ],
+                expectedTotal: 2,
+                expectedData: [
+                    { uri: 'uri1', tags: 'javascript' },
+                    { uri: 'uri3', tags: 'python' },
+                ],
+            },
+            {
+                testName:
                     'should return resources matching value in string array field',
                 fieldName: 'cats',
                 value: 'tech',

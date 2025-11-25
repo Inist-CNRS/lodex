@@ -6,7 +6,7 @@ import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdm
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
-import BubblePlot from '../../models/BubblePlot';
+import { buildBubblePlotSpec } from '../../models/BubblePlot';
 import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
@@ -100,17 +100,21 @@ const BubblePlotAdmin = ({
             return advancedModeSpec;
         }
 
-        const specBuilder = new BubblePlot();
-
-        specBuilder.setColor(colors);
-        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
-        specBuilder.flipAxis(flipAxis);
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipSource);
-        specBuilder.setTooltipTarget(tooltipTarget);
-        specBuilder.setTooltipValue(tooltipWeight);
-
-        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+        return JSON.stringify(
+            buildBubblePlotSpec({
+                colors: [colors],
+                orderBy: lodexOrderToIdOrder(params.orderBy),
+                flip: flipAxis || false,
+                tooltip: {
+                    toggle: tooltip || false,
+                    sourceTitle: tooltipSource,
+                    targetTitle: tooltipTarget,
+                    weightTitle: tooltipWeight,
+                },
+            }),
+            null,
+            2,
+        );
     }, [
         advancedMode,
         advancedModeSpec,

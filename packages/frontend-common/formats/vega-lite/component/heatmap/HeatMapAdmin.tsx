@@ -5,7 +5,7 @@ import { Checkbox, FormControlLabel, Switch, FormGroup } from '@mui/material';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../components/ColorSchemeSelector';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
-import HeatMap from '../../models/HeatMap';
+import { buildHeatMapSpec } from '../../models/HeatMap';
 import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import { HeatMapAdminView } from './HeatMapView';
@@ -19,6 +19,7 @@ import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSele
 import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../../i18n/I18NContext';
+import { FieldSelector } from '../../../../fields/form/FieldSelector';
 
 export const defaultArgs = {
     params: {
@@ -34,6 +35,7 @@ export const defaultArgs = {
     tooltipTarget: 'Target',
     tooltipWeight: 'Weight',
     aspectRatio: ASPECT_RATIO_1_1,
+    fieldToFilter: null,
 };
 
 type HeatMapParams = {
@@ -54,6 +56,7 @@ type HeatMapArgs = {
     tooltipTarget: string;
     tooltipWeight?: string;
     aspectRatio: AspectRatio;
+    fieldToFilter?: string | null;
 };
 
 type HeatMapAdminProps = {
@@ -86,6 +89,7 @@ const HeatMapAdmin = ({
         tooltipTarget,
         tooltipWeight,
         aspectRatio,
+        fieldToFilter,
     } = args;
 
     const spec = useMemo(() => {
@@ -97,21 +101,26 @@ const HeatMapAdmin = ({
             return advancedModeSpec;
         }
 
-        const specBuilder = new HeatMap();
-
-        specBuilder.setColor(colorScheme.join(' '));
-        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
-        specBuilder.flipAxis(flipAxis);
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipSource);
-        specBuilder.setTooltipTarget(tooltipTarget);
-        specBuilder.setTooltipValue(tooltipWeight);
-
-        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+        return JSON.stringify(
+            buildHeatMapSpec({
+                colors: colorScheme as string[],
+                tooltip: {
+                    toggle: tooltip,
+                    sourceTitle: tooltipSource,
+                    targetTitle: tooltipTarget,
+                    weightTitle: tooltipWeight,
+                },
+                flip: !!flipAxis,
+                orderBy: lodexOrderToIdOrder(params.orderBy || ''),
+            }),
+            null,
+            2,
+        );
     }, [
         advancedMode,
         advancedModeSpec,
         colorScheme,
+        fieldToFilter,
         flipAxis,
         params.orderBy,
         tooltip,
@@ -240,6 +249,15 @@ const HeatMapAdmin = ({
                 />
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet defaultExpanded>
+                <FieldSelector
+                    value={fieldToFilter ?? null}
+                    onChange={(fieldToFilter) =>
+                        onChange({
+                            ...args,
+                            fieldToFilter: fieldToFilter || null,
+                        })
+                    }
+                />
                 <FormGroup>
                     <FormControlLabel
                         control={
