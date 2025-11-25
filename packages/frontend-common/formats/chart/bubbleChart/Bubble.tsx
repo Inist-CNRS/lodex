@@ -33,15 +33,17 @@ interface BubbleProps {
     name: string;
     color: string;
     value: number;
+    onClick?: (name: string) => void;
 }
 
-const Bubble = ({ r, x, y, name, value, color }: BubbleProps) => (
+const Bubble = ({ r, x, y, name, value, color, onClick }: BubbleProps) => (
     <div
         // @ts-expect-error TS7006
         style={styles.leaf({ r, x, y }, name, color)}
         data-tip={`${name}: ${value}`}
         data-for={`bubble-${name}`}
         data-iscapture="true"
+        onClick={() => onClick?.(name)}
     >
         {r > 10 && (
             // @ts-expect-error TS7006
