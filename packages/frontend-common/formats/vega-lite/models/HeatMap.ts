@@ -94,6 +94,7 @@ export const buildHeatMapSpec = ({
     tooltip = {},
     flip,
     orderBy,
+    selectionEnabled = false,
 }: {
     colors?: string[];
     tooltip?: {
@@ -104,14 +105,22 @@ export const buildHeatMapSpec = ({
     };
     flip: boolean;
     orderBy?: number;
+    selectionEnabled?: boolean;
 }) => {
     const model = deepClone(heatmapVL);
 
     model.layer.forEach((e) => {
-        if (e.mark.type === 'rect' && colors) {
+        if (e.mark.type !== 'rect') {
+            return;
+        }
+        if (colors) {
             // @ts-expect-error TS2339
             e.encoding.color.scale.range = colors;
             e.encoding.color.condition.value = colors[colors.length - 1];
+        }
+        if (selectionEnabled) {
+            // @ts-expect-error TS2339
+            e.mark.cursor = 'pointer';
         }
     });
 

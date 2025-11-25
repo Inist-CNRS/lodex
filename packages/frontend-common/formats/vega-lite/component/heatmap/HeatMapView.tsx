@@ -104,18 +104,20 @@ const HeatMapView = ({
             },
             flip: flipAxis || false,
             orderBy: lodexOrderToIdOrder(params.orderBy),
+            selectionEnabled: !!fieldToFilter,
         });
     }, [
         advancedMode,
         colorScheme,
-        params.orderBy,
-        flipAxis,
         tooltip,
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
-        width,
+        flipAxis,
+        params.orderBy,
+        fieldToFilter,
         advancedModeSpec,
+        width,
     ]);
 
     if (!spec) {
