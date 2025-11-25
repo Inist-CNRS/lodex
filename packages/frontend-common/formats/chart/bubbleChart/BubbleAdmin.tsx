@@ -12,6 +12,7 @@ import {
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { FieldSelector } from '../../../fields/form/FieldSelector';
 
 export const defaultArgs = {
     params: {
@@ -21,6 +22,7 @@ export const defaultArgs = {
         orderBy: 'value/asc',
         uri: undefined,
     },
+    fieldToFilter: null,
     diameter: 500,
     colors: MULTICHROMATIC_DEFAULT_COLORSET,
 };
@@ -29,6 +31,7 @@ type BubbleAdminArgs = {
     params?: RoutineParams;
     diameter?: number;
     colors?: string;
+    fieldToFilter?: string | null;
 };
 
 type BubbleAdminProps = {
@@ -43,6 +46,7 @@ type BubbleAdminProps = {
         };
         diameter?: number;
         colors?: string;
+        fieldToFilter?: string | null;
     }) => void;
     showMaxSize?: boolean;
     showMaxValue?: boolean;
@@ -115,6 +119,15 @@ const BubbleAdmin = ({
                 />
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet defaultExpanded>
+                <FieldSelector
+                    value={args?.fieldToFilter ?? null}
+                    onChange={(fieldToFilter) =>
+                        onChange({
+                            ...args,
+                            fieldToFilter: fieldToFilter || null,
+                        })
+                    }
+                />
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}
