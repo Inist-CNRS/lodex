@@ -58,7 +58,7 @@ const BubblePlotView = ({
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
-    const { setFilter } = useContext(SearchPaneContext) ?? {
+    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
         setFilter: () => {},
     };
 
@@ -94,6 +94,11 @@ const BubblePlotView = ({
             }
         }
 
+        const selectedDatum = data?.values.find(
+            ({ source, target }: { source: string; target: string }) =>
+                filter?.value?.[0] === target && filter?.value?.[1] === source,
+        );
+
         return buildBubblePlotSpec({
             colors: colors ? colors.split(' ') : [],
             orderBy: lodexOrderToIdOrder(params?.orderBy),
@@ -105,19 +110,22 @@ const BubblePlotView = ({
                 weightTitle: tooltipWeight,
             },
             selectionEnabled: !!fieldToFilter,
+            selectedDatum,
         });
     }, [
-        width,
         advancedMode,
-        advancedModeSpec,
+        data?.values,
         colors,
-        params,
+        params?.orderBy,
         flipAxis,
         tooltip,
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
         fieldToFilter,
+        advancedModeSpec,
+        width,
+        filter?.value,
     ]);
 
     if (!spec) {

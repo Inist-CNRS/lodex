@@ -8,6 +8,7 @@ export const buildBubblePlotSpec = ({
     flip = false,
     orderBy,
     selectionEnabled,
+    selectedDatum,
 }: {
     colors?: string[];
     tooltip?: {
@@ -19,8 +20,9 @@ export const buildBubblePlotSpec = ({
     flip?: boolean;
     orderBy?: number;
     selectionEnabled?: boolean;
+    selectedDatum?: unknown;
 }) => {
-    const model = deepClone(bubblePlotVL);
+    const model: any = deepClone(bubblePlotVL);
 
     if (colors) {
         model.encoding.color.scale.range = colors;
@@ -32,14 +34,45 @@ export const buildBubblePlotSpec = ({
             {
                 name: 'select',
                 select: 'point',
+                value: selectedDatum ? [selectedDatum] : null,
+            },
+            {
+                name: 'highlight',
+                select: {
+                    type: 'point',
+                    on: 'pointerover',
+                },
             },
         ];
         model.encoding.opacity = {
-            condition: {
-                param: 'select',
-                value: 1,
-            },
+            condition: [
+                {
+                    param: 'select',
+                    value: 1,
+                },
+                {
+                    param: 'highlight',
+                    empty: false,
+                    value: 1,
+                },
+            ],
             value: 0.3,
+        };
+        model.mark.stroke = 'black';
+        model.encoding.strokeWidth = {
+            condition: [
+                {
+                    param: 'select',
+                    empty: false,
+                    value: 1,
+                },
+                {
+                    param: 'highlight',
+                    empty: false,
+                    value: 1,
+                },
+            ],
+            value: 0,
         };
     }
 
