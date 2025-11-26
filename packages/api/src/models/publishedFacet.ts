@@ -178,7 +178,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
             }
         }
 
-        return await collection.findLimitFromSkip({
+        return collection.findLimitFromSkip({
             limit: parseInt(perPage.toString(), 10),
             skip: (page || 0) * perPage,
             filters,
