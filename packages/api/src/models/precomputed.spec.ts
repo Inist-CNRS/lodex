@@ -29,6 +29,34 @@ describe('PrecomputedModel', () => {
             }
         }
     });
+
+    describe('getStreamOfResult', () => {
+        it('should return a stream of documents without _id field', async () => {
+            const collectionId = new ObjectId().toString();
+            const collection = db.collection(`pc_${collectionId}`);
+            const docs = [
+                { id: 1, value: 'A', lodexStamp: 'stamp1', enrichedField: 41 },
+                { id: 2, value: 'B', lodexStamp: 'stamp2', enrichedField: 42 },
+                { id: 3, value: 'C', lodexStamp: 'stamp3', enrichedField: 43 },
+            ];
+            await collection.insertMany(docs);
+
+            const stream =
+                precomputedCollection.getStreamOfResult(collectionId);
+
+            const results: any[] = [];
+            for await (const doc of stream) {
+                results.push(doc);
+            }
+
+            expect(results).toEqual([
+                { id: 1, lodexStamp: 'stamp1', value: 'A', enrichedField: 41 },
+                { id: 2, lodexStamp: 'stamp2', value: 'B', enrichedField: 42 },
+                { id: 3, lodexStamp: 'stamp3', value: 'C', enrichedField: 43 },
+            ]);
+        });
+    });
+
     describe('getResultColumns', () => {
         it('should return the correct columns for a given precomputed collection', async () => {
             const collectionId = new ObjectId().toString();
