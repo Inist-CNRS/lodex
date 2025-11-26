@@ -145,6 +145,44 @@ export const getPage = async (ctx: any) => {
     };
 };
 
+const getFilter = ({
+    field,
+    fieldName,
+    value,
+}: {
+    field: string;
+    fieldName: string;
+    value: unknown;
+}) => {
+    if (!value) {
+        return { field };
+    }
+
+    if (Array.isArray(value)) {
+        return {
+            [`versions.0.${fieldName}`]: { $in: value },
+        };
+    }
+
+    return {
+        $or: [
+            { [`versions.0.${fieldName}`]: value },
+            {
+                [`versions.0.${fieldName}`]: {
+                    $elemMatch: { $eq: value },
+                },
+            },
+            {
+                [`versions.0.${fieldName}`]: {
+                    $elemMatch: {
+                        $elemMatch: { $eq: value },
+                    },
+                },
+            },
+        ],
+    };
+};
+
 export const getPageByField = async (ctx: Koa.Context, field: string) => {
     const fieldNameResult = fieldNameSchema.safeParse(field);
     if (!fieldNameResult.success) {
@@ -168,27 +206,11 @@ export const getPageByField = async (ctx: Koa.Context, field: string) => {
 
     const { value, page, perPage, sort } = parseBodyResult.data;
 
-    const filter = value
-        ? {
-              $or: [
-                  { [`versions.0.${fieldName}`]: value },
-                  {
-                      [`versions.0.${fieldName}`]: {
-                          $elemMatch: { $eq: value },
-                      },
-                  },
-                  {
-                      [`versions.0.${fieldName}`]: {
-                          $elemMatch: {
-                              $elemMatch: { $eq: value },
-                          },
-                      },
-                  },
-              ],
-          }
-        : {
-              field,
-          };
+    const filter = getFilter({
+        field,
+        fieldName,
+        value,
+    });
 
     const [data, total] = await Promise.all([
         ctx.publishedDataset

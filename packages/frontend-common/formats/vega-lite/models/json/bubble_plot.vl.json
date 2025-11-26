@@ -1,4 +1,11 @@
 {
+  "width": "container",
+  "height": "container",
+  "background": "transparent",
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
   "mark": {
     "type": "circle",
     "opacity": 0.8
@@ -8,7 +15,7 @@
       "field": "source",
       "type": "nominal",
       "axis": {
-        "labelAngle": 0,
+        "labelAngle": -35,
         "title": ""
       }
     },

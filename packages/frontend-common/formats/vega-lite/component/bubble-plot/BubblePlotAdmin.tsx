@@ -6,7 +6,7 @@ import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdm
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
-import BubblePlot from '../../models/BubblePlot';
+import { buildBubblePlotSpec } from '../../models/BubblePlot';
 import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
@@ -19,6 +19,7 @@ import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
+import { FieldSelector } from '../../../../fields/form/FieldSelector';
 
 export const defaultArgs = {
     params: {
@@ -34,6 +35,7 @@ export const defaultArgs = {
     tooltipTarget: 'Target',
     tooltipWeight: 'Weight',
     aspectRatio: ASPECT_RATIO_1_1,
+    fieldToFilter: null,
 };
 
 type BubblePlotParams = {
@@ -54,6 +56,7 @@ type BubblePlotArgs = {
     tooltipTarget?: string;
     tooltipWeight?: string;
     aspectRatio: AspectRatio;
+    fieldToFilter?: string | null;
 };
 
 type BubblePlotAdminProps = {
@@ -85,6 +88,7 @@ const BubblePlotAdmin = ({
         tooltipTarget = defaultArgs.tooltipTarget,
         tooltipWeight = defaultArgs.tooltipWeight,
         aspectRatio,
+        fieldToFilter,
     } = args;
 
     const colors = useMemo(() => {
@@ -100,17 +104,22 @@ const BubblePlotAdmin = ({
             return advancedModeSpec;
         }
 
-        const specBuilder = new BubblePlot();
-
-        specBuilder.setColor(colors);
-        specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
-        specBuilder.flipAxis(flipAxis);
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipSource);
-        specBuilder.setTooltipTarget(tooltipTarget);
-        specBuilder.setTooltipValue(tooltipWeight);
-
-        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+        return JSON.stringify(
+            buildBubblePlotSpec({
+                colors: [colors],
+                orderBy: lodexOrderToIdOrder(params.orderBy),
+                flip: flipAxis || false,
+                tooltip: {
+                    toggle: tooltip || false,
+                    sourceTitle: tooltipSource,
+                    targetTitle: tooltipTarget,
+                    weightTitle: tooltipWeight,
+                },
+                selectionEnabled: !!fieldToFilter,
+            }),
+            null,
+            2,
+        );
     }, [
         advancedMode,
         advancedModeSpec,
@@ -121,6 +130,7 @@ const BubblePlotAdmin = ({
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
+        fieldToFilter,
     ]);
 
     const toggleAdvancedMode = useCallback(
@@ -241,6 +251,15 @@ const BubblePlotAdmin = ({
                 />
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet defaultExpanded>
+                <FieldSelector
+                    value={fieldToFilter ?? null}
+                    onChange={(fieldToFilter) =>
+                        onChange({
+                            ...args,
+                            fieldToFilter: fieldToFilter || null,
+                        })
+                    }
+                />
                 <FormGroup>
                     <FormControlLabel
                         control={

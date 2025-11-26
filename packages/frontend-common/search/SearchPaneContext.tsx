@@ -15,7 +15,7 @@ export const SearchPaneContext = createContext<
 
 export type SearchPaneFilter = {
     field: string;
-    value: string | null;
+    value: string | string[] | null;
 };
 
 export type SearchPaneContextType = {

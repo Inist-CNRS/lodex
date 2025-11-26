@@ -186,7 +186,7 @@ class BarChart extends BasicChart {
     /**
      * Rebuild the edited spec
      */
-    buildSpec() {
+    buildSpec({ selectedDatum }: { selectedDatum?: unknown } = {}) {
         // @ts-expect-error TS2339
         const model = this.model;
         // @ts-expect-error TS2339
@@ -300,6 +300,7 @@ class BarChart extends BasicChart {
                 {
                     name: 'select',
                     select: 'point',
+                    value: selectedDatum ? [selectedDatum] : null,
                 },
             ]);
         }
