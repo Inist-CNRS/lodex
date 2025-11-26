@@ -9,10 +9,13 @@ describe('ColorScaleInput', () => {
         render(<ColorScaleInput value={undefined} onChange={mockOnChange} />);
 
         const colorInput = screen.getByLabelText('color_picker');
+        const captionInput = screen.getByRole('textbox', { name: 'caption' });
         const valuesInput = screen.getByRole('textbox', { name: 'values' });
 
         expect(colorInput).toBeInTheDocument();
         expect(colorInput).toHaveValue('#000000');
+        expect(captionInput).toBeInTheDocument();
+        expect(captionInput).toHaveValue('');
         expect(valuesInput).toBeInTheDocument();
         expect(valuesInput).toHaveValue('');
     });
@@ -21,7 +24,8 @@ describe('ColorScaleInput', () => {
         const mockOnChange = jest.fn();
         const initialValue: ColorScaleItem = {
             color: '#FF5733',
-            values: 'value1\nvalue2',
+            caption: 'Test Caption',
+            values: ['value1', 'value2'],
         };
 
         render(
@@ -32,9 +36,11 @@ describe('ColorScaleInput', () => {
         const textInput = within(colorGroup).getByRole('textbox', {
             name: 'Color',
         });
+        const captionInput = screen.getByRole('textbox', { name: 'caption' });
         const valuesInput = screen.getByRole('textbox', { name: 'values' });
 
         expect(textInput).toHaveValue('#FF5733');
+        expect(captionInput).toHaveValue('Test Caption');
         expect(valuesInput).toHaveValue('value1\nvalue2');
     });
 
@@ -54,10 +60,16 @@ describe('ColorScaleInput', () => {
             expectedMatch: { color: '#00FF00' },
         },
         {
+            label: 'caption changes',
+            inputType: 'caption',
+            typeValue: 'My Caption',
+            expectedMatch: { caption: 'My Caption' },
+        },
+        {
             label: 'values change',
             inputType: 'values',
             typeValue: 'test1\ntest2',
-            expectedMatch: { values: 'test1\ntest2' },
+            expectedMatch: { values: ['test1', 'test2'] },
         },
     ])(
         'should call onChange when $label',
@@ -79,7 +91,7 @@ describe('ColorScaleInput', () => {
                     await user.clear(input);
                 });
             } else {
-                input = screen.getByRole('textbox', { name: 'values' });
+                input = screen.getByRole('textbox', { name: inputType });
             }
 
             await act(async () => {
@@ -94,7 +106,7 @@ describe('ColorScaleInput', () => {
         },
     );
 
-    it('should update both color and values independently', async () => {
+    it('should update color, caption and values independently', async () => {
         const user = userEvent.setup();
         const mockOnChange = jest.fn();
 
@@ -104,11 +116,20 @@ describe('ColorScaleInput', () => {
         const colorTextInput = within(colorGroup).getByRole('textbox', {
             name: 'Color',
         });
+        const captionInput = screen.getByRole('textbox', { name: 'caption' });
         const valuesInput = screen.getByRole('textbox', { name: 'values' });
 
         await act(async () => {
             await user.clear(colorTextInput);
             await user.type(colorTextInput, '#FF0000');
+        });
+
+        await waitFor(() => {
+            expect(mockOnChange).toHaveBeenCalled();
+        });
+
+        await act(async () => {
+            await user.type(captionInput, 'Test');
         });
 
         await waitFor(() => {
@@ -123,7 +144,8 @@ describe('ColorScaleInput', () => {
             expect(mockOnChange).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     color: '#FF0000',
-                    values: 'value1',
+                    caption: 'Test',
+                    values: ['value1'],
                 }),
             );
         });
@@ -167,7 +189,7 @@ describe('ColorScaleInput', () => {
         await waitFor(() => {
             expect(mockOnChange).toHaveBeenLastCalledWith(
                 expect.objectContaining({
-                    values: expect.stringContaining('\n'),
+                    values: ['line1', 'line2', 'line3'],
                 }),
             );
         });
@@ -178,26 +200,45 @@ describe('ColorScaleInput', () => {
             label: 'updating only color',
             initialValue: {
                 color: '#000000',
-                values: 'existing\nvalues',
+                caption: 'Existing Caption',
+                values: ['existing', 'values'],
             },
             updateType: 'color',
             newValue: '#FFFFFF',
             expectedMatch: {
                 color: '#FFFFFF',
-                values: 'existing\nvalues',
+                caption: 'Existing Caption',
+                values: ['existing', 'values'],
+            },
+        },
+        {
+            label: 'updating only caption',
+            initialValue: {
+                color: '#FF5733',
+                caption: 'Old Caption',
+                values: ['existing', 'values'],
+            },
+            updateType: 'caption',
+            newValue: 'New Caption',
+            expectedMatch: {
+                color: '#FF5733',
+                caption: 'New Caption',
+                values: ['existing', 'values'],
             },
         },
         {
             label: 'updating only values',
             initialValue: {
                 color: '#FF5733',
-                values: 'initial',
+                caption: 'Keep Caption',
+                values: ['initial'],
             },
             updateType: 'values',
             newValue: 'updated',
             expectedMatch: {
                 color: '#FF5733',
-                values: 'updated',
+                caption: 'Keep Caption',
+                values: ['updated'],
             },
         },
     ])(
@@ -220,7 +261,7 @@ describe('ColorScaleInput', () => {
                     name: 'Color',
                 });
             } else {
-                input = screen.getByRole('textbox', { name: 'values' });
+                input = screen.getByRole('textbox', { name: updateType });
             }
 
             await act(async () => {
@@ -241,6 +282,7 @@ describe('ColorScaleInput', () => {
             label: 'undefined initial value',
             initialValue: undefined,
             expectedColor: '#000000',
+            expectedCaption: '',
             expectedValues: '',
             useColorGroup: false,
         },
@@ -248,19 +290,43 @@ describe('ColorScaleInput', () => {
             label: 'partial initial value with only color',
             initialValue: { color: '#123456' },
             expectedColor: '#123456',
+            expectedCaption: '',
             expectedValues: '',
             useColorGroup: true,
         },
         {
+            label: 'partial initial value with only caption',
+            initialValue: { caption: 'Only Caption' },
+            expectedColor: '#000000',
+            expectedCaption: 'Only Caption',
+            expectedValues: '',
+            useColorGroup: false,
+        },
+        {
             label: 'partial initial value with only values',
+            initialValue: { values: ['test', 'data'] },
+            expectedColor: '#000000',
+            expectedCaption: '',
+            expectedValues: 'test\ndata',
+            useColorGroup: false,
+        },
+        {
+            label: 'partial initial value with only values as string',
             initialValue: { values: 'test\ndata' },
             expectedColor: '#000000',
+            expectedCaption: '',
             expectedValues: 'test\ndata',
             useColorGroup: false,
         },
     ])(
         'should handle $label',
-        ({ initialValue, expectedColor, expectedValues, useColorGroup }) => {
+        ({
+            initialValue,
+            expectedColor,
+            expectedCaption,
+            expectedValues,
+            useColorGroup,
+        }) => {
             const mockOnChange = jest.fn();
 
             render(
@@ -280,6 +346,11 @@ describe('ColorScaleInput', () => {
                 const colorInput = screen.getByLabelText('color_picker');
                 expect(colorInput).toHaveValue(expectedColor);
             }
+
+            const captionInput = screen.getByRole('textbox', {
+                name: 'caption',
+            });
+            expect(captionInput).toHaveValue(expectedCaption);
 
             const valuesInput = screen.getByRole('textbox', { name: 'values' });
             expect(valuesInput).toHaveValue(expectedValues);

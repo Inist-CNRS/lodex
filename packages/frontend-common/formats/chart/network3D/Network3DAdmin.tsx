@@ -35,6 +35,7 @@ type NetworkArgs = {
     colors?: string;
     fieldToFilter?: string | null;
     isAdvancedColorMode?: boolean;
+    captionTitle?: string;
     colorScale?: ColorScaleItemMaybe[];
 };
 
@@ -120,6 +121,16 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
             onChange({
                 ...args,
                 isAdvancedColorMode,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleCaptionTitleChange = useCallback(
+        (captionTitle: string) => {
+            onChange({
+                ...args,
+                captionTitle,
             });
         },
         [onChange, args],
@@ -219,9 +230,11 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                         <ColorScaleGroup
                             isAdvancedColorMode={args.isAdvancedColorMode}
                             colorScale={args.colorScale}
+                            captionTitle={args.captionTitle}
                             handleToggleAdvancedColors={
                                 handleToggleAdvancedColors
                             }
+                            handleCaptionTitleChange={handleCaptionTitleChange}
                             handleColorScaleChange={handleColorScaleChange}
                         />
                     )}

@@ -1,12 +1,14 @@
-import { FormControlLabel, Switch } from '@mui/material';
+import { FormControlLabel, Switch, TextField } from '@mui/material';
 import { ArrayInput } from '../../../form-fields/ArrayInput';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { ColorScaleInput, type ColorScaleItemMaybe } from './ColorScaleInput';
 
 export function ColorScaleGroup({
     isAdvancedColorMode = false,
+    captionTitle = '',
     colorScale = [],
     handleToggleAdvancedColors,
+    handleCaptionTitleChange,
     handleColorScaleChange,
 }: ColorScaleGroupProps) {
     const { translate } = useTranslate();
@@ -25,11 +27,20 @@ export function ColorScaleGroup({
             />
 
             {isAdvancedColorMode && (
-                <ArrayInput
-                    Component={ColorScaleInput}
-                    values={colorScale}
-                    onChange={handleColorScaleChange}
-                />
+                <>
+                    <TextField
+                        label={translate('caption_title')}
+                        value={captionTitle ?? ''}
+                        onChange={(e) => {
+                            handleCaptionTitleChange(e.target.value);
+                        }}
+                    />
+                    <ArrayInput
+                        Component={ColorScaleInput}
+                        values={colorScale}
+                        onChange={handleColorScaleChange}
+                    />
+                </>
             )}
         </>
     );
@@ -37,7 +48,9 @@ export function ColorScaleGroup({
 
 export type ColorScaleGroupProps = {
     isAdvancedColorMode?: boolean | undefined;
+    captionTitle?: string | undefined;
     colorScale?: ColorScaleItemMaybe[] | undefined;
     handleToggleAdvancedColors(checked: boolean): void;
+    handleCaptionTitleChange(title: string): void;
     handleColorScaleChange(colorScale: ColorScaleItemMaybe[]): void;
 };

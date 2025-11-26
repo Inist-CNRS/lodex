@@ -80,7 +80,9 @@ const FormatEditionDialog = ({
                 </IconButton>
             </DialogTitle>
 
-            <DialogContent style={{ padding: 10, width: '800px' }}>
+            <DialogContent
+                style={{ padding: 10, maxWidth: '992px', width: '100%' }}
+            >
                 <Box mb={3}>
                     <SelectFormat
                         // @ts-expect-error TS2322

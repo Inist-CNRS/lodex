@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import type { ColorScaleItemMaybe } from './ColorScaleInput';
+import type { ColorScaleItem } from './useColorOverrides';
 import { useColorOverrides } from './useColorOverrides';
 
 describe('useColorOverrides', () => {
@@ -7,26 +7,26 @@ describe('useColorOverrides', () => {
         {
             label: 'isAdvancedColorMode is false',
             isAdvancedColorMode: false,
-            colorScale: [{ color: '#FF0000', values: 'A\nB' }],
-            expected: {},
+            colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
+            expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'isAdvancedColorMode is undefined',
             isAdvancedColorMode: undefined,
-            colorScale: [{ color: '#FF0000', values: 'A\nB' }],
-            expected: {},
+            colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
+            expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'colorScale is undefined',
             isAdvancedColorMode: true,
             colorScale: undefined,
-            expected: {},
+            expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'colorScale is empty array',
             isAdvancedColorMode: true,
             colorScale: [],
-            expected: {},
+            expected: { colorOverrides: {}, captions: {} },
         },
     ])(
         'should return empty object when $label',
@@ -40,8 +40,8 @@ describe('useColorOverrides', () => {
     );
 
     it('should return color overrides for single color scale item', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB\nC' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red Items', values: ['A', 'B', 'C'] },
         ];
 
         const { result } = renderHook(() =>
@@ -49,17 +49,22 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
-            C: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+                C: '#FF0000',
+            },
+            captions: {
+                'Red Items': '#FF0000',
+            },
         });
     });
 
     it('should return color overrides for multiple color scale items', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
-            { color: '#00FF00', values: 'C\nD' },
-            { color: '#0000FF', values: 'E' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+            { color: '#00FF00', caption: 'Green', values: ['C', 'D'] },
+            { color: '#0000FF', caption: 'Blue', values: ['E'] },
         ];
 
         const { result } = renderHook(() =>
@@ -67,17 +72,28 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
-            C: '#00FF00',
-            D: '#00FF00',
-            E: '#0000FF',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+                C: '#00FF00',
+                D: '#00FF00',
+                E: '#0000FF',
+            },
+            captions: {
+                Red: '#FF0000',
+                Green: '#00FF00',
+                Blue: '#0000FF',
+            },
         });
     });
 
     it('should trim whitespace from values and colors', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '  #FF0000  ', values: '  A  \n  B  \n  C  ' },
+        const colorScale: ColorScaleItem[] = [
+            {
+                color: '  #FF0000  ',
+                caption: 'Caption',
+                values: ['  A  ', '  B  ', '  C  '],
+            },
         ];
 
         const { result } = renderHook(() =>
@@ -85,15 +101,20 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
-            C: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+                C: '#FF0000',
+            },
+            captions: {
+                Caption: '#FF0000',
+            },
         });
     });
 
-    it('should ignore empty lines in values', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\n\nB\n  \nC\n' },
+    it('should ignore empty values in array', () => {
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', values: ['A', '', 'B', '  ', 'C', ''] },
         ];
 
         const { result } = renderHook(() =>
@@ -101,48 +122,42 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
-            C: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+                C: '#FF0000',
+            },
+            captions: {},
         });
     });
 
     it.each([
         {
             label: 'item with missing color',
-            colorScale: [{ values: 'A\nB' }] as ColorScaleItemMaybe[],
-            expected: {},
+            colorScale: [{ values: ['A', 'B'] }] as ColorScaleItem[],
+            expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'item with missing values',
-            colorScale: [{ color: '#FF0000' }] as ColorScaleItemMaybe[],
-            expected: {},
+            colorScale: [{ color: '#FF0000' }] as ColorScaleItem[],
+            expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'item with empty color',
-            colorScale: [
-                { color: '', values: 'A\nB' },
-            ] as ColorScaleItemMaybe[],
-            expected: {},
+            colorScale: [{ color: '', values: ['A', 'B'] }] as ColorScaleItem[],
+            expected: { colorOverrides: {}, captions: {} },
         },
         {
-            label: 'item with empty values',
-            colorScale: [
-                { color: '#FF0000', values: '' },
-            ] as ColorScaleItemMaybe[],
-            expected: {},
+            label: 'item with empty values array',
+            colorScale: [{ color: '#FF0000', values: [] }] as ColorScaleItem[],
+            expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'item with whitespace-only color',
             colorScale: [
-                { color: '   ', values: 'A\nB' },
-            ] as ColorScaleItemMaybe[],
-            expected: { A: '', B: '' },
-        },
-        {
-            label: 'undefined item in array',
-            colorScale: [undefined, { color: '#FF0000', values: 'A' }],
-            expected: { A: '#FF0000' },
+                { color: '   ', values: ['A', 'B'] },
+            ] as ColorScaleItem[],
+            expected: { colorOverrides: { A: '', B: '' }, captions: {} },
         },
     ])('should handle $label', ({ colorScale, expected }) => {
         const { result } = renderHook(() =>
@@ -153,13 +168,12 @@ describe('useColorOverrides', () => {
     });
 
     it('should handle mixed valid and invalid items', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
-            undefined,
-            { color: '', values: 'C' },
-            { color: '#00FF00', values: 'D' },
-            { values: 'E' },
-            { color: '#0000FF', values: '' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+            { color: '', values: ['C'] },
+            { color: '#00FF00', values: ['D'] },
+            { values: ['E'] },
+            { color: '#0000FF', values: [] },
         ];
 
         const { result } = renderHook(() =>
@@ -167,16 +181,21 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
-            D: '#00FF00',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+                D: '#00FF00',
+            },
+            captions: {
+                Red: '#FF0000',
+            },
         });
     });
 
     it('should override values when same value appears multiple times', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
-            { color: '#00FF00', values: 'B\nC' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+            { color: '#00FF00', caption: 'Green', values: ['B', 'C'] },
         ];
 
         const { result } = renderHook(() =>
@@ -184,15 +203,21 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#00FF00',
-            C: '#00FF00',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#00FF00',
+                C: '#00FF00',
+            },
+            captions: {
+                Red: '#FF0000',
+                Green: '#00FF00',
+            },
         });
     });
 
     it('should update when isAdvancedColorMode changes', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', values: ['A', 'B'] },
         ];
 
         const { result, rerender } = renderHook(
@@ -200,26 +225,29 @@ describe('useColorOverrides', () => {
             { initialProps: { advanced: false } },
         );
 
-        expect(result.current).toEqual({});
+        expect(result.current).toEqual({ colorOverrides: {}, captions: {} });
 
         rerender({ advanced: true });
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+            },
+            captions: {},
         });
 
         rerender({ advanced: false });
 
-        expect(result.current).toEqual({});
+        expect(result.current).toEqual({ colorOverrides: {}, captions: {} });
     });
 
     it('should update when colorScale changes', () => {
-        const colorScale1: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
+        const colorScale1: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
         ];
-        const colorScale2: ColorScaleItemMaybe[] = [
-            { color: '#00FF00', values: 'C\nD' },
+        const colorScale2: ColorScaleItem[] = [
+            { color: '#00FF00', caption: 'Green', values: ['C', 'D'] },
         ];
 
         const { result, rerender } = renderHook(
@@ -228,25 +256,35 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+            },
+            captions: {
+                Red: '#FF0000',
+            },
         });
 
         rerender({ scale: colorScale2 });
 
         expect(result.current).toEqual({
-            C: '#00FF00',
-            D: '#00FF00',
+            colorOverrides: {
+                C: '#00FF00',
+                D: '#00FF00',
+            },
+            captions: {
+                Green: '#00FF00',
+            },
         });
     });
 
     it('should update when items are added to colorScale', () => {
-        const colorScale1: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A' },
+        const colorScale1: ColorScaleItem[] = [
+            { color: '#FF0000', values: ['A'] },
         ];
-        const colorScale2: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A' },
-            { color: '#00FF00', values: 'B' },
+        const colorScale2: ColorScaleItem[] = [
+            { color: '#FF0000', values: ['A'] },
+            { color: '#00FF00', caption: 'Green', values: ['B'] },
         ];
 
         const { result, rerender } = renderHook(
@@ -255,20 +293,28 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+            },
+            captions: {},
         });
 
         rerender({ scale: colorScale2 });
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#00FF00',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#00FF00',
+            },
+            captions: {
+                Green: '#00FF00',
+            },
         });
     });
 
     it('should memoize result when inputs do not change', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', values: ['A', 'B'] },
         ];
 
         const { result, rerender } = renderHook(() =>
@@ -282,9 +328,9 @@ describe('useColorOverrides', () => {
         expect(result.current).toBe(firstResult);
     });
 
-    it('should handle single value without newline', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A' },
+    it('should handle single value', () => {
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Single', values: ['A'] },
         ];
 
         const { result } = renderHook(() =>
@@ -292,15 +338,27 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+            },
+            captions: {
+                Single: '#FF0000',
+            },
         });
     });
 
-    it('should handle complex multiline values with various whitespace', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
+    it('should handle values with various whitespace', () => {
+        const colorScale: ColorScaleItem[] = [
             {
                 color: '#FF0000',
-                values: '  Value One  \n\nValue Two\n  \n  Value Three  \n',
+                caption: 'Complex',
+                values: [
+                    '  Value One  ',
+                    '',
+                    'Value Two',
+                    '  ',
+                    '  Value Three  ',
+                ],
             },
         ];
 
@@ -309,15 +367,23 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            'Value One': '#FF0000',
-            'Value Two': '#FF0000',
-            'Value Three': '#FF0000',
+            colorOverrides: {
+                'Value One': '#FF0000',
+                'Value Two': '#FF0000',
+                'Value Three': '#FF0000',
+            },
+            captions: {
+                Complex: '#FF0000',
+            },
         });
     });
 
     it('should handle values with special characters', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'value-1\nvalue_2\nvalue.3\nvalue@4' },
+        const colorScale: ColorScaleItem[] = [
+            {
+                color: '#FF0000',
+                values: ['value-1', 'value_2', 'value.3', 'value@4'],
+            },
         ];
 
         const { result } = renderHook(() =>
@@ -325,75 +391,87 @@ describe('useColorOverrides', () => {
         );
 
         expect(result.current).toEqual({
-            'value-1': '#FF0000',
-            value_2: '#FF0000',
-            'value.3': '#FF0000',
-            'value@4': '#FF0000',
+            colorOverrides: {
+                'value-1': '#FF0000',
+                value_2: '#FF0000',
+                'value.3': '#FF0000',
+                'value@4': '#FF0000',
+            },
+            captions: {},
         });
     });
 
     it('should return empty object when all items are invalid', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            undefined,
-            { color: '', values: 'A' },
-            { color: '#FF0000', values: '' },
-            { values: 'B' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '', values: ['A'] },
+            { color: '#FF0000', values: [] },
+            { values: ['B'] },
         ];
 
         const { result } = renderHook(() =>
             useColorOverrides(true, colorScale),
         );
 
-        expect(result.current).toEqual({});
+        expect(result.current).toEqual({ colorOverrides: {}, captions: {} });
     });
 
     it('should handle transition from undefined to defined colorScale', () => {
         const { result, rerender } = renderHook(
-            ({ scale }: { scale: ColorScaleItemMaybe[] | undefined }) =>
+            ({ scale }: { scale: ColorScaleItem[] | undefined }) =>
                 useColorOverrides(true, scale),
             {
                 initialProps: {
-                    scale: undefined as ColorScaleItemMaybe[] | undefined,
+                    scale: undefined as ColorScaleItem[] | undefined,
                 },
             },
         );
 
-        expect(result.current).toEqual({});
+        expect(result.current).toEqual({ colorOverrides: {}, captions: {} });
 
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
         ];
 
         rerender({ scale: colorScale });
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+            },
+            captions: {
+                Red: '#FF0000',
+            },
         });
     });
 
     it('should handle transition from defined to undefined colorScale', () => {
-        const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
         ];
 
         const { result, rerender } = renderHook(
-            ({ scale }: { scale: ColorScaleItemMaybe[] | undefined }) =>
+            ({ scale }: { scale: ColorScaleItem[] | undefined }) =>
                 useColorOverrides(true, scale),
             {
                 initialProps: {
-                    scale: colorScale as ColorScaleItemMaybe[] | undefined,
+                    scale: colorScale as ColorScaleItem[] | undefined,
                 },
             },
         );
 
         expect(result.current).toEqual({
-            A: '#FF0000',
-            B: '#FF0000',
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+            },
+            captions: {
+                Red: '#FF0000',
+            },
         });
 
         rerender({ scale: undefined });
 
-        expect(result.current).toEqual({});
+        expect(result.current).toEqual({ colorOverrides: {}, captions: {} });
     });
 });

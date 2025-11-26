@@ -18,6 +18,7 @@ import { SearchPaneContext } from '../../../search/SearchPaneContext';
 import { addTransparency } from '../../utils/colorHelpers';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
+import { NetworkCaption } from './NetworkCaption';
 import { type Link, type Node } from './useFormatNetworkData';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
@@ -128,6 +129,8 @@ type NetworkBaseProps = {
     showArrows?: boolean;
     fieldToFilter?: string | null;
     zoomAdjustNodeSize?: boolean;
+    captionTitle?: string;
+    captions?: Record<string, string>;
 };
 
 export const NetworkBase = ({
@@ -140,6 +143,8 @@ export const NetworkBase = ({
     showArrows = false,
     fieldToFilter,
     zoomAdjustNodeSize = false,
+    captions,
+    captionTitle,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const searchPane = useContext(SearchPaneContext);
@@ -485,6 +490,11 @@ export const NetworkBase = ({
                     >
                         {<MouseIcon />}
                     </div>
+
+                    <NetworkCaption
+                        captions={captions}
+                        captionTitle={captionTitle}
+                    />
                 </div>
             </FormatFullScreenMode>
         </div>

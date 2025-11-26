@@ -11,7 +11,6 @@ import indexSearchableFields from '../../services/indexSearchableFields';
 import { mongoConnectionString } from '../../services/mongoClient';
 import publishFacets from './publishFacets';
 
-import { ObjectId } from 'mongodb';
 import {
     Overview,
     SCOPE_COLLECTION,
@@ -19,6 +18,7 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '@lodex/common';
+import { ObjectId } from 'mongodb';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
 import generateUid from '../../services/generateUid';
 import { restorePrecomputed } from '../../services/precomputed/precomputed';
@@ -26,6 +26,7 @@ import { restoreModel } from '../../services/restoreModel';
 import { ENRICHER } from '../../workers/enricher';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { dropJobs } from '../../workers/tools';
+import { transformField } from './field.transformer';
 
 const sortByFieldUri = (a: any, b: any) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -159,12 +160,11 @@ export const getAllField = async (ctx: any) => {
 };
 
 export const postField = async (ctx: any) => {
-    const newField = ctx.request.body;
+    const newField = transformField(ctx.request.body);
 
     const { searchable } = newField;
 
     const result = await ctx.field.create(newField);
-
     if (searchable) {
         await indexSearchableFields(ctx);
     }
@@ -178,7 +178,7 @@ export const postField = async (ctx: any) => {
 };
 
 export const patchField = async (ctx: any, id: any) => {
-    const newField = ctx.request.body;
+    const newField = transformField(ctx.request.body);
 
     try {
         ctx.body = await ctx.field.updateOneById(id, newField);

@@ -1,6 +1,6 @@
 import { FormControl, FormHelperText, TextField } from '@mui/material';
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ArrayInputComponentProps } from '../../../form-fields/ArrayInput';
 import { ColorPickerInput } from '../../../form-fields/ColorPickerInput';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -21,7 +21,11 @@ export function ColorScaleInput({
     const [value, setValue] = useState<ColorScaleItem>(initialValue ?? {});
 
     const handleValuesChange = (values: string) => {
-        setValue({ ...value, values });
+        setValue({ ...value, values: values.split('\n') });
+    };
+
+    const handleCaptionChange = (caption: string) => {
+        setValue({ ...value, caption });
     };
 
     const handleColorChange = (color: string) => {
@@ -32,6 +36,18 @@ export function ColorScaleInput({
         handleChange(value);
     }, [handleChange, value]);
 
+    const values = useMemo(() => {
+        if (typeof value?.values === 'string') {
+            return value.values;
+        }
+
+        if (Array.isArray(value?.values)) {
+            return value.values.join('\n');
+        }
+
+        return '';
+    }, [value?.values]);
+
     return (
         <>
             <ColorPickerInput
@@ -39,15 +55,24 @@ export function ColorScaleInput({
                 value={value?.color ?? ''}
                 onChange={handleColorChange}
             />
+            <TextField
+                label={translate('caption')}
+                value={value?.caption ?? ''}
+                onChange={(e) => handleCaptionChange(e.target.value)}
+                sx={{
+                    width: '100%',
+                    maxWidth: '256px',
+                }}
+            />
             <FormControl
                 sx={{
                     width: '100%',
-                    maxWidth: '384px',
+                    maxWidth: '512px',
                 }}
             >
                 <TextField
                     label={translate('values')}
-                    value={value?.values ?? ''}
+                    value={values}
                     onChange={(e) => handleValuesChange(e.target.value)}
                     multiline
                     minRows={2}
@@ -66,7 +91,8 @@ export function ColorScaleInput({
 
 export type ColorScaleItem = {
     color?: string;
-    values?: string;
+    caption?: string;
+    values?: string[] | string;
 };
 
 export type ColorScaleItemMaybe = ColorScaleItem | undefined;

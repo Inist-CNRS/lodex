@@ -15,6 +15,7 @@ describe('ColorScaleGroup', () => {
         isAdvancedColorMode: false,
         colorScale: [],
         handleToggleAdvancedColors: jest.fn(),
+        handleCaptionTitleChange: jest.fn(),
         handleColorScaleChange: jest.fn(),
     };
 
@@ -148,8 +149,8 @@ describe('ColorScaleGroup', () => {
         {
             label: 'with 2 items having values',
             colorScale: [
-                { color: '#FF0000', values: 'red\ncrimson' },
-                { color: '#00FF00', values: 'green\nlime' },
+                { color: '#FF0000', values: ['red', 'crimson'] },
+                { color: '#00FF00', values: ['green', 'lime'] },
             ],
             expectedCount: 2,
             expectedColors: ['#FF0000', '#00FF00'],
@@ -158,9 +159,9 @@ describe('ColorScaleGroup', () => {
         {
             label: 'with 3 items',
             colorScale: [
-                { color: '#FF0000', values: 'value1' },
-                { color: '#00FF00', values: 'value2' },
-                { color: '#0000FF', values: 'value3' },
+                { color: '#FF0000', values: ['value1'] },
+                { color: '#00FF00', values: ['value2'] },
+                { color: '#0000FF', values: ['value3'] },
             ],
             expectedCount: 3,
             expectedColors: ['#FF0000', '#00FF00', '#0000FF'],
@@ -169,9 +170,9 @@ describe('ColorScaleGroup', () => {
         {
             label: 'with undefined values in colorScale',
             colorScale: [
-                { color: '#FF0000', values: 'red' },
+                { color: '#FF0000', values: ['red'] },
                 undefined,
-                { color: '#00FF00', values: 'green' },
+                { color: '#00FF00', values: ['green'] },
             ],
             expectedCount: 3,
             checkValues: false,
@@ -252,8 +253,8 @@ describe('ColorScaleGroup', () => {
         const user = userEvent.setup();
         const mockHandleChange = jest.fn();
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'red' },
-            { color: '#00FF00', values: 'green' },
+            { color: '#FF0000', values: ['red'] },
+            { color: '#00FF00', values: ['green'] },
         ];
 
         render(
@@ -274,7 +275,7 @@ describe('ColorScaleGroup', () => {
         });
 
         expect(mockHandleChange).toHaveBeenCalledWith([
-            { color: '#00FF00', values: 'green' },
+            { color: '#00FF00', values: ['green'] },
         ]);
     });
 
@@ -304,5 +305,96 @@ describe('ColorScaleGroup', () => {
         expect(
             screen.getByRole('button', { name: 'add_value' }),
         ).toBeInTheDocument();
+    });
+
+    it.each([
+        {
+            label: 'not visible when isAdvancedColorMode is false',
+            isAdvancedColorMode: false,
+            captionTitle: undefined,
+            shouldBeVisible: false,
+            expectedValue: undefined,
+        },
+        {
+            label: 'visible and empty when isAdvancedColorMode is true',
+            isAdvancedColorMode: true,
+            captionTitle: '',
+            shouldBeVisible: true,
+            expectedValue: '',
+        },
+        {
+            label: 'visible with a title',
+            isAdvancedColorMode: true,
+            captionTitle: 'My Caption Title',
+            shouldBeVisible: true,
+            expectedValue: 'My Caption Title',
+        },
+        {
+            label: 'visible and empty when captionTitle is undefined',
+            isAdvancedColorMode: true,
+            captionTitle: undefined,
+            shouldBeVisible: true,
+            expectedValue: '',
+        },
+    ])(
+        'should render caption_title input $label',
+        ({
+            isAdvancedColorMode,
+            captionTitle,
+            shouldBeVisible,
+            expectedValue,
+        }) => {
+            render(
+                <ColorScaleGroup
+                    {...defaultProps}
+                    isAdvancedColorMode={isAdvancedColorMode}
+                    captionTitle={captionTitle}
+                />,
+            );
+
+            const captionInput = screen.queryByRole('textbox', {
+                name: 'caption_title',
+            });
+
+            if (shouldBeVisible) {
+                expect(captionInput).toBeInTheDocument();
+                expect(captionInput).toHaveValue(expectedValue);
+            } else {
+                expect(captionInput).not.toBeInTheDocument();
+            }
+        },
+    );
+
+    it('should call handleCaptionTitleChange when caption_title input value changes', async () => {
+        const user = userEvent.setup();
+        const mockHandleChange = jest.fn();
+
+        const { rerender } = render(
+            <ColorScaleGroup
+                {...defaultProps}
+                isAdvancedColorMode={true}
+                captionTitle=""
+                handleCaptionTitleChange={mockHandleChange}
+            />,
+        );
+
+        const captionInput = screen.getByRole('textbox', {
+            name: 'caption_title',
+        });
+
+        await user.type(captionInput, 'N');
+
+        expect(mockHandleChange).toHaveBeenCalledWith('N');
+        rerender(
+            <ColorScaleGroup
+                {...defaultProps}
+                isAdvancedColorMode={true}
+                captionTitle="N"
+                handleCaptionTitleChange={mockHandleChange}
+            />,
+        );
+
+        await user.type(captionInput, 'e');
+        expect(mockHandleChange).toHaveBeenCalledWith('Ne');
     });
 });
