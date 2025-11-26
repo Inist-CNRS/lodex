@@ -58,7 +58,7 @@ const HeatMapView = ({
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
-    const { setFilter } = useContext(SearchPaneContext) ?? {
+    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
         setFilter: () => {},
     };
 
@@ -94,6 +94,11 @@ const HeatMapView = ({
             }
         }
 
+        const selectedDatum = data?.values.find(
+            ({ source, target }: { source: string; target: string }) =>
+                filter?.value?.[0] === target && filter?.value?.[1] === source,
+        );
+
         return buildHeatMapSpec({
             colors: colorScheme || [],
             tooltip: {
@@ -105,9 +110,11 @@ const HeatMapView = ({
             flip: flipAxis || false,
             orderBy: lodexOrderToIdOrder(params.orderBy),
             selectionEnabled: !!fieldToFilter,
+            selectedDatum,
         });
     }, [
         advancedMode,
+        data?.values,
         colorScheme,
         tooltip,
         tooltipSource,
@@ -118,6 +125,7 @@ const HeatMapView = ({
         fieldToFilter,
         advancedModeSpec,
         width,
+        filter?.value,
     ]);
 
     if (!spec) {

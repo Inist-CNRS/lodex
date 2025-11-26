@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { clamp } from 'lodash';
 import compose from 'recompose/compose';
@@ -15,6 +15,7 @@ import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import type { Field } from '../../../../fields/types';
 import { buildBubblePlotSpec } from '../../models/BubblePlot';
+import { SearchPaneContext } from '../../../../search/SearchPaneContext';
 
 const styles = {
     container: {
@@ -42,31 +43,41 @@ interface BubblePlotViewProps {
 
 const BubblePlotView = ({
     advancedMode,
-
     advancedModeSpec,
-
     field,
-
     data,
-
     colors,
-
     params,
-
     flipAxis,
-
     tooltip,
-
     tooltipSource,
-
     tooltipTarget,
-
     tooltipWeight,
-
     aspectRatio,
 }: BubblePlotViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
+
+    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
+        setFilter: () => {},
+    };
+
+    const fieldToFilter =
+        typeof field?.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
+
+    const handleClick = useCallback(
+        (data: { source: string; target: string }) => {
+            if (fieldToFilter) {
+                setFilter({
+                    field: fieldToFilter,
+                    value: data ? [data.target, data.source] : null,
+                });
+            }
+        },
+        [fieldToFilter, setFilter],
+    );
 
     const spec = useMemo(() => {
         if (advancedMode) {
@@ -83,6 +94,11 @@ const BubblePlotView = ({
             }
         }
 
+        const selectedDatum = data?.values.find(
+            ({ source, target }: { source: string; target: string }) =>
+                filter?.value?.[0] === target && filter?.value?.[1] === source,
+        );
+
         return buildBubblePlotSpec({
             colors: colors ? colors.split(' ') : [],
             orderBy: lodexOrderToIdOrder(params?.orderBy),
@@ -93,18 +109,23 @@ const BubblePlotView = ({
                 targetTitle: tooltipTarget,
                 weightTitle: tooltipWeight,
             },
+            selectionEnabled: !!fieldToFilter,
+            selectedDatum,
         });
     }, [
-        width,
         advancedMode,
-        advancedModeSpec,
+        data?.values,
         colors,
-        params,
+        params?.orderBy,
         flipAxis,
         tooltip,
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
+        fieldToFilter,
+        advancedModeSpec,
+        width,
+        filter?.value,
     ]);
 
     if (!spec) {
@@ -121,6 +142,7 @@ const BubblePlotView = ({
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
+                onClick={handleClick}
             />
         </div>
     );
