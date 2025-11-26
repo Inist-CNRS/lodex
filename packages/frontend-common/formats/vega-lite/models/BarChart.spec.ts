@@ -289,6 +289,7 @@ describe('BasicChart', () => {
                 {
                     name: 'select',
                     select: 'point',
+                    value: null,
                 },
             ],
             width: 'container',
@@ -431,6 +432,7 @@ describe('BasicChart', () => {
                 {
                     name: 'select',
                     select: 'point',
+                    value: null,
                 },
             ],
             width: 'container',
