@@ -72,7 +72,7 @@ const BarChartView = ({
 }: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
-    const { setFilter } = useContext(SearchPaneContext) ?? {
+    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
         setFilter: () => {},
     };
 
@@ -108,6 +108,10 @@ const BarChartView = ({
             }
         }
 
+        const selectedDatum = data?.values.find(
+            (d: { _id: string }) => d._id === filter?.value,
+        );
+
         const specBuilder = new BarChart({
             enableSelection: !!fieldToFilter,
         });
@@ -127,13 +131,13 @@ const BarChartView = ({
         if (diagonalCategoryAxis) specBuilder.setLabelAngle(AXIS_X, -45);
         if (diagonalValueAxis) specBuilder.setLabelAngle(AXIS_Y, -45);
 
-        // @ts-expect-error TS2554
-        return specBuilder.buildSpec(width, data.values.length);
+        return specBuilder.buildSpec({
+            selectedDatum,
+        });
     }, [
-        width,
         advancedMode,
-        advancedModeSpec,
         data?.values,
+        fieldToFilter,
         direction,
         scale,
         colors,
@@ -146,7 +150,9 @@ const BarChartView = ({
         barSize,
         diagonalCategoryAxis,
         diagonalValueAxis,
-        fieldToFilter,
+        advancedModeSpec,
+        width,
+        filter?.value,
     ]);
 
     if (!spec) {
