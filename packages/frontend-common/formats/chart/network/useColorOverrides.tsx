@@ -42,7 +42,7 @@ export type ColorOverrides = {
 };
 
 export type ColorScaleItem = {
-    color: string;
-    caption: string;
-    values: string[];
+    color?: string;
+    caption?: string;
+    values?: string[];
 };

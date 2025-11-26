@@ -369,7 +369,7 @@ describe('ColorScaleGroup', () => {
         const user = userEvent.setup();
         const mockHandleChange = jest.fn();
 
-        render(
+        const { rerender } = render(
             <ColorScaleGroup
                 {...defaultProps}
                 isAdvancedColorMode={true}
@@ -382,44 +382,19 @@ describe('ColorScaleGroup', () => {
             name: 'caption_title',
         });
 
-        await act(async () => {
-            await user.clear(captionInput);
-            await user.type(captionInput, 'New Title');
-        });
+        await user.type(captionInput, 'N');
 
-        expect(mockHandleChange).toHaveBeenCalledTimes(9); // 'New Title'.length
-        expect(mockHandleChange).toHaveBeenLastCalledWith('New Title');
-    });
-
-    it('should handle multiple caption_title changes', async () => {
-        const user = userEvent.setup();
-        const mockHandleChange = jest.fn();
-
-        render(
+        expect(mockHandleChange).toHaveBeenCalledWith('N');
+        rerender(
             <ColorScaleGroup
                 {...defaultProps}
                 isAdvancedColorMode={true}
-                captionTitle="Initial"
+                captionTitle="N"
                 handleCaptionTitleChange={mockHandleChange}
             />,
         );
 
-        const captionInput = screen.getByRole('textbox', {
-            name: 'caption_title',
-        });
-
-        await act(async () => {
-            await user.clear(captionInput);
-            await user.type(captionInput, 'First');
-        });
-
-        expect(mockHandleChange).toHaveBeenCalledWith('First');
-
-        await act(async () => {
-            await user.clear(captionInput);
-            await user.type(captionInput, 'Second');
-        });
-
-        expect(mockHandleChange).toHaveBeenCalledWith('Second');
+        await user.type(captionInput, 'e');
+        expect(mockHandleChange).toHaveBeenCalledWith('Ne');
     });
 });
