@@ -3,12 +3,11 @@ import { useTranslate } from '../../../i18n/I18NContext';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
-import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import { useCallback } from 'react';
 
 export const defaultArgs = {
     paragraphWidth: '100%',
-    colors: MONOCHROMATIC_DEFAULT_COLORSET,
+    colors: '#000000';
 };
 
 type ParagraphArgs = {
