@@ -198,7 +198,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
                 filters.value = regexFilter;
             }
         }
-        return await collection.countDocuments(filters);
+        return collection.countDocuments(filters);
     };
 
     return collection;
