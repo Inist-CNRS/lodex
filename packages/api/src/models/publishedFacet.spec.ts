@@ -1,114 +1,131 @@
+import { MongoClient } from 'mongodb';
 import publishedFacetFactory from './publishedFacet';
-import type { Db } from 'mongodb';
 
-describe('publishedFacet model', () => {
-    const collection = {
-        countDocuments: jest.fn(),
-        find: jest.fn().mockImplementation(() => ({
-            skip: () => ({
-                limit: () => ({
-                    sort: () => ({
-                        toArray: () => Promise.resolve([]),
-                    }),
-                }),
-            }),
-        })),
-        insertMany: jest.fn(),
-    };
-    const listCollections = {
-        toArray: () => Promise.resolve([true]),
-    };
-    const db = {
-        collection: jest.fn().mockReturnValue(collection),
-        listCollections: jest.fn().mockReturnValue(listCollections),
-        databaseName: 'test',
-        options: {},
-    } as unknown as Db;
+describe('publishedFacet', () => {
+    const connectionStringURI = process.env.MONGO_URL;
 
-    beforeEach(() => {
-        jest.clearAllMocks();
+    let connection: MongoClient;
+    let db: any;
+    let publishedFacet: any;
+
+    beforeAll(async () => {
+        connection = await MongoClient.connect(connectionStringURI!);
+        db = connection.db();
+    });
+
+    afterAll(async () => {
+        await connection.close();
+    });
+
+    beforeEach(async () => {
+        await db.dropDatabase();
+        publishedFacet = await publishedFacetFactory(db);
+
+        await publishedFacet.insertMany([
+            { field: 'foo', value: 'filter', count: 10 },
+            { field: 'foo', value: 'filtré', count: 5 },
+            { field: 'foo', value: 'Filtration', count: 3 },
+            { field: 'foo', value: 'other', count: 2 },
+            { field: 'bar', value: 'filter', count: 1 },
+        ]);
     });
 
     describe('findValuesForField', () => {
-        describe('without filter', () => {
-            it('calls collection.find with correct parameters', async () => {
-                const publishedFacet = await publishedFacetFactory(db);
-
-                await publishedFacet.findValuesForField({ field: 'foo' });
-
-                expect(collection.find).toHaveBeenCalledWith({ field: 'foo' });
+        it('returns all values for a field when no filter is provided', async () => {
+            const results = await publishedFacet.findValuesForField({
+                field: 'foo',
+                perPage: 10,
             });
-        });
-        describe('with filter', () => {
-            it('calls collection.find with correct parameters', async () => {
-                const publishedFacet = await publishedFacetFactory(db);
 
-                await publishedFacet.findValuesForField({
-                    field: 'foo',
-                    filter: 'filter',
-                });
-
-                expect(collection.find).toHaveBeenCalledWith({
-                    field: 'foo',
-                    value: {
-                        $regex: '.*f[iìíîïīĭįı][lĺļľłŀ][tţťŧ][eèéêëēĕėęě][rŕŗř].*',
-                        $options: 'i',
-                    },
-                });
-            });
+            expect(results.map((r: any) => r.value).sort()).toStrictEqual([
+                'Filtration',
+                'filter',
+                'filtré',
+                'other',
+            ]);
         });
 
-        describe('with empty or whitespace filter', () => {
-            it('ignores empty filter', async () => {
-                const publishedFacet = await publishedFacetFactory(db);
-
-                await publishedFacet.findValuesForField({
-                    field: 'foo',
-                    filter: '',
-                });
-
-                expect(collection.find).toHaveBeenCalledWith({ field: 'foo' });
+        it('filters values using accent-insensitive and case-insensitive search', async () => {
+            const results = await publishedFacet.findValuesForField({
+                field: 'foo',
+                filter: 'filtre',
+                perPage: 10,
             });
 
-            it('ignores whitespace-only filter', async () => {
-                const publishedFacet = await publishedFacetFactory(db);
+            expect(results.map((r: any) => r.value)).toStrictEqual(['filtré']);
+        });
 
-                await publishedFacet.findValuesForField({
-                    field: 'foo',
-                    filter: '   ',
-                });
-
-                expect(collection.find).toHaveBeenCalledWith({ field: 'foo' });
+        it.each([
+            ['', 'empty string'],
+            ['   ', 'whitespace only'],
+        ])('ignores filter when it is %s (%s)', async (filter) => {
+            const results = await publishedFacet.findValuesForField({
+                field: 'foo',
+                filter,
+                perPage: 10,
             });
+
+            expect(results).toHaveLength(4);
+        });
+
+        it('applies pagination and sorting', async () => {
+            const results = await publishedFacet.findValuesForField({
+                field: 'foo',
+                sortBy: 'count',
+                sortDir: 'ASC',
+                perPage: 2,
+                page: 0,
+            });
+
+            expect(results.map((r: any) => r.count)).toStrictEqual([2, 3]);
+        });
+
+        it('returns an empty array if no values match the filter', async () => {
+            const results = await publishedFacet.findValuesForField({
+                field: 'foo',
+                filter: 'does-not-exist',
+                perPage: 10,
+            });
+
+            expect(results).toStrictEqual([]);
         });
     });
 
     describe('countValuesForField', () => {
-        describe('without filter', () => {
-            it('calls collection.countDocuments with correct parameters', async () => {
-                const publishedFacet = await publishedFacetFactory(db);
+        it('counts all values for a field when no filter is provided', async () => {
+            const count = await publishedFacet.countValuesForField('foo');
 
-                await publishedFacet.countValuesForField('foo');
-
-                expect(collection.countDocuments).toHaveBeenCalledWith({
-                    field: 'foo',
-                });
-            });
+            expect(count).toBe(4);
         });
-        describe('with filter', () => {
-            it('calls collection.countDocuments with correct parameters', async () => {
-                const publishedFacet = await publishedFacetFactory(db);
 
-                await publishedFacet.countValuesForField('foo', 'filter');
+        it('counts values using accent-insensitive filter', async () => {
+            const count = await publishedFacet.countValuesForField(
+                'foo',
+                'filtre',
+            );
 
-                expect(collection.countDocuments).toHaveBeenCalledWith({
-                    field: 'foo',
-                    value: {
-                        $regex: '.*f[iìíîïīĭįı][lĺļľłŀ][tţťŧ][eèéêëēĕėęě][rŕŗř].*',
-                        $options: 'i',
-                    },
-                });
-            });
+            expect(count).toBe(1);
+        });
+
+        it.each(['', '   '])(
+            'ignores filter when counting if filter is "%s"',
+            async (filter) => {
+                const count = await publishedFacet.countValuesForField(
+                    'foo',
+                    filter,
+                );
+
+                expect(count).toBe(4);
+            },
+        );
+
+        it('returns 0 when no values match the filter', async () => {
+            const count = await publishedFacet.countValuesForField(
+                'foo',
+                'unknown',
+            );
+
+            expect(count).toBe(0);
         });
     });
 });
