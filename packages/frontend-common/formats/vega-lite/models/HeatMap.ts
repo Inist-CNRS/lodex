@@ -33,7 +33,7 @@ export const commonWithBubblePlot = ({
         targetTitle?: string;
         weightTitle?: string;
     };
-    flip: boolean;
+    flip?: boolean;
     orderBy?: number;
 }) => {
     model.background = 'transparent';
@@ -95,6 +95,7 @@ export const buildHeatMapSpec = ({
     flip,
     orderBy,
     selectionEnabled = false,
+    selectedDatum,
 }: {
     colors?: string[];
     tooltip?: {
@@ -103,24 +104,68 @@ export const buildHeatMapSpec = ({
         targetTitle?: string;
         weightTitle?: string;
     };
-    flip: boolean;
+    flip?: boolean;
     orderBy?: number;
     selectionEnabled?: boolean;
-}) => {
-    const model = deepClone(heatmapVL);
+    selectedDatum?: unknown;
+} = {}) => {
+    const model: any = deepClone(heatmapVL);
 
-    model.layer.forEach((e) => {
-        if (e.mark.type !== 'rect') {
+    model.layer.forEach((layer: any) => {
+        if (layer.mark.type !== 'rect') {
             return;
         }
         if (colors) {
-            // @ts-expect-error TS2339
-            e.encoding.color.scale.range = colors;
-            e.encoding.color.condition.value = colors[colors.length - 1];
+            layer.encoding.color.scale.range = colors;
+            layer.encoding.color.condition.value = colors[colors.length - 1];
         }
         if (selectionEnabled) {
-            // @ts-expect-error TS2339
-            e.mark.cursor = 'pointer';
+            layer.mark.cursor = 'pointer';
+            layer.mark.stroke = 'black';
+            layer.params = [
+                {
+                    name: 'select',
+                    select: 'point',
+                    value: selectedDatum ? [selectedDatum] : null,
+                },
+                {
+                    name: 'highlight',
+                    select: {
+                        type: 'point',
+                        on: 'pointerover',
+                    },
+                },
+            ];
+            layer.encoding.opacity = {
+                condition: [
+                    {
+                        param: 'select',
+                        value: 1,
+                    },
+                    {
+                        param: 'highlight',
+                        empty: false,
+                        value: 1,
+                    },
+                ],
+                value: 0.3,
+            };
+
+            layer.encoding.strokeWidth = {
+                condition: [
+                    {
+                        param: 'select',
+                        empty: false,
+                        value: 1,
+                    },
+                    {
+                        param: 'highlight',
+                        empty: false,
+                        value: 1,
+                    },
+                ],
+                value: 0,
+            };
         }
     });
 
