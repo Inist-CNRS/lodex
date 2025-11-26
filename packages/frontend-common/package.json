@@ -3,6 +3,9 @@
     "name": "@lodex/frontend-common",
     "description": "Lodex common frontend utilities, states and components",
     "version": "16.0.5",
+    "dependencies": {
+        "@tanstack/react-pacer": "0.17.3"
+    },
     "devDependencies": {
         "@types/node": "^24.9.1",
         "typescript": "^5.9.3"

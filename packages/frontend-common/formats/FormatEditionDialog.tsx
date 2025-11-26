@@ -1,5 +1,4 @@
-import React from 'react';
-import merge from '../utils/merge';
+import CloseIcon from '@mui/icons-material/Close';
 import {
     Box,
     Button,
@@ -9,12 +8,13 @@ import {
     DialogTitle,
     IconButton,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
-import SelectFormat from './SelectFormat';
-import { getAdminComponent, getFormatInitialArgs } from './getFormat';
 import CancelButton from '../components/CancelButton';
 import { useTranslate } from '../i18n/I18NContext';
+import merge from '../utils/merge';
+import SelectFormat from './SelectFormat';
+import { getAdminComponent, getFormatInitialArgs } from './getFormat';
 
 const FormatEditionDialog = ({
     isOpen,
@@ -91,7 +91,7 @@ const FormatEditionDialog = ({
                 </Box>
                 {/* 
                 // @ts-expect-error TS2739 */}
-                <AdminComponent onChange={setArgs} args={args} />
+                <AdminComponent onChange={setArgs} args={args} format={name} />
             </DialogContent>
             <DialogActions>
                 <CancelButton
