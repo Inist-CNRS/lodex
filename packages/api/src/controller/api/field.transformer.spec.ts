@@ -1,4 +1,126 @@
-import { transformField, type Field } from './field.transformer';
+import {
+    transformColorScale,
+    transformField,
+    transformValues,
+    type Field,
+} from './field.transformer';
+
+describe('transformValues', () => {
+    it.each([
+        { label: 'undefined', input: undefined },
+        { label: 'empty string', input: '' },
+        { label: 'empty array', input: [] },
+    ])('should return empty array when values is $label', ({ input }) => {
+        const result = transformValues(input);
+        expect(result).toEqual([]);
+    });
+
+    it.each([
+        {
+            label: 'string by newlines',
+            input: 'A\nB\nC',
+            expected: ['A', 'B', 'C'],
+        },
+        {
+            label: 'string with whitespace',
+            input: '  A  \n  B  \n  C  ',
+            expected: ['A', 'B', 'C'],
+        },
+        {
+            label: 'string with empty lines',
+            input: 'A\n  \nB\n\nC',
+            expected: ['A', 'B', 'C'],
+        },
+        {
+            label: 'array with whitespace and empty strings',
+            input: ['A', '  B  ', '', '  ', 'C'],
+            expected: ['A', 'B', 'C'],
+        },
+        {
+            label: 'already formatted array',
+            input: ['A', 'B', 'C'],
+            expected: ['A', 'B', 'C'],
+        },
+    ])('should handle $label correctly', ({ input, expected }) => {
+        const result = transformValues(input);
+        expect(result).toEqual(expected);
+    });
+});
+
+describe('transformColorScale', () => {
+    it.each([
+        {
+            label: 'default color when color is undefined',
+            input: { caption: 'Test', values: ['A', 'B'] },
+            expected: { color: '#000000', caption: 'Test', values: ['A', 'B'] },
+        },
+        {
+            label: 'null caption when caption is undefined',
+            input: { color: '#FF0000', values: ['A', 'B'] },
+            expected: { color: '#FF0000', caption: null, values: ['A', 'B'] },
+        },
+    ])('should use $label', ({ input, expected }) => {
+        const result = transformColorScale(input);
+        expect(result).toEqual(expected);
+    });
+
+    it.each([
+        {
+            label: 'string values to array',
+            input: {
+                color: '#FF0000',
+                caption: 'Red',
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                values: 'A\nB\nC' as any,
+            },
+            expected: {
+                color: '#FF0000',
+                caption: 'Red',
+                values: ['A', 'B', 'C'],
+            },
+        },
+        {
+            label: 'values with whitespace and empty lines',
+            input: {
+                color: '#FF0000',
+                caption: 'Red',
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                values: '  A  \n  \nB\n\nC  ' as any,
+            },
+            expected: {
+                color: '#FF0000',
+                caption: 'Red',
+                values: ['A', 'B', 'C'],
+            },
+        },
+        {
+            label: 'undefined values',
+            input: { color: '#FF0000', caption: 'Red' },
+            expected: { color: '#FF0000', caption: 'Red', values: [] },
+        },
+        {
+            label: 'undefined colorScale item',
+            input: undefined,
+            expected: { color: '#000000', caption: null, values: [] },
+        },
+        {
+            label: 'provided color and caption',
+            input: {
+                color: '#ABCDEF',
+                caption: 'Custom Caption',
+                values: ['X', 'Y', 'Z'],
+            },
+            expected: {
+                color: '#ABCDEF',
+                caption: 'Custom Caption',
+                values: ['X', 'Y', 'Z'],
+            },
+        },
+    ])('should handle $label', ({ input, expected }) => {
+        const result = transformColorScale(input);
+        expect(result).toEqual(expected);
+    });
+});
 
 describe('transformField', () => {
     it('should return field unchanged when format is not network or network3D', () => {
@@ -100,7 +222,7 @@ describe('transformField', () => {
                         {
                             color: '#FF0000',
                             caption: 'Red Items',
-                            values: 'A\nB\nC',
+                            values: ['A', 'B', 'C'],
                         },
                     ],
                 },
@@ -119,115 +241,7 @@ describe('transformField', () => {
                         {
                             color: '#FF0000',
                             caption: 'Red Items',
-                            values: 'A\nB\nC',
-                        },
-                    ],
-                },
-            },
-        });
-    });
-
-    it('should use default captionTitle when not provided in advanced mode', () => {
-        const field: Field = {
-            format: {
-                name: 'network',
-                args: {
-                    isAdvancedColorMode: true,
-                    colorScale: [
-                        {
-                            color: '#FF0000',
-                            values: 'A\nB',
-                        },
-                    ],
-                },
-            },
-        };
-
-        const result = transformField(field);
-
-        expect(result).toEqual({
-            format: {
-                name: 'network',
-                args: {
-                    isAdvancedColorMode: true,
-                    captionTitle: null,
-                    colorScale: [
-                        {
-                            color: '#FF0000',
-                            caption: null,
-                            values: 'A\nB',
-                        },
-                    ],
-                },
-            },
-        });
-    });
-
-    it('should set default color when missing in colorScale item', () => {
-        const field: Field = {
-            format: {
-                name: 'network',
-                args: {
-                    isAdvancedColorMode: true,
-                    colorScale: [
-                        {
-                            caption: 'Items',
-                            values: 'A\nB',
-                        },
-                    ],
-                },
-            },
-        };
-
-        const result = transformField(field);
-
-        expect(result).toEqual({
-            format: {
-                name: 'network',
-                args: {
-                    isAdvancedColorMode: true,
-                    captionTitle: null,
-                    colorScale: [
-                        {
-                            color: '#000000',
-                            caption: 'Items',
-                            values: 'A\nB',
-                        },
-                    ],
-                },
-            },
-        });
-    });
-
-    it('should set null caption when missing in colorScale item', () => {
-        const field: Field = {
-            format: {
-                name: 'network',
-                args: {
-                    isAdvancedColorMode: true,
-                    colorScale: [
-                        {
-                            color: '#FF0000',
-                            values: 'A\nB',
-                        },
-                    ],
-                },
-            },
-        };
-
-        const result = transformField(field);
-
-        expect(result).toEqual({
-            format: {
-                name: 'network',
-                args: {
-                    isAdvancedColorMode: true,
-                    captionTitle: null,
-                    colorScale: [
-                        {
-                            color: '#FF0000',
-                            caption: null,
-                            values: 'A\nB',
+                            values: ['A', 'B', 'C'],
                         },
                     ],
                 },
@@ -237,56 +251,146 @@ describe('transformField', () => {
 
     it.each([
         {
-            label: 'null values',
+            label: 'default captionTitle when not provided',
+            field: {
+                format: {
+                    name: 'network' as const,
+                    args: {
+                        isAdvancedColorMode: true,
+                        colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
+                    },
+                },
+            },
+            expected: {
+                format: {
+                    name: 'network' as const,
+                    args: {
+                        isAdvancedColorMode: true,
+                        captionTitle: null,
+                        colorScale: [
+                            {
+                                color: '#FF0000',
+                                caption: null,
+                                values: ['A', 'B'],
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+        {
+            label: 'default color when missing',
+            field: {
+                format: {
+                    name: 'network' as const,
+                    args: {
+                        isAdvancedColorMode: true,
+                        colorScale: [{ caption: 'Items', values: ['A', 'B'] }],
+                    },
+                },
+            },
+            expected: {
+                format: {
+                    name: 'network' as const,
+                    args: {
+                        isAdvancedColorMode: true,
+                        captionTitle: null,
+                        colorScale: [
+                            {
+                                color: '#000000',
+                                caption: 'Items',
+                                values: ['A', 'B'],
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+        {
+            label: 'null caption when missing',
+            field: {
+                format: {
+                    name: 'network' as const,
+                    args: {
+                        isAdvancedColorMode: true,
+                        colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
+                    },
+                },
+            },
+            expected: {
+                format: {
+                    name: 'network' as const,
+                    args: {
+                        isAdvancedColorMode: true,
+                        captionTitle: null,
+                        colorScale: [
+                            {
+                                color: '#FF0000',
+                                caption: null,
+                                values: ['A', 'B'],
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    ])('should set $label in advanced mode', ({ field, expected }) => {
+        const result = transformField(field);
+        expect(result).toEqual(expected);
+    });
+
+    it.each([
+        {
+            label: 'empty values',
             colorScale: [
                 {
                     color: '#FF0000',
                     caption: 'Red Items',
-                    values: 'A\nB',
+                    values: ['A', 'B'],
                 },
                 {
                     color: '#00FF00',
                     caption: 'Green Items',
-                    values: '',
+                    values: [],
                 },
                 {
                     color: '#0000FF',
                     caption: 'Blue Items',
-                    values: 'C\nD',
+                    values: ['C', 'D'],
                 },
             ],
             expectedColorScale: [
                 {
                     color: '#FF0000',
                     caption: 'Red Items',
-                    values: 'A\nB',
+                    values: ['A', 'B'],
                 },
                 {
                     color: '#0000FF',
                     caption: 'Blue Items',
-                    values: 'C\nD',
+                    values: ['C', 'D'],
                 },
             ],
         },
         {
-            label: 'empty string values',
+            label: 'undefined values',
             colorScale: [
                 {
                     color: '#FF0000',
                     caption: 'Valid',
-                    values: 'A\nB',
+                    values: ['A', 'B'],
                 },
                 {
                     color: '#00FF00',
                     caption: 'Invalid',
-                    values: '',
+                    values: undefined,
                 },
             ],
             expectedColorScale: [
                 {
                     color: '#FF0000',
                     caption: 'Valid',
-                    values: 'A\nB',
+                    values: ['A', 'B'],
                 },
             ],
         },
@@ -328,13 +432,13 @@ describe('transformField', () => {
                         {
                             color: '#FF0000',
                             caption: 'Red',
-                            values: 'A\nB',
+                            values: ['A', 'B'],
                         },
                         undefined,
                         {
                             color: '#00FF00',
                             caption: 'Green',
-                            values: 'C\nD',
+                            values: ['C', 'D'],
                         },
                     ],
                 },
@@ -353,12 +457,12 @@ describe('transformField', () => {
                         {
                             color: '#FF0000',
                             caption: 'Red',
-                            values: 'A\nB',
+                            values: ['A', 'B'],
                         },
                         {
                             color: '#00FF00',
                             caption: 'Green',
-                            values: 'C\nD',
+                            values: ['C', 'D'],
                         },
                     ],
                 },
@@ -419,7 +523,7 @@ describe('transformField', () => {
                         {
                             color: '#00FF00',
                             caption: 'Green',
-                            values: '',
+                            values: [],
                         },
                     ],
                 },

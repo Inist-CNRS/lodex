@@ -1,11 +1,17 @@
+import {
+    Overview,
+    SCOPE_COLLECTION,
+    SCOPE_DATASET,
+    SCOPE_DOCUMENT,
+    SCOPE_GRAPHIC,
+} from '@lodex/common';
+import _ from 'lodash';
 import { MongoClient } from 'mongodb';
 import { default as enrichmentFactory } from '../../models/enrichment';
 import { default as fieldFactory, validateField } from '../../models/field';
 import { default as precomputedFactory } from '../../models/precomputed';
 import { default as publishedDatasetModelFactory } from '../../models/publishedDataset';
 import indexSearchableFields from '../../services/indexSearchableFields';
-import publishFacets from './publishFacets';
-
 import {
     exportFields,
     getAllField,
@@ -20,15 +26,7 @@ import {
     restoreFields,
     setup,
 } from './field';
-
-import {
-    Overview,
-    SCOPE_COLLECTION,
-    SCOPE_DATASET,
-    SCOPE_DOCUMENT,
-    SCOPE_GRAPHIC,
-} from '@lodex/common';
-import _ from 'lodash';
+import publishFacets from './publishFacets';
 
 jest.mock('../../services/indexSearchableFields');
 
@@ -388,12 +386,12 @@ describe('field routes', () => {
                                 {
                                     color: '#FF0000',
                                     caption: 'Red Items',
-                                    values: 'A\nB',
+                                    values: ['A', 'B'],
                                 },
                                 {
                                     color: undefined,
                                     caption: 'Default',
-                                    values: 'C',
+                                    values: ['C'],
                                 },
                             ],
                         },
@@ -421,12 +419,12 @@ describe('field routes', () => {
                                 {
                                     color: '#FF0000',
                                     caption: 'Red Items',
-                                    values: 'A\nB',
+                                    values: ['A', 'B'],
                                 },
                                 {
                                     color: '#000000',
                                     caption: 'Default',
-                                    values: 'C',
+                                    values: ['C'],
                                 },
                             ],
                         },
@@ -493,12 +491,12 @@ describe('field routes', () => {
                     {
                         color: '#FF0000',
                         caption: 'Red Items',
-                        values: 'A\nB',
+                        values: ['A', 'B'],
                     },
                     {
                         color: '#000000',
                         caption: 'Valid',
-                        values: 'C',
+                        values: ['C'],
                     },
                 ]);
             },
@@ -566,9 +564,9 @@ describe('field routes', () => {
                                 args: {
                                     isAdvancedColorMode: true,
                                     colorScale: [
-                                        { values: 'val1' },
+                                        { values: ['val1'] },
                                         {
-                                            values: 'val2',
+                                            values: ['val2'],
                                             caption: 'Caption 2',
                                         },
                                     ],
@@ -586,12 +584,12 @@ describe('field routes', () => {
 
                 expect(ctx.body.format.args.colorScale).toEqual([
                     {
-                        values: 'val1',
+                        values: ['val1'],
                         color: '#000000',
                         caption: null,
                     },
                     {
-                        values: 'val2',
+                        values: ['val2'],
                         color: '#000000',
                         caption: 'Caption 2',
                     },
@@ -648,12 +646,12 @@ describe('field routes', () => {
                 // Should only keep items with valid values
                 expect(ctx.body.format.args.colorScale).toEqual([
                     {
-                        values: 'val1',
+                        values: ['val1'],
                         color: '#FF0000',
                         caption: 'Valid 1',
                     },
                     {
-                        values: 'val2',
+                        values: ['val2'],
                         color: '#000000',
                         caption: 'Valid 2',
                     },

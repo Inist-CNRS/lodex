@@ -1,9 +1,8 @@
 import { compose } from 'recompose';
 import type { Field } from '../../../fields/types';
 import injectData from '../../injectData';
-import type { ColorScaleItemMaybe } from './ColorScaleInput';
 import { NetworkBase } from './NetworkBase';
-import { useColorOverrides } from './useColorOverrides';
+import { useColorOverrides, type ColorScaleItem } from './useColorOverrides';
 import { useFormatNetworkData, type NetworkData } from './useFormatNetworkData';
 
 interface NetworkProps {
@@ -11,7 +10,7 @@ interface NetworkProps {
     formatData?: NetworkData[];
     field: Field<{
         isAdvancedColorMode?: boolean;
-        colorScale?: ColorScaleItemMaybe[];
+        colorScale?: ColorScaleItem[];
         captionTitle?: string;
         displayWeighted?: boolean;
         fieldToFilter?: string;

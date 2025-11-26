@@ -1,6 +1,6 @@
 import { FormControl, FormHelperText, TextField } from '@mui/material';
 import { useDebouncedCallback } from '@tanstack/react-pacer/debouncer';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ArrayInputComponentProps } from '../../../form-fields/ArrayInput';
 import { ColorPickerInput } from '../../../form-fields/ColorPickerInput';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -21,7 +21,7 @@ export function ColorScaleInput({
     const [value, setValue] = useState<ColorScaleItem>(initialValue ?? {});
 
     const handleValuesChange = (values: string) => {
-        setValue({ ...value, values });
+        setValue({ ...value, values: values.split('\n') });
     };
 
     const handleCaptionChange = (caption: string) => {
@@ -35,6 +35,18 @@ export function ColorScaleInput({
     useEffect(() => {
         handleChange(value);
     }, [handleChange, value]);
+
+    const values = useMemo(() => {
+        if (typeof value?.values === 'string') {
+            return value.values;
+        }
+
+        if (Array.isArray(value?.values)) {
+            return value.values.join('\n');
+        }
+
+        return '';
+    }, [value?.values]);
 
     return (
         <>
@@ -60,7 +72,7 @@ export function ColorScaleInput({
             >
                 <TextField
                     label={translate('values')}
-                    value={value?.values ?? ''}
+                    value={values}
                     onChange={(e) => handleValuesChange(e.target.value)}
                     multiline
                     minRows={2}
@@ -80,7 +92,7 @@ export function ColorScaleInput({
 export type ColorScaleItem = {
     color?: string;
     caption?: string;
-    values?: string;
+    values?: string[] | string;
 };
 
 export type ColorScaleItemMaybe = ColorScaleItem | undefined;

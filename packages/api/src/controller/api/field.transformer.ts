@@ -1,3 +1,26 @@
+export function transformValues(values: string[] | string | undefined) {
+    if (!values) {
+        return [];
+    }
+
+    const transformedValues: string[] =
+        typeof values === 'string' ? values.split('\n') : values;
+
+    return transformedValues
+        .map((value) => value.trim())
+        .filter((value) => value.length);
+}
+
+export function transformColorScale(
+    colorScale?: ColorScaleItemMaybe | undefined,
+) {
+    return {
+        color: colorScale?.color || '#000000',
+        caption: colorScale?.caption || null,
+        values: transformValues(colorScale?.values),
+    };
+}
+
 export function transformField(field: Field) {
     const format = field.format;
     if (format?.name === 'network' || format?.name === 'network3D') {
@@ -21,19 +44,23 @@ export function transformField(field: Field) {
                     ...format.args,
                     captionTitle: format.args?.captionTitle || null,
                     colorScale: (Array.isArray(format.args?.colorScale)
-                        ? format.args.colorScale.map((caption) => ({
-                              color: caption?.color || '#000000',
-                              caption: caption?.caption || null,
-                              values: caption?.values || null,
-                          }))
+                        ? format.args.colorScale.map(transformColorScale)
                         : []
-                    ).filter((colorScale) => !!colorScale.values),
+                    ).filter((colorScale) => !!colorScale.values?.length),
                 },
             },
         };
     }
     return field;
 }
+
+export type ColorScaleItemMaybe =
+    | {
+          color?: string;
+          caption?: string;
+          values?: string[];
+      }
+    | undefined;
 
 export type Field = {
     name?: string;
@@ -44,14 +71,7 @@ export type Field = {
               args: {
                   isAdvancedColorMode?: boolean;
                   captionTitle?: string;
-                  colorScale?: (
-                      | {
-                            color?: string;
-                            caption?: string;
-                            values?: string;
-                        }
-                      | undefined
-                  )[];
+                  colorScale?: ColorScaleItemMaybe[];
               };
           }
         | {

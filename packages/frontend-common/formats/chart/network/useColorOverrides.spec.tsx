@@ -7,13 +7,13 @@ describe('useColorOverrides', () => {
         {
             label: 'isAdvancedColorMode is false',
             isAdvancedColorMode: false,
-            colorScale: [{ color: '#FF0000', values: 'A\nB' }],
+            colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
             expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'isAdvancedColorMode is undefined',
             isAdvancedColorMode: undefined,
-            colorScale: [{ color: '#FF0000', values: 'A\nB' }],
+            colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
             expected: { colorOverrides: {}, captions: {} },
         },
         {
@@ -41,7 +41,7 @@ describe('useColorOverrides', () => {
 
     it('should return color overrides for single color scale item', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Red Items', values: 'A\nB\nC' },
+            { color: '#FF0000', caption: 'Red Items', values: ['A', 'B', 'C'] },
         ];
 
         const { result } = renderHook(() =>
@@ -62,9 +62,9 @@ describe('useColorOverrides', () => {
 
     it('should return color overrides for multiple color scale items', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Red', values: 'A\nB' },
-            { color: '#00FF00', caption: 'Green', values: 'C\nD' },
-            { color: '#0000FF', caption: 'Blue', values: 'E' },
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+            { color: '#00FF00', caption: 'Green', values: ['C', 'D'] },
+            { color: '#0000FF', caption: 'Blue', values: ['E'] },
         ];
 
         const { result } = renderHook(() =>
@@ -92,7 +92,7 @@ describe('useColorOverrides', () => {
             {
                 color: '  #FF0000  ',
                 caption: 'Caption',
-                values: '  A  \n  B  \n  C  ',
+                values: ['  A  ', '  B  ', '  C  '],
             },
         ];
 
@@ -112,9 +112,9 @@ describe('useColorOverrides', () => {
         });
     });
 
-    it('should ignore empty lines in values', () => {
+    it('should ignore empty values in array', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\n\nB\n  \nC\n' },
+            { color: '#FF0000', values: ['A', '', 'B', '  ', 'C', ''] },
         ];
 
         const { result } = renderHook(() =>
@@ -134,7 +134,7 @@ describe('useColorOverrides', () => {
     it.each([
         {
             label: 'item with missing color',
-            colorScale: [{ values: 'A\nB' }] as ColorScaleItemMaybe[],
+            colorScale: [{ values: ['A', 'B'] }] as ColorScaleItemMaybe[],
             expected: { colorOverrides: {}, captions: {} },
         },
         {
@@ -145,27 +145,27 @@ describe('useColorOverrides', () => {
         {
             label: 'item with empty color',
             colorScale: [
-                { color: '', values: 'A\nB' },
+                { color: '', values: ['A', 'B'] },
             ] as ColorScaleItemMaybe[],
             expected: { colorOverrides: {}, captions: {} },
         },
         {
-            label: 'item with empty values',
+            label: 'item with empty values array',
             colorScale: [
-                { color: '#FF0000', values: '' },
+                { color: '#FF0000', values: [] },
             ] as ColorScaleItemMaybe[],
             expected: { colorOverrides: {}, captions: {} },
         },
         {
             label: 'item with whitespace-only color',
             colorScale: [
-                { color: '   ', values: 'A\nB' },
+                { color: '   ', values: ['A', 'B'] },
             ] as ColorScaleItemMaybe[],
             expected: { colorOverrides: { A: '', B: '' }, captions: {} },
         },
         {
             label: 'undefined item in array',
-            colorScale: [undefined, { color: '#FF0000', values: 'A' }],
+            colorScale: [undefined, { color: '#FF0000', values: ['A'] }],
             expected: { colorOverrides: { A: '#FF0000' }, captions: {} },
         },
     ])('should handle $label', ({ colorScale, expected }) => {
@@ -178,12 +178,12 @@ describe('useColorOverrides', () => {
 
     it('should handle mixed valid and invalid items', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Red', values: 'A\nB' },
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
             undefined,
-            { color: '', values: 'C' },
-            { color: '#00FF00', values: 'D' },
-            { values: 'E' },
-            { color: '#0000FF', values: '' },
+            { color: '', values: ['C'] },
+            { color: '#00FF00', values: ['D'] },
+            { values: ['E'] },
+            { color: '#0000FF', values: [] },
         ];
 
         const { result } = renderHook(() =>
@@ -204,8 +204,8 @@ describe('useColorOverrides', () => {
 
     it('should override values when same value appears multiple times', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Red', values: 'A\nB' },
-            { color: '#00FF00', caption: 'Green', values: 'B\nC' },
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+            { color: '#00FF00', caption: 'Green', values: ['B', 'C'] },
         ];
 
         const { result } = renderHook(() =>
@@ -227,7 +227,7 @@ describe('useColorOverrides', () => {
 
     it('should update when isAdvancedColorMode changes', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
+            { color: '#FF0000', values: ['A', 'B'] },
         ];
 
         const { result, rerender } = renderHook(
@@ -254,10 +254,10 @@ describe('useColorOverrides', () => {
 
     it('should update when colorScale changes', () => {
         const colorScale1: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Red', values: 'A\nB' },
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
         ];
         const colorScale2: ColorScaleItemMaybe[] = [
-            { color: '#00FF00', caption: 'Green', values: 'C\nD' },
+            { color: '#00FF00', caption: 'Green', values: ['C', 'D'] },
         ];
 
         const { result, rerender } = renderHook(
@@ -290,11 +290,11 @@ describe('useColorOverrides', () => {
 
     it('should update when items are added to colorScale', () => {
         const colorScale1: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A' },
+            { color: '#FF0000', values: ['A'] },
         ];
         const colorScale2: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A' },
-            { color: '#00FF00', caption: 'Green', values: 'B' },
+            { color: '#FF0000', values: ['A'] },
+            { color: '#00FF00', caption: 'Green', values: ['B'] },
         ];
 
         const { result, rerender } = renderHook(
@@ -324,7 +324,7 @@ describe('useColorOverrides', () => {
 
     it('should memoize result when inputs do not change', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'A\nB' },
+            { color: '#FF0000', values: ['A', 'B'] },
         ];
 
         const { result, rerender } = renderHook(() =>
@@ -338,9 +338,9 @@ describe('useColorOverrides', () => {
         expect(result.current).toBe(firstResult);
     });
 
-    it('should handle single value without newline', () => {
+    it('should handle single value', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Single', values: 'A' },
+            { color: '#FF0000', caption: 'Single', values: ['A'] },
         ];
 
         const { result } = renderHook(() =>
@@ -357,12 +357,12 @@ describe('useColorOverrides', () => {
         });
     });
 
-    it('should handle complex multiline values with various whitespace', () => {
+    it('should handle values with various whitespace', () => {
         const colorScale: ColorScaleItemMaybe[] = [
             {
                 color: '#FF0000',
                 caption: 'Complex',
-                values: '  Value One  \n\nValue Two\n  \n  Value Three  \n',
+                values: ['  Value One  ', '', 'Value Two', '  ', '  Value Three  '],
             },
         ];
 
@@ -384,7 +384,7 @@ describe('useColorOverrides', () => {
 
     it('should handle values with special characters', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', values: 'value-1\nvalue_2\nvalue.3\nvalue@4' },
+            { color: '#FF0000', values: ['value-1', 'value_2', 'value.3', 'value@4'] },
         ];
 
         const { result } = renderHook(() =>
@@ -405,9 +405,9 @@ describe('useColorOverrides', () => {
     it('should return empty object when all items are invalid', () => {
         const colorScale: ColorScaleItemMaybe[] = [
             undefined,
-            { color: '', values: 'A' },
-            { color: '#FF0000', values: '' },
-            { values: 'B' },
+            { color: '', values: ['A'] },
+            { color: '#FF0000', values: [] },
+            { values: ['B'] },
         ];
 
         const { result } = renderHook(() =>
@@ -431,7 +431,7 @@ describe('useColorOverrides', () => {
         expect(result.current).toEqual({ colorOverrides: {}, captions: {} });
 
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Red', values: 'A\nB' },
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
         ];
 
         rerender({ scale: colorScale });
@@ -449,7 +449,7 @@ describe('useColorOverrides', () => {
 
     it('should handle transition from defined to undefined colorScale', () => {
         const colorScale: ColorScaleItemMaybe[] = [
-            { color: '#FF0000', caption: 'Red', values: 'A\nB' },
+            { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
         ];
 
         const { result, rerender } = renderHook(

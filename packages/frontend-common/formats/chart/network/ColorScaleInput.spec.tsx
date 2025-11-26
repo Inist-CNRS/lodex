@@ -25,7 +25,7 @@ describe('ColorScaleInput', () => {
         const initialValue: ColorScaleItem = {
             color: '#FF5733',
             caption: 'Test Caption',
-            values: 'value1\nvalue2',
+            values: ['value1', 'value2'],
         };
 
         render(
@@ -69,7 +69,7 @@ describe('ColorScaleInput', () => {
             label: 'values change',
             inputType: 'values',
             typeValue: 'test1\ntest2',
-            expectedMatch: { values: 'test1\ntest2' },
+            expectedMatch: { values: ['test1', 'test2'] },
         },
     ])(
         'should call onChange when $label',
@@ -145,7 +145,7 @@ describe('ColorScaleInput', () => {
                 expect.objectContaining({
                     color: '#FF0000',
                     caption: 'Test',
-                    values: 'value1',
+                    values: ['value1'],
                 }),
             );
         });
@@ -189,7 +189,7 @@ describe('ColorScaleInput', () => {
         await waitFor(() => {
             expect(mockOnChange).toHaveBeenLastCalledWith(
                 expect.objectContaining({
-                    values: expect.stringContaining('\n'),
+                    values: ['line1', 'line2', 'line3'],
                 }),
             );
         });
@@ -201,14 +201,14 @@ describe('ColorScaleInput', () => {
             initialValue: {
                 color: '#000000',
                 caption: 'Existing Caption',
-                values: 'existing\nvalues',
+                values: ['existing', 'values'],
             },
             updateType: 'color',
             newValue: '#FFFFFF',
             expectedMatch: {
                 color: '#FFFFFF',
                 caption: 'Existing Caption',
-                values: 'existing\nvalues',
+                values: ['existing', 'values'],
             },
         },
         {
@@ -216,14 +216,14 @@ describe('ColorScaleInput', () => {
             initialValue: {
                 color: '#FF5733',
                 caption: 'Old Caption',
-                values: 'existing\nvalues',
+                values: ['existing', 'values'],
             },
             updateType: 'caption',
             newValue: 'New Caption',
             expectedMatch: {
                 color: '#FF5733',
                 caption: 'New Caption',
-                values: 'existing\nvalues',
+                values: ['existing', 'values'],
             },
         },
         {
@@ -231,14 +231,14 @@ describe('ColorScaleInput', () => {
             initialValue: {
                 color: '#FF5733',
                 caption: 'Keep Caption',
-                values: 'initial',
+                values: ['initial'],
             },
             updateType: 'values',
             newValue: 'updated',
             expectedMatch: {
                 color: '#FF5733',
                 caption: 'Keep Caption',
-                values: 'updated',
+                values: ['updated'],
             },
         },
     ])(
@@ -304,6 +304,14 @@ describe('ColorScaleInput', () => {
         },
         {
             label: 'partial initial value with only values',
+            initialValue: { values: ['test', 'data'] },
+            expectedColor: '#000000',
+            expectedCaption: '',
+            expectedValues: 'test\ndata',
+            useColorGroup: false,
+        },
+        {
+            label: 'partial initial value with only values as string',
             initialValue: { values: 'test\ndata' },
             expectedColor: '#000000',
             expectedCaption: '',
