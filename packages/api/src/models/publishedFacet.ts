@@ -83,7 +83,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
     const toAccentInsensitive = (text: string): string =>
         text
             .split('')
-            .map((c: string) => accentMap[c] || escapeRegex(c))
+            .map((c: string) => accentMap[c] ?? escapeRegex(c))
             .join('');
 
     /**
