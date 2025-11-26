@@ -154,7 +154,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
         sortBy = 'count',
         sortDir = 'DESC',
     }: FindLimitFromSkipParams): Promise<Document[]> => {
-        return await collection
+        return collection
             .find(filters)
             .skip(skip)
             .limit(limit)
