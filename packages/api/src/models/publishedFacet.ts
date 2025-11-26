@@ -1,27 +1,32 @@
 import chunk from 'lodash/chunk';
+import { z } from 'zod';
 import { getCreatedCollection } from './utils';
 import type { Db, Collection, Filter, Document } from 'mongodb';
 
-// Définition des types
+// Schémas de validation Zod
+const FindLimitFromSkipSchema = z.object({
+    limit: z.number().int().positive(),
+    skip: z.number().int().nonnegative(),
+    filters: z.custom<Filter<Document>>(),
+    sortBy: z.string().optional().default('count'),
+    sortDir: z.enum(['ASC', 'DESC']).optional().default('DESC'),
+});
+
+const FindValuesForFieldSchema = z.object({
+    field: z.string(),
+    filter: z.string().optional(),
+    page: z.number().int().nonnegative().optional().default(0),
+    perPage: z.number().int().positive().max(100).optional().default(10),
+    sortBy: z.string().optional(),
+    sortDir: z.enum(['ASC', 'DESC']).optional(),
+});
+
+// Définition des types dérivés de Zod
+type FindLimitFromSkipParams = z.infer<typeof FindLimitFromSkipSchema>;
+type FindValuesForFieldParams = z.infer<typeof FindValuesForFieldSchema>;
+
 interface AccentMap {
     [key: string]: string;
-}
-
-interface FindLimitFromSkipParams {
-    limit: number;
-    skip: number;
-    filters: Filter<Document>;
-    sortBy?: string;
-    sortDir?: 'ASC' | 'DESC';
-}
-
-interface FindValuesForFieldParams {
-    field: string;
-    filter?: string;
-    page?: number;
-    perPage?: number;
-    sortBy?: string;
-    sortDir?: 'ASC' | 'DESC';
 }
 
 interface RegexFilter {
@@ -77,13 +82,13 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
         w: '[wŵ]',
     };
 
-    const escapeRegex = (char: string): string =>
+    const escapeRegex = (char: string) =>
         char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
     const toAccentInsensitive = (text: string): string =>
         text
             .split('')
-            .map((c: string) => accentMap[c] || escapeRegex(c))
+            .map((c: string) => accentMap[c] ?? escapeRegex(c))
             .join('');
 
     /**
@@ -147,43 +152,44 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
     /**
      * Récupère une page de résultats avec skip/limit/sort
      */
-    collection.findLimitFromSkip = async ({
-        limit,
-        skip,
-        filters,
-        sortBy = 'count',
-        sortDir = 'DESC',
-    }: FindLimitFromSkipParams): Promise<Document[]> => {
-        return await collection
-            .find(filters)
-            .skip(skip)
-            .limit(limit)
-            .sort({ [sortBy]: sortDir === 'ASC' ? 1 : -1, _id: 1 })
+    collection.findLimitFromSkip = async (
+        params: FindLimitFromSkipParams,
+    ): Promise<Document[]> => {
+        const validatedParams = FindLimitFromSkipSchema.parse(params);
+
+        return collection
+            .find(validatedParams.filters)
+            .skip(validatedParams.skip)
+            .limit(validatedParams.limit)
+            .sort({
+                [validatedParams.sortBy]:
+                    validatedParams.sortDir === 'ASC' ? 1 : -1,
+                _id: 1,
+            })
             .toArray();
     };
 
-    collection.findValuesForField = async ({
-        field,
-        filter,
-        page = 0,
-        perPage = 10,
-        sortBy,
-        sortDir,
-    }: FindValuesForFieldParams): Promise<Document[]> => {
-        const filters: Filter<Document> = { field };
-        if (filter?.trim()) {
-            const regexFilter = createWordStartRegex(filter.trim());
+    collection.findValuesForField = async (
+        params: FindValuesForFieldParams,
+    ): Promise<Document[]> => {
+        const validatedParams = FindValuesForFieldSchema.parse(params);
+        const filters: Filter<Document> = { field: validatedParams.field };
+
+        if (validatedParams.filter?.trim()) {
+            const regexFilter = createWordStartRegex(
+                validatedParams.filter.trim(),
+            );
             if (regexFilter) {
                 filters.value = regexFilter;
             }
         }
 
-        return await collection.findLimitFromSkip({
-            limit: parseInt(perPage.toString(), 10),
-            skip: (page || 0) * perPage,
+        return collection.findLimitFromSkip({
+            limit: validatedParams.perPage,
+            skip: validatedParams.page * validatedParams.perPage,
             filters,
-            sortBy,
-            sortDir,
+            sortBy: validatedParams.sortBy ?? 'count',
+            sortDir: validatedParams.sortDir ?? 'DESC',
         });
     };
 

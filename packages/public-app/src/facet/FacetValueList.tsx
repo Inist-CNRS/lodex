@@ -267,7 +267,7 @@ export const FacetValueList = ({
                     </div>
                 </div>
                 <div>
-                    {/* @ts-expect-error - legacy typing issue */}
+                    {/* @ts-expect-error TS2322 */}
                     {filter && <FacetValueAll name={name} page={page} />}
                     {facetValues.map((facetValue) => {
                         return (
@@ -296,7 +296,7 @@ export const FacetValueList = ({
 // @ts-expect-error TS7006
 export const ConnectFacetValueList = (props) => (
     <FacetActionsContext.Consumer>
-        {/* @ts-expect-error - legacy typing issue */}
+        {/* @ts-expect-error TS2339 */}
         {({ changeFacetValue, invertFacet, sortFacetValue }) => (
             <FacetValueList
                 {...props}
