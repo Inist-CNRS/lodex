@@ -241,7 +241,6 @@ export const FacetValueList = ({
                         </InputAdornment>
                     ),
                 }}
-                helperText={''}
             />
             <div>
                 <div style={styles.listHeader}>
