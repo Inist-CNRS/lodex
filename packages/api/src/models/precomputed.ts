@@ -191,7 +191,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
     const getStreamOfResult = (id: ObjectId | string) => {
         return db
             .collection(`pc_${id}`)
-            .find({}, { projection: { _id: 0, id: 1, value: 1 } })
+            .find({}, { projection: { _id: 0 } })
             .stream();
     };
 
