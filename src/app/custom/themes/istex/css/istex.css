@@ -31,41 +31,22 @@
     font-weight: 700;
 }
 @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    src:
-        local('Inter'),
-        url('/themes/istex/fonts/Inter/Inter-Regular.ttf') format('truetype');
+    font-family: 'Open Sans';
+    src: url('/themes/istex/fonts/Open_Sans/static/OpenSans/OpenSans-Regular.ttf')
+        format('truetype');
+    font-weight: normal;
 }
 @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    src:
-        local('Inter'),
-        url('/themes/istex/fonts/Inter/Inter-Bold.ttf') format('truetype');
+    font-family: 'Open Sans';
+    src: url('/themes/istex/fonts/Open_Sans/static/OpenSans/OpenSans-Bold.ttf')
+        format('truetype');
+    font-weight: bold;
 }
-/*****************************/
-/* General *******************/
-/*****************************/
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-html {
-    width: 100%;
-}
-body {
-    font-family: var(--font-texte);
-    color: var(--text-main);
-    line-height: 1.43;
-}
+
 :root {
     --font-titre: Montserrat, Arial, Helvetica, sans-serif;
     --font-titre-medium: Montserrat Medium, Arial, Helvetica, sans-serif;
-    --font-texte: Inter, Arial, Helvetica, sans-serif;
+    --font-texte: 'Open Sans', Arial, Helvetica, sans-serif;
     --maxWidth: 1200px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
     --font-size-texte: 0.875rem;
 
@@ -87,6 +68,22 @@ body {
     --gris2: #8f8f8f; /*gris 2*/
     --gris3: #f0f0f0; /*gris 3*/
     --white: #ffffff;
+}
+/*****************************/
+/* General *******************/
+/*****************************/
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+html {
+    width: 100%;
+}
+body {
+    font-family: var(--font-texte);
+    color: var(--text-main);
+    line-height: 1.43;
 }
 /*class pour header footer*/
 .flexcol {
@@ -420,8 +417,11 @@ button {
 }
 #content p,
 #content li,
-#content div {
-    font-family: var(--font-texte);
+#content div,
+#content p *,
+#content li *,
+#content div * {
+    font-family: var(--font-texte) !important;
     font-size: var(--font-size-texte);
 }
 a img {
