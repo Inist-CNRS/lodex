@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 
 export const defaultArgs = {
     paragraphWidth: '100%',
-    colors: '#000000';
+    colors: '#000000',
 };
 
 type ParagraphArgs = {
