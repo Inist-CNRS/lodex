@@ -160,21 +160,7 @@ const getFilter = ({
 
     if (Array.isArray(value)) {
         return {
-            $or: [
-                { [`versions.0.${field}`]: { $in: value } },
-                {
-                    [`versions.0.${field}`]: {
-                        $elemMatch: { $in: value },
-                    },
-                },
-                {
-                    [`versions.0.${field}`]: {
-                        $elemMatch: {
-                            $elemMatch: { $in: value },
-                        },
-                    },
-                },
-            ],
+            [`versions.0.${fieldName}`]: { $in: value },
         };
     }
 
