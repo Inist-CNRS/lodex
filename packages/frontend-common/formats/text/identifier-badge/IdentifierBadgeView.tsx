@@ -3,7 +3,6 @@ import Link from '../../../components/Link';
 import stylesToClassname from '../../../utils/stylesToClassName';
 import type { Field } from '../../../fields/types';
 
-// @ts-expect-error TS2554
 const styles = stylesToClassname(
     {
         key: {
@@ -68,8 +67,10 @@ const IdentifierBadgeView = ({
         return null;
     }
 
+    // @ts-expect-error TS7053
+    const stylesLink = styles.link;
     return (
-        <Link className={styles.link} href={target}>
+        <Link className={stylesLink} href={target}>
             {/*
              // @ts-expect-error TS2339 */}
             <span className={styles.key}>{typid}</span>
