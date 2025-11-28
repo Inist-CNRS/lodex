@@ -46,6 +46,7 @@ describe('Graph Page', () => {
         menu.openChartDrawer();
         menu.goToChart('Bubble Chart');
 
+        cy.wait(500);
         graphPage.getSearchInput().should('have.value', 'Biodiversity');
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
