@@ -98,7 +98,9 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
      * @returns {Object|null} - Un filtre regex MongoDB
      *
      */
-    const createWordStartRegex = (filter: string): RegexFilter | null => {
+    const createAccentInsensitiveContainsRegex = (
+        filter: string,
+    ): RegexFilter | null => {
         if (!filter) return null;
 
         const normalized = filter
@@ -109,24 +111,27 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
 
         if (!normalized) return null;
 
+        // Multi-mots → tous les mots doivent être présents
         if (normalized.includes(' ')) {
-            // multi-mots
             const words = normalized.split(/\s+/).filter(Boolean);
-            const wordPatterns = words.map((word: string) =>
-                toAccentInsensitive(word),
+
+            const wordPatterns = words.map((word) =>
+                escapeRegex(toAccentInsensitive(word)),
             );
-            const patterns = wordPatterns
-                .map((pattern: string) => `(?=.*${pattern})`)
+
+            const lookaheadPattern = wordPatterns
+                .map((pattern) => `(?=.*${pattern})`)
                 .join('');
+
             return {
-                $regex: `${patterns}.*`,
+                $regex: `^${lookaheadPattern}.*`,
                 $options: 'i',
             };
         }
 
-        // mot simple
+        // Mot simple → recherche "contains"
         return {
-            $regex: toAccentInsensitive(normalized),
+            $regex: escapeRegex(toAccentInsensitive(normalized)),
             $options: 'i',
         };
     };
@@ -176,7 +181,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
         const filters: Filter<Document> = { field: validatedParams.field };
 
         if (validatedParams.filter?.trim()) {
-            const regexFilter = createWordStartRegex(
+            const regexFilter = createAccentInsensitiveContainsRegex(
                 validatedParams.filter.trim(),
             );
             if (regexFilter) {
@@ -199,7 +204,9 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
     ): Promise<number> => {
         const filters: Filter<Document> = { field };
         if (filter?.trim()) {
-            const regexFilter = createWordStartRegex(filter.trim());
+            const regexFilter = createAccentInsensitiveContainsRegex(
+                filter.trim(),
+            );
             if (regexFilter) {
                 filters.value = regexFilter;
             }

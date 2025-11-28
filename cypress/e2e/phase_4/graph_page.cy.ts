@@ -46,7 +46,13 @@ describe('Graph Page', () => {
         menu.openChartDrawer();
         menu.goToChart('Bubble Chart');
 
-        cy.wait(500);
+        cy.wait(1500);
+
+        // Debug: log the actual stats value
+        graphPage.getStats().then(($el) => {
+            cy.log('Stats value:', $el.text());
+        });
+
         graphPage.getSearchInput().should('have.value', 'Biodiversity');
         graphPage.getStats().should('have.text', 'Found 4 on 50');
 
