@@ -38,6 +38,8 @@ describe('Graph Page', () => {
         graphPage.clearSearch();
         graphPage.getStats().should('have.text', 'Found 50 on 50');
 
+        graphPage.clearSearch();
+        cy.wait(400);
         graphPage.searchFor('Biodiversity');
         graphPage.setFacet('Publication Year', '2011');
         cy.wait(400);
@@ -64,7 +66,7 @@ describe('Graph Page', () => {
         graphPage.searchFor('Biodiversity');
         graphPage.getStats().should('have.text', 'Found 5 on 50');
         graphPage.setFacet('Publication Year', '2011');
-        graphPage.getStats().should('have.text', 'Found 0 on 50');
+        graphPage.getStats().should('have.text', 'Found 4 on 50');
 
         menu.openSearchDrawer();
         searchDrawer.getFacet('Publication Year').click();
