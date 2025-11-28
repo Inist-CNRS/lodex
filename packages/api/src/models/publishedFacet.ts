@@ -126,7 +126,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
 
         // mot simple
         return {
-            $regex: `.*${toAccentInsensitive(normalized)}.*`,
+            $regex: toAccentInsensitive(normalized),
             $options: 'i',
         };
     };
