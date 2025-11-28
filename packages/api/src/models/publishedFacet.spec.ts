@@ -1,12 +1,20 @@
-import { MongoClient } from 'mongodb';
-import publishedFacetFactory from './publishedFacet';
+import { MongoClient, type Db, type WithId, type Document } from 'mongodb';
+import publishedFacetFactory, {
+    type PublishedFacetCollection,
+} from './publishedFacet';
+
+interface FacetDocument extends WithId<Document> {
+    field: string;
+    value: string;
+    count: number;
+}
 
 describe('publishedFacet', () => {
     const connectionStringURI = process.env.MONGO_URL;
 
     let connection: MongoClient;
-    let db: any;
-    let publishedFacet: any;
+    let db: Db;
+    let publishedFacet: PublishedFacetCollection;
 
     beforeAll(async () => {
         connection = await MongoClient.connect(connectionStringURI!);
@@ -32,12 +40,13 @@ describe('publishedFacet', () => {
 
     describe('findValuesForField', () => {
         it('returns all values for a field when no filter is provided', async () => {
-            const results = await publishedFacet.findValuesForField({
+            const results = (await publishedFacet.findValuesForField({
                 field: 'foo',
+                page: 0,
                 perPage: 10,
-            });
+            })) as FacetDocument[];
 
-            expect(results.map((r: any) => r.value).sort()).toStrictEqual([
+            expect(results.map((r) => r.value).sort()).toStrictEqual([
                 'Filtration',
                 'filter',
                 'filtré',
@@ -46,13 +55,14 @@ describe('publishedFacet', () => {
         });
 
         it('filters values using accent-insensitive and case-insensitive search', async () => {
-            const results = await publishedFacet.findValuesForField({
+            const results = (await publishedFacet.findValuesForField({
                 field: 'foo',
                 filter: 'filtre',
+                page: 0,
                 perPage: 10,
-            });
+            })) as FacetDocument[];
 
-            expect(results.map((r: any) => r.value)).toStrictEqual(['filtré']);
+            expect(results.map((r) => r.value)).toStrictEqual(['filtré']);
         });
 
         it.each([
@@ -62,6 +72,7 @@ describe('publishedFacet', () => {
             const results = await publishedFacet.findValuesForField({
                 field: 'foo',
                 filter,
+                page: 0,
                 perPage: 10,
             });
 
@@ -69,21 +80,22 @@ describe('publishedFacet', () => {
         });
 
         it('applies pagination and sorting', async () => {
-            const results = await publishedFacet.findValuesForField({
+            const results = (await publishedFacet.findValuesForField({
                 field: 'foo',
                 sortBy: 'count',
                 sortDir: 'ASC',
                 perPage: 2,
                 page: 0,
-            });
+            })) as FacetDocument[];
 
-            expect(results.map((r: any) => r.count)).toStrictEqual([2, 3]);
+            expect(results.map((r) => r.count)).toStrictEqual([2, 3]);
         });
 
         it('returns an empty array if no values match the filter', async () => {
             const results = await publishedFacet.findValuesForField({
                 field: 'foo',
                 filter: 'does-not-exist',
+                page: 0,
                 perPage: 10,
             });
 
@@ -94,7 +106,6 @@ describe('publishedFacet', () => {
     describe('countValuesForField', () => {
         it('counts all values for a field when no filter is provided', async () => {
             const count = await publishedFacet.countValuesForField('foo');
-
             expect(count).toBe(4);
         });
 

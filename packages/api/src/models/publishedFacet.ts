@@ -116,7 +116,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
             const words = normalized.split(/\s+/).filter(Boolean);
 
             const wordPatterns = words.map((word) =>
-                escapeRegex(toAccentInsensitive(word)),
+                toAccentInsensitive(escapeRegex(word)),
             );
 
             const lookaheadPattern = wordPatterns
@@ -131,7 +131,7 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
 
         // Mot simple → recherche "contains"
         return {
-            $regex: escapeRegex(toAccentInsensitive(normalized)),
+            $regex: toAccentInsensitive(escapeRegex(normalized)),
             $options: 'i',
         };
     };
@@ -216,3 +216,4 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
 
     return collection;
 };
+export type { PublishedFacetCollection };
