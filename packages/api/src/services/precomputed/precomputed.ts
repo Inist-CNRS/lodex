@@ -160,7 +160,10 @@ export const getComputedFromWebservice = async (ctx: any) => {
     notifyListeners(room, logData);
 
     const webServiceRetrieveURL = new URL(webServiceUrl);
-    webServiceRetrieveURL.pathname = path.join(path.dirname(webServiceRetrieveURL.pathname), RETRIEVE_ENTRY_POINT);
+    webServiceRetrieveURL.pathname = path.join(
+        path.dirname(webServiceRetrieveURL.pathname),
+        RETRIEVE_ENTRY_POINT,
+    );
     webServiceRetrieveURL.search = '';
     webServiceRetrieveURL.hash = '';
     const importedDate = new Date();
