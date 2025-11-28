@@ -23,6 +23,7 @@ const SearchBar = ({
     maxWidth,
 }: SearchBarProps) => {
     const refTextField = useRef(null);
+    const hasInitialFocus = useRef(false);
 
     useEffect(() => {
         setTimeout(() => {
@@ -47,7 +48,10 @@ const SearchBar = ({
                 if (!event || !event.target) {
                     return;
                 }
-                event.target.select();
+                if (!hasInitialFocus.current) {
+                    event.target.select();
+                    hasInitialFocus.current = true;
+                }
             }}
             value={value}
             variant="outlined"

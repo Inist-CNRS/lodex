@@ -1,13 +1,66 @@
 import chunk from 'lodash/chunk';
+import { z } from 'zod';
 import { getCreatedCollection } from './utils';
+import type { Db, Collection, Filter, Document } from 'mongodb';
 
-export default async (db: any) => {
-    const collection: any = await getCreatedCollection(db, 'publishedFacet');
+// Schémas de validation Zod
+const FindLimitFromSkipSchema = z.object({
+    limit: z.number().int().positive(),
+    skip: z.number().int().nonnegative(),
+    filters: z.custom<Filter<Document>>(),
+    sortBy: z.string().optional().default('count'),
+    sortDir: z.enum(['ASC', 'DESC']).optional().default('DESC'),
+});
+
+const FindValuesForFieldSchema = z.object({
+    field: z.string(),
+    filter: z.string().optional(),
+    page: z.number().int().nonnegative().optional().default(0),
+    perPage: z.number().int().positive().max(100).optional().default(10),
+    sortBy: z.string().optional(),
+    sortDir: z.enum(['ASC', 'DESC']).optional(),
+});
+
+// Définition des types dérivés de Zod
+type FindLimitFromSkipParams = z.infer<typeof FindLimitFromSkipSchema>;
+type FindValuesForFieldParams = z.infer<typeof FindValuesForFieldSchema>;
+
+interface AccentMap {
+    [key: string]: string;
+}
+
+interface RegexFilter {
+    $regex: string;
+    $options: string;
+}
+
+interface FacetValue {
+    value: string;
+    count: number;
+    [key: string]: unknown;
+}
+
+// Interface étendue pour la collection personnalisée
+interface PublishedFacetCollection extends Collection {
+    insertBatch: (documents: Document[]) => Promise<void>;
+    insertFacet: (field: string, values: FacetValue[]) => Promise<void>;
+    findLimitFromSkip: (params: FindLimitFromSkipParams) => Promise<Document[]>;
+    findValuesForField: (
+        params: FindValuesForFieldParams,
+    ) => Promise<Document[]>;
+    countValuesForField: (field: string, filter?: string) => Promise<number>;
+}
+
+export default async (db: Db): Promise<PublishedFacetCollection> => {
+    const collection = (await getCreatedCollection(
+        db,
+        'publishedFacet',
+    )) as PublishedFacetCollection;
 
     /**
      * Table de correspondance lettres → regex accent-insensible
      */
-    const accentMap = {
+    const accentMap: AccentMap = {
         a: '[aàáâãäåāăą]',
         e: '[eèéêëēĕėęě]',
         i: '[iìíîïīĭįı]',
@@ -32,20 +85,22 @@ export default async (db: any) => {
     const escapeRegex = (char: string) =>
         char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    const toAccentInsensitive = (text: string) =>
+    const toAccentInsensitive = (text: string): string =>
         text
             .split('')
-            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-            .map((c) => accentMap[c] || escapeRegex(c))
+            .map((c: string) => accentMap[c] ?? escapeRegex(c))
             .join('');
 
     /**
-     * Crée une regex accent-insensible et tolérante aux séparateurs
+     * Crée une regex accent-insensible qui trouve le terme n'importe où dans la chaîne
      *
      * @param {string} filter - Le terme de recherche
      * @returns {Object|null} - Un filtre regex MongoDB
+     *
      */
-    const createWordStartRegex = (filter: any) => {
+    const createAccentInsensitiveContainsRegex = (
+        filter: string,
+    ): RegexFilter | null => {
         if (!filter) return null;
 
         const normalized = filter
@@ -56,26 +111,27 @@ export default async (db: any) => {
 
         if (!normalized) return null;
 
+        // Multi-mots → tous les mots doivent être présents
         if (normalized.includes(' ')) {
-            // multi-mots (ex: "CAN University of Toronto" → "CAN / University of Toronto")
-            // Chaque mot doit être présent comme début d'un mot
             const words = normalized.split(/\s+/).filter(Boolean);
-            const wordPatterns = words.map(
-                (word: string) => `(^|[^a-z0-9])${toAccentInsensitive(word)}`,
+
+            const wordPatterns = words.map((word) =>
+                toAccentInsensitive(escapeRegex(word)),
             );
-            // Tous les mots doivent être présents (ordre flexible avec lookahead)
-            const patterns = wordPatterns
-                .map((pattern: string) => `(?=.*${pattern})`)
+
+            const lookaheadPattern = wordPatterns
+                .map((pattern) => `(?=.*${pattern})`)
                 .join('');
+
             return {
-                $regex: `^${patterns}.*`,
+                $regex: `^${lookaheadPattern}.*`,
                 $options: 'i',
             };
         }
 
-        // mot simple
+        // Mot simple → recherche "contains"
         return {
-            $regex: `(^|[^a-z0-9])${toAccentInsensitive(normalized)}`,
+            $regex: toAccentInsensitive(escapeRegex(normalized)),
             $options: 'i',
         };
     };
@@ -83,67 +139,81 @@ export default async (db: any) => {
     /**
      * Insertions par lot
      */
-    collection.insertBatch = async (documents: any) => {
+    collection.insertBatch = async (documents: Document[]): Promise<void> => {
         for (const data of chunk(documents, 100)) {
             await collection.insertMany(data);
         }
     };
 
-    collection.insertFacet = (field: any, values: any) =>
-        collection.insertBatch(
-            values.map((value: any) => ({ field, ...value })),
+    collection.insertFacet = async (
+        field: string,
+        values: FacetValue[],
+    ): Promise<void> => {
+        await collection.insertBatch(
+            values.map((value: FacetValue) => ({ field, ...value })),
         );
+    };
 
     /**
      * Récupère une page de résultats avec skip/limit/sort
      */
-    collection.findLimitFromSkip = ({
-        limit,
-        skip,
-        filters,
-        sortBy = 'count',
-        sortDir = 'DESC',
-    }: any) =>
-        collection
-            .find(filters)
-            .skip(skip)
-            .limit(limit)
-            .sort({ [sortBy]: sortDir === 'ASC' ? 1 : -1, _id: 1 })
-            .toArray();
+    collection.findLimitFromSkip = async (
+        params: FindLimitFromSkipParams,
+    ): Promise<Document[]> => {
+        const validatedParams = FindLimitFromSkipSchema.parse(params);
 
-    collection.findValuesForField = ({
-        field,
-        filter,
-        page = 0,
-        perPage = 10,
-        sortBy,
-        sortDir,
-    }: any) => {
-        const filters = { field };
-        if (filter?.trim()) {
-            const regexFilter = createWordStartRegex(filter.trim());
-            // @ts-expect-error TS2339
-            if (regexFilter) filters.value = regexFilter;
+        return collection
+            .find(validatedParams.filters)
+            .skip(validatedParams.skip)
+            .limit(validatedParams.limit)
+            .sort({
+                [validatedParams.sortBy]:
+                    validatedParams.sortDir === 'ASC' ? 1 : -1,
+                _id: 1,
+            })
+            .toArray();
+    };
+
+    collection.findValuesForField = async (
+        params: FindValuesForFieldParams,
+    ): Promise<Document[]> => {
+        const validatedParams = FindValuesForFieldSchema.parse(params);
+        const filters: Filter<Document> = { field: validatedParams.field };
+
+        if (validatedParams.filter?.trim()) {
+            const regexFilter = createAccentInsensitiveContainsRegex(
+                validatedParams.filter.trim(),
+            );
+            if (regexFilter) {
+                filters.value = regexFilter;
+            }
         }
 
         return collection.findLimitFromSkip({
-            limit: parseInt(perPage, 10),
-            skip: page * perPage,
+            limit: validatedParams.perPage,
+            skip: validatedParams.page * validatedParams.perPage,
             filters,
-            sortBy,
-            sortDir,
+            sortBy: validatedParams.sortBy ?? 'count',
+            sortDir: validatedParams.sortDir ?? 'DESC',
         });
     };
 
-    collection.countValuesForField = (field: any, filter: any) => {
-        const filters = { field };
+    collection.countValuesForField = async (
+        field: string,
+        filter?: string,
+    ): Promise<number> => {
+        const filters: Filter<Document> = { field };
         if (filter?.trim()) {
-            const regexFilter = createWordStartRegex(filter.trim());
-            // @ts-expect-error TS2339
-            if (regexFilter) filters.value = regexFilter;
+            const regexFilter = createAccentInsensitiveContainsRegex(
+                filter.trim(),
+            );
+            if (regexFilter) {
+                filters.value = regexFilter;
+            }
         }
-        return collection.count(filters);
+        return collection.countDocuments(filters);
     };
 
     return collection;
 };
+export type { PublishedFacetCollection };

@@ -56,5 +56,7 @@ export const browseResults = () => {
     cy.wait(500);
 };
 
-export const clearSearch = () =>
+export const clearSearch = () => {
     cy.get('.dataset-searchbar button.searchbar-clear').click();
+    waitForLoading();
+};
