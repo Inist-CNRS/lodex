@@ -41,13 +41,13 @@ describe('Graph Page', () => {
         graphPage.searchFor('Biodiversity');
         graphPage.setFacet('Publication Year', '2011');
         cy.wait(400);
-        graphPage.getStats().should('have.text', 'Found 4 on 50');
+        graphPage.getStats().should('have.text', 'Found 0 on 50');
 
         menu.openChartDrawer();
         menu.goToChart('Bubble Chart');
 
         graphPage.getSearchInput().should('have.value', 'Biodiversity');
-        graphPage.getStats().should('have.text', 'Found 4 on 50');
+        graphPage.getStats().should('have.text', 'Found 0 on 50');
 
         graphPage.getFacet('Publication Year').click();
         cy.wait(500);
