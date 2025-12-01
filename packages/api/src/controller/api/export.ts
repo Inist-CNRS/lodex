@@ -56,6 +56,7 @@ const middlewareScript = (isFormatExporters = false) => {
 
         const [, metaData, exporterName] = currentScript;
         const {
+            uri,
             sortDir,
             sortBy,
             match,
@@ -109,6 +110,7 @@ const middlewareScript = (isFormatExporters = false) => {
             ...facets,
             connectionStringURI: mongoConnectionString(ctx.tenant),
             host,
+            uri,
         };
 
         const input = new PassThrough({ objectMode: true });
