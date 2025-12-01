@@ -277,3 +277,8 @@ div[class*='ButtonShadow']
     background-color: var(--link-dark) !important;
     color: var(--contrast-main) !important;
 }
+/* lien badge identifiant */
+/* format texte - */
+.format_identifierBadge a {
+    text-decoration: none !important;
+}
