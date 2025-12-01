@@ -325,6 +325,7 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
             >
                 <DataGrid
                     rowBuffer={100}
+                    columnBuffer={columns.length}
                     getRowId={(row) => row._id}
                     rows={tenants}
                     columns={columns}
