@@ -1,25 +1,25 @@
-import { useCallback, useMemo, type ChangeEvent } from 'react';
+import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { schemeOrRd } from 'd3-scale-chromatic';
-import { Checkbox, FormControlLabel, Switch, FormGroup } from '@mui/material';
+import { useCallback, useMemo, type ChangeEvent } from 'react';
 
-import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import { GradientSchemeSelector } from '../../../../components/ColorSchemeSelector';
-import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
-import { buildHeatMapSpec } from '../../models/HeatMap';
+import { FieldSelector } from '../../../../fields/form/FieldSelector';
+import { useTranslate } from '../../../../i18n/I18NContext';
+import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
-import { HeatMapAdminView } from './HeatMapView';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
-import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
-import { StandardSourceTargetWeight } from '../../../utils/dataSet';
-import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { useTranslate } from '../../../../i18n/I18NContext';
-import { FieldSelector } from '../../../../fields/form/FieldSelector';
+import { StandardSourceTargetWeight } from '../../../utils/dataSet';
+import { buildHeatMapSpec } from '../../models/HeatMap';
+import { HeatMapAdminView } from './HeatMapView';
 
 export const defaultArgs = {
     params: {
@@ -56,7 +56,8 @@ type HeatMapArgs = {
     tooltipTarget: string;
     tooltipWeight?: string;
     aspectRatio: AspectRatio;
-    fieldToFilter?: string | null;
+    fieldToFilterColumn?: string | null;
+    fieldToFilterRow?: string | null;
 };
 
 type HeatMapAdminProps = {
@@ -89,7 +90,8 @@ const HeatMapAdmin = ({
         tooltipTarget,
         tooltipWeight,
         aspectRatio,
-        fieldToFilter,
+        fieldToFilterColumn,
+        fieldToFilterRow,
     } = args;
 
     const spec = useMemo(() => {
@@ -112,7 +114,7 @@ const HeatMapAdmin = ({
                 },
                 flip: !!flipAxis,
                 orderBy: lodexOrderToIdOrder(params.orderBy || ''),
-                selectionEnabled: !!fieldToFilter,
+                selectionEnabled: !!fieldToFilterColumn || !!fieldToFilterRow,
             }),
             null,
             2,
@@ -121,7 +123,8 @@ const HeatMapAdmin = ({
         advancedMode,
         advancedModeSpec,
         colorScheme,
-        fieldToFilter,
+        fieldToFilterColumn,
+        fieldToFilterRow,
         flipAxis,
         params.orderBy,
         tooltip,
@@ -251,11 +254,22 @@ const HeatMapAdmin = ({
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet defaultExpanded>
                 <FieldSelector
-                    value={fieldToFilter ?? null}
+                    label={translate('field_to_filter_column')}
+                    value={fieldToFilterColumn ?? null}
                     onChange={(fieldToFilter) =>
                         onChange({
                             ...args,
-                            fieldToFilter: fieldToFilter || null,
+                            fieldToFilterColumn: fieldToFilter || null,
+                        })
+                    }
+                />
+                <FieldSelector
+                    label={translate('field_to_filter_row')}
+                    value={fieldToFilterRow ?? null}
+                    onChange={(fieldToFilter) =>
+                        onChange({
+                            ...args,
+                            fieldToFilterRow: fieldToFilter || null,
                         })
                     }
                 />

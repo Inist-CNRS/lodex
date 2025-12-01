@@ -1,6 +1,8 @@
 import { Box, useTheme } from '@mui/material';
+import isEqual from 'lodash/isEqual';
 import {
     createContext,
+    useCallback,
     useEffect,
     useMemo,
     useState,
@@ -13,40 +15,74 @@ export const SearchPaneContext = createContext<
     SearchPaneContextType | undefined
 >(undefined);
 
-export type SearchPaneFilter = {
+export type FieldFilter = {
     field: string;
     value: string | string[] | null;
 };
 
+export type SearchPaneFilter = FieldFilter[];
+
 export type SearchPaneContextType = {
-    filter: SearchPaneFilter | null;
-    setFilter: React.Dispatch<React.SetStateAction<SearchPaneFilter | null>>;
+    filters: SearchPaneFilter;
+    selectOne(filter: FieldFilter): void;
+    selectMany(first: FieldFilter, second: FieldFilter): void;
+    clearFilters(): void;
 };
+
+const defaultFilters: SearchPaneFilter = [];
 
 export function SearchPaneContextProvider({
     children,
     resultsPane,
 }: SearchPaneContextProviderProps): ReactElement {
     const { pathname } = useLocation();
-    const [filter, setFilter] = useState<SearchPaneFilter | null>(null);
+    const [filters, setFilters] = useState<SearchPaneFilter>(defaultFilters);
     const theme = useTheme();
+
+    const handleClear = useCallback(() => {
+        setFilters(defaultFilters);
+    }, []);
+
+    const handleSelectOne = useCallback(
+        (filter: FieldFilter) => {
+            if (
+                filters.length === 1 &&
+                filters[0].field === filter.field &&
+                isEqual(filters[0].value, filter.value)
+            ) {
+                setFilters(defaultFilters);
+            } else {
+                setFilters([filter]);
+            }
+        },
+        [filters],
+    );
+
+    const handleSelectMany = useCallback(
+        (first: FieldFilter, second: FieldFilter) => {
+            setFilters([first, second]);
+        },
+        [],
+    );
 
     const contextValue = useMemo<SearchPaneContextType | undefined>(() => {
         return {
-            filter,
-            setFilter,
+            filters,
+            selectOne: handleSelectOne,
+            selectMany: handleSelectMany,
+            clearFilters: handleClear,
         };
-    }, [filter]);
+    }, [filters, handleSelectOne, handleSelectMany, handleClear]);
 
     useEffect(() => {
-        setFilter(null);
+        setFilters([]);
     }, [pathname]);
 
     return (
         <SearchPaneContext.Provider value={contextValue}>
             <Box
                 sx={{
-                    marginRight: filter?.value ? '384px' : 0,
+                    marginRight: filters?.length ? '384px' : 0,
                     transition: theme.transitions.create('margin', {
                         easing: theme.transitions.easing.easeOut,
                         duration: theme.transitions.duration.enteringScreen,

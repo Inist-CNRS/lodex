@@ -10,7 +10,7 @@ import { SearchPaneContextProvider } from './SearchPaneContext';
 import { useSearchPaneContext } from './useSearchPaneContext';
 
 function TestContent() {
-    const { setFilter } = useSearchPaneContext();
+    const { selectOne } = useSearchPaneContext();
     const history = useHistory();
 
     return (
@@ -18,7 +18,7 @@ function TestContent() {
             <button
                 type="button"
                 onClick={() =>
-                    setFilter({
+                    selectOne({
                         field: 'testColumn',
                         value: 'testValue',
                     })
@@ -34,11 +34,12 @@ function TestContent() {
 }
 
 function TestResultsPane() {
-    const { filter, setFilter } = useSearchPaneContext();
+    const { filters, clearFilters } = useSearchPaneContext();
+    const filter = filters?.[0];
 
     return (
-        <dialog open={!!filter}>
-            <button type="button" onClick={() => setFilter(null)}>
+        <dialog open={filters?.length > 0}>
+            <button type="button" onClick={() => clearFilters()}>
                 Clear Filter
             </button>
             <dl role="group" aria-label={filter?.field}>
@@ -50,7 +51,7 @@ function TestResultsPane() {
 }
 
 describe('SearchPaneContext', () => {
-    it('sould not render the resultsPane when filter is null', () => {
+    it('should not render the resultsPane when filters is empty', () => {
         const screen = render(
             <MemoryRouter>
                 <SearchPaneContextProvider resultsPane={<TestResultsPane />}>
@@ -146,6 +147,34 @@ describe('SearchPaneContext', () => {
             fireEvent.click(
                 screen.getByRole('button', { name: 'Navigate to /page2' }),
             );
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
+    });
+
+    it('should clear filters when selecting the same field and value', async () => {
+        const screen = render(
+            <MemoryRouter>
+                <SearchPaneContextProvider resultsPane={<TestResultsPane />}>
+                    <TestContent />
+                </SearchPaneContextProvider>
+            </MemoryRouter>,
+        );
+
+        // Set a filter
+        act(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'Set Filter' }));
+        });
+
+        await waitFor(() => {
+            expect(screen.getByRole('dialog')).toBeVisible();
+        });
+
+        // Click the same filter again
+        act(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'Set Filter' }));
         });
 
         await waitFor(() => {

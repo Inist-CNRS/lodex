@@ -2,7 +2,6 @@ import {
     lazy,
     Suspense,
     useCallback,
-    useContext,
     useEffect,
     useMemo,
     useRef,
@@ -15,7 +14,7 @@ import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import Loading from '../../../components/Loading';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
-import { SearchPaneContext } from '../../../search/SearchPaneContext';
+import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
 import { addTransparency } from '../../utils/colorHelpers';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
@@ -149,7 +148,7 @@ export const NetworkBase = ({
     captionTitle,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
-    const searchPane = useContext(SearchPaneContext);
+    const { selectOne, clearFilters } = useSearchPaneContextOrDefault();
     const [mode, setMode] = useState<'arrow' | 'animated'>('animated');
     const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({
@@ -263,14 +262,14 @@ export const NetworkBase = ({
 
         if (!node || selectedNode?.id === node?.id) {
             setSelectedNode(null);
-            searchPane?.setFilter(null);
+            clearFilters();
             return;
         }
         setSelectedNode(node);
 
         const nodeId = node.id?.toString();
         if (fieldToFilter && nodeId) {
-            searchPane?.setFilter({
+            selectOne({
                 field: fieldToFilter,
                 value: nodeId,
             });

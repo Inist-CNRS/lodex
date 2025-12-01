@@ -4,15 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 export function useListPublishedDatasetByFieldValue(
-    filter: UseListPublishedDatasetByFieldValueParams = null,
+    filters: UseListPublishedDatasetByFieldValueParams = null,
 ) {
     const { fetch } = useApiClient();
 
     const { isLoading: isListSearchResultPending, data: searchResult } =
         useQuery({
-            queryKey: ['search', 'list', filter?.field, filter?.value],
+            queryKey: ['search', 'list', JSON.stringify(filters)],
             queryFn: async () => {
-                if (!filter) {
+                if (!filters?.length) {
                     return {
                         total: 0,
                         data: [],
@@ -20,10 +20,10 @@ export function useListPublishedDatasetByFieldValue(
                 }
 
                 return fetch<PublishedDataByFieldResponse>({
-                    url: `/api/publishedDataset/field/${filter.field}`,
+                    url: `/api/publishedDataset/search`,
                     method: 'POST',
                     body: JSON.stringify({
-                        value: filter.value,
+                        filters,
                     }),
                 });
             },

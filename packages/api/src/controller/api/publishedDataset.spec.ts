@@ -9,6 +9,7 @@ import {
     getRemovedPage,
     removeResource,
     restoreResource,
+    searchByField,
 } from './publishedDataset';
 
 describe('publishedDataset', () => {
@@ -545,7 +546,7 @@ describe('publishedDataset', () => {
         });
     });
 
-    describe('getPageByField', () => {
+    describe('searchByField', () => {
         let connection: MongoClient;
         let db;
         let publishedDatasetModel: Awaited<
@@ -570,60 +571,29 @@ describe('publishedDataset', () => {
             await publishedDatasetModel.deleteMany({});
         });
 
-        it.each([
-            {
-                testName:
-                    'should return 400 when field name is invalid (too short)',
-                fieldName: 'abc',
-                requestBody: {
-                    value: 'test',
-                    page: 0,
-                    perPage: 10,
-                },
-                expectedError: 'invalid_field_name',
-            },
-            {
-                testName:
-                    'should return 400 when field name is invalid (has special chars)',
-                fieldName: 'te$t',
-                requestBody: {
-                    value: 'test',
-                    page: 0,
-                    perPage: 10,
-                },
-                expectedError: 'invalid_field_name',
-            },
-            {
-                testName: 'should return 400 when request body is invalid',
-                fieldName: 'test',
-                requestBody: {
-                    invalidField: 'invalid',
-                    page: 'not a number',
-                },
-                expectedError: 'invalid_request',
-            },
-        ])('$testName', async ({ fieldName, requestBody, expectedError }) => {
+        it('should return 400 when request body is invalid', async () => {
             const ctx = {
                 publishedDataset: publishedDatasetModel,
                 request: {
-                    body: requestBody,
+                    body: {
+                        invalidField: 'invalid',
+                        page: 'not a number',
+                    },
                 },
             } as any;
 
-            const { getPageByField } = await import('./publishedDataset');
-            await getPageByField(ctx, fieldName);
+            await searchByField(ctx);
 
             expect(ctx.status).toBe(400);
             expect(ctx.body).toEqual({
-                error: expectedError,
+                error: 'invalid_request',
             });
         });
 
         it.each([
             {
                 testName: 'should return resources matching string field value',
-                fieldName: 'tags',
-                value: 'javascript',
+                filters: [{ field: 'tags', value: 'javascript' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -640,8 +610,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return resources matching string[] field value',
-                fieldName: 'tags',
-                value: ['javascript', 'python'],
+                filters: [{ field: 'tags', value: ['javascript', 'python'] }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -653,7 +622,7 @@ describe('publishedDataset', () => {
                     },
                     {
                         uri: 'uri3',
-                        versions: [{ name: 'Resource 2', tags: 'python' }],
+                        versions: [{ name: 'Resource 3', tags: 'python' }],
                     },
                 ],
                 expectedTotal: 2,
@@ -665,8 +634,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return resources matching value in string array field',
-                fieldName: 'cats',
-                value: 'tech',
+                filters: [{ field: 'cats', value: 'tech' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -683,8 +651,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return resources matching value in string[][] field',
-                fieldName: 'matr',
-                value: 'a',
+                filters: [{ field: 'matr', value: 'a' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -722,8 +689,7 @@ describe('publishedDataset', () => {
             },
             {
                 testName: 'should find value in nested arrays (string[][])',
-                fieldName: 'matr',
-                value: 'h',
+                filters: [{ field: 'matr', value: 'h' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -759,30 +725,48 @@ describe('publishedDataset', () => {
                     },
                 ],
             },
+            {
+                testName: 'should support multiple filters (AND logic)',
+                filters: [
+                    { field: 'tags', value: 'javascript' },
+                    { field: 'name', value: 'Resource 1' },
+                ],
+                testData: [
+                    {
+                        uri: 'uri1',
+                        versions: [{ name: 'Resource 1', tags: 'javascript' }],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [{ name: 'Resource 2', tags: 'javascript' }],
+                    },
+                    {
+                        uri: 'uri3',
+                        versions: [{ name: 'Resource 1', tags: 'python' }],
+                    },
+                ],
+                expectedTotal: 1,
+                expectedData: [
+                    { uri: 'uri1', name: 'Resource 1', tags: 'javascript' },
+                ],
+            },
         ])(
             '$testName',
-            async ({
-                fieldName,
-                value,
-                testData,
-                expectedTotal,
-                expectedData,
-            }) => {
+            async ({ filters, testData, expectedTotal, expectedData }) => {
                 await publishedDatasetModel.insertBatch(testData);
 
                 const ctx = {
                     publishedDataset: publishedDatasetModel,
                     request: {
                         body: {
-                            value,
+                            filters,
                             page: 0,
                             perPage: 10,
                         },
                     },
                 } as any;
 
-                const { getPageByField } = await import('./publishedDataset');
-                await getPageByField(ctx, fieldName);
+                await searchByField(ctx);
 
                 expect(ctx.body.total).toBe(expectedTotal);
                 expect(ctx.body.data).toHaveLength(expectedTotal);
@@ -799,8 +783,7 @@ describe('publishedDataset', () => {
         it.each([
             {
                 testName: 'should support pagination for string field values',
-                fieldName: 'tags',
-                value: 'javascript',
+                filters: [{ field: 'tags', value: 'javascript' }],
                 perPage: 1,
                 testData: [
                     { uri: 'uri1', versions: [{ tags: 'javascript' }] },
@@ -810,8 +793,7 @@ describe('publishedDataset', () => {
             },
             {
                 testName: 'should support pagination for string[] field values',
-                fieldName: 'cats',
-                value: 'tech',
+                filters: [{ field: 'cats', value: 'tech' }],
                 perPage: 1,
                 testData: [
                     { uri: 'uri1', versions: [{ cats: ['tech', 'web'] }] },
@@ -821,8 +803,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should support pagination for string[][] field values',
-                fieldName: 'matr',
-                value: 'a',
+                filters: [{ field: 'matr', value: 'a' }],
                 perPage: 1,
                 testData: [
                     {
@@ -835,29 +816,28 @@ describe('publishedDataset', () => {
                     },
                 ],
             },
-        ])('$testName', async ({ fieldName, value, perPage, testData }) => {
+        ])('$testName', async ({ filters, perPage, testData }) => {
             await publishedDatasetModel.insertBatch(testData);
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        value,
+                        filters,
                         page: 0,
                         perPage,
                     },
                 },
             } as any;
 
-            const { getPageByField } = await import('./publishedDataset');
-            await getPageByField(ctx, fieldName);
+            await searchByField(ctx);
 
             const totalResults = ctx.body.total;
             expect(ctx.body.data).toHaveLength(Math.min(perPage, totalResults));
 
             // Get second page
             ctx.request.body.page = 1;
-            await getPageByField(ctx, fieldName);
+            await searchByField(ctx);
 
             expect(ctx.body.total).toBe(totalResults);
             const remainingItems = Math.max(0, totalResults - perPage);
@@ -870,15 +850,13 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return empty array when no resources match string value',
-                fieldName: 'tags',
-                value: 'nonexistent',
+                filters: [{ field: 'tags', value: 'nonexistent' }],
                 testData: [{ uri: 'uri1', versions: [{ tags: 'python' }] }],
             },
             {
                 testName:
                     'should return empty array when no resources match string[] value',
-                fieldName: 'cats',
-                value: 'nonexistent',
+                filters: [{ field: 'cats', value: 'nonexistent' }],
                 testData: [
                     { uri: 'uri1', versions: [{ cats: ['tech', 'web'] }] },
                 ],
@@ -886,26 +864,24 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return empty array when no resources match string[][] value',
-                fieldName: 'matr',
-                value: 'zzz',
+                filters: [{ field: 'matr', value: 'zzz' }],
                 testData: [{ uri: 'uri1', versions: [{ matr: [['a', 'b']] }] }],
             },
-        ])('$testName', async ({ fieldName, value, testData }) => {
+        ])('$testName', async ({ filters, testData }) => {
             await publishedDatasetModel.insertBatch(testData);
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        value,
+                        filters,
                         page: 0,
                         perPage: 10,
                     },
                 },
             } as any;
 
-            const { getPageByField } = await import('./publishedDataset');
-            await getPageByField(ctx, fieldName);
+            await searchByField(ctx);
 
             expect(ctx.body.total).toBe(0);
             expect(ctx.body.data).toHaveLength(0);
@@ -914,14 +890,14 @@ describe('publishedDataset', () => {
         it.each([
             {
                 testName:
-                    'should support sorting in ascending order with a filter value',
+                    'should support sorting in ascending order with a filter',
                 sortDir: 'ASC' as const,
                 expectedFirst: 'Resource 1',
                 expectedLast: 'Resource 2',
             },
             {
                 testName:
-                    'should support sorting in descending order with a filter value',
+                    'should support sorting in descending order with a filter',
                 sortDir: 'DESC' as const,
                 expectedFirst: 'Resource 2',
                 expectedLast: 'Resource 1',
@@ -942,7 +918,7 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        value: 'javascript',
+                        filters: [{ field: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 5,
                         sort: {
@@ -953,8 +929,7 @@ describe('publishedDataset', () => {
                 },
             } as any;
 
-            const { getPageByField } = await import('./publishedDataset');
-            await getPageByField(ctx, 'tags');
+            await searchByField(ctx);
 
             expect(ctx.body.data).toHaveLength(2);
             expect(ctx.body.data[0].name).toBe(expectedFirst);
@@ -982,15 +957,14 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        value: 'javascript',
+                        filters: [{ field: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 10,
                     },
                 },
             } as any;
 
-            const { getPageByField } = await import('./publishedDataset');
-            await getPageByField(ctx, 'tags');
+            await searchByField(ctx);
 
             // The query uses versions.0 (first version), but returns the latest version
             // So this finds resources where the FIRST version has tags='javascript'
@@ -1023,7 +997,7 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        value: 'javascript',
+                        filters: [{ field: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 10,
                         // No sort provided, should default to { sortBy: '_id', sortDir: 'ASC' }
@@ -1031,8 +1005,7 @@ describe('publishedDataset', () => {
                 },
             } as any;
 
-            const { getPageByField } = await import('./publishedDataset');
-            await getPageByField(ctx, 'tags');
+            await searchByField(ctx);
 
             expect(ctx.body.total).toBe(3);
             expect(ctx.body.data).toHaveLength(3);
@@ -1064,7 +1037,7 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        value: 'javascript',
+                        filters: [{ field: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 10,
                         sort: {
@@ -1075,8 +1048,7 @@ describe('publishedDataset', () => {
                 },
             } as any;
 
-            const { getPageByField } = await import('./publishedDataset');
-            await getPageByField(ctx, 'tags');
+            await searchByField(ctx);
 
             expect(ctx.body.total).toBe(3);
             expect(ctx.body.data).toHaveLength(3);
@@ -1084,6 +1056,53 @@ describe('publishedDataset', () => {
             const ids = ctx.body.data.map((d: any) => d._id);
             const sortedIdsDesc = [...ids].sort().reverse();
             expect(ids).toEqual(sortedIdsDesc);
+        });
+
+        it('should handle empty filters array', async () => {
+            await publishedDatasetModel.insertBatch([
+                { uri: 'uri1', versions: [{ name: 'Resource 1' }] },
+                { uri: 'uri2', versions: [{ name: 'Resource 2' }] },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                request: {
+                    body: {
+                        filters: [],
+                        page: 0,
+                        perPage: 10,
+                    },
+                },
+            } as any;
+
+            await searchByField(ctx);
+
+            // With no filters, should return all resources
+            expect(ctx.body.total).toBe(2);
+            expect(ctx.body.data).toHaveLength(2);
+        });
+
+        it('should handle missing filters field', async () => {
+            await publishedDatasetModel.insertBatch([
+                { uri: 'uri1', versions: [{ name: 'Resource 1' }] },
+                { uri: 'uri2', versions: [{ name: 'Resource 2' }] },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                request: {
+                    body: {
+                        page: 0,
+                        perPage: 10,
+                    },
+                },
+            } as any;
+
+            await searchByField(ctx);
+
+            // With no filters, should return all resources
+            expect(ctx.body.total).toBe(2);
+            expect(ctx.body.data).toHaveLength(2);
         });
     });
 
