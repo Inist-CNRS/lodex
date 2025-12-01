@@ -150,6 +150,10 @@ const Drawer = ({ children, status, onClose, disabled }: DrawerProps) => {
         }
     }, [status]);
 
+    useEffect(() => {
+        return () => removePreventScroll();
+    }, []);
+
     return (
         <>
             <div
