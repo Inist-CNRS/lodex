@@ -390,6 +390,22 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=irc3-species%20-%20Recherche%20de%20noms%20d%27esp%C3%A8ces#/default/post_v1_irc3sp",
         "objectifTDM": "https://services.istex.fr/irc3-species-recherche-despeces-animales/",
         "type": "entites nommees"
+    },   
+    {
+        "id": "post-v1-tagger",
+        "url": "https://software-extract.services.istex.fr/v1/tagger",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/software-extract",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=software-extract%20-%20Extrait%20des%20noms%20de%20logiciels%20dans%20un%20texte%20%C3%A9crit%20en%20anglais.#/",
+        "objectifTDM": "https://services.istex.fr/extraction-de-noms-de-logiciels/",
+        "type": "entites nommees"
+    },
+        {
+        "id": "post-v1-tagger-oa",
+        "url": "https://software-extract.services.istex.fr/v1/tagger-oa",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/software-extract",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=software-extract%20-%20Extrait%20des%20noms%20de%20logiciels%20dans%20un%20texte%20%C3%A9crit%20en%20anglais.#/",
+        "objectifTDM": "https://services.istex.fr/extraction-de-noms-de-logiciels/",
+        "type": "entites nommees"
     },
             {
         "id": "post-v1-tam",
