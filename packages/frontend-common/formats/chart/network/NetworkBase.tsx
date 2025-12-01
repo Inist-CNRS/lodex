@@ -9,6 +9,7 @@ import {
     useState,
 } from 'react';
 
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import Loading from '../../../components/Loading';
@@ -20,6 +21,7 @@ import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import { NetworkCaption } from './NetworkCaption';
 import { type Link, type Node } from './useFormatNetworkData';
+import { useLinkColor } from './useLinkColor';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
@@ -148,6 +150,7 @@ export const NetworkBase = ({
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const searchPane = useContext(SearchPaneContext);
+    const [mode, setMode] = useState<'arrow' | 'animated'>('animated');
     const fgRef = useRef<ForceGraphMethods>();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -289,6 +292,19 @@ export const NetworkBase = ({
         );
     }, [nodes, highlightedNodeIds, selectedNode, hoveredNode]);
 
+    const [minLinkSize, maxLinkSize] = useMemo(() => {
+        const sizes = links
+            .map((l) => l.value)
+            .filter((v): v is number => typeof v === 'number');
+        return [Math.min(...sizes), Math.max(...sizes)];
+    }, [links]);
+
+    const linkColor = useLinkColor({
+        mode,
+        minLinkSize,
+        maxLinkSize,
+    });
+
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
             <FormatFullScreenMode>
@@ -296,6 +312,26 @@ export const NetworkBase = ({
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <GraphAction>
+                        {showArrows && (
+                            <ToggleButtonGroup
+                                value={mode}
+                                exclusive
+                                onChange={(_, value) =>
+                                    setMode(value as 'arrow' | 'animated')
+                                }
+                                aria-label={translate('network_mode')}
+                                sx={{
+                                    height: '56px',
+                                }}
+                            >
+                                <ToggleButton value="arrow">
+                                    {translate('network_mode_arrow')}
+                                </ToggleButton>
+                                <ToggleButton value="animated">
+                                    {translate('network_mode_animated')}
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        )}
                         <AutoComplete
                             label={translate('select_node')}
                             value={selectedNode?.id || null}
@@ -311,7 +347,7 @@ export const NetworkBase = ({
                                 .sort((a, b) => a.localeCompare(b))}
                             name="search"
                             sx={{
-                                maxWidth: '384px',
+                                maxWidth: '256px',
                             }}
                         />
                     </GraphAction>
@@ -405,11 +441,7 @@ export const NetworkBase = ({
 
                                 ctx.globalAlpha = 1;
                             }}
-                            linkColor={(link) =>
-                                link.color
-                                    ? addTransparency(link.color, 0.25)
-                                    : '#99999999'
-                            }
+                            linkColor={(link) => linkColor(link as Link)}
                             linkVisibility={(link) =>
                                 isLinkVisible({
                                     link: link as {
@@ -428,7 +460,11 @@ export const NetworkBase = ({
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
-                            linkWidth={(l) => l.value ?? 1}
+                            linkWidth={(l) =>
+                                showArrows && mode === 'arrow'
+                                    ? 1
+                                    : l.value ?? 1
+                            }
                             linkLabel={(l) => l.label ?? ''}
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
@@ -476,8 +512,21 @@ export const NetworkBase = ({
                                     ...bckgDimensions,
                                 );
                             }}
-                            linkDirectionalParticleWidth={showArrows ? 4 : 0}
-                            linkDirectionalParticles={showArrows ? 4 : 0}
+                            linkDirectionalParticleWidth={
+                                showArrows && mode === 'animated' ? 4 : 0
+                            }
+                            linkDirectionalParticles={
+                                showArrows && mode === 'animated' ? 2 : 0
+                            }
+                            linkDirectionalParticleSpeed={
+                                showArrows && mode === 'animated' ? 0.005 : 0
+                            }
+                            linkDirectionalArrowLength={
+                                showArrows && mode === 'arrow' ? 3 : 0
+                            }
+                            linkDirectionalArrowRelPos={
+                                showArrows && mode === 'arrow' ? 1 : 0
+                            }
                         />
                     </Suspense>
 

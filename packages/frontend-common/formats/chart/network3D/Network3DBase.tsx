@@ -15,21 +15,22 @@ import {
     Mesh,
     MeshLambertMaterial,
     SphereGeometry,
-    Vector3, // @ts-expect-error TS7016
+    Vector3,
 } from 'three';
 import Loading from '../../../components/Loading';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { SearchPaneContext } from '../../../search/SearchPaneContext';
-import { addTransparency } from '../../utils/colorHelpers';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import type { Link, Node } from '../network/useFormatNetworkData';
 
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import SpriteText from 'three-spritetext';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import { compareNodes, isLinkVisible } from '../network/NetworkBase';
 import { NetworkCaption } from '../network/NetworkCaption';
+import { useLinkColor } from '../network/useLinkColor';
 
 const ForceGraph3D = lazy(() => import('react-force-graph-3d'));
 
@@ -73,6 +74,7 @@ export const Network3DBase = ({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Map<string, { group: Group; sprite: any; node: Node }>
     >(new Map());
+    const [mode, setMode] = useState<'arrow' | 'animated'>('animated');
     const animationFrameRef = useRef<number>();
     const { translate } = useTranslate();
     const searchPane = useContext(SearchPaneContext);
@@ -282,6 +284,19 @@ export const Network3DBase = ({
         );
     }, [nodes, highlightedNodeIds, selectedNode, hoveredNode]);
 
+    const [minLinkSize, maxLinkSize] = useMemo(() => {
+        const sizes = links
+            .map((l) => l.value)
+            .filter((v): v is number => typeof v === 'number');
+        return [Math.min(...sizes), Math.max(...sizes)];
+    }, [links]);
+
+    const linkColor = useLinkColor({
+        mode,
+        minLinkSize,
+        maxLinkSize,
+    });
+
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
             <FormatFullScreenMode>
@@ -289,6 +304,26 @@ export const Network3DBase = ({
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <GraphAction>
+                        {showArrows && (
+                            <ToggleButtonGroup
+                                value={mode}
+                                exclusive
+                                onChange={(_, value) =>
+                                    setMode(value as 'arrow' | 'animated')
+                                }
+                                aria-label={translate('network_mode')}
+                                sx={{
+                                    height: '56px',
+                                }}
+                            >
+                                <ToggleButton value="arrow">
+                                    {translate('network_mode_arrow')}
+                                </ToggleButton>
+                                <ToggleButton value="animated">
+                                    {translate('network_mode_animated')}
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        )}
                         <AutoComplete
                             label={translate('select_node')}
                             value={selectedNode?.id || null}
@@ -316,7 +351,7 @@ export const Network3DBase = ({
                             backgroundColor="white"
                             nodeVal={(n) => n.radius}
                             nodeColor={() => colorSet![0]}
-                            nodeThreeObject={(node: Node) => {
+                            nodeThreeObject={(node) => {
                                 // Create a group to hold both sphere and text
                                 const group = new Group();
 
@@ -352,9 +387,7 @@ export const Network3DBase = ({
                                 sprite.textHeight = node.radius;
                                 sprite.strokeColor = 'white';
                                 sprite.strokeWidth = 0.5;
-                                // @ts-expect-error SpriteText material property
                                 sprite.material.opacity = opacity;
-                                // @ts-expect-error SpriteText material property
                                 sprite.material.transparent = true;
 
                                 // Add both to the group
@@ -365,7 +398,7 @@ export const Network3DBase = ({
                                 nodeObjectsRef.current.set(node.id as string, {
                                     group,
                                     sprite,
-                                    node,
+                                    node: node as Node,
                                 });
 
                                 return group;
@@ -379,9 +412,7 @@ export const Network3DBase = ({
                             nodeLabel={(node) => {
                                 return node.label;
                             }}
-                            linkColor={(link) =>
-                                addTransparency(link.color ?? '#777777', 0.25)
-                            }
+                            linkColor={(link) => linkColor(link as Link)}
                             linkVisibility={(link) =>
                                 isLinkVisible({
                                     link: link as {
@@ -400,13 +431,30 @@ export const Network3DBase = ({
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
-                            linkWidth={(l) => l.value ?? 1}
+                            linkWidth={(l) =>
+                                showArrows && mode === 'arrow'
+                                    ? 1
+                                    : l.value ?? 1
+                            }
                             linkLabel={(l) => l.label ?? ''}
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
                             linkCurvature={linkCurvature}
-                            linkDirectionalParticleWidth={showArrows ? 4 : 0}
-                            linkDirectionalParticles={showArrows ? 4 : 0}
+                            linkDirectionalParticleWidth={
+                                showArrows && mode === 'animated' ? 4 : 0
+                            }
+                            linkDirectionalParticles={
+                                showArrows && mode === 'animated' ? 2 : 0
+                            }
+                            linkDirectionalParticleSpeed={
+                                showArrows && mode === 'animated' ? 0.005 : 0
+                            }
+                            linkDirectionalArrowLength={
+                                showArrows && mode === 'arrow' ? 3 : 0
+                            }
+                            linkDirectionalArrowRelPos={
+                                showArrows && mode === 'arrow' ? 1 : 0
+                            }
                         />
                     </Suspense>
 
