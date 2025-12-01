@@ -522,6 +522,7 @@ export const ParsingResultComponent = ({
                 filterMode="server"
                 filterModel={filterModel}
                 rowBuffer={limit ?? 100}
+                columnBuffer={columnsToShow.length}
                 onFilterModelChange={handleFilterModelChange}
                 rowsPerPageOptions={[10, 25, 50]}
                 disableSelectionOnClick={true}

@@ -92,6 +92,7 @@ export const PrecomputedList = ({
         <Box>
             <DataGrid
                 rowBuffer={100}
+                columnBuffer={5}
                 columns={[
                     {
                         field: 'name',
