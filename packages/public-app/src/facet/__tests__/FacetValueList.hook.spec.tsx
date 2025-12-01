@@ -34,13 +34,13 @@ describe('useDebouncedSearch hook', () => {
         jest.clearAllMocks();
     });
 
-    it('debounces and respects MIN_SEARCH_LENGTH', () => {
+    it('debounces search calls', () => {
         const wrapper = mount(
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);
 
-        // type one char -> should not call changeFacetValue because MIN_SEARCH_LENGTH = 2
+        // type one char -> should call changeFacetValue
         act(() => {
             input.simulate('change', {
                 target: { value: 'a' },
@@ -52,9 +52,14 @@ describe('useDebouncedSearch hook', () => {
             jest.advanceTimersByTime(500);
         });
 
-        expect(defaultChange).not.toHaveBeenCalled();
+        expect(defaultChange).toHaveBeenCalledWith({
+            currentPage: 0,
+            filter: 'a',
+            name: 'test',
+            perPage: 10,
+        });
 
-        // type two chars -> should trigger
+        // type more chars -> should trigger again
         act(() => {
             input.simulate('change', {
                 target: { value: 'ab' },
@@ -66,8 +71,6 @@ describe('useDebouncedSearch hook', () => {
             jest.advanceTimersByTime(500);
         });
 
-        wrapper.update();
-        expect(defaultChange).toHaveBeenCalled();
         expect(defaultChange).toHaveBeenCalledWith({
             name: 'test',
             currentPage: 0,

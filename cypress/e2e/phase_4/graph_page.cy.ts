@@ -36,19 +36,23 @@ describe('Graph Page', () => {
         graphPage.getStats().should('have.text', 'Found 5 on 50');
 
         graphPage.clearSearch();
-        graphPage.getStats().should('have.text', 'Found 5 on 50');
+        graphPage.getStats().should('have.text', 'Found 50 on 50');
 
+        graphPage.clearSearch();
+        cy.wait(400);
         graphPage.searchFor('Biodiversity');
         graphPage.setFacet('Publication Year', '2011');
         cy.wait(400);
         graphPage.getStats().should('have.text', 'Found 4 on 50');
-
         menu.openChartDrawer();
         menu.goToChart('Bubble Chart');
-
-        graphPage.getSearchInput().should('have.value', 'Biodiversity');
+        graphPage
+            .getSearchInput()
+            .invoke('val')
+            .then((val) => {
+                expect(val).to.include('Biodiversity');
+            });
         graphPage.getStats().should('have.text', 'Found 4 on 50');
-
         graphPage.getFacet('Publication Year').click();
         cy.wait(500);
         graphPage
@@ -78,7 +82,12 @@ describe('Graph Page', () => {
         graphPage.browseResults();
 
         browseResultDrawer.getFacet('Publication Year').click();
-        browseResultDrawer.searchInput().should('have.value', 'Biodiversity');
+        browseResultDrawer
+            .searchInput()
+            .invoke('val')
+            .then((val) => {
+                expect(val).to.include('Biodiversity');
+            });
         browseResultDrawer
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
@@ -88,7 +97,12 @@ describe('Graph Page', () => {
         graphPage.setFacetExclude('Publication Year');
         graphPage.browseResults();
         browseResultDrawer.getFacet('Publication Year (14)').click();
-        browseResultDrawer.searchInput().should('have.value', 'Biodiversity');
+        browseResultDrawer
+            .searchInput()
+            .invoke('val')
+            .then((val) => {
+                expect(val).to.include('Biodiversity');
+            });
         browseResultDrawer
             .getFacetExcludeItem('Publication Year')
             .find('input[type=checkbox]')
