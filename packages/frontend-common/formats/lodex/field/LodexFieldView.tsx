@@ -235,7 +235,13 @@ export default compose(
         const source = URL.parse(value);
         // @ts-expect-error TS18047
         if (source.pathname.search(/(ark|uid):/) >= 0) {
-            const [check, tenant = 'default', scheme, identifier1, identifier2] =
+            const [
+                check,
+                tenant = 'default',
+                scheme,
+                identifier1,
+                identifier2,
+            ] =
                 // @ts-expect-error TS18047
                 source.pathname.split('/').filter(Boolean);
             let identifier;
@@ -246,7 +252,6 @@ export default compose(
                 // Mostly an URI
                 identifier = `${identifier1}`;
             }
-
 
             let uri;
             let pathname;
