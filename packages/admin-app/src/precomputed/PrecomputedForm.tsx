@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, type MouseEvent } from 'react';
 import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
 import PrecomputedFormLogsDialogComponent from './PrecomputedLogsDialog';
-import PrecomputedFormDataDialogComponent from './PrecomputedDataDialog';
 import SourceValueFromColumns from './SourceValueFromColumns';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField';
@@ -15,7 +14,13 @@ import { compose } from 'recompose';
 import { fromPrecomputed, fromParsing } from '../selectors';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
 import { withRouter } from 'react-router';
-import { Box, Button, Typography, type ButtonProps } from '@mui/material';
+import {
+    Box,
+    Button,
+    Stack,
+    Typography,
+    type ButtonProps,
+} from '@mui/material';
 import {
     createPrecomputed,
     getPreviewPrecomputed,
@@ -35,6 +40,8 @@ import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 import { RunButton } from './RunButton';
+import { Link } from 'react-router-dom';
+import { DownloadPrecomputedResultButton } from './DownloadPrecomputedResultButton';
 
 export type PrecomputedFormProps = {
     datasetFields: string[];
@@ -74,7 +81,6 @@ export const PrecomputedForm = ({
     const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openPrecomputedLogs, setOpenPrecomputedLogs] = React.useState(false);
-    const [openPrecomputedData, setOpenPrecomputedData] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [dataPreviewPrecomputed, setDataPreviewPrecomputed] = React.useState(
         [],
@@ -309,7 +315,7 @@ export const PrecomputedForm = ({
                                             startedAt={initialValues?.startedAt}
                                         />
                                     </Typography>
-                                    <Box>
+                                    <Stack direction="row" spacing={2}>
                                         <Button
                                             variant={
                                                 'link' as ButtonProps['variant']
@@ -340,6 +346,7 @@ export const PrecomputedForm = ({
                                                         variant={
                                                             'link' as ButtonProps['variant']
                                                         }
+                                                        component={Link}
                                                         sx={{
                                                             marginLeft: 2,
                                                             paddingRight: 0,
@@ -347,30 +354,18 @@ export const PrecomputedForm = ({
                                                             textDecoration:
                                                                 'underline',
                                                         }}
-                                                        onClick={() =>
-                                                            setOpenPrecomputedData(
-                                                                true,
-                                                            )
-                                                        }
+                                                        to={`/data/existing/precomputation?precomputation=${initialValues!._id}`}
                                                     >
                                                         {translate('see_data')}
                                                     </Button>
-                                                    <PrecomputedFormDataDialogComponent
-                                                        isOpen={
-                                                            openPrecomputedData
-                                                        }
-                                                        precomputedID={
-                                                            initialValues._id
-                                                        }
-                                                        handleClose={() =>
-                                                            setOpenPrecomputedData(
-                                                                false,
-                                                            )
+                                                    <DownloadPrecomputedResultButton
+                                                        precomputedId={
+                                                            initialValues!._id
                                                         }
                                                     />
                                                 </>
                                             )}
-                                    </Box>
+                                    </Stack>
                                 </Box>
                             )}
                         </Box>
