@@ -20,6 +20,7 @@ import { CancelWorkerError, workerQueues } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import getLogger from '../logger';
 
+const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to the Web service entry point.
 ezs.use(Lodex);
 ezs.use(Basics);
 const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
@@ -159,7 +160,10 @@ export const getComputedFromWebservice = async (ctx: any) => {
     notifyListeners(room, logData);
 
     const webServiceRetrieveURL = new URL(webServiceUrl);
-    webServiceRetrieveURL.pathname = '/v1/retrieve-json';
+    webServiceRetrieveURL.pathname = path.join(
+        path.dirname(webServiceRetrieveURL.pathname),
+        RETRIEVE_ENTRY_POINT,
+    );
     webServiceRetrieveURL.search = '';
     webServiceRetrieveURL.hash = '';
     const importedDate = new Date();
