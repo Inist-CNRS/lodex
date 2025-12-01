@@ -28,7 +28,7 @@ import { ENRICHER } from '../../workers/enricher';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { dropJobs } from '../../workers/tools';
 import { transformField } from './field.transformer';
-import { workerQueues } from '../../workers';
+import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
 
 const sortByFieldUri = (a: any, b: any) =>
@@ -470,7 +470,8 @@ export const duplicateField = async (ctx: any) => {
             await indexSearchableFields(ctx);
         }
 
-        await workerQueues[ctx.tenant].add(
+        const workerQueue = getOrCreateWorkerQueue(ctx.tenant, 1);
+        await workerQueue.add(
             PUBLISHER, // Name of the job
             { jobType: PUBLISHER, tenant: ctx.tenant },
             { jobId: uuid() },

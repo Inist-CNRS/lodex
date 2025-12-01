@@ -3,6 +3,7 @@ import { processPublication, PUBLISHER } from './publisher';
 import { processEnrichment, ENRICHER, RETRY_ENRICHER } from './enricher';
 import { processPrecomputed, PRECOMPUTER } from './precomputer';
 import { processImport, IMPORT } from './import';
+import bullBoard from '../bullBoard';
 
 export const QUEUE_NAME = 'worker';
 
@@ -17,9 +18,12 @@ export class CancelWorkerError extends Error {
 
 export const workerQueues: any = {};
 
-export const createWorkerQueue = (queueName: any, concurrency: any) => {
+export const getOrCreateWorkerQueue = (
+    queueName: any,
+    concurrency: any,
+): Queue.Queue => {
     if (workerQueues[queueName]) {
-        return;
+        return workerQueues[queueName];
     }
 
     // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
@@ -50,6 +54,8 @@ export const createWorkerQueue = (queueName: any, concurrency: any) => {
     });
 
     workerQueues[queueName] = workerQueue;
+
+    bullBoard.addDashboardQueue(queueName, workerQueue);
 
     return workerQueue;
 };

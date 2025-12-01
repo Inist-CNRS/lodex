@@ -4,7 +4,7 @@ import route from 'koa-route';
 import jwt from 'koa-jwt';
 import config from 'config';
 import { ObjectId } from 'mongodb';
-import { createWorkerQueue, deleteWorkerQueue } from '../workers';
+import { getOrCreateWorkerQueue, deleteWorkerQueue } from '../workers';
 import {
     checkForbiddenNames,
     getTenantMaxSize,
@@ -104,8 +104,7 @@ const postTenant = async (ctx: any) => {
         // Open configTenant files as json and save it in mongo
         await insertConfigTenant(name);
 
-        const queue = createWorkerQueue(name, 1);
-        bullBoard.addDashboardQueue(name, queue);
+        getOrCreateWorkerQueue(name, 1);
         ctx.body = await getTenants(ctx, { createdAt: -1 });
     }
 };
