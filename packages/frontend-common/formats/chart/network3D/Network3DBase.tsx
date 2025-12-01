@@ -25,17 +25,12 @@ import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import type { Link, Node } from '../network/useFormatNetworkData';
 
-import {
-    darken,
-    lighten,
-    ToggleButton,
-    ToggleButtonGroup,
-} from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import SpriteText from 'three-spritetext';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
-import { addTransparency } from '../../utils/colorHelpers';
 import { compareNodes, isLinkVisible } from '../network/NetworkBase';
 import { NetworkCaption } from '../network/NetworkCaption';
+import { useLinkColor } from '../network/useLinkColor';
 
 const ForceGraph3D = lazy(() => import('react-force-graph-3d'));
 
@@ -296,6 +291,12 @@ export const Network3DBase = ({
         return [Math.min(...sizes), Math.max(...sizes)];
     }, [links]);
 
+    const linkColor = useLinkColor({
+        mode,
+        minLinkSize,
+        maxLinkSize,
+    });
+
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
             <FormatFullScreenMode>
@@ -411,20 +412,7 @@ export const Network3DBase = ({
                             nodeLabel={(node) => {
                                 return node.label;
                             }}
-                            linkColor={(link) => {
-                                const color = link.color ?? '#d0d0d0';
-                                if (mode === 'arrow') {
-                                    const value = link.value ?? 1;
-                                    const ratio =
-                                        (value - minLinkSize) /
-                                        (maxLinkSize - minLinkSize || 1);
-
-                                    const fn = ratio < 0.5 ? lighten : darken;
-                                    return fn(color, (ratio - 0.5) * 2 * 0.5);
-                                }
-
-                                return addTransparency(color, 0.6);
-                            }}
+                            linkColor={(link) => linkColor(link as Link)}
                             linkVisibility={(link) =>
                                 isLinkVisible({
                                     link: link as {
