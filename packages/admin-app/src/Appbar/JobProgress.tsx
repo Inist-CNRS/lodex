@@ -95,6 +95,13 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
     const [hasLoadedParsingResult, setHasLoadedParsingResult] = useState(false);
 
     useEffect(() => {
+        if (progress) {
+            return;
+        }
+        setIsCancelDialogOpen(false);
+    }, [progress]);
+
+    useEffect(() => {
         const socket = io();
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
@@ -207,7 +214,7 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
             loadParsingResult();
             setHasLoadedParsingResult(true);
         }
-    }, [progress, hasLoadedParsingResult]);
+    }, [progress, hasLoadedParsingResult, loadParsingResult]);
 
     return (
         <>
