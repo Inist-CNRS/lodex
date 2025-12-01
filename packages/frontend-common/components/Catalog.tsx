@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     List,
     ListItemText,
@@ -147,6 +147,7 @@ export const EnrichmentCatalog = ({
 
     const [filteredEnricher, setFilterEnricher] = useState(enrichers);
     const [selectedFilter, setSelectedFilter] = useState('all');
+    const selectedItemRef = useRef<HTMLLIElement | null>(null);
 
     useEffect(() => {
         setFilterEnricher(
@@ -154,19 +155,29 @@ export const EnrichmentCatalog = ({
                 ? enrichers.filter((item) => item.type === selectedFilter)
                 : enrichers,
         );
-    }, [selectedFilter]);
+    }, [enrichers, selectedFilter]);
+
+    useEffect(() => {
+        if (isOpen && selectedWebServiceUrl) {
+            // Wait for the dialog to open before scrolling
+            const timeoutId = setTimeout(() => {
+                if (selectedItemRef.current) {
+                    selectedItemRef.current.scrollIntoView({
+                        inline: 'center',
+                        block: 'center',
+                        behavior: 'smooth',
+                    });
+                }
+            }, 100);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [isOpen, selectedWebServiceUrl]);
 
     // @ts-expect-error TS7006
     const handleValueChange = (newValue) => {
         onChange(newValue);
         handleClose();
-    };
-
-    // @ts-expect-error TS7006
-    const scrollTo = (el) => {
-        if (el) {
-            el.scrollIntoView({ inline: 'center', block: 'center' });
-        }
     };
 
     return (
@@ -224,7 +235,7 @@ export const EnrichmentCatalog = ({
                             }}
                             ref={
                                 selectedWebServiceUrl === enricher.url
-                                    ? scrollTo
+                                    ? selectedItemRef
                                     : null
                             }
                         >
