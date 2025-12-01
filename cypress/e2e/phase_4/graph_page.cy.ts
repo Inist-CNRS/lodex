@@ -15,6 +15,7 @@ describe('Graph Page', () => {
         cy.on('uncaught:exception', (error) => {
             return !error.message.includes('ResizeObserver');
         });
+        
         teardown();
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
