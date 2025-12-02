@@ -129,7 +129,7 @@ describe('BubbleView', () => {
         await act(() => user.click(screen.getByText('id2')));
 
         expect(selectOne).toHaveBeenCalledWith({
-            field: 'testFieldToFilter',
+            fieldName: 'testFieldToFilter',
             value: 'id2',
         });
 
