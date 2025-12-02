@@ -352,4 +352,56 @@ describe('PrecomputedModel', () => {
             expect(updatedDoc).toBeNull();
         });
     });
+
+    describe('insertManyResults', () => {
+        it('should insert multiple documents into the precomputed collection', async () => {
+            const precomputedId = new ObjectId().toString();
+            const precomputedResults = [
+                { col1: 'value1', col2: 10 },
+                { col1: 'value2', col2: 20 },
+                { col1: 'value3', col2: 30 },
+            ];
+
+            await precomputedCollection.insertManyResults(
+                precomputedId,
+                precomputedResults,
+            );
+
+            const insertedDocs = await db
+                .collection(`pc_${precomputedId}`)
+                .find({})
+                .sort({ col1: 1 })
+                .toArray();
+
+            expect(insertedDocs).toEqual(precomputedResults);
+        });
+    });
+
+    describe('deleteManyResults', () => {
+        it('should delete the precomputed collection from the database', async () => {
+            const precomputedId = new ObjectId().toString();
+            const collection = db.collection(`pc_${precomputedId}`);
+            await collection.insertMany([
+                { col1: 'value1', col2: 10 },
+                { col1: 'value2', col2: 20 },
+            ]);
+
+            await precomputedCollection.deleteManyResults({ precomputedId });
+
+            const precomputedResults = await collection
+                .find({})
+                .sort({ col1: 1 })
+                .toArray();
+
+            expect(precomputedResults).toEqual([]);
+        });
+
+        it('should do nothing if the collection does not exist', async () => {
+            const precomputedId = new ObjectId().toString();
+
+            await expect(
+                precomputedCollection.deleteManyResults({ precomputedId }),
+            ).resolves.not.toThrow();
+        });
+    });
 });
