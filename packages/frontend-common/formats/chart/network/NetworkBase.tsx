@@ -232,7 +232,7 @@ export const NetworkBase = ({
             if (node)
                 setDimensions({
                     width: node.clientWidth,
-                    height: node.clientHeight - 91, // 91 is the height of the autocomplete + margins
+                    height: node.clientHeight - 51, // 51 is the height of the mouseIcon
                 });
         });
         resizeObserver.observe(node);

@@ -5,6 +5,7 @@ import route from 'koa-route';
 import moment from 'moment';
 import streamToString from 'stream-to-string';
 import tar from 'tar-stream';
+import { v1 as uuid } from 'uuid';
 
 import { validateField } from '../../models/field';
 import indexSearchableFields from '../../services/indexSearchableFields';
@@ -27,6 +28,8 @@ import { ENRICHER } from '../../workers/enricher';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { dropJobs } from '../../workers/tools';
 import { transformField } from './field.transformer';
+import { getOrCreateWorkerQueue } from '../../workers';
+import { PUBLISHER } from '../../workers/publisher';
 
 const sortByFieldUri = (a: any, b: any) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -460,6 +463,19 @@ export const duplicateField = async (ctx: any) => {
 
         // save field in database
         const newField = await ctx.field.create(field);
+
+        ctx.body = await ctx.field.updateOneById(newField._id, newField);
+        await indexSearchableFields(ctx);
+        if (newField.searchable) {
+            await indexSearchableFields(ctx);
+        }
+
+        const workerQueue = getOrCreateWorkerQueue(ctx.tenant, 1);
+        await workerQueue.add(
+            PUBLISHER, // Name of the job
+            { jobType: PUBLISHER, tenant: ctx.tenant },
+            { jobId: uuid() },
+        );
         ctx.status = 200;
         ctx.body = newField;
     } catch (error) {
@@ -468,6 +484,7 @@ export const duplicateField = async (ctx: any) => {
             // @ts-expect-error TS(2571): Object is of type 'unknown'.
             error: error.message,
         };
+        return;
     }
 };
 

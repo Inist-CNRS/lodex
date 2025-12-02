@@ -10,7 +10,7 @@ import ezs from '@ezs/core';
 import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
-import { createWorkerQueue, workerQueues } from './workers';
+import { getOrCreateWorkerQueue, workerQueues } from './workers';
 import progress from './services/progress';
 // @ts-expect-error TS(2792): Cannot find module '@uswitch/koa-prometheus'. Did ... Remove this comment to see the full error message
 import Meter, { collectMetrics } from '@uswitch/koa-prometheus';
@@ -93,8 +93,7 @@ const initQueueAndBullDashboard = async () => {
 
     const tenants = await tenantCollection.findAll();
     tenants.forEach((tenant: any) => {
-        const queue = createWorkerQueue(tenant.name, 1);
-        bullBoard.addDashboardQueue(tenant.name, queue);
+        getOrCreateWorkerQueue(tenant.name, 1);
     });
     // if tenant `default` is not in the database, we add it
     if (!tenants.find((tenant: any) => tenant.name === DEFAULT_TENANT)) {
@@ -106,8 +105,7 @@ const initQueueAndBullDashboard = async () => {
             password: 'secret',
             createdAt: new Date(),
         });
-        const defaultQueue = createWorkerQueue(DEFAULT_TENANT, 1);
-        bullBoard.addDashboardQueue(DEFAULT_TENANT, defaultQueue);
+        getOrCreateWorkerQueue(DEFAULT_TENANT, 1);
     }
     insertConfigTenant(DEFAULT_TENANT);
 };
