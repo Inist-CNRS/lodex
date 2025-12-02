@@ -317,6 +317,20 @@ describe('BasicChart', () => {
             },
             layer: [
                 {
+                    params: [
+                        {
+                            name: 'highlight',
+                            select: {
+                                on: 'pointerover',
+                                type: 'point',
+                            },
+                        },
+                        {
+                            name: 'select',
+                            select: 'point',
+                            value: null,
+                        },
+                    ],
                     encoding: {
                         color: {
                             field: '_id',
@@ -421,20 +435,6 @@ describe('BasicChart', () => {
                 },
             ],
             padding: 18,
-            params: [
-                {
-                    name: 'highlight',
-                    select: {
-                        on: 'pointerover',
-                        type: 'point',
-                    },
-                },
-                {
-                    name: 'select',
-                    select: 'point',
-                    value: null,
-                },
-            ],
             width: 'container',
         };
         barChart.setLabels(true);
