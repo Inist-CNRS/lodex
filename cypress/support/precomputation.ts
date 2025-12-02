@@ -91,3 +91,7 @@ export const importPrecomputationResultsWithDialog = ({
     cy.findByRole('button', { name: 'Import' }).click();
     cy.contains('Import completed successfully').should('be.visible');
 };
+
+export const exportPrecomputationResults = () => {
+    cy.findByText('Download data').click();
+};
