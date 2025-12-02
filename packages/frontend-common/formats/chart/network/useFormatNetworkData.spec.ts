@@ -339,4 +339,26 @@ describe('useFormatNetworkData', () => {
             '#0000FF',
         );
     });
+
+    it('should use source_title as label when provided', () => {
+        const data: NetworkData[] = [
+            { source: 'A', source_title: 'Alpha', target: 'B', weight: 1 },
+            { source: 'B', source_title: 'Beta', target: 'C', weight: 2 },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatNetworkData({
+                formatData: data,
+                displayWeighted: true,
+            }),
+        );
+
+        const nodeA = result.current.nodes.find((n) => n.id === 'A');
+        const nodeB = result.current.nodes.find((n) => n.id === 'B');
+        const nodeC = result.current.nodes.find((n) => n.id === 'C');
+
+        expect(nodeA?.label).toBe('Alpha');
+        expect(nodeB?.label).toBe('Beta');
+        expect(nodeC?.label).toBe('C');
+    });
 });

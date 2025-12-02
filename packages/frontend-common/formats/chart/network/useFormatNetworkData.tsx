@@ -26,11 +26,11 @@ export function useFormatNetworkData({
         );
 
         const nodesDic = sanitizedFormatData.reduce<Record<string, Node>>(
-            (acc, { source, target }) => ({
+            (acc, { source, source_title, target }) => ({
                 ...acc,
                 [source]: {
                     id: source,
-                    label: source,
+                    label: source_title ?? source,
                     radius: get(acc, [source, 'radius'], 0) + 1,
                 },
                 [target]: {
@@ -77,11 +77,12 @@ export function useFormatNetworkData({
             })),
             links,
         };
-    }, [formatData, displayWeighted, colorOverrides]);
+    }, [formatData, minRadius, maxRadius, displayWeighted, colorOverrides]);
 }
 
 export type NetworkData = {
     source: string;
+    source_title?: string;
     target: string;
     weight: number;
 };
