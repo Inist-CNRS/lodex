@@ -369,10 +369,10 @@ class BarChart extends BasicChart {
             }
 
             return {
-                ...(this.enableSelection ? { params } : {}),
                 background: 'transparent',
                 layer: [
                     {
+                        ...(this.enableSelection ? { params } : {}),
                         mark: {
                             ...model.mark,
                             ...(this.enableSelection
