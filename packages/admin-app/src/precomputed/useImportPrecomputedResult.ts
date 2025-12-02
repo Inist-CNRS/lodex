@@ -1,10 +1,10 @@
-import { useApiClient } from '@lodex/frontend-common/api/useApiClient';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from '@lodex/common';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
+import { loadFile } from '@lodex/frontend-common/utils/loadFile';
 
 export const useImportPrecomputedResult = () => {
-    const { fetch } = useApiClient();
     const { translate } = useTranslate();
     const { mutateAsync } = useMutation({
         mutationFn: async ({
@@ -14,18 +14,12 @@ export const useImportPrecomputedResult = () => {
             file: File;
             precomputedId: string;
         }) => {
-            const formData = new FormData();
-            formData.append('file', file);
-            await fetch(
-                {
-                    url: `/api/precomputed/${precomputedId}/import`,
-                    body: formData,
-                    method: 'POST',
-                    head: {
-                        Accept: 'multipart/form-data',
-                    },
-                },
-                'blob',
+            const { token } = getUserSessionStorageInfo();
+
+            await loadFile(
+                `/api/precomputed/${precomputedId}/import`,
+                file,
+                token,
             );
         },
         onError: (error) => {

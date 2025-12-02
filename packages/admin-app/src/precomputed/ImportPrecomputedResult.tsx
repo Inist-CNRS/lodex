@@ -48,6 +48,7 @@ export const ImportPrecomputedResult = ({
             precomputedId: precomputed._id,
         });
         setUploading(false);
+        setOpen(false);
     };
 
     const handleOpen = useCallback(() => {
