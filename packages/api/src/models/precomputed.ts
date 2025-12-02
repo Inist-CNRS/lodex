@@ -80,6 +80,17 @@ export type PrecomputedCollection = Collection<PreComputation> & {
         data: Record<string, unknown>;
     }) => Promise<Record<string, unknown> | null>;
     cancelByIds: (jobIds: string[]) => Promise<UpdateResult | undefined>;
+    removeResultColumn: (
+        precomputedId: string,
+        columnKey: string,
+    ) => Promise<void>;
+    insertManyResults: (
+        precomputedId: string,
+        data: Record<string, unknown>[],
+    ) => Promise<void>;
+    deleteManyResults: (params: {
+        precomputedId: string;
+    }) => Promise<{ deletedCount?: number }>;
 };
 
 export default async (db: Db): Promise<PrecomputedCollection> => {
@@ -494,6 +505,24 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             .updateMany({}, { $unset: { [columnKey]: '' } });
     };
 
+    const insertManyResults = async (
+        precomputedId: string,
+        data: Record<string, unknown>[],
+    ): Promise<void> => {
+        if (data.length === 0) {
+            return;
+        }
+        await db.collection(`pc_${precomputedId}`).insertMany(data);
+    };
+
+    const deleteManyResults = async ({
+        precomputedId,
+    }: {
+        precomputedId: string;
+    }): Promise<{ deletedCount?: number }> => {
+        return db.collection(`pc_${precomputedId}`).deleteMany({});
+    };
+
     return Object.assign(collection, {
         findOneById,
         findAll,
@@ -512,5 +541,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         updateResult,
         cancelByIds,
         removeResultColumn,
+        insertManyResults,
+        deleteManyResults,
     });
 };

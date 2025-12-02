@@ -4,6 +4,9 @@ import route from 'koa-route';
 import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
+import mime from 'mime-types';
+import fs from 'fs';
+
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { workerQueues } from '../../workers';
 import {
@@ -11,10 +14,11 @@ import {
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
 import { cancelJob } from '../../workers/tools';
-import { getLocale } from '@lodex/common';
+import { getLocale, TaskStatus } from '@lodex/common';
 import { buildQuery } from './buildQuery';
 import type { PreComputation } from '../../models/precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
+import asyncBusboy from '@recuperateur/async-busboy';
 
 export const setup = async (
     ctx: { status: number; body: { error: any } },
@@ -286,9 +290,50 @@ export const previewDataPrecomputed = async (ctx: AppContext, id: string) => {
     }
 };
 
+const postImportPrecomputedResult = async (ctx: any, precomputedId: string) => {
+    const { files } = await asyncBusboy(ctx.req);
+    if (files.length !== 1) {
+        ctx.status = 400;
+        ctx.body = { message: 'File does not exist' };
+        return;
+    }
+
+    const type = mime.lookup(files[0].filename);
+    if (type !== 'application/json') {
+        ctx.status = 400;
+        ctx.body = { message: 'Wrong mime type, application/json required' };
+        return;
+    }
+    try {
+        const file = fs.readFileSync(files[0].path, 'utf8');
+        const precomputedResults = JSON.parse(file);
+        await ctx.precomputed.deleteManyResults({
+            precomputedId,
+        });
+        await ctx.precomputed.insertManyResults(
+            precomputedId,
+            precomputedResults,
+        );
+
+        await ctx.precomputed.updateStatus(precomputedId, TaskStatus.FINISHED, {
+            hasData: true,
+        });
+    } catch (error) {
+        ctx.status = 400;
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
+        ctx.body = { message: error.message };
+        return;
+    }
+
+    ctx.body = { message: 'Imported' };
+    ctx.status = 200;
+};
+
 const app = new Koa();
 
 app.use(setup);
+
+app.use(route.post('/:precomputedId/import', postImportPrecomputedResult));
 
 // @ts-expect-error TS2345
 app.use(route.get('/', getAllPrecomputed));

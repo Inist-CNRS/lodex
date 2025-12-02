@@ -42,6 +42,7 @@ import { PrecomputedStatus } from './PrecomputedStatus';
 import { RunButton } from './RunButton';
 import { Link } from 'react-router-dom';
 import { DownloadPrecomputedResultButton } from './DownloadPrecomputedResultButton';
+import { ImportPrecomputedResult } from './ImportPrecomputedResult';
 
 export type PrecomputedFormProps = {
     datasetFields: string[];
@@ -290,13 +291,20 @@ export const PrecomputedForm = ({
                                     fullWidth
                                 />
                                 {isEditMode && (
-                                    <RunButton
-                                        variant="outlined"
-                                        handleLaunchPrecomputed={
-                                            handleLaunchPrecomputed
-                                        }
-                                        precomputedStatus={precomputedStatus}
-                                    />
+                                    <>
+                                        <RunButton
+                                            variant="outlined"
+                                            handleLaunchPrecomputed={
+                                                handleLaunchPrecomputed
+                                            }
+                                            precomputedStatus={
+                                                precomputedStatus
+                                            }
+                                        />
+                                        <ImportPrecomputedResult
+                                            precomputed={initialValues!}
+                                        />
+                                    </>
                                 )}
                             </Box>
                             {isEditMode && (

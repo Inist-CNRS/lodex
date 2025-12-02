@@ -9,16 +9,19 @@ export function useApiClient() {
     const history = useHistory();
 
     const fetch = useCallback(
-        async <T = unknown>({
-            body,
-            method = 'GET',
-            url,
-            credentials = 'same-origin',
-            head = {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        }: RequestProps) => {
+        async <T = unknown>(
+            {
+                body,
+                method = 'GET',
+                url,
+                credentials = 'same-origin',
+                head = {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }: RequestProps,
+            mode: 'json' | 'blob' | 'stream' = 'json',
+        ) => {
             const { token } = getUserSessionStorageInfo();
 
             if (!token) {
@@ -26,16 +29,19 @@ export function useApiClient() {
                 throw new Error('unauthorized');
             }
 
-            const { response, error } = await internalFetch({
-                url,
-                body,
-                credentials,
-                headers: {
-                    ...head,
-                    Authorization: `Bearer ${token}`,
+            const { response, error } = await internalFetch(
+                {
+                    url,
+                    body,
+                    credentials,
+                    headers: {
+                        ...head,
+                        Authorization: `Bearer ${token}`,
+                    },
+                    method,
                 },
-                method,
-            });
+                mode,
+            );
 
             if (error) {
                 if (error?.code === 401) {
