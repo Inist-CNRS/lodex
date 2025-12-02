@@ -1,7 +1,7 @@
-import Component from './Hierarchy';
 import DefaultFormat from '../../utils/components/default-format';
-import AdminComponent, { defaultArgs } from './HierarchyAdmin';
-import Icon from './HierarchyIcon';
+import AdminComponent, { defaultArgs } from './HierarchicalTreeAdmin';
+import Icon from './HierarchicalTreeIcon';
+import Component from './HierarchicalTreeView';
 
 export default {
     ...DefaultFormat,

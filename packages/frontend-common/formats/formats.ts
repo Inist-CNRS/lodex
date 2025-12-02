@@ -1,57 +1,57 @@
+import advancedNetwork from './chart/advancedNetwork';
 import asterPlotChart from './chart/asterPlotChart';
-import code from './text/code';
-import globalBarchart from './vega-lite/component/bar-chart';
-import globalPiechart from './vega-lite/component/pie-chart';
-import globalRadarchart from './vega/component/radar-chart';
-import emphasedNumber from './text/emphased-number';
-import identifierBadge from './text/identifier-badge';
+import bubbleChart from './chart/bubbleChart';
+import clusteredChart from './chart/clustered-chart';
+import directed3DNetwork from './chart/directed3DNetwork';
+import directedNetwork from './chart/directedNetwork';
+import fieldClone from './chart/fieldClone';
+import hierarchicalTree from './chart/hierarchical-tree';
+import leaflet from './chart/leaflet';
+import network from './chart/network';
+import network3D from './chart/network3D';
+import parallelCoordinatesChart from './chart/parallel-coordinates';
+import streamgraph from './chart/streamgraph';
+import venn from './chart/venn';
+import lodexField from './lodex/field';
+import resource from './lodex/resource';
+import istex from './other/istex';
+import istexCitation from './other/istexCitation';
+import istexRefbibs from './other/istexRefbibs';
+import istexSummary from './other/istexSummary';
+import json from './other/json';
 import resourcesGrid from './other/resources-grid';
 import paginatedTable from './other/table/paginated';
 import unpaginatedTable from './other/table/unpaginated';
-import email from './url/email';
-import fieldClone from './chart/fieldClone';
-import html from './text/html';
-import image from './url/image';
-import iframe from './url/iframe';
-import pdf from './url/pdf';
-import latex from './text/latex';
+import code from './text/code';
 import ejs from './text/ejs';
-import istex from './other/istex';
+import emphasedNumber from './text/emphased-number';
+import html from './text/html';
+import identifierBadge from './text/identifier-badge';
+import latex from './text/latex';
+import list from './text/list';
+import markdownModal from './text/markdown/modal';
+import markdown from './text/markdown/simple';
+import paragraph from './text/paragraph';
+import sentence from './text/sentence';
+import sparqlTextField from './text/sparql/SparqlTextField';
+import title from './text/title';
+import email from './url/email';
+import iframe from './url/iframe';
+import image from './url/image';
 import link from './url/link';
 import linkImage from './url/link-image';
-import list from './text/list';
-import markdown from './text/markdown/simple';
-import markdownModal from './text/markdown/modal';
+import pdf from './url/pdf';
+import redirect from './url/redirect';
 import uri from './url/uri';
-import title from './text/title';
-import paragraph from './text/paragraph';
-import parallelCoordinatesChart from './chart/parallel-coordinates';
-import sentence from './text/sentence';
 import vegaLite from './vega-lite';
-import resource from './lodex/resource';
-import lodexField from './lodex/field';
+import globalBarchart from './vega-lite/component/bar-chart';
+import bubblePlot from './vega-lite/component/bubble-plot';
 import cartography from './vega-lite/component/cartography';
 import heatmap from './vega-lite/component/heatmap';
-import network from './chart/network';
-import advancedNetwork from './chart/advancedNetwork';
-import directedNetwork from './chart/directedNetwork';
-import directed3DNetwork from './chart/directed3DNetwork';
-import venn from './chart/venn';
-import leaflet from './chart/leaflet';
-import redirect from './url/redirect';
-import bubbleChart from './chart/bubbleChart';
-import sparqlTextField from './text/sparql/SparqlTextField';
-import istexSummary from './other/istexSummary';
-import streamgraph from './chart/streamgraph';
-import hierarchy from './chart/hierarchy';
-import istexCitation from './other/istexCitation';
-import istexRefbibs from './other/istexRefbibs';
-import bubblePlot from './vega-lite/component/bubble-plot';
+import globalPiechart from './vega-lite/component/pie-chart';
 import flowMap from './vega/component/flow-map';
-import clusteredChart from './chart/clustered-chart';
-import json from './other/json';
+import globalRadarchart from './vega/component/radar-chart';
 import TreeMap from './vega/component/tree-map';
-import network3D from './chart/network3D';
 
 export const FORMATS_CATALOG = [
     {
@@ -536,7 +536,7 @@ export const FORMATS_CATALOG = [
         name: 'formatHierarchy',
         description: 'formatHierarchyDescription',
         componentName: 'hierarchy',
-        component: hierarchy,
+        component: hierarchicalTree,
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphique-hi%C3%A9rarchique',
