@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const filterSchema = z.object({
-    field: z.string().regex(/^[a-zA-Z0-9_]{4}$/),
+    fieldName: z.string().regex(/^[a-zA-Z0-9_]{4}$/),
     value: z.string().or(z.array(z.string())).or(z.number()).nullish(),
 });
 

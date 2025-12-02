@@ -142,27 +142,27 @@ export const getPage = async (ctx: any) => {
     };
 };
 
-const getFilter = ({ field, value }: Filter) => {
+const getFilter = ({ fieldName, value }: Filter) => {
     if (!value) {
-        return { field };
+        return null;
     }
 
     if (Array.isArray(value)) {
         return {
-            [`versions.0.${field}`]: { $in: value },
+            [`versions.0.${fieldName}`]: { $in: value },
         };
     }
 
     return {
         $or: [
-            { [`versions.0.${field}`]: value },
+            { [`versions.0.${fieldName}`]: value },
             {
-                [`versions.0.${field}`]: {
+                [`versions.0.${fieldName}`]: {
                     $elemMatch: { $eq: value },
                 },
             },
             {
-                [`versions.0.${field}`]: {
+                [`versions.0.${fieldName}`]: {
                     $elemMatch: {
                         $elemMatch: { $eq: value },
                     },
@@ -183,10 +183,13 @@ export const searchByField = async (ctx: Koa.Context) => {
     }
 
     const { filters, page, perPage, sort } = parseBodyResult.data;
+    const transformedFilters = (filters ?? [])
+        .map((f) => getFilter(f))
+        .filter((f) => !!f);
 
-    const searchFilter = filters?.length
+    const searchFilter = transformedFilters?.length
         ? {
-              $and: filters.map((f) => getFilter(f)),
+              $and: transformedFilters,
           }
         : {};
 

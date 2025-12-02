@@ -245,7 +245,7 @@ export const Network3DBase = ({
         const nodeId = node.id?.toString();
         if (fieldToFilter && nodeId) {
             selectOne({
-                field: fieldToFilter,
+                fieldName: fieldToFilter,
                 value: nodeId,
             });
         }

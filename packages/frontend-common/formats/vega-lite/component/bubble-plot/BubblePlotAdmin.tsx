@@ -56,8 +56,8 @@ type BubblePlotArgs = {
     tooltipTarget?: string;
     tooltipWeight?: string;
     aspectRatio: AspectRatio;
-    fieldToFilterColumn?: string | null;
-    fieldToFilterRow?: string | null;
+    fieldToFilterSource?: string | null;
+    fieldToFilterTarget?: string | null;
 };
 
 type BubblePlotAdminProps = {
@@ -89,8 +89,8 @@ const BubblePlotAdmin = ({
         tooltipTarget = defaultArgs.tooltipTarget,
         tooltipWeight = defaultArgs.tooltipWeight,
         aspectRatio,
-        fieldToFilterColumn,
-        fieldToFilterRow,
+        fieldToFilterSource,
+        fieldToFilterTarget,
     } = args;
 
     const colors = useMemo(() => {
@@ -117,7 +117,8 @@ const BubblePlotAdmin = ({
                     targetTitle: tooltipTarget,
                     weightTitle: tooltipWeight,
                 },
-                selectionEnabled: !!fieldToFilterColumn || !!fieldToFilterRow,
+                selectionEnabled:
+                    !!fieldToFilterSource || !!fieldToFilterTarget,
             }),
             null,
             2,
@@ -132,8 +133,8 @@ const BubblePlotAdmin = ({
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
-        fieldToFilterColumn,
-        fieldToFilterRow,
+        fieldToFilterSource,
+        fieldToFilterTarget,
     ]);
 
     const toggleAdvancedMode = useCallback(
@@ -256,21 +257,21 @@ const BubblePlotAdmin = ({
             <FormatChartParamsFieldSet defaultExpanded>
                 <FieldSelector
                     label={translate('field_to_filter_column')}
-                    value={fieldToFilterColumn ?? null}
+                    value={fieldToFilterSource ?? null}
                     onChange={(fieldToFilter) =>
                         onChange({
                             ...args,
-                            fieldToFilterColumn: fieldToFilter || null,
+                            fieldToFilterSource: fieldToFilter || null,
                         })
                     }
                 />
                 <FieldSelector
                     label={translate('field_to_filter_row')}
-                    value={fieldToFilterRow ?? null}
+                    value={fieldToFilterTarget ?? null}
                     onChange={(fieldToFilter) =>
                         onChange({
                             ...args,
-                            fieldToFilterRow: fieldToFilter || null,
+                            fieldToFilterTarget: fieldToFilter || null,
                         })
                     }
                 />

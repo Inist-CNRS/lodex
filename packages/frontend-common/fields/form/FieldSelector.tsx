@@ -6,7 +6,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { useListField } from '../api/useListField';
 import type { Field } from '../types';
 
-export function selectFields(fieldsByName: Record<string, Field>) {
+export function getFieldSelectorOptions(fieldsByName: Record<string, Field>) {
     return Object.keys(fieldsByName)
         .filter((name) => {
             const field = fieldsByName[name];
@@ -44,7 +44,7 @@ export function FieldSelector({ label, value, onChange }: FieldSelectorProps) {
     }, [fields]);
 
     const options = useMemo(() => {
-        return selectFields(fieldsByName);
+        return getFieldSelectorOptions(fieldsByName);
     }, [fieldsByName]);
 
     const getOptionLabel = useCallback(

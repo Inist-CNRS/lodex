@@ -102,7 +102,7 @@ describe('BubbleView', () => {
                     clearFilters() {},
                     filters: [
                         {
-                            field: 'someField',
+                            fieldName: 'someField',
                             value: 'someValue',
                         },
                     ],

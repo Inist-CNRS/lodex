@@ -54,7 +54,7 @@ export const BubbleView = ({
             if (!fieldToFilter) {
                 return;
             }
-            selectOne({ field: fieldToFilter, value: name });
+            selectOne({ fieldName: fieldToFilter, value: name });
         },
         [fieldToFilter, selectOne],
     );

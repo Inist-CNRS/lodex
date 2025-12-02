@@ -70,7 +70,7 @@ describe('SearchResultPane', () => {
         mockUseSearchPaneContext.mockReturnValue({
             filters: [
                 {
-                    field: 'author',
+                    fieldName: 'author',
                     value: 'John Doe',
                 },
             ],
@@ -106,7 +106,7 @@ describe('SearchResultPane', () => {
         mockUseSearchPaneContext.mockReturnValue({
             filters: [
                 {
-                    field: 'category',
+                    fieldName: 'category',
                     value: 'Science',
                 },
             ],
@@ -144,7 +144,7 @@ describe('SearchResultPane', () => {
         mockUseSearchPaneContext.mockReturnValue({
             filters: [
                 {
-                    field: 'topic',
+                    fieldName: 'topic',
                     value: 'Machine Learning',
                 },
             ],
@@ -212,7 +212,7 @@ describe('SearchResultPane', () => {
         mockUseSearchPaneContext.mockReturnValue({
             filters: [
                 {
-                    field: 'year',
+                    fieldName: 'year',
                     value: '2024',
                 },
             ],
@@ -248,7 +248,7 @@ describe('SearchResultPane', () => {
         mockUseSearchPaneContext.mockReturnValue({
             filters: [
                 {
-                    field: 'status',
+                    fieldName: 'status',
                     value: 'published',
                 },
             ],

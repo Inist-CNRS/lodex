@@ -19,7 +19,7 @@ function TestContent() {
                 type="button"
                 onClick={() =>
                     selectOne({
-                        field: 'testColumn',
+                        fieldName: 'testColumn',
                         value: 'testValue',
                     })
                 }
@@ -42,8 +42,8 @@ function TestResultsPane() {
             <button type="button" onClick={() => clearFilters()}>
                 Clear Filter
             </button>
-            <dl role="group" aria-label={filter?.field}>
-                <dt role="listitem">{filter?.field}</dt>
+            <dl role="group" aria-label={filter?.fieldName}>
+                <dt role="listitem">{filter?.fieldName}</dt>
                 <dd>{JSON.stringify(filter?.value)}</dd>
             </dl>
         </dialog>

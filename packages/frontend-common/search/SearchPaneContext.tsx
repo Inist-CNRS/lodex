@@ -16,7 +16,7 @@ export const SearchPaneContext = createContext<
 >(undefined);
 
 export type FieldFilter = {
-    field: string;
+    fieldName: string;
     value: string | string[] | null;
 };
 
@@ -25,7 +25,7 @@ export type SearchPaneFilter = FieldFilter[];
 export type SearchPaneContextType = {
     filters: SearchPaneFilter;
     selectOne(filter: FieldFilter): void;
-    selectMany(first: FieldFilter, second: FieldFilter): void;
+    selectMany(filters: FieldFilter[]): void;
     clearFilters(): void;
 };
 
@@ -47,7 +47,7 @@ export function SearchPaneContextProvider({
         (filter: FieldFilter) => {
             if (
                 filters.length === 1 &&
-                filters[0].field === filter.field &&
+                filters[0].fieldName === filter.fieldName &&
                 isEqual(filters[0].value, filter.value)
             ) {
                 setFilters(defaultFilters);
@@ -58,12 +58,9 @@ export function SearchPaneContextProvider({
         [filters],
     );
 
-    const handleSelectMany = useCallback(
-        (first: FieldFilter, second: FieldFilter) => {
-            setFilters([first, second]);
-        },
-        [],
-    );
+    const handleSelectMany = useCallback((filters: FieldFilter[]) => {
+        setFilters(filters);
+    }, []);
 
     const contextValue = useMemo<SearchPaneContextType | undefined>(() => {
         return {

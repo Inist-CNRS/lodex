@@ -61,14 +61,14 @@ const BubblePlotView = ({
     const { filters, selectOne, selectMany, clearFilters } =
         useSearchPaneContextOrDefault();
 
-    const fieldToFilterColumn =
-        typeof field?.format?.args?.fieldToFilterColumn === 'string'
-            ? field.format.args.fieldToFilterColumn
+    const fieldToFilterSource =
+        typeof field?.format?.args?.fieldToFilterSource === 'string'
+            ? field.format.args.fieldToFilterSource
             : null;
 
-    const fieldToFilterRow =
-        typeof field?.format?.args?.fieldToFilterRow === 'string'
-            ? field.format.args.fieldToFilterRow
+    const fieldToFilterTarget =
+        typeof field?.format?.args?.fieldToFilterTarget === 'string'
+            ? field.format.args.fieldToFilterTarget
             : null;
 
     const handleClick = useCallback(
@@ -78,32 +78,32 @@ const BubblePlotView = ({
                 return;
             }
 
-            if (fieldToFilterColumn && fieldToFilterRow) {
-                selectMany(
+            if (fieldToFilterSource && fieldToFilterTarget) {
+                selectMany([
                     {
-                        field: fieldToFilterColumn,
+                        fieldName: fieldToFilterSource,
                         value: data.source,
                     },
                     {
-                        field: fieldToFilterRow,
+                        fieldName: fieldToFilterTarget,
                         value: data.target,
                     },
-                );
-            } else if (fieldToFilterColumn) {
+                ]);
+            } else if (fieldToFilterSource) {
                 selectOne({
-                    field: fieldToFilterColumn,
+                    fieldName: fieldToFilterSource,
                     value: data.source,
                 });
-            } else if (fieldToFilterRow) {
+            } else if (fieldToFilterTarget) {
                 selectOne({
-                    field: fieldToFilterRow,
+                    fieldName: fieldToFilterTarget,
                     value: data.target,
                 });
             }
         },
         [
-            fieldToFilterColumn,
-            fieldToFilterRow,
+            fieldToFilterSource,
+            fieldToFilterTarget,
             selectOne,
             selectMany,
             clearFilters,
@@ -141,7 +141,7 @@ const BubblePlotView = ({
                 targetTitle: tooltipTarget,
                 weightTitle: tooltipWeight,
             },
-            selectionEnabled: !!fieldToFilterColumn || !!fieldToFilterRow,
+            selectionEnabled: !!fieldToFilterSource || !!fieldToFilterTarget,
             selectedDatum,
         });
     }, [
@@ -154,8 +154,8 @@ const BubblePlotView = ({
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
-        fieldToFilterColumn,
-        fieldToFilterRow,
+        fieldToFilterSource,
+        fieldToFilterTarget,
         advancedModeSpec,
         width,
         filters,

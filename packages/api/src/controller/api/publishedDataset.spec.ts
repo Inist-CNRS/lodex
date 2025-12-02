@@ -593,7 +593,7 @@ describe('publishedDataset', () => {
         it.each([
             {
                 testName: 'should return resources matching string field value',
-                filters: [{ field: 'tags', value: 'javascript' }],
+                filters: [{ fieldName: 'tags', value: 'javascript' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -610,7 +610,9 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return resources matching string[] field value',
-                filters: [{ field: 'tags', value: ['javascript', 'python'] }],
+                filters: [
+                    { fieldName: 'tags', value: ['javascript', 'python'] },
+                ],
                 testData: [
                     {
                         uri: 'uri1',
@@ -634,7 +636,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return resources matching value in string array field',
-                filters: [{ field: 'cats', value: 'tech' }],
+                filters: [{ fieldName: 'cats', value: 'tech' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -651,7 +653,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return resources matching value in string[][] field',
-                filters: [{ field: 'matr', value: 'a' }],
+                filters: [{ fieldName: 'matr', value: 'a' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -689,7 +691,7 @@ describe('publishedDataset', () => {
             },
             {
                 testName: 'should find value in nested arrays (string[][])',
-                filters: [{ field: 'matr', value: 'h' }],
+                filters: [{ fieldName: 'matr', value: 'h' }],
                 testData: [
                     {
                         uri: 'uri1',
@@ -728,8 +730,8 @@ describe('publishedDataset', () => {
             {
                 testName: 'should support multiple filters (AND logic)',
                 filters: [
-                    { field: 'tags', value: 'javascript' },
-                    { field: 'name', value: 'Resource 1' },
+                    { fieldName: 'tags', value: 'javascript' },
+                    { fieldName: 'name', value: 'Resource 1' },
                 ],
                 testData: [
                     {
@@ -783,7 +785,7 @@ describe('publishedDataset', () => {
         it.each([
             {
                 testName: 'should support pagination for string field values',
-                filters: [{ field: 'tags', value: 'javascript' }],
+                filters: [{ fieldName: 'tags', value: 'javascript' }],
                 perPage: 1,
                 testData: [
                     { uri: 'uri1', versions: [{ tags: 'javascript' }] },
@@ -793,7 +795,7 @@ describe('publishedDataset', () => {
             },
             {
                 testName: 'should support pagination for string[] field values',
-                filters: [{ field: 'cats', value: 'tech' }],
+                filters: [{ fieldName: 'cats', value: 'tech' }],
                 perPage: 1,
                 testData: [
                     { uri: 'uri1', versions: [{ cats: ['tech', 'web'] }] },
@@ -803,7 +805,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should support pagination for string[][] field values',
-                filters: [{ field: 'matr', value: 'a' }],
+                filters: [{ fieldName: 'matr', value: 'a' }],
                 perPage: 1,
                 testData: [
                     {
@@ -850,13 +852,13 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return empty array when no resources match string value',
-                filters: [{ field: 'tags', value: 'nonexistent' }],
+                filters: [{ fieldName: 'tags', value: 'nonexistent' }],
                 testData: [{ uri: 'uri1', versions: [{ tags: 'python' }] }],
             },
             {
                 testName:
                     'should return empty array when no resources match string[] value',
-                filters: [{ field: 'cats', value: 'nonexistent' }],
+                filters: [{ fieldName: 'cats', value: 'nonexistent' }],
                 testData: [
                     { uri: 'uri1', versions: [{ cats: ['tech', 'web'] }] },
                 ],
@@ -864,7 +866,7 @@ describe('publishedDataset', () => {
             {
                 testName:
                     'should return empty array when no resources match string[][] value',
-                filters: [{ field: 'matr', value: 'zzz' }],
+                filters: [{ fieldName: 'matr', value: 'zzz' }],
                 testData: [{ uri: 'uri1', versions: [{ matr: [['a', 'b']] }] }],
             },
         ])('$testName', async ({ filters, testData }) => {
@@ -918,7 +920,7 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        filters: [{ field: 'tags', value: 'javascript' }],
+                        filters: [{ fieldName: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 5,
                         sort: {
@@ -957,7 +959,7 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        filters: [{ field: 'tags', value: 'javascript' }],
+                        filters: [{ fieldName: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 10,
                     },
@@ -997,7 +999,7 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        filters: [{ field: 'tags', value: 'javascript' }],
+                        filters: [{ fieldName: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 10,
                         // No sort provided, should default to { sortBy: '_id', sortDir: 'ASC' }
@@ -1037,7 +1039,7 @@ describe('publishedDataset', () => {
                 publishedDataset: publishedDatasetModel,
                 request: {
                     body: {
-                        filters: [{ field: 'tags', value: 'javascript' }],
+                        filters: [{ fieldName: 'tags', value: 'javascript' }],
                         page: 0,
                         perPage: 10,
                         sort: {

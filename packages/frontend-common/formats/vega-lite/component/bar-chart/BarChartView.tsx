@@ -83,7 +83,7 @@ const BarChartView = ({
         (data: { _id: string }) => {
             if (fieldToFilter) {
                 selectOne({
-                    field: fieldToFilter,
+                    fieldName: fieldToFilter,
                     value: data?._id ?? null,
                 });
             }

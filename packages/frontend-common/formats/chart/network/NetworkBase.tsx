@@ -270,7 +270,7 @@ export const NetworkBase = ({
         const nodeId = node.id?.toString();
         if (fieldToFilter && nodeId) {
             selectOne({
-                field: fieldToFilter,
+                fieldName: fieldToFilter,
                 value: nodeId,
             });
         }

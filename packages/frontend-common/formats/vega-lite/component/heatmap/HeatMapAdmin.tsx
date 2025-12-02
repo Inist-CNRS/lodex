@@ -56,8 +56,8 @@ type HeatMapArgs = {
     tooltipTarget: string;
     tooltipWeight?: string;
     aspectRatio: AspectRatio;
-    fieldToFilterColumn?: string | null;
-    fieldToFilterRow?: string | null;
+    fieldToFilterSource?: string | null;
+    fieldToFilterTarget?: string | null;
 };
 
 type HeatMapAdminProps = {
@@ -90,8 +90,8 @@ const HeatMapAdmin = ({
         tooltipTarget,
         tooltipWeight,
         aspectRatio,
-        fieldToFilterColumn,
-        fieldToFilterRow,
+        fieldToFilterSource,
+        fieldToFilterTarget,
     } = args;
 
     const spec = useMemo(() => {
@@ -114,7 +114,8 @@ const HeatMapAdmin = ({
                 },
                 flip: !!flipAxis,
                 orderBy: lodexOrderToIdOrder(params.orderBy || ''),
-                selectionEnabled: !!fieldToFilterColumn || !!fieldToFilterRow,
+                selectionEnabled:
+                    !!fieldToFilterSource || !!fieldToFilterTarget,
             }),
             null,
             2,
@@ -123,8 +124,8 @@ const HeatMapAdmin = ({
         advancedMode,
         advancedModeSpec,
         colorScheme,
-        fieldToFilterColumn,
-        fieldToFilterRow,
+        fieldToFilterSource,
+        fieldToFilterTarget,
         flipAxis,
         params.orderBy,
         tooltip,
@@ -255,21 +256,21 @@ const HeatMapAdmin = ({
             <FormatChartParamsFieldSet defaultExpanded>
                 <FieldSelector
                     label={translate('field_to_filter_column')}
-                    value={fieldToFilterColumn ?? null}
+                    value={fieldToFilterSource ?? null}
                     onChange={(fieldToFilter) =>
                         onChange({
                             ...args,
-                            fieldToFilterColumn: fieldToFilter || null,
+                            fieldToFilterSource: fieldToFilter || null,
                         })
                     }
                 />
                 <FieldSelector
                     label={translate('field_to_filter_row')}
-                    value={fieldToFilterRow ?? null}
+                    value={fieldToFilterTarget ?? null}
                     onChange={(fieldToFilter) =>
                         onChange({
                             ...args,
-                            fieldToFilterRow: fieldToFilter || null,
+                            fieldToFilterTarget: fieldToFilter || null,
                         })
                     }
                 />

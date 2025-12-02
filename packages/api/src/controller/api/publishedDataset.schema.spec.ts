@@ -3,28 +3,28 @@ import { filterSchema, searchSchema } from './publishedDataset.schema';
 describe('filterSchema', () => {
     it.each([
         {
-            input: { field: 'test', value: 'value' },
-            expected: { field: 'test', value: 'value' },
+            input: { fieldName: 'test', value: 'value' },
+            expected: { fieldName: 'test', value: 'value' },
             label: 'string value',
         },
         {
-            input: { field: 'abcd', value: ['a', 'b'] },
-            expected: { field: 'abcd', value: ['a', 'b'] },
+            input: { fieldName: 'abcd', value: ['a', 'b'] },
+            expected: { fieldName: 'abcd', value: ['a', 'b'] },
             label: 'array value',
         },
         {
-            input: { field: 'num1', value: 42 },
-            expected: { field: 'num1', value: 42 },
+            input: { fieldName: 'num1', value: 42 },
+            expected: { fieldName: 'num1', value: 42 },
             label: 'number value',
         },
         {
-            input: { field: 'null', value: null },
-            expected: { field: 'null', value: null },
+            input: { fieldName: 'null', value: null },
+            expected: { fieldName: 'null', value: null },
             label: 'null value',
         },
         {
-            input: { field: 'undf', value: undefined },
-            expected: { field: 'undf', value: undefined },
+            input: { fieldName: 'undf', value: undefined },
+            expected: { fieldName: 'undf', value: undefined },
             label: 'undefined value',
         },
     ])('should accept filter: $label', ({ input, expected }) => {
@@ -37,15 +37,15 @@ describe('filterSchema', () => {
 
     it.each([
         {
-            input: { field: 'ab', value: 'test' },
+            input: { fieldName: 'ab', value: 'test' },
             label: 'field too short',
         },
         {
-            input: { field: 'abcde', value: 'test' },
+            input: { fieldName: 'abcde', value: 'test' },
             label: 'field too long',
         },
         {
-            input: { field: 'ab-d', value: 'test' },
+            input: { fieldName: 'ab-d', value: 'test' },
             label: 'field with invalid character',
         },
     ])('should reject invalid filter: $label', ({ input }) => {
@@ -160,22 +160,22 @@ describe('searchSchema', () => {
     it('should handle filters field', () => {
         const result = searchSchema.safeParse({
             filters: [
-                { field: 'test', value: 'value1' },
-                { field: 'abcd', value: ['a', 'b'] },
+                { fieldName: 'test', value: 'value1' },
+                { fieldName: 'abcd', value: ['a', 'b'] },
             ],
         });
         expect(result.success).toBe(true);
         if (result.success) {
             expect(result.data.filters).toEqual([
-                { field: 'test', value: 'value1' },
-                { field: 'abcd', value: ['a', 'b'] },
+                { fieldName: 'test', value: 'value1' },
+                { fieldName: 'abcd', value: ['a', 'b'] },
             ]);
         }
     });
 
     it('should accept complete valid object', () => {
         const result = searchSchema.safeParse({
-            filters: [{ field: 'abcd', value: 'filter' }],
+            filters: [{ fieldName: 'abcd', value: 'filter' }],
             page: 2,
             perPage: 25,
             sort: {
@@ -186,7 +186,7 @@ describe('searchSchema', () => {
         expect(result.success).toBe(true);
         if (result.success) {
             expect(result.data).toEqual({
-                filters: [{ field: 'abcd', value: 'filter' }],
+                filters: [{ fieldName: 'abcd', value: 'filter' }],
                 page: 2,
                 perPage: 25,
                 sort: {

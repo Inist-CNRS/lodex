@@ -2,7 +2,7 @@ import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useListField } from '../api/useListField';
 import type { Field } from '../types';
-import { FieldSelector, selectFields } from './FieldSelector';
+import { FieldSelector, getFieldSelectorOptions } from './FieldSelector';
 
 jest.mock('../api/useListField');
 jest.mock('../../../admin-app/src/fields/FieldRepresentation', () => ({
@@ -16,7 +16,7 @@ const mockUseListField = useListField as jest.MockedFunction<
     typeof useListField
 >;
 
-describe('selectFields', () => {
+describe('getFieldSelectorOptions', () => {
     it.each([
         {
             label: 'empty object',
@@ -54,7 +54,9 @@ describe('selectFields', () => {
             expected: ['field1', 'field2'],
         },
     ])('should return field names for $label', ({ fieldsByName, expected }) => {
-        const result = selectFields(fieldsByName as Record<string, Field>);
+        const result = getFieldSelectorOptions(
+            fieldsByName as Record<string, Field>,
+        );
         expect(result).toEqual(expected);
     });
 
@@ -108,7 +110,7 @@ describe('selectFields', () => {
             expected: [],
         },
     ])('should filter out $label fields', ({ fieldsByName, expected }) => {
-        const result = selectFields(
+        const result = getFieldSelectorOptions(
             fieldsByName as unknown as Record<string, Field>,
         );
         expect(result).toEqual(expected);
@@ -266,7 +268,7 @@ describe('selectFields', () => {
             expected: ['doc2', 'doc3', 'doc1'],
         },
     ])('should sort fields $label', ({ fieldsByName, expected }) => {
-        const result = selectFields(
+        const result = getFieldSelectorOptions(
             fieldsByName as unknown as Record<string, Field>,
         );
         expect(result).toEqual(expected);
