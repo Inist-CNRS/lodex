@@ -203,7 +203,6 @@ export class LodexFieldView extends Component<LodexFieldViewProps> {
         const labelArray = field.format.args.param.labelArray.map((e) =>
             e.trim(),
         );
-
         return (
             <div className={className} style={styles.container}>
                 {this.getHeaderFormat()}
@@ -236,9 +235,24 @@ export default compose(
         const source = URL.parse(value);
         // @ts-expect-error TS18047
         if (source.pathname.search(/(ark|uid):/) >= 0) {
-            const [check, tenant = 'default', scheme, identifier] =
+            const [
+                check,
+                tenant = 'default',
+                scheme,
+                identifier1,
+                identifier2,
+            ] =
                 // @ts-expect-error TS18047
                 source.pathname.split('/').filter(Boolean);
+            let identifier;
+            if (identifier2) {
+                // Probably an ARK
+                identifier = `${identifier1}/${identifier2}`;
+            } else {
+                // Mostly an URI
+                identifier = `${identifier1}`;
+            }
+
             let uri;
             let pathname;
             if (check === 'instance') {
