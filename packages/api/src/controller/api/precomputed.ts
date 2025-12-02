@@ -5,7 +5,7 @@ import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
 import mime from 'mime-types';
-import fs from 'fs';
+import fs from 'fs/promises';
 
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { workerQueues } from '../../workers';
@@ -290,22 +290,32 @@ export const previewDataPrecomputed = async (ctx: AppContext, id: string) => {
     }
 };
 
-const postImportPrecomputedResult = async (ctx: any, precomputedId: string) => {
-    const { files } = await asyncBusboy(ctx.req);
-    if (files.length !== 1) {
-        ctx.status = 400;
-        ctx.body = { message: 'File does not exist' };
-        return;
-    }
-
-    const type = mime.lookup(files[0].filename);
-    if (type !== 'application/json') {
-        ctx.status = 400;
-        ctx.body = { message: 'Wrong mime type, application/json required' };
-        return;
-    }
+export const postImportPrecomputedResult = async (
+    ctx: any,
+    precomputedId: string,
+) => {
     try {
-        const file = fs.readFileSync(files[0].path, 'utf8');
+        const { files } = await asyncBusboy(ctx.req);
+        if (files.length === 0) {
+            ctx.status = 400;
+            ctx.body = { message: 'File does not exist' };
+            return;
+        }
+        if (files.length > 1) {
+            ctx.status = 400;
+            ctx.body = { message: 'Only one file must be provided' };
+            return;
+        }
+
+        const type = mime.lookup(files[0].filename);
+        if (type !== 'application/json') {
+            ctx.status = 400;
+            ctx.body = {
+                message: 'Wrong mime type, application/json required',
+            };
+            return;
+        }
+        const file = await fs.readFile(files[0].path, 'utf8');
         const precomputedResults = JSON.parse(file);
         await ctx.precomputed.deleteManyResults({
             precomputedId,
