@@ -14,6 +14,8 @@ import configureStore from '@lodex/frontend-common/configureStore';
 import reducers from './reducers';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Store } from 'redux';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
 
 // @ts-expect-error TS7017
 global.__DEBUG__ = false;
@@ -27,15 +29,23 @@ const theme = createTheme(defaultMuiTheme, {
 export const Wrapper = ({
     children,
     store,
+    client = new QueryClient(),
 }: {
     children: ReactNode;
     store: Store;
+    client?: QueryClient;
 }) => (
-    <Provider store={store}>
-        <TestI18N>
-            <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
-        </TestI18N>
-    </Provider>
+    <MemoryRouter>
+        <QueryClientProvider client={client}>
+            <Provider store={store}>
+                <TestI18N>
+                    <MuiThemeProvider theme={theme}>
+                        {children}
+                    </MuiThemeProvider>
+                </TestI18N>
+            </Provider>
+        </QueryClientProvider>
+    </MemoryRouter>
 );
 
 export const getStore = (initialState = {}) =>
