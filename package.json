@@ -319,6 +319,7 @@
         "array-series": "0.1.5",
         "babel-jest": "29.7.0",
         "cypress": "^13.17.0",
+        "cypress-file-upload": "^5.0.8",
         "cypress-network-idle": "^1.15.0",
         "enzyme": "^3.11.0",
         "eslint": "^9.36.0",

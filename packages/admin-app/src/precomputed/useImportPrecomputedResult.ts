@@ -3,9 +3,12 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from '@lodex/common';
 import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 import { loadFile } from '@lodex/frontend-common/utils/loadFile';
+import { useDispatch } from 'react-redux';
+import { loadPrecomputed } from '.';
 
 export const useImportPrecomputedResult = () => {
     const { translate } = useTranslate();
+    const dispatch = useDispatch();
     const { mutateAsync } = useMutation({
         mutationFn: async ({
             file,
@@ -21,6 +24,7 @@ export const useImportPrecomputedResult = () => {
                 file,
                 token,
             );
+            dispatch(loadPrecomputed());
         },
         onError: (error) => {
             console.error(error);

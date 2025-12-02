@@ -105,4 +105,81 @@ describe('Precomputation', () => {
         cy.findByRole('button', { name: 'Save' }).click();
         cy.findAllByRole('cell').eq(1).should('contain', 'new_id_value');
     });
+
+    it('should allow to import precomputed results from a file', () => {
+        cy.contains('No rows').should('be.visible');
+        precomputation.createPrecomputation({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+        });
+        cy.waitForNetworkIdle(500);
+
+        precomputation.importPrecomputationResults({
+            filePath: 'precomputations/simple.json',
+        });
+        cy.waitForNetworkIdle(500);
+
+        // cy.findByRole('button', { name: 'Run' }).click();
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
+        adminNavigation.goToData();
+        cy.waitForNetworkIdle(500);
+        cy.contains('Precomputed data').click();
+        cy.waitForNetworkIdle(500);
+        cy.contains('1–25 of 26').should('be.visible');
+    });
+
+    it.only('should overwrite existing precomputed results when importing from a file on a run precomputation', () => {
+        cy.contains('No rows').should('be.visible');
+        precomputation.createPrecomputation({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+        });
+        cy.waitForNetworkIdle(500);
+
+        cy.findByRole('button', { name: 'Run' }).click();
+        cy.waitForNetworkIdle(500);
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
+
+        adminNavigation.goToData();
+        cy.waitForNetworkIdle(500);
+        cy.contains('Precomputed data').click();
+        cy.waitForNetworkIdle(500);
+
+        cy.contains('1–25 of 30').should('be.visible');
+
+        adminNavigation.goToPreComputation();
+        cy.waitForNetworkIdle(500);
+        cy.contains('1–1 of 1').should('be.visible');
+        cy.findByRole('grid').within(() => cy.contains('Statistics').click());
+        cy.waitForNetworkIdle(500);
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
+
+        precomputation.importPrecomputationResultsWithDialog({
+            filePath: 'precomputations/simple.json',
+        });
+        cy.waitForNetworkIdle(500);
+
+        adminNavigation.goToData();
+        cy.waitForNetworkIdle(500);
+        cy.contains('Precomputed data').click();
+        cy.waitForNetworkIdle(500);
+        cy.contains('1–25 of 26').should('be.visible');
+    });
 });
