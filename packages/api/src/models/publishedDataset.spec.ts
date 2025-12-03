@@ -1,3 +1,4 @@
+import { MongoClient } from 'mongodb';
 import publishedDataset from './publishedDataset';
 import { PropositionStatus } from '@lodex/common';
 
@@ -519,6 +520,121 @@ describe('publishedDataset', () => {
                 uri: { $in: ['uri1', 'uri2'] },
             });
             expect(toArray).toHaveBeenCalledWith();
+        });
+    });
+
+    describe('getFacetsForField', () => {
+        const connectionStringURI = process.env.MONGO_URL as string;
+        let connection: any;
+        let db: any;
+
+        beforeAll(async () => {
+            connection = await MongoClient.connect(connectionStringURI, {});
+            db = connection.db();
+        });
+
+        afterAll(async () => {
+            await connection.close();
+        });
+
+        beforeEach(async () => {
+            await db.collection('publishedDataset').deleteMany({});
+        });
+
+        it('should return facets for a given field', async () => {
+            await db.collection('publishedDataset').insertMany([
+                {
+                    uri: 'uri1',
+                    versions: [{ fieldName: 'value1' }],
+                },
+                {
+                    uri: 'uri2',
+                    versions: [{ fieldName: 'value2' }],
+                },
+                {
+                    uri: 'uri3',
+                    versions: [{ fieldName: 'value1' }],
+                },
+                {
+                    uri: 'uri4',
+                    versions: [{ fieldName: 'value3' }],
+                },
+            ]);
+            const publishedDatasetCollection = await publishedDataset(db);
+
+            const result =
+                await publishedDatasetCollection.getFacetsForField('fieldName');
+
+            expect(
+                result.sort(
+                    (
+                        a: {
+                            value: string;
+                        },
+                        b: {
+                            value: string;
+                        },
+                    ) => a.value.localeCompare(b.value),
+                ),
+            ).toStrictEqual([
+                {
+                    field: 'fieldName',
+                    value: 'value1',
+                    count: 2,
+                },
+                {
+                    field: 'fieldName',
+                    value: 'value2',
+                    count: 1,
+                },
+                {
+                    field: 'fieldName',
+                    value: 'value3',
+                    count: 1,
+                },
+            ]);
+        });
+
+        it('should exclude removed resources', async () => {
+            await db.collection('publishedDataset').insertMany([
+                {
+                    uri: 'uri1',
+                    versions: [{ fieldName: 'value1' }],
+                    removedAt: new Date(),
+                },
+                {
+                    uri: 'uri2',
+                    versions: [{ fieldName: 'value2' }],
+                    removedAt: new Date(),
+                },
+                {
+                    uri: 'uri3',
+                    versions: [{ fieldName: 'value1' }],
+                },
+            ]);
+            const publishedDatasetCollection = await publishedDataset(db);
+
+            const result =
+                await publishedDatasetCollection.getFacetsForField('fieldName');
+
+            expect(
+                result.sort(
+                    (
+                        a: {
+                            value: string;
+                        },
+                        b: {
+                            value: string;
+                        },
+                    ) => a.value.localeCompare(b.value),
+                ),
+            ).toStrictEqual([
+                {
+                    field: 'fieldName',
+                    value: 'value1',
+                    count: 1,
+                },
+            ]);
         });
     });
 });

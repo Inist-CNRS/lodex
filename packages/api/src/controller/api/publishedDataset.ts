@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 import updateFacetValue from '../../services/updateFacetValue';
 import ark from './ark';
 import { searchSchema, type Filter } from './publishedDataset.schema';
+import publishFacets from './publishFacets';
 
 const app = new Koa();
 
@@ -247,6 +248,11 @@ export const removeResource = async (ctx: any) => {
         removedAt,
     });
     ctx.body = await ctx.publishedDataset.hide(uri, reason, removedAt);
+
+    if ((await ctx.publishedDataset.countAll()) > 0) {
+        const fields = await ctx.field.findAll();
+        await publishFacets(ctx, fields, true);
+    }
 };
 
 export const restoreResource = async (ctx: any) => {
