@@ -15,6 +15,8 @@ export const buildPieChartSpec = ({
     tooltipCategory?: string;
     tooltipValue?: string;
     labels?: boolean;
+    enableSelection?: boolean;
+    selectedDatum?: { _id: string };
 }) => {
     const tooltip = {
         toggle: hasTooltip,

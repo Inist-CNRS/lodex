@@ -1,6 +1,6 @@
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 
 import { buildPieChartSpec } from '../../models/PieChart';
@@ -14,6 +14,7 @@ import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import injectData from '../../../injectData';
 import type { Field } from '../../../../fields/types';
+import { useSearchPaneContextOrDefault } from '../../../../search/useSearchPaneContext';
 
 const styles = {
     container: {
@@ -27,7 +28,7 @@ interface PieChartViewProps {
     data?: {
         values: any;
     };
-    colors?: string[];
+    colors?: string;
     tooltip?: boolean;
     tooltipCategory?: string;
     tooltipValue?: string;
@@ -39,27 +40,36 @@ interface PieChartViewProps {
 
 const PieChartView = ({
     advancedMode,
-
     advancedModeSpec,
-
     field,
-
     data,
-
     tooltip,
-
     tooltipCategory,
-
     tooltipValue,
-
     colors,
-
     labels,
-
     aspectRatio,
 }: PieChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
+    const { selectOne } = useSearchPaneContextOrDefault();
+
+    const fieldToFilter =
+        typeof field?.format?.args?.fieldToFilter === 'string'
+            ? field.format.args.fieldToFilter
+            : null;
+
+    const handleClick = useCallback(
+        (data: { _id: string }) => {
+            if (fieldToFilter) {
+                selectOne({
+                    fieldName: fieldToFilter,
+                    value: data?._id ?? null,
+                });
+            }
+        },
+        [fieldToFilter, selectOne],
+    );
 
     const spec = useMemo(() => {
         if (advancedMode) {
@@ -81,7 +91,7 @@ const PieChartView = ({
             tooltipCategory,
             tooltipValue,
             labels,
-            colors,
+            colors: colors ? colors.split(' ') : undefined,
         });
 
         // enable the orderBy in vega-lite
@@ -94,12 +104,12 @@ const PieChartView = ({
         return spec;
     }, [
         advancedMode,
+        data?.values,
         tooltip,
         tooltipCategory,
         tooltipValue,
         labels,
         colors,
-        data?.values,
         advancedModeSpec,
         width,
     ]);
@@ -118,6 +128,7 @@ const PieChartView = ({
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
+                onClick={handleClick}
             />
         </div>
     );
