@@ -11,10 +11,6 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-a:hover {
-    text-decoration: none;
-    cursor: pointer;
-}
 
 a,
 button {
@@ -459,8 +455,8 @@ a[data-lightbox] {
     text-align: center;
 }
 a[data-lightbox]:hover::before {
-    content: "+";
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    content: '+';
+    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue',
         Helvetica, Arial;
     font-size: 32px;
     width: 50px;
@@ -574,7 +570,7 @@ a[data-lightbox]:hover img {
 /* Bloc image backgrounds */
 
 .bg-city-overlay {
-    background-image: url("img/city-overlay.png");
+    background-image: url('img/city-overlay.png');
 }
 
 .quote {

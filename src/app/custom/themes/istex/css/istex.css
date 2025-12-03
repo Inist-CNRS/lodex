@@ -556,11 +556,11 @@ div.property div.MuiBox-root > div > * + div {
     padding: 10px 30px !important;
 }
 #version .container a {
-    color: var(--contrast-light) !important;
+    color: var(--contrast-light);
+    text-decoration: underline;
 }
 #version .container a:is(:hover, :focus, :active) {
     color: var(--contrast-main);
-    text-decoration: underline !important;
 }
 #version .container strong {
     font-weight: bold !important;
