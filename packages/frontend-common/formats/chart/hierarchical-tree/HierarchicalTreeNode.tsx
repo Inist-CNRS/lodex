@@ -40,7 +40,7 @@ export function HierarchicalTreeNode({
               }
             : {
                   bottom: -1 * BUTTON_SIZE - BUTTON_SPACING,
-                  left: (width - BUTTON_SIZE) / 2,
+                  left: (width - BUTTON_SIZE - 2) / 2,
               };
 
     return (

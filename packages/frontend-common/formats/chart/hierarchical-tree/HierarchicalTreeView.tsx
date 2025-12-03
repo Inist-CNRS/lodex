@@ -53,10 +53,10 @@ export function HierarchicalTreeView({
 
     const nodeSize = useMemo(
         () => ({
-            x: (nodeWidth ?? DEFAULT_NODE_WIDTH) + 32,
-            y: (nodeHeight ?? DEFAULT_NODE_HEIGHT) + 32,
+            x: (nodeWidth ?? DEFAULT_NODE_WIDTH) + spacing,
+            y: (nodeHeight ?? DEFAULT_NODE_HEIGHT) + spacing,
         }),
-        [nodeWidth, nodeHeight],
+        [nodeWidth, nodeHeight, spacing],
     );
 
     const { parentRef, treeRef, dimensions, treeTranslate, centerOnNode } =
