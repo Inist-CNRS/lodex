@@ -259,6 +259,11 @@ export const restoreResource = async (ctx: any) => {
     const { uri } = ctx.request.body;
     await ctx.hiddenResource.deleteByUri(uri);
     ctx.body = await ctx.publishedDataset.restore(uri);
+
+    if ((await ctx.publishedDataset.countAll()) > 0) {
+        const fields = await ctx.field.findAll();
+        await publishFacets(ctx, fields, true);
+    }
 };
 
 export const addFieldToResource = async (ctx: any) => {
