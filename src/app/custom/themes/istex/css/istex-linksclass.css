@@ -15,10 +15,10 @@
 /* Lien au fil du texte */
 /* Lien du contenu      */
 /************************/
-#content a:not(:empty, .property_value) {
+/*#content a:not(:empty, .property_value) {
     text-decoration: underline;
     cursor: pointer;
-}
+}*/
 /**************/
 /* Fond clair */
 /**************/
@@ -94,16 +94,6 @@ div[class*='HomeSidebar']
     )[target='_blank']::after {
     color: black;
     filter: var(--filtreBlancMainHFA);
-}
-
-/* Lien */
-a:not(:empty) {
-    color: var(--primary-main);
-    text-decoration: underline;
-}
-
-a:not(:empty, .footer1 a):is(:hover, :focus) {
-    color: var(--primary-secondary);
 }
 
 /* Lien URL en clair dans sidebar */
