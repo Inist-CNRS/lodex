@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
-import { pack, hierarchy } from 'd3-hierarchy';
+import { hierarchy, pack } from 'd3-hierarchy';
 import memoize from 'lodash/memoize';
 
+import { useCallback } from 'react';
+import type { Field } from '../../../fields/types';
+import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
 import injectData from '../../injectData';
-import Bubble from './Bubble';
 import { getColor } from '../../utils/colorUtils';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
-import type { Field } from '../../../fields/types';
-import { useCallback, useContext } from 'react';
-import { SearchPaneContext } from '../../../search/SearchPaneContext';
+import Bubble from './Bubble';
 
 const styles: {
     container: (args: { diameter: number | string }) => React.CSSProperties;
@@ -47,20 +47,16 @@ export const BubbleView = ({
             ? field.format.args.fieldToFilter
             : null;
 
-    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
-        setFilter: () => {},
-    };
+    const { filters, selectOne } = useSearchPaneContextOrDefault();
 
     const handleClick = useCallback(
         (name: string) => {
-            if (fieldToFilter) {
-                setFilter({
-                    field: fieldToFilter,
-                    value: name !== filter?.value ? name ?? null : null,
-                });
+            if (!fieldToFilter) {
+                return;
             }
+            selectOne({ fieldName: fieldToFilter, value: name });
         },
-        [fieldToFilter, setFilter, filter?.value],
+        [fieldToFilter, selectOne],
     );
 
     return (
@@ -76,7 +72,7 @@ export const BubbleView = ({
                         value={value}
                         color={getColor(colorSet, index)}
                         onClick={fieldToFilter ? handleClick : undefined}
-                        isSelected={key === filter?.value}
+                        isSelected={key === filters?.at(0)?.value}
                     />
                 ))}
             </div>

@@ -1,9 +1,13 @@
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { clamp } from 'lodash';
+import { useCallback, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { clamp } from 'lodash';
 
+import type { Field } from '../../../../fields/types';
+import { useSearchPaneContextOrDefault } from '../../../../search/useSearchPaneContext';
 import injectData from '../../../injectData';
+import InvalidFormat from '../../../InvalidFormat';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import {
     AXIS_X,
     AXIS_Y,
@@ -13,12 +17,8 @@ import {
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../utils/chartsUtils';
-import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
-import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../utils/chartsHooks';
-import type { Field } from '../../../../fields/types';
-import { SearchPaneContext } from '../../../../search/SearchPaneContext';
+import BarChart from '../../models/BarChart';
 
 const styles = {
     container: {
@@ -72,9 +72,7 @@ const BarChartView = ({
 }: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
-    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
-        setFilter: () => {},
-    };
+    const { filters, selectOne } = useSearchPaneContextOrDefault();
 
     const fieldToFilter =
         typeof field?.format?.args?.fieldToFilter === 'string'
@@ -84,13 +82,13 @@ const BarChartView = ({
     const handleClick = useCallback(
         (data: { _id: string }) => {
             if (fieldToFilter) {
-                setFilter({
-                    field: fieldToFilter,
+                selectOne({
+                    fieldName: fieldToFilter,
                     value: data?._id ?? null,
                 });
             }
         },
-        [fieldToFilter, setFilter],
+        [fieldToFilter, selectOne],
     );
 
     const spec = useMemo(() => {
@@ -109,7 +107,7 @@ const BarChartView = ({
         }
 
         const selectedDatum = data?.values.find(
-            (d: { _id: string }) => d._id === filter?.value,
+            (d: { _id: string }) => d._id === filters?.at(0)?.value,
         );
 
         const specBuilder = new BarChart({
@@ -152,7 +150,7 @@ const BarChartView = ({
         diagonalValueAxis,
         advancedModeSpec,
         width,
-        filter?.value,
+        filters,
     ]);
 
     if (!spec) {

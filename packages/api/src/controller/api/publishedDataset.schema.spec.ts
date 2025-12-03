@@ -1,63 +1,60 @@
-import {
-    fieldNameSchema,
-    getPageByFieldSchema,
-} from './publishedDataset.schema';
+import { filterSchema, searchSchema } from './publishedDataset.schema';
 
-describe('fieldNameSchema', () => {
+describe('filterSchema', () => {
     it.each([
-        { fieldName: 'abcd', expected: true },
-        { fieldName: 'test', expected: true },
-        { fieldName: 'AB12', expected: true },
-        { fieldName: '1234', expected: true },
-        { fieldName: 'h1bM', expected: true },
-    ])(
-        'should accept valid field name: $fieldName',
-        ({ fieldName, expected }) => {
-            const result = fieldNameSchema.safeParse(fieldName);
-            expect(result.success).toBe(expected);
-            if (result.success) {
-                expect(result.data).toBe(fieldName);
-            }
-        },
-    );
-
-    it.each([
-        { fieldName: 'abc', reason: 'too short (3 chars)' },
-        { fieldName: 'abcde', reason: 'too long (5 chars)' },
-        { fieldName: 'ab-d', reason: 'contains dash' },
-        { fieldName: 'ab$d', reason: 'contains special char' },
-        { fieldName: 'ab d', reason: 'contains space' },
-        { fieldName: '', reason: 'empty string' },
-        { fieldName: 'aBéC', reason: 'contains accented char' },
-        { fieldName: 'a_b_', reason: 'contains underscore' },
-    ])(
-        'should reject invalid field name: $fieldName ($reason)',
-        ({ fieldName }) => {
-            const result = fieldNameSchema.safeParse(fieldName);
-            expect(result.success).toBe(false);
-        },
-    );
-});
-
-describe('getPageByFieldSchema', () => {
-    it.each([
-        { input: { value: 'test' }, expected: 'test', label: 'string value' },
-        { input: { value: 42 }, expected: 42, label: 'number value' },
-        { input: { value: null }, expected: null, label: 'null value' },
         {
-            input: { value: undefined },
-            expected: undefined,
+            input: { fieldName: 'test', value: 'value' },
+            expected: { fieldName: 'test', value: 'value' },
+            label: 'string value',
+        },
+        {
+            input: { fieldName: 'abcd', value: ['a', 'b'] },
+            expected: { fieldName: 'abcd', value: ['a', 'b'] },
+            label: 'array value',
+        },
+        {
+            input: { fieldName: 'num1', value: 42 },
+            expected: { fieldName: 'num1', value: 42 },
+            label: 'number value',
+        },
+        {
+            input: { fieldName: 'null', value: null },
+            expected: { fieldName: 'null', value: null },
+            label: 'null value',
+        },
+        {
+            input: { fieldName: 'undf', value: undefined },
+            expected: { fieldName: 'undf', value: undefined },
             label: 'undefined value',
         },
-        { input: {}, expected: undefined, label: 'missing value field' },
-    ])('should accept value field: $label', ({ input, expected }) => {
-        const result = getPageByFieldSchema.safeParse(input);
+    ])('should accept filter: $label', ({ input, expected }) => {
+        const result = filterSchema.safeParse(input);
         expect(result.success).toBe(true);
         if (result.success) {
-            expect(result.data.value).toBe(expected);
+            expect(result.data).toEqual(expected);
         }
     });
 
+    it.each([
+        {
+            input: { fieldName: 'ab', value: 'test' },
+            label: 'field too short',
+        },
+        {
+            input: { fieldName: 'abcde', value: 'test' },
+            label: 'field too long',
+        },
+        {
+            input: { fieldName: 'ab-d', value: 'test' },
+            label: 'field with invalid character',
+        },
+    ])('should reject invalid filter: $label', ({ input }) => {
+        const result = filterSchema.safeParse(input);
+        expect(result.success).toBe(false);
+    });
+});
+
+describe('searchSchema', () => {
     it.each([
         { input: { page: 5 }, expected: 5, label: 'page number' },
         { input: { page: null }, expected: 0, label: 'null (defaults to 0)' },
@@ -68,7 +65,7 @@ describe('getPageByFieldSchema', () => {
         },
         { input: {}, expected: 0, label: 'missing (defaults to 0)' },
     ])('should handle page field: $label', ({ input, expected }) => {
-        const result = getPageByFieldSchema.safeParse(input);
+        const result = searchSchema.safeParse(input);
         expect(result.success).toBe(true);
         if (result.success) {
             expect(result.data.page).toBe(expected);
@@ -89,7 +86,7 @@ describe('getPageByFieldSchema', () => {
         },
         { input: {}, expected: 10, label: 'missing (defaults to 10)' },
     ])('should handle perPage field: $label', ({ input, expected }) => {
-        const result = getPageByFieldSchema.safeParse(input);
+        const result = searchSchema.safeParse(input);
         expect(result.success).toBe(true);
         if (result.success) {
             expect(result.data.perPage).toBe(expected);
@@ -143,7 +140,7 @@ describe('getPageByFieldSchema', () => {
             label: '_id as sortBy',
         },
     ])('should handle sort field: $label', ({ input, expected }) => {
-        const result = getPageByFieldSchema.safeParse(input);
+        const result = searchSchema.safeParse(input);
         expect(result.success).toBe(true);
         if (result.success) {
             expect(result.data.sort).toEqual(expected);
@@ -151,7 +148,7 @@ describe('getPageByFieldSchema', () => {
     });
 
     it('should reject invalid sortDir value', () => {
-        const result = getPageByFieldSchema.safeParse({
+        const result = searchSchema.safeParse({
             sort: {
                 sortBy: 'name',
                 sortDir: 'INVALID',
@@ -160,9 +157,25 @@ describe('getPageByFieldSchema', () => {
         expect(result.success).toBe(false);
     });
 
+    it('should handle filters field', () => {
+        const result = searchSchema.safeParse({
+            filters: [
+                { fieldName: 'test', value: 'value1' },
+                { fieldName: 'abcd', value: ['a', 'b'] },
+            ],
+        });
+        expect(result.success).toBe(true);
+        if (result.success) {
+            expect(result.data.filters).toEqual([
+                { fieldName: 'test', value: 'value1' },
+                { fieldName: 'abcd', value: ['a', 'b'] },
+            ]);
+        }
+    });
+
     it('should accept complete valid object', () => {
-        const result = getPageByFieldSchema.safeParse({
-            value: 'test',
+        const result = searchSchema.safeParse({
+            filters: [{ fieldName: 'abcd', value: 'filter' }],
             page: 2,
             perPage: 25,
             sort: {
@@ -173,7 +186,7 @@ describe('getPageByFieldSchema', () => {
         expect(result.success).toBe(true);
         if (result.success) {
             expect(result.data).toEqual({
-                value: 'test',
+                filters: [{ fieldName: 'abcd', value: 'filter' }],
                 page: 2,
                 perPage: 25,
                 sort: {
@@ -185,11 +198,10 @@ describe('getPageByFieldSchema', () => {
     });
 
     it('should apply all defaults when empty object', () => {
-        const result = getPageByFieldSchema.safeParse({});
+        const result = searchSchema.safeParse({});
         expect(result.success).toBe(true);
         if (result.success) {
             expect(result.data).toEqual({
-                value: undefined,
                 page: 0,
                 perPage: 10,
                 sort: {
@@ -201,7 +213,7 @@ describe('getPageByFieldSchema', () => {
     });
 
     it('should reject object with invalid field types', () => {
-        const result = getPageByFieldSchema.safeParse({
+        const result = searchSchema.safeParse({
             page: 'not a number',
             perPage: 'also not a number',
         });

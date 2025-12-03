@@ -1,9 +1,12 @@
 import { z } from 'zod';
 
-export const fieldNameSchema = z.string().regex(/^[a-zA-Z0-9]{4}$/);
-
-export const getPageByFieldSchema = z.object({
+export const filterSchema = z.object({
+    fieldName: z.string().regex(/^[a-zA-Z0-9_]{4}$/),
     value: z.string().or(z.array(z.string())).or(z.number()).nullish(),
+});
+
+export const searchSchema = z.object({
+    filters: filterSchema.array().optional(),
     page: z
         .number()
         .nullish()
@@ -23,3 +26,5 @@ export const getPageByFieldSchema = z.object({
         .nullish()
         .transform((value) => value ?? { sortBy: '_id', sortDir: 'ASC' }),
 });
+
+export type Filter = z.infer<typeof filterSchema>;

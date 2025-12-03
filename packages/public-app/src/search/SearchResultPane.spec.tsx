@@ -3,6 +3,16 @@ import { render, screen } from '@testing-library/react';
 import { SearchResultPane } from './SearchResultPane';
 import { useListSearchResult } from './useListSearchResult';
 
+jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
+    useTranslate: () => ({
+        translate: (key: string, params?: { total?: number }) => {
+            if (key === 'istex_total') {
+                return `${params?.total} results`;
+            }
+            return key;
+        },
+    }),
+}));
 jest.mock('@lodex/frontend-common/search/useSearchPaneContext');
 jest.mock('./useListSearchResult');
 jest.mock('./SearchResult', () => ({
@@ -27,10 +37,12 @@ describe('SearchResultPane', () => {
         jest.clearAllMocks();
     });
 
-    it('should not render content when filter is null', () => {
+    it('should not render content when filters is empty', () => {
         mockUseSearchPaneContext.mockReturnValue({
-            filter: null,
-            setFilter: jest.fn(),
+            filters: [],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
         });
 
         mockUseListSearchResult.mockReturnValue({
@@ -56,11 +68,15 @@ describe('SearchResultPane', () => {
 
     it('should render filter value and results count when filter is set', () => {
         mockUseSearchPaneContext.mockReturnValue({
-            filter: {
-                field: 'author',
-                value: 'John Doe',
-            },
-            setFilter: jest.fn(),
+            filters: [
+                {
+                    fieldName: 'author',
+                    value: 'John Doe',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
         });
 
         mockUseListSearchResult.mockReturnValue({
@@ -88,11 +104,15 @@ describe('SearchResultPane', () => {
 
     it('should display loading skeleton when data is pending', () => {
         mockUseSearchPaneContext.mockReturnValue({
-            filter: {
-                field: 'category',
-                value: 'Science',
-            },
-            setFilter: jest.fn(),
+            filters: [
+                {
+                    fieldName: 'category',
+                    value: 'Science',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
         });
 
         mockUseListSearchResult.mockReturnValue({
@@ -122,11 +142,15 @@ describe('SearchResultPane', () => {
 
     it('should render search results when available', () => {
         mockUseSearchPaneContext.mockReturnValue({
-            filter: {
-                field: 'topic',
-                value: 'Machine Learning',
-            },
-            setFilter: jest.fn(),
+            filters: [
+                {
+                    fieldName: 'topic',
+                    value: 'Machine Learning',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
         });
 
         const mockFields = [
@@ -186,11 +210,15 @@ describe('SearchResultPane', () => {
 
     it('should display 10 skeleton loaders when loading', () => {
         mockUseSearchPaneContext.mockReturnValue({
-            filter: {
-                field: 'year',
-                value: '2024',
-            },
-            setFilter: jest.fn(),
+            filters: [
+                {
+                    fieldName: 'year',
+                    value: '2024',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
         });
 
         mockUseListSearchResult.mockReturnValue({
@@ -218,11 +246,15 @@ describe('SearchResultPane', () => {
 
     it('should render empty list when no results are found', () => {
         mockUseSearchPaneContext.mockReturnValue({
-            filter: {
-                field: 'status',
-                value: 'published',
-            },
-            setFilter: jest.fn(),
+            filters: [
+                {
+                    fieldName: 'status',
+                    value: 'published',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
         });
 
         mockUseListSearchResult.mockReturnValue({

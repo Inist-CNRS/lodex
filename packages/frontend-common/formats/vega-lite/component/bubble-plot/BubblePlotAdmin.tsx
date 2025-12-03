@@ -1,25 +1,25 @@
+import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { useCallback, useMemo, type ChangeEvent } from 'react';
 import { useTranslate } from '../../../../i18n/I18NContext';
-import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
-import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
-import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
-import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
-import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
-import { buildBubblePlotSpec } from '../../models/BubblePlot';
+import { FieldSelector } from '../../../../fields/form/FieldSelector';
+import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
+import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
+import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
+import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
+import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
+import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
+import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../../utils/components/field-set/FormatFieldSets';
-import { BubblePlotAdminView } from './BubblePlotView';
-import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
-import { StandardSourceTargetWeight } from '../../../utils/dataSet';
-import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { FieldSelector } from '../../../../fields/form/FieldSelector';
+import { StandardSourceTargetWeight } from '../../../utils/dataSet';
+import { buildBubblePlotSpec } from '../../models/BubblePlot';
+import { BubblePlotAdminView } from './BubblePlotView';
 
 export const defaultArgs = {
     params: {
@@ -56,7 +56,8 @@ type BubblePlotArgs = {
     tooltipTarget?: string;
     tooltipWeight?: string;
     aspectRatio: AspectRatio;
-    fieldToFilter?: string | null;
+    fieldToFilterSource?: string | null;
+    fieldToFilterTarget?: string | null;
 };
 
 type BubblePlotAdminProps = {
@@ -88,7 +89,8 @@ const BubblePlotAdmin = ({
         tooltipTarget = defaultArgs.tooltipTarget,
         tooltipWeight = defaultArgs.tooltipWeight,
         aspectRatio,
-        fieldToFilter,
+        fieldToFilterSource,
+        fieldToFilterTarget,
     } = args;
 
     const colors = useMemo(() => {
@@ -115,7 +117,8 @@ const BubblePlotAdmin = ({
                     targetTitle: tooltipTarget,
                     weightTitle: tooltipWeight,
                 },
-                selectionEnabled: !!fieldToFilter,
+                selectionEnabled:
+                    !!fieldToFilterSource || !!fieldToFilterTarget,
             }),
             null,
             2,
@@ -130,7 +133,8 @@ const BubblePlotAdmin = ({
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
-        fieldToFilter,
+        fieldToFilterSource,
+        fieldToFilterTarget,
     ]);
 
     const toggleAdvancedMode = useCallback(
@@ -252,11 +256,22 @@ const BubblePlotAdmin = ({
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet defaultExpanded>
                 <FieldSelector
-                    value={fieldToFilter ?? null}
+                    label={translate('field_to_filter_column')}
+                    value={fieldToFilterSource ?? null}
                     onChange={(fieldToFilter) =>
                         onChange({
                             ...args,
-                            fieldToFilter: fieldToFilter || null,
+                            fieldToFilterSource: fieldToFilter || null,
+                        })
+                    }
+                />
+                <FieldSelector
+                    label={translate('field_to_filter_row')}
+                    value={fieldToFilterTarget ?? null}
+                    onChange={(fieldToFilter) =>
+                        onChange({
+                            ...args,
+                            fieldToFilterTarget: fieldToFilter || null,
                         })
                     }
                 />

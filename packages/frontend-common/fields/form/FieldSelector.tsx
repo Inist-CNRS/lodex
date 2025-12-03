@@ -1,9 +1,34 @@
-import { useMemo } from 'react';
+import { ListItem } from '@mui/material';
+import { useCallback, useMemo, type HTMLAttributes } from 'react';
+import FieldRepresentation from '../../../admin-app/src/fields/FieldRepresentation';
 import { AutoComplete } from '../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../i18n/I18NContext';
 import { useListField } from '../api/useListField';
+import type { Field } from '../types';
 
-export function FieldSelector({ value, onChange }: FieldSelectorProps) {
+export function getFieldSelectorOptions(fieldsByName: Record<string, Field>) {
+    return Object.keys(fieldsByName)
+        .filter((name) => {
+            const field = fieldsByName[name];
+            return field?.scope === 'document';
+        })
+        .toSorted((a, b) => {
+            const fieldA = fieldsByName[a]!;
+            const fieldB = fieldsByName[b]!;
+
+            const fieldALabel = fieldA.label?.toLowerCase() ?? '';
+            const fieldBLabel = fieldB.label?.toLowerCase() ?? '';
+
+            const localeCompare = fieldALabel.localeCompare(fieldBLabel);
+            if (localeCompare !== 0) {
+                return localeCompare;
+            }
+
+            return fieldA.name.localeCompare(fieldB.name);
+        });
+}
+
+export function FieldSelector({ label, value, onChange }: FieldSelectorProps) {
     const { translate } = useTranslate();
 
     const { isFieldListPending, fields } = useListField();
@@ -19,26 +44,45 @@ export function FieldSelector({ value, onChange }: FieldSelectorProps) {
     }, [fields]);
 
     const options = useMemo(() => {
-        return Object.keys(fieldsByName);
+        return getFieldSelectorOptions(fieldsByName);
     }, [fieldsByName]);
 
-    const getOptionLabel = useMemo(() => {
-        return (fieldName: string) => {
+    const getOptionLabel = useCallback(
+        (fieldName: string) => {
+            return fieldsByName[fieldName]
+                ? `[${fieldsByName[fieldName].name}] ${fieldsByName[fieldName].label}`
+                : fieldName;
+        },
+        [fieldsByName],
+    );
+
+    const renderOption = useCallback(
+        (props: HTMLAttributes<HTMLLIElement>, fieldName: string) => {
             const field = fieldsByName[fieldName];
-            if (field) {
-                return `[${field.name}] ${field.label}`;
-            }
-            return fieldName;
-        };
-    }, [fieldsByName]);
+            return (
+                <ListItem
+                    {...props}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                    }}
+                >
+                    {field ? <FieldRepresentation field={field} /> : fieldName}
+                </ListItem>
+            );
+        },
+        [fieldsByName],
+    );
 
     return (
         <AutoComplete
             name="fieldToFilter"
-            label={translate('field_to_filter')}
+            label={label ?? translate('field_to_filter')}
             disabled={isFieldListPending}
             options={options}
             getOptionLabel={getOptionLabel}
+            renderOption={renderOption}
             value={value}
             onChange={(_, newValue) => onChange?.(newValue)}
         />
@@ -46,6 +90,7 @@ export function FieldSelector({ value, onChange }: FieldSelectorProps) {
 }
 
 type FieldSelectorProps = {
+    label?: string;
     onChange?: (fieldName: string | null) => void;
     value?: string | null;
 };

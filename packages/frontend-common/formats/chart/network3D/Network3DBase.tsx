@@ -2,7 +2,6 @@ import {
     lazy,
     Suspense,
     useCallback,
-    useContext,
     useEffect,
     useMemo,
     useRef,
@@ -20,7 +19,6 @@ import {
 import Loading from '../../../components/Loading';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
 import { useTranslate } from '../../../i18n/I18NContext';
-import { SearchPaneContext } from '../../../search/SearchPaneContext';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import type { Link, Node } from '../network/useFormatNetworkData';
@@ -28,6 +26,7 @@ import type { Link, Node } from '../network/useFormatNetworkData';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import SpriteText from 'three-spritetext';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
+import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
 import { compareNodes, isLinkVisible } from '../network/NetworkBase';
 import { NetworkCaption } from '../network/NetworkCaption';
 import { useLinkColor } from '../network/useLinkColor';
@@ -77,7 +76,7 @@ export const Network3DBase = ({
     const [mode, setMode] = useState<'arrow' | 'animated'>('animated');
     const animationFrameRef = useRef<number>();
     const { translate } = useTranslate();
-    const searchPane = useContext(SearchPaneContext);
+    const { selectOne, clearFilters } = useSearchPaneContextOrDefault();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
         height: 0,
@@ -238,15 +237,15 @@ export const Network3DBase = ({
 
         if (!node || selectedNode?.id === node?.id) {
             setSelectedNode(null);
-            searchPane?.setFilter(null);
+            clearFilters();
             return;
         }
         setSelectedNode(node);
 
         const nodeId = node.id?.toString();
         if (fieldToFilter && nodeId) {
-            searchPane?.setFilter({
-                field: fieldToFilter,
+            selectOne({
+                fieldName: fieldToFilter,
                 value: nodeId,
             });
         }

@@ -1,4 +1,6 @@
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useSearchPaneContext } from '@lodex/frontend-common/search/useSearchPaneContext';
+import { Close } from '@mui/icons-material';
 import {
     Drawer,
     IconButton,
@@ -9,13 +11,13 @@ import {
 } from '@mui/material';
 import SearchResult from './SearchResult';
 import { useListSearchResult } from './useListSearchResult';
-import { Close } from '@mui/icons-material';
 
 const SIDE_PANE_WIDTH = 384;
 const SIDE_PANE_PADDING = 16;
 
 export function SearchResultPane() {
-    const { filter, setFilter } = useSearchPaneContext();
+    const { translate } = useTranslate();
+    const { filters, clearFilters } = useSearchPaneContext();
 
     const {
         isListSearchResultPending,
@@ -23,13 +25,13 @@ export function SearchResultPane() {
         searchResult,
         fields,
         fieldNames,
-    } = useListSearchResult(filter);
+    } = useListSearchResult(filters);
 
     const sx: SxProps = {
         transition: 'all 0.3s',
         overflow: 'hidden',
         paddingBlockStart: '1.75rem',
-        ...(filter
+        ...(filters?.length
             ? {
                   paddingInlineStart: `${SIDE_PANE_PADDING}px`,
                   width: `${SIDE_PANE_WIDTH}px`,
@@ -44,7 +46,7 @@ export function SearchResultPane() {
 
     return (
         <Drawer
-            open={!!filter?.value}
+            open={!!filters?.length}
             anchor="right"
             variant="persistent"
             sx={{
@@ -72,15 +74,19 @@ export function SearchResultPane() {
                                     fontSize: '1.25rem',
                                 }}
                             >
-                                {Array.isArray(filter?.value)
-                                    ? filter.value.join(' × ')
-                                    : filter?.value}
+                                {filters
+                                    .map((filter) =>
+                                        Array.isArray(filter?.value)
+                                            ? filter.value.join(',')
+                                            : filter?.value,
+                                    )
+                                    .join(' × ')}
                             </Typography>
                             <IconButton
                                 sx={{
                                     paddingTop: 0,
                                 }}
-                                onClick={() => setFilter(null)}
+                                onClick={clearFilters}
                             >
                                 <Close />
                             </IconButton>
@@ -89,7 +95,9 @@ export function SearchResultPane() {
                             <Skeleton height={16} width={80} />
                         ) : (
                             <Typography variant="body2" color="text.secondary">
-                                {totalSearchResult} results
+                                {translate('istex_total', {
+                                    total: totalSearchResult,
+                                })}
                             </Typography>
                         )}
                     </Stack>
@@ -108,15 +116,13 @@ export function SearchResultPane() {
                                       <Skeleton key={index} height={72} />
                                   ))
                             : searchResult.map((record) => (
-                                  <>
-                                      <SearchResult
-                                          key={record.uri}
-                                          result={record}
-                                          closeDrawer={() => {}}
-                                          fields={fields}
-                                          fieldNames={fieldNames}
-                                      />
-                                  </>
+                                  <SearchResult
+                                      key={record.uri}
+                                      result={record}
+                                      closeDrawer={() => {}}
+                                      fields={fields}
+                                      fieldNames={fieldNames}
+                                  />
                               ))}
                     </Stack>
                 </Stack>

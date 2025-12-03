@@ -7,10 +7,7 @@ import { uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import updateFacetValue from '../../services/updateFacetValue';
 import ark from './ark';
-import {
-    fieldNameSchema,
-    getPageByFieldSchema,
-} from './publishedDataset.schema';
+import { searchSchema, type Filter } from './publishedDataset.schema';
 
 const app = new Koa();
 
@@ -145,17 +142,9 @@ export const getPage = async (ctx: any) => {
     };
 };
 
-const getFilter = ({
-    field,
-    fieldName,
-    value,
-}: {
-    field: string;
-    fieldName: string;
-    value: unknown;
-}) => {
+const getFilter = ({ fieldName, value }: Filter) => {
     if (!value) {
-        return { field };
+        return null;
     }
 
     if (Array.isArray(value)) {
@@ -183,19 +172,8 @@ const getFilter = ({
     };
 };
 
-export const getPageByField = async (ctx: Koa.Context, field: string) => {
-    const fieldNameResult = fieldNameSchema.safeParse(field);
-    if (!fieldNameResult.success) {
-        ctx.status = 400;
-        ctx.body = {
-            error: 'invalid_field_name',
-        };
-        return;
-    }
-
-    const fieldName = fieldNameResult.data;
-
-    const parseBodyResult = getPageByFieldSchema.safeParse(ctx.request.body);
+export const searchByField = async (ctx: Koa.Context) => {
+    const parseBodyResult = searchSchema.safeParse(ctx.request.body);
     if (!parseBodyResult.success) {
         ctx.status = 400;
         ctx.body = {
@@ -204,17 +182,20 @@ export const getPageByField = async (ctx: Koa.Context, field: string) => {
         return;
     }
 
-    const { value, page, perPage, sort } = parseBodyResult.data;
+    const { filters, page, perPage, sort } = parseBodyResult.data;
+    const transformedFilters = (filters ?? [])
+        .map((f) => getFilter(f))
+        .filter((f) => !!f);
 
-    const filter = getFilter({
-        field,
-        fieldName,
-        value,
-    });
+    const searchFilter = transformedFilters?.length
+        ? {
+              $and: transformedFilters,
+          }
+        : {};
 
     const [data, total] = await Promise.all([
         ctx.publishedDataset
-            .find(filter)
+            .find(searchFilter)
             .limit(perPage)
             .skip(page * perPage)
             .sort({
@@ -222,7 +203,7 @@ export const getPageByField = async (ctx: Koa.Context, field: string) => {
                     sort.sortDir === 'ASC' ? 1 : -1,
             })
             .toArray(),
-        ctx.publishedDataset.count(filter),
+        ctx.publishedDataset.count(searchFilter),
     ]);
 
     ctx.body = {
@@ -389,6 +370,7 @@ export const createResource = async (ctx: any) => {
 app.use(koaBodyParser());
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.post('/', getPage));
+app.use(route.post('/search', searchByField));
 app.use(route.put('/add_field', addFieldToResource));
 app.use(route.get('/ark', ark));
 app.use(async (ctx: any, next: any) => {
@@ -406,7 +388,6 @@ app.use(route.put('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
 app.use(route.get('/:status', getPropositionPage));
-app.use(route.post('/field/:fieldId', getPageByField));
 app.use(
     route.put(
         '/:uri/change_contribution_status/:name/:status',

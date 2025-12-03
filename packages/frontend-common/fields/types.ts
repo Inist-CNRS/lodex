@@ -8,6 +8,7 @@ export type Field<T extends object = { [key: string]: unknown }> = {
     position?: number;
     isDefaultSortField?: boolean;
     sortOrder?: 'asc' | 'desc';
+    scope?: string;
     format?: {
         name: string;
         args?: T;

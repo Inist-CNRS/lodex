@@ -90,17 +90,22 @@ describe('BubbleView', () => {
     });
 
     it('should allow to click on bubbles to set filter', async () => {
-        const setFilter = jest.fn();
+        const selectOne = jest.fn();
+        const selectMany = jest.fn();
 
         const user = userEvent.setup();
         const screen = render(
             <SearchPaneContext.Provider
                 value={{
-                    setFilter,
-                    filter: {
-                        field: 'someField',
-                        value: 'someValue',
-                    },
+                    selectOne,
+                    selectMany,
+                    clearFilters() {},
+                    filters: [
+                        {
+                            fieldName: 'someField',
+                            value: 'someValue',
+                        },
+                    ],
                 }}
             >
                 <BubbleView
@@ -123,10 +128,12 @@ describe('BubbleView', () => {
 
         await act(() => user.click(screen.getByText('id2')));
 
-        expect(setFilter).toHaveBeenCalledWith({
-            field: 'testFieldToFilter',
+        expect(selectOne).toHaveBeenCalledWith({
+            fieldName: 'testFieldToFilter',
             value: 'id2',
         });
+
+        expect(selectMany).not.toHaveBeenCalled();
     });
 
     it('should render empty chart when no data is provided', () => {

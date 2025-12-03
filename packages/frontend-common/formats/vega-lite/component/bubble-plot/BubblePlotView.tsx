@@ -1,21 +1,21 @@
-import { useCallback, useContext, useMemo, useState } from 'react';
-import { connect } from 'react-redux';
 import { clamp } from 'lodash';
+import { useCallback, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
+import type { Field } from '../../../../fields/types';
+import { useSearchPaneContextOrDefault } from '../../../../search/useSearchPaneContext';
 import injectData from '../../../injectData';
+import InvalidFormat from '../../../InvalidFormat';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../../../utils/chartsUtils';
-import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../utils/chartsHooks';
-import type { Field } from '../../../../fields/types';
+import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import { buildBubblePlotSpec } from '../../models/BubblePlot';
-import { SearchPaneContext } from '../../../../search/SearchPaneContext';
 
 const styles = {
     container: {
@@ -58,25 +58,56 @@ const BubblePlotView = ({
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
-    const { setFilter, filter } = useContext(SearchPaneContext) ?? {
-        setFilter: () => {},
-    };
+    const { filters, selectOne, selectMany, clearFilters } =
+        useSearchPaneContextOrDefault();
 
-    const fieldToFilter =
-        typeof field?.format?.args?.fieldToFilter === 'string'
-            ? field.format.args.fieldToFilter
+    const fieldToFilterSource =
+        typeof field?.format?.args?.fieldToFilterSource === 'string'
+            ? field.format.args.fieldToFilterSource
+            : null;
+
+    const fieldToFilterTarget =
+        typeof field?.format?.args?.fieldToFilterTarget === 'string'
+            ? field.format.args.fieldToFilterTarget
             : null;
 
     const handleClick = useCallback(
         (data: { source: string; target: string }) => {
-            if (fieldToFilter) {
-                setFilter({
-                    field: fieldToFilter,
-                    value: data ? [data.target, data.source] : null,
+            if (!data?.source || !data?.target) {
+                clearFilters();
+                return;
+            }
+
+            if (fieldToFilterSource && fieldToFilterTarget) {
+                selectMany([
+                    {
+                        fieldName: fieldToFilterSource,
+                        value: data.source,
+                    },
+                    {
+                        fieldName: fieldToFilterTarget,
+                        value: data.target,
+                    },
+                ]);
+            } else if (fieldToFilterSource) {
+                selectOne({
+                    fieldName: fieldToFilterSource,
+                    value: data.source,
+                });
+            } else if (fieldToFilterTarget) {
+                selectOne({
+                    fieldName: fieldToFilterTarget,
+                    value: data.target,
                 });
             }
         },
-        [fieldToFilter, setFilter],
+        [
+            fieldToFilterSource,
+            fieldToFilterTarget,
+            selectOne,
+            selectMany,
+            clearFilters,
+        ],
     );
 
     const spec = useMemo(() => {
@@ -94,6 +125,7 @@ const BubblePlotView = ({
             }
         }
 
+        const filter = filters?.at(0);
         const selectedDatum = data?.values.find(
             ({ source, target }: { source: string; target: string }) =>
                 filter?.value?.[0] === target && filter?.value?.[1] === source,
@@ -109,7 +141,7 @@ const BubblePlotView = ({
                 targetTitle: tooltipTarget,
                 weightTitle: tooltipWeight,
             },
-            selectionEnabled: !!fieldToFilter,
+            selectionEnabled: !!fieldToFilterSource || !!fieldToFilterTarget,
             selectedDatum,
         });
     }, [
@@ -122,10 +154,11 @@ const BubblePlotView = ({
         tooltipSource,
         tooltipTarget,
         tooltipWeight,
-        fieldToFilter,
+        fieldToFilterSource,
+        fieldToFilterTarget,
         advancedModeSpec,
         width,
-        filter?.value,
+        filters,
     ]);
 
     if (!spec) {

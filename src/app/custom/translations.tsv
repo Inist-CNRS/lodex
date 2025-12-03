@@ -1488,6 +1488,8 @@
 "network_mode_arrow"	"Arrow"	"Flèche"
 "network_mode_animated"	"Animated"	"Animé"
 "field_to_filter"	"Field used for search during value selection"	"Champ utilisé pour la recherche lors de la sélection d'une valeur"
+"field_to_filter_column"	"Field used for search during value selection for column"	"Champ utilisé pour la recherche lors de la sélection d'une valeur pour la colonne"
+"field_to_filter_row"	"Field used for search during value selection for row"	"Champ utilisé pour la recherche lors de la sélection d'une valeur pour la ligne"
 "no_precomputed_data"	"No precomputed data to display"	"Aucun prècalculs à afficher"
 "default_color"	"Default color"	"Couleur par défaut"
 "advanced_color_mode"	"Define from data"	"Définir en fonction des données"
