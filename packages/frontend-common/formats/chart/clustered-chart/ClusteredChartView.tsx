@@ -1,13 +1,13 @@
-import { useMemo } from 'react';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
-import _ from 'lodash';
 import { Grid, Paper } from '@mui/material';
+import _ from 'lodash';
+import { useMemo } from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
 import injectData from '../../injectData';
-import ClusteredChart from './ClusteredChart';
 import { flip } from '../../utils/chartsUtils';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
+import ClusteredChart from './ClusteredChart';
 
 interface ClusteredChartViewProps {
     field: unknown;
@@ -54,7 +54,7 @@ const ClusteredChartView = ({
 
     return (
         <div style={{ margin: '12px' }}>
-            <FormatFullScreenMode>
+            <FormatFullScreenMode forceRerenderOnToggle>
                 <Grid
                     container
                     justifyContent="center"

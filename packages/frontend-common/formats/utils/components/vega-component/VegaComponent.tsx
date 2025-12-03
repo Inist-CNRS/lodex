@@ -1,18 +1,18 @@
-import { Vega } from 'react-vega';
-import { connect } from 'react-redux';
 import deepClone from 'lodash/cloneDeep';
+import { connect } from 'react-redux';
+import { Vega } from 'react-vega';
+import { compose } from 'recompose';
+import { useTranslate } from '../../../../i18n/I18NContext';
+import type { SharedState } from '../../../../sharedReducers';
+import { ASPECT_RATIO_NONE, type AspectRatio } from '../../aspectRatio';
 import {
     VEGA_DATA_INJECT_TYPE_A,
     VEGA_DATA_INJECT_TYPE_B,
     VEGA_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
-import { ASPECT_RATIO_NONE, type AspectRatio } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
 import { useVegaActions } from '../useVegaActions';
 import { useVegaCsvExport } from '../useVegaCsvExport';
-import { compose } from 'recompose';
-import { useTranslate } from '../../../../i18n/I18NContext';
-import type { SharedState } from '../../../../sharedReducers';
 
 export type VegaData = {
     values: { source: string; target: string; weight: number }[];
@@ -80,7 +80,7 @@ function CustomActionVega(props: CustomActionVegaProps) {
     }
 
     return (
-        <FormatFullScreenMode>
+        <FormatFullScreenMode forceRerenderOnToggle>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             <div ref={graphParentRef} style={{ width: '100%', height: '100%' }}>
                 {/*

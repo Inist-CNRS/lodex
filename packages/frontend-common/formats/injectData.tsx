@@ -22,7 +22,7 @@ const styles = {
     },
     format: {
         container: {
-            position: 'relative',
+            position: 'initial',
         },
         loading: {
             zIndex: 99998,

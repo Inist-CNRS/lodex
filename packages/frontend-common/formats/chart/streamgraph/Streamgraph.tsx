@@ -4,14 +4,14 @@ import compose from 'recompose/compose';
 import { StyleSheet, css } from 'aphrodite/no-important';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
+import injectData from '../../injectData';
 import {
-    zoomFunction,
-    transformDataIntoMapArray,
-    getMinMaxValue,
     findNearestTickPosition,
     generateUniqueId,
+    getMinMaxValue,
+    transformDataIntoMapArray,
+    zoomFunction,
 } from './utils';
-import injectData from '../../injectData';
 // @ts-expect-error TS7016
 import cliTruncate from 'cli-truncate';
 import moment from 'moment';
@@ -21,8 +21,8 @@ import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUt
 import LoadingGraph from '../../utils/components/LoadingGraph';
 import MouseIcon from '../../utils/components/MouseIcon';
 
-import CenterIcon from '../../utils/components/CenterIcon';
 import stylesToClassname from '../../../utils/stylesToClassName';
+import CenterIcon from '../../utils/components/CenterIcon';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 const styles = StyleSheet.create({
@@ -796,7 +796,7 @@ class Streamgraph extends PureComponent<StreamgraphProps> {
             loading = '';
         }
         return (
-            <FormatFullScreenMode>
+            <FormatFullScreenMode forceRerenderOnToggle>
                 <div
                     // @ts-expect-error TS2339
                     ref={this.divContainer}
