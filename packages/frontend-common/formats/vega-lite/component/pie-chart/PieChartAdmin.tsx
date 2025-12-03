@@ -18,6 +18,7 @@ import { ASPECT_RATIO_8_5, type AspectRatio } from '../../../utils/aspectRatio';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../../i18n/I18NContext';
+import { FieldSelector } from '../../../../fields/form/FieldSelector';
 
 export const defaultArgs = {
     params: {
@@ -51,6 +52,7 @@ type PieChartArgs = {
     tooltipValue: string;
     labels?: boolean;
     aspectRatio: AspectRatio;
+    fieldToFilter?: string | null;
 };
 
 type PieChartAdminProps = {
@@ -248,6 +250,15 @@ const PieChartAdmin = ({
                             onValueTitleChange={handleTooltipValue}
                             valueTitle={tooltipValue}
                             thirdValue={false}
+                        />
+                        <FieldSelector
+                            value={args?.fieldToFilter ?? null}
+                            onChange={(fieldToFilter) =>
+                                onChange({
+                                    ...args,
+                                    fieldToFilter: fieldToFilter || null,
+                                })
+                            }
                         />
                         <FormControlLabel
                             control={
