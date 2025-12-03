@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import { hierarchy, pack } from 'd3-hierarchy';
 import memoize from 'lodash/memoize';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
 import { useCallback } from 'react';
 import type { Field } from '../../../fields/types';
 import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
+
 import injectData from '../../injectData';
 import { getColor } from '../../utils/colorUtils';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
@@ -102,18 +102,12 @@ const mapStateToProps = (
 
     const packingFunction = pack().size([diameter, diameter]).padding(5);
 
-    const root = hierarchy({ name: 'root', children: formatData })
-        .sum((d: { value: number }) => d.value)
-        .sort(
-            (
-                a: {
-                    value: number;
-                },
-                b: {
-                    value: number;
-                },
-            ) => b.value - a.value,
-        );
+    const root = hierarchy<Datum>({
+        name: 'root',
+        children: formatData,
+    } as Datum)
+        .sum((d) => d.value)
+        .sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
     const data = packingFunction(root).leaves();
 
     return {
@@ -129,3 +123,10 @@ export default compose<
     injectData(),
     connect(mapStateToProps),
 )(BubbleView);
+
+type Datum = {
+    _id: string;
+    name?: string;
+    value: number;
+    children?: Datum[];
+};

@@ -62,8 +62,9 @@ const FormatEditionDialog = ({
             open={isOpen}
             onClose={handleClose}
             scroll="body"
-            maxWidth="lg"
             id="format-edit-dialog"
+            maxWidth="lg"
+            PaperProps={{ sx: { maxWidth: '992px', width: '992px' } }}
         >
             <DialogTitle>
                 {translate('format_settings')}
