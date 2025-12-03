@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 import updateFacetValue from '../../services/updateFacetValue';
 import ark from './ark';
 import { searchSchema, type Filter } from './publishedDataset.schema';
+import publishFacets from './publishFacets';
 
 const app = new Koa();
 
@@ -241,18 +242,40 @@ export const getRemovedPage = async (ctx: any) => {
 export const removeResource = async (ctx: any) => {
     const { uri, reason } = ctx.request.body;
     const removedAt = ctx.request.body.removedAt ?? new Date();
+    const targetResource = await ctx.publishedDataset.findByUri(uri);
+    if (!targetResource || targetResource.removedAt) {
+        ctx.status = 404;
+        ctx.body = 'Resource not found';
+        return;
+    }
     await ctx.hiddenResource.create({
         uri,
         reason,
         removedAt,
     });
     ctx.body = await ctx.publishedDataset.hide(uri, reason, removedAt);
+
+    if ((await ctx.publishedDataset.countAll()) > 0) {
+        const fields = await ctx.field.findAll();
+        await publishFacets(ctx, fields, true);
+    }
 };
 
 export const restoreResource = async (ctx: any) => {
     const { uri } = ctx.request.body;
+    const targetResource = await ctx.publishedDataset.findByUri(uri);
+    if (!targetResource || !targetResource.removedAt) {
+        ctx.status = 404;
+        ctx.body = 'Resource not found';
+        return;
+    }
     await ctx.hiddenResource.deleteByUri(uri);
     ctx.body = await ctx.publishedDataset.restore(uri);
+
+    if ((await ctx.publishedDataset.countAll()) > 0) {
+        const fields = await ctx.field.findAll();
+        await publishFacets(ctx, fields, true);
+    }
 };
 
 export const addFieldToResource = async (ctx: any) => {

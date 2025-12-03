@@ -11,6 +11,11 @@ import {
     restoreResource,
     searchByField,
 } from './publishedDataset';
+import publishedDataset from '../../models/publishedDataset';
+import hiddenResource from '../../models/hiddenResource';
+import field from '../../models/field';
+import publishedFacet from '../../models/publishedFacet';
+import publishFacets from './publishFacets';
 
 describe('publishedDataset', () => {
     describe('getPage', () => {
@@ -1306,90 +1311,345 @@ describe('publishedDataset', () => {
 
     describe('removeResource', () => {
         const date = new Date();
-        const ctx = {
-            publishedDataset: {
-                hide: jest
-                    .fn()
-                    .mockImplementation(() => Promise.resolve('foo')),
-            },
-            request: {
-                body: {
-                    uri: 'the uri',
+        let db: any;
+        let defaultCtx: any;
+
+        beforeAll(async () => {
+            const connectionStringURI = process.env.MONGO_URL;
+            const connection = await MongoClient.connect(connectionStringURI!);
+            db = connection.db();
+            defaultCtx = {
+                tenant: 'tenant',
+                job: {
+                    id: 'jobId',
+                    data: {
+                        tenant: 'tenant',
+                    },
+                    log: jest.fn(),
+                },
+                publishedDataset: await publishedDataset(db),
+                hiddenResource: await hiddenResource(db),
+                field: await field(db),
+                publishedFacet: await publishedFacet(db),
+            };
+        });
+
+        beforeEach(async () => {
+            await defaultCtx.publishedDataset.deleteMany({});
+            await defaultCtx.publishedFacet.deleteMany({});
+            await defaultCtx.field.deleteMany({});
+            await defaultCtx.hiddenResource.deleteMany({});
+        });
+
+        it('should hide the target resource, creating hiddenResource and recomputing all facets', async () => {
+            const ctx = {
+                ...defaultCtx,
+                request: {
+                    body: {
+                        uri: 'uri2',
+                        reason: 'the reason',
+                        removedAt: date,
+                    },
+                },
+            };
+            await ctx.publishedDataset.insertMany([
+                {
+                    uri: 'uri1',
+                    versions: [
+                        {
+                            field1: 'value1',
+                            field2: 'value2',
+                        },
+                    ],
+                },
+                {
+                    uri: 'uri2',
+                    versions: [
+                        {
+                            field1: 'value3',
+                            field2: 'value4',
+                        },
+                    ],
+                },
+                {
+                    uri: 'uri3',
+                    versions: [
+                        {
+                            field1: 'value1',
+                            field2: 'value4',
+                        },
+                    ],
+                },
+            ]);
+            await ctx.field.insertMany([
+                { name: 'field1', isFacet: true },
+                { name: 'field2', isFacet: true },
+            ]);
+            await publishFacets(ctx, [
+                { name: 'field1', isFacet: true },
+                { name: 'field2', isFacet: true },
+            ]);
+            await removeResource(ctx);
+
+            const hiddenResource = await db
+                .collection('hiddenResource')
+                .find({})
+                .toArray();
+
+            expect(hiddenResource).toStrictEqual([
+                {
+                    _id: hiddenResource[0]._id,
+                    uri: 'uri2',
                     reason: 'the reason',
                     removedAt: date,
                 },
-            },
-            hiddenResource: {
-                create: jest.fn().mockImplementation(() => ({
-                    _id: '65ba559de49f0fc00f4581ba',
-                    uri: 'uid:/0R4JCK4F',
-                    reason: 'Reason',
-                    removedAt: date,
-                })),
-            },
-        };
+            ]);
 
-        it('should hide the resource', async () => {
-            await removeResource(ctx);
+            const publishedFacets = await db
+                .collection('publishedFacet')
+                .find({})
+                .sort({ field: 1, value: 1 })
+                .toArray();
 
-            expect(ctx.publishedDataset.hide).toHaveBeenCalledWith(
-                'the uri',
-                'the reason',
-                date,
-            );
+            expect(publishedFacets).toStrictEqual([
+                {
+                    _id: publishedFacets[0]._id,
+                    field: 'field1',
+                    value: 'value1',
+                    count: 2,
+                },
+                {
+                    _id: publishedFacets[1]._id,
+                    field: 'field2',
+                    value: 'value2',
+                    count: 1,
+                },
+                {
+                    _id: publishedFacets[2]._id,
+                    field: 'field2',
+                    value: 'value4',
+                    count: 1,
+                },
+            ]);
 
-            expect(ctx.hiddenResource.create).toHaveBeenCalledWith({
-                uri: 'the uri',
+            const removedResource = await ctx.publishedDataset.findOne({
+                uri: 'uri2',
+            });
+            expect(removedResource.reason).toBe('the reason');
+            expect(removedResource.removedAt).toBeDefined();
+
+            expect(ctx.body).toStrictEqual({
                 reason: 'the reason',
-                removedAt: date,
+                removedAt: expect.any(Date),
             });
         });
 
-        it('should return the result', async () => {
+        it('should do nothing if the resource is not found', async () => {
+            const ctx = {
+                ...defaultCtx,
+                request: {
+                    body: {
+                        uri: 'nonexistent-uri',
+                        reason: 'the reason',
+                        removedAt: date,
+                    },
+                },
+            };
             await removeResource(ctx);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
-            expect(ctx.body).toBe('foo');
+            const hiddenResource = await db
+                .collection('hiddenResource')
+                .find({})
+                .toArray();
+
+            expect(hiddenResource).toStrictEqual([]);
+
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toBe('Resource not found');
+        });
+
+        it('should do nothing if the resource is already removed', async () => {
+            const ctx = {
+                ...defaultCtx,
+                request: {
+                    body: {
+                        uri: 'uri1',
+                        reason: 'the reason',
+                        removedAt: date,
+                    },
+                },
+            };
+            await ctx.publishedDataset.insertMany([
+                {
+                    uri: 'uri1',
+                    versions: [
+                        {
+                            field1: 'value1',
+                            field2: 'value2',
+                        },
+                    ],
+                    removedAt: new Date(),
+                },
+            ]);
+            await removeResource(ctx);
+
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toBe('Resource not found');
         });
     });
 
-    describe('restoreResource', () => {
-        const ctx = {
-            publishedDataset: {
-                restore: jest
-                    .fn()
-                    .mockImplementation(() => Promise.resolve('foo')),
-            },
-            request: {
-                body: {
-                    uri: 'the uri',
+    describe.only('restoreResource', () => {
+        let defaultCtx: any;
+        let db: any;
+
+        beforeAll(async () => {
+            const connectionStringURI = process.env.MONGO_URL;
+            const connection = await MongoClient.connect(connectionStringURI!);
+            db = connection.db();
+            defaultCtx = {
+                tenant: 'tenant',
+                job: {
+                    id: 'jobId',
+                    data: {
+                        tenant: 'tenant',
+                    },
+                    log: jest.fn(),
                 },
-            },
-            hiddenResource: {
-                deleteByUri: jest.fn().mockImplementation(() => ({
-                    acknowledged: true,
-                    deletedCount: 1,
-                })),
-            },
-        };
-
-        it('should restore the resource', async () => {
-            await restoreResource(ctx);
-
-            expect(ctx.publishedDataset.restore).toHaveBeenCalledWith(
-                'the uri',
-            );
-
-            expect(ctx.hiddenResource.deleteByUri).toHaveBeenCalledWith(
-                'the uri',
-            );
+                publishedDataset: await publishedDataset(db),
+                hiddenResource: await hiddenResource(db),
+                field: await field(db),
+                publishedFacet: await publishedFacet(db),
+            };
+        });
+        beforeEach(async () => {
+            await defaultCtx.publishedDataset.deleteMany({});
+            await defaultCtx.publishedFacet.deleteMany({});
+            await defaultCtx.field.deleteMany({});
+            await defaultCtx.hiddenResource.deleteMany({});
         });
 
-        it('should return the result', async () => {
+        it('should restore the resource, republishing facets', async () => {
+            const ctx = {
+                ...defaultCtx,
+                request: {
+                    body: {
+                        uri: 'the uri',
+                    },
+                },
+                body: null,
+            };
+            await db.collection('field').insertMany([
+                { name: 'field1', isFacet: true },
+                { name: 'field2', isFacet: true },
+            ]);
+            await db.collection('hiddenResource').insertOne({
+                uri: 'uri',
+                reason: 'the reason',
+                removedAt: new Date(),
+            });
+            await db.collection('publishedDataset').insertOne({
+                uri: 'the uri',
+                versions: [
+                    {
+                        field1: 'value1',
+                        field2: 'value2',
+                    },
+                ],
+                reason: 'the reason',
+                removedAt: new Date(),
+            });
             await restoreResource(ctx);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
-            expect(ctx.body).toBe('foo');
+            const hiddenResource = await db
+                .collection('hiddenResource')
+                .findOne({ uri: 'the uri' });
+
+            expect(hiddenResource).toBeNull();
+
+            const restoredResource = await db
+                .collection('publishedDataset')
+                .findOne({ uri: 'the uri' });
+
+            expect(restoredResource).toEqual({
+                _id: restoredResource._id,
+                uri: 'the uri',
+                versions: [
+                    {
+                        field1: 'value1',
+                        field2: 'value2',
+                    },
+                ],
+            });
+
+            const facets = await db
+                .collection('publishedFacet')
+                .find({})
+                .sort({ field: 1, value: 1 })
+                .toArray();
+
+            expect(facets).toEqual([
+                {
+                    _id: facets[0]._id,
+                    count: 1,
+                    field: 'field1',
+                    value: 'value1',
+                },
+                {
+                    _id: facets[1]._id,
+                    count: 1,
+                    field: 'field2',
+                    value: 'value2',
+                },
+            ]);
+
+            expect(ctx.body).toStrictEqual({
+                acknowledged: true,
+                matchedCount: 1,
+                modifiedCount: 1,
+                upsertedCount: 0,
+                upsertedId: null,
+            });
+        });
+
+        it('should do nothing if the resource does not exists', async () => {
+            const ctx = {
+                ...defaultCtx,
+                request: {
+                    body: {
+                        uri: 'nonexistent-uri',
+                    },
+                },
+                body: null,
+            };
+            await restoreResource(ctx);
+
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toBe('Resource not found');
+        });
+
+        it('should do nothing if the resource is not removed', async () => {
+            const ctx = {
+                ...defaultCtx,
+                request: {
+                    body: {
+                        uri: 'the uri',
+                    },
+                },
+                body: null,
+            };
+            await db.collection('publishedDataset').insertOne({
+                uri: 'the uri',
+                versions: [
+                    {
+                        field1: 'value1',
+                        field2: 'value2',
+                    },
+                ],
+            });
+            await restoreResource(ctx);
+
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toBe('Resource not found');
         });
     });
 
