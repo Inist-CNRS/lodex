@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import {
     lazy,
     Suspense,
@@ -8,6 +8,9 @@ import {
 } from 'react';
 import type { TreeProps } from 'react-d3-tree';
 import { compose } from 'recompose';
+import { CloseAllIcon } from '../../../../public-app/src/annotation/icons/CloseAllIcon';
+import { OpenAllIcon } from '../../../../public-app/src/annotation/icons/OpenAllIcon';
+import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
@@ -59,14 +62,21 @@ export function HierarchicalTreeView({
         [nodeWidth, nodeHeight, spacing],
     );
 
-    const { parentRef, treeRef, dimensions, treeTranslate, centerOnNode } =
-        useHierarchicalTreeController({
-            orientation,
-            nodeSize,
-            spaceBetweenNodes: spacing,
-            initialZoom: zoom,
-            initialDepth: depth,
-        });
+    const {
+        parentRef,
+        treeRef,
+        dimensions,
+        treeTranslate,
+        centerOnNode,
+        openAll,
+        closeAll,
+    } = useHierarchicalTreeController({
+        orientation,
+        nodeSize,
+        spaceBetweenNodes: spacing,
+        initialZoom: zoom,
+        initialDepth: depth,
+    });
 
     const tree = useFormatTreeData({
         data: formatData,
@@ -79,6 +89,14 @@ export function HierarchicalTreeView({
     return (
         <Box sx={{ height: `500px`, position: 'relative' }} role="tree">
             <FormatFullScreenMode>
+                <GraphAction>
+                    <IconButton onClick={closeAll} size="small">
+                        <CloseAllIcon />
+                    </IconButton>
+                    <IconButton onClick={openAll} size="small">
+                        <OpenAllIcon />
+                    </IconButton>
+                </GraphAction>
                 <Box ref={parentRef} sx={{ width: '100%', height: '100%' }}>
                     <Suspense>
                         <TreeView

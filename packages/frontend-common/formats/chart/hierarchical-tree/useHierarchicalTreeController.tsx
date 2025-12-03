@@ -83,6 +83,52 @@ export function useHierarchicalTreeController({
         [],
     );
 
+    const walkNodes = useCallback((action: (node: TreeNodeDatum) => void) => {
+        if (!treeRef.current) {
+            return;
+        }
+
+        const nodeQueue = [...treeRef.current.state.data];
+
+        const interval = setInterval(() => {
+            const node = nodeQueue.shift();
+            if (!node) {
+                clearInterval(interval);
+                return;
+            }
+
+            action(node);
+
+            if (node.children?.length) {
+                nodeQueue.push(...node.children);
+            }
+        }, 1);
+    }, []);
+
+    const openAll = useCallback(() => {
+        // We need to walk the nodes in order to open them one by one
+        // This requires async execution otherwise this won't work properly
+        walkNodes((node) => {
+            if (!node.__rd3t.collapsed) {
+                return;
+            }
+
+            treeRef.current!.handleNodeToggle(node.__rd3t.id);
+        });
+    }, [walkNodes]);
+
+    const closeAll = useCallback(() => {
+        // We need to walk the nodes in order to close them
+        // This requires async execution otherwise this won't work properly
+        walkNodes((node) => {
+            if (node.__rd3t.collapsed || node.attributes?.hasParent === true) {
+                return;
+            }
+
+            treeRef.current!.handleNodeToggle(node.__rd3t.id);
+        });
+    }, [walkNodes]);
+
     return useMemo(
         () => ({
             parentRef,
@@ -90,8 +136,10 @@ export function useHierarchicalTreeController({
             dimensions,
             treeTranslate,
             centerOnNode,
+            openAll,
+            closeAll,
         }),
-        [dimensions, treeTranslate, centerOnNode],
+        [dimensions, treeTranslate, centerOnNode, openAll, closeAll],
     );
 }
 
