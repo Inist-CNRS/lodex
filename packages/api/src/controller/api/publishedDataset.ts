@@ -242,6 +242,12 @@ export const getRemovedPage = async (ctx: any) => {
 export const removeResource = async (ctx: any) => {
     const { uri, reason } = ctx.request.body;
     const removedAt = ctx.request.body.removedAt ?? new Date();
+    const targetResource = await ctx.publishedDataset.findByUri(uri);
+    if (!targetResource || targetResource.removedAt) {
+        ctx.status = 404;
+        ctx.body = 'Resource not found';
+        return;
+    }
     await ctx.hiddenResource.create({
         uri,
         reason,
@@ -257,6 +263,12 @@ export const removeResource = async (ctx: any) => {
 
 export const restoreResource = async (ctx: any) => {
     const { uri } = ctx.request.body;
+    const targetResource = await ctx.publishedDataset.findByUri(uri);
+    if (!targetResource || !targetResource.removedAt) {
+        ctx.status = 404;
+        ctx.body = 'Resource not found';
+        return;
+    }
     await ctx.hiddenResource.deleteByUri(uri);
     ctx.body = await ctx.publishedDataset.restore(uri);
 
