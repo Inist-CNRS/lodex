@@ -1,42 +1,11 @@
 import MoreIcon from '@mui/icons-material/Add';
 import MinusIcon from '@mui/icons-material/Remove';
-import { Box, IconButton, Tooltip } from '@mui/material';
-import classNames from 'classnames';
+import { Box, Button, Tooltip } from '@mui/material';
 import type { CustomNodeElementProps } from 'react-d3-tree';
-import stylesToClassName from '../../../utils/stylesToClassName';
 
-const styles = stylesToClassName(
-    {
-        container: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#ffffff',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderRadius: '4px',
-        },
-        group: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            borderTopRightRadius: '4px',
-            borderTopLeftRadius: '4px',
-            minWidth: '0',
-            gap: '8px',
-            width: '100%',
-            paddingInline: '8px',
-        },
-        label: {
-            display: 'block',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            flex: '1',
-        },
-    },
-    'hierarchical-tree-node',
-);
+export const BUTTON_SIZE = 20;
+export const BUTTON_SPACING = 8;
+export const HEADER_HEIGHT = 32;
 
 export function HierarchicalTreeNode({
     orientation,
@@ -63,20 +32,48 @@ export function HierarchicalTreeNode({
 
     const title = nodeDatum?.attributes?.title ?? nodeDatum.name;
 
+    const buttonPosition =
+        orientation === 'horizontal'
+            ? {
+                  top: (HEADER_HEIGHT - BUTTON_SIZE - 2) / 2,
+                  right: -1 * BUTTON_SIZE - BUTTON_SPACING,
+              }
+            : {
+                  bottom: -1 * BUTTON_SIZE - BUTTON_SPACING,
+                  left: (width - BUTTON_SIZE) / 2,
+              };
+
     return (
         <foreignObject
-            width={width}
-            height={height}
+            width={
+                width +
+                (orientation === 'horizontal'
+                    ? BUTTON_SIZE + BUTTON_SPACING
+                    : 0)
+            }
+            height={
+                height +
+                (orientation === 'vertical' ? BUTTON_SIZE + BUTTON_SPACING : 0)
+            }
             x={orientation === 'horizontal' ? 0 : (-1 * width) / 2}
-            y={orientation === 'horizontal' ? -16 : 0}
+            y={orientation === 'horizontal' ? (-1 * HEADER_HEIGHT) / 2 : 0}
         >
             <Box
                 role="treeitem"
-                // @ts-expect-error TS2339
-                className={classNames(styles.container)}
+                className="hierarchical-tree-node-container"
                 sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#ffffff',
+                    borderWidth: '1px',
+                    borderStyle: 'solid',
+                    borderRadius: '4px',
                     borderColor: color,
                     color,
+                    position: 'relative',
+                    width: `${width}px`,
+                    maxHeight: `${height}px`,
                 }}
                 onClick={handleClick}
                 onMouseOver={onNodeMouseOver}
@@ -85,36 +82,64 @@ export function HierarchicalTreeNode({
                 <Box
                     role="group"
                     aria-label={nodeDatum.name}
-                    // @ts-expect-error TS2339
-                    className={classNames(styles.group)}
+                    className="hierarchical-tree-node-group"
                     sx={{
-                        padding: '4px',
-                        height: '32px',
+                        padding: '4px 8px',
+                        height: `${HEADER_HEIGHT - 2}px`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        borderTopRightRadius: '4px',
+                        borderTopLeftRadius: '4px',
+                        minWidth: '0',
+                        gap: '8px',
+                        width: '100%',
                     }}
                 >
                     <Tooltip title={title}>
-                        <span
-                            // @ts-expect-error TS2339
-                            className={classNames(styles.label)}
+                        <Box
+                            className="hierarchical-tree-node-label"
+                            sx={{
+                                display: 'block',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                flex: '1',
+                            }}
+                            component="span"
                         >
                             {title}
-                        </span>
+                        </Box>
                     </Tooltip>
-
-                    {hasChildren && (
-                        <IconButton
-                            sx={{
-                                width: '20px',
-                                height: '20px',
-                                '& svg': {
-                                    fontSize: '16px',
-                                },
-                            }}
-                        >
-                            {isOpen ? <MinusIcon /> : <MoreIcon />}
-                        </IconButton>
-                    )}
                 </Box>
+
+                {hasChildren && (
+                    <Button
+                        sx={{
+                            minWidth: 0,
+                            width: `${BUTTON_SIZE}px`,
+                            height: `${BUTTON_SIZE}px`,
+                            position: 'absolute',
+                            padding: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#ffffff',
+                            border: '1px #000000 solid',
+                            borderRadius: '50%',
+                            ...buttonPosition,
+                            '&:hover': {
+                                backgroundColor: '#f0f0f0',
+                            },
+                            '& svg': {
+                                fontSize: `${BUTTON_SIZE - 4}px`,
+                            },
+                        }}
+                        className="hierarchical-tree-node-toggle"
+                    >
+                        {isOpen ? <MinusIcon /> : <MoreIcon />}
+                    </Button>
+                )}
             </Box>
         </foreignObject>
     );

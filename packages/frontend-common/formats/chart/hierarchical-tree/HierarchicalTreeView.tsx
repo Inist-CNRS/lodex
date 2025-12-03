@@ -21,7 +21,11 @@ import {
     DEFAULT_SPACE_BETWEEN_NODES,
     DEFAULT_ZOOM,
 } from './const';
-import { HierarchicalTreeNode } from './HierarchicalTreeNode';
+import {
+    BUTTON_SIZE,
+    BUTTON_SPACING,
+    HierarchicalTreeNode,
+} from './HierarchicalTreeNode';
 import type { Datum } from './type';
 import { useFormatTreeData } from './useFormatTreeData';
 import { useHierarchicalTreeController } from './useHierarchicalTreeController';
@@ -36,13 +40,17 @@ export function HierarchicalTreeView({
     nodeWidth,
     nodeHeight,
     orientation = DEFAULT_ORIENTATION,
-    spaceBetweenNodes = DEFAULT_SPACE_BETWEEN_NODES,
-    initialZoom = DEFAULT_ZOOM,
-    initialDepth = DEFAULT_DEPTH,
+    spaceBetweenNodes,
+    initialZoom,
+    initialDepth,
     minimumScaleValue,
     maximumScaleValue,
     colors,
 }: HierarchicalTreeViewProps) {
+    const zoom = initialZoom ?? DEFAULT_ZOOM;
+    const depth = initialDepth ?? DEFAULT_DEPTH;
+    const spacing = spaceBetweenNodes ?? DEFAULT_SPACE_BETWEEN_NODES;
+
     const nodeSize = useMemo(
         () => ({
             x: (nodeWidth ?? DEFAULT_NODE_WIDTH) + 32,
@@ -55,12 +63,12 @@ export function HierarchicalTreeView({
         useHierarchicalTreeController({
             orientation,
             nodeSize,
-            spaceBetweenNodes,
-            initialZoom,
-            initialDepth,
+            spaceBetweenNodes: spacing,
+            initialZoom: zoom,
+            initialDepth: depth,
         });
 
-    const { tree } = useFormatTreeData({
+    const tree = useFormatTreeData({
         data: formatData,
     });
 
@@ -88,8 +96,18 @@ export function HierarchicalTreeView({
                                 />
                             )}
                             nodeSize={{
-                                x: (nodeWidth ?? DEFAULT_NODE_WIDTH) + 32,
-                                y: (nodeHeight ?? DEFAULT_NODE_HEIGHT) + 32,
+                                x:
+                                    (nodeWidth ?? DEFAULT_NODE_WIDTH) +
+                                    (orientation === 'horizontal'
+                                        ? BUTTON_SIZE + BUTTON_SPACING
+                                        : 0) +
+                                    spacing,
+                                y:
+                                    (nodeHeight ?? DEFAULT_NODE_HEIGHT) +
+                                    (orientation === 'vertical'
+                                        ? BUTTON_SIZE + BUTTON_SPACING
+                                        : 0) +
+                                    spacing,
                             }}
                             scaleExtent={{
                                 min:
@@ -99,8 +117,8 @@ export function HierarchicalTreeView({
                                     maximumScaleValue ??
                                     DEFAULT_MAXIMUM_SCALE_VALUE,
                             }}
-                            zoom={initialZoom}
-                            initialDepth={initialDepth}
+                            zoom={zoom}
+                            initialDepth={depth}
                             hasInteractiveNodes
                             onNodeClick={centerOnNode}
                             centeringTransitionDuration={150}
@@ -129,15 +147,17 @@ type HierarchicalTreeViewProps = {
     orientation?: 'horizontal' | 'vertical';
     nodeWidth?: number | null;
     nodeHeight?: number | null;
-    spaceBetweenNodes?: number;
+    spaceBetweenNodes?: number | null;
 
-    initialZoom?: number;
-    initialDepth?: number;
+    initialZoom?: number | null;
+    initialDepth?: number | null;
 
     minimumScaleValue?: number | null;
     maximumScaleValue?: number | null;
     colors?: string;
 };
 
-// @ts-expect-error TS2345
-export default compose(injectData())(HierarchicalTreeView);
+export default compose<
+    HierarchicalTreeViewProps,
+    Omit<HierarchicalTreeViewProps, 'formatData'>
+>(injectData())(HierarchicalTreeView);

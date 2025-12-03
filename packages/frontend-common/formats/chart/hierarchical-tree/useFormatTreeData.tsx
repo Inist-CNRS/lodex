@@ -10,25 +10,56 @@ const ALLOWED_ATTRIBUTE_KEYS = [
     'detail3',
 ] as const;
 
-function bindAttributes(
+export function bindAttributes(
     datum: Datum,
-    node: RawNodeDatum,
+    attributes: Record<string, string | number | boolean> | undefined,
     kind: 'source' | 'target',
-) {
-    for (const key of ALLOWED_ATTRIBUTE_KEYS) {
-        const datumKey = `${kind}_${key}` as keyof Datum;
-        if (
-            typeof datum[datumKey] === 'string' ||
-            typeof datum[datumKey] === 'number'
-        ) {
-            node.attributes = node.attributes || {};
-            node.attributes![key] = datum[datumKey];
+): Record<string, string | number | boolean> {
+    return ALLOWED_ATTRIBUTE_KEYS.reduce(
+        (acc, key) => {
+            const datumKey = `${kind}_${key}` as keyof Datum;
+            const value = datum[datumKey];
+
+            if (typeof value === 'string' || typeof value === 'number') {
+                acc[key] = value;
+            }
+
+            return acc;
+        },
+        { ...attributes } as Record<string, string | number | boolean>,
+    );
+}
+
+export function createTree(
+    nodeMap: Map<string, RawNodeDatum>,
+    childrenByParent: Record<string, RawNodeDatum[]>,
+): RawNodeDatum[] {
+    const buildNode = (nodeDatum: RawNodeDatum): RawNodeDatum => {
+        const children = childrenByParent[nodeDatum.name]?.filter(
+            (child) => child.name !== nodeDatum.name,
+        );
+
+        if (children && children.length > 0) {
+            nodeDatum.children = children.map(buildNode);
         }
-    }
+
+        return nodeDatum;
+    };
+
+    const hasParent = (nodeName: string): boolean =>
+        Array.from(nodeMap.values()).some((datum) =>
+            childrenByParent[datum.name]?.some(
+                (child) => child.name === nodeName,
+            ),
+        );
+
+    return Array.from(nodeMap.values())
+        .filter((node) => !hasParent(node.name))
+        .map(buildNode);
 }
 
 export function useFormatTreeData({ data }: UseFormatTreeDataParams) {
-    const tree = useMemo(() => {
+    return useMemo(() => {
         const map = new Map<string, RawNodeDatum>();
 
         for (const datum of data) {
@@ -55,8 +86,16 @@ export function useFormatTreeData({ data }: UseFormatTreeDataParams) {
             const sourceNode = map.get(datum.source)!;
             const targetNode = map.get(datum.target)!;
 
-            bindAttributes(datum, sourceNode, 'source');
-            bindAttributes(datum, targetNode, 'target');
+            sourceNode.attributes = bindAttributes(
+                datum,
+                sourceNode.attributes,
+                'source',
+            );
+            targetNode.attributes = bindAttributes(
+                datum,
+                targetNode.attributes,
+                'target',
+            );
             targetNode.attributes!.hasParent = true;
 
             sourceNode.children!.push(targetNode);
@@ -66,13 +105,6 @@ export function useFormatTreeData({ data }: UseFormatTreeDataParams) {
             (node) => node.attributes!.hasParent === false,
         );
     }, [data]);
-
-    return useMemo<UseFormatTreeDataResult>(
-        () => ({
-            tree,
-        }),
-        [tree],
-    );
 }
 
 export type UseFormatTreeDataParams = {
