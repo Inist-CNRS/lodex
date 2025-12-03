@@ -5,13 +5,30 @@ import {
     deletePrecomputed,
     getPrecomputedResultList,
     getPrecomputedResultColumns,
+    postImportPrecomputedResult,
 } from './precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
 import type { PreComputation } from '../../models/precomputed';
+import asyncBusboy from '@recuperateur/async-busboy';
+import fs from 'fs/promises';
+import { TaskStatus } from '@lodex/common';
+
+const mockedAsyncBusboy = asyncBusboy as jest.MockedFunction<
+    typeof asyncBusboy
+>;
 
 jest.mock('../../workers/tools', () => ({
     getActiveJob: jest.fn(),
     cancelJob: jest.fn(),
+}));
+
+jest.mock('@recuperateur/async-busboy', () => {
+    return jest.fn();
+});
+
+jest.mock('fs/promises', () => ({
+    readFile: jest.fn(),
+    unlink: jest.fn(),
 }));
 
 describe('Precomputed controller', () => {
@@ -192,6 +209,122 @@ describe('Precomputed controller', () => {
             expect(ctx.body).toEqual({
                 columns: ['column1', 'column2'],
             });
+        });
+    });
+
+    describe('postImportPrecomputedResult', () => {
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('should return 400 if no body is provided', async () => {
+            // Mock asyncBusboy to throw an error for malformed multipart data
+            mockedAsyncBusboy.mockRejectedValue(
+                new Error('Multipart: Boundary not found'),
+            );
+
+            const ctx = {
+                configTenant: {},
+                req: {
+                    headers: {
+                        'content-type': 'multipart/form-data',
+                    },
+                },
+            } as unknown as AppContext<any, any>;
+
+            const precomputedId = new ObjectId().toString();
+            await postImportPrecomputedResult(ctx, precomputedId);
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body).toEqual({
+                message: 'Multipart: Boundary not found',
+            });
+        });
+
+        it('should return 400 if more than one file is provided', async () => {
+            // Mock asyncBusboy to return multiple files
+            mockedAsyncBusboy.mockResolvedValue({
+                files: [
+                    { filename: 'file1.json', path: '/tmp/file1' },
+                    { filename: 'file2.json', path: '/tmp/file2' },
+                ],
+                fields: {},
+            });
+
+            const ctx = {
+                configTenant: {},
+                req: {
+                    headers: {
+                        'content-type':
+                            'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                    },
+                },
+            } as unknown as AppContext<any, any>;
+
+            const precomputedId = new ObjectId().toString();
+            await postImportPrecomputedResult(ctx, precomputedId);
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body).toEqual({
+                message: 'Only one file must be provided',
+            });
+        });
+
+        it('should save the file in db', async () => {
+            // Mock asyncBusboy to return a single file
+            mockedAsyncBusboy.mockResolvedValue({
+                files: [{ filename: 'file1.json', path: '/tmp/file1' }],
+                fields: {},
+            });
+
+            fs.readFile = jest.fn().mockResolvedValue(
+                JSON.stringify([
+                    { resultField1: 'value1', resultField2: 'valueA' },
+                    { resultField1: 'value2', resultField2: 'valueA' },
+                ]),
+            );
+
+            const ctx = {
+                configTenant: {},
+                req: {
+                    headers: {
+                        'content-type':
+                            'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                    },
+                },
+                precomputed: {
+                    insertManyResults: jest.fn().mockResolvedValue(undefined),
+                    deleteManyResults: jest.fn().mockResolvedValue(undefined),
+                    updateStatus: jest.fn().mockResolvedValue(undefined),
+                },
+            } as unknown as AppContext<any, any>;
+
+            const precomputedId = new ObjectId().toString();
+            await postImportPrecomputedResult(ctx, precomputedId);
+
+            expect(ctx.body).toEqual({
+                message: 'Imported',
+            });
+
+            expect(ctx.precomputed.deleteManyResults).toHaveBeenCalledWith({
+                precomputedId,
+            });
+
+            expect(ctx.precomputed.insertManyResults).toHaveBeenCalledWith(
+                precomputedId,
+                [
+                    { resultField1: 'value1', resultField2: 'valueA' },
+                    { resultField1: 'value2', resultField2: 'valueA' },
+                ],
+            );
+
+            expect(ctx.precomputed.updateStatus).toHaveBeenCalledWith(
+                precomputedId,
+                TaskStatus.FINISHED,
+                {
+                    hasData: true,
+                },
+            );
         });
     });
 });

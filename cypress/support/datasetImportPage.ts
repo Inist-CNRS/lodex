@@ -7,6 +7,39 @@ export const openImport = () => {
     cy.location('pathname').should('equal', '/data/existing');
 };
 
+export const selectLoader = (loaderName = 'automatic') => {
+    cy.get('.select-loader').first().click();
+    cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
+};
+
+export const addFile = (filename: string, mimeType = 'text/csv') => {
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+    selectLoader();
+    cy.get('.btn-upload-dataset').click({ force: true });
+};
+
+export const addFileWithoutClick = (
+    filename: string,
+    mimeType = 'text/csv',
+) => {
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+};
+export const importAnnotations = (filename: string) => {
+    fillInputWithFixture(
+        'input[name="import_annotations"]',
+        filename,
+        'application/json',
+    );
+
+    cy.findByText(`${filename} file have been imported successfully.`, {
+        timeout: 2000,
+    }).should('exist');
+
+    cy.wait(1000);
+};
+
 export const importDataset = (filename: string, mimeType = 'text/csv') => {
     addFile(filename, mimeType);
     cy.get('[role="grid"]', { timeout: 12000 }).should('exist');
@@ -162,36 +195,4 @@ export const checkListOfFiltererFileFormats = () => {
     cy.get('button').contains('TSV').click();
     cy.get('li>div>span').should('have.length', 4);
     cy.get('button').contains('Cancel').click({ force: true });
-};
-export const addFile = (filename: string, mimeType = 'text/csv') => {
-    fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(300);
-    selectLoader();
-    cy.get('.btn-upload-dataset').click({ force: true });
-};
-export const addFileWithoutClick = (
-    filename: string,
-    mimeType = 'text/csv',
-) => {
-    fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(300);
-};
-
-export const selectLoader = (loaderName = 'automatic') => {
-    cy.get('.select-loader').first().click();
-    cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
-};
-
-export const importAnnotations = (filename: string) => {
-    fillInputWithFixture(
-        'input[name="import_annotations"]',
-        filename,
-        'application/json',
-    );
-
-    cy.findByText(`${filename} file have been imported successfully.`, {
-        timeout: 2000,
-    }).should('exist');
-
-    cy.wait(1000);
 };

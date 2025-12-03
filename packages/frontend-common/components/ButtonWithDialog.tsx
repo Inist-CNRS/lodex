@@ -9,7 +9,7 @@ import {
     DialogTitle,
 } from '@mui/material';
 
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 import CancelButton from './CancelButton';
 
 const dialogStyle = {
@@ -25,15 +25,14 @@ const dialogStyle = {
 interface PureButtonWithDialogProps {
     handleClose?(...args: unknown[]): unknown;
     handleOpen?(...args: unknown[]): unknown;
-    p: unknown;
     open?: boolean;
     show?: boolean;
     style?: object;
     dialog: React.ReactNode;
-    label: object | string;
+    label: string;
     icon?: React.ReactNode;
     className?: string;
-    actions?: React.ReactNode[];
+    actions?: React.ReactNode[] | React.ReactNode;
     openButton?: React.ReactNode;
 }
 
@@ -47,14 +46,7 @@ export const PureButtonWithDialog = ({
     className,
     label,
     icon,
-    p: polyglot,
-    actions = [
-        <CancelButton key="cancel" onClick={handleClose}>
-            {/*
-             // @ts-expect-error TS18046 */}
-            {polyglot.t('close')}
-        </CancelButton>,
-    ],
+    actions,
     openButton = (
         <Button
             variant="text"
@@ -63,12 +55,11 @@ export const PureButtonWithDialog = ({
             startIcon={icon}
             onClick={handleOpen}
         >
-            {/*
-             // @ts-expect-error TS2769 */}
             {label}
         </Button>
     ),
 }: PureButtonWithDialogProps) => {
+    const { translate } = useTranslate();
     if (!show) {
         return null;
     }
@@ -83,8 +74,6 @@ export const PureButtonWithDialog = ({
                 scroll="body"
                 aria-labelledby="dialog-title"
             >
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <DialogTitle id="dialog-title">{label}</DialogTitle>
                 <DialogContent style={dialogStyle.content}>
                     <div className="dialog-body">
@@ -97,7 +86,11 @@ export const PureButtonWithDialog = ({
                         justifyContent="flex-end"
                         className="dialog-actions"
                     >
-                        {actions}
+                        {actions ?? [
+                            <CancelButton key="cancel" onClick={handleClose}>
+                                {translate('close')}
+                            </CancelButton>,
+                        ]}
                     </Box>
                 </DialogActions>
             </Dialog>
@@ -105,4 +98,4 @@ export const PureButtonWithDialog = ({
     );
 };
 
-export default translate(PureButtonWithDialog);
+export default PureButtonWithDialog;

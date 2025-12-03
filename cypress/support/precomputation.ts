@@ -65,3 +65,33 @@ export const createPrecomputation = ({
     cy.findByRole('button', { name: 'Save' }).click();
     cy.contains('Precomputed data added successfully').should('be.visible');
 };
+
+export const importPrecomputationResults = ({
+    filePath,
+}: {
+    filePath: string;
+}) => {
+    cy.findByText('Import').click();
+    cy.get('input[type="file"]').attachFile(filePath);
+    cy.findByRole('button', { name: 'Import' }).click();
+    cy.contains('Import completed successfully').should('be.visible');
+};
+
+export const importPrecomputationResultsWithDialog = ({
+    filePath,
+}: {
+    filePath: string;
+}) => {
+    cy.findByText('Import').click();
+    cy.contains('Import Precomputed results').should('be.visible');
+    cy.contains('Warning: this will overwrite the current results').should(
+        'be.visible',
+    );
+    cy.get('input[type="file"]').attachFile(filePath);
+    cy.findByRole('button', { name: 'Import' }).click();
+    cy.contains('Import completed successfully').should('be.visible');
+};
+
+export const exportPrecomputationResults = () => {
+    cy.findByText('Download data').click();
+};

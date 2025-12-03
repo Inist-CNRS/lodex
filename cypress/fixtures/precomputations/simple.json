@@ -1,0 +1,106 @@
+[
+    {
+        "id": "taxon",
+        "value": 20
+    },
+    {
+        "id": "predation",
+        "value": 15
+    },
+    {
+        "id": "genus",
+        "value": 13
+    },
+    {
+        "id": "fault bar",
+        "value": 13
+    },
+    {
+        "id": "bristle",
+        "value": 12
+    },
+    {
+        "id": "darter",
+        "value": 10
+    },
+    {
+        "id": "patchiness",
+        "value": 10
+    },
+    {
+        "id": "pallid sturgeon",
+        "value": 9
+    },
+    {
+        "id": "obscure puffer",
+        "value": 9
+    },
+    {
+        "id": "riparian",
+        "value": 9
+    },
+    {
+        "id": "body size",
+        "value": 9
+    },
+    {
+        "id": "ocellated puffer",
+        "value": 9
+    },
+    {
+        "id": "diptera",
+        "value": 8
+    },
+    {
+        "id": "phylogeny",
+        "value": 8
+    },
+    {
+        "id": "bsafs",
+        "value": 8
+    },
+    {
+        "id": "nflow restoration",
+        "value": 8
+    },
+    {
+        "id": "common carp",
+        "value": 8
+    },
+    {
+        "id": "juvenile common carp",
+        "value": 2
+    },
+    {
+        "id": "brachiopod",
+        "value": 8
+    },
+    {
+        "id": "a: adaptive",
+        "value": 8
+    },
+    {
+        "id": "present study",
+        "value": 8
+    },
+    {
+        "id": "bird specie",
+        "value": 8
+    },
+    {
+        "id": "antipredator behavior",
+        "value": 8
+    },
+    {
+        "id": "eastern gambusia",
+        "value": 7
+    },
+    {
+        "id": "sensillum",
+        "value": 7
+    },
+    {
+        "id": "functional trait",
+        "value": 42
+    }
+]

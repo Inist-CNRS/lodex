@@ -1497,3 +1497,5 @@
 "color_picker"	"Color picker"	"Sélecteur de couleur"
 "caption"	"Caption"	"Légende"
 "caption_title"	"Caption title"	"Titre de la légende"
+"import_precomputed_result_confirmation_title"	"Import Precomputed results"	"Importer les résultats du précalculs"
+"import_precomputed_result_confirmation_message"	"Warning: this will overwrite the current results"	"Attention: ceci écrasera les résultats actuels"
