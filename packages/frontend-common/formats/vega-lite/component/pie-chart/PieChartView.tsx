@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 
-import PieChart from '../../models/PieChart';
+import { buildPieChartSpec } from '../../models/PieChart';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import {
     convertSpecTemplate,
@@ -27,7 +27,7 @@ interface PieChartViewProps {
     data?: {
         values: any;
     };
-    colors?: string;
+    colors?: string[];
     tooltip?: boolean;
     tooltipCategory?: string;
     tooltipValue?: string;
@@ -76,7 +76,13 @@ const PieChartView = ({
             }
         }
 
-        const specBuilder = new PieChart();
+        const spec = buildPieChartSpec({
+            hasTooltip: tooltip,
+            tooltipCategory,
+            tooltipValue,
+            labels,
+            colors,
+        });
 
         // enable the orderBy in vega-lite
         let count = 1;
@@ -85,23 +91,17 @@ const PieChartView = ({
             entry.order = count++;
         });
 
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipCategory);
-        specBuilder.setTooltipValue(tooltipValue);
-        specBuilder.setColor(colors);
-        specBuilder.setLabels(labels);
-
-        return specBuilder.buildSpec();
+        return spec;
     }, [
-        width,
         advancedMode,
-        advancedModeSpec,
-        field,
         tooltip,
         tooltipCategory,
         tooltipValue,
-        colors,
         labels,
+        colors,
+        data?.values,
+        advancedModeSpec,
+        width,
     ]);
 
     if (!spec) {

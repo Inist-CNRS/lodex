@@ -5,7 +5,7 @@ import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdm
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
-import PieChart from '../../models/PieChart';
+import { buildPieChartSpec } from '../../models/PieChart';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
@@ -97,15 +97,15 @@ const PieChartAdmin = ({
             return advancedModeSpec;
         }
 
-        const specBuilder = new PieChart();
+        const spec = buildPieChartSpec({
+            hasTooltip: tooltip,
+            tooltipCategory,
+            tooltipValue,
+            colors: colors.split(' '),
+            labels,
+        });
 
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipCategory);
-        specBuilder.setTooltipValue(tooltipValue);
-        specBuilder.setColor(colors);
-        specBuilder.setLabels(labels);
-
-        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+        return JSON.stringify(spec, null, 2);
     }, [
         advancedMode,
         advancedModeSpec,
