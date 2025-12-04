@@ -18,6 +18,7 @@ export const SearchPaneContext = createContext<
 export type FieldFilter = {
     fieldName: string;
     value: string | string[] | null;
+    label?: string;
 };
 
 export type SearchPaneFilter = FieldFilter[];

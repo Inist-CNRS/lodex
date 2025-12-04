@@ -7,13 +7,46 @@ import type {
     NodeObject,
 } from 'react-force-graph-2d';
 
+export type NodeType = {
+    id: string;
+    label: string;
+    radius: number;
+    color?: string;
+};
+
+export type LinkType = {
+    value: number;
+};
+
+export type Node = NodeObject<NodeType>;
+export type Link = LinkObject<NodeType, LinkType>;
+
+export type NetworkData = {
+    source: string;
+    source_title?: string;
+    target: string;
+    target_title?: string;
+    weight: number;
+};
+
+export type UseFormatNetworkDataParams = {
+    formatData?: NetworkData[];
+    displayWeighted: boolean;
+    minRadius?: number;
+    maxRadius?: number;
+    colorOverrides?: Record<string, string>;
+};
+
 export function useFormatNetworkData({
     formatData,
     displayWeighted = true,
     minRadius = 1,
     maxRadius = 20,
     colorOverrides = {},
-}: UseFormatNetworkDataParams) {
+}: UseFormatNetworkDataParams): {
+    nodes: Node[];
+    links: Link[];
+} {
     return useMemo(() => {
         if (!formatData) {
             return {
@@ -26,16 +59,16 @@ export function useFormatNetworkData({
         );
 
         const nodesDic = sanitizedFormatData.reduce<Record<string, Node>>(
-            (acc, { source, target }) => ({
+            (acc, { source, source_title, target, target_title }) => ({
                 ...acc,
                 [source]: {
                     id: source,
-                    label: source,
+                    label: source_title ?? source,
                     radius: get(acc, [source, 'radius'], 0) + 1,
                 },
                 [target]: {
                     id: target,
-                    label: target,
+                    label: target_title ?? target,
                     radius: get(acc, [target, 'radius'], 0) + 1,
                 },
             }),
@@ -77,34 +110,7 @@ export function useFormatNetworkData({
             })),
             links,
         };
-    }, [formatData, displayWeighted, colorOverrides]);
+    }, [formatData, minRadius, maxRadius, displayWeighted, colorOverrides]);
 }
 
-export type NetworkData = {
-    source: string;
-    target: string;
-    weight: number;
-};
-
-export type UseFormatNetworkDataParams = {
-    formatData?: NetworkData[];
-    displayWeighted: boolean;
-    minRadius?: number;
-    maxRadius?: number;
-    colorOverrides?: Record<string, string>;
-};
-
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];
-
-export type NodeType = {
-    id: string;
-    radius: number;
-    color?: string;
-};
-
-export type LinkType = {
-    value: number;
-};
-
-export type Node = NodeObject<NodeType>;
-export type Link = LinkObject<NodeType, LinkType>;

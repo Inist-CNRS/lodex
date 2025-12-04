@@ -268,10 +268,13 @@ export const NetworkBase = ({
         setSelectedNode(node);
 
         const nodeId = node.id?.toString();
+        const label =
+            node.label !== nodeId ? `${node.label} (${nodeId})` : nodeId;
         if (fieldToFilter && nodeId) {
             selectOne({
                 fieldName: fieldToFilter,
                 value: nodeId,
+                label,
             });
         }
 
@@ -333,7 +336,7 @@ export const NetworkBase = ({
                         )}
                         <AutoComplete
                             label={translate('select_node')}
-                            value={selectedNode?.id || null}
+                            value={selectedNode?.label || null}
                             onChange={(_event, value) =>
                                 handleNodeClick(
                                     nodes.find((node) => node.id === value) ||
@@ -342,7 +345,7 @@ export const NetworkBase = ({
                             }
                             getOptionLabel={(option: string) => option}
                             options={nodes
-                                .map((node) => node.id as string)
+                                .map((node) => node.label as string)
                                 .sort((a, b) => a.localeCompare(b))}
                             name="search"
                             sx={{

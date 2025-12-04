@@ -78,7 +78,7 @@ export function SearchResultPane() {
                                     .map((filter) =>
                                         Array.isArray(filter?.value)
                                             ? filter.value.join(',')
-                                            : filter?.value,
+                                            : filter?.label ?? filter?.value,
                                     )
                                     .join(' × ')}
                             </Typography>

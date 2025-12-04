@@ -243,10 +243,13 @@ export const Network3DBase = ({
         setSelectedNode(node);
 
         const nodeId = node.id?.toString();
+        const label =
+            node.label !== nodeId ? `${node.label} (${nodeId})` : nodeId;
         if (fieldToFilter && nodeId) {
             selectOne({
                 fieldName: fieldToFilter,
                 value: nodeId,
+                label,
             });
         }
 
