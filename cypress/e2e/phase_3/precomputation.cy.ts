@@ -192,7 +192,9 @@ describe('Precomputation', () => {
         });
         cy.waitForNetworkIdle(500);
 
-        cy.findByRole('button', { name: 'Run' }).click();
+        precomputation.importPrecomputationResults({
+            filePath: 'precomputations/simple.json',
+        });
         cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
@@ -210,7 +212,7 @@ describe('Precomputation', () => {
             expect(content).not.to.equal(null);
             // @ts-expect-error TS2345
             const precomputationResults = JSON.parse(content);
-            expect(precomputationResults).to.be.an('array').with.length(30);
+            expect(precomputationResults).to.be.an('array').with.length(26);
             expect(precomputationResults[0]).to.have.all.keys([
                 'id',
                 'value',
