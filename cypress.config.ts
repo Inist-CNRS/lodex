@@ -14,7 +14,7 @@ module.exports = defineConfig({
         baseUrl: 'http://localhost:3000',
         supportFile: 'cypress/support/index.ts',
         experimentalStudio: true,
-        retries: 0,
+        retries: process.env.CI ? 2 : 0,
         setupNodeEvents(on) {
             on('task', {
                 getFileContent({

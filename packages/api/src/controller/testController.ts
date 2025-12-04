@@ -18,16 +18,12 @@ app.use(mongoRootAdminClient);
 
 app.use(
     route.delete('/fixtures', async (ctx: any) => {
-        await ctx.db.collection('publishedFacet').deleteMany();
-        await ctx.db.collection('publishedDataset').deleteMany();
-        await ctx.db.collection('publishedCharacteristic').deleteMany();
-        await ctx.db.collection('hiddenResource').deleteMany();
-        await ctx.db.collection('field').deleteMany();
-        await ctx.db.collection('dataset').deleteMany();
-        await ctx.db.collection('subresource').deleteMany();
-        await ctx.db.collection('enrichment').deleteMany();
-        await ctx.db.collection('precomputed').deleteMany();
-        await ctx.db.collection('annotation').deleteMany();
+        const collections = await ctx.db.listCollections();
+        for await (const collection of collections) {
+            if (collection.name !== 'configTenant') {
+                await ctx.db.collection(collection.name).deleteMany();
+            }
+        }
 
         const tenantsToDelete = await ctx.rootAdminDb
             .collection('tenant')
