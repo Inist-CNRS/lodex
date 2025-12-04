@@ -1,11 +1,11 @@
-import { useMemo, useState, Suspense, useCallback } from 'react';
+import { Suspense, useCallback, useMemo, useState } from 'react';
 import compose from 'recompose/compose';
 
+import Loading from '../../../components/Loading';
+import { useTranslate } from '../../../i18n/I18NContext';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
-import Loading from '../../../components/Loading';
-import { useTranslate } from '../../../i18n/I18NContext';
 import VennDiagram from './VennDiagram';
 
 const styles = {
@@ -56,7 +56,7 @@ const Venn = ({ formatData, colorSet }: VennProps) => {
 
     return (
         <div style={{ height: `500px` }}>
-            <FormatFullScreenMode>
+            <FormatFullScreenMode forceRerenderOnToggle>
                 {/*
                  // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>

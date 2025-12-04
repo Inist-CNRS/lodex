@@ -77,7 +77,7 @@ export function HierarchicalTreeView({
     }, [colors]);
 
     return (
-        <Box sx={{ height: `500px`, position: 'relative' }} role="tree">
+        <Box sx={{ height: `500px` }} role="tree">
             <FormatFullScreenMode>
                 <Box ref={parentRef} sx={{ width: '100%', height: '100%' }}>
                     <Suspense>

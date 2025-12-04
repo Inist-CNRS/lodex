@@ -308,7 +308,7 @@ export const NetworkBase = ({
     });
 
     return (
-        <div style={{ height: `500px`, position: 'relative' }}>
+        <div style={{ height: `500px` }}>
             <FormatFullScreenMode>
                 {/*
                  // @ts-expect-error TS2322 */}
@@ -349,6 +349,7 @@ export const NetworkBase = ({
                                 .sort((a, b) => a.localeCompare(b))}
                             name="search"
                             sx={{
+                                width: '256px',
                                 maxWidth: '256px',
                             }}
                         />

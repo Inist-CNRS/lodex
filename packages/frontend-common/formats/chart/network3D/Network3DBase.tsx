@@ -300,7 +300,7 @@ export const Network3DBase = ({
     });
 
     return (
-        <div style={{ height: `500px`, position: 'relative' }}>
+        <div style={{ height: `500px` }}>
             <FormatFullScreenMode>
                 {/*
                  // @ts-expect-error TS2322 */}

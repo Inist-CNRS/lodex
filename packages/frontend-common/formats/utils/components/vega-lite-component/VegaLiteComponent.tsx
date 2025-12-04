@@ -1,18 +1,18 @@
 import { Vega } from 'react-vega';
 
+import { useCallback } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { translate } from '../../../../i18n/I18NContext';
+import { ASPECT_RATIO_NONE, type AspectRatio } from '../../aspectRatio';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
-import { ASPECT_RATIO_NONE, type AspectRatio } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
-import { translate } from '../../../../i18n/I18NContext';
-import { compose } from 'recompose';
-import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';
-import { useCallback } from 'react';
+import { useVegaCsvExport } from '../useVegaCsvExport';
 
 interface CustomActionVegaLiteProps {
     disableZoom?: boolean;
@@ -123,7 +123,7 @@ function CustomActionVegaLite({
             {disableZoom ? (
                 <div ref={graphParentRef}>{vegaGraphElement}</div>
             ) : (
-                <FormatFullScreenMode>
+                <FormatFullScreenMode forceRerenderOnToggle>
                     <div
                         ref={graphParentRef}
                         style={{ width: '100%', height: '100%' }}

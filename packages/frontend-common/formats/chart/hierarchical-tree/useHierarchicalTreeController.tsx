@@ -1,14 +1,6 @@
 import type { HierarchyPointNode } from 'd3-hierarchy';
-import {
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Tree, TreeNodeDatum, TreeProps } from 'react-d3-tree';
-import { GraphContext } from '../../../../public-app/src/graph/GraphContext';
 
 export function useHierarchicalTreeController({
     orientation,
@@ -17,8 +9,6 @@ export function useHierarchicalTreeController({
     initialZoom,
     initialDepth,
 }: HierarchicalTreeControllerParams) {
-    const graphContext = useContext(GraphContext);
-
     const parentRef = useRef<HTMLDivElement>(null);
     const treeRef = useRef<Tree>(null);
 
@@ -59,18 +49,29 @@ export function useHierarchicalTreeController({
     }, [orientation, nodeSize.x, spaceBetweenNodes, initialZoom, initialDepth]);
 
     useEffect(() => {
-        const animationId = requestAnimationFrame(handleResize);
+        let current: HTMLDivElement | null = null;
+        const resizeObserver = new ResizeObserver(() => {
+            handleResize();
+        });
+
+        const timer = setTimeout(() => {
+            if (!parentRef.current) {
+                return;
+            }
+            handleResize();
+            current = parentRef.current;
+            resizeObserver.observe(current);
+        }, 100);
+
         window.addEventListener('resize', handleResize);
         return () => {
-            window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(animationId);
+            if (current) {
+                resizeObserver.unobserve(current);
+            }
+
+            clearTimeout(timer);
         };
     }, [handleResize]);
-
-    useEffect(() => {
-        // Resize when fullscreen mode is toggled
-        handleResize();
-    }, [graphContext?.field, handleResize]);
 
     const centerOnNode = useCallback(
         (node: HierarchyPointNode<TreeNodeDatum>) => {
