@@ -1,7 +1,7 @@
+import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
 import { default as _ } from 'lodash';
 import { MongoClient } from 'mongodb';
 import { text } from 'stream/consumers';
-import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
 import createAnnotationModel from '../../models/annotation';
 import configTenant from '../../models/configTenant';
 import createFieldModel from '../../models/field';
@@ -458,10 +458,6 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             expect(ctx.body).toMatchObject({
                 total: 0,
                 errors: [
-                    {
-                        path: ['comment'],
-                        message: 'error_required',
-                    },
                     {
                         path: ['authorName'],
                         message: 'error_required',
