@@ -129,6 +129,10 @@ const FormatFullScreenMode = ({
                 document.body.style.overflow = 'auto';
             }, 100);
         }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
     }, [open, forceRerenderOnOpen]);
 
     if (!externalContext) {
