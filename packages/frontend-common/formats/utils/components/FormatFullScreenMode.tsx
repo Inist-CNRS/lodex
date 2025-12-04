@@ -17,6 +17,12 @@ import {
 import type { Field } from '../../../fields/types';
 import { useTranslate } from '../../../i18n/I18NContext';
 
+type FullScreenButtonProps = {
+    fill?: string;
+
+    open(): void;
+};
+
 function FullScreenButton({ fill, open }: FullScreenButtonProps) {
     const { translate } = useTranslate();
 
@@ -40,10 +46,10 @@ function FullScreenButton({ fill, open }: FullScreenButtonProps) {
     );
 }
 
-type FullScreenButtonProps = {
-    fill?: string;
+type FullScreenHeadingProps = {
+    field?: Field | undefined;
 
-    open(): void;
+    close(): void;
 };
 
 const FullScreenHeading = forwardRef<HTMLDivElement, FullScreenHeadingProps>(
@@ -92,10 +98,14 @@ const FullScreenHeading = forwardRef<HTMLDivElement, FullScreenHeadingProps>(
     },
 );
 
-type FullScreenHeadingProps = {
-    field?: Field | undefined;
+type FormatFullScreenModeProps = {
+    children: React.ReactNode;
+    fill?: string;
 
-    close(): void;
+    // Some graphs do not resize well when entering fullscreen mode.
+    // This option forces a re-render when toggling fullscreen mode.
+    // Default: false
+    forceRerenderOnToggle?: boolean;
 };
 
 const FormatFullScreenMode = ({
@@ -212,16 +222,6 @@ const FormatFullScreenMode = ({
             </Stack>
         </GraphContextProvider>
     );
-};
-
-type FormatFullScreenModeProps = {
-    children: React.ReactNode;
-    fill?: string;
-
-    // Some graphs do not resize well when entering fullscreen mode.
-    // This option forces a re-render when toggling fullscreen mode.
-    // Default: false
-    forceRerenderOnToggle?: boolean;
 };
 
 export default FormatFullScreenMode;

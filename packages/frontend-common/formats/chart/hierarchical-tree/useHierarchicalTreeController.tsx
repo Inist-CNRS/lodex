@@ -23,7 +23,6 @@ export function useHierarchicalTreeController({
     });
 
     const handleResize = useCallback(() => {
-        console.log('handleResize called');
         if (!parentRef.current) {
             return;
         }
