@@ -213,11 +213,7 @@ describe('Precomputation', () => {
             // @ts-expect-error TS2345
             const precomputationResults = JSON.parse(content);
             expect(precomputationResults).to.be.an('array').with.length(26);
-            expect(precomputationResults[0]).to.have.all.keys([
-                'id',
-                'value',
-                'lodexStamp',
-            ]);
+            expect(precomputationResults[0]).to.have.all.keys(['id', 'value']);
         });
     });
 });
