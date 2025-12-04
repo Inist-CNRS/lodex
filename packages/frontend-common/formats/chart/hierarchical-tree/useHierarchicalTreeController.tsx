@@ -2,6 +2,30 @@ import type { HierarchyPointNode } from 'd3-hierarchy';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Tree, TreeNodeDatum, TreeProps } from 'react-d3-tree';
 
+export async function walkNodes(
+    tree: TreeNodeDatum[],
+    action: (node: TreeNodeDatum) => void,
+) {
+    return new Promise<void>((resolve) => {
+        const nodeQueue = [...tree];
+
+        const interval = setInterval(() => {
+            const node = nodeQueue.shift();
+            if (!node) {
+                clearInterval(interval);
+                resolve();
+                return;
+            }
+
+            action(node);
+
+            if (node.children?.length) {
+                nodeQueue.push(...node.children);
+            }
+        }, 1);
+    });
+}
+
 export function useHierarchicalTreeController({
     orientation,
     nodeSize,
@@ -84,6 +108,30 @@ export function useHierarchicalTreeController({
         [],
     );
 
+    const openAll = useCallback(() => {
+        // We need to walk the nodes in order to open them one by one
+        // This requires async execution otherwise this won't work properly
+        walkNodes(treeRef.current?.state.data ?? [], (node) => {
+            if (!node.__rd3t.collapsed) {
+                return;
+            }
+
+            treeRef.current!.handleNodeToggle(node.__rd3t.id);
+        });
+    }, []);
+
+    const closeAll = useCallback(() => {
+        // We need to walk the nodes in order to close them
+        // This requires async execution otherwise this won't work properly
+        walkNodes(treeRef.current?.state.data ?? [], (node) => {
+            if (node.__rd3t.collapsed || node.attributes?.hasParent === true) {
+                return;
+            }
+
+            treeRef.current!.handleNodeToggle(node.__rd3t.id);
+        });
+    }, []);
+
     return useMemo(
         () => ({
             parentRef,
@@ -91,8 +139,10 @@ export function useHierarchicalTreeController({
             dimensions,
             treeTranslate,
             centerOnNode,
+            openAll,
+            closeAll,
         }),
-        [dimensions, treeTranslate, centerOnNode],
+        [dimensions, treeTranslate, centerOnNode, openAll, closeAll],
     );
 }
 
