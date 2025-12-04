@@ -3,8 +3,8 @@ import { compareNodes, isLinkVisible } from './NetworkBase';
 describe('NetworkView', () => {
     describe('compareNodes', () => {
         it('should subtract a.radius from b.radius when no selectedNode nor hoveredNode', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             expect(
                 compareNodes({
                     a: nodeA,
@@ -17,8 +17,8 @@ describe('NetworkView', () => {
         });
 
         it('should subtract b.radius from a.radius when a and b are neither selected, highlighted nor hovered', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             const selectedNode = { id: '3', radius: 15 };
             const hoveredNode = { id: '4', radius: 25 };
             const highlightedNodeIds: string[] = ['5', '6', '7', '8'];
@@ -34,8 +34,8 @@ describe('NetworkView', () => {
         });
 
         it('should return 1 when a is highlighted and b is not', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             const highlightedNodeIds: string[] = ['1'];
             expect(
                 compareNodes({
@@ -54,8 +54,8 @@ describe('NetworkView', () => {
             ).toBe(1);
         });
         it('should return -1 when b is highlighted and a is not', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             const highlightedNodeIds: string[] = ['2'];
             expect(
                 compareNodes({
@@ -75,8 +75,8 @@ describe('NetworkView', () => {
         });
 
         it('should return a - b radius when both are highlighted', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             const highlightedNodeIds: string[] = ['1', '2'];
             expect(
                 compareNodes({
@@ -96,8 +96,8 @@ describe('NetworkView', () => {
         });
 
         it('should -1 when a is selected and b is hovered', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             expect(
                 compareNodes({
                     a: nodeA,
@@ -110,8 +110,8 @@ describe('NetworkView', () => {
         });
 
         it('should 1 when a is selected and b is not hovered', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             expect(
                 compareNodes({
                     a: nodeA,
@@ -124,8 +124,8 @@ describe('NetworkView', () => {
         });
 
         it('should return 1 when a is selected even if b is highlighted', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             expect(
                 compareNodes({
                     a: nodeA,
@@ -138,8 +138,8 @@ describe('NetworkView', () => {
         });
 
         it('should 1 when b is selected and a is hovered', () => {
-            const nodeA = { id: '1', radius: 10 };
-            const nodeB = { id: '2', radius: 20 };
+            const nodeA = { id: '1', radius: 10, label: '1' };
+            const nodeB = { id: '2', radius: 20, label: '2' };
             expect(
                 compareNodes({
                     a: nodeA,
@@ -152,8 +152,8 @@ describe('NetworkView', () => {
         });
 
         it('should -1 when b is selected and a is not hovered', () => {
-            const nodeA = { id: '2', radius: 20 };
-            const nodeB = { id: '1', radius: 10 };
+            const nodeA = { id: '2', radius: 20, label: '1' };
+            const nodeB = { id: '1', radius: 10, label: '2' };
             expect(
                 compareNodes({
                     a: nodeA,
@@ -166,8 +166,8 @@ describe('NetworkView', () => {
         });
 
         it('should return -1 when a is selected even if b is highlighted', () => {
-            const nodeA = { id: '2', radius: 20 };
-            const nodeB = { id: '1', radius: 10 };
+            const nodeA = { id: '2', radius: 20, label: '1' };
+            const nodeB = { id: '1', radius: 10, label: '2' };
             expect(
                 compareNodes({
                     a: nodeA,
@@ -182,12 +182,12 @@ describe('NetworkView', () => {
         // the last one is printed last and so will be rendered on top
         it('should allow to sort an array of nodes (the rest > highlighted > selected > hovered)', () => {
             const nodes = [
-                { id: '1', radius: 10 },
-                { id: '2', radius: 20 },
-                { id: '3', radius: 15 },
-                { id: '4', radius: 25 },
-                { id: '5', radius: 5 },
-                { id: '6', radius: 30 },
+                { id: '1', radius: 10, label: '1' },
+                { id: '2', radius: 20, label: '2' },
+                { id: '3', radius: 15, label: '3' },
+                { id: '4', radius: 25, label: '4' },
+                { id: '5', radius: 5, label: '5' },
+                { id: '6', radius: 30, label: '6' },
             ];
             const selectedNode = nodes[2]; // id 3
             const hoveredNode = nodes[3]; // id 4

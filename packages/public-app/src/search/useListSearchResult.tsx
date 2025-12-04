@@ -4,12 +4,17 @@ import { useMemo } from 'react';
 import { useListPublishedDatasetByFieldValue } from './useListPublishedDatasetByFieldValue';
 
 export function useListSearchResult(
-    filter: UseListPublishedDatasetByFieldValueParams = null,
+    filters: UseListPublishedDatasetByFieldValueParams = null,
 ) {
     const { isFieldListPending, fields, fieldNames } = useListField();
 
     const { isListSearchResultPending, totalSearchResult, searchResult } =
-        useListPublishedDatasetByFieldValue(filter);
+        useListPublishedDatasetByFieldValue(
+            filters?.map(({ fieldName, value }) => ({
+                fieldName,
+                value,
+            })),
+        );
 
     return useMemo(
         () => ({
