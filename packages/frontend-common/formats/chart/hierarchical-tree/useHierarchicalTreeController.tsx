@@ -10,6 +10,30 @@ import {
 import type { Tree, TreeNodeDatum, TreeProps } from 'react-d3-tree';
 import { GraphContext } from '../../../../public-app/src/graph/GraphContext';
 
+export async function walkNodes(
+    tree: TreeNodeDatum[],
+    action: (node: TreeNodeDatum) => void,
+) {
+    return new Promise<void>((resolve) => {
+        const nodeQueue = [...tree];
+
+        const interval = setInterval(() => {
+            const node = nodeQueue.shift();
+            if (!node) {
+                clearInterval(interval);
+                resolve();
+                return;
+            }
+
+            action(node);
+
+            if (node.children?.length) {
+                nodeQueue.push(...node.children);
+            }
+        }, 1);
+    });
+}
+
 export function useHierarchicalTreeController({
     orientation,
     nodeSize,
@@ -83,51 +107,29 @@ export function useHierarchicalTreeController({
         [],
     );
 
-    const walkNodes = useCallback((action: (node: TreeNodeDatum) => void) => {
-        if (!treeRef.current) {
-            return;
-        }
-
-        const nodeQueue = [...treeRef.current.state.data];
-
-        const interval = setInterval(() => {
-            const node = nodeQueue.shift();
-            if (!node) {
-                clearInterval(interval);
-                return;
-            }
-
-            action(node);
-
-            if (node.children?.length) {
-                nodeQueue.push(...node.children);
-            }
-        }, 1);
-    }, []);
-
     const openAll = useCallback(() => {
         // We need to walk the nodes in order to open them one by one
         // This requires async execution otherwise this won't work properly
-        walkNodes((node) => {
+        walkNodes(treeRef.current?.state.data ?? [], (node) => {
             if (!node.__rd3t.collapsed) {
                 return;
             }
 
             treeRef.current!.handleNodeToggle(node.__rd3t.id);
         });
-    }, [walkNodes]);
+    }, []);
 
     const closeAll = useCallback(() => {
         // We need to walk the nodes in order to close them
         // This requires async execution otherwise this won't work properly
-        walkNodes((node) => {
+        walkNodes(treeRef.current?.state.data ?? [], (node) => {
             if (node.__rd3t.collapsed || node.attributes?.hasParent === true) {
                 return;
             }
 
             treeRef.current!.handleNodeToggle(node.__rd3t.id);
         });
-    }, [walkNodes]);
+    }, []);
 
     return useMemo(
         () => ({
