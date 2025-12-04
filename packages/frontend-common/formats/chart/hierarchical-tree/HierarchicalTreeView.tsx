@@ -45,6 +45,7 @@ export function HierarchicalTreeView({
     initialDepth,
     minimumScaleValue,
     maximumScaleValue,
+    fieldToFilter,
     colors,
 }: HierarchicalTreeViewProps) {
     const zoom = initialZoom ?? DEFAULT_ZOOM;
@@ -92,6 +93,7 @@ export function HierarchicalTreeView({
                                     orientation={orientation}
                                     width={nodeWidth ?? DEFAULT_NODE_WIDTH}
                                     height={nodeHeight ?? DEFAULT_NODE_HEIGHT}
+                                    fieldToFilter={fieldToFilter}
                                     getNodeColor={getNodeColor}
                                 />
                             )}
@@ -154,6 +156,8 @@ type HierarchicalTreeViewProps = {
 
     minimumScaleValue?: number | null;
     maximumScaleValue?: number | null;
+
+    fieldToFilter?: string | null;
     colors?: string;
 };
 

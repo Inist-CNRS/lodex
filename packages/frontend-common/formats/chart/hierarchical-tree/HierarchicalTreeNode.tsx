@@ -2,6 +2,7 @@ import MoreIcon from '@mui/icons-material/Add';
 import MinusIcon from '@mui/icons-material/Remove';
 import { Box, Button, Tooltip } from '@mui/material';
 import type { CustomNodeElementProps } from 'react-d3-tree';
+import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
 
 export const BUTTON_SIZE = 20;
 export const BUTTON_SPACING = 8;
@@ -12,22 +13,32 @@ export function HierarchicalTreeNode({
     nodeDatum,
     width,
     height,
+    fieldToFilter,
     getNodeColor,
     onNodeClick,
     onNodeMouseOut,
     onNodeMouseOver,
     toggleNode,
 }: NodeProps) {
+    const { filters, selectOne } = useSearchPaneContextOrDefault();
+
     const color = getNodeColor(nodeDatum.__rd3t.depth);
     const isOpen = nodeDatum.__rd3t?.collapsed === false;
     const hasChildren = !!nodeDatum.children?.length;
 
     const handleClick = (event: React.MouseEvent) => {
         event.stopPropagation();
-        toggleNode();
+        if (fieldToFilter) {
+            selectOne({ fieldName: fieldToFilter, value: nodeDatum.name });
+        }
+
         if (onNodeClick) {
             onNodeClick(event);
         }
+    };
+    const handleToggleNode = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        toggleNode();
     };
 
     const title = nodeDatum?.attributes?.title ?? nodeDatum.name;
@@ -42,6 +53,9 @@ export function HierarchicalTreeNode({
                   bottom: -1 * BUTTON_SIZE - BUTTON_SPACING,
                   left: (width - BUTTON_SIZE - 2) / 2,
               };
+
+    const isSelected = filters.at(0)?.value === nodeDatum.name;
+    const isNotSelected = filters?.length > 0 && !isSelected;
 
     return (
         <foreignObject
@@ -65,19 +79,20 @@ export function HierarchicalTreeNode({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: '#ffffff',
-                    borderWidth: '1px',
+                    backgroundColor: isNotSelected ? '#fafafa' : '#ffffff',
+                    borderWidth: isSelected ? '3px' : '1px',
                     borderStyle: 'solid',
                     borderRadius: '4px',
-                    borderColor: color,
-                    color,
+                    borderColor: isNotSelected ? `${color}ee` : color,
+                    color: isNotSelected ? `${color}cc` : color,
                     position: 'relative',
                     width: `${width}px`,
                     maxHeight: `${height}px`,
                 }}
-                onClick={handleClick}
                 onMouseOver={onNodeMouseOver}
                 onMouseOut={onNodeMouseOut}
+                onClick={handleClick}
+                aria-current={isSelected}
             >
                 <Box
                     role="group"
@@ -85,7 +100,7 @@ export function HierarchicalTreeNode({
                     className="hierarchical-tree-node-group"
                     sx={{
                         padding: '4px 8px',
-                        height: `${HEADER_HEIGHT - 2}px`,
+                        height: `${HEADER_HEIGHT - (isSelected ? 6 : 2)}px`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -136,6 +151,7 @@ export function HierarchicalTreeNode({
                             },
                         }}
                         className="hierarchical-tree-node-toggle"
+                        onClick={handleToggleNode}
                     >
                         {isOpen ? <MinusIcon /> : <MoreIcon />}
                     </Button>
@@ -149,5 +165,8 @@ type NodeProps = CustomNodeElementProps & {
     orientation: 'vertical' | 'horizontal';
     width: number;
     height: number;
+
+    fieldToFilter?: string | null;
+
     getNodeColor(level: number): string;
 };

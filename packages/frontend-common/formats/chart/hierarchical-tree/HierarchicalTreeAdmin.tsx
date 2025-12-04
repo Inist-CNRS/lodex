@@ -7,6 +7,7 @@ import {
     TextField,
 } from '@mui/material';
 import { useCallback } from 'react';
+import { FieldSelector } from '../../../fields/form/FieldSelector';
 import { ColorPickerInput } from '../../../form-fields/ColorPickerInput';
 import { useTranslate } from '../../../i18n/I18NContext';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
@@ -64,11 +65,14 @@ export default function HierarchicalTreeAdmin({
         nodeWidth,
         nodeHeight,
         spaceBetweenNodes,
+
         initialZoom,
         initialDepth,
 
         minimumScaleValue,
         maximumScaleValue,
+
+        fieldToFilter,
         colors,
     } = {
         params: {
@@ -261,6 +265,16 @@ export default function HierarchicalTreeAdmin({
                     />
                 </Stack>
 
+                <FieldSelector
+                    value={fieldToFilter ?? null}
+                    onChange={(fieldToFilter) =>
+                        onChange({
+                            ...args,
+                            fieldToFilter: fieldToFilter || null,
+                        })
+                    }
+                />
+
                 <ColorPickerInput
                     label={translate('default_color')}
                     value={colors ?? ''}
@@ -296,5 +310,7 @@ type HierarchicalTreeArgs = {
     initialDepth?: number | null;
     minimumScaleValue?: number | null;
     maximumScaleValue?: number | null;
+
+    fieldToFilter?: string | null;
     colors?: string;
 };
