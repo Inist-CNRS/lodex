@@ -512,7 +512,6 @@ const app = new Koa();
 
 app.use(setup);
 
-app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
 app.use(route.post('/import', importFields(asyncBusboy)));
 app.use(route.delete('/', dropFieldCollection));
@@ -526,5 +525,9 @@ app.use(route.patch('/sort-field', patchSortField));
 app.use(route.patch('/sort-order', patchSortOrder));
 app.use(route.patch('/:id', patchField));
 app.use(route.del('/:id', removeField));
+
+export const frontFieldRoutes = new Koa();
+
+frontFieldRoutes.use(route.get('/', getAllField));
 
 export default app;

@@ -24,11 +24,6 @@ export function useApiClient() {
         ) => {
             const { token } = getUserSessionStorageInfo();
 
-            if (!token) {
-                history.push(LOGIN_URL);
-                throw new Error('unauthorized');
-            }
-
             const { response, error } = await internalFetch(
                 {
                     url,
@@ -36,7 +31,7 @@ export function useApiClient() {
                     credentials,
                     headers: {
                         ...head,
-                        Authorization: `Bearer ${token}`,
+                        Authorization: token ? `Bearer ${token}` : undefined,
                     },
                     method,
                 },
