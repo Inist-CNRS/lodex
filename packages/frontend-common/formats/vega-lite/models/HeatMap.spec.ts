@@ -1,6 +1,6 @@
+import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 import { buildHeatMapSpec } from './HeatMap';
 import heatmapVL from './json/heatmap.vl.json';
-import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 
 describe('HeatMap', () => {
     it('should return default heatMap spec', function () {
@@ -11,7 +11,7 @@ describe('HeatMap', () => {
                     toggle: false,
                 },
             }),
-        ).toStrictEqual(heatmapVL);
+        ).toStrictEqual({ ...heatmapVL, background: 'transparent' });
     });
 
     it('should flip axis when flip is true', function () {
@@ -24,6 +24,7 @@ describe('HeatMap', () => {
 
         expect(spec).toStrictEqual({
             ...heatmapVL,
+            background: 'transparent',
             encoding: {
                 ...heatmapVL.encoding,
                 x: {
@@ -49,6 +50,7 @@ describe('HeatMap', () => {
 
         expect(specAsc).toStrictEqual({
             ...heatmapVL,
+            background: 'transparent',
             encoding: {
                 ...heatmapVL.encoding,
                 x: {
@@ -72,6 +74,7 @@ describe('HeatMap', () => {
 
         expect(specDesc).toStrictEqual({
             ...heatmapVL,
+            background: 'transparent',
             encoding: {
                 ...heatmapVL.encoding,
                 x: {
@@ -98,6 +101,7 @@ describe('HeatMap', () => {
 
         expect(spec).toStrictEqual({
             ...heatmapVL,
+            background: 'transparent',
             layer: [
                 {
                     ...heatmapVL.layer[0],
@@ -134,62 +138,24 @@ describe('HeatMap', () => {
 
         expect(spec).toStrictEqual({
             ...heatmapVL,
+            background: 'transparent',
             encoding: {
                 ...heatmapVL.encoding,
                 tooltip: [
                     {
-                        source: {
-                            field: 'source',
-                            title: 'Source',
-                            type: 'nominal',
-                        },
-                        target: {
-                            field: 'target',
-                            title: 'Target',
-                            type: 'nominal',
-                        },
+                        field: 'source',
                         title: 'Custom Source',
-                        weight: {
-                            field: 'weight',
-                            title: 'Weight',
-                            type: 'quantitative',
-                        },
+                        type: 'nominal',
                     },
                     {
-                        source: {
-                            field: 'source',
-                            title: 'Source',
-                            type: 'nominal',
-                        },
-                        target: {
-                            field: 'target',
-                            title: 'Target',
-                            type: 'nominal',
-                        },
+                        field: 'target',
                         title: 'Custom Target',
-                        weight: {
-                            field: 'weight',
-                            title: 'Weight',
-                            type: 'quantitative',
-                        },
+                        type: 'nominal',
                     },
                     {
-                        source: {
-                            field: 'source',
-                            title: 'Source',
-                            type: 'nominal',
-                        },
-                        target: {
-                            field: 'target',
-                            title: 'Target',
-                            type: 'nominal',
-                        },
+                        field: 'weight',
                         title: 'Custom Weight',
-                        weight: {
-                            field: 'weight',
-                            title: 'Weight',
-                            type: 'quantitative',
-                        },
+                        type: 'quantitative',
                     },
                 ],
             },
