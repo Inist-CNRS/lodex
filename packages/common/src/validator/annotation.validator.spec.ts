@@ -28,6 +28,48 @@ describe('annotation.validator', () => {
             expect(validatedAnnotation).toStrictEqual(annotationPayload);
         });
 
+        it('should validate an annotation without comment', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                target: 'value',
+                fieldId: 'GvaF',
+                kind: 'removal',
+                comment: '',
+                authorName: 'John Doe',
+                authorEmail: null,
+                initialValue: 'initial value',
+                proposedValue: null,
+                isContributorNamePublic: false,
+            };
+
+            const validatedAnnotation =
+                annotationCreationSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual(annotationPayload);
+        });
+
+        it('should validate an annotation with null comment', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                target: 'value',
+                fieldId: 'GvaF',
+                kind: 'removal',
+                authorName: 'John Doe',
+                authorEmail: null,
+                initialValue: 'initial value',
+                proposedValue: null,
+                isContributorNamePublic: false,
+            };
+
+            const validatedAnnotation =
+                annotationCreationSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual({
+                ...annotationPayload,
+                comment: '',
+            });
+        });
+
         it('should support annotation without kind', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
@@ -616,10 +658,6 @@ describe('annotation.validator', () => {
             expect(success).toBe(false);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toMatchObject([
-                {
-                    path: ['comment'],
-                    message: 'error_required',
-                },
                 {
                     path: ['authorName'],
                     message: 'error_required',

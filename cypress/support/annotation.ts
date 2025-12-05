@@ -37,9 +37,7 @@ function chooseValueToComment(value: string) {
 }
 
 export function fillComment(comment: string) {
-    cy.findByRole('textbox', { name: 'Comment *', timeout: 1500 }).type(
-        comment,
-    );
+    cy.findByRole('textbox', { name: 'Comment', timeout: 1500 }).type(comment);
 }
 
 export function authorNameField() {

@@ -49,7 +49,7 @@ describe('AnnotationCommentStep', () => {
     it('should render only the comment input when kind is comment', () => {
         const screen = renderAnnotationCommentStep({ kind: 'comment' });
         expect(
-            screen.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment'),
         ).toBeInTheDocument();
         expect(
             screen.queryByRole('textbox', {
@@ -65,7 +65,7 @@ describe('AnnotationCommentStep', () => {
             ),
         ).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment'),
         ).toBeInTheDocument();
         expect(
             screen.queryByRole('textbox', {
@@ -84,7 +84,7 @@ describe('AnnotationCommentStep', () => {
             ),
         ).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment'),
         ).toBeInTheDocument();
         expect(
             screen.queryByRole('textbox', {
@@ -111,7 +111,7 @@ describe('AnnotationCommentStep', () => {
             ),
         ).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment'),
         ).toBeInTheDocument();
         expect(
             screen.queryByRole('textbox', {
@@ -134,7 +134,7 @@ describe('AnnotationCommentStep', () => {
         const screen = renderAnnotationCommentStep({ kind: 'addition' });
         expect(screen.queryByText('annotation_add_value')).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment'),
         ).toBeInTheDocument();
         expect(
             screen.queryByRole('textbox', {
@@ -153,7 +153,7 @@ describe('AnnotationCommentStep', () => {
         });
         expect(screen.queryByText('annotation_add_value')).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment'),
         ).toBeInTheDocument();
         expect(
             screen.queryByRole('combobox', {

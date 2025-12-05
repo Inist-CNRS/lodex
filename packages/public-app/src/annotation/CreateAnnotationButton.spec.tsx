@@ -146,7 +146,7 @@ describe('CreateAnnotationButton', () => {
         await waitFor(() => {
             fireEvent.change(
                 screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
+                    name: 'annotation.comment',
                 }),
                 {
                     target: { value: 'test' },
@@ -232,7 +232,7 @@ describe('CreateAnnotationButton', () => {
         await waitFor(() => {
             fireEvent.change(
                 screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
+                    name: 'annotation.comment',
                 }),
                 {
                     target: { value: 'test' },

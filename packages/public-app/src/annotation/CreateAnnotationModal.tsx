@@ -175,13 +175,10 @@ export function CreateAnnotationModal({
                 state.values.kind!,
             )
         ) {
-            return (
-                !!state.values.proposedValue &&
-                isRequiredFieldValid(state, 'comment')
-            );
+            return !!state.values.proposedValue;
         }
 
-        return isRequiredFieldValid(state, 'comment');
+        return true;
     });
 
     const isAuthorStepValid = useStore(form.store, (state) => {
