@@ -14,7 +14,7 @@ import { useGetPreComputedColumns } from './useGetPreComputedColumns';
 const SourceValuePrecomputed = ({
     updateDefaultValueTransformers,
     value,
-    routine,
+    routine: initialRoutine,
 }: {
     updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
     value?: string | null;
@@ -29,14 +29,15 @@ const SourceValuePrecomputed = ({
             ),
     );
     const [selectedPrecomputation, setSelectedPrecomputation] = useState(value);
-    const [selectedPrecomputedColumn, setSelectedPrecomputedColumn] = useState<
-        string | null
-    >(null);
+    const [selectedPrecomputedValueColumn, setSelectedPrecomputedValueColumn] =
+        useState<string | null>(null);
+    const [selectedPrecomputedLabelColumn, setSelectedPrecomputedLabelColumn] =
+        useState<string | null>(null);
     useEffect(() => {
         setSelectedPrecomputation(value);
     }, [value]);
     const [openRoutineCatalog, setOpenRoutineCatalog] = useState(false);
-    const [valueInput, setValueInput] = useState(routine || '');
+    const [routineValue, setRoutineValue] = useState(initialRoutine || '');
 
     const precomputedId = useMemo(() => {
         const precomputed = precomputedData.find((pc) => pc.name === value);
@@ -47,6 +48,43 @@ const SourceValuePrecomputed = ({
         useGetPreComputedColumns({
             precomputedId,
         });
+
+    useEffect(() => {
+        const transformers = [
+            {
+                operation: 'PRECOMPUTED',
+                args: [
+                    {
+                        name: 'precomputed',
+                        type: 'string',
+                        value: selectedPrecomputation,
+                    },
+                    {
+                        name: 'precomputedLabelColumn',
+                        type: 'string',
+                        value: selectedPrecomputedLabelColumn,
+                    },
+                    {
+                        name: 'precomputedValueColumn',
+                        type: 'string',
+                        value: selectedPrecomputedValueColumn,
+                    },
+                    {
+                        name: 'routine',
+                        type: 'string',
+                        value: routineValue,
+                    },
+                ],
+            },
+        ] as TransformerDraft[];
+        updateDefaultValueTransformers(transformers);
+    }, [
+        selectedPrecomputation,
+        selectedPrecomputedLabelColumn,
+        selectedPrecomputedValueColumn,
+        updateDefaultValueTransformers,
+        routineValue,
+    ]);
 
     // @ts-expect-error TS7006
     const handleChangePrecomputed = (event, value) => {
@@ -62,100 +100,46 @@ const SourceValuePrecomputed = ({
         }
 
         setSelectedPrecomputation(value);
-        setSelectedPrecomputedColumn(null);
-        const transformers = [
-            {
-                operation: 'PRECOMPUTED',
-                args: [
-                    {
-                        name: 'precomputed',
-                        type: 'string',
-                        value: value,
-                    },
-                    {
-                        name: 'routine',
-                        type: 'string',
-                        value: routine!,
-                    },
-                ],
-            },
-        ];
-
-        updateDefaultValueTransformers(transformers);
-    };
-
-    const handleChangePrecomputedColumns = (
-        _event: unknown,
-        column: string | null,
-    ) => {
-        setSelectedPrecomputedColumn(column);
-        const transformers = [
-            {
-                operation: 'PRECOMPUTED',
-                args: [
-                    {
-                        name: 'precomputed',
-                        type: 'string',
-                        value: value!,
-                    },
-                    {
-                        name: 'routine',
-                        type: 'string',
-                        value: routine!,
-                    },
-                ],
-            },
-            column
-                ? {
-                      operation: 'COLUMN',
-                      args: [
-                          {
-                              name: 'column',
-                              type: 'column',
-                              value: column,
-                          },
-                      ],
-                  }
-                : null,
-        ].filter(Boolean) as TransformerDraft[];
-
-        updateDefaultValueTransformers(transformers);
+        setSelectedPrecomputedValueColumn(null);
+        setSelectedPrecomputedLabelColumn(null);
     };
 
     // @ts-expect-error TS7006
     const handleChangeRoutine = (event) => {
-        setValueInput(event.target.value);
-        const transformers = [
-            {
-                operation: 'PRECOMPUTED',
-                args: [
-                    {
-                        name: 'precomputed',
-                        type: 'string',
-                        value: value,
-                    },
-                    {
-                        name: 'routine',
-                        type: 'string',
-                        value: event.target.value,
-                    },
-                ],
-            },
-            selectedPrecomputedColumn
-                ? {
-                      operation: 'COLUMN',
-                      args: [
-                          {
-                              name: 'column',
-                              type: 'column',
-                              value: selectedPrecomputedColumn,
-                          },
-                      ],
-                  }
-                : null,
-        ].filter(Boolean) as TransformerDraft[];
+        setRoutineValue(event.target.value);
+        const isSourceWeightRoutine = [
+            '/api/run/segments-precomputed/',
+            '/api/run/segments-precomputed-nofilter/',
+        ].includes(event.target.value);
+        if (isSourceWeightRoutine) {
+            if (precomputedFieldNames.includes('source')) {
+                setSelectedPrecomputedLabelColumn('source');
+            }
+            if (precomputedFieldNames.includes('weight')) {
+                setSelectedPrecomputedValueColumn('weight');
+            }
+            return;
+        }
+        if (precomputedFieldNames.includes('id')) {
+            setSelectedPrecomputedLabelColumn('id');
+        }
+        if (precomputedFieldNames.includes('value')) {
+            setSelectedPrecomputedValueColumn('value');
+        }
+    };
 
-        updateDefaultValueTransformers(transformers);
+    const handleChangePrecomputedValueColumn = (
+        _event: unknown,
+        column: string | null,
+    ) => {
+        setSelectedPrecomputedValueColumn(column);
+    };
+
+    const handleChangePrecomputedLabelColumn = (
+        _event: unknown,
+        column: string | null,
+    ) => {
+        setSelectedPrecomputedLabelColumn(column);
     };
 
     return (
@@ -174,28 +158,12 @@ const SourceValuePrecomputed = ({
                 )}
                 onChange={handleChangePrecomputed}
             />
-            <Autocomplete
-                data-testid="source-value-from-precomputed-column"
-                fullWidth
-                disabled={!selectedPrecomputation}
-                loading={isLoadingPrecomputedColumns}
-                options={precomputedFieldNames}
-                value={selectedPrecomputedColumn}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label={translate('from_precomputed_column')}
-                        placeholder={translate('enter_precomputed_from_column')}
-                    />
-                )}
-                onChange={handleChangePrecomputedColumns}
-            />
 
             <Box display="flex" alignItems="center">
                 <RoutineCatalogAutocomplete
                     // @ts-expect-error TS2322
                     onChange={handleChangeRoutine}
-                    currentValue={valueInput}
+                    currentValue={routineValue}
                     label={translate('enter_a_routine_value')}
                     precomputed
                 />
@@ -216,10 +184,46 @@ const SourceValuePrecomputed = ({
                     isOpen={openRoutineCatalog}
                     handleClose={() => setOpenRoutineCatalog(false)}
                     onChange={handleChangeRoutine}
-                    currentValue={routine}
+                    currentValue={routineValue}
                     precomputed
                 />
             </Box>
+            <Autocomplete
+                data-testid="source-value-from-precomputed-label-column"
+                fullWidth
+                disabled={!selectedPrecomputation}
+                loading={isLoadingPrecomputedColumns}
+                options={precomputedFieldNames}
+                value={selectedPrecomputedLabelColumn}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label={translate('from_precomputed_label_column')}
+                        placeholder={translate(
+                            'enter_precomputed_from_label_column',
+                        )}
+                    />
+                )}
+                onChange={handleChangePrecomputedLabelColumn}
+            />
+            <Autocomplete
+                data-testid="source-value-from-precomputed-value-column"
+                fullWidth
+                disabled={!selectedPrecomputation}
+                loading={isLoadingPrecomputedColumns}
+                options={precomputedFieldNames}
+                value={selectedPrecomputedValueColumn}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label={translate('from_precomputed_value_column')}
+                        placeholder={translate(
+                            'enter_precomputed_from_value_column',
+                        )}
+                    />
+                )}
+                onChange={handleChangePrecomputedValueColumn}
+            />
         </Box>
     );
 };
