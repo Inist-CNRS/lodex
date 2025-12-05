@@ -1,5 +1,6 @@
+import type { Queue } from 'bull';
 import type Koa from 'koa';
-import { workerQueues } from '../../workers';
+import { getOrCreateWorkerQueue } from '../../workers';
 import { cancelJob, getActiveJob } from '../../workers/tools';
 import {
     deleteEnrichment,
@@ -14,16 +15,23 @@ jest.mock('../../workers/tools', () => ({
     cancelJob: jest.fn(),
 }));
 
-jest.mock('../../workers', () => ({
-    workerQueues: {
-        test: { add: jest.fn(async () => ({ id: 'job-id' })) },
-    },
-}));
+jest.mock('../../workers');
 
 describe('Enrichment controller', () => {
+    let workerQueue: Queue | null = null;
     beforeEach(() => {
+        jest.mocked(getOrCreateWorkerQueue).mockImplementation(() => {
+            workerQueue = {
+                add: jest.fn().mockResolvedValue({ id: 'job-id' }),
+            } as unknown as Queue;
+            return workerQueue;
+        });
+    });
+
+    afterEach(() => {
         jest.clearAllMocks();
     });
+
     describe('postEnrichment', () => {
         it('should call enrichment create repository method', async () => {
             const ctx = {
@@ -286,11 +294,6 @@ describe('Enrichment controller', () => {
 
     describe('launchAllEnrichment', () => {
         it('should retrieve all enrichments and create a job for each of them setting their status to pending', async () => {
-            jest.mock('../../workers', () => ({
-                workerQueues: {
-                    test: { add: jest.fn(async () => ({ id: 'job-id' })) },
-                },
-            }));
             const ctx = {
                 enrichment: {
                     findAll: jest.fn(() => [
@@ -329,12 +332,6 @@ describe('Enrichment controller', () => {
             );
         });
         it('should remove enrichmentAttribute from dataset when its status is FINISHED', async () => {
-            jest.mock('../../workers', () => ({
-                workerQueues: {
-                    test: { add: jest.fn(async () => ({ id: 'job-id' })) },
-                },
-            }));
-
             const ctx = {
                 enrichment: {
                     findAll: jest.fn(() => [
@@ -380,11 +377,6 @@ describe('Enrichment controller', () => {
 
     describe('retryEnrichmentOnFailedRow', () => {
         it('should retrieve given enrichments and create a job to retry failed dataset rows', async () => {
-            jest.mock('../../workers', () => ({
-                workerQueues: {
-                    test: { add: jest.fn(async () => ({ id: 'job-id' })) },
-                },
-            }));
             const ctx = {
                 enrichment: {
                     updateStatus: jest.fn(async () => {}),
@@ -405,8 +397,8 @@ describe('Enrichment controller', () => {
                 'PENDING',
                 { jobId: 'job-id' },
             );
-            expect(workerQueues.test.add).toHaveBeenCalledTimes(1);
-            expect(workerQueues.test.add).toHaveBeenCalledWith(
+            expect(workerQueue?.add).toHaveBeenCalledTimes(1);
+            expect(workerQueue?.add).toHaveBeenCalledWith(
                 'retry-enricher',
                 { id: 1, jobType: 'retry-enricher', tenant: 'test' },
                 { jobId: expect.any(String) },

@@ -1,21 +1,30 @@
+import type { Queue } from 'bull';
 import config from 'config';
-import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
-import { IMPORT } from '../../workers/import';
 import progress from '../../services/progress';
-import { workerQueues } from '../../workers';
+import { getOrCreateWorkerQueue } from '../../workers';
+import { IMPORT } from '../../workers/import';
+import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
 
-jest.mock('../../workers', () => ({
-    workerQueues: {
-        lodex_test: {
-            add: jest.fn(),
-        },
-    },
-}));
+jest.mock('../../workers');
 jest.mock('uuid', () => ({ v1: () => 'uuid' }));
 
 describe('upload', () => {
     beforeAll(async () => {
         progress.initialize('lodex_test');
+    });
+
+    let workerQueue: Queue | null = null;
+    beforeEach(() => {
+        jest.mocked(getOrCreateWorkerQueue).mockImplementation(() => {
+            workerQueue = {
+                add: jest.fn(),
+            } as unknown as Queue;
+            return workerQueue;
+        });
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     describe('parseRequest', () => {
@@ -75,8 +84,7 @@ describe('upload', () => {
 
             const next = jest.fn();
 
-            beforeAll(async () => {
-                workerQueues[ctx.tenant].add.mockClear();
+            beforeEach(async () => {
                 // @ts-expect-error TS(2554): Expected 2 arguments, but got 3.
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
@@ -109,7 +117,7 @@ describe('upload', () => {
             });
 
             it('should not add job to the queue', () => {
-                expect(workerQueues[ctx.tenant].add).not.toHaveBeenCalled();
+                expect(workerQueue?.add).not.toBeDefined();
             });
         });
 
@@ -132,8 +140,7 @@ describe('upload', () => {
 
             const next = jest.fn();
 
-            beforeAll(async () => {
-                workerQueues[ctx.tenant].add.mockClear();
+            beforeEach(async () => {
                 // @ts-expect-error TS(2554): Expected 2 arguments, but got 3.
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
@@ -157,7 +164,7 @@ describe('upload', () => {
             });
 
             it('should add job to the queue', () => {
-                expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                expect(workerQueue?.add).toHaveBeenCalledWith(
                     IMPORT,
                     {
                         extension: 'extension',
@@ -192,8 +199,7 @@ describe('upload', () => {
 
             const next = jest.fn();
 
-            beforeAll(async () => {
-                workerQueues[ctx.tenant].add.mockClear();
+            beforeEach(async () => {
                 // @ts-expect-error TS(2554): Expected 2 arguments, but got 3.
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
@@ -220,7 +226,7 @@ describe('upload', () => {
             });
 
             it('should add job to the queue', () => {
-                expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+                expect(workerQueue?.add).toHaveBeenCalledWith(
                     IMPORT,
                     {
                         extension: 'extension',
@@ -254,8 +260,7 @@ describe('upload', () => {
 
             const next = jest.fn();
 
-            beforeAll(async () => {
-                workerQueues[ctx.tenant].add.mockClear();
+            beforeEach(async () => {
                 // @ts-expect-error TS(2554): Expected 2 arguments, but got 3.
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
@@ -291,7 +296,7 @@ describe('upload', () => {
             });
 
             it('should not add job to the queue', () => {
-                expect(workerQueues[ctx.tenant].add).not.toHaveBeenCalled();
+                expect(workerQueue?.add).toHaveBeenCalledTimes(0);
             });
         });
     });
@@ -307,13 +312,12 @@ describe('upload', () => {
             },
         };
 
-        beforeAll(async () => {
-            workerQueues[ctx.tenant].add.mockClear();
+        beforeEach(async () => {
             await uploadUrl(ctx);
         });
 
         it('should add job to the queue', () => {
-            expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+            expect(workerQueue?.add).toHaveBeenCalledWith(
                 IMPORT,
                 {
                     extension: 'ext',
@@ -339,13 +343,12 @@ describe('upload', () => {
             },
         };
 
-        beforeAll(async () => {
-            workerQueues[ctx.tenant].add.mockClear();
+        beforeEach(async () => {
             await uploadUrl(ctx);
         });
 
         it('should add job to the queue', () => {
-            expect(workerQueues[ctx.tenant].add).toHaveBeenCalledWith(
+            expect(workerQueue?.add).toHaveBeenCalledWith(
                 IMPORT,
                 {
                     extension: 'ext',

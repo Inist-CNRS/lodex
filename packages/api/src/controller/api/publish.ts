@@ -3,14 +3,14 @@ import route from 'koa-route';
 import { v1 as uuid } from 'uuid';
 
 import clearPublished from '../../services/clearPublished';
-import { workerQueues } from '../../workers';
-import { PUBLISHER } from '../../workers/publisher';
 import getLogger from '../../services/logger';
+import { getOrCreateWorkerQueue } from '../../workers';
+import { PUBLISHER } from '../../workers/publisher';
 
 const app = new Koa();
 
 export const doPublish = async (ctx: any) => {
-    await workerQueues[ctx.tenant].add(
+    await getOrCreateWorkerQueue(ctx.tenant, 1).add(
         PUBLISHER, // Name of the job
         { jobType: PUBLISHER, tenant: ctx.tenant },
         { jobId: uuid() },

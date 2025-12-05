@@ -1,10 +1,10 @@
 import Koa from 'koa';
-import route from 'koa-route';
 import bodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 
 import { v1 as uuid } from 'uuid';
 
-import { workerQueues } from '../workers';
+import { getOrCreateWorkerQueue } from '../workers';
 import { PRECOMPUTER } from '../workers/precomputer';
 
 export const getComputedWebserviceData = async (ctx: any) => {
@@ -30,7 +30,7 @@ export const getComputedWebserviceData = async (ctx: any) => {
         data.error = { type, message };
     }
 
-    await workerQueues[tenant].add(
+    await getOrCreateWorkerQueue(tenant, 1).add(
         PRECOMPUTER, // Name of the job
         data,
         { jobId: uuid() },

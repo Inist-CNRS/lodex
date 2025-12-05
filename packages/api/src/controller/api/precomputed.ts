@@ -2,23 +2,23 @@ import Koa from 'koa';
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
-import koaBodyParser from 'koa-bodyparser';
-import { v1 as uuid } from 'uuid';
-import mime from 'mime-types';
 import fs from 'fs/promises';
+import koaBodyParser from 'koa-bodyparser';
+import mime from 'mime-types';
+import { v1 as uuid } from 'uuid';
 
-import { PRECOMPUTER } from '../../workers/precomputer';
-import { workerQueues } from '../../workers';
+import { getLocale, TaskStatus } from '@lodex/common';
+import asyncBusboy from '@recuperateur/async-busboy';
+import type { PreComputation } from '../../models/precomputed';
 import {
     getPrecomputedDataPreview,
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
-import { cancelJob } from '../../workers/tools';
-import { getLocale, TaskStatus } from '@lodex/common';
-import { buildQuery } from './buildQuery';
-import type { PreComputation } from '../../models/precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
-import asyncBusboy from '@recuperateur/async-busboy';
+import { getOrCreateWorkerQueue } from '../../workers';
+import { PRECOMPUTER } from '../../workers/precomputer';
+import { cancelJob } from '../../workers/tools';
+import { buildQuery } from './buildQuery';
 
 export const setup = async (
     ctx: { status: number; body: { error: any } },
@@ -132,7 +132,7 @@ export const precomputedAction = async (
     }
 
     if (action === 'launch') {
-        await workerQueues[ctx.tenant]
+        await getOrCreateWorkerQueue(ctx.tenant, 1)
             .add(
                 PRECOMPUTER, // Name of the job
                 {
@@ -154,7 +154,7 @@ export const precomputedAction = async (
 
     if (action === 'relaunch') {
         await ctx.dataset.removeAttribute(precomputed.name);
-        await workerQueues[ctx.tenant]
+        await getOrCreateWorkerQueue(ctx.tenant, 1)
             .add(
                 PRECOMPUTER, // Name of the job
                 {

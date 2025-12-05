@@ -1,11 +1,11 @@
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import getLogger from '../../services/logger';
-import { buildQuery } from './buildQuery';
-import { workerQueues } from '../../workers';
-import { PUBLISHER } from '../../workers/publisher';
 import { v1 as uuid } from 'uuid';
+import getLogger from '../../services/logger';
+import { getOrCreateWorkerQueue } from '../../workers';
+import { PUBLISHER } from '../../workers/publisher';
+import { buildQuery } from './buildQuery';
 
 const app = new Koa();
 
@@ -95,7 +95,7 @@ export const deleteManyDatasetRowByIds = async (ctx: any) => {
         }
 
         if ((await ctx.publishedDataset.countAll()) > 0) {
-            await workerQueues[ctx.tenant].add(
+            await getOrCreateWorkerQueue(ctx.tenant, 1).add(
                 PUBLISHER, // Name of the job
                 { jobType: PUBLISHER, tenant: ctx.tenant },
                 { jobId: uuid() },
@@ -131,7 +131,7 @@ export const deleteManyDatasetRowByFilter = async (ctx: any) => {
         }
 
         if ((await ctx.publishedDataset.countAll()) > 0) {
-            await workerQueues[ctx.tenant].add(
+            await getOrCreateWorkerQueue(ctx.tenant, 1).add(
                 PUBLISHER, // Name of the job
                 { jobType: PUBLISHER, tenant: ctx.tenant },
                 { jobId: uuid() },

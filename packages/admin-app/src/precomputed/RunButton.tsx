@@ -5,7 +5,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Button, type ButtonProps } from '@mui/material';
 import { type MouseEvent } from 'react';
 
-const RUNNABLE_STATUSES: (TaskStatusType | '' | undefined)[] = [
+export const RUNNABLE_STATUSES: (TaskStatusType | '' | undefined)[] = [
     undefined,
     '',
     TaskStatus.FINISHED,

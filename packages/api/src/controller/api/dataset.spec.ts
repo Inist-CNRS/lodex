@@ -1,21 +1,26 @@
+import type { Queue } from 'bull';
+import { getOrCreateWorkerQueue } from '../../workers';
 import {
     deleteManyDatasetRowByFilter,
     deleteManyDatasetRowByIds,
 } from './dataset';
-import { workerQueues } from '../../workers';
 
 const tenant = 'lodex_test';
-jest.mock('../../workers', () => ({
-    workerQueues: {
-        lodex_test: {
-            add: jest.fn(),
-        },
-    },
-}));
+jest.mock('../../workers');
 
 describe('dataset API', () => {
+    let workerQueue: Queue | null = null;
     beforeEach(() => {
-        workerQueues[tenant].add.mockClear();
+        jest.mocked(getOrCreateWorkerQueue).mockImplementation(() => {
+            workerQueue = {
+                add: jest.fn(),
+            } as unknown as Queue;
+            return workerQueue;
+        });
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
     });
     describe('DELETE /dataset/batch-delete-id', () => {
         it('should return 400 if ids query parameter is absent', async () => {
@@ -42,7 +47,7 @@ describe('dataset API', () => {
             });
 
             expect(ctx.dataset.deleteManyById).not.toHaveBeenCalled();
-            expect(workerQueues[tenant].add).toHaveBeenCalledTimes(0);
+            expect(workerQueue?.add).not.toBeDefined();
         });
 
         it('should delete the rows matching the ids and republish when publishedDataset is not empty', async () => {
@@ -67,7 +72,7 @@ describe('dataset API', () => {
                 '3',
             ]);
             expect(ctx.publishedDataset.countAll).toHaveBeenCalled();
-            expect(workerQueues[tenant].add).toHaveBeenCalledWith(
+            expect(workerQueue?.add).toHaveBeenCalledWith(
                 'publisher',
                 { jobType: 'publisher', tenant },
                 { jobId: expect.any(String) },
@@ -98,7 +103,7 @@ describe('dataset API', () => {
                 '3',
             ]);
             expect(ctx.publishedDataset.countAll).toHaveBeenCalled();
-            expect(workerQueues[tenant].add).toHaveBeenCalledTimes(0);
+            expect(workerQueue?.add).toHaveBeenCalledTimes(0);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toEqual({ status: 'deleted' });
         });
@@ -126,7 +131,7 @@ describe('dataset API', () => {
             });
 
             expect(ctx.dataset.deleteMany).not.toHaveBeenCalled();
-            expect(workerQueues[tenant].add).toHaveBeenCalledTimes(0);
+            expect(workerQueue?.add).toHaveBeenCalledTimes(0);
         });
 
         it('should delete the rows matching the filter and republish when publishedDataset is not empty', async () => {
@@ -155,7 +160,7 @@ describe('dataset API', () => {
                 foo: /^.*[bƀƃƅƄɃ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][rŕŗřȑȓɍ].*$/gi,
             });
             expect(ctx.publishedDataset.countAll).toHaveBeenCalled();
-            expect(workerQueues[tenant].add).toHaveBeenCalledWith(
+            expect(workerQueue?.add).toHaveBeenCalledWith(
                 'publisher',
                 { jobType: 'publisher', tenant },
                 { jobId: expect.any(String) },
@@ -190,7 +195,7 @@ describe('dataset API', () => {
                 foo: /^.*[bƀƃƅƄɃ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][rŕŗřȑȓɍ].*$/gi,
             });
             expect(ctx.publishedDataset.countAll).toHaveBeenCalled();
-            expect(workerQueues[tenant].add).toHaveBeenCalledTimes(0);
+            expect(workerQueue?.add).toHaveBeenCalledTimes(0);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toEqual({ status: 'deleted' });
         });
