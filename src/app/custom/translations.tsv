@@ -1023,6 +1023,8 @@
 "enter_from_precomputed"	"Enter existing precomputed data"	"Saisir précalcul existant"
 "from_columns"	"Existing Column(s)"	"Colonne(s) existante(s)"
 "enter_from_columns"	"Enter existing Column(s)"	"Saisir colonne(s) existante(s)"
+"from_precomputed_column"	"Precomputed result Column"	"Colonne des résultas du précalcul"
+"enter_from_columns"	"Optional: Enter Precomputed result Column"	"Optionel: Saisir colonne des résultats du précalcul"
 "from_subresource"	"From Subresource"	"Depuis une sous-ressource"
 "precomputed_processing"	"Precomputed processing"	"Donnée précalculée"
 "precomputed_processing_value"	"Precomputed web service"	"Web service précalculé"
