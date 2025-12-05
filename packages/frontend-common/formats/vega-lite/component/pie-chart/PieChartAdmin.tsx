@@ -5,7 +5,7 @@ import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdm
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
-import PieChart from '../../models/PieChart';
+import { buildPieChartSpec } from '../../models/PieChart';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import {
     FormatChartParamsFieldSet,
@@ -18,6 +18,7 @@ import { ASPECT_RATIO_8_5, type AspectRatio } from '../../../utils/aspectRatio';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../../i18n/I18NContext';
+import { FieldSelector } from '../../../../fields/form/FieldSelector';
 
 export const defaultArgs = {
     params: {
@@ -51,6 +52,7 @@ type PieChartArgs = {
     tooltipValue: string;
     labels?: boolean;
     aspectRatio: AspectRatio;
+    fieldToFilter?: string | null;
 };
 
 type PieChartAdminProps = {
@@ -95,15 +97,15 @@ const PieChartAdmin = ({
             return advancedModeSpec;
         }
 
-        const specBuilder = new PieChart();
+        const spec = buildPieChartSpec({
+            hasTooltip: tooltip,
+            tooltipCategory,
+            tooltipValue,
+            colors: colors.split(' '),
+            labels,
+        });
 
-        specBuilder.setTooltip(tooltip);
-        specBuilder.setTooltipCategory(tooltipCategory);
-        specBuilder.setTooltipValue(tooltipValue);
-        specBuilder.setColor(colors);
-        specBuilder.setLabels(labels);
-
-        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+        return JSON.stringify(spec, null, 2);
     }, [
         advancedMode,
         advancedModeSpec,
@@ -248,6 +250,15 @@ const PieChartAdmin = ({
                             onValueTitleChange={handleTooltipValue}
                             valueTitle={tooltipValue}
                             thirdValue={false}
+                        />
+                        <FieldSelector
+                            value={args?.fieldToFilter ?? null}
+                            onChange={(fieldToFilter) =>
+                                onChange({
+                                    ...args,
+                                    fieldToFilter: fieldToFilter || null,
+                                })
+                            }
                         />
                         <FormControlLabel
                             control={

@@ -21,7 +21,7 @@ import enrichment from './enrichment';
 import exportPublishedDataset from './export';
 import exportPDFPublishedDataset from './exportPDF';
 import facet from './facet';
-import fieldRoutes from './field';
+import fieldRoutes, { frontFieldRoutes } from './field';
 import hiddenResource from './hiddenResource';
 import job from './job';
 import loader from './loader';
@@ -114,6 +114,7 @@ app.use(mount('/facet', facet));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));
 app.use(mount('/publishedDataset', publishedDataset));
+app.use(mount('/field', frontFieldRoutes));
 
 app.use(async (ctx: any, next: any) => {
     if (!ctx.state.cookie || !ctx.state.header) {
