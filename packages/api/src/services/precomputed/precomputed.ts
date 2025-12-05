@@ -1,24 +1,24 @@
-import progress from '../progress';
-import localConfig from '../../../../../config.json';
 import { getHost, ProgressStatus, TaskStatus } from '@lodex/common';
-import { unlinkFile } from '../fsHelpers';
 import streamToPromise from 'stream-to-promise';
+import localConfig from '../../../../../config.json';
+import { unlinkFile } from '../fsHelpers';
+import progress from '../progress';
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
-import path from 'path';
-import { tmpdir } from 'os';
 import { createReadStream } from 'fs';
+import { tmpdir } from 'os';
+import path from 'path';
 // @ts-expect-error TS(2792): Cannot find module 'stream-to-promise'. Did you me... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import Lodex from '@ezs/lodex';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/basics'. Did you mean to ... Remove this comment to see the full error message
 import Basics from '@ezs/basics';
 import { Readable } from 'stream';
-import { mongoConnectionString } from '../mongoClient';
-import { jobLogger } from '../../workers/tools';
-import { CancelWorkerError, workerQueues } from '../../workers';
+import { CancelWorkerError, getOrCreateWorkerQueue } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
+import { jobLogger } from '../../workers/tools';
 import getLogger from '../logger';
+import { mongoConnectionString } from '../mongoClient';
 
 const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to the Web service entry point.
 ezs.use(Lodex);
@@ -107,7 +107,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
     }
     await unlinkFile(path.resolve(tmpDirectory, precomputedId)); // delete input file
     progress.setProgress(tenant, 65);
-    const workerQueue = workerQueues[tenant];
+    const workerQueue = getOrCreateWorkerQueue(tenant, 1);
     const completedJobs = await workerQueue.getCompleted();
     const askForPrecomputedJob = completedJobs.filter((completedJob: any) => {
         const { id, jobType, tenant: jobTenant } = completedJob.data;
@@ -260,7 +260,7 @@ export const getFailureFromWebservice = async (ctx: any) => {
             })}`,
         );
     }
-    const workerQueue = workerQueues[tenant];
+    const workerQueue = getOrCreateWorkerQueue(tenant, 1);
     const completedJobs = await workerQueue.getCompleted();
     const job = completedJobs.filter((job: any) => {
         const { id, jobType, tenant: jobTenant } = job.data;

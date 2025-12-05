@@ -1,7 +1,7 @@
 import Koa from 'koa';
-import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
-import { workerQueues } from '../../workers';
+import route from 'koa-route';
+import { getOrCreateWorkerQueue } from '../../workers';
 import { cancelJob, clearJobs } from '../../workers/tools';
 
 export const setup = async (ctx: any, next: any) => {
@@ -15,7 +15,7 @@ export const setup = async (ctx: any, next: any) => {
 };
 
 export const getJobLogs = async (ctx: any, id: any) => {
-    ctx.body = await workerQueues[ctx.tenant].getJobLogs(id);
+    ctx.body = await getOrCreateWorkerQueue(ctx.tenant, 1).getJobLogs(id);
 };
 
 export const postCancelJob = async (ctx: any, type: any) => {

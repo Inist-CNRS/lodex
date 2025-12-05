@@ -1,11 +1,12 @@
-import { useCallback, useState, type ChangeEventHandler } from 'react';
-import UploadIcon from '@mui/icons-material/Upload';
-import { Button, CircularProgress, styled } from '@mui/material';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { useImportPrecomputedResult } from './useImportPrecomputedResult';
 import { TaskStatus, type TaskStatusType } from '@lodex/common';
 import ButtonWithDialog from '@lodex/frontend-common/components/ButtonWithDialog';
 import CancelButton from '@lodex/frontend-common/components/CancelButton';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import UploadIcon from '@mui/icons-material/Upload';
+import { Button, CircularProgress, styled } from '@mui/material';
+import { useCallback, useState, type ChangeEventHandler } from 'react';
+import { RUNNABLE_STATUSES } from './RunButton';
+import { useImportPrecomputedResult } from './useImportPrecomputedResult';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -68,16 +69,7 @@ export const ImportPrecomputedResult = ({
                 uploading ? <CircularProgress size="1em" /> : <UploadIcon />
             }
             disabled={
-                uploading ||
-                !(
-                    [
-                        TaskStatus.PENDING,
-                        TaskStatus.CANCELED,
-                        TaskStatus.ERROR,
-                        TaskStatus.FINISHED,
-                        undefined,
-                    ] as TaskStatusType[]
-                ).includes(precomputed.status)
+                uploading || !RUNNABLE_STATUSES.includes(precomputed.status)
             }
         >
             {buttonLabel}

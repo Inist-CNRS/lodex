@@ -10,7 +10,7 @@ import {
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
 import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
-import { workerQueues } from '../../workers';
+import { getOrCreateWorkerQueue } from '../../workers';
 import { ENRICHER, RETRY_ENRICHER } from '../../workers/enricher';
 import { cancelJob, getActiveJob } from '../../workers/tools';
 
@@ -132,7 +132,7 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
     }
 
     if (action === 'launch') {
-        await workerQueues[ctx.tenant]
+        await getOrCreateWorkerQueue(ctx.tenant, 1)
             .add(
                 ENRICHER, // Name of the job
                 {
@@ -153,7 +153,7 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
     if (action === 'relaunch') {
         const enrichment = await ctx.enrichment.findOneById(id);
         await ctx.dataset.removeAttribute(enrichment.name);
-        await workerQueues[ctx.tenant]
+        await getOrCreateWorkerQueue(ctx.tenant, 1)
             .add(
                 ENRICHER, // Name of the job
                 {
@@ -200,7 +200,7 @@ export const launchAllEnrichment = async (ctx: any) => {
             if (enrichment.status === 'FINISHED') {
                 await ctx.dataset.removeAttribute(enrichment.name);
             }
-            await workerQueues[ctx.tenant]
+            await getOrCreateWorkerQueue(ctx.tenant, 1)
                 .add(
                     ENRICHER, // Name of the job
                     {
@@ -230,7 +230,7 @@ export const launchAllEnrichment = async (ctx: any) => {
 };
 
 export const retryEnrichmentOnFailedRow = async (ctx: any, id: any) => {
-    await workerQueues[ctx.tenant]
+    await getOrCreateWorkerQueue(ctx.tenant, 1)
         .add(
             RETRY_ENRICHER, // Name of the job
             {
