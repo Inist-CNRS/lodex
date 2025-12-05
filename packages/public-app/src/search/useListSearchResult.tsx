@@ -8,13 +8,12 @@ export function useListSearchResult(
 ) {
     const { isFieldListPending, fields, fieldNames } = useListField();
 
-    const { isListSearchResultPending, totalSearchResult, searchResult } =
-        useListPublishedDatasetByFieldValue(
-            filters?.map(({ fieldName, value }) => ({
-                fieldName,
-                value,
-            })),
-        );
+    const {
+        isListSearchResultPending,
+        totalSearchResult,
+        searchResult,
+        fetchMoreResults,
+    } = useListPublishedDatasetByFieldValue(filters);
 
     return useMemo(
         () => ({
@@ -24,6 +23,7 @@ export function useListSearchResult(
             searchResult,
             fields,
             fieldNames,
+            fetchMoreResults,
         }),
         [
             isFieldListPending,
@@ -32,6 +32,7 @@ export function useListSearchResult(
             isListSearchResultPending,
             totalSearchResult,
             searchResult,
+            fetchMoreResults,
         ],
     );
 }

@@ -350,7 +350,7 @@ export const Network3DBase = ({
                     >
                         <ForceGraph3D
                             ref={fgRef}
-                            backgroundColor="white"
+                            backgroundColor="#ffffff00"
                             nodeVal={(n) => n.radius}
                             nodeColor={() => colorSet![0]}
                             nodeThreeObject={(node) => {

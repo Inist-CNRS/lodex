@@ -121,18 +121,18 @@ describe('searchSchema', () => {
         },
         {
             input: { sort: null },
-            expected: { sortBy: '_id', sortDir: 'ASC' },
-            label: 'sort null (defaults to _id/ASC)',
+            expected: undefined,
+            label: 'sort null (defaults to undefined)',
         },
         {
             input: { sort: undefined },
-            expected: { sortBy: '_id', sortDir: 'ASC' },
-            label: 'sort undefined (defaults to _id/ASC)',
+            expected: undefined,
+            label: 'sort undefined (defaults to undefined)',
         },
         {
             input: {},
-            expected: { sortBy: '_id', sortDir: 'ASC' },
-            label: 'sort missing (defaults to _id/ASC)',
+            expected: undefined,
+            label: 'sort missing (defaults to undefined)',
         },
         {
             input: { sort: { sortBy: '_id', sortDir: 'DESC' } },
@@ -204,10 +204,6 @@ describe('searchSchema', () => {
             expect(result.data).toEqual({
                 page: 0,
                 perPage: 10,
-                sort: {
-                    sortBy: '_id',
-                    sortDir: 'ASC',
-                },
             });
         }
     });
