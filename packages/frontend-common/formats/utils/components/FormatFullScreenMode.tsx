@@ -203,10 +203,6 @@ const FormatFullScreenMode = memo(
                 portalContainer={graphContextValue?.portalContainer}
                 field={graphContextValue?.field}
             >
-                {(() => {
-                    console.log('repaint FormatFullScreenMode');
-                    return null;
-                })()}
                 <Stack
                     sx={{
                         top: 0,

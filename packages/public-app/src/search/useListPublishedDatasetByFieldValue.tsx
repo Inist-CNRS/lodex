@@ -1,28 +1,22 @@
 import { useApiClient } from '@lodex/frontend-common/api/useApiClient';
 import type { SearchPaneFilter } from '@lodex/frontend-common/search/SearchPaneContext';
-import { useMutation } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
-const defaultResults: PublishedDataByFieldResponse['data'] = [];
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 const PAGE_SIZE = 10;
 
 export function useListPublishedDatasetByFieldValue(
     filters: UseListPublishedDatasetByFieldValueParams = null,
 ) {
-    const [totalSearchResult, setSearchTotalResult] = useState<number>(0);
-    const [searchResult, setSearchResult] =
-        useState<PublishedDataByFieldResponse['data']>(defaultResults);
-
     const { fetch } = useApiClient();
 
-    const { isLoading: isListSearchResultPending, mutateAsync } = useMutation<
-        PublishedDataByFieldResponse,
-        unknown,
-        number
-    >({
-        mutationKey: ['search', 'list', JSON.stringify(filters)],
-        async mutationFn(page = 0) {
+    const {
+        isLoading: isListSearchResultPending,
+        fetchNextPage: fetchMoreResults,
+        data,
+    } = useInfiniteQuery({
+        queryKey: ['search', 'list', JSON.stringify(filters)],
+        queryFn({ pageParam = 0 }) {
             if (!filters?.length) {
                 return {
                     total: 0,
@@ -35,50 +29,26 @@ export function useListPublishedDatasetByFieldValue(
                 method: 'POST',
                 body: JSON.stringify({
                     filters,
-                    page,
+                    page: pageParam,
                     pageSize: PAGE_SIZE,
                 }),
             });
         },
+        getNextPageParam(_, allPages) {
+            return allPages.length;
+        },
     });
-
-    useEffect(() => {
-        if (!filters?.length) {
-            setSearchTotalResult(0);
-            setSearchResult(defaultResults);
-            return;
-        }
-
-        mutateAsync(0).then(({ total, data }) => {
-            setSearchTotalResult(total);
-            setSearchResult(data);
-        });
-    }, [filters, mutateAsync]);
-
-    const fetchMoreResults = useCallback(async () => {
-        if (!filters?.length || searchResult.length >= totalSearchResult) {
-            return;
-        }
-
-        const nextPage = Math.floor(searchResult.length / 10);
-        const { data } = await mutateAsync(nextPage);
-
-        setSearchResult((prevResults) => [...prevResults, ...data]);
-    }, [mutateAsync, filters, searchResult, totalSearchResult]);
 
     return useMemo(
         () => ({
             isListSearchResultPending,
-            totalSearchResult,
-            searchResult,
+            totalSearchResult: (data?.pages ?? [])
+                .map((page) => page.total)
+                .reduce((a, b) => Math.max(a, b), 0),
+            searchResult: (data?.pages ?? []).flatMap((page) => page.data),
             fetchMoreResults,
         }),
-        [
-            isListSearchResultPending,
-            totalSearchResult,
-            searchResult,
-            fetchMoreResults,
-        ],
+        [isListSearchResultPending, data, fetchMoreResults],
     );
 }
 
