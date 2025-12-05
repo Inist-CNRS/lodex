@@ -34,7 +34,8 @@ import { GraphContextProvider } from './GraphContext';
 const styles = stylesToClassname(
     {
         container: {
-            margin: '0px auto 30px auto',
+            marginBottom: '30px',
+            width: '100%',
         },
         header: {
             gridColumn: 'span 2',
@@ -54,6 +55,7 @@ const styles = stylesToClassname(
             justifyContent: 'center',
         },
         content: {
+            width: '100%',
             '@media (min-width: 992px)': {
                 display: 'grid',
                 gridTemplateColumns: '1fr 3fr',
@@ -62,6 +64,7 @@ const styles = stylesToClassname(
         results: {
             '@media (min-width: 992px)': {
                 minWidth: '600px',
+                maxWidth: '100%',
                 flex: 3,
                 padding: '0rem calc(1rem + 12px)',
             },

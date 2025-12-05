@@ -5,8 +5,10 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import React, {
     forwardRef,
+    memo,
     useContext,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from 'react';
@@ -108,120 +110,147 @@ type FormatFullScreenModeProps = {
     forceRerenderOnToggle?: boolean;
 };
 
-const FormatFullScreenMode = ({
-    children,
-    fill,
-    forceRerenderOnToggle: forceRerenderOnOpen = false,
-}: FormatFullScreenModeProps) => {
-    const [key, setKey] = useState(Math.random());
-    const [open, setOpen] = useState(false);
+const FormatFullScreenMode = memo(
+    ({
+        children,
+        fill,
+        forceRerenderOnToggle: forceRerenderOnOpen = false,
+    }: FormatFullScreenModeProps) => {
+        const [key, setKey] = useState(Math.random());
+        const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const externalContext = useContext(GraphContext);
-    const graphActionRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        if (forceRerenderOnOpen) {
-            setKey(Math.random());
-        }
-
-        if (open) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            setTimeout(() => {
-                document.body.style.overflow = 'auto';
-            }, 100);
-        }
-
-        return () => {
-            document.body.style.overflow = 'auto';
+        const handleOpen = () => {
+            setOpen(true);
         };
-    }, [open, forceRerenderOnOpen]);
 
-    if (!externalContext) {
-        return children;
-    }
+        const handleClose = () => {
+            setOpen(false);
+        };
 
-    const modalStyles: SxProps = open
-        ? {
-              position: 'absolute',
-              gap: '1rem',
-              padding: '1rem',
-          }
-        : {
-              gap: 0,
-              paddong: 0,
-          };
+        const externalContext = useContext(GraphContext);
+        const graphActionRef = useRef<HTMLDivElement | null>(null);
 
-    const fieldStyles: SxProps = open
-        ? {
-              borderRadius: '0.25rem',
-              paddingInline: '0rem',
-              margin: 0,
-              overflow: 'auto',
-          }
-        : {
-              border: 0,
-          };
-
-    return (
-        <GraphContextProvider
-            {...externalContext}
-            portalContainer={
-                open ? graphActionRef : externalContext?.portalContainer
+        useEffect(() => {
+            if (forceRerenderOnOpen) {
+                setKey(Math.random());
             }
-        >
-            <Stack
-                sx={{
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    display: 'flex',
-                    width: '100%',
-                    height: '100%',
-                    zIndex: open ? 9999 : 'initial',
-                    position: open ? 'absolute' : 'relative',
-                    backgroundColor: open ? 'var(--background-paper)' : 'none',
-                    ...modalStyles,
-                }}
+
+            if (open) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                setTimeout(() => {
+                    document.body.style.overflow = 'auto';
+                }, 100);
+            }
+
+            return () => {
+                document.body.style.overflow = 'auto';
+            };
+        }, [open, forceRerenderOnOpen]);
+
+        const modalStyles: SxProps = useMemo(
+            () =>
+                open
+                    ? {
+                          position: 'absolute',
+                          gap: '1rem',
+                          padding: '1rem',
+                          width: '100%',
+                          zIndex: 9999,
+                      }
+                    : {
+                          position: 'relative',
+                          gap: 0,
+                          padding: 0,
+                      },
+            [open],
+        );
+
+        const fieldStyles: SxProps = useMemo(
+            () =>
+                open
+                    ? {
+                          borderRadius: '0.25rem',
+                          paddingInline: '0rem',
+                          margin: 0,
+                          overflow: 'auto',
+                      }
+                    : {
+                          border: 0,
+                      },
+            [open],
+        );
+
+        const graphContextValue = useMemo(() => {
+            if (!externalContext) {
+                return null;
+            }
+
+            return {
+                ...externalContext,
+                portalContainer: open
+                    ? graphActionRef
+                    : externalContext.portalContainer,
+            };
+        }, [externalContext, open]);
+
+        if (!graphContextValue) {
+            return children;
+        }
+
+        return (
+            <GraphContextProvider
+                portalContainer={graphContextValue?.portalContainer}
+                field={graphContextValue?.field}
             >
-                {open && (
-                    <FullScreenHeading
-                        ref={graphActionRef}
-                        field={externalContext?.field}
-                        close={handleClose}
-                    />
-                )}
-
-                <Box
-                    component="fieldset"
+                {(() => {
+                    console.log('repaint FormatFullScreenMode');
+                    return null;
+                })()}
+                <Stack
                     sx={{
-                        position: 'relative',
-                        flexGrow: 1,
-                        width: '100%',
-                        maxWidth: '100%',
-                        minWidth: '100%',
-                        ...fieldStyles,
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        display: 'flex',
+                        height: '100%',
+                        backgroundColor: open
+                            ? 'var(--background-paper)'
+                            : 'none',
+                        ...modalStyles,
                     }}
-                    key={key}
                 >
-                    {children}
-
-                    {!open && (
-                        <FullScreenButton open={handleOpen} fill={fill} />
+                    {open && (
+                        <FullScreenHeading
+                            ref={graphActionRef}
+                            field={externalContext?.field}
+                            close={handleClose}
+                        />
                     )}
-                </Box>
-            </Stack>
-        </GraphContextProvider>
-    );
-};
+
+                    <Box
+                        component="fieldset"
+                        sx={{
+                            position: 'relative',
+                            flexGrow: 1,
+                            width: '100%',
+                            maxWidth: '100%',
+                            minWidth: '100%',
+                            ...fieldStyles,
+                        }}
+                        key={key}
+                    >
+                        {children}
+
+                        {!open && (
+                            <FullScreenButton open={handleOpen} fill={fill} />
+                        )}
+                    </Box>
+                </Stack>
+            </GraphContextProvider>
+        );
+    },
+);
 
 export default FormatFullScreenMode;

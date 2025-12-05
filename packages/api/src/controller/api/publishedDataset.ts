@@ -183,7 +183,20 @@ export const searchByField = async (ctx: Koa.Context) => {
         return;
     }
 
-    const { filters, page, perPage, sort } = parseBodyResult.data;
+    const defaultSortField = (await ctx.field.findAll()).find(
+        (f: { name: string; sortOrder: string; isDefaultSortField: boolean }) =>
+            f.isDefaultSortField,
+    );
+
+    const {
+        filters,
+        page,
+        perPage,
+        sort = {
+            sortBy: defaultSortField?.name ?? '_id',
+            sortDir: defaultSortField?.sortOrder ?? 'ASC',
+        },
+    } = parseBodyResult.data;
     const transformedFilters = (filters ?? [])
         .map((f) => getFilter(f))
         .filter((f) => !!f);
@@ -201,7 +214,7 @@ export const searchByField = async (ctx: Koa.Context) => {
             .skip(page * perPage)
             .sort({
                 [sort.sortBy === '_id' ? '_id' : `versions.0.${sort.sortBy}`]:
-                    sort.sortDir === 'ASC' ? 1 : -1,
+                    sort.sortDir.toUpperCase() === 'ASC' ? 1 : -1,
             })
             .toArray(),
         ctx.publishedDataset.count(searchFilter),

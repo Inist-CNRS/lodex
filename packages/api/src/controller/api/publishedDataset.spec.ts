@@ -1,6 +1,12 @@
 import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
-import createPublishedDatasetModel from '../../models/publishedDataset';
+import field from '../../models/field';
+import hiddenResource from '../../models/hiddenResource';
+import {
+    default as createPublishedDatasetModel,
+    default as publishedDataset,
+} from '../../models/publishedDataset';
+import publishedFacet from '../../models/publishedFacet';
 import {
     completeFilters,
     createResource,
@@ -11,10 +17,6 @@ import {
     restoreResource,
     searchByField,
 } from './publishedDataset';
-import publishedDataset from '../../models/publishedDataset';
-import hiddenResource from '../../models/hiddenResource';
-import field from '../../models/field';
-import publishedFacet from '../../models/publishedFacet';
 import publishFacets from './publishFacets';
 
 describe('publishedDataset', () => {
@@ -764,6 +766,9 @@ describe('publishedDataset', () => {
 
                 const ctx = {
                     publishedDataset: publishedDatasetModel,
+                    field: {
+                        findAll: jest.fn().mockResolvedValue([]),
+                    },
                     request: {
                         body: {
                             filters,
@@ -828,6 +833,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         filters,
@@ -879,6 +887,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         filters,
@@ -923,6 +934,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         filters: [{ fieldName: 'tags', value: 'javascript' }],
@@ -962,6 +976,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         filters: [{ fieldName: 'tags', value: 'javascript' }],
@@ -1002,6 +1019,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         filters: [{ fieldName: 'tags', value: 'javascript' }],
@@ -1042,6 +1062,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         filters: [{ fieldName: 'tags', value: 'javascript' }],
@@ -1073,6 +1096,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         filters: [],
@@ -1097,6 +1123,9 @@ describe('publishedDataset', () => {
 
             const ctx = {
                 publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([]),
+                },
                 request: {
                     body: {
                         page: 0,
@@ -1110,6 +1139,221 @@ describe('publishedDataset', () => {
             // With no filters, should return all resources
             expect(ctx.body.total).toBe(2);
             expect(ctx.body.data).toHaveLength(2);
+        });
+
+        it('should use default sort field when isDefaultSortField is set and no sort provided', async () => {
+            await publishedDatasetModel.insertBatch([
+                {
+                    uri: 'uri1',
+                    versions: [{ name: 'Resource C', priority: 3 }],
+                },
+                {
+                    uri: 'uri2',
+                    versions: [{ name: 'Resource A', priority: 1 }],
+                },
+                {
+                    uri: 'uri3',
+                    versions: [{ name: 'Resource B', priority: 2 }],
+                },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([
+                        {
+                            name: 'name',
+                            sortOrder: 'ASC',
+                            isDefaultSortField: false,
+                        },
+                        {
+                            name: 'priority',
+                            sortOrder: 'ASC',
+                            isDefaultSortField: true,
+                        },
+                    ]),
+                },
+                request: {
+                    body: {
+                        page: 0,
+                        perPage: 10,
+                        // No sort provided - should use priority field as default
+                    },
+                },
+            } as any;
+
+            await searchByField(ctx);
+
+            // Should be sorted by priority in ASC order (1, 2, 3)
+            expect(ctx.body).toStrictEqual({
+                total: 3,
+                data: [
+                    expect.objectContaining({ uri: 'uri2', priority: 1 }),
+                    expect.objectContaining({ uri: 'uri3', priority: 2 }),
+                    expect.objectContaining({ uri: 'uri1', priority: 3 }),
+                ],
+            });
+        });
+
+        it('should use default sort field with DESC order when sortOrder is DESC', async () => {
+            await publishedDatasetModel.insertBatch([
+                {
+                    uri: 'uri1',
+                    versions: [{ name: 'Resource C', priority: 3 }],
+                },
+                {
+                    uri: 'uri2',
+                    versions: [{ name: 'Resource A', priority: 1 }],
+                },
+                {
+                    uri: 'uri3',
+                    versions: [{ name: 'Resource B', priority: 2 }],
+                },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([
+                        {
+                            name: 'priority',
+                            sortOrder: 'DESC',
+                            isDefaultSortField: true,
+                        },
+                    ]),
+                },
+                request: {
+                    body: {
+                        page: 0,
+                        perPage: 10,
+                    },
+                },
+            } as any;
+
+            await searchByField(ctx);
+
+            // Should be sorted by priority in DESC order (3, 2, 1)
+            expect(ctx.body).toStrictEqual({
+                total: 3,
+                data: [
+                    expect.objectContaining({ uri: 'uri1', priority: 3 }),
+                    expect.objectContaining({ uri: 'uri3', priority: 2 }),
+                    expect.objectContaining({ uri: 'uri2', priority: 1 }),
+                ],
+            });
+        });
+
+        it('should fall back to _id ASC when no default sort field is defined', async () => {
+            await publishedDatasetModel.insertBatch([
+                {
+                    uri: 'uri1',
+                    versions: [{ name: 'Resource 1' }],
+                },
+                {
+                    uri: 'uri2',
+                    versions: [{ name: 'Resource 2' }],
+                },
+                {
+                    uri: 'uri3',
+                    versions: [{ name: 'Resource 3' }],
+                },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([
+                        {
+                            name: 'name',
+                            sortOrder: 'ASC',
+                            isDefaultSortField: false,
+                        },
+                        {
+                            name: 'other',
+                            sortOrder: 'ASC',
+                            isDefaultSortField: false,
+                        },
+                    ]),
+                },
+                request: {
+                    body: {
+                        page: 0,
+                        perPage: 10,
+                    },
+                },
+            } as any;
+
+            await searchByField(ctx);
+
+            // Should be sorted by _id in ASC order
+            const ids = ctx.body.data.map((d: any) => d._id);
+            const sortedIds = [...ids].sort();
+            expect(ids).toEqual(sortedIds);
+            expect(ctx.body).toStrictEqual({
+                total: 3,
+                data: expect.any(Array),
+            });
+        });
+
+        it('should override default sort field when sort is explicitly provided', async () => {
+            await publishedDatasetModel.insertBatch([
+                {
+                    uri: 'uri1',
+                    versions: [{ name: 'Resource C', priority: 3 }],
+                },
+                {
+                    uri: 'uri2',
+                    versions: [{ name: 'Resource A', priority: 1 }],
+                },
+                {
+                    uri: 'uri3',
+                    versions: [{ name: 'Resource B', priority: 2 }],
+                },
+            ]);
+
+            const ctx = {
+                publishedDataset: publishedDatasetModel,
+                field: {
+                    findAll: jest.fn().mockResolvedValue([
+                        {
+                            name: 'priority',
+                            sortOrder: 'ASC',
+                            isDefaultSortField: true,
+                        },
+                    ]),
+                },
+                request: {
+                    body: {
+                        page: 0,
+                        perPage: 10,
+                        sort: {
+                            sortBy: 'name',
+                            sortDir: 'DESC',
+                        },
+                    },
+                },
+            } as any;
+
+            await searchByField(ctx);
+
+            // Should be sorted by name in DESC order (C, B, A)
+            expect(ctx.body).toStrictEqual({
+                total: 3,
+                data: [
+                    expect.objectContaining({
+                        uri: 'uri1',
+                        name: 'Resource C',
+                    }),
+                    expect.objectContaining({
+                        uri: 'uri3',
+                        name: 'Resource B',
+                    }),
+                    expect.objectContaining({
+                        uri: 'uri2',
+                        name: 'Resource A',
+                    }),
+                ],
+            });
         });
     });
 
@@ -1498,7 +1742,7 @@ describe('publishedDataset', () => {
         });
     });
 
-    describe.only('restoreResource', () => {
+    describe('restoreResource', () => {
         let defaultCtx: any;
         let db: any;
 

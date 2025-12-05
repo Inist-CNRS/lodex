@@ -2,6 +2,7 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useSearchPaneContext } from '@lodex/frontend-common/search/useSearchPaneContext';
 import { Close } from '@mui/icons-material';
 import {
+    Button,
     Drawer,
     IconButton,
     Skeleton,
@@ -25,6 +26,7 @@ export function SearchResultPane() {
         searchResult,
         fields,
         fieldNames,
+        fetchMoreResults,
     } = useListSearchResult(filters);
 
     const sx: SxProps = {
@@ -50,6 +52,7 @@ export function SearchResultPane() {
             anchor="right"
             variant="persistent"
             sx={{
+                position: 'relative',
                 zIndex: 1100,
             }}
         >
@@ -91,7 +94,8 @@ export function SearchResultPane() {
                                 <Close />
                             </IconButton>
                         </Stack>
-                        {isListSearchResultPending ? (
+                        {totalSearchResult === 0 &&
+                        isListSearchResultPending ? (
                             <Skeleton height={16} width={80} />
                         ) : (
                             <Typography variant="body2" color="text.secondary">
@@ -104,26 +108,40 @@ export function SearchResultPane() {
                     <Stack
                         sx={{
                             gap: '0.125rem',
-                            maxHeight: 'calc(100vh - 11.25rem)',
+                            maxHeight: 'calc(100vh - 11.75rem)',
                             overflow: 'auto',
                             paddingInlineEnd: `${SIDE_PANE_PADDING}px`,
                         }}
                     >
-                        {isListSearchResultPending
-                            ? new Array(10)
-                                  .fill(null)
-                                  .map((_, index) => (
-                                      <Skeleton key={index} height={72} />
-                                  ))
-                            : searchResult.map((record) => (
-                                  <SearchResult
-                                      key={record.uri}
-                                      result={record}
-                                      closeDrawer={() => {}}
-                                      fields={fields}
-                                      fieldNames={fieldNames}
-                                  />
-                              ))}
+                        {searchResult.map((record) => (
+                            <SearchResult
+                                key={record.uri}
+                                result={record}
+                                closeDrawer={() => {}}
+                                fields={fields}
+                                fieldNames={fieldNames}
+                            />
+                        ))}
+
+                        {isListSearchResultPending &&
+                            new Array(10)
+                                .fill(null)
+                                .map((_, index) => (
+                                    <Skeleton key={index} height={72} />
+                                ))}
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            onClick={() => fetchMoreResults()}
+                            disabled={
+                                isListSearchResultPending ||
+                                searchResult.length >= totalSearchResult
+                            }
+                        >
+                            {translate('search_load_more')}
+                        </Button>
                     </Stack>
                 </Stack>
             </Stack>

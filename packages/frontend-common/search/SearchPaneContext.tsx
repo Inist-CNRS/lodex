@@ -73,7 +73,7 @@ export function SearchPaneContextProvider({
     }, [filters, handleSelectOne, handleSelectMany, handleClear]);
 
     useEffect(() => {
-        setFilters([]);
+        setFilters(defaultFilters);
     }, [pathname]);
 
     return (

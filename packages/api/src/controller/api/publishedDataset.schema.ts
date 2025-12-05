@@ -24,7 +24,7 @@ export const searchSchema = z.object({
                 .transform((val) => val ?? 'ASC'),
         })
         .nullish()
-        .transform((value) => value ?? { sortBy: '_id', sortDir: 'ASC' }),
+        .transform((value) => value || undefined),
 });
 
 export type Filter = z.infer<typeof filterSchema>;

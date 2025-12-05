@@ -18,11 +18,11 @@ const GraphPage = ({ name, tenant }: GraphPageProps) => (
         <Helmet>
             <title>{getTitle(tenant, 'Resources')}</title>
         </Helmet>
-        <Stack direction="row">
-            <SearchPaneContextProvider resultsPane={<SearchResultPane />}>
+        <SearchPaneContextProvider resultsPane={<SearchResultPane />}>
+            <Stack direction="row" sx={{ width: '100%' }}>
                 <Graph className="graph-page" name={name} />
-            </SearchPaneContextProvider>
-        </Stack>
+            </Stack>
+        </SearchPaneContextProvider>
     </>
 );
 

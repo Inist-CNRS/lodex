@@ -1,5 +1,5 @@
 import { useSearchPaneContext } from '@lodex/frontend-common/search/useSearchPaneContext';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { SearchResultPane } from './SearchResultPane';
 import { useListSearchResult } from './useListSearchResult';
 
@@ -8,6 +8,9 @@ jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
         translate: (key: string, params?: { total?: number }) => {
             if (key === 'istex_total') {
                 return `${params?.total} results`;
+            }
+            if (key === 'search_load_more') {
+                return 'Load more';
             }
             return key;
         },
@@ -58,6 +61,7 @@ describe('SearchResultPane', () => {
                 detail2: undefined,
                 detail3: undefined,
             },
+            fetchMoreResults: jest.fn(),
         });
 
         render(<SearchResultPane />);
@@ -92,6 +96,7 @@ describe('SearchResultPane', () => {
                 detail2: undefined,
                 detail3: undefined,
             },
+            fetchMoreResults: jest.fn(),
         });
 
         render(<SearchResultPane />);
@@ -128,6 +133,7 @@ describe('SearchResultPane', () => {
                 detail2: undefined,
                 detail3: undefined,
             },
+            fetchMoreResults: jest.fn(),
         });
 
         render(<SearchResultPane />);
@@ -188,6 +194,7 @@ describe('SearchResultPane', () => {
             searchResult: mockSearchResult,
             fields: mockFields,
             fieldNames: mockFieldNames,
+            fetchMoreResults: jest.fn(),
         });
 
         render(<SearchResultPane />);
@@ -234,6 +241,7 @@ describe('SearchResultPane', () => {
                 detail2: undefined,
                 detail3: undefined,
             },
+            fetchMoreResults: jest.fn(),
         });
 
         const { container } = render(<SearchResultPane />);
@@ -270,6 +278,7 @@ describe('SearchResultPane', () => {
                 detail2: undefined,
                 detail3: undefined,
             },
+            fetchMoreResults: jest.fn(),
         });
 
         render(<SearchResultPane />);
@@ -279,5 +288,174 @@ describe('SearchResultPane', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('0 results')).toBeInTheDocument();
         expect(screen.queryByTestId(/search-result-/)).not.toBeInTheDocument();
+    });
+
+    it('should call fetchMoreResults when load more button is clicked', () => {
+        const mockFetchMoreResults = jest.fn();
+
+        mockUseSearchPaneContext.mockReturnValue({
+            filters: [
+                {
+                    fieldName: 'author',
+                    value: 'John Doe',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
+        });
+
+        mockUseListSearchResult.mockReturnValue({
+            isListSearchResultPending: false,
+            totalSearchResult: 25,
+            searchResult: new Array(10).fill(null).map((_, i) => ({
+                uri: `resource-${i}`,
+                title: `Result ${i}`,
+            })),
+            fields: [],
+            fieldNames: {
+                uri: 'uri',
+                title: 'title',
+                description: undefined,
+                detail1: undefined,
+                detail2: undefined,
+                detail3: undefined,
+            },
+            fetchMoreResults: mockFetchMoreResults,
+        });
+
+        render(<SearchResultPane />);
+
+        const loadMoreButton = screen.getByRole('button', {
+            name: 'Load more',
+        });
+        expect(loadMoreButton).toBeInTheDocument();
+        expect(loadMoreButton).not.toBeDisabled();
+
+        act(() => {
+            fireEvent.click(loadMoreButton);
+        });
+
+        expect(mockFetchMoreResults).toHaveBeenCalledTimes(1);
+    });
+
+    it('should disable load more button when all results are loaded', () => {
+        mockUseSearchPaneContext.mockReturnValue({
+            filters: [
+                {
+                    fieldName: 'author',
+                    value: 'John Doe',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
+        });
+
+        mockUseListSearchResult.mockReturnValue({
+            isListSearchResultPending: false,
+            totalSearchResult: 10,
+            searchResult: new Array(10).fill(null).map((_, i) => ({
+                uri: `resource-${i}`,
+                title: `Result ${i}`,
+            })),
+            fields: [],
+            fieldNames: {
+                uri: 'uri',
+                title: 'title',
+                description: undefined,
+                detail1: undefined,
+                detail2: undefined,
+                detail3: undefined,
+            },
+            fetchMoreResults: jest.fn(),
+        });
+
+        render(<SearchResultPane />);
+
+        const loadMoreButton = screen.getByRole('button', {
+            name: 'Load more',
+        });
+        expect(loadMoreButton).toBeDisabled();
+    });
+
+    it('should disable load more button when loading', () => {
+        mockUseSearchPaneContext.mockReturnValue({
+            filters: [
+                {
+                    fieldName: 'author',
+                    value: 'John Doe',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
+        });
+
+        mockUseListSearchResult.mockReturnValue({
+            isListSearchResultPending: true,
+            totalSearchResult: 25,
+            searchResult: new Array(10).fill(null).map((_, i) => ({
+                uri: `resource-${i}`,
+                title: `Result ${i}`,
+            })),
+            fields: [],
+            fieldNames: {
+                uri: 'uri',
+                title: 'title',
+                description: undefined,
+                detail1: undefined,
+                detail2: undefined,
+                detail3: undefined,
+            },
+            fetchMoreResults: jest.fn(),
+        });
+
+        render(<SearchResultPane />);
+
+        const loadMoreButton = screen.getByRole('button', {
+            name: 'Load more',
+        });
+        expect(loadMoreButton).toBeDisabled();
+    });
+
+    it('should enable load more button when there are more results to load', () => {
+        mockUseSearchPaneContext.mockReturnValue({
+            filters: [
+                {
+                    fieldName: 'author',
+                    value: 'John Doe',
+                },
+            ],
+            selectOne: jest.fn(),
+            selectMany: jest.fn(),
+            clearFilters: jest.fn(),
+        });
+
+        mockUseListSearchResult.mockReturnValue({
+            isListSearchResultPending: false,
+            totalSearchResult: 50,
+            searchResult: new Array(10).fill(null).map((_, i) => ({
+                uri: `resource-${i}`,
+                title: `Result ${i}`,
+            })),
+            fields: [],
+            fieldNames: {
+                uri: 'uri',
+                title: 'title',
+                description: undefined,
+                detail1: undefined,
+                detail2: undefined,
+                detail3: undefined,
+            },
+            fetchMoreResults: jest.fn(),
+        });
+
+        render(<SearchResultPane />);
+
+        const loadMoreButton = screen.getByRole('button', {
+            name: 'Load more',
+        });
+        expect(loadMoreButton).not.toBeDisabled();
     });
 });
