@@ -173,6 +173,10 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
             source: 'precomputed',
             value: transformers[0]?.args && transformers[0].args[0]?.value,
             routine: transformers[0]?.args && transformers[0].args[1]?.value,
+            labelColumn:
+                transformers[0]?.args && transformers[0].args[2]?.value,
+            valueColumn:
+                transformers[0]?.args && transformers[0].args[3]?.value,
         },
         COLUMN: {
             source: 'fromColumns',
@@ -233,21 +237,28 @@ export const SourceValueToggle = ({
     const [source, setSource] = React.useState(null);
     const [value, setValue] = React.useState(null);
     const [routine, setRoutine] = React.useState(undefined);
+    const [labelColumn, setLabelColumn] = React.useState<string | null>(null);
+    const [valueColumn, setValueColumn] = React.useState<string | null>(null);
+
     React.useEffect(() => {
         const {
             source: currentSource,
             value: currentValue,
             routine: currentRoutine,
+            labelColumn: currentLabelColumn,
+            valueColumn: currentValueColumn,
         } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
             currentTransformers,
             !!selectedSubresourceUri,
         );
         setSource(currentSource);
         setValue(currentValue);
+        setLabelColumn(currentLabelColumn);
+        setValueColumn(currentValueColumn);
         if (currentRoutine) {
             setRoutine(currentRoutine);
         }
-    }, [currentTransformers]);
+    }, [currentTransformers, selectedSubresourceUri]);
 
     const updateDefaultValueTransformers = (
         // @ts-expect-error TS7006
@@ -456,6 +467,8 @@ export const SourceValueToggle = ({
                     }
                     value={value}
                     routine={routine}
+                    labelColumn={labelColumn}
+                    valueColumn={valueColumn}
                 />
             )}
 

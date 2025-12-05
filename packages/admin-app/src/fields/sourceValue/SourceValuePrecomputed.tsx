@@ -15,10 +15,14 @@ const SourceValuePrecomputed = ({
     updateDefaultValueTransformers,
     value,
     routine: initialRoutine,
+    labelColumn,
+    valueColumn,
 }: {
     updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
     value?: string | null;
     routine?: string;
+    labelColumn?: string | null;
+    valueColumn?: string | null;
 }) => {
     const { translate } = useTranslate();
     const precomputedData = useSelector((state: State) =>
@@ -29,10 +33,10 @@ const SourceValuePrecomputed = ({
             ),
     );
     const [selectedPrecomputation, setSelectedPrecomputation] = useState(value);
-    const [selectedPrecomputedValueColumn, setSelectedPrecomputedValueColumn] =
-        useState<string | null>(null);
     const [selectedPrecomputedLabelColumn, setSelectedPrecomputedLabelColumn] =
-        useState<string | null>(null);
+        useState<string | null | undefined>(labelColumn);
+    const [selectedPrecomputedValueColumn, setSelectedPrecomputedValueColumn] =
+        useState<string | null | undefined>(valueColumn);
     useEffect(() => {
         setSelectedPrecomputation(value);
     }, [value]);
@@ -60,6 +64,11 @@ const SourceValuePrecomputed = ({
                         value: selectedPrecomputation,
                     },
                     {
+                        name: 'routine',
+                        type: 'string',
+                        value: routineValue,
+                    },
+                    {
                         name: 'precomputedLabelColumn',
                         type: 'string',
                         value: selectedPrecomputedLabelColumn,
@@ -68,11 +77,6 @@ const SourceValuePrecomputed = ({
                         name: 'precomputedValueColumn',
                         type: 'string',
                         value: selectedPrecomputedValueColumn,
-                    },
-                    {
-                        name: 'routine',
-                        type: 'string',
-                        value: routineValue,
                     },
                 ],
             },
@@ -107,25 +111,6 @@ const SourceValuePrecomputed = ({
     // @ts-expect-error TS7006
     const handleChangeRoutine = (event) => {
         setRoutineValue(event.target.value);
-        const isSourceWeightRoutine = [
-            '/api/run/segments-precomputed/',
-            '/api/run/segments-precomputed-nofilter/',
-        ].includes(event.target.value);
-        if (isSourceWeightRoutine) {
-            if (precomputedFieldNames.includes('source')) {
-                setSelectedPrecomputedLabelColumn('source');
-            }
-            if (precomputedFieldNames.includes('weight')) {
-                setSelectedPrecomputedValueColumn('weight');
-            }
-            return;
-        }
-        if (precomputedFieldNames.includes('id')) {
-            setSelectedPrecomputedLabelColumn('id');
-        }
-        if (precomputedFieldNames.includes('value')) {
-            setSelectedPrecomputedValueColumn('value');
-        }
     };
 
     const handleChangePrecomputedValueColumn = (

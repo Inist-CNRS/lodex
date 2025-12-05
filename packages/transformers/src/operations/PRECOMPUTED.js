@@ -82,15 +82,15 @@ transformation.getMetas = () => ({
             type: 'string',
         },
         {
+            name: 'routine',
+            type: 'string',
+        },
+        {
             name: 'precomputedLabelColumn',
             type: 'string',
         },
         {
             name: 'precomputedValueColumn',
-            type: 'string',
-        },
-        {
-            name: 'routine',
             type: 'string',
         },
     ],
