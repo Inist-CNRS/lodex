@@ -5,6 +5,7 @@ import SourceValueToggle from '../sourceValue/SourceValueToggle.tsx';
 import type { Transformer } from '@lodex/frontend-common/fields/types.ts';
 import TransformerList from '../transformers/TransformerList.tsx';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useMemo } from 'react';
 
 export const TabGeneralComponent = ({
     subresourceUri,
@@ -18,8 +19,10 @@ export const TabGeneralComponent = ({
         name: 'transformers',
         control,
     });
-    const transformers = (transformersArray.fields ||
-        []) as unknown as Transformer[];
+    const transformers = useMemo(
+        () => (transformersArray.fields || []) as unknown as Transformer[],
+        [transformersArray],
+    );
     const updateTransformers = transformersArray.replace;
 
     return (
