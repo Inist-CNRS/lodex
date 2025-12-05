@@ -415,12 +415,8 @@ button {
     font-weight: normal;
     font-style: italic;
 }
-#content p,
-#content li,
-#content div,
-#content p *,
-#content li *,
-#content div * {
+/*le texte */
+#content :not(h1, h2, h3, h4, h5, h6) {
     font-family: var(--font-texte) !important;
     font-size: var(--font-size-texte);
 }
