@@ -196,7 +196,15 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                     label={translate('display_weighted')}
                 />
                 <FormControl fullWidth>
-                    <FormLabel>{translate('zoom_adjust_node_size')}</FormLabel>
+                    <FormLabel
+                        sx={{
+                            '&.Mui-focused': {
+                                color: 'rgba(98,99,104,0.75)',
+                            },
+                        }}
+                    >
+                        {translate('zoom_adjust_node_size')}
+                    </FormLabel>
                     <RadioGroup
                         value={args.zoomAdjustNodeSize ?? false}
                         onChange={handleChangeZoomAdjustNodeSize}
