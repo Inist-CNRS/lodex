@@ -1,6 +1,6 @@
+import deepClone from 'lodash/cloneDeep';
 import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 import heatmapVL from './json/heatmap.vl.json';
-import deepClone from 'lodash/cloneDeep';
 
 const defaultTooltip = {
     source: {
@@ -52,19 +52,19 @@ export const commonWithBubblePlot = ({
         model.encoding.tooltip = [
             tooltip.sourceTitle
                 ? {
-                      ...defaultTooltip,
+                      ...defaultTooltip.source,
                       title: tooltip.sourceTitle,
                   }
                 : defaultTooltip.source,
             tooltip.targetTitle
                 ? {
-                      ...defaultTooltip,
+                      ...defaultTooltip.target,
                       title: tooltip.targetTitle,
                   }
                 : defaultTooltip.target,
             tooltip.weightTitle
                 ? {
-                      ...defaultTooltip,
+                      ...defaultTooltip.weight,
                       title: tooltip.weightTitle,
                   }
                 : defaultTooltip.weight,

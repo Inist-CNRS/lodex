@@ -1,6 +1,6 @@
-import defaultSpec from './json/bubble_plot.vl.json';
 import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 import { buildBubblePlotSpec } from './BubblePlot';
+import defaultSpec from './json/bubble_plot.vl.json';
 
 describe('BubblePlot', () => {
     it('should return default heatMap spec', function () {
@@ -11,7 +11,7 @@ describe('BubblePlot', () => {
                     toggle: false,
                 },
             }),
-        ).toStrictEqual(defaultSpec);
+        ).toStrictEqual({ ...defaultSpec, background: 'transparent' });
     });
 
     it('should flip axis when flip is true', function () {
@@ -24,6 +24,7 @@ describe('BubblePlot', () => {
 
         expect(spec).toStrictEqual({
             ...defaultSpec,
+            background: 'transparent',
             encoding: {
                 ...defaultSpec.encoding,
                 x: {
@@ -49,6 +50,7 @@ describe('BubblePlot', () => {
 
         expect(specAsc).toStrictEqual({
             ...defaultSpec,
+            background: 'transparent',
             encoding: {
                 ...defaultSpec.encoding,
                 x: {
@@ -72,6 +74,7 @@ describe('BubblePlot', () => {
 
         expect(specDesc).toStrictEqual({
             ...defaultSpec,
+            background: 'transparent',
             encoding: {
                 ...defaultSpec.encoding,
                 x: {
@@ -98,6 +101,7 @@ describe('BubblePlot', () => {
 
         expect(spec).toStrictEqual({
             ...defaultSpec,
+            background: 'transparent',
             encoding: {
                 ...defaultSpec.encoding,
                 color: {
@@ -124,62 +128,24 @@ describe('BubblePlot', () => {
 
         expect(spec).toStrictEqual({
             ...defaultSpec,
+            background: 'transparent',
             encoding: {
                 ...defaultSpec.encoding,
                 tooltip: [
                     {
-                        source: {
-                            field: 'source',
-                            title: 'Source',
-                            type: 'nominal',
-                        },
-                        target: {
-                            field: 'target',
-                            title: 'Target',
-                            type: 'nominal',
-                        },
+                        field: 'source',
                         title: 'Custom Source',
-                        weight: {
-                            field: 'weight',
-                            title: 'Weight',
-                            type: 'quantitative',
-                        },
+                        type: 'nominal',
                     },
                     {
-                        source: {
-                            field: 'source',
-                            title: 'Source',
-                            type: 'nominal',
-                        },
-                        target: {
-                            field: 'target',
-                            title: 'Target',
-                            type: 'nominal',
-                        },
+                        field: 'target',
                         title: 'Custom Target',
-                        weight: {
-                            field: 'weight',
-                            title: 'Weight',
-                            type: 'quantitative',
-                        },
+                        type: 'nominal',
                     },
                     {
-                        source: {
-                            field: 'source',
-                            title: 'Source',
-                            type: 'nominal',
-                        },
-                        target: {
-                            field: 'target',
-                            title: 'Target',
-                            type: 'nominal',
-                        },
+                        field: 'weight',
                         title: 'Custom Weight',
-                        weight: {
-                            field: 'weight',
-                            title: 'Weight',
-                            type: 'quantitative',
-                        },
+                        type: 'quantitative',
                     },
                 ],
             },

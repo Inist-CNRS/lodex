@@ -3,6 +3,26 @@ import { fireEvent, screen } from '@testing-library/react';
 import { act, render } from '../../../test-utils';
 import HierarchicalTreeAdmin, { defaultArgs } from './HierarchicalTreeAdmin';
 
+jest.mock('../../../fields/api/useListField', () => ({
+    useListField: jest.fn(() => ({
+        isFieldListPending: false,
+        fields: [
+            {
+                _id: 'field1',
+                name: 'field1',
+                label: 'Field 1',
+                scope: 'document',
+            },
+            {
+                _id: 'field2',
+                name: 'field2',
+                label: 'Field 2',
+                scope: 'document',
+            },
+        ],
+    })),
+}));
+
 describe('<HierarchicalTreeAdmin />', () => {
     it('should have accessible labels for all form controls', () => {
         const mockOnChange = jest.fn();
