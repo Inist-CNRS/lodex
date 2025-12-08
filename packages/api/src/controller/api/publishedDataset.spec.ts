@@ -1498,7 +1498,7 @@ describe('publishedDataset', () => {
         });
     });
 
-    describe.only('restoreResource', () => {
+    describe('restoreResource', () => {
         let defaultCtx: any;
         let db: any;
 

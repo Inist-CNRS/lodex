@@ -381,7 +381,7 @@ export const SourceValueToggle = ({
                 newTransformers,
             );
         },
-        [source, updateDefaultValueTransformers],
+        [currentTransformers, source, updateDefaultValueTransformers],
     );
 
     return (
