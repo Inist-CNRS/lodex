@@ -1,7 +1,54 @@
+import { get } from 'lodash';
 import documentationByOperation from './documentationByOperation';
 
 const isUndefinedOrEmpty = (value) =>
-    typeof value === 'undefined' || value === '';
+    typeof value === 'undefined' || value === '' || value === null;
+
+const getLabelColumn = (preComputation, labelColumn) => {
+    if (!isUndefinedOrEmpty(labelColumn)) {
+        return labelColumn;
+    }
+
+    if (
+        ['segments-precomputed', 'segments-precomputed-nofilter'].includes(
+            preComputation,
+        )
+    ) {
+        return 'source';
+    }
+
+    return 'id';
+};
+
+const getValueColumn = (preComputation, valueColumn) => {
+    if (!isUndefinedOrEmpty(valueColumn)) {
+        return valueColumn;
+    }
+
+    if (
+        ['segments-precomputed', 'segments-precomputed-nofilter'].includes(
+            preComputation,
+        )
+    ) {
+        return 'weight';
+    }
+
+    return 'value';
+};
+
+const getQueryParameters = (preComputation, labelColumn, valueColumn) => {
+    const precomputedValueColum = getValueColumn(preComputation, valueColumn);
+    const precomputedLabelColumn = getLabelColumn(preComputation, labelColumn);
+    return `?precomputedName=${preComputation}${
+        precomputedValueColum
+            ? `&precomputedValueColum=${precomputedValueColum}`
+            : ''
+    }${
+        precomputedLabelColumn
+            ? `&precomputedLabelColumn=${precomputedLabelColumn}`
+            : ''
+    }`;
+};
 
 const transformation = (_, args) => () =>
     new Promise((resolve, reject) => {
@@ -13,6 +60,14 @@ const transformation = (_, args) => () =>
             );
         }
 
+        const precomputedLabelColumnArg = args.find(
+            (a) => a.name === 'precomputedLabelColumn',
+        ) ?? { value: 'id' };
+
+        const precomputedValueColumnArg = args.find(
+            (a) => a.name === 'precomputedValueColumn',
+        ) ?? { value: 'value' };
+
         const routineArg = args.find((a) => a.name === 'routine');
 
         if (!routineArg || isUndefinedOrEmpty(routineArg.value)) {
@@ -22,7 +77,11 @@ const transformation = (_, args) => () =>
         }
 
         return resolve(
-            `${routineArg.value}?precomputedName=${precomputedArg.value}`,
+            `${routineArg.value}${getQueryParameters(
+                precomputedArg.value,
+                precomputedLabelColumnArg.value,
+                precomputedValueColumnArg.value,
+            )}`,
         );
     });
 
@@ -36,6 +95,14 @@ transformation.getMetas = () => ({
         },
         {
             name: 'routine',
+            type: 'string',
+        },
+        {
+            name: 'precomputedLabelColumn',
+            type: 'string',
+        },
+        {
+            name: 'precomputedValueColumn',
             type: 'string',
         },
     ],

@@ -129,6 +129,12 @@ export const splitPrecomputedNameAndRoutine = (value) => {
 
         return {
             precomputedName: url.searchParams.get('precomputedName'),
+            precomputedValueColumn: url.searchParams.get(
+                'precomputedValueColumn',
+            ),
+            precomputedLabelColumn: url.searchParams.get(
+                'precomputedLabelColumn',
+            ),
             routine: `${url.protocol}//${url.host}${url.pathname}`,
         };
     } catch (_e) {
@@ -137,6 +143,8 @@ export const splitPrecomputedNameAndRoutine = (value) => {
 
     return {
         precomputedName: url.searchParams.get('precomputedName'),
+        precomputedValueColumn: url.searchParams.get('precomputedValueColumn'),
+        precomputedLabelColumn: url.searchParams.get('precomputedLabelColumn'),
         routine: `/${url.host}${url.pathname}`,
     };
 };
@@ -168,6 +176,18 @@ export function* handleLoadFormatDataRequest({
         const precomputedFieldValue = splitPrecomputedNameAndRoutine(rawValue);
         precomputed = {
             precomputedName: precomputedFieldValue.precomputedName,
+            ...(precomputedFieldValue.precomputedValueColumn
+                ? {
+                      precomputedValueColumn:
+                          precomputedFieldValue.precomputedValueColumn,
+                  }
+                : {}),
+            ...(precomputedFieldValue.precomputedLabelColumn
+                ? {
+                      precomputedLabelColumn:
+                          precomputedFieldValue.precomputedLabelColumn,
+                  }
+                : {}),
         };
         value = precomputedFieldValue.routine;
     }
