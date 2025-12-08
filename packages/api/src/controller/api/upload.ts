@@ -1,20 +1,20 @@
-import Koa from 'koa';
-import route from 'koa-route';
 import asyncBusboy from '@recuperateur/async-busboy';
 import config from 'config';
+import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 
-import progress from '../../services/progress';
 import { ProgressStatus } from '@lodex/common';
 import {
-    saveStreamInFile,
     checkFileExists,
     getUploadedFileSize,
+    saveStreamInFile,
     unlinkFile,
 } from '../../services/fsHelpers';
+import progress from '../../services/progress';
 
 import { v1 as uuid } from 'uuid';
-import { workerQueues } from '../../workers';
+import { getOrCreateWorkerQueue } from '../../workers';
 import { IMPORT } from '../../workers/import';
 
 export const requestToStream = (asyncBusboyImpl: any) => async (req: any) => {
@@ -120,7 +120,7 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
     }
 
     if (uploadedFileSize >= totalSize) {
-        await workerQueues[ctx.tenant].add(
+        await getOrCreateWorkerQueue(ctx.tenant, 1).add(
             IMPORT, // Name of the job
             {
                 loaderName,
@@ -144,7 +144,7 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
 export const uploadUrl = async (ctx: any) => {
     const { url, loaderName, customLoader } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
-    await workerQueues[ctx.tenant].add(
+    await getOrCreateWorkerQueue(ctx.tenant, 1).add(
         IMPORT, // Name of the job
         {
             loaderName,
@@ -163,7 +163,7 @@ export const uploadUrl = async (ctx: any) => {
 
 export const uploadText = async (ctx: any) => {
     const { text, loaderName, customLoader } = ctx.request.body;
-    await workerQueues[ctx.tenant].add(
+    await getOrCreateWorkerQueue(ctx.tenant, 1).add(
         IMPORT, // Name of the job
         {
             loaderName,
@@ -194,7 +194,7 @@ export const checkChunkMiddleware = async (ctx: any, loaderName: any) => {
     const exists = await checkFileExists(chunkname, currentChunkSize);
 
     if (exists && chunkNumber === totalChunks) {
-        await workerQueues[ctx.tenant].add(
+        await getOrCreateWorkerQueue(ctx.tenant, 1).add(
             IMPORT, // Name of the job
             {
                 loaderName,

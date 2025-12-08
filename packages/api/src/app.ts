@@ -10,8 +10,8 @@ import ezs from '@ezs/core';
 import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
-import { getOrCreateWorkerQueue, workerQueues } from './workers';
 import progress from './services/progress';
+import { getOrCreateWorkerQueue } from './workers';
 // @ts-expect-error TS(2792): Cannot find module '@uswitch/koa-prometheus'. Did ... Remove this comment to see the full error message
 import Meter, { collectMetrics } from '@uswitch/koa-prometheus';
 // @ts-expect-error TS(2792): Cannot find module '@uswitch/koa-tracer'. Did you ... Remove this comment to see the full error message
@@ -129,7 +129,7 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
 app.use(async (ctx: any, next: any) => {
     try {
         const activeJobs =
-            (await workerQueues[ctx.tenant]?.getActive()) || null;
+            (await getOrCreateWorkerQueue(ctx.tenant, 1).getActive()) || null;
 
         if (!activeJobs) {
             return await next();

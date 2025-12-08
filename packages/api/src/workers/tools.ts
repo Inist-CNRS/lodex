@@ -1,30 +1,18 @@
 import {
-    cleanWaitingJobsOfType,
-    workerQueues,
     CancelWorkerError,
+    cleanWaitingJobsOfType,
+    getOrCreateWorkerQueue,
 } from './index';
 // @ts-expect-error TS(2792): Cannot find module 'uuid'. Did you mean to install... Remove this comment to see the full error message
 import { disableFusible } from '@ezs/core/fusible';
 
 import { ProgressStatus } from '@lodex/common';
+import type Bull from 'bull';
 import getLogger from '../services/logger';
 import progress from '../services/progress';
-import { notifyListeners } from './import';
-import { handleEnrichmentError } from './enricher';
 import type { AppContext } from '../services/repositoryMiddleware';
-
-type Job = {
-    id: string;
-    name: string;
-    data: {
-        id: string;
-        fusible?: string;
-        jobType: string;
-        tenant: string;
-    };
-    moveToFailed: (err: Error, bool: boolean) => void;
-    remove: () => void;
-};
+import { handleEnrichmentError } from './enricher';
+import { notifyListeners } from './import';
 
 export const jobLogger = {
     info: (job: any, message: any) => {
@@ -45,21 +33,23 @@ export const jobLogger = {
     },
 };
 
-export const getActiveJobs = async (tenant: string): Promise<Job[]> => {
-    const activeJobs = (await workerQueues[tenant]?.getActive()) || [];
+export const getActiveJobs = async (tenant: string): Promise<Bull.Job[]> => {
+    const activeJobs =
+        (await getOrCreateWorkerQueue(tenant, 1).getActive()) || [];
 
     return activeJobs;
 };
 
 export const getActiveJob = async (
     tenant: string,
-): Promise<Job | undefined> => {
+): Promise<Bull.Job | undefined> => {
     const activeJobs = await getActiveJobs(tenant);
     return activeJobs?.[0] || undefined;
 };
 
 export const getcompletedJobs = async (tenant: any) => {
-    const completedJobs = (await workerQueues[tenant]?.getCompleted()) || null;
+    const completedJobs =
+        (await getOrCreateWorkerQueue(tenant, 1).getCompleted()) || null;
 
     if (completedJobs.length === 0) {
         return undefined;
@@ -67,8 +57,8 @@ export const getcompletedJobs = async (tenant: any) => {
     return completedJobs;
 };
 
-export const getWaitingJobs = async (tenant: string): Promise<Job[]> => {
-    const waitingJobs = await workerQueues[tenant].getWaiting();
+export const getWaitingJobs = async (tenant: string): Promise<Bull.Job[]> => {
+    const waitingJobs = await getOrCreateWorkerQueue(tenant, 1).getWaiting();
 
     if (waitingJobs.length === 0) {
         return [];
@@ -113,8 +103,15 @@ export const cancelJob = async (
 };
 
 export const dropJobs = async (tenant: string, jobType: string) => {
-    const jobs = await workerQueues[tenant].getJobs();
-    jobs.forEach((job: Job) => {
+    const jobs = await getOrCreateWorkerQueue(tenant, 1)?.getJobs([
+        'completed',
+        'waiting',
+        'active',
+        'delayed',
+        'failed',
+        'paused',
+    ]);
+    jobs.forEach((job) => {
         if (!jobType || job?.data?.jobType === jobType) job.remove();
     });
 };
