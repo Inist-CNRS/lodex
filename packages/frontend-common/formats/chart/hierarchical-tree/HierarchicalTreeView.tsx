@@ -11,6 +11,7 @@ import { compose } from 'recompose';
 import { CloseAllIcon } from '../../../../public-app/src/annotation/icons/CloseAllIcon';
 import { OpenAllIcon } from '../../../../public-app/src/annotation/icons/OpenAllIcon';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
+import type { Field } from '../../../fields/types';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
@@ -27,7 +28,10 @@ import {
 import {
     BUTTON_SIZE,
     BUTTON_SPACING,
+    HEADER_HEIGHT,
     HierarchicalTreeNode,
+    LEAF_BAR_HEIGHT,
+    LEAF_BAR_SPACING,
 } from './HierarchicalTreeNode';
 import type { Datum } from './type';
 import { useFormatTreeData } from './useFormatTreeData';
@@ -39,6 +43,7 @@ const TreeView = lazy(async () => {
 });
 
 export function HierarchicalTreeView({
+    field,
     formatData,
     nodeWidth,
     nodeHeight,
@@ -58,7 +63,9 @@ export function HierarchicalTreeView({
     const nodeSize = useMemo(
         () => ({
             x: (nodeWidth ?? DEFAULT_NODE_WIDTH) + spacing,
-            y: (nodeHeight ?? DEFAULT_NODE_HEIGHT) + spacing,
+            y:
+                Math.min(nodeHeight ?? DEFAULT_NODE_HEIGHT, HEADER_HEIGHT + 2) +
+                spacing,
         }),
         [nodeWidth, nodeHeight, spacing],
     );
@@ -80,6 +87,7 @@ export function HierarchicalTreeView({
     });
 
     const tree = useFormatTreeData({
+        rootName: field?.label,
         data: formatData,
     });
 
@@ -98,7 +106,13 @@ export function HierarchicalTreeView({
                         <OpenAllIcon />
                     </IconButton>
                 </GraphAction>
-                <Box ref={parentRef} sx={{ width: '100%', height: '100%' }}>
+                <Box
+                    ref={parentRef}
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
                     <Suspense>
                         <TreeView
                             ref={treeRef}
@@ -109,25 +123,29 @@ export function HierarchicalTreeView({
                                 <HierarchicalTreeNode
                                     {...props}
                                     orientation={orientation}
-                                    width={nodeWidth ?? DEFAULT_NODE_WIDTH}
-                                    height={nodeHeight ?? DEFAULT_NODE_HEIGHT}
+                                    width={nodeSize.x}
+                                    height={nodeSize.y}
                                     fieldToFilter={fieldToFilter}
                                     getNodeColor={getNodeColor}
                                 />
                             )}
                             nodeSize={{
                                 x:
-                                    (nodeWidth ?? DEFAULT_NODE_WIDTH) +
+                                    nodeSize.x +
                                     (orientation === 'horizontal'
-                                        ? BUTTON_SIZE + BUTTON_SPACING
-                                        : 0) +
-                                    spacing,
+                                        ? BUTTON_SIZE +
+                                          BUTTON_SPACING +
+                                          spacing * 11
+                                        : 0),
                                 y:
-                                    (nodeHeight ?? DEFAULT_NODE_HEIGHT) +
+                                    nodeSize.y +
                                     (orientation === 'vertical'
-                                        ? BUTTON_SIZE + BUTTON_SPACING
+                                        ? BUTTON_SIZE +
+                                          BUTTON_SPACING +
+                                          spacing * 7
                                         : 0) +
-                                    spacing,
+                                    LEAF_BAR_HEIGHT +
+                                    LEAF_BAR_SPACING,
                             }}
                             scaleExtent={{
                                 min:
@@ -143,6 +161,7 @@ export function HierarchicalTreeView({
                             onNodeClick={centerOnNode}
                             centeringTransitionDuration={150}
                             dimensions={dimensions}
+                            rootNodeClassName="tree-root"
                         />
                     </Suspense>
                 </Box>
@@ -162,6 +181,7 @@ export function HierarchicalTreeView({
 }
 
 type HierarchicalTreeViewProps = {
+    field?: Field;
     formatData: Datum[];
 
     orientation?: 'horizontal' | 'vertical';

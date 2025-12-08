@@ -7,8 +7,13 @@ describe('walkNodes', () => {
             description: 'single root node',
             tree: [
                 {
-                    name: 'Root',
-                    attributes: { hasParent: false },
+                    name: '__root__',
+                    children: [
+                        {
+                            name: 'Root',
+                            attributes: { hasParent: false },
+                        },
+                    ],
                 },
             ],
             expectedCount: 1,
@@ -18,12 +23,17 @@ describe('walkNodes', () => {
             description: 'multiple root nodes',
             tree: [
                 {
-                    name: 'Root1',
-                    attributes: { hasParent: false },
-                },
-                {
-                    name: 'Root2',
-                    attributes: { hasParent: false },
+                    name: '__root__',
+                    children: [
+                        {
+                            name: 'Root1',
+                            attributes: { hasParent: false },
+                        },
+                        {
+                            name: 'Root2',
+                            attributes: { hasParent: false },
+                        },
+                    ],
                 },
             ],
             expectedCount: 2,
@@ -33,16 +43,21 @@ describe('walkNodes', () => {
             description: 'parent and children nodes',
             tree: [
                 {
-                    name: 'Parent',
-                    attributes: { hasParent: false },
+                    name: '__root__',
                     children: [
                         {
-                            name: 'Child1',
-                            attributes: { hasParent: true },
-                        },
-                        {
-                            name: 'Child2',
-                            attributes: { hasParent: true },
+                            name: 'Parent',
+                            attributes: { hasParent: false },
+                            children: [
+                                {
+                                    name: 'Child1',
+                                    attributes: { hasParent: true },
+                                },
+                                {
+                                    name: 'Child2',
+                                    attributes: { hasParent: true },
+                                },
+                            ],
                         },
                     ],
                 },
@@ -54,20 +69,27 @@ describe('walkNodes', () => {
             description: 'deeply nested nodes',
             tree: [
                 {
-                    name: 'Root',
-                    attributes: { hasParent: false },
+                    name: '__root__',
                     children: [
                         {
-                            name: 'Level1',
-                            attributes: { hasParent: true },
+                            name: 'Root',
+                            attributes: { hasParent: false },
                             children: [
                                 {
-                                    name: 'Level2',
+                                    name: 'Level1',
                                     attributes: { hasParent: true },
                                     children: [
                                         {
-                                            name: 'Level3',
+                                            name: 'Level2',
                                             attributes: { hasParent: true },
+                                            children: [
+                                                {
+                                                    name: 'Level3',
+                                                    attributes: {
+                                                        hasParent: true,
+                                                    },
+                                                },
+                                            ],
                                         },
                                     ],
                                 },
@@ -83,26 +105,31 @@ describe('walkNodes', () => {
             description: 'complex tree with multiple branches',
             tree: [
                 {
-                    name: 'Root1',
-                    attributes: { hasParent: false },
+                    name: '__root__',
                     children: [
                         {
-                            name: 'Root1-Child1',
-                            attributes: { hasParent: true },
+                            name: 'Root1',
+                            attributes: { hasParent: false },
+                            children: [
+                                {
+                                    name: 'Root1-Child1',
+                                    attributes: { hasParent: true },
+                                },
+                                {
+                                    name: 'Root1-Child2',
+                                    attributes: { hasParent: true },
+                                },
+                            ],
                         },
                         {
-                            name: 'Root1-Child2',
-                            attributes: { hasParent: true },
-                        },
-                    ],
-                },
-                {
-                    name: 'Root2',
-                    attributes: { hasParent: false },
-                    children: [
-                        {
-                            name: 'Root2-Child1',
-                            attributes: { hasParent: true },
+                            name: 'Root2',
+                            attributes: { hasParent: false },
+                            children: [
+                                {
+                                    name: 'Root2-Child1',
+                                    attributes: { hasParent: true },
+                                },
+                            ],
                         },
                     ],
                 },
@@ -134,26 +161,31 @@ describe('walkNodes', () => {
         const action = jest.fn();
         const tree = [
             {
-                name: 'Root',
-                attributes: { hasParent: false },
+                name: '__root__',
                 children: [
                     {
-                        name: 'Child1',
-                        attributes: { hasParent: true },
+                        name: 'Root',
+                        attributes: { hasParent: false },
                         children: [
                             {
-                                name: 'Grandchild1',
+                                name: 'Child1',
                                 attributes: { hasParent: true },
+                                children: [
+                                    {
+                                        name: 'Grandchild1',
+                                        attributes: { hasParent: true },
+                                    },
+                                ],
                             },
-                        ],
-                    },
-                    {
-                        name: 'Child2',
-                        attributes: { hasParent: true },
-                        children: [
                             {
-                                name: 'Grandchild2',
+                                name: 'Child2',
                                 attributes: { hasParent: true },
+                                children: [
+                                    {
+                                        name: 'Grandchild2',
+                                        attributes: { hasParent: true },
+                                    },
+                                ],
                             },
                         ],
                     },
@@ -176,15 +208,25 @@ describe('walkNodes', () => {
     it.each([
         {
             description: 'empty tree array',
-            tree: [],
+            tree: [
+                {
+                    name: '__root__',
+                    children: [],
+                },
+            ],
             expectedCount: 0,
         },
         {
             description: 'node without children property',
             tree: [
                 {
-                    name: 'Root',
-                    attributes: { hasParent: false },
+                    name: '__root__',
+                    children: [
+                        {
+                            name: 'Root',
+                            attributes: { hasParent: false },
+                        },
+                    ],
                 },
             ],
             expectedCount: 1,
@@ -193,9 +235,14 @@ describe('walkNodes', () => {
             description: 'node with empty children array',
             tree: [
                 {
-                    name: 'Root',
-                    attributes: { hasParent: false },
-                    children: [],
+                    name: '__root__',
+                    children: [
+                        {
+                            name: 'Root',
+                            attributes: { hasParent: false },
+                            children: [],
+                        },
+                    ],
                 },
             ],
             expectedCount: 1,
@@ -204,12 +251,17 @@ describe('walkNodes', () => {
             description: 'promise resolution after all nodes processed',
             tree: [
                 {
-                    name: 'Root',
-                    attributes: { hasParent: false },
+                    name: '__root__',
                     children: [
                         {
-                            name: 'Child',
-                            attributes: { hasParent: true },
+                            name: 'Root',
+                            attributes: { hasParent: false },
+                            children: [
+                                {
+                                    name: 'Child',
+                                    attributes: { hasParent: true },
+                                },
+                            ],
                         },
                     ],
                 },

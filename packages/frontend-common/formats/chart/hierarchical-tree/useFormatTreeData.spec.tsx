@@ -218,10 +218,15 @@ describe('bindAttributes', () => {
 });
 
 describe('useFormatTreeData', () => {
-    it('should return empty array for empty data', () => {
-        const { result } = renderHook(() => useFormatTreeData({ data: [] }));
+    it('should return root with no children for empty data', () => {
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data: [], rootName: 'root' }),
+        );
 
-        expect(result.current).toEqual([]);
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [],
+        });
     });
 
     it('should create a simple parent-child relationship', () => {
@@ -232,25 +237,34 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should handle multiple children for the same parent', () => {
@@ -269,39 +283,52 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+                    },
+                    children: [
+                        {
+                            name: 'Child1',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                        {
+                            name: 'Child2',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                        {
+                            name: 'Child3',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
                 },
-                children: [
-                    {
-                        name: 'Child1',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                    {
-                        name: 'Child2',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                    {
-                        name: 'Child3',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                ],
-            },
-        ]);
+            ],
+        });
     });
 
     it('should handle multiple root nodes', () => {
@@ -316,40 +343,53 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Root1',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child1',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Root1',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-            {
-                name: 'Root2',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child2',
-                        attributes: {
-                            hasParent: true,
+                    children: [
+                        {
+                            name: 'Child1',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
                         },
-                        children: [],
+                    ],
+                },
+                {
+                    name: 'Root2',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child2',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should handle multi-level hierarchies', () => {
@@ -368,41 +408,54 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Root',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Level1',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [
-                            {
-                                name: 'Level2',
-                                attributes: {
-                                    hasParent: true,
-                                },
-                                children: [
-                                    {
-                                        name: 'Level3',
-                                        attributes: {
-                                            hasParent: true,
-                                        },
-                                        children: [],
-                                    },
-                                ],
-                            },
-                        ],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Root',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Level1',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [
+                                {
+                                    name: 'Level2',
+                                    attributes: {
+                                        hasParent: true,
+                                        weight: 1,
+                                        weightPercent: 100,
+                                    },
+                                    children: [
+                                        {
+                                            name: 'Level3',
+                                            attributes: {
+                                                hasParent: true,
+                                                weight: 1,
+                                                weightPercent: 100,
+                                            },
+                                            children: [],
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it.each([
@@ -435,26 +488,36 @@ describe('useFormatTreeData', () => {
             } as Datum,
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                    [field]: value,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+
+                        [field]: value,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should bind multiple source attributes simultaneously', () => {
@@ -470,30 +533,40 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                    title: 'Parent Title',
-                    description: 'Parent Description',
-                    detail1: 'Detail 1',
-                    detail2: 'Detail 2',
-                    detail3: 'Detail 3',
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+
+                        title: 'Parent Title',
+                        description: 'Parent Description',
+                        detail1: 'Detail 1',
+                        detail2: 'Detail 2',
+                        detail3: 'Detail 3',
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should handle numeric source attribute values', () => {
@@ -506,27 +579,37 @@ describe('useFormatTreeData', () => {
             } as unknown as Datum,
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                    title: 42,
-                    detail1: 100,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+
+                        title: 42,
+                        detail1: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it.each([
@@ -546,25 +629,34 @@ describe('useFormatTreeData', () => {
                 } as unknown as Datum,
             ];
 
-            const { result } = renderHook(() => useFormatTreeData({ data }));
+            const { result } = renderHook(() =>
+                useFormatTreeData({ data, rootName: 'root' }),
+            );
 
-            expect(result.current).toStrictEqual([
-                {
-                    name: 'Parent',
-                    attributes: {
-                        hasParent: false,
-                    },
-                    children: [
-                        {
-                            name: 'Child',
-                            attributes: {
-                                hasParent: true,
-                            },
-                            children: [],
+            expect(result.current).toStrictEqual({
+                name: 'root',
+                children: [
+                    {
+                        name: 'Parent',
+                        attributes: {
+                            hasParent: false,
+                            weight: 1,
+                            weightPercent: 100,
                         },
-                    ],
-                },
-            ]);
+                        children: [
+                            {
+                                name: 'Child',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 1,
+                                    weightPercent: 100,
+                                },
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            });
         },
     );
 
@@ -598,26 +690,36 @@ describe('useFormatTreeData', () => {
             } as Datum,
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                            [field]: value,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                [field]: value,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should bind multiple target attributes simultaneously', () => {
@@ -633,30 +735,40 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                            title: 'Child Title',
-                            description: 'Child Description',
-                            detail1: 'Detail 1',
-                            detail2: 'Detail 2',
-                            detail3: 'Detail 3',
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                title: 'Child Title',
+                                description: 'Child Description',
+                                detail1: 'Detail 1',
+                                detail2: 'Detail 2',
+                                detail3: 'Detail 3',
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should handle numeric target attribute values', () => {
@@ -669,27 +781,37 @@ describe('useFormatTreeData', () => {
             } as unknown as Datum,
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                            title: 99,
-                            description: 200,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                title: 99,
+                                description: 200,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it.each([
@@ -709,25 +831,34 @@ describe('useFormatTreeData', () => {
                 } as unknown as Datum,
             ];
 
-            const { result } = renderHook(() => useFormatTreeData({ data }));
+            const { result } = renderHook(() =>
+                useFormatTreeData({ data, rootName: 'root' }),
+            );
 
-            expect(result.current).toStrictEqual([
-                {
-                    name: 'Parent',
-                    attributes: {
-                        hasParent: false,
-                    },
-                    children: [
-                        {
-                            name: 'Child',
-                            attributes: {
-                                hasParent: true,
-                            },
-                            children: [],
+            expect(result.current).toStrictEqual({
+                name: 'root',
+                children: [
+                    {
+                        name: 'Parent',
+                        attributes: {
+                            hasParent: false,
+                            weight: 1,
+                            weightPercent: 100,
                         },
-                    ],
-                },
-            ]);
+                        children: [
+                            {
+                                name: 'Child',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 1,
+                                    weightPercent: 100,
+                                },
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            });
         },
     );
 
@@ -743,29 +874,40 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                    title: 'Parent Title',
-                    description: 'Parent Description',
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                            title: 'Child Title',
-                            description: 'Child Description',
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+
+                        title: 'Parent Title',
+                        description: 'Parent Description',
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                title: 'Child Title',
+                                description: 'Child Description',
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should handle partial attributes for both source and target', () => {
@@ -778,27 +920,38 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                    title: 'Parent Title',
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                            detail1: 'Child Detail',
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+
+                        title: 'Parent Title',
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                detail1: 'Child Detail',
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should merge attributes when a node appears as both source and target', () => {
@@ -815,34 +968,46 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Root',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Middle',
-                        attributes: {
-                            hasParent: true,
-                            title: 'Middle as Source',
-                        },
-                        children: [
-                            {
-                                name: 'Child',
-                                attributes: {
-                                    hasParent: true,
-                                },
-                                children: [],
-                            },
-                        ],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Root',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Middle',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                title: 'Middle as Source',
+                            },
+                            children: [
+                                {
+                                    name: 'Child',
+                                    attributes: {
+                                        hasParent: true,
+                                        weight: 1,
+                                        weightPercent: 100,
+                                    },
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should accumulate all children when same source appears multiple times', () => {
@@ -859,33 +1024,45 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                    title: 'Second Occurrence',
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+
+                        title: 'Second Occurrence',
+                    },
+                    children: [
+                        {
+                            name: 'Child1',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                        {
+                            name: 'Child2',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
                 },
-                children: [
-                    {
-                        name: 'Child1',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                    {
-                        name: 'Child2',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                ],
-            },
-        ]);
+            ],
+        });
     });
 
     it('should return the same tree reference when data does not change', () => {
@@ -897,7 +1074,7 @@ describe('useFormatTreeData', () => {
         ];
 
         const { result, rerender } = renderHook(() =>
-            useFormatTreeData({ data }),
+            useFormatTreeData({ data, rootName: 'root' }),
         );
 
         const firstTree = result.current;
@@ -916,7 +1093,7 @@ describe('useFormatTreeData', () => {
         ];
 
         const { result, rerender } = renderHook(
-            ({ data }) => useFormatTreeData({ data }),
+            ({ data }) => useFormatTreeData({ data, rootName: 'root' }),
             {
                 initialProps: { data: initialData },
             },
@@ -935,8 +1112,14 @@ describe('useFormatTreeData', () => {
         const secondTree = result.current;
 
         expect(firstTree).not.toBe(secondTree);
-        expect(firstTree[0].name).toBe('Parent1');
-        expect(secondTree[0].name).toBe('Parent2');
+        expect(firstTree).toStrictEqual({
+            name: 'root',
+            children: [expect.objectContaining({ name: 'Parent1' })],
+        });
+        expect(secondTree).toStrictEqual({
+            name: 'root',
+            children: [expect.objectContaining({ name: 'Parent2' })],
+        });
     });
 
     it('should handle a complex tree with multiple levels and attributes', () => {
@@ -967,54 +1150,74 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Company',
-                attributes: {
-                    hasParent: false,
-                    title: 'Tech Corp',
-                    description: 'A technology company',
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Company',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+
+                        title: 'Tech Corp',
+                        description: 'A technology company',
+                    },
+                    children: [
+                        {
+                            name: 'Department A',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                title: 'Engineering',
+                                detail1: 'R&D',
+                            },
+                            children: [
+                                {
+                                    name: 'Team 1',
+                                    attributes: {
+                                        hasParent: true,
+                                        weight: 1,
+                                        weightPercent: 100,
+
+                                        title: 'Backend Team',
+                                    },
+                                    children: [],
+                                },
+                                {
+                                    name: 'Team 2',
+                                    attributes: {
+                                        hasParent: true,
+                                        weight: 1,
+                                        weightPercent: 100,
+
+                                        title: 'Frontend Team',
+                                    },
+                                    children: [],
+                                },
+                            ],
+                        },
+                        {
+                            name: 'Department B',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+
+                                title: 'Sales',
+                            },
+                            children: [],
+                        },
+                    ],
                 },
-                children: [
-                    {
-                        name: 'Department A',
-                        attributes: {
-                            hasParent: true,
-                            title: 'Engineering',
-                            detail1: 'R&D',
-                        },
-                        children: [
-                            {
-                                name: 'Team 1',
-                                attributes: {
-                                    hasParent: true,
-                                    title: 'Backend Team',
-                                },
-                                children: [],
-                            },
-                            {
-                                name: 'Team 2',
-                                attributes: {
-                                    hasParent: true,
-                                    title: 'Frontend Team',
-                                },
-                                children: [],
-                            },
-                        ],
-                    },
-                    {
-                        name: 'Department B',
-                        attributes: {
-                            hasParent: true,
-                            title: 'Sales',
-                        },
-                        children: [],
-                    },
-                ],
-            },
-        ]);
+            ],
+        });
     });
 
     it('should handle weight attribute without affecting tree structure', () => {
@@ -1026,25 +1229,34 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: {
+                        hasParent: false,
+                        weight: 100,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 100,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should maintain correct hasParent flags in complex hierarchies', () => {
@@ -1063,56 +1275,73 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Root1',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Middle',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [
-                            {
-                                name: 'Leaf',
-                                attributes: {
-                                    hasParent: true,
-                                },
-                                children: [],
-                            },
-                        ],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Root1',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-            {
-                name: 'Root2',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Middle',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [
-                            {
-                                name: 'Leaf',
-                                attributes: {
-                                    hasParent: true,
-                                },
-                                children: [],
+                    children: [
+                        {
+                            name: 'Middle',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
                             },
-                        ],
+                            children: [
+                                {
+                                    name: 'Leaf',
+                                    attributes: {
+                                        hasParent: true,
+                                        weight: 1,
+                                        weightPercent: 100,
+                                    },
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    name: 'Root2',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Middle',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [
+                                {
+                                    name: 'Leaf',
+                                    attributes: {
+                                        hasParent: true,
+                                        weight: 1,
+                                        weightPercent: 100,
+                                    },
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should handle nodes with the same source and target', () => {
@@ -1123,9 +1352,14 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toHaveLength(0);
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [],
+        });
     });
 
     it('should handle empty string as source or target', () => {
@@ -1136,25 +1370,34 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: '',
-                attributes: {
-                    hasParent: false,
-                },
-                children: [
-                    {
-                        name: 'Child',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: '',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
                     },
-                ],
-            },
-        ]);
+                    children: [
+                        {
+                            name: 'Child',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it('should handle special characters in node names', () => {
@@ -1169,32 +1412,43 @@ describe('useFormatTreeData', () => {
             },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'Parent (Main)',
-                attributes: {
-                    hasParent: false,
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent (Main)',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+                    },
+                    children: [
+                        {
+                            name: 'Child #1',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                        {
+                            name: 'Child @2',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
                 },
-                children: [
-                    {
-                        name: 'Child #1',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                    {
-                        name: 'Child @2',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                ],
-            },
-        ]);
+            ],
+        });
     });
 
     it('should preserve node order based on data order', () => {
@@ -1204,38 +1458,501 @@ describe('useFormatTreeData', () => {
             { source: 'P', target: 'C2' },
         ];
 
-        const { result } = renderHook(() => useFormatTreeData({ data }));
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
 
-        expect(result.current).toStrictEqual([
-            {
-                name: 'P',
-                attributes: {
-                    hasParent: false,
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'P',
+                    attributes: {
+                        hasParent: false,
+                        weight: 1,
+                        weightPercent: 100,
+                    },
+                    children: [
+                        {
+                            name: 'C3',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                        {
+                            name: 'C1',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                        {
+                            name: 'C2',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                    ],
                 },
+            ],
+        });
+    });
+
+    it.each([
+        {
+            description: 'when all nodes have the same weight',
+            data: [
+                { source: 'Parent', target: 'Child1', weight: 5 },
+                { source: 'Parent', target: 'Child2', weight: 5 },
+                { source: 'Parent', target: 'Child3', weight: 5 },
+            ] as Datum[],
+            expected: {
+                name: 'root',
                 children: [
                     {
-                        name: 'C3',
+                        name: 'Parent',
                         attributes: {
-                            hasParent: true,
+                            hasParent: false,
+                            weight: 5,
+                            weightPercent: 100,
                         },
-                        children: [],
-                    },
-                    {
-                        name: 'C1',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
-                    },
-                    {
-                        name: 'C2',
-                        attributes: {
-                            hasParent: true,
-                        },
-                        children: [],
+                        children: [
+                            {
+                                name: 'Child1',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 5,
+                                    weightPercent: 100,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child2',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 5,
+                                    weightPercent: 100,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child3',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 5,
+                                    weightPercent: 100,
+                                },
+                                children: [],
+                            },
+                        ],
                     },
                 ],
             },
-        ]);
+        },
+        {
+            description:
+                'based on min/max when children have different weights',
+            data: [
+                { source: 'Parent', target: 'Child1', weight: 10 },
+                { source: 'Parent', target: 'Child2', weight: 50 },
+                { source: 'Parent', target: 'Child3', weight: 100 },
+            ] as Datum[],
+            expected: {
+                name: 'root',
+                children: [
+                    {
+                        name: 'Parent',
+                        attributes: {
+                            hasParent: false,
+                            weight: 10,
+                            weightPercent: 0,
+                        },
+                        children: [
+                            {
+                                name: 'Child1',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 10,
+                                    weightPercent: 0,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child2',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 50,
+                                    weightPercent: 40 / 90,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child3',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 100,
+                                    weightPercent: 1,
+                                },
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            description: 'with weight range from 1 to 10',
+            data: [
+                { source: 'Root', target: 'A', weight: 1 },
+                { source: 'Root', target: 'B', weight: 5 },
+                { source: 'Root', target: 'C', weight: 10 },
+            ] as Datum[],
+            expected: {
+                name: 'root',
+                children: [
+                    {
+                        name: 'Root',
+                        attributes: {
+                            hasParent: false,
+                            weight: 1,
+                            weightPercent: 0,
+                        },
+                        children: [
+                            {
+                                name: 'A',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 1,
+                                    weightPercent: 0,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'B',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 5,
+                                    weightPercent: 4 / 9,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'C',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 10,
+                                    weightPercent: 1,
+                                },
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+    ])('should calculate weightPercent $description', ({ data, expected }) => {
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
+
+        expect(result.current).toStrictEqual(expected);
+    });
+
+    it('should calculate weightPercent across multiple parent nodes', () => {
+        const data: Datum[] = [
+            { source: 'Parent1', target: 'Child1', weight: 20 },
+            { source: 'Parent2', target: 'Child2', weight: 60 },
+            { source: 'Parent3', target: 'Child3', weight: 100 },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
+
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent1',
+                    attributes: {
+                        hasParent: false,
+                        weight: 20,
+                        weightPercent: 0,
+                    },
+                    children: [
+                        {
+                            name: 'Child1',
+                            attributes: {
+                                hasParent: true,
+                                weight: 20,
+                                weightPercent: 0,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+                {
+                    name: 'Parent2',
+                    attributes: {
+                        hasParent: false,
+                        weight: 60,
+                        weightPercent: 0.5,
+                    },
+                    children: [
+                        {
+                            name: 'Child2',
+                            attributes: {
+                                hasParent: true,
+                                weight: 60,
+                                weightPercent: 0.5,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+                {
+                    name: 'Parent3',
+                    attributes: {
+                        hasParent: false,
+                        weight: 100,
+                        weightPercent: 1,
+                    },
+                    children: [
+                        {
+                            name: 'Child3',
+                            attributes: {
+                                hasParent: true,
+                                weight: 100,
+                                weightPercent: 1,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
+    });
+
+    it('should calculate weightPercent in multi-level hierarchies with different weights', () => {
+        const data: Datum[] = [
+            { source: 'Root', target: 'Level1A', weight: 100 },
+            { source: 'Level1A', target: 'Level2A', weight: 200 },
+            { source: 'Root', target: 'Level1B', weight: 300 },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
+
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Root',
+                    attributes: {
+                        hasParent: false,
+                        weight: 100,
+                        weightPercent: 0,
+                    },
+                    children: [
+                        {
+                            name: 'Level1A',
+                            attributes: {
+                                hasParent: true,
+                                weight: 100,
+                                weightPercent: 0,
+                            },
+                            children: [
+                                {
+                                    name: 'Level2A',
+                                    attributes: {
+                                        hasParent: true,
+                                        weight: 200,
+                                        weightPercent: 0.5,
+                                    },
+                                    children: [],
+                                },
+                            ],
+                        },
+                        {
+                            name: 'Level1B',
+                            attributes: {
+                                hasParent: true,
+                                weight: 300,
+                                weightPercent: 1,
+                            },
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
+    });
+
+    it.each([
+        {
+            description: 'with decimal weights',
+            data: [
+                { source: 'Parent', target: 'Child1', weight: 1.5 },
+                { source: 'Parent', target: 'Child2', weight: 2.25 },
+                { source: 'Parent', target: 'Child3', weight: 3.0 },
+            ] as Datum[],
+            expected: {
+                name: 'root',
+                children: [
+                    {
+                        name: 'Parent',
+                        attributes: {
+                            hasParent: false,
+                            weight: 1.5,
+                            weightPercent: 0,
+                        },
+                        children: [
+                            {
+                                name: 'Child1',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 1.5,
+                                    weightPercent: 0,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child2',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 2.25,
+                                    weightPercent: 0.5,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child3',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 3.0,
+                                    weightPercent: 1,
+                                },
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            description: 'with default weight of 1 when weight is undefined',
+            data: [
+                { source: 'Parent', target: 'Child1' },
+                { source: 'Parent', target: 'Child2', weight: 50 },
+                { source: 'Parent', target: 'Child3', weight: 100 },
+            ] as Datum[],
+            expected: {
+                name: 'root',
+                children: [
+                    {
+                        name: 'Parent',
+                        attributes: {
+                            hasParent: false,
+                            weight: 1,
+                            weightPercent: 0,
+                        },
+                        children: [
+                            {
+                                name: 'Child1',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 1,
+                                    weightPercent: 0,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child2',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 50,
+                                    weightPercent: 49 / 99,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child3',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 100,
+                                    weightPercent: 1,
+                                },
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+        {
+            description: 'with negative weights',
+            data: [
+                { source: 'Parent', target: 'Child1', weight: -10 },
+                { source: 'Parent', target: 'Child2', weight: 0 },
+                { source: 'Parent', target: 'Child3', weight: 10 },
+            ] as Datum[],
+            expected: {
+                name: 'root',
+                children: [
+                    {
+                        name: 'Parent',
+                        attributes: {
+                            hasParent: false,
+                            weight: -10,
+                            weightPercent: 0,
+                        },
+                        children: [
+                            {
+                                name: 'Child1',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: -10,
+                                    weightPercent: 0,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child2',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 0,
+                                    weightPercent: 0.5,
+                                },
+                                children: [],
+                            },
+                            {
+                                name: 'Child3',
+                                attributes: {
+                                    hasParent: true,
+                                    weight: 10,
+                                    weightPercent: 1,
+                                },
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+    ])('should handle weightPercent $description', ({ data, expected }) => {
+        const { result } = renderHook(() =>
+            useFormatTreeData({ data, rootName: 'root' }),
+        );
+
+        expect(result.current).toStrictEqual(expected);
     });
 });
