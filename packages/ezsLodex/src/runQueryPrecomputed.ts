@@ -35,8 +35,17 @@ async function LodexRunQueryPrecomputed(this: any, data: any, feed: any) {
     const fields = fds.filter(Boolean);
     const projection = zipObject(fields, Array(fields.length).fill(true));
 
-    const valueFieldName = this.getParam('valueFieldName', 'value');
-    const labelFieldName = this.getParam('labelFieldName', 'id');
+    const valueFieldName = this.getParam('valueFieldName');
+    const labelFieldName = this.getParam('labelFieldName');
+
+    console.log(
+        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
+        {
+            valueFieldName,
+            labelFieldName,
+        },
+        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
+    );
 
     const filter = {};
 

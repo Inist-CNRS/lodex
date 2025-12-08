@@ -64,6 +64,16 @@ const transformation = (_, args) => () =>
             );
         }
 
+        console.log(
+            '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
+            `${routineArg.value}${getQueryParameters(
+                precomputedArg.value,
+                precomputedLabelColumnArg.value,
+                precomputedValueColumnArg.value,
+            )}`,
+            '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
+        );
+
         return resolve(
             `${routineArg.value}${getQueryParameters(
                 precomputedArg.value,
