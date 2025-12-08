@@ -1,3 +1,4 @@
+import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
 import {
     lazy,
     Suspense,
@@ -7,7 +8,6 @@ import {
     useRef,
     useState,
 } from 'react';
-
 import type { ForceGraphMethods, NodeObject } from 'react-force-graph-3d';
 import {
     Group,
@@ -23,7 +23,12 @@ import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import type { Link, Node } from '../network/useFormatNetworkData';
 
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+    Box,
+    IconButton,
+    ToggleButton,
+    ToggleButtonGroup,
+} from '@mui/material';
 import SpriteText from 'three-spritetext';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
@@ -319,6 +324,14 @@ export const Network3DBase = ({
         maxLinkSize,
     });
 
+    const handleResetZoom = () => {
+        if (!fgRef.current) {
+            return;
+        }
+
+        fgRef.current.zoomToFit(250);
+    };
+
     return (
         <div style={{ height: `500px` }}>
             <FormatFullScreenMode>
@@ -480,15 +493,30 @@ export const Network3DBase = ({
                         />
                     </Suspense>
 
-                    <div
-                        style={{
+                    <Box
+                        sx={{
                             position: 'absolute',
-                            bottom: 0,
-                            left: 0,
+                            bottom: '8px',
+                            left: '8px',
+                            '& svg': {
+                                width: '32px',
+                                height: '32px',
+                            },
                         }}
                     >
-                        {<MouseIcon />}
-                    </div>
+                        <MouseIcon />
+                    </Box>
+
+                    <IconButton
+                        onClick={handleResetZoom}
+                        sx={{
+                            position: 'absolute',
+                            left: '48px',
+                            bottom: '8px',
+                        }}
+                    >
+                        <FilterCenterFocusIcon />
+                    </IconButton>
 
                     <NetworkCaption
                         captions={captions}
