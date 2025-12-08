@@ -333,30 +333,32 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                     )}
                 </Box>
             </Fade>
-            <CancelProcessDialog
-                isOpen={isCancelDialogOpen}
-                // @ts-expect-error TS2339
-                title={getTitle(progress?.type)}
-                // @ts-expect-error TS2339
-                content={getContent(progress?.type)}
-                onCancel={() => {
-                    setIsCancelDialogOpen(false);
-                }}
-                onConfirm={() => {
-                    if (!progress) {
-                        return;
-                    }
+            {progress && (
+                <CancelProcessDialog
+                    isOpen={isCancelDialogOpen}
                     // @ts-expect-error TS2339
-                    jobsApi.cancelJob(progress.type, progress.subLabel);
+                    title={getTitle(progress?.type)}
                     // @ts-expect-error TS2339
-                    if (progress.type === 'publisher') {
-                        handleCancelPublication();
-                        // @ts-expect-error TS2554
-                        setProgress();
-                    }
-                    setIsCancelDialogOpen(false);
-                }}
-            />
+                    content={getContent(progress?.type)}
+                    onCancel={() => {
+                        setIsCancelDialogOpen(false);
+                    }}
+                    onConfirm={() => {
+                        if (!progress) {
+                            return;
+                        }
+                        // @ts-expect-error TS2339
+                        jobsApi.cancelJob(progress.type, progress.subLabel);
+                        // @ts-expect-error TS2339
+                        if (progress.type === 'publisher') {
+                            handleCancelPublication();
+                            // @ts-expect-error TS2554
+                            setProgress();
+                        }
+                        setIsCancelDialogOpen(false);
+                    }}
+                />
+            )}
         </>
     );
 };
