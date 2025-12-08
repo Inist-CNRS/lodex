@@ -152,7 +152,7 @@ const FormatFullScreenMode = memo(
             () =>
                 open
                     ? {
-                          position: 'absolute',
+                          position: 'fixed',
                           gap: '1rem',
                           padding: '1rem',
                           width: '100%',
