@@ -1,3 +1,4 @@
+import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
 import { Box, IconButton } from '@mui/material';
 import {
     lazy,
@@ -78,6 +79,7 @@ export function HierarchicalTreeView({
         centerOnNode,
         openAll,
         closeAll,
+        resetZoom,
     } = useHierarchicalTreeController({
         orientation,
         nodeSize,
@@ -158,7 +160,7 @@ export function HierarchicalTreeView({
                             zoom={zoom}
                             initialDepth={depth}
                             hasInteractiveNodes
-                            onNodeClick={centerOnNode}
+                            onNodeClick={(node) => centerOnNode(node.data.name)}
                             centeringTransitionDuration={150}
                             dimensions={dimensions}
                             rootNodeClassName="tree-root"
@@ -166,15 +168,30 @@ export function HierarchicalTreeView({
                     </Suspense>
                 </Box>
 
-                <div
-                    style={{
+                <Box
+                    sx={{
                         position: 'absolute',
-                        bottom: 0,
-                        left: 0,
+                        bottom: '8px',
+                        left: '8px',
+                        '& svg': {
+                            width: '32px',
+                            height: '32px',
+                        },
                     }}
                 >
-                    {<MouseIcon />}
-                </div>
+                    <MouseIcon />
+                </Box>
+
+                <IconButton
+                    onClick={resetZoom}
+                    sx={{
+                        position: 'absolute',
+                        left: '48px',
+                        bottom: '8px',
+                    }}
+                >
+                    <FilterCenterFocusIcon />
+                </IconButton>
             </FormatFullScreenMode>
         </Box>
     );
