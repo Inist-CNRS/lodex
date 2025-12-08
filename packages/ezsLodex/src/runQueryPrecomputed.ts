@@ -38,15 +38,6 @@ async function LodexRunQueryPrecomputed(this: any, data: any, feed: any) {
     const valueFieldName = this.getParam('valueFieldName');
     const labelFieldName = this.getParam('labelFieldName');
 
-    console.log(
-        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
-        {
-            valueFieldName,
-            labelFieldName,
-        },
-        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
-    );
-
     const filter = {};
 
     if (minValue) {

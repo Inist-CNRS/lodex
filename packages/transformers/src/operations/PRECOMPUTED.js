@@ -2,7 +2,7 @@ import { get } from 'lodash';
 import documentationByOperation from './documentationByOperation';
 
 const isUndefinedOrEmpty = (value) =>
-    typeof value === 'undefined' || value === '';
+    typeof value === 'undefined' || value === '' || value === null;
 
 const getLabelColumn = (preComputation, labelColumn) => {
     if (!isUndefinedOrEmpty(labelColumn)) {
@@ -16,6 +16,7 @@ const getLabelColumn = (preComputation, labelColumn) => {
     ) {
         return 'source';
     }
+
     return 'id';
 };
 
@@ -31,11 +32,22 @@ const getValueColumn = (preComputation, valueColumn) => {
     ) {
         return 'weight';
     }
+
     return 'value';
 };
 
 const getQueryParameters = (preComputation, labelColumn, valueColumn) => {
-    return `?precomputedName=${preComputation}&precomputedValueColumn=${getValueColumn(preComputation, valueColumn)}&precomputedLabelColumn=${getLabelColumn(preComputation, labelColumn)}`;
+    const precomputedValueColum = getValueColumn(preComputation, valueColumn);
+    const precomputedLabelColumn = getLabelColumn(preComputation, labelColumn);
+    return `?precomputedName=${preComputation}${
+        precomputedValueColum
+            ? `&precomputedValueColum=${precomputedValueColum}`
+            : ''
+    }${
+        precomputedLabelColumn
+            ? `&precomputedLabelColumn=${precomputedLabelColumn}`
+            : ''
+    }`;
 };
 
 const transformation = (_, args) => () =>
@@ -63,16 +75,6 @@ const transformation = (_, args) => () =>
                 new Error('Invalid Argument for PRECOMPUTED transformation'),
             );
         }
-
-        console.log(
-            '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
-            `${routineArg.value}${getQueryParameters(
-                precomputedArg.value,
-                precomputedLabelColumnArg.value,
-                precomputedValueColumnArg.value,
-            )}`,
-            '-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
-        );
 
         return resolve(
             `${routineArg.value}${getQueryParameters(
