@@ -132,12 +132,14 @@ describe('useFormatNetworkData', () => {
                 label: 'A',
                 radius: expect.any(Number),
                 color: undefined,
+                isLeaf: false,
             },
             {
                 id: 'B',
                 label: 'B',
                 radius: expect.any(Number),
                 color: undefined,
+                isLeaf: true,
             },
         ]);
 
@@ -161,18 +163,21 @@ describe('useFormatNetworkData', () => {
                 label: 'A',
                 radius: expect.any(Number),
                 color: undefined,
+                isLeaf: false,
             },
             {
                 id: 'B',
                 label: 'B',
                 radius: expect.any(Number),
                 color: undefined,
+                isLeaf: false,
             },
             {
                 id: 'C',
                 label: 'C',
                 radius: expect.any(Number),
                 color: undefined,
+                isLeaf: true,
             },
         ]);
 

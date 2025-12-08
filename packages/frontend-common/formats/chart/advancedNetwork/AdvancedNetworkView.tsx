@@ -37,6 +37,11 @@ const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
         typeof field.format?.args?.fieldToFilter === 'string'
             ? field.format.args.fieldToFilter
             : null;
+
+    const secondFieldToFilter =
+        typeof field.format?.args?.secondFieldToFilter === 'string'
+            ? field.format.args.secondFieldToFilter
+            : null;
     return (
         <NetworkBase
             colorSet={colorSet}
@@ -46,6 +51,7 @@ const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
             linkCurvature={0.25}
             highlightMode="outgoing"
             fieldToFilter={fieldToFilter}
+            secondFieldToFilter={secondFieldToFilter}
             zoomAdjustNodeSize={zoomAdjustNodeSize}
         />
     );

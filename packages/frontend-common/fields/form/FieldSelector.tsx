@@ -28,7 +28,19 @@ export function getFieldSelectorOptions(fieldsByName: Record<string, Field>) {
         });
 }
 
-export function FieldSelector({ label, value, onChange }: FieldSelectorProps) {
+type FieldSelectorProps = {
+    name?: string;
+    label?: string;
+    onChange?: (fieldName: string | null) => void;
+    value?: string | null;
+};
+
+export function FieldSelector({
+    label,
+    name = 'fieldToFilter',
+    value,
+    onChange,
+}: FieldSelectorProps) {
     const { translate } = useTranslate();
 
     const { isFieldListPending, fields } = useListField();
@@ -77,7 +89,7 @@ export function FieldSelector({ label, value, onChange }: FieldSelectorProps) {
 
     return (
         <AutoComplete
-            name="fieldToFilter"
+            name={name}
             label={label ?? translate('field_to_filter')}
             disabled={isFieldListPending}
             options={options}
@@ -88,9 +100,3 @@ export function FieldSelector({ label, value, onChange }: FieldSelectorProps) {
         />
     );
 }
-
-type FieldSelectorProps = {
-    label?: string;
-    onChange?: (fieldName: string | null) => void;
-    value?: string | null;
-};

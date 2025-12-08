@@ -1489,6 +1489,7 @@
 "network_mode_arrow"	"Arrow"	"Flèche"
 "network_mode_animated"	"Animated"	"Animé"
 "field_to_filter"	"Field used for search during value selection"	"Champ utilisé pour la recherche lors de la sélection d'une valeur"
+"second_field_to_filter"	"Optional: Second field used for search during value selection applicable for cross field data"	"Optionel: Second champ utilisé pour la recherche lors de la sélection d'une valeur, applicable si les données concernent des champs croisés "
 "field_to_filter_column"	"Field used for search during value selection for column"	"Champ utilisé pour la recherche lors de la sélection d'une valeur pour la colonne"
 "field_to_filter_row"	"Field used for search during value selection for row"	"Champ utilisé pour la recherche lors de la sélection d'une valeur pour la ligne"
 "no_precomputed_data"	"No precomputed data to display"	"Aucun prècalculs à afficher"

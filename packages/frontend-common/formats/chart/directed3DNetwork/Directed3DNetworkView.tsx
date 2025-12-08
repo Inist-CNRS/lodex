@@ -39,6 +39,11 @@ const Directed3DNetwork = ({
         typeof field.format?.args?.fieldToFilter === 'string'
             ? field.format.args.fieldToFilter
             : null;
+
+    const secondFieldToFilter =
+        typeof field.format?.args?.secondFieldToFilter === 'string'
+            ? field.format.args.secondFieldToFilter
+            : null;
     return (
         <Network3DBase
             colorSet={colorSet}
@@ -47,6 +52,7 @@ const Directed3DNetwork = ({
             linkCurvature={0.25}
             showArrows
             fieldToFilter={fieldToFilter}
+            secondFieldToFilter={secondFieldToFilter}
         />
     );
 };

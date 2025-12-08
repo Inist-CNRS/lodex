@@ -20,6 +20,7 @@ interface NetworkProps {
         captionTitle?: string;
         displayWeighted?: boolean;
         fieldToFilter?: string;
+        secondFieldToFilter?: string;
         zoomAdjustNodeSize?: boolean;
         minRadius?: number;
         maxRadius?: number;
@@ -56,12 +57,18 @@ const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
             ? field.format.args.fieldToFilter
             : null;
 
+    const secondFieldToFilter =
+        typeof field.format?.args?.secondFieldToFilter === 'string'
+            ? field.format.args.secondFieldToFilter
+            : null;
+
     return (
         <Network3DBase
             colorSet={colorSet}
             nodes={nodes}
             links={links}
             fieldToFilter={fieldToFilter}
+            secondFieldToFilter={secondFieldToFilter}
             captions={captions}
             captionTitle={field.format?.args?.captionTitle}
         />

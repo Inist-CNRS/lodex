@@ -65,11 +65,13 @@ export function useFormatNetworkData({
                     id: source,
                     label: source_title ?? source,
                     radius: get(acc, [source, 'radius'], 0) + 1,
+                    isLeaf: false,
                 },
                 [target]: {
                     id: target,
                     label: target_title ?? target,
                     radius: get(acc, [target, 'radius'], 0) + 1,
+                    isLeaf: acc['source'] ? false : true,
                 },
             }),
             {},

@@ -42,6 +42,11 @@ const DirectedNetwork = ({
         typeof field.format?.args?.fieldToFilter === 'string'
             ? field.format.args.fieldToFilter
             : null;
+
+    const secondFieldToFilter =
+        typeof field.format?.args?.secondFieldToFilter === 'string'
+            ? field.format.args.secondFieldToFilter
+            : null;
     return (
         <NetworkBase
             colorSet={colorSet}
@@ -50,6 +55,7 @@ const DirectedNetwork = ({
             linkCurvature={0.25}
             showArrows
             fieldToFilter={fieldToFilter}
+            secondFieldToFilter={secondFieldToFilter}
             zoomAdjustNodeSize={zoomAdjustNodeSize}
         />
     );
