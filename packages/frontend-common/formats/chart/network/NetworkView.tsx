@@ -14,6 +14,7 @@ interface NetworkProps {
         captionTitle?: string;
         displayWeighted?: boolean;
         fieldToFilter?: string;
+        secondFieldToFilter?: string;
         zoomAdjustNodeSize?: boolean;
         minRadius?: number;
         maxRadius?: number;
@@ -27,6 +28,11 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
     const fieldToFilter =
         typeof field.format?.args?.fieldToFilter === 'string'
             ? field.format.args.fieldToFilter
+            : null;
+
+    const secondFieldToFilter =
+        typeof field.format?.args?.secondFieldToFilter === 'string'
+            ? field.format.args.secondFieldToFilter
             : null;
 
     const { colorOverrides, captions } = useColorOverrides(
@@ -51,6 +57,7 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
             nodes={nodes}
             links={links}
             fieldToFilter={fieldToFilter}
+            secondFieldToFilter={secondFieldToFilter}
             zoomAdjustNodeSize={zoomAdjustNodeSize}
             captions={captions}
             captionTitle={field.format?.args?.captionTitle}

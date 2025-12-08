@@ -129,6 +129,7 @@ type NetworkBaseProps = {
     highlightMode?: 'ingoing' | 'outgoing' | 'all';
     showArrows?: boolean;
     fieldToFilter?: string | null;
+    secondFieldToFilter?: string | null;
     zoomAdjustNodeSize?: boolean;
     captionTitle?: string;
     captions?: Record<string, string>;
@@ -143,6 +144,7 @@ export const NetworkBase = ({
     highlightMode = 'all',
     showArrows = false,
     fieldToFilter,
+    secondFieldToFilter,
     zoomAdjustNodeSize = false,
     captions,
     captionTitle,
@@ -270,6 +272,28 @@ export const NetworkBase = ({
         const nodeId = node.id?.toString();
         const label =
             node.label !== nodeId ? `${node.label} (${nodeId})` : nodeId;
+
+        if (fgRef.current) {
+            fgRef.current.zoomToFit(500, 100, (n) => n.id === node.id);
+        }
+
+        if (secondFieldToFilter && fieldToFilter && nodeId) {
+            selectOne(
+                node.isLeaf
+                    ? {
+                          fieldName: secondFieldToFilter,
+                          value: nodeId,
+                          label,
+                      }
+                    : {
+                          fieldName: fieldToFilter,
+                          value: nodeId,
+                          label,
+                      },
+            );
+            return;
+        }
+
         if (fieldToFilter && nodeId) {
             selectOne({
                 fieldName: fieldToFilter,
@@ -277,9 +301,6 @@ export const NetworkBase = ({
                 label,
             });
         }
-
-        if (!fgRef.current) return;
-        fgRef.current.zoomToFit(500, 100, (n) => n.id === node.id);
     };
 
     const sortedNodes = useMemo(() => {

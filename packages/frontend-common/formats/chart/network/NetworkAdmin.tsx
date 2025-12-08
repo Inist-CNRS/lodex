@@ -38,6 +38,7 @@ type NetworkArgs = {
     maxRadius?: number;
     colors?: string;
     fieldToFilter?: string | null;
+    secondFieldToFilter?: string | null;
     isAdvancedColorMode?: boolean;
     captionTitle?: string;
     colorScale?: ColorScaleItemMaybe[];
@@ -57,6 +58,7 @@ export const defaultArgs: NetworkArgs = {
     maxRadius: 20,
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
     fieldToFilter: null,
+    secondFieldToFilter: null,
 };
 
 type NetworkAdminProps = {
@@ -245,6 +247,16 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                         onChange({
                             ...args,
                             fieldToFilter: fieldToFilter || null,
+                        })
+                    }
+                />
+                <FieldSelector
+                    label={translate('target_field_to_filter')}
+                    value={args?.secondFieldToFilter ?? null}
+                    onChange={(secondFieldToFilter) =>
+                        onChange({
+                            ...args,
+                            secondFieldToFilter: secondFieldToFilter || null,
                         })
                     }
                 />

@@ -84,6 +84,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 x: -900,
                 y: -500,
                 z: 0,
+                isLeaf: false,
             },
             {
                 id: 'B',
@@ -93,6 +94,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 x: 0,
                 y: 0,
                 z: 0,
+                isLeaf: false,
             },
             {
                 id: 'C',
@@ -102,6 +104,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 x: 900,
                 y: 500,
                 z: 0,
+                isLeaf: false,
             },
         ]);
 
@@ -256,6 +259,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 x: -900,
                 y: -500,
                 z: 0,
+                isLeaf: false,
             },
             {
                 id: 'B',
@@ -265,6 +269,7 @@ describe('useFormatAdvancedNetworkData', () => {
                 x: 900,
                 y: 500,
                 z: 0,
+                isLeaf: false,
             },
         ]);
     });

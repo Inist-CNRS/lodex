@@ -132,6 +132,7 @@ export function useFormatAdvancedNetworkData({
                 y: y !== undefined ? scalePositionY(y) : undefined,
                 z,
                 color: node.color,
+                isLeaf: !targets || targets.length === 0,
             }),
         );
 
@@ -158,7 +159,7 @@ export function useFormatAdvancedNetworkData({
             nodes,
             links,
         };
-    }, [displayWeighted, formatData]);
+    }, [displayWeighted, formatData, maxRadius, minRadius]);
 }
 
 export type UseFormatNetworkDataReturn = ForceGraphProps['graphData'];

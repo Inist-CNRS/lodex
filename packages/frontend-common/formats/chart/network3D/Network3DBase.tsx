@@ -52,6 +52,7 @@ type NetworkBaseProps = {
     highlightMode?: 'ingoing' | 'outgoing' | 'all';
     showArrows?: boolean;
     fieldToFilter?: string | null;
+    secondFieldToFilter?: string | null;
     captions?: Record<string, string>;
     captionTitle?: string;
 };
@@ -65,6 +66,7 @@ export const Network3DBase = ({
     highlightMode = 'all',
     showArrows = false,
     fieldToFilter,
+    secondFieldToFilter,
     captions,
     captionTitle,
 }: NetworkBaseProps) => {
@@ -245,6 +247,24 @@ export const Network3DBase = ({
         const nodeId = node.id?.toString();
         const label =
             node.label !== nodeId ? `${node.label} (${nodeId})` : nodeId;
+
+        if (secondFieldToFilter && fieldToFilter && nodeId) {
+            selectOne(
+                node.isLeaf
+                    ? {
+                          fieldName: secondFieldToFilter,
+                          value: nodeId,
+                          label,
+                      }
+                    : {
+                          fieldName: fieldToFilter,
+                          value: nodeId,
+                          label,
+                      },
+            );
+            return;
+        }
+
         if (fieldToFilter && nodeId) {
             selectOne({
                 fieldName: fieldToFilter,
