@@ -202,4 +202,4 @@ type HierarchicalTreeViewProps = {
 export default compose<
     HierarchicalTreeViewProps,
     Omit<HierarchicalTreeViewProps, 'formatData'>
->(injectData())(HierarchicalTreeView);
+>(injectData(null, null, true))(HierarchicalTreeView);
