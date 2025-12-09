@@ -80,11 +80,12 @@ export const getComputedFromWebservice = async (ctx: any) => {
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
     const precomputed = await ctx.precomputed.findOneById(precomputedId);
-    if (!precomputed) {
-        // Entry may have been deleted before the webservice called us back.
-        // We can ignore the reply in that case.
+    if (!precomputed || precomputed.status === TaskStatus.CANCELED) {
+        // Entry may have been deleted or cancelled before the webservice called us back.
+        // We ignore the reply in that case.
         return;
     }
+
     const { webServiceUrl, name: precomputedName } = precomputed;
     progress.initialize(tenant);
     progress.start(ctx.tenant, {
