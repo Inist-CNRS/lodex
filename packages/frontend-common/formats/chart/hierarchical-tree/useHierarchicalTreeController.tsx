@@ -1,4 +1,3 @@
-import type { HierarchyPointNode } from 'd3-hierarchy';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Tree, TreeNodeDatum, TreeProps } from 'react-d3-tree';
 
@@ -99,16 +98,19 @@ export function useHierarchicalTreeController({
         };
     }, [handleResize]);
 
-    const centerOnNode = useCallback(
-        (node: HierarchyPointNode<TreeNodeDatum>) => {
-            if (!treeRef.current) {
-                return;
-            }
+    const centerOnNode = useCallback((nodeName?: string) => {
+        if (!treeRef.current || nodeName == null) {
+            return;
+        }
 
-            treeRef.current.centerNode(node);
-        },
-        [],
-    );
+        const tree = treeRef.current.generateTree();
+        const node = tree.nodes.find((n) => n.data.name === nodeName);
+        if (!node) {
+            return;
+        }
+
+        treeRef.current.centerNode(node);
+    }, []);
 
     const openAll = useCallback(() => {
         // We need to walk the nodes in order to open them one by one
@@ -134,6 +136,10 @@ export function useHierarchicalTreeController({
         });
     }, []);
 
+    const resetZoom = useCallback(() => {
+        centerOnNode(treeRef.current?.state.data.at(0)?.name);
+    }, [centerOnNode]);
+
     return useMemo(
         () => ({
             parentRef,
@@ -143,8 +149,9 @@ export function useHierarchicalTreeController({
             centerOnNode,
             openAll,
             closeAll,
+            resetZoom,
         }),
-        [dimensions, treeTranslate, centerOnNode, openAll, closeAll],
+        [dimensions, treeTranslate, centerOnNode, openAll, closeAll, resetZoom],
     );
 }
 
