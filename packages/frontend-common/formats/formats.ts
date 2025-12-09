@@ -14,6 +14,7 @@ import streamgraph from './chart/streamgraph';
 import venn from './chart/venn';
 import lodexField from './lodex/field';
 import resource from './lodex/resource';
+import backButton from './other/back-button';
 import istex from './other/istex';
 import istexCitation from './other/istexCitation';
 import istexRefbibs from './other/istexRefbibs';
@@ -591,5 +592,15 @@ export const FORMATS_CATALOG = [
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
         isUrlValue: true,
+    },
+    {
+        name: 'formatBackButton',
+        description: 'backButtonDescription',
+        componentName: 'backButton',
+        type: 'other',
+        component: backButton,
+        isValueAnnotable: false,
+        docUrl: '',
+        isUrlValue: false,
     },
 ];

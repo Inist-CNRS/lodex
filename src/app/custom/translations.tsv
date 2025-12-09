@@ -16,6 +16,8 @@
 "enrichment_batch_size"	"Enrichment Batch Size"	"Taille du lot d’enrichissement"
 "config"	"Configuration"	"Configuration"
 "line"	"line"	"ligne"
+"formatBackButton"	"Other - Back Button"	"Autre - Bouton Retour"
+"backButtonDescription"	"This format allows you to add a back button to navigate to the previous page."	"Ce format permet d’ajouter un bouton de retour pour naviguer vers la page précédente."
 "formatCode"	"Text - Code"	"Texte - Code"
 "formatCodeDescription"	"Syntactically color the value of the field following the syntax of the language given in parameter (among XML, JSON, INI, Shell, SQL, Javascript)."	"Colore syntaxiquement la valeur du champ en suivant la syntaxe du langage donné en paramètre (parmi XML, JSON, INI, Shell, SQL, Javascript)."
 "error"	"error"	"erreur"

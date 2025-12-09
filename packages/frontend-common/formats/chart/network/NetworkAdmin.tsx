@@ -251,7 +251,7 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                     }
                 />
                 <FieldSelector
-                    label={translate('target_field_to_filter')}
+                    label={translate('second_field_to_filter')}
                     value={args?.secondFieldToFilter ?? null}
                     onChange={(secondFieldToFilter) =>
                         onChange({
