@@ -5,26 +5,15 @@ export async function walkNodes(
     tree: TreeNodeDatum[],
     action: (node: TreeNodeDatum) => void,
 ) {
-    // We need to skip the root node here as it is visually hidden
-    const rootNodes = tree.at(0)?.children ?? [];
-    return new Promise<void>((resolve) => {
-        const nodeQueue = [...rootNodes];
+    for (const node of tree) {
+        action(node);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+    }
 
-        const interval = setInterval(() => {
-            const node = nodeQueue.shift();
-            if (!node) {
-                clearInterval(interval);
-                resolve();
-                return;
-            }
-
-            action(node);
-
-            if (node.children?.length) {
-                nodeQueue.push(...node.children);
-            }
-        }, 1);
-    });
+    const allChildren = tree.flatMap((node) => node.children ?? []);
+    if (allChildren.length > 0) {
+        await walkNodes(allChildren, action);
+    }
 }
 
 export function getNodeAncestorById(

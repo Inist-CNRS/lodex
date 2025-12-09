@@ -8,190 +8,37 @@ import {
 
 describe('useHierarchicalTreeController', () => {
     describe('walkNodes', () => {
-        it.each([
-            {
-                description: 'single root node',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Root',
-                                attributes: { hasParent: false },
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 1,
-                expectedNames: ['Root'],
-            },
-            {
-                description: 'multiple root nodes',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Root1',
-                                attributes: { hasParent: false },
-                            },
-                            {
-                                name: 'Root2',
-                                attributes: { hasParent: false },
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 2,
-                expectedNames: ['Root1', 'Root2'],
-            },
-            {
-                description: 'parent and children nodes',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Parent',
-                                attributes: { hasParent: false },
-                                children: [
-                                    {
-                                        name: 'Child1',
-                                        attributes: { hasParent: true },
-                                    },
-                                    {
-                                        name: 'Child2',
-                                        attributes: { hasParent: true },
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 3,
-                expectedNames: ['Parent', 'Child1', 'Child2'],
-            },
-            {
-                description: 'deeply nested nodes',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Root',
-                                attributes: { hasParent: false },
-                                children: [
-                                    {
-                                        name: 'Level1',
-                                        attributes: { hasParent: true },
-                                        children: [
-                                            {
-                                                name: 'Level2',
-                                                attributes: { hasParent: true },
-                                                children: [
-                                                    {
-                                                        name: 'Level3',
-                                                        attributes: {
-                                                            hasParent: true,
-                                                        },
-                                                    },
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 4,
-                expectedNames: ['Root', 'Level1', 'Level2', 'Level3'],
-            },
-            {
-                description: 'complex tree with multiple branches',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Root1',
-                                attributes: { hasParent: false },
-                                children: [
-                                    {
-                                        name: 'Root1-Child1',
-                                        attributes: { hasParent: true },
-                                    },
-                                    {
-                                        name: 'Root1-Child2',
-                                        attributes: { hasParent: true },
-                                    },
-                                ],
-                            },
-                            {
-                                name: 'Root2',
-                                attributes: { hasParent: false },
-                                children: [
-                                    {
-                                        name: 'Root2-Child1',
-                                        attributes: { hasParent: true },
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 5,
-                expectedNames: [
-                    'Root1',
-                    'Root2',
-                    'Root1-Child1',
-                    'Root1-Child2',
-                    'Root2-Child1',
-                ],
-            },
-        ])(
-            'should call action for $description',
-            async ({ tree, expectedCount, expectedNames }) => {
-                const action = jest.fn();
-
-                await walkNodes(tree as unknown as TreeNodeDatum[], action);
-
-                expect(action).toHaveBeenCalledTimes(expectedCount);
-                expect(action.mock.calls.map((call) => call[0].name)).toEqual(
-                    expectedNames,
-                );
-            },
-        );
-
-        it('should walk nodes in breadth-first order', async () => {
-            const action = jest.fn();
-            const tree = [
+        it('should call action for each node in the tree sequentially depth by depth', async () => {
+            const tree: TreeNodeDatum[] = [
                 {
-                    name: '__root__',
+                    name: 'Root',
+                    __rd3t: { id: '0' },
                     children: [
                         {
-                            name: 'Root',
-                            attributes: { hasParent: false },
+                            name: 'Child1',
+                            __rd3t: { id: '1' },
                             children: [
                                 {
-                                    name: 'Child1',
-                                    attributes: { hasParent: true },
-                                    children: [
-                                        {
-                                            name: 'Grandchild1',
-                                            attributes: { hasParent: true },
-                                        },
-                                    ],
+                                    name: 'GrandChild1',
+                                    __rd3t: { id: '2' },
                                 },
                                 {
-                                    name: 'Child2',
-                                    attributes: { hasParent: true },
-                                    children: [
-                                        {
-                                            name: 'Grandchild2',
-                                            attributes: { hasParent: true },
-                                        },
-                                    ],
+                                    name: 'GrandChild2',
+                                    __rd3t: { id: '3' },
+                                },
+                            ],
+                        },
+                        {
+                            name: 'Child2',
+                            __rd3t: { id: '4' },
+                            children: [
+                                {
+                                    name: 'GrandChild3',
+                                    __rd3t: { id: '4' },
+                                },
+                                {
+                                    name: 'GrandChild4',
+                                    __rd3t: { id: '5' },
                                 },
                             ],
                         },
@@ -199,87 +46,29 @@ describe('useHierarchicalTreeController', () => {
                 },
             ] as unknown as TreeNodeDatum[];
 
+            const action = jest.fn();
             await walkNodes(tree, action);
 
-            expect(action).toHaveBeenCalledTimes(5);
-            expect(action.mock.calls.map((call) => call[0].name)).toEqual([
-                'Root',
-                'Child1',
-                'Child2',
-                'Grandchild1',
-                'Grandchild2',
-            ]);
-        });
-
-        it.each([
-            {
-                description: 'empty tree array',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [],
-                    },
-                ],
-                expectedCount: 0,
-            },
-            {
-                description: 'node without children property',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Root',
-                                attributes: { hasParent: false },
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 1,
-            },
-            {
-                description: 'node with empty children array',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Root',
-                                attributes: { hasParent: false },
-                                children: [],
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 1,
-            },
-            {
-                description: 'promise resolution after all nodes processed',
-                tree: [
-                    {
-                        name: '__root__',
-                        children: [
-                            {
-                                name: 'Root',
-                                attributes: { hasParent: false },
-                                children: [
-                                    {
-                                        name: 'Child',
-                                        attributes: { hasParent: true },
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-                expectedCount: 2,
-            },
-        ])('should handle $description', async ({ tree, expectedCount }) => {
-            const action = jest.fn();
-
-            await walkNodes(tree as unknown as TreeNodeDatum[], action);
-
-            expect(action).toHaveBeenCalledTimes(expectedCount);
+            expect(action).toHaveBeenCalledTimes(7);
+            expect(action).toHaveBeenNthCalledWith(1, tree[0]);
+            expect(action).toHaveBeenNthCalledWith(2, tree[0].children![0]);
+            expect(action).toHaveBeenNthCalledWith(3, tree[0].children![1]);
+            expect(action).toHaveBeenNthCalledWith(
+                4,
+                tree[0].children![0].children![0],
+            );
+            expect(action).toHaveBeenNthCalledWith(
+                5,
+                tree[0].children![0].children![1],
+            );
+            expect(action).toHaveBeenNthCalledWith(
+                6,
+                tree[0].children![1].children![0],
+            );
+            expect(action).toHaveBeenNthCalledWith(
+                7,
+                tree[0].children![1].children![1],
+            );
         });
     });
 
