@@ -63,7 +63,7 @@ export function getNodeAncestorById(
     return getNodeAncestorByIdInternal(root, id, []);
 }
 
-const openPath = async (
+export const openPath = async (
     path: TreeNodeDatum[],
     handleNodeToggle: Tree['handleNodeToggle'],
 ) => {
@@ -82,15 +82,59 @@ const openPath = async (
     await openPath(remainingPath, handleNodeToggle);
 };
 
+const getTreeNodeOptions = (
+    tree: TreeNodeDatum,
+    result: {
+        value: string;
+        label: string;
+    }[] = [],
+): {
+    value: string;
+    label: string;
+}[] => {
+    return [
+        {
+            value: tree.__rd3t.id,
+            label: tree.name,
+        },
+        ...(tree.children ?? []).flatMap((child) =>
+            getTreeNodeOptions(child, result),
+        ),
+    ];
+};
+
+export const getNodeOptions = (
+    tree: TreeNodeDatum[],
+    result: {
+        value: string;
+        label: string;
+    }[] = [],
+): {
+    value: string;
+    label: string;
+}[] => {
+    return tree
+        .flatMap((node) => getTreeNodeOptions(node, result))
+        .toSorted((a, b) => a.label.localeCompare(b.label));
+};
+
 export function useHierarchicalTreeController({
     orientation,
     nodeSize,
     spaceBetweenNodes,
     initialZoom,
     initialDepth,
+    tree,
 }: HierarchicalTreeControllerParams) {
     const parentRef = useRef<HTMLDivElement>(null);
     const treeRef = useRef<Tree>(null);
+
+    const [nodeOptions, setNodeOptions] = useState<
+        {
+            value: string;
+            label: string;
+        }[]
+    >([]);
 
     const [selectedNodeOption, setSelectedNodeOption] = useState<{
         value: string;
@@ -157,6 +201,19 @@ export function useHierarchicalTreeController({
             clearTimeout(timer);
         };
     }, [handleResize]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (!treeRef.current) {
+                return;
+            }
+            const options = getNodeOptions(treeRef.current.state.data);
+            setNodeOptions(options);
+            clearInterval(interval);
+        }, 100);
+        return () => clearInterval(interval);
+        // recompute when tree changes
+    }, [tree]);
 
     const selectNode = useCallback((node?: any) => {
         setSelectedNodeOption(
@@ -243,6 +300,7 @@ export function useHierarchicalTreeController({
             resetZoom,
             selectedNodeOption,
             selectNodeById,
+            nodeOptions,
         }),
         [
             dimensions,
@@ -253,6 +311,7 @@ export function useHierarchicalTreeController({
             resetZoom,
             selectedNodeOption,
             selectNodeById,
+            nodeOptions,
         ],
     );
 }
@@ -263,4 +322,5 @@ export type HierarchicalTreeControllerParams = {
     spaceBetweenNodes: number;
     initialZoom: number;
     initialDepth: number;
+    tree: unknown;
 };

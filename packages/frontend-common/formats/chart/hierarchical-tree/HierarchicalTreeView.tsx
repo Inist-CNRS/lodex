@@ -4,12 +4,10 @@ import {
     lazy,
     Suspense,
     useCallback,
-    useEffect,
     useMemo,
-    useState,
     type ComponentClass,
 } from 'react';
-import type { TreeNodeDatum, TreeProps } from 'react-d3-tree';
+import type { TreeProps } from 'react-d3-tree';
 import { compose } from 'recompose';
 import { CloseAllIcon } from '../../../../public-app/src/annotation/icons/CloseAllIcon';
 import { OpenAllIcon } from '../../../../public-app/src/annotation/icons/OpenAllIcon';
@@ -47,40 +45,6 @@ const TreeView = lazy(async () => {
     return { default: Tree as ComponentClass<TreeProps> };
 });
 
-const getTreeNodeOptions = (
-    tree: TreeNodeDatum,
-    result: {
-        value: string;
-        label: string;
-    }[] = [],
-): {
-    value: string;
-    label: string;
-}[] => {
-    return [
-        {
-            value: tree.__rd3t.id,
-            label: tree.name,
-        },
-        ...(tree.children ?? []).flatMap((child) =>
-            getTreeNodeOptions(child, result),
-        ),
-    ];
-};
-
-const getNodeOptions = (
-    tree: TreeNodeDatum[],
-    result: {
-        value: string;
-        label: string;
-    }[] = [],
-): {
-    value: string;
-    label: string;
-}[] => {
-    return tree.flatMap((node) => getTreeNodeOptions(node, result));
-};
-
 export function HierarchicalTreeView({
     field,
     formatData,
@@ -94,7 +58,6 @@ export function HierarchicalTreeView({
     maximumScaleValue,
     fieldToFilter,
     colors,
-
     params,
 }: HierarchicalTreeViewProps) {
     const { translate } = useTranslate();
@@ -121,6 +84,12 @@ export function HierarchicalTreeView({
         [nodeWidth, nodeHeight, spacing],
     );
 
+    const tree = useFormatTreeData({
+        rootName: field?.label,
+        data: formatData,
+        sortBy,
+    });
+
     const {
         parentRef,
         treeRef,
@@ -132,46 +101,19 @@ export function HierarchicalTreeView({
         resetZoom,
         selectedNodeOption,
         selectNodeById,
+        nodeOptions,
     } = useHierarchicalTreeController({
         orientation,
         nodeSize,
         spaceBetweenNodes: spacing,
         initialZoom: zoom,
         initialDepth: depth,
-    });
-
-    const tree = useFormatTreeData({
-        rootName: field?.label,
-        data: formatData,
-        sortBy,
+        tree,
     });
 
     const getNodeColor = useCallback(() => {
         return colors || '#000000';
     }, [colors]);
-
-    const [nodeOptions, setNodeOptions] = useState<
-        {
-            value: string;
-            label: string;
-            collapsed?: boolean;
-        }[]
-    >([]);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (!treeRef.current) {
-                return;
-            }
-            const options = getNodeOptions(treeRef.current.state.data);
-            setNodeOptions(options);
-            clearInterval(interval);
-        }, 100);
-        return () => clearInterval(interval);
-        // recompute when tree changes
-    }, [tree]);
-
-    console.log({ selectedNodeOption });
 
     return (
         <Box sx={{ height: `500px` }} role="tree">
