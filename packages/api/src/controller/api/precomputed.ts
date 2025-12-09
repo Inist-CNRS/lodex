@@ -339,6 +339,16 @@ export const postImportPrecomputedResult = async (
     ctx.status = 200;
 };
 
+const cancelPrecomputedJob = async (ctx: AppContext, precomputedId: string) => {
+    const precomputed = await ctx.precomputed.findOneById(precomputedId);
+    if (precomputed) {
+        await cancelJob(ctx, PRECOMPUTER, precomputed.name);
+    }
+    await ctx.precomputed.updateStatus(precomputedId, TaskStatus.CANCELED, {});
+    ctx.status = 200;
+    ctx.body = { message: 'Job cancelled' };
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -367,6 +377,8 @@ app.use(route.post('/preview', precomputedDataPreview));
 
 // @ts-expect-error TS2345
 app.use(route.get('/:precomputedId/result', getPrecomputedResultList));
+// @ts-expect-error TS2345
+app.use(route.put('/:precomputedId/cancel', cancelPrecomputedJob));
 app.use(
     // @ts-expect-error TS2345
     route.get('/:precomputedId/result/columns', getPrecomputedResultColumns),

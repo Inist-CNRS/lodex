@@ -43,6 +43,7 @@ import { RunButton } from './RunButton';
 import { Link } from 'react-router-dom';
 import { DownloadPrecomputedResultButton } from './DownloadPrecomputedResultButton';
 import { ImportPrecomputedResult } from './ImportPrecomputedResult';
+import { useCancelPrecomputation } from './useCancelPrecomputation';
 
 export type PrecomputedFormProps = {
     datasetFields: string[];
@@ -271,6 +272,7 @@ export const PrecomputedForm = ({
         handleSourcePreview(formValues);
     }, [getValues, sourceColumns, webServiceUrl]);
 
+    const cancelPrecomputation = useCancelPrecomputation();
     return (
         <FormProvider {...formMethods}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -301,6 +303,27 @@ export const PrecomputedForm = ({
                                                 precomputedStatus
                                             }
                                         />
+                                        {[
+                                            TaskStatus.IN_PROGRESS,
+                                            TaskStatus.ON_HOLD,
+                                        ].includes(
+                                            precomputedStatus as any,
+                                        ) && (
+                                            <Button
+                                                onClick={() => {
+                                                    cancelPrecomputation(
+                                                        initialValues!._id,
+                                                    );
+                                                }}
+                                                variant="outlined"
+                                                color="error"
+                                                sx={{
+                                                    paddingX: '1.5rem',
+                                                }}
+                                            >
+                                                {translate('cancel_job')}
+                                            </Button>
+                                        )}
                                         <ImportPrecomputedResult
                                             precomputed={initialValues!}
                                         />

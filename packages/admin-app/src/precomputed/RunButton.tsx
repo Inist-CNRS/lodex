@@ -45,7 +45,7 @@ export const RunButton = ({
         <Button
             color="primary"
             variant={variant}
-            sx={{ height: '100%' }}
+            sx={{ height: '100%', paddingX: '1.5rem' }}
             startIcon={<PlayArrowIcon />}
             onClick={handleConfirm}
             disabled={!RUNNABLE_STATUSES.includes(precomputedStatus)}
