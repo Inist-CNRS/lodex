@@ -1,21 +1,11 @@
 import get from 'lodash/get';
 
 import { isEmpty, PropositionStatus } from '@lodex/common';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 export const shouldDisplayField = (
     resource: Record<string, unknown>,
-    field: {
-        name: string;
-        format: {
-            name: string;
-            args: {
-                value: string;
-            };
-        };
-        composedOf?: {
-            fields: string[];
-        };
-    },
+    field: Pick<Field, 'name' | 'format' | 'composedOf'>,
     fieldStatus: string,
     predicate: (value: unknown) => boolean = () => true,
     isAdmin = false,
@@ -30,6 +20,9 @@ export const shouldDisplayField = (
     }
 
     if (field.format?.name === 'fieldClone') {
+        if (typeof field.format.args?.value !== 'string') {
+            return false;
+        }
         return !isEmpty(resource[field.format.args.value]);
     }
 
