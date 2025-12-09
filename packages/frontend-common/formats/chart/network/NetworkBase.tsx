@@ -1,3 +1,10 @@
+import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
+import {
+    Box,
+    IconButton,
+    ToggleButton,
+    ToggleButtonGroup,
+} from '@mui/material';
 import {
     lazy,
     Suspense,
@@ -7,8 +14,6 @@ import {
     useRef,
     useState,
 } from 'react';
-
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import Loading from '../../../components/Loading';
@@ -328,6 +333,14 @@ export const NetworkBase = ({
         maxLinkSize,
     });
 
+    const handleResetZoom = () => {
+        if (!fgRef.current) {
+            return;
+        }
+
+        fgRef.current.zoomToFit(250);
+    };
+
     return (
         <div style={{ height: `500px` }}>
             <FormatFullScreenMode>
@@ -554,16 +567,32 @@ export const NetworkBase = ({
                         />
                     </Suspense>
 
-                    <div
-                        style={{
+                    <Box
+                        sx={{
                             position: 'absolute',
-                            bottom: 0,
-                            left: 0,
+                            bottom: '8px',
+                            left: '8px',
+                            '& svg': {
+                                width: '32px',
+                                height: '32px',
+                            },
                         }}
                     >
-                        {<MouseIcon />}
-                    </div>
+                        <MouseIcon />
+                    </Box>
 
+                    <IconButton
+                        onClick={handleResetZoom}
+                        sx={{
+                            position: 'absolute',
+                            left: '48px',
+                            bottom: '8px',
+                        }}
+                    >
+                        <FilterCenterFocusIcon />
+                    </IconButton>
+                </div>
+                <div>
                     <NetworkCaption
                         captions={captions}
                         captionTitle={captionTitle}
