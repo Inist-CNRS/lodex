@@ -1,3 +1,4 @@
+import { TaskStatus, type TaskStatusType } from '@lodex/common';
 import omit from 'lodash/omit';
 import {
     Collection,
@@ -8,11 +9,11 @@ import {
     type WithId,
 } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
-import { TaskStatus, type TaskStatusType } from '@lodex/common';
 
-type Enrichment = {
+export type Enrichment = {
     _id?: ObjectId;
     name: string;
+    dataSource?: string;
     description?: string;
     status: TaskStatusType;
     createdAt: Date;
@@ -43,7 +44,7 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
         db,
         'enrichment',
     );
-    await collection.createIndex({ name: 1 }, { unique: true });
+    await collection.createIndex({ name: 1, dataSource: 1 }, { unique: true });
 
     const findOneById = async (id: string) =>
         // @ts-expect-error TS2345
