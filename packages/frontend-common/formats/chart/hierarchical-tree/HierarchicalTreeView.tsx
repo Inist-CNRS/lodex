@@ -4,10 +4,12 @@ import {
     lazy,
     Suspense,
     useCallback,
+    useEffect,
     useMemo,
+    useState,
     type ComponentClass,
 } from 'react';
-import type { TreeProps } from 'react-d3-tree';
+import type { TreeNodeDatum, TreeProps } from 'react-d3-tree';
 import { compose } from 'recompose';
 import { CloseAllIcon } from '../../../../public-app/src/annotation/icons/CloseAllIcon';
 import { OpenAllIcon } from '../../../../public-app/src/annotation/icons/OpenAllIcon';
@@ -37,11 +39,47 @@ import {
 import type { Datum } from './type';
 import { useFormatTreeData, type SortBy } from './useFormatTreeData';
 import { useHierarchicalTreeController } from './useHierarchicalTreeController';
+import { AutoComplete } from '../../../form-fields/AutoCompleteField';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const TreeView = lazy(async () => {
     const { Tree } = await import('react-d3-tree');
     return { default: Tree as ComponentClass<TreeProps> };
 });
+
+const getTreeNodeOptions = (
+    tree: TreeNodeDatum,
+    result: {
+        value: string;
+        label: string;
+    }[] = [],
+): {
+    value: string;
+    label: string;
+}[] => {
+    return [
+        {
+            value: tree.__rd3t.id,
+            label: tree.name,
+        },
+        ...(tree.children ?? []).flatMap((child) =>
+            getTreeNodeOptions(child, result),
+        ),
+    ];
+};
+
+const getNodeOptions = (
+    tree: TreeNodeDatum[],
+    result: {
+        value: string;
+        label: string;
+    }[] = [],
+): {
+    value: string;
+    label: string;
+}[] => {
+    return tree.flatMap((node) => getTreeNodeOptions(node, result));
+};
 
 export function HierarchicalTreeView({
     field,
@@ -59,6 +97,7 @@ export function HierarchicalTreeView({
 
     params,
 }: HierarchicalTreeViewProps) {
+    const { translate } = useTranslate();
     const zoom = initialZoom ?? DEFAULT_ZOOM;
     const depth = initialDepth ?? DEFAULT_DEPTH;
     const spacing = spaceBetweenNodes ?? DEFAULT_SPACE_BETWEEN_NODES;
@@ -87,10 +126,12 @@ export function HierarchicalTreeView({
         treeRef,
         dimensions,
         treeTranslate,
-        centerOnNode,
+        selectNode,
         openAll,
         closeAll,
         resetZoom,
+        selectedNodeOption,
+        selectNodeById,
     } = useHierarchicalTreeController({
         orientation,
         nodeSize,
@@ -109,10 +150,60 @@ export function HierarchicalTreeView({
         return colors || '#000000';
     }, [colors]);
 
+    const [nodeOptions, setNodeOptions] = useState<
+        {
+            value: string;
+            label: string;
+            collapsed?: boolean;
+        }[]
+    >([]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (!treeRef.current) {
+                return;
+            }
+            const options = getNodeOptions(treeRef.current.state.data);
+            setNodeOptions(options);
+            clearInterval(interval);
+        }, 100);
+        return () => clearInterval(interval);
+        // recompute when tree changes
+    }, [tree]);
+
+    console.log({ selectedNodeOption });
+
     return (
         <Box sx={{ height: `500px` }} role="tree">
             <FormatFullScreenMode>
                 <GraphAction>
+                    <AutoComplete
+                        label={translate('select_node')}
+                        value={selectedNodeOption}
+                        onChange={(_event, option) => {
+                            selectNodeById(option.value);
+                        }}
+                        getOptionLabel={(
+                            option:
+                                | {
+                                      value: string;
+                                      label: string;
+                                  }
+                                | string,
+                        ) =>
+                            typeof option === 'string' ? option : option.label
+                        }
+                        isOptionEqualToValue={(option, value) =>
+                            option.value === value.value
+                        }
+                        getOptionKey={(option) => option.value}
+                        options={nodeOptions}
+                        name="search"
+                        sx={{
+                            width: '256px',
+                            maxWidth: '256px',
+                        }}
+                    />
                     <IconButton onClick={closeAll} size="small">
                         <CloseAllIcon />
                     </IconButton>
@@ -172,7 +263,7 @@ export function HierarchicalTreeView({
                             zoom={zoom}
                             initialDepth={depth}
                             hasInteractiveNodes
-                            onNodeClick={(node) => centerOnNode(node.data.name)}
+                            onNodeClick={(node) => selectNode(node)}
                             centeringTransitionDuration={150}
                             dimensions={dimensions}
                         />

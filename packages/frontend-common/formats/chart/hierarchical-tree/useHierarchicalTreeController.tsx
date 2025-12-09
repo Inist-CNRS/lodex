@@ -27,6 +27,61 @@ export async function walkNodes(
     });
 }
 
+export function getNodeAncestorById(
+    tree: TreeNodeDatum[],
+    id: string,
+): TreeNodeDatum[] {
+    const root = tree.at(0);
+    if (!root) {
+        return [];
+    }
+
+    function getNodeAncestorByIdInternal(
+        node: TreeNodeDatum,
+        id: string,
+        path: TreeNodeDatum[],
+    ): TreeNodeDatum[] {
+        if (node.__rd3t.id === id) {
+            return path;
+        }
+
+        if (node.children) {
+            for (const child of node.children) {
+                const result = getNodeAncestorByIdInternal(child, id, [
+                    ...path,
+                    node,
+                ]);
+                if (result.length > 0) {
+                    return result;
+                }
+            }
+        }
+
+        return [];
+    }
+
+    return getNodeAncestorByIdInternal(root, id, []);
+}
+
+const openPath = async (
+    path: TreeNodeDatum[],
+    handleNodeToggle: Tree['handleNodeToggle'],
+) => {
+    if (!path.length) {
+        return;
+    }
+
+    const [currentNode, ...remainingPath] = path;
+
+    if (currentNode.__rd3t.collapsed) {
+        handleNodeToggle(currentNode.__rd3t.id);
+        // Wait a bit for the animation to complete
+        await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    await openPath(remainingPath, handleNodeToggle);
+};
+
 export function useHierarchicalTreeController({
     orientation,
     nodeSize,
@@ -36,6 +91,11 @@ export function useHierarchicalTreeController({
 }: HierarchicalTreeControllerParams) {
     const parentRef = useRef<HTMLDivElement>(null);
     const treeRef = useRef<Tree>(null);
+
+    const [selectedNodeOption, setSelectedNodeOption] = useState<{
+        value: string;
+        label: string;
+    } | null>(null);
 
     const [treeTranslate, setTreeTranslate] = useState<TreeProps['translate']>({
         x: 0,
@@ -98,19 +158,46 @@ export function useHierarchicalTreeController({
         };
     }, [handleResize]);
 
-    const centerOnNode = useCallback((nodeName?: string) => {
-        if (!treeRef.current || nodeName == null) {
-            return;
-        }
-
-        const tree = treeRef.current.generateTree();
-        const node = tree.nodes.find((n) => n.data.name === nodeName);
-        if (!node) {
+    const selectNode = useCallback((node?: any) => {
+        setSelectedNodeOption(
+            node
+                ? {
+                      value: node?.data.__rd3t.id,
+                      label: node?.data.name,
+                  }
+                : null,
+        );
+        if (!node || !treeRef.current) {
             return;
         }
 
         treeRef.current.centerNode(node);
     }, []);
+
+    const selectNodeById = useCallback(
+        async (nodeId?: string) => {
+            if (!treeRef.current || nodeId == null) {
+                return;
+            }
+
+            const ancestors = getNodeAncestorById(
+                treeRef.current.state.data,
+                nodeId,
+            );
+
+            await openPath(ancestors, treeRef.current.handleNodeToggle);
+
+            const tree = treeRef.current.generateTree();
+
+            const targetNode = tree.nodes.find(
+                (node) => node.data.__rd3t.id === nodeId,
+            );
+            if (targetNode) {
+                selectNode(targetNode);
+            }
+        },
+        [selectNode],
+    );
 
     const openAll = useCallback(() => {
         // We need to walk the nodes in order to open them one by one
@@ -137,8 +224,12 @@ export function useHierarchicalTreeController({
     }, []);
 
     const resetZoom = useCallback(() => {
-        centerOnNode(treeRef.current?.state.data.at(0)?.name);
-    }, [centerOnNode]);
+        selectNodeById(
+            selectedNodeOption
+                ? selectedNodeOption.value
+                : treeRef.current?.state.data.at(0)?.__rd3t.id,
+        );
+    }, [selectNodeById, selectedNodeOption]);
 
     return useMemo(
         () => ({
@@ -146,12 +237,23 @@ export function useHierarchicalTreeController({
             treeRef,
             dimensions,
             treeTranslate,
-            centerOnNode,
+            selectNode,
             openAll,
             closeAll,
             resetZoom,
+            selectedNodeOption,
+            selectNodeById,
         }),
-        [dimensions, treeTranslate, centerOnNode, openAll, closeAll, resetZoom],
+        [
+            dimensions,
+            treeTranslate,
+            selectNode,
+            openAll,
+            closeAll,
+            resetZoom,
+            selectedNodeOption,
+            selectNodeById,
+        ],
     );
 }
 
