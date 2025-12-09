@@ -35,7 +35,7 @@ import {
     LEAF_BAR_SPACING,
 } from './HierarchicalTreeNode';
 import type { Datum } from './type';
-import { useFormatTreeData } from './useFormatTreeData';
+import { useFormatTreeData, type SortBy } from './useFormatTreeData';
 import { useHierarchicalTreeController } from './useHierarchicalTreeController';
 
 const TreeView = lazy(async () => {
@@ -56,10 +56,21 @@ export function HierarchicalTreeView({
     maximumScaleValue,
     fieldToFilter,
     colors,
+
+    params,
 }: HierarchicalTreeViewProps) {
     const zoom = initialZoom ?? DEFAULT_ZOOM;
     const depth = initialDepth ?? DEFAULT_DEPTH;
     const spacing = spaceBetweenNodes ?? DEFAULT_SPACE_BETWEEN_NODES;
+
+    const sortBy = useMemo(() => {
+        const sortByParam = params?.orderBy ?? 'label/asc';
+        const [kind, direction] = sortByParam.split('/') as [
+            SortBy['kind'],
+            SortBy['direction'],
+        ];
+        return { kind, direction };
+    }, [params?.orderBy]);
 
     const nodeSize = useMemo(
         () => ({
@@ -91,6 +102,7 @@ export function HierarchicalTreeView({
     const tree = useFormatTreeData({
         rootName: field?.label,
         data: formatData,
+        sortBy,
     });
 
     const getNodeColor = useCallback(() => {
@@ -163,7 +175,6 @@ export function HierarchicalTreeView({
                             onNodeClick={(node) => centerOnNode(node.data.name)}
                             centeringTransitionDuration={150}
                             dimensions={dimensions}
-                            rootNodeClassName="tree-root"
                         />
                     </Suspense>
                 </Box>
@@ -214,6 +225,8 @@ type HierarchicalTreeViewProps = {
 
     fieldToFilter?: string | null;
     colors?: string;
+
+    params?: { orderBy?: string };
 };
 
 export default compose<

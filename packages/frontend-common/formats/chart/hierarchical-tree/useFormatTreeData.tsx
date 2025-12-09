@@ -31,6 +31,24 @@ export function bindAttributes(
     );
 }
 
+export function createSortByFunction(
+    sortBy: SortBy = { kind: 'label', direction: 'asc' },
+) {
+    const sortMultiplier = sortBy.direction === 'asc' ? 1 : -1;
+
+    if (sortBy.kind === 'label') {
+        return (a: RawNodeDatum, b: RawNodeDatum): number => {
+            return a.name.localeCompare(b.name) * sortMultiplier;
+        };
+    }
+    return (a: RawNodeDatum, b: RawNodeDatum): number => {
+        return (
+            (((a.attributes?.weight as number | undefined) ?? 1) -
+                ((b.attributes?.weight as number | undefined) ?? 1)) *
+            sortMultiplier
+        );
+    };
+}
 export function createTree(
     nodeMap: Map<string, RawNodeDatum>,
     childrenByParent: Record<string, RawNodeDatum[]>,
@@ -59,7 +77,11 @@ export function createTree(
         .map(buildNode);
 }
 
-export function useFormatTreeData({ rootName, data }: UseFormatTreeDataParams) {
+export function useFormatTreeData({
+    rootName,
+    data,
+    sortBy,
+}: UseFormatTreeDataParams) {
     const { translate } = useTranslate();
     return useMemo(() => {
         const map = new Map<string, RawNodeDatum>();
@@ -133,6 +155,15 @@ export function useFormatTreeData({ rootName, data }: UseFormatTreeDataParams) {
             sourceNode.children!.push(targetNode);
         }
 
+        const sortByFunction = createSortByFunction(sortBy);
+        for (const node of map.values()) {
+            if (!node.children) {
+                continue;
+            }
+
+            node.children = node.children.toSorted(sortByFunction);
+        }
+
         // We need to have a fake root node to accommodate multiple roots in the data
         return {
             name: rootName ?? translate('root'),
@@ -140,12 +171,18 @@ export function useFormatTreeData({ rootName, data }: UseFormatTreeDataParams) {
                 (node) => node.attributes!.hasParent === false,
             ),
         };
-    }, [translate, rootName, data]);
+    }, [translate, rootName, data, sortBy]);
 }
+
+export type SortBy = {
+    kind: 'label' | 'value';
+    direction: 'asc' | 'desc';
+};
 
 export type UseFormatTreeDataParams = {
     rootName?: string;
     data: Datum[];
+    sortBy?: SortBy;
 };
 
 export type UseFormatTreeDataResult = {

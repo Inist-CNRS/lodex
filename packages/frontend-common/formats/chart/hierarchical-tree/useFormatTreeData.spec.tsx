@@ -1,6 +1,10 @@
 import { renderHook } from '@testing-library/react';
 import type { Datum } from './type';
-import { bindAttributes, useFormatTreeData } from './useFormatTreeData';
+import {
+    bindAttributes,
+    useFormatTreeData,
+    type SortBy,
+} from './useFormatTreeData';
 
 describe('bindAttributes', () => {
     describe('source attributes', () => {
@@ -254,12 +258,12 @@ describe('useFormatTreeData', () => {
                     children: [
                         {
                             name: 'Child',
+                            children: [],
                             attributes: {
                                 hasParent: true,
                                 weight: 1,
                                 weightPercent: 100,
                             },
-                            children: [],
                         },
                     ],
                 },
@@ -1428,7 +1432,7 @@ describe('useFormatTreeData', () => {
                     },
                     children: [
                         {
-                            name: 'Child #1',
+                            name: 'Child @2',
                             attributes: {
                                 hasParent: true,
                                 weight: 1,
@@ -1437,7 +1441,7 @@ describe('useFormatTreeData', () => {
                             children: [],
                         },
                         {
-                            name: 'Child @2',
+                            name: 'Child #1',
                             attributes: {
                                 hasParent: true,
                                 weight: 1,
@@ -1451,7 +1455,7 @@ describe('useFormatTreeData', () => {
         });
     });
 
-    it('should preserve node order based on data order', () => {
+    it('should sort children alphabetically by default', () => {
         const data: Datum[] = [
             { source: 'P', target: 'C3' },
             { source: 'P', target: 'C1' },
@@ -1474,15 +1478,6 @@ describe('useFormatTreeData', () => {
                     },
                     children: [
                         {
-                            name: 'C3',
-                            attributes: {
-                                hasParent: true,
-                                weight: 1,
-                                weightPercent: 100,
-                            },
-                            children: [],
-                        },
-                        {
                             name: 'C1',
                             attributes: {
                                 hasParent: true,
@@ -1493,6 +1488,15 @@ describe('useFormatTreeData', () => {
                         },
                         {
                             name: 'C2',
+                            attributes: {
+                                hasParent: true,
+                                weight: 1,
+                                weightPercent: 100,
+                            },
+                            children: [],
+                        },
+                        {
+                            name: 'C3',
                             attributes: {
                                 hasParent: true,
                                 weight: 1,
@@ -1954,5 +1958,374 @@ describe('useFormatTreeData', () => {
         );
 
         expect(result.current).toStrictEqual(expected);
+    });
+
+    it.each([
+        {
+            description: 'by label in ascending order by default',
+            data: [
+                { source: 'Parent', target: 'Zebra' },
+                { source: 'Parent', target: 'Apple' },
+                { source: 'Parent', target: 'Mango' },
+            ] as Datum[],
+            sortBy: undefined,
+            expected: ['Apple', 'Mango', 'Zebra'],
+        },
+        {
+            description: 'by label in ascending order when sortBy is label/asc',
+            data: [
+                { source: 'Parent', target: 'Charlie' },
+                { source: 'Parent', target: 'Alpha' },
+                { source: 'Parent', target: 'Bravo' },
+            ] as Datum[],
+            sortBy: { kind: 'label' as const, direction: 'asc' as const },
+            expected: ['Alpha', 'Bravo', 'Charlie'],
+        },
+        {
+            description:
+                'by label in descending order when sortBy is label/desc',
+            data: [
+                { source: 'Parent', target: 'Charlie' },
+                { source: 'Parent', target: 'Alpha' },
+                { source: 'Parent', target: 'Bravo' },
+            ] as Datum[],
+            sortBy: { kind: 'label' as const, direction: 'desc' as const },
+            expected: ['Charlie', 'Bravo', 'Alpha'],
+        },
+        {
+            description: 'by value in ascending order when sortBy is value/asc',
+            data: [
+                { source: 'Parent', target: 'Heavy', weight: 100 },
+                { source: 'Parent', target: 'Light', weight: 10 },
+                { source: 'Parent', target: 'Medium', weight: 50 },
+            ] as Datum[],
+            sortBy: { kind: 'value' as const, direction: 'asc' as const },
+            expected: ['Light', 'Medium', 'Heavy'],
+        },
+        {
+            description:
+                'by value in descending order when sortBy is value/desc',
+            data: [
+                { source: 'Parent', target: 'Heavy', weight: 100 },
+                { source: 'Parent', target: 'Light', weight: 10 },
+                { source: 'Parent', target: 'Medium', weight: 50 },
+            ] as Datum[],
+            sortBy: { kind: 'value' as const, direction: 'desc' as const },
+            expected: ['Heavy', 'Medium', 'Light'],
+        },
+        {
+            description: 'with undefined weights using default value of 1',
+            data: [
+                { source: 'Parent', target: 'WithWeight', weight: 50 },
+                { source: 'Parent', target: 'NoWeight' },
+                { source: 'Parent', target: 'AnotherWeight', weight: 10 },
+            ] as Datum[],
+            sortBy: { kind: 'value' as const, direction: 'asc' as const },
+            expected: ['NoWeight', 'AnotherWeight', 'WithWeight'],
+        },
+        {
+            description: 'with negative weights correctly',
+            data: [
+                { source: 'Parent', target: 'Positive', weight: 10 },
+                { source: 'Parent', target: 'Negative', weight: -10 },
+                { source: 'Parent', target: 'Zero', weight: 0 },
+            ] as Datum[],
+            sortBy: { kind: 'value' as const, direction: 'asc' as const },
+            expected: ['Negative', 'Zero', 'Positive'],
+        },
+    ])('should sort children $description', ({ data, sortBy, expected }) => {
+        const { result } = renderHook(() =>
+            useFormatTreeData({
+                data,
+                rootName: 'root',
+                sortBy,
+            }),
+        );
+
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: expect.objectContaining({
+                        hasParent: false,
+                    }),
+                    children: expected.map((name) => ({
+                        name,
+                        attributes: expect.objectContaining({
+                            hasParent: true,
+                        }),
+                        children: [],
+                    })),
+                },
+            ],
+        });
+    });
+
+    it('should sort at multiple levels of hierarchy', () => {
+        const data: Datum[] = [
+            { source: 'Root', target: 'B', weight: 2 },
+            { source: 'Root', target: 'A', weight: 1 },
+            { source: 'A', target: 'A2', weight: 20 },
+            { source: 'A', target: 'A1', weight: 10 },
+            { source: 'B', target: 'B2', weight: 200 },
+            { source: 'B', target: 'B1', weight: 100 },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatTreeData({
+                data,
+                rootName: 'root',
+                sortBy: { kind: 'value', direction: 'asc' },
+            }),
+        );
+
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Root',
+                    attributes: expect.objectContaining({
+                        hasParent: false,
+                        weight: 2,
+                    }),
+                    children: [
+                        {
+                            name: 'A',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 1,
+                            }),
+                            children: [
+                                {
+                                    name: 'A1',
+                                    attributes: expect.objectContaining({
+                                        hasParent: true,
+                                        weight: 10,
+                                    }),
+                                    children: [],
+                                },
+                                {
+                                    name: 'A2',
+                                    attributes: expect.objectContaining({
+                                        hasParent: true,
+                                        weight: 20,
+                                    }),
+                                    children: [],
+                                },
+                            ],
+                        },
+                        {
+                            name: 'B',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 2,
+                            }),
+                            children: [
+                                {
+                                    name: 'B1',
+                                    attributes: expect.objectContaining({
+                                        hasParent: true,
+                                        weight: 100,
+                                    }),
+                                    children: [],
+                                },
+                                {
+                                    name: 'B2',
+                                    attributes: expect.objectContaining({
+                                        hasParent: true,
+                                        weight: 200,
+                                    }),
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
+    });
+
+    it('should handle special characters in labels when sorting', () => {
+        const data: Datum[] = [
+            { source: 'Parent', target: 'Item #3' },
+            { source: 'Parent', target: 'Item @1' },
+            { source: 'Parent', target: 'Item (2)' },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatTreeData({
+                data,
+                rootName: 'root',
+                sortBy: { kind: 'label', direction: 'asc' },
+            }),
+        );
+
+        const childNames = result.current.children[0].children?.map(
+            (c) => c.name,
+        );
+        expect(childNames?.length).toBe(3);
+        expect(childNames).toContain('Item #3');
+        expect(childNames).toContain('Item @1');
+        expect(childNames).toContain('Item (2)');
+    });
+
+    it('should maintain sort order across re-renders with same data', () => {
+        const data: Datum[] = [
+            { source: 'Parent', target: 'C', weight: 3 },
+            { source: 'Parent', target: 'A', weight: 1 },
+            { source: 'Parent', target: 'B', weight: 2 },
+        ];
+
+        const { result, rerender } = renderHook(() =>
+            useFormatTreeData({
+                data,
+                rootName: 'root',
+                sortBy: { kind: 'value', direction: 'asc' },
+            }),
+        );
+
+        const expectedTree = {
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: expect.objectContaining({ hasParent: false }),
+                    children: [
+                        {
+                            name: 'A',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 1,
+                            }),
+                            children: [],
+                        },
+                        {
+                            name: 'B',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 2,
+                            }),
+                            children: [],
+                        },
+                        {
+                            name: 'C',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 3,
+                            }),
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        };
+
+        expect(result.current).toStrictEqual(expectedTree);
+        rerender();
+        expect(result.current).toStrictEqual(expectedTree);
+    });
+
+    it('should update sort when sortBy changes', () => {
+        const data: Datum[] = [
+            { source: 'Parent', target: 'Zebra', weight: 1 },
+            { source: 'Parent', target: 'Apple', weight: 3 },
+            { source: 'Parent', target: 'Mango', weight: 2 },
+        ];
+
+        const { result, rerender } = renderHook(
+            ({
+                sortBy,
+            }: {
+                sortBy?: { kind: 'label' | 'value'; direction: 'asc' | 'desc' };
+            }) =>
+                useFormatTreeData({
+                    data,
+                    rootName: 'root',
+                    sortBy,
+                }),
+            {
+                initialProps: {
+                    sortBy: {
+                        kind: 'label',
+                        direction: 'asc',
+                    } as SortBy,
+                },
+            },
+        );
+
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: expect.objectContaining({ hasParent: false }),
+                    children: [
+                        {
+                            name: 'Apple',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 3,
+                            }),
+                            children: [],
+                        },
+                        {
+                            name: 'Mango',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 2,
+                            }),
+                            children: [],
+                        },
+                        {
+                            name: 'Zebra',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 1,
+                            }),
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
+
+        rerender({ sortBy: { kind: 'value', direction: 'asc' } });
+
+        expect(result.current).toStrictEqual({
+            name: 'root',
+            children: [
+                {
+                    name: 'Parent',
+                    attributes: expect.objectContaining({ hasParent: false }),
+                    children: [
+                        {
+                            name: 'Zebra',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 1,
+                            }),
+                            children: [],
+                        },
+                        {
+                            name: 'Mango',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 2,
+                            }),
+                            children: [],
+                        },
+                        {
+                            name: 'Apple',
+                            attributes: expect.objectContaining({
+                                hasParent: true,
+                                weight: 3,
+                            }),
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 });
