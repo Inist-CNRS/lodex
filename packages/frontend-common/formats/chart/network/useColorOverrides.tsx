@@ -1,12 +1,19 @@
 import { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-const matchOneOf = (patterns: string[], content: string) => {
-    return patterns.some((pattern) =>
-        new RegExp(`^${pattern.replaceAll('*', '.*')}`, 'i').test(
+export const matchOneOf = (patterns: string[], content: string) => {
+    if (!patterns || patterns.length === 0) {
+        return false;
+    }
+    return patterns.some((pattern) => {
+        console.log({
+            pattern,
+            regex: `^${pattern.replaceAll('*', '.*')}`,
+        });
+        return new RegExp(`^${pattern.replaceAll('*', '.*')}`, 'i').test(
             content.trim(),
-        ),
-    );
+        );
+    });
 };
 
 export function useColorOverrides(
@@ -24,14 +31,24 @@ export function useColorOverrides(
             };
         }
 
+        const sanitizedColorScale = (colorScale ?? []).map((item) => {
+            const values = item.values?.map((v) => v.trim()).filter(Boolean);
+            const caption = item.caption?.trim() ?? values?.join(', ');
+            return {
+                ...item,
+                color: item.color?.trim(),
+                caption,
+                values,
+            };
+        });
+
         const captions = {
-            ...(colorScale ?? []).reduce<ColorOverrides['captions']>(
+            ...(sanitizedColorScale ?? []).reduce<ColorOverrides['captions']>(
                 (acc, item) => {
                     if (item?.values && item?.color) {
-                        const color = item.color.trim();
+                        const color = item.color;
 
-                        const caption =
-                            item.caption?.trim() ?? item?.values.join(', ');
+                        const caption = item.caption;
                         if (caption) {
                             acc[caption] = color;
                         }
@@ -57,7 +74,7 @@ export function useColorOverrides(
                 }
                 return matchOneOf(item.values ?? [], content);
             })?.color;
-            return color ? color.trim() : defaultColor!;
+            return color ?? defaultColor!;
         };
 
         return {
