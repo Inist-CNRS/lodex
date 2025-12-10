@@ -78,6 +78,7 @@ export const ImportPrecomputedResult = ({
             disabled={
                 uploading || !RUNNABLE_STATUSES.includes(precomputed.status)
             }
+            sx={{ paddingX: '1.5rem' }}
         >
             {buttonLabel}
             <VisuallyHiddenInput

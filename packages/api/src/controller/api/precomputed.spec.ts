@@ -6,12 +6,14 @@ import {
     getPrecomputedResultList,
     getPrecomputedResultColumns,
     postImportPrecomputedResult,
+    cancelPrecomputedJob,
 } from './precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
 import type { PreComputation } from '../../models/precomputed';
 import asyncBusboy from '@recuperateur/async-busboy';
 import fs from 'fs/promises';
 import { TaskStatus } from '@lodex/common';
+import { cancelJob } from '../../workers/tools';
 
 const mockedAsyncBusboy = asyncBusboy as jest.MockedFunction<
     typeof asyncBusboy
@@ -144,6 +146,51 @@ describe('Precomputed controller', () => {
 
             expect(ctx.status).toBe(403);
             expect(ctx.body).toEqual({ error: 'ERROR!' });
+        });
+    });
+
+    describe('cancelPrecomputed', () => {
+        it('should cancel job and set precomputed status to CANCELED', async () => {
+            const ctx = {
+                configTenant: {},
+                precomputed: {
+                    findOneById: jest.fn(() =>
+                        Promise.resolve({ name: 'PRECOMPUTED_NAME' }),
+                    ),
+                    updateStatus: jest.fn(),
+                },
+            } as unknown as AppContext<any, any>;
+
+            const precomputedId = new ObjectId().toString();
+            await cancelPrecomputedJob(ctx, precomputedId);
+
+            expect(cancelJob).toHaveBeenCalledWith(
+                ctx,
+                'precomputer',
+                'PRECOMPUTED_NAME',
+            );
+            expect(ctx.precomputed.updateStatus).toHaveBeenCalledWith(
+                precomputedId,
+                TaskStatus.CANCELED,
+                {},
+            );
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toEqual({ message: 'Job cancelled' });
+        });
+        it('should return 404 if precomputed not found', async () => {
+            const ctx = {
+                configTenant: {},
+                precomputed: {
+                    findOneById: jest.fn(() => Promise.resolve(null)),
+                    updateStatus: jest.fn(),
+                },
+            } as unknown as AppContext<any, any>;
+
+            const precomputedId = new ObjectId().toString();
+            await cancelPrecomputedJob(ctx, precomputedId);
+
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toEqual({ message: 'Precomputed not found' });
         });
     });
 
