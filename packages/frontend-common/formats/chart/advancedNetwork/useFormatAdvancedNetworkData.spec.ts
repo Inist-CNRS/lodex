@@ -273,4 +273,172 @@ describe('useFormatAdvancedNetworkData', () => {
             },
         ]);
     });
+
+    it('should set link value based on target thickness when displayWeighted is true', () => {
+        const data: AdvancedNetworkData[] = [
+            {
+                id: 'A',
+                value: {
+                    label: 'Node A',
+                    targets: [
+                        { id: 'B', thickness: '10' },
+                        { id: 'C', thickness: '20' },
+                    ],
+                    viz$position: { x: '0', y: '0', z: '0' },
+                    viz$color: { r: '255', g: '0', b: '0', a: '1' },
+                    viz$size: { value: '0.1' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+            {
+                id: 'B',
+                value: {
+                    label: 'Node B',
+                    targets: [{ id: 'A', thickness: '15' }],
+                    viz$position: { x: '1', y: '1', z: '0' },
+                    viz$color: { r: '0', g: '255', b: '0', a: '0' },
+                    viz$size: { value: '0.01' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+            {
+                id: 'C',
+                value: {
+                    label: 'Node C',
+                    targets: [{ id: 'A', thickness: '5' }],
+                    viz$position: { x: '2', y: '2', z: '0' },
+                    viz$color: { r: '0', g: '0', b: '255', a: '1' },
+                    viz$size: { value: '0.01' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatAdvancedNetworkData({
+                formatData: data,
+                displayWeighted: true,
+            }),
+        );
+
+        expect(result.current.links).toStrictEqual([
+            {
+                source: 'A',
+                target: 'B',
+                value: 33.99999999999999,
+                color: '#ff0000',
+            },
+            {
+                source: 'A',
+                target: 'C',
+                value: 100,
+                color: '#ff0000',
+            },
+            {
+                source: 'B',
+                target: 'A',
+                value: 66.99999999999999,
+                color: '#00ff00',
+            },
+            {
+                source: 'C',
+                target: 'A',
+                value: 1,
+                color: '#0000ff',
+            },
+        ]);
+    });
+
+    it('should set link value to 1 when displayWeighted is false', () => {
+        const data: AdvancedNetworkData[] = [
+            {
+                id: 'A',
+                value: {
+                    label: 'Node A',
+                    targets: [
+                        { id: 'B', thickness: '10' },
+                        { id: 'C', thickness: '20' },
+                    ],
+                    viz$position: { x: '0', y: '0', z: '0' },
+                    viz$color: { r: '255', g: '0', b: '0', a: '1' },
+                    viz$size: { value: '0.1' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+            {
+                id: 'B',
+                value: {
+                    label: 'Node B',
+                    targets: [{ id: 'A', thickness: '15' }],
+                    viz$position: { x: '1', y: '1', z: '0' },
+                    viz$color: { r: '0', g: '255', b: '0', a: '0' },
+                    viz$size: { value: '0.01' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+            {
+                id: 'C',
+                value: {
+                    label: 'Node C',
+                    targets: [{ id: 'A', thickness: '5' }],
+                    viz$position: { x: '2', y: '2', z: '0' },
+                    viz$color: { r: '0', g: '0', b: '255', a: '1' },
+                    viz$size: { value: '0.01' },
+                },
+                attributes: {
+                    alpha: '0.5',
+                    zorder: '1',
+                },
+            },
+        ];
+
+        const { result } = renderHook(() =>
+            useFormatAdvancedNetworkData({
+                formatData: data,
+                displayWeighted: false,
+            }),
+        );
+
+        expect(result.current.links).toStrictEqual([
+            {
+                source: 'A',
+                target: 'B',
+                value: 1,
+                color: '#ff0000',
+            },
+            {
+                source: 'A',
+                target: 'C',
+                value: 1,
+                color: '#ff0000',
+            },
+            {
+                source: 'B',
+                target: 'A',
+                value: 1,
+                color: '#00ff00',
+            },
+            {
+                source: 'C',
+                target: 'A',
+                value: 1,
+                color: '#0000ff',
+            },
+        ]);
+    });
 });

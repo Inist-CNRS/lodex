@@ -24,6 +24,7 @@ export type AdvancedNetworkData = {
         };
         targets?: {
             id: string;
+            thickness?: string;
         }[];
     };
 
@@ -61,7 +62,10 @@ export function useFormatAdvancedNetworkData({
 
         const fullNodes = formatData.map<
             Node & {
-                targets: AdvancedNetworkData['value']['targets'];
+                targets: {
+                    id: string;
+                    thickness?: number;
+                }[];
             }
         >(
             ({
@@ -80,7 +84,14 @@ export function useFormatAdvancedNetworkData({
                     viz$size.value && displayWeighted
                         ? parseFloat(viz$size.value)
                         : 100,
-                targets,
+                targets: targets
+                    ? targets.map((target) => ({
+                          ...target,
+                          thickness: target.thickness
+                              ? parseFloat(target.thickness)
+                              : undefined,
+                      }))
+                    : [],
                 x: viz$position?.x ? parseFloat(viz$position.x) : undefined,
                 y: viz$position?.y ? parseFloat(viz$position.y) : undefined,
                 z: viz$position?.z ? parseFloat(viz$position.z) : undefined,
@@ -124,6 +135,20 @@ export function useFormatAdvancedNetworkData({
             .domain([minY, maxY])
             .range([-500, 500]);
 
+        const allThicknesses = fullNodes
+            .flatMap(({ targets }) =>
+                targets ? targets.map((target) => target.thickness) : [],
+            )
+            .filter(Boolean) as number[];
+
+        const minTargetThickness = Math.min(...allThicknesses);
+
+        const maxTargetThickness = Math.max(...allThicknesses);
+
+        const scaleThickness = scaleLinear()
+            .domain([minTargetThickness, maxTargetThickness])
+            .range([1, 100]);
+
         const nodes = fullNodes.map(
             ({ targets, radius, x, y, z, ...node }) => ({
                 ...node,
@@ -144,10 +169,13 @@ export function useFormatAdvancedNetworkData({
         const links = fullNodes.flatMap(({ id: sourceId, targets, color }) =>
             targets
                 ? targets
-                      .map(({ id: targetId }) => ({
+                      .map(({ id: targetId, thickness }) => ({
                           source: sourceId,
                           target: targetId,
-                          value: 1,
+                          value:
+                              displayWeighted && thickness
+                                  ? scaleThickness(thickness)
+                                  : 1,
                           color,
                       }))
                       // remove orphan link when retrieving only a subset of nodes
