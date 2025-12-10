@@ -33,6 +33,11 @@ const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
         field?.format?.args?.colorScale,
         colorSet?.at(0),
     );
+    console.log({
+        captions,
+        colorOverrides,
+        colorScale: field?.format?.args?.colorScale,
+    });
 
     const {
         minRadius,
