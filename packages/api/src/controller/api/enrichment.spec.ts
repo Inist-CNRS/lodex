@@ -1,4 +1,4 @@
-import type { Queue } from 'bull';
+import type { Job, Queue } from 'bull';
 import type Koa from 'koa';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { cancelJob, getActiveJob } from '../../workers/tools';
@@ -117,19 +117,25 @@ describe('Enrichment controller', () => {
                         Promise.resolve('updated enrichment'),
                     ),
                 },
-                dataset: { removeAttribute: jest.fn() },
+                dataSource: {
+                    getDataSources: jest.fn(),
+                    removeAttribute: jest.fn(),
+                },
                 configTenant: {},
 
                 status: 200,
                 body: null,
-            } satisfies Partial<Koa.Context>;
+            } as unknown as Koa.Context;
 
             await putEnrichment(ctx, 42);
 
             expect(ctx.status).toBe(200);
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
+            expect(ctx.dataSource.removeAttribute).toHaveBeenCalledWith(
+                undefined,
+                'NAME',
+            );
             expect(ctx.enrichment.update).toHaveBeenCalledWith(
                 42,
                 expect.objectContaining({
@@ -143,20 +149,24 @@ describe('Enrichment controller', () => {
 
         it('should return a 403 on error if an error occured', async () => {
             const ctx = {
-                request: { body: 'my updated enrichment' },
+                request: { body: 'my updated enrichment' } as Koa.Request,
                 enrichment: {
                     findOneById: async () => {
                         throw new Error('ERROR!');
                     },
                 },
                 configTenant: {},
-            };
+                dataSource: {
+                    getDataSources: jest.fn().mockResolvedValue([]),
+                    removeAttribute: jest.fn(),
+                },
+                status: 200,
+                body: '',
+            } as unknown as Koa.Context;
 
             await putEnrichment(ctx, 42);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(403);
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toEqual({ error: 'ERROR!' });
         });
     });
@@ -168,25 +178,33 @@ describe('Enrichment controller', () => {
                     findOneById: jest.fn(() => ({ name: 'NAME' })),
                     delete: jest.fn(),
                 },
-                dataset: { removeAttribute: jest.fn() },
+                dataSource: {
+                    getDataSources: jest.fn(),
+                    removeAttribute: jest.fn(),
+                },
                 precomputed: {
                     removeResultColumn: jest.fn(),
                 },
                 configTenant: {},
+                status: 200,
+                body: '',
+                tenant: 'default',
             };
-            // @ts-expect-error TS(2339): Property 'mockResolvedValue' does not exist on typ... Remove this comment to see the full error message
-            getActiveJob.mockResolvedValue({
+
+            jest.mocked(getActiveJob).mockResolvedValue({
                 data: { id: 42, jobType: 'enricher' },
-            });
+            } as Job);
 
             await deleteEnrichment(ctx, 42);
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
+            expect(ctx.dataSource.removeAttribute).toHaveBeenCalledWith(
+                undefined,
+                'NAME',
+            );
             expect(ctx.precomputed.removeResultColumn).toHaveBeenCalledTimes(0);
             expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
             expect(cancelJob).toHaveBeenCalled();
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(200);
         });
         it('should delete existing dataset data based on the enrichment name and then delete it when DataSource is "dataset"', async () => {
@@ -198,11 +216,17 @@ describe('Enrichment controller', () => {
                     })),
                     delete: jest.fn(),
                 },
-                dataset: { removeAttribute: jest.fn() },
+                dataSource: {
+                    getDataSources: jest.fn(),
+                    removeAttribute: jest.fn(),
+                },
                 precomputed: {
                     removeResultColumn: jest.fn(),
                 },
                 configTenant: {},
+                status: 200,
+                body: '',
+                tenant: 'default',
             };
             // @ts-expect-error TS(2339): Property 'mockResolvedValue' does not exist on typ... Remove this comment to see the full error message
             getActiveJob.mockResolvedValue({
@@ -212,11 +236,13 @@ describe('Enrichment controller', () => {
             await deleteEnrichment(ctx, 42);
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith('NAME');
+            expect(ctx.dataSource.removeAttribute).toHaveBeenCalledWith(
+                'dataset',
+                'NAME',
+            );
             expect(ctx.precomputed.removeResultColumn).toHaveBeenCalledTimes(0);
             expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
             expect(cancelJob).toHaveBeenCalled();
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(200);
         });
         it('should delete existing precomputed data based on the enrichment dataSource and name and then delete it', async () => {
@@ -228,11 +254,14 @@ describe('Enrichment controller', () => {
                     })),
                     delete: jest.fn(),
                 },
-                dataset: { removeAttribute: jest.fn() },
-                precomputed: {
-                    removeResultColumn: jest.fn(),
+                dataSource: {
+                    getDataSources: jest.fn(),
+                    removeAttribute: jest.fn(),
                 },
                 configTenant: {},
+                status: 200,
+                body: '',
+                tenant: 'default',
             };
             // @ts-expect-error TS(2339): Property 'mockResolvedValue' does not exist on typ... Remove this comment to see the full error message
             getActiveJob.mockResolvedValue({
@@ -242,14 +271,12 @@ describe('Enrichment controller', () => {
             await deleteEnrichment(ctx, 42);
 
             expect(ctx.enrichment.findOneById).toHaveBeenCalledWith(42);
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledTimes(0);
-            expect(ctx.precomputed.removeResultColumn).toHaveBeenCalledWith(
+            expect(ctx.dataSource.removeAttribute).toHaveBeenCalledWith(
                 'precomputed-1',
                 'NAME',
             );
             expect(ctx.enrichment.delete).toHaveBeenCalledWith(42);
             expect(cancelJob).toHaveBeenCalled();
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(200);
         });
 
@@ -259,15 +286,19 @@ describe('Enrichment controller', () => {
                     findOneById: jest.fn(() => null),
                     delete: jest.fn(),
                 },
-                dataset: { removeAttribute: jest.fn() },
+                dataSource: {
+                    getDataSources: jest.fn(),
+                    removeAttribute: jest.fn(),
+                },
                 configTenant: {},
+                status: 200,
+                body: '',
+                tenant: 'default',
             };
 
             await deleteEnrichment(ctx, 42);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(404);
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toEqual({ error: 'Enrichment not found' });
         });
 
@@ -279,15 +310,19 @@ describe('Enrichment controller', () => {
                     },
                     delete: jest.fn(),
                 },
-                dataset: { removeAttribute: jest.fn() },
+                dataSource: {
+                    getDataSources: jest.fn(),
+                    removeAttribute: jest.fn(),
+                },
                 configTenant: {},
+                status: 200,
+                body: '',
+                tenant: 'default',
             };
 
             await deleteEnrichment(ctx, 42);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(403);
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toEqual({ error: 'ERROR!' });
         });
     });
@@ -308,17 +343,18 @@ describe('Enrichment controller', () => {
                     ]),
                     updateStatus: jest.fn(async () => {}),
                 },
-                dataset: {
-                    getColumns: jest.fn().mockResolvedValue([]),
+                dataSource: {
+                    getDataSources: jest.fn().mockResolvedValue([]),
                     removeAttribute: jest.fn(async () => {}),
                 },
                 tenant: 'test',
-            };
+                body: null,
+            } as unknown as Koa.Context;
 
             await launchAllEnrichment(ctx);
 
             expect(ctx.enrichment.findAll).toHaveBeenCalled();
-            expect(ctx.dataset.removeAttribute).not.toHaveBeenCalled();
+            expect(ctx.dataSource.removeAttribute).not.toHaveBeenCalled();
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledTimes(2);
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
                 1,
@@ -348,18 +384,21 @@ describe('Enrichment controller', () => {
                     ]),
                     updateStatus: jest.fn(async () => {}),
                 },
-                dataset: {
-                    getColumns: jest.fn().mockResolvedValue([]),
-                    removeAttribute: jest.fn(async () => {}),
+
+                dataSource: {
+                    getDataSources: jest.fn().mockResolvedValue([]),
+                    removeAttribute: jest.fn(),
                 },
                 tenant: 'test',
-            };
+                body: null,
+            } as unknown as Koa.Context;
 
             await launchAllEnrichment(ctx);
 
             expect(ctx.enrichment.findAll).toHaveBeenCalled();
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledTimes(1);
-            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith(
+            expect(ctx.dataSource.removeAttribute).toHaveBeenCalledTimes(1);
+            expect(ctx.dataSource.removeAttribute).toHaveBeenCalledWith(
+                undefined,
                 'finished-attribute',
             );
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
@@ -381,16 +420,16 @@ describe('Enrichment controller', () => {
                 enrichment: {
                     updateStatus: jest.fn(async () => {}),
                 },
-                dataset: {
-                    getColumns: jest.fn().mockResolvedValue([]),
-                    removeAttribute: jest.fn(async () => {}),
+                dataSource: {
+                    getDataSources: jest.fn(),
+                    removeAttribute: jest.fn(),
                 },
                 tenant: 'test',
             };
 
             await retryEnrichmentOnFailedRow(ctx, 1);
 
-            expect(ctx.dataset.removeAttribute).not.toHaveBeenCalled();
+            expect(ctx.dataSource.removeAttribute).not.toHaveBeenCalled();
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledTimes(1);
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
                 1,

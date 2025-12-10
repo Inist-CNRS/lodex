@@ -3,9 +3,10 @@ import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 import { v1 as uuid } from 'uuid';
 
+import _ from 'lodash';
+import { DATASET_ID } from '../../models/dataSource';
 import {
     createEnrichmentRule,
-    DATASET_COLLECTION,
     getEnrichmentDataPreview,
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
@@ -59,14 +60,17 @@ export const postEnrichment = async (ctx: any) => {
     }
 };
 
-export const putEnrichment = async (ctx: any, id: any) => {
+export const putEnrichment = async (ctx: Koa.Context, id: any) => {
     const newEnrichment = ctx.request.body;
 
     try {
         // Delete existing data from dataset
         // If we change the name or the rule, existing data is obsolete
         const enrichment = await ctx.enrichment.findOneById(id);
-        await ctx.dataset.removeAttribute(enrichment.name);
+        await ctx.dataSource.removeAttribute(
+            enrichment.dataSource,
+            enrichment.name,
+        );
         const newEnrichmentWithRule = await createEnrichmentRule(
             ctx,
             newEnrichment,
@@ -96,17 +100,10 @@ export const deleteEnrichment = async (ctx: any, id: any) => {
             cancelJob(ctx, ENRICHER);
         }
 
-        if (
-            !enrichment!.dataSource ||
-            enrichment!.dataSource === DATASET_COLLECTION
-        ) {
-            await ctx.dataset.removeAttribute(enrichment.name);
-        } else {
-            await ctx.precomputed.removeResultColumn(
-                enrichment!.dataSource,
-                enrichment!.name,
-            );
-        }
+        await ctx.dataSource.removeAttribute(
+            enrichment.dataSource,
+            enrichment.name,
+        );
         await ctx.enrichment.delete(id);
         ctx.status = 200;
         ctx.body = { message: 'ok' };
@@ -152,7 +149,11 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
 
     if (action === 'relaunch') {
         const enrichment = await ctx.enrichment.findOneById(id);
-        await ctx.dataset.removeAttribute(enrichment.name);
+        await ctx.dataSource.removeAttribute(
+            enrichment.dataSource,
+            enrichment.name,
+        );
+
         await getOrCreateWorkerQueue(ctx.tenant, 1)
             .add(
                 ENRICHER, // Name of the job
@@ -187,19 +188,51 @@ export const enrichmentDataPreview = async (ctx: any) => {
     }
 };
 
-export const launchAllEnrichment = async (ctx: any) => {
+export const launchAllEnrichment = async (ctx: Koa.Context) => {
     try {
-        const datasetColumns = await ctx.dataset.getColumns();
-        const enrichments = await ctx.enrichment.findAll();
-        const orderedEnrichments = orderEnrichmentsByDependencies(
-            datasetColumns.map((column: any) => column.key),
+        const [enrichments, dataSources] = await Promise.all([
+            ctx.enrichment.findAll(),
+            ctx.dataSource.getDataSources(),
+        ]);
+
+        const enrichmentsByDataSource = _.groupBy(
             enrichments,
+            (enrichment) => enrichment.dataSource || DATASET_ID,
+        );
+
+        const columnsByDataSource: Record<string, string[]> =
+            dataSources.reduce(
+                (acc, dataSource) => {
+                    acc[dataSource.id] = dataSource.columns.map(
+                        ({ name }) => name,
+                    );
+                    return acc;
+                },
+                {} as Record<string, string[]>,
+            );
+
+        const orderedEnrichments = [
+            ...Object.entries(enrichmentsByDataSource),
+        ].flatMap(([dataSource, enrichments]) => {
+            return orderEnrichmentsByDependencies(
+                columnsByDataSource[dataSource] ?? [],
+                enrichments,
+            );
+        });
+
+        await Promise.all(
+            orderedEnrichments.map(async (enrichment) => {
+                if (enrichment.status !== 'FINISHED') {
+                    return;
+                }
+                return ctx.dataSource.removeAttribute(
+                    enrichment.dataSource,
+                    enrichment.name,
+                );
+            }),
         );
 
         for (const enrichment of orderedEnrichments) {
-            if (enrichment.status === 'FINISHED') {
-                await ctx.dataset.removeAttribute(enrichment.name);
-            }
             await getOrCreateWorkerQueue(ctx.tenant, 1)
                 .add(
                     ENRICHER, // Name of the job
@@ -210,10 +243,9 @@ export const launchAllEnrichment = async (ctx: any) => {
                     },
                     { jobId: uuid(), lifo: false },
                 )
-                .then((job: any) =>
-                    setEnrichmentJobId(ctx, enrichment._id, job),
-                );
+                .then((job) => setEnrichmentJobId(ctx, enrichment._id, job));
         }
+
         ctx.body = {
             status: 'pending',
         };

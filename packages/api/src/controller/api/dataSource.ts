@@ -1,4 +1,3 @@
-import { TaskStatus, type DataSource } from '@lodex/common';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
@@ -8,57 +7,10 @@ import { previewDataSourceSchema } from './dataSource.schema';
 const app = new Koa();
 
 export const listDataSource = async (ctx: ListDataSourceContext) => {
-    const [precomputed, datasetColumns] = await Promise.all([
-        ctx.precomputed.findAll(),
-        ctx.dataset.getColumnsWithSubPaths(),
-    ]);
-
-    const precomputedWithColumns = await Promise.all(
-        precomputed.map(
-            async ({ _id, name, status, hasData }): Promise<DataSource> => {
-                if (hasData === false) {
-                    return {
-                        id: _id.toString(),
-                        name,
-                        status,
-                        columns: [],
-                        isEmpty: true,
-                    };
-                }
-
-                const columns =
-                    await ctx.precomputed.getColumnsWithSubPaths(_id);
-
-                return {
-                    id: _id.toString(),
-                    name,
-                    status,
-                    columns,
-                    isEmpty: columns.length === 0,
-                };
-            },
-        ),
-    );
-
-    ctx.body = [
-        {
-            id: 'dataset',
-            name: 'dataset',
-            columns: datasetColumns,
-            status: datasetColumns.length > 0 ? TaskStatus.FINISHED : undefined,
-            isEmpty: datasetColumns.length === 0,
-        },
-        ...precomputedWithColumns,
-    ] satisfies DataSource[];
+    ctx.body = await ctx.dataSource.getDataSources();
 };
 
-export type ListDataSourceContext = Pick<Koa.Context, 'body'> & {
-    dataset: Pick<Koa.Context['dataset'], 'getColumnsWithSubPaths'>;
-    precomputed: Pick<
-        Koa.Context['precomputed'],
-        'findAll' | 'getColumnsWithSubPaths'
-    >;
-};
+export type ListDataSourceContext = Pick<Koa.Context, 'body' | 'dataSource'>;
 
 export const previewDataSource = async (ctx: PreviewDataSourceContext) => {
     const previewDataSourceConfig = previewDataSourceSchema.safeParse(

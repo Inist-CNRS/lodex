@@ -33,9 +33,9 @@ describe('orderEnrichmentsByDependencies', () => {
         const A = { name: 'A' };
         const B = { name: 'B' };
         const C = { name: 'C', sourceColumn: 'D' };
-        const D = undefined;
+        const E = { name: 'E' };
         expect(() =>
-            orderEnrichmentsByDependencies([], [A, B, C, D]),
+            orderEnrichmentsByDependencies([], [A, B, C, E]),
         ).toThrow();
     });
 

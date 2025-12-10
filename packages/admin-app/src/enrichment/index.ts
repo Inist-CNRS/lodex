@@ -9,6 +9,8 @@ export const LAUNCH_ALL_ENRICHMENT_STARTED = 'LAUNCH_ALL_ENRICHMENT_STARTED';
 export const LAUNCH_ALL_ENRICHMENT_COMPLETED =
     'LAUNCH_ALL_ENRICHMENT_COMPLETED';
 export const LAUNCH_ALL_ENRICHMENT_ERROR = 'LAUNCH_ALL_ENRICHMENT_ERROR';
+export const LAUNCH_ALL_ENRICHMENT_CLEAR_ERROR =
+    'LAUNCH_ALL_ENRICHMENT_CLEAR_ERROR';
 export const RETRY_ENRICHMENT = 'RETRY_ENRICHMENT';
 
 export const loadEnrichments = createAction(LOAD_ENRICHMENTS);
@@ -25,6 +27,10 @@ export const launchAllEnrichmentCompleted = createAction(
 );
 export const launchAllEnrichmentError = createAction(
     LAUNCH_ALL_ENRICHMENT_ERROR,
+);
+
+export const launchAllEnrichmentClearError = createAction(
+    LAUNCH_ALL_ENRICHMENT_CLEAR_ERROR,
 );
 
 export type Enrichment = {
@@ -88,6 +94,10 @@ export default handleActions<EnrichmentState, any>(
         LAUNCH_ALL_ENRICHMENT_ERROR: (state, { payload: error }) => ({
             ...state,
             runAllEnrichmentError: error,
+        }),
+        LAUNCH_ALL_ENRICHMENT_CLEAR_ERROR: (state) => ({
+            ...state,
+            runAllEnrichmentError: null,
         }),
         LAUNCH_ALL_ENRICHMENT_COMPLETED: (state) => ({
             ...state,

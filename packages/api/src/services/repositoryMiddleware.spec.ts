@@ -32,6 +32,7 @@ describe('mongoClient middleware', () => {
             'publishedFacet',
             'configTenantCollection',
             'hiddenResource',
+            'dataSource',
         ]);
     });
 });

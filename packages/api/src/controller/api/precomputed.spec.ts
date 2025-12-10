@@ -1,19 +1,19 @@
-import { ObjectId } from 'mongodb';
-import {
-    postPrecomputed,
-    putPrecomputed,
-    deletePrecomputed,
-    getPrecomputedResultList,
-    getPrecomputedResultColumns,
-    postImportPrecomputedResult,
-    cancelPrecomputedJob,
-} from './precomputed';
-import type { AppContext } from '../../services/repositoryMiddleware';
-import type { PreComputation } from '../../models/precomputed';
+import { TaskStatus } from '@lodex/common';
 import asyncBusboy from '@recuperateur/async-busboy';
 import fs from 'fs/promises';
-import { TaskStatus } from '@lodex/common';
+import { ObjectId } from 'mongodb';
+import type { PreComputation } from '../../models/precomputed';
+import type { AppContext } from '../../services/repositoryMiddleware';
 import { cancelJob } from '../../workers/tools';
+import {
+    cancelPrecomputedJob,
+    deletePrecomputed,
+    getPrecomputedResultColumns,
+    getPrecomputedResultList,
+    postImportPrecomputedResult,
+    postPrecomputed,
+    putPrecomputed,
+} from './precomputed';
 
 const mockedAsyncBusboy = asyncBusboy as jest.MockedFunction<
     typeof asyncBusboy
@@ -98,7 +98,7 @@ describe('Precomputed controller', () => {
                         Promise.resolve('updated precomputed'),
                     ),
                 },
-                dataset: { removeAttribute: jest.fn() },
+                dataSource: { removeAttribute: jest.fn() },
             } as unknown as AppContext<any, any>;
 
             const objectId = new ObjectId().toString();
