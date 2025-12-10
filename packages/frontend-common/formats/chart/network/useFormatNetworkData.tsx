@@ -34,7 +34,7 @@ export type UseFormatNetworkDataParams = {
     displayWeighted: boolean;
     minRadius?: number;
     maxRadius?: number;
-    colorOverrides?: Record<string, string>;
+    colorOverrides: (content: string) => string;
 };
 
 export function useFormatNetworkData({
@@ -42,7 +42,7 @@ export function useFormatNetworkData({
     displayWeighted = true,
     minRadius = 1,
     maxRadius = 20,
-    colorOverrides = {},
+    colorOverrides,
 }: UseFormatNetworkDataParams): {
     nodes: Node[];
     links: Link[];
@@ -108,7 +108,7 @@ export function useFormatNetworkData({
             nodes: nodes.map((node) => ({
                 ...node,
                 radius: displayWeighted ? nodeScale(node.radius) : 1,
-                color: colorOverrides[node.id] ?? undefined,
+                color: colorOverrides(node.id) ?? undefined,
             })),
             links,
         };

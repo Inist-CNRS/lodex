@@ -11,7 +11,11 @@ describe('useFormatNetworkData', () => {
         [{ label: 'an empty array', d: [] as NetworkData[] }],
     ])('returns empty nodes and links when formatData is $label', ({ d }) => {
         const { result } = renderHook(() =>
-            useFormatNetworkData({ formatData: d, displayWeighted: true }),
+            useFormatNetworkData({
+                formatData: d,
+                displayWeighted: true,
+                colorOverrides: (v) => v,
+            }),
         );
 
         expect(result.current).toEqual({ nodes: [], links: [] });
@@ -46,6 +50,7 @@ describe('useFormatNetworkData', () => {
                 useFormatNetworkData({
                     formatData: data,
                     displayWeighted: true,
+                    colorOverrides: (v) => v,
                 }),
             );
 
@@ -68,7 +73,11 @@ describe('useFormatNetworkData', () => {
         ];
 
         const { result } = renderHook(() =>
-            useFormatNetworkData({ formatData: data, displayWeighted: true }),
+            useFormatNetworkData({
+                formatData: data,
+                displayWeighted: true,
+                colorOverrides: (v) => v,
+            }),
         );
 
         const graph =
@@ -119,6 +128,7 @@ describe('useFormatNetworkData', () => {
                 useFormatNetworkData({
                     formatData: d,
                     displayWeighted: true,
+                    colorOverrides: (_v) => 'overriddenColor',
                 }),
             { initialProps: { d: data1 } },
         );
@@ -131,14 +141,14 @@ describe('useFormatNetworkData', () => {
                 id: 'A',
                 label: 'A',
                 radius: expect.any(Number),
-                color: undefined,
+                color: 'overriddenColor',
                 isLeaf: false,
             },
             {
                 id: 'B',
                 label: 'B',
                 radius: expect.any(Number),
-                color: undefined,
+                color: 'overriddenColor',
                 isLeaf: true,
             },
         ]);
@@ -162,21 +172,21 @@ describe('useFormatNetworkData', () => {
                 id: 'A',
                 label: 'A',
                 radius: expect.any(Number),
-                color: undefined,
+                color: 'overriddenColor',
                 isLeaf: false,
             },
             {
                 id: 'B',
                 label: 'B',
                 radius: expect.any(Number),
-                color: undefined,
+                color: 'overriddenColor',
                 isLeaf: false,
             },
             {
                 id: 'C',
                 label: 'C',
                 radius: expect.any(Number),
-                color: undefined,
+                color: 'overriddenColor',
                 isLeaf: true,
             },
         ]);
@@ -205,7 +215,11 @@ describe('useFormatNetworkData', () => {
         ];
 
         const { result } = renderHook(() =>
-            useFormatNetworkData({ formatData: data, displayWeighted: false }),
+            useFormatNetworkData({
+                formatData: data,
+                displayWeighted: false,
+                colorOverrides: (v) => v,
+            }),
         );
 
         const graph = result.current as NonNullable<UseFormatNetworkDataReturn>;
@@ -230,6 +244,7 @@ describe('useFormatNetworkData', () => {
                 useFormatNetworkData({
                     formatData: data,
                     displayWeighted: weighted,
+                    colorOverrides: (v) => v,
                 }),
             { initialProps: { weighted: false } },
         );
@@ -262,7 +277,7 @@ describe('useFormatNetworkData', () => {
             { source: 'B', target: 'C', weight: 2 },
         ];
 
-        const colorOverrides = {
+        const colorOverrides: Record<string, string> = {
             A: '#FF0000',
             C: '#00FF00',
         };
@@ -271,7 +286,7 @@ describe('useFormatNetworkData', () => {
             useFormatNetworkData({
                 formatData: data,
                 displayWeighted: true,
-                colorOverrides,
+                colorOverrides: (v: string) => colorOverrides[v] as string,
             }),
         );
 
@@ -291,12 +306,12 @@ describe('useFormatNetworkData', () => {
             useFormatNetworkData({
                 formatData: data,
                 displayWeighted: true,
-                colorOverrides: {},
+                colorOverrides: (_v) => 'overriddenColor',
             }),
         );
 
         for (const node of result.current.nodes) {
-            expect(node.color).toBeUndefined();
+            expect(node.color).toBe('overriddenColor');
         }
     });
 
@@ -307,11 +322,12 @@ describe('useFormatNetworkData', () => {
             useFormatNetworkData({
                 formatData: data,
                 displayWeighted: true,
+                colorOverrides: (_v) => 'overriddenColor',
             }),
         );
 
         for (const node of result.current.nodes) {
-            expect(node.color).toBeUndefined();
+            expect(node.color).toBe('overriddenColor');
         }
     });
 
@@ -319,26 +335,34 @@ describe('useFormatNetworkData', () => {
         const data: NetworkData[] = [{ source: 'A', target: 'B', weight: 1 }];
 
         const { result, rerender } = renderHook(
-            ({ overrides }) =>
+            ({ colorOverrides }) =>
                 useFormatNetworkData({
                     formatData: data,
                     displayWeighted: true,
-                    colorOverrides: overrides,
+                    colorOverrides,
                 }),
-            { initialProps: { overrides: {} } },
+            {
+                initialProps: {
+                    colorOverrides: (_v: string) => 'defaultColor',
+                },
+            },
         );
 
-        expect(
-            result.current.nodes.find((n) => n.id === 'A')?.color,
-        ).toBeUndefined();
+        expect(result.current.nodes.find((n) => n.id === 'A')?.color).toBe(
+            'defaultColor',
+        );
 
-        rerender({ overrides: { A: '#FF0000' } });
+        rerender({
+            colorOverrides: (v) => (v === 'A' ? '#FF0000' : 'defaultColor'),
+        });
 
         expect(result.current.nodes.find((n) => n.id === 'A')?.color).toBe(
             '#FF0000',
         );
 
-        rerender({ overrides: { A: '#0000FF' } });
+        rerender({
+            colorOverrides: (v) => (v === 'A' ? '#0000FF' : 'defaultColor'),
+        });
 
         expect(result.current.nodes.find((n) => n.id === 'A')?.color).toBe(
             '#0000FF',
@@ -355,6 +379,7 @@ describe('useFormatNetworkData', () => {
             useFormatNetworkData({
                 formatData: data,
                 displayWeighted: true,
+                colorOverrides: (v) => v,
             }),
         );
 

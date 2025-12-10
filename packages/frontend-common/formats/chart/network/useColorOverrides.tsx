@@ -6,10 +6,6 @@ export const matchOneOf = (patterns: string[], content: string) => {
         return false;
     }
     return patterns.some((pattern) => {
-        console.log({
-            pattern,
-            regex: `^${pattern.replaceAll('*', '.*')}`,
-        });
         return new RegExp(`^${pattern.replaceAll('*', '.*')}`, 'i').test(
             content.trim(),
         );
