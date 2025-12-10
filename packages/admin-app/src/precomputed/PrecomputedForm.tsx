@@ -321,7 +321,9 @@ export const PrecomputedForm = ({
                                                     paddingX: '1.5rem',
                                                 }}
                                             >
-                                                {translate('cancel_job')}
+                                                {translate(
+                                                    'cancel_precomputation',
+                                                )}
                                             </Button>
                                         )}
                                         <ImportPrecomputedResult

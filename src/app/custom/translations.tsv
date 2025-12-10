@@ -1518,3 +1518,5 @@
 "initial_zoom"	"Initial zoom"	"Zoom initial"
 "initial_depth"	"Initial depth"	"Profondeur initiale"
 "root"	"Root"	"Racine"
+"cancel_precomputation"	"Cancel precomputation"	"Annuler précalcul"
+"precomputed_cancel_success"	"Precomputation successfully cancelled"	"Précalcul annulé avec succés"

@@ -339,8 +339,16 @@ export const postImportPrecomputedResult = async (
     ctx.status = 200;
 };
 
-const cancelPrecomputedJob = async (ctx: AppContext, precomputedId: string) => {
+export const cancelPrecomputedJob = async (
+    ctx: AppContext,
+    precomputedId: string,
+) => {
     const precomputed = await ctx.precomputed.findOneById(precomputedId);
+    if (!precomputed) {
+        ctx.status = 404;
+        ctx.body = { message: 'Precomputed not found' };
+        return;
+    }
     if (precomputed) {
         await cancelJob(ctx, PRECOMPUTER, precomputed.name);
     }
