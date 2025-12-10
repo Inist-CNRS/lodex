@@ -210,7 +210,5 @@ type NodeProps = CustomNodeElementProps & {
     width: number;
     height: number;
 
-    fieldToFilter?: string | null;
-
     getNodeColor(level: number): string;
 };

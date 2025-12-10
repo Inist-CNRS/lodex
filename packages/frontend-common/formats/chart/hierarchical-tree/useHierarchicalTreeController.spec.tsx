@@ -6,6 +6,15 @@ import {
     getNodeOptions,
 } from './useHierarchicalTreeController';
 
+const mockSelectOne = jest.fn();
+
+jest.mock('../../../search/useSearchPaneContext', () => ({
+    useSearchPaneContextOrDefault: jest.fn(() => ({
+        filters: [],
+        selectOne: mockSelectOne,
+    })),
+}));
+
 describe('useHierarchicalTreeController', () => {
     describe('walkNodes', () => {
         it('should call action for each node in the tree sequentially depth by depth', async () => {

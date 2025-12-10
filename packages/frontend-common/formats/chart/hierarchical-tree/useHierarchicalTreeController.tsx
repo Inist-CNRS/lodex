@@ -108,6 +108,16 @@ export const getNodeOptions = (
         .toSorted((a, b) => a.label.localeCompare(b.label));
 };
 
+export type HierarchicalTreeControllerParams = {
+    orientation: 'vertical' | 'horizontal';
+    nodeSize: { x: number; y: number };
+    spaceBetweenNodes: number;
+    initialZoom: number;
+    initialDepth: number;
+    tree: unknown;
+    fieldToFilter?: string | null;
+};
+
 export function useHierarchicalTreeController({
     orientation,
     nodeSize,
@@ -316,13 +326,3 @@ export function useHierarchicalTreeController({
         ],
     );
 }
-
-export type HierarchicalTreeControllerParams = {
-    orientation: 'vertical' | 'horizontal';
-    nodeSize: { x: number; y: number };
-    spaceBetweenNodes: number;
-    initialZoom: number;
-    initialDepth: number;
-    tree: unknown;
-    fieldToFilter?: string | null;
-};
