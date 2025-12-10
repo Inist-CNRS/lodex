@@ -109,6 +109,7 @@ export function HierarchicalTreeView({
         initialZoom: zoom,
         initialDepth: depth,
         tree,
+        fieldToFilter,
     });
 
     const getNodeColor = useCallback(() => {
@@ -166,7 +167,7 @@ export function HierarchicalTreeView({
                             data={tree}
                             orientation={orientation}
                             translate={treeTranslate}
-                            renderCustomNodeElement={(props) => (
+                            renderCustomNodeElement={({ ...props }) => (
                                 <HierarchicalTreeNode
                                     {...props}
                                     orientation={orientation}

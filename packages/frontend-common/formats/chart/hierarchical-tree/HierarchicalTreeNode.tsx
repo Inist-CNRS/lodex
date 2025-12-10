@@ -16,7 +16,6 @@ export function HierarchicalTreeNode({
     nodeDatum,
     width,
     height,
-    fieldToFilter,
     getNodeColor,
     onNodeClick,
     onNodeMouseOut,
@@ -25,7 +24,7 @@ export function HierarchicalTreeNode({
 }: NodeProps) {
     const { translate } = useTranslate();
 
-    const { filters, selectOne } = useSearchPaneContextOrDefault();
+    const { filters } = useSearchPaneContextOrDefault();
 
     const title =
         typeof nodeDatum?.attributes?.title === 'string'
@@ -38,9 +37,6 @@ export function HierarchicalTreeNode({
 
     const handleClick = (event: React.MouseEvent) => {
         event.stopPropagation();
-        if (fieldToFilter && nodeDatum.__rd3t.depth > 0) {
-            selectOne({ fieldName: fieldToFilter, value: title });
-        }
 
         if (onNodeClick) {
             onNodeClick(event);

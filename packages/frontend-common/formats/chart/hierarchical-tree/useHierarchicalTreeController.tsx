@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Tree, TreeNodeDatum, TreeProps } from 'react-d3-tree';
+import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
 
 export async function walkNodes(
     tree: TreeNodeDatum[],
@@ -114,9 +115,12 @@ export function useHierarchicalTreeController({
     initialZoom,
     initialDepth,
     tree,
+    fieldToFilter,
 }: HierarchicalTreeControllerParams) {
     const parentRef = useRef<HTMLDivElement>(null);
     const treeRef = useRef<Tree>(null);
+
+    const { selectOne } = useSearchPaneContextOrDefault();
 
     const [nodeOptions, setNodeOptions] = useState<
         {
@@ -205,6 +209,14 @@ export function useHierarchicalTreeController({
     }, [tree]);
 
     const selectNode = useCallback((node?: any) => {
+        if (fieldToFilter && node && node.data.__rd3t.depth > 0) {
+            const value =
+                typeof node.data.attributes?.title === 'string'
+                    ? node.data.attributes.title
+                    : node.data.name;
+            selectOne({ fieldName: fieldToFilter, value });
+        }
+
         setSelectedNodeOption(
             node
                 ? {
@@ -312,4 +324,5 @@ export type HierarchicalTreeControllerParams = {
     initialZoom: number;
     initialDepth: number;
     tree: unknown;
+    fieldToFilter?: string | null;
 };
