@@ -173,7 +173,6 @@ export function HierarchicalTreeView({
                                     orientation={orientation}
                                     width={nodeSize.x}
                                     height={nodeSize.y}
-                                    fieldToFilter={fieldToFilter}
                                     getNodeColor={getNodeColor}
                                 />
                             )}
