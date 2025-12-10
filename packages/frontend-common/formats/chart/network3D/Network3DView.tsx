@@ -31,6 +31,7 @@ const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
     const { colorOverrides, captions } = useColorOverrides(
         field?.format?.args?.isAdvancedColorMode,
         field?.format?.args?.colorScale,
+        colorSet?.at(0),
     );
 
     const {

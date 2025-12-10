@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export function useColorOverrides(
     isAdvancedColorMode: boolean | undefined,
     colorScale: ColorScaleItem[] | undefined,
+    defaultColor?: string,
 ) {
+    const { translate } = useTranslate();
     return useMemo<ColorOverrides>(() => {
         if (!isAdvancedColorMode) {
             return {
@@ -12,28 +15,38 @@ export function useColorOverrides(
             };
         }
 
-        return (colorScale ?? []).reduce<ColorOverrides>(
-            (acc, item) => {
-                if (item?.values && item?.color) {
-                    const color = item.color.trim();
-                    for (const value of item.values) {
-                        const cleanedValue = value?.trim();
-                        if (cleanedValue) {
-                            acc.colorOverrides[cleanedValue] = color;
+        return {
+            ...(colorScale ?? []).reduce<ColorOverrides>(
+                (acc, item) => {
+                    if (item?.values && item?.color) {
+                        const color = item.color.trim();
+                        for (const value of item.values) {
+                            const cleanedValue = value?.trim();
+                            if (cleanedValue) {
+                                acc.colorOverrides[cleanedValue] = color;
+                            }
+                        }
+
+                        const caption =
+                            item.caption?.trim() ?? item?.values.join(', ');
+                        if (caption) {
+                            acc.captions[caption] = color;
                         }
                     }
-                    if (item?.caption) {
-                        acc.captions[item.caption] = color;
-                    }
-                }
-                return acc;
-            },
-            {
-                colorOverrides: {},
-                captions: {},
-            },
-        );
-    }, [isAdvancedColorMode, colorScale]);
+
+                    return acc;
+                },
+                {
+                    colorOverrides: {},
+                    captions: defaultColor
+                        ? {
+                              [translate('other')]: defaultColor,
+                          }
+                        : {},
+                },
+            ),
+        };
+    }, [translate, isAdvancedColorMode, colorScale, defaultColor]);
 }
 
 export type ColorOverrides = {
@@ -43,6 +56,7 @@ export type ColorOverrides = {
 
 export type ColorScaleItem = {
     color?: string;
+
     caption?: string;
     values?: string[];
 };
