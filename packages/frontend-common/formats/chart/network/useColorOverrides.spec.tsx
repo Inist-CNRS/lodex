@@ -2,6 +2,16 @@ import { renderHook } from '@testing-library/react';
 import type { ColorScaleItem } from './useColorOverrides';
 import { useColorOverrides } from './useColorOverrides';
 
+const mockTranslate = jest.fn((key: string) =>
+    key === 'other' ? 'other' : key,
+);
+
+jest.mock('../../../i18n/I18NContext', () => ({
+    useTranslate: () => ({
+        translate: mockTranslate,
+    }),
+}));
+
 describe('useColorOverrides', () => {
     it.each([
         {
@@ -56,6 +66,27 @@ describe('useColorOverrides', () => {
             },
             captions: {
                 'Red Items': '#FF0000',
+            },
+        });
+    });
+
+    it('should use values joined as caption when caption is not provided', () => {
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', values: ['A', 'B', 'C'] },
+        ];
+
+        const { result } = renderHook(() =>
+            useColorOverrides(true, colorScale),
+        );
+
+        expect(result.current).toEqual({
+            colorOverrides: {
+                A: '#FF0000',
+                B: '#FF0000',
+                C: '#FF0000',
+            },
+            captions: {
+                'A, B, C': '#FF0000',
             },
         });
     });
@@ -127,7 +158,9 @@ describe('useColorOverrides', () => {
                 B: '#FF0000',
                 C: '#FF0000',
             },
-            captions: {},
+            captions: {
+                'A, , B,   , C, ': '#FF0000',
+            },
         });
     });
 
@@ -157,7 +190,10 @@ describe('useColorOverrides', () => {
             colorScale: [
                 { color: '   ', values: ['A', 'B'] },
             ] as ColorScaleItem[],
-            expected: { colorOverrides: { A: '', B: '' }, captions: {} },
+            expected: {
+                colorOverrides: { A: '', B: '' },
+                captions: { 'A, B': '' },
+            },
         },
     ])('should handle $label', ({ colorScale, expected }) => {
         const { result } = renderHook(() =>
@@ -188,6 +224,7 @@ describe('useColorOverrides', () => {
             },
             captions: {
                 Red: '#FF0000',
+                D: '#00FF00',
             },
         });
     });
@@ -234,7 +271,9 @@ describe('useColorOverrides', () => {
                 A: '#FF0000',
                 B: '#FF0000',
             },
-            captions: {},
+            captions: {
+                'A, B': '#FF0000',
+            },
         });
 
         rerender({ advanced: false });
@@ -296,7 +335,9 @@ describe('useColorOverrides', () => {
             colorOverrides: {
                 A: '#FF0000',
             },
-            captions: {},
+            captions: {
+                A: '#FF0000',
+            },
         });
 
         rerender({ scale: colorScale2 });
@@ -307,6 +348,7 @@ describe('useColorOverrides', () => {
                 B: '#00FF00',
             },
             captions: {
+                A: '#FF0000',
                 Green: '#00FF00',
             },
         });
@@ -326,6 +368,7 @@ describe('useColorOverrides', () => {
         rerender();
 
         expect(result.current).toBe(firstResult);
+        expect(result.current.captions).toEqual({ 'A, B': '#FF0000' });
     });
 
     it('should handle single value', () => {
@@ -397,7 +440,9 @@ describe('useColorOverrides', () => {
                 'value.3': '#FF0000',
                 'value@4': '#FF0000',
             },
-            captions: {},
+            captions: {
+                'value-1, value_2, value.3, value@4': '#FF0000',
+            },
         });
     });
 
@@ -473,5 +518,133 @@ describe('useColorOverrides', () => {
         rerender({ scale: undefined });
 
         expect(result.current).toEqual({ colorOverrides: {}, captions: {} });
+    });
+
+    it.each([
+        {
+            label: 'when defaultColor is provided',
+            colorScale: [
+                { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+            ] as ColorScaleItem[],
+            defaultColor: '#CCCCCC',
+            expected: {
+                colorOverrides: { A: '#FF0000', B: '#FF0000' },
+                captions: { Red: '#FF0000', other: '#CCCCCC' },
+            },
+        },
+        {
+            label: 'when defaultColor is undefined',
+            colorScale: [
+                { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+            ] as ColorScaleItem[],
+            defaultColor: undefined,
+            expected: {
+                colorOverrides: { A: '#FF0000', B: '#FF0000' },
+                captions: { Red: '#FF0000' },
+            },
+        },
+        {
+            label: 'with empty colorScale',
+            colorScale: [] as ColorScaleItem[],
+            defaultColor: '#999999',
+            expected: { colorOverrides: {}, captions: { other: '#999999' } },
+        },
+        {
+            label: 'with undefined colorScale',
+            colorScale: undefined,
+            defaultColor: '#888888',
+            expected: { colorOverrides: {}, captions: { other: '#888888' } },
+        },
+        {
+            label: 'when isAdvancedColorMode is false',
+            colorScale: [
+                { color: '#FF0000', values: ['A'] },
+            ] as ColorScaleItem[],
+            defaultColor: '#CCCCCC',
+            isAdvancedColorMode: false,
+            expected: { colorOverrides: {}, captions: {} },
+        },
+        {
+            label: 'with empty string as defaultColor',
+            colorScale: [
+                { color: '#FF0000', values: ['A'] },
+            ] as ColorScaleItem[],
+            defaultColor: '',
+            expected: {
+                colorOverrides: { A: '#FF0000' },
+                captions: { A: '#FF0000' },
+            },
+        },
+        {
+            label: 'combining multiple captions with defaultColor',
+            colorScale: [
+                { color: '#FF0000', caption: 'Red', values: ['A', 'B'] },
+                { color: '#00FF00', caption: 'Green', values: ['C'] },
+                { color: '#0000FF', values: ['D', 'E'] },
+            ] as ColorScaleItem[],
+            defaultColor: '#CCCCCC',
+            expected: {
+                colorOverrides: {
+                    A: '#FF0000',
+                    B: '#FF0000',
+                    C: '#00FF00',
+                    D: '#0000FF',
+                    E: '#0000FF',
+                },
+                captions: {
+                    Red: '#FF0000',
+                    Green: '#00FF00',
+                    'D, E': '#0000FF',
+                    other: '#CCCCCC',
+                },
+            },
+        },
+    ])(
+        'should handle defaultColor $label',
+        ({
+            colorScale,
+            defaultColor,
+            isAdvancedColorMode = true,
+            expected,
+        }) => {
+            const { result } = renderHook(() =>
+                useColorOverrides(
+                    isAdvancedColorMode,
+                    colorScale,
+                    defaultColor,
+                ),
+            );
+
+            expect(result.current).toEqual(expected);
+        },
+    );
+
+    it('should update "other" caption when defaultColor changes', () => {
+        const colorScale: ColorScaleItem[] = [
+            { color: '#FF0000', caption: 'Red', values: ['A'] },
+        ];
+
+        const { result, rerender } = renderHook(
+            ({ color }) => useColorOverrides(true, colorScale, color),
+            { initialProps: { color: '#AAAAAA' as string | undefined } },
+        );
+
+        expect(result.current.captions).toEqual({
+            Red: '#FF0000',
+            other: '#AAAAAA',
+        });
+
+        rerender({ color: '#BBBBBB' });
+
+        expect(result.current.captions).toEqual({
+            Red: '#FF0000',
+            other: '#BBBBBB',
+        });
+
+        rerender({ color: undefined });
+
+        expect(result.current.captions).toEqual({
+            Red: '#FF0000',
+        });
     });
 });

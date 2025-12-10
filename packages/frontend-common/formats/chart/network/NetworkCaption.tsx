@@ -5,6 +5,7 @@ import {
     AccordionSummary,
     Box,
     Stack,
+    Tooltip,
     Typography,
 } from '@mui/material';
 import { useMemo } from 'react';
@@ -15,6 +16,7 @@ export function NetworkCaption({
     captionTitle,
 }: NetworkCaptionProps) {
     const { translate } = useTranslate();
+    const otherLabel = useMemo(() => translate('other'), [translate]);
 
     const captionList = useMemo(() => {
         if (!captions) {
@@ -28,8 +30,13 @@ export function NetworkCaption({
             .filter(
                 (item): item is { caption: string; color: string } =>
                     !!item.caption && !!item.color,
-            );
-    }, [captions]);
+            )
+            .toSorted((a, b) => {
+                if (a.caption === otherLabel) return 1;
+                if (b.caption === otherLabel) return -1;
+                return 0;
+            });
+    }, [captions, otherLabel]);
 
     if (!captionList.length) {
         return null;
@@ -87,14 +94,29 @@ export function NetworkCaption({
                     >
                         <Box
                             sx={{
+                                minWidth: '32px',
                                 width: '32px',
+                                minHeight: '24px',
                                 height: '24px',
                                 backgroundColor: color,
                                 borderRadius: '2px',
                                 border: '1px solid #00000033',
                             }}
                         />
-                        <Typography component="span">{caption}</Typography>
+                        <Tooltip title={caption} placement="top">
+                            <Typography
+                                component="span"
+                                sx={{
+                                    display: 'block',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    flexGrow: 1,
+                                }}
+                            >
+                                {caption}
+                            </Typography>
+                        </Tooltip>
                     </Stack>
                 ))}
             </AccordionDetails>
