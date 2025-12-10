@@ -88,7 +88,7 @@ export const importPrecomputationResultsWithDialog = ({
         'be.visible',
     );
     cy.get('input[type="file"]').attachFile(filePath);
-    cy.findByRole('button', { name: 'Import' }).click();
+    cy.findByRole('button', { name: 'confirm' }).click();
     cy.contains('Import completed successfully').should('be.visible');
 };
 

@@ -31,7 +31,10 @@ export const ImportPrecomputedResult = ({
     precomputed,
 }: ImportPrecomputedResultProps) => {
     const { translate } = useTranslate();
-    const buttonLabel = translate('import');
+    const buttonLabel =
+        precomputed.status === TaskStatus.FINISHED
+            ? translate('confirm')
+            : translate('import');
     const [uploading, setUploading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -66,7 +69,11 @@ export const ImportPrecomputedResult = ({
             variant="outlined"
             className="import"
             startIcon={
-                uploading ? <CircularProgress size="1em" /> : <UploadIcon />
+                uploading ? (
+                    <CircularProgress size="1em" />
+                ) : precomputed.status !== TaskStatus.FINISHED ? (
+                    <UploadIcon />
+                ) : undefined
             }
             disabled={
                 uploading || !RUNNABLE_STATUSES.includes(precomputed.status)
@@ -100,7 +107,7 @@ export const ImportPrecomputedResult = ({
                         disabled={uploading}
                         onClick={handleOpen}
                     >
-                        {buttonLabel}
+                        {translate('import')}
                     </Button>
                 }
                 dialog={translate(
