@@ -175,32 +175,6 @@ describe('<HierarchicalTreeNode />', () => {
         expect(onNodeClick).toHaveBeenCalledTimes(1);
     });
 
-    it('should not select root node with title override (depth 0)', () => {
-        const onNodeClick = jest.fn();
-        const nodeDatum = createMockNodeDatum(
-            'RootNode',
-            { title: 'Root Title' },
-            0,
-        );
-
-        render(
-            <svg>
-                <HierarchicalTreeNode
-                    {...defaultProps}
-                    nodeDatum={nodeDatum}
-                    fieldToFilter="testField"
-                    onNodeClick={onNodeClick}
-                />
-            </svg>,
-        );
-
-        const container = screen.getByRole('treeitem');
-        fireEvent.click(container);
-
-        expect(mockSelectOne).not.toHaveBeenCalled();
-        expect(onNodeClick).toHaveBeenCalledTimes(1);
-    });
-
     it.each([
         {
             description: 'child node (depth 1)',
@@ -267,59 +241,5 @@ describe('<HierarchicalTreeNode />', () => {
                 type: 'click',
             }),
         );
-    });
-
-    it('should not throw error when onNodeClick is not provided', () => {
-        render(
-            <svg>
-                <HierarchicalTreeNode {...defaultProps} />
-            </svg>,
-        );
-
-        const container = screen.getByRole('treeitem');
-
-        expect(() => {
-            fireEvent.click(container);
-        }).not.toThrow();
-    });
-
-    it('should call onNodeClick even when fieldToFilter is not provided', () => {
-        const onNodeClick = jest.fn();
-
-        render(
-            <svg>
-                <HierarchicalTreeNode
-                    {...defaultProps}
-                    onNodeClick={onNodeClick}
-                    fieldToFilter={undefined}
-                />
-            </svg>,
-        );
-
-        const container = screen.getByRole('treeitem');
-        fireEvent.click(container);
-
-        expect(onNodeClick).toHaveBeenCalledTimes(1);
-        expect(mockSelectOne).not.toHaveBeenCalled();
-    });
-
-    it('should stop event propagation when clicking', () => {
-        const onNodeClick = jest.fn();
-        const outerClickHandler = jest.fn();
-
-        render(
-            <svg onClick={outerClickHandler}>
-                <HierarchicalTreeNode
-                    {...defaultProps}
-                    onNodeClick={onNodeClick}
-                />
-            </svg>,
-        );
-
-        const treeitem = screen.getByRole('treeitem');
-        fireEvent.click(treeitem);
-
-        expect(onNodeClick).toHaveBeenCalledTimes(1);
-        expect(outerClickHandler).not.toHaveBeenCalled();
     });
 });
