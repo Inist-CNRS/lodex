@@ -27,14 +27,19 @@ export function HierarchicalTreeNode({
 
     const { filters, selectOne } = useSearchPaneContextOrDefault();
 
+    const title =
+        typeof nodeDatum?.attributes?.title === 'string'
+            ? nodeDatum.attributes.title
+            : nodeDatum.name;
+
     const color = getNodeColor(nodeDatum.__rd3t.depth);
     const isOpen = nodeDatum.__rd3t?.collapsed === false;
     const hasChildren = !!nodeDatum.children?.length;
 
     const handleClick = (event: React.MouseEvent) => {
         event.stopPropagation();
-        if (fieldToFilter) {
-            selectOne({ fieldName: fieldToFilter, value: nodeDatum.name });
+        if (fieldToFilter && nodeDatum.__rd3t.depth > 0) {
+            selectOne({ fieldName: fieldToFilter, value: title });
         }
 
         if (onNodeClick) {
@@ -45,8 +50,6 @@ export function HierarchicalTreeNode({
         event.stopPropagation();
         toggleNode();
     };
-
-    const title = nodeDatum?.attributes?.title ?? nodeDatum.name;
 
     const buttonPosition =
         orientation === 'horizontal'
@@ -112,7 +115,7 @@ export function HierarchicalTreeNode({
                 >
                     <Stack
                         role="group"
-                        aria-label={nodeDatum.name}
+                        aria-label={title}
                         className="hierarchical-tree-node-group"
                         flexDirection="row"
                         sx={{
