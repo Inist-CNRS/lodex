@@ -1,7 +1,7 @@
-import { SCOPES, SCOPE_DOCUMENT, SCOPE_GRAPHIC } from './scope';
-import knownTransformers from './transformers';
 import languagesList from './languages';
 import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
+import { SCOPES, SCOPE_DOCUMENT, SCOPE_GRAPHIC } from './scope';
+import knownTransformers from './transformers';
 
 export const validateScope = (field: any, isContribution: any) => {
     const result = {
@@ -216,12 +216,25 @@ export const validateTransformer = (
         };
     }
 
-    const transformerMeta = transformerOperation.getMetas();
+    const transformerMeta = transformerOperation.getMetas() as {
+        args: {
+            name: string;
+            type: string;
+            required?: boolean;
+        }[];
+    };
     const transformerArgs = transformer.args || [];
-    const filteredTransformerArgs = transformerArgs.filter(({ value }: any) =>
-        transformer.operation === 'VALUE'
-            ? value !== undefined
-            : !isUndefinedOrEmpty(value),
+    const filteredTransformerArgs = transformerArgs.filter(
+        ({ value, name }: { name: string; value: string | undefined }) => {
+            const arg = transformerMeta.args.find((m) => m.name === name);
+            if (arg?.required === false) {
+                return true;
+            }
+
+            return transformer.operation === 'VALUE'
+                ? value !== undefined
+                : !isUndefinedOrEmpty(value);
+        },
     );
 
     if (transformerMeta.args.length > filteredTransformerArgs.length) {

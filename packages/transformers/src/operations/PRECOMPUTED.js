@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import documentationByOperation from './documentationByOperation';
 
 const isUndefinedOrEmpty = (value) =>
@@ -100,10 +99,12 @@ transformation.getMetas = () => ({
         {
             name: 'precomputedLabelColumn',
             type: 'string',
+            required: false,
         },
         {
             name: 'precomputedValueColumn',
             type: 'string',
+            required: false,
         },
     ],
     docUrl: documentationByOperation['PRECOMPUTED'],

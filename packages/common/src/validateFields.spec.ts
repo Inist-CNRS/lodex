@@ -1,14 +1,14 @@
-import { SCOPE_DOCUMENT, SCOPE_COLLECTION, SCOPE_GRAPHIC } from './scope';
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT, SCOPE_GRAPHIC } from './scope';
 import {
     validateCompletesField,
     validateComposedOf,
-    validateComposedOfFields,
     validateComposedOfField,
-    validateScope,
+    validateComposedOfFields,
     validateField,
     validateLanguage,
     validatePosition,
     validateScheme,
+    validateScope,
     validateTransformer,
     validateTransformers,
 } from './validateFields';
@@ -516,6 +516,47 @@ describe('validateField', () => {
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.meta.args).toBe(1);
             expect(result.error).toBe('invalid');
+        });
+
+        it('should return valid if the argument is not required and value is undefined', () => {
+            const IVY = (x: any) => x;
+
+            IVY.getMetas = () => ({
+                name: 'IVY',
+                type: 'transform',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        required: false,
+                    },
+                ],
+            });
+
+            const knownTransformers = {
+                IVY,
+            };
+
+            const transformer = {
+                operation: 'IVY',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value: undefined,
+                    },
+                ],
+            };
+
+            const result = validateTransformer(
+                transformer,
+                false,
+                // @ts-expect-error TS2345
+                knownTransformers,
+            );
+
+            expect(result.name).toBe('transformer.operation');
+            expect(result.isValid).toBe(true);
         });
 
         it('should return valid otherwise', () => {
