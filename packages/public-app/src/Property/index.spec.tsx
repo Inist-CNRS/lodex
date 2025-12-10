@@ -1,7 +1,7 @@
-import { PropositionStatus, ADMIN_ROLE, USER_ROLE } from '@lodex/common';
-import { PropertyComponent, type PropertyComponentProps } from './index';
-import { render } from '../test-utils';
+import { ADMIN_ROLE, PropositionStatus, USER_ROLE } from '@lodex/common';
 import { getPredicate } from '@lodex/frontend-common/formats/getFormat';
+import { render } from '../test-utils';
+import { PropertyComponent, type PropertyComponentProps } from './index';
 // @ts-expect-error TS2322
 import { StyleSheetTestUtils } from 'aphrodite';
 import { useCanAnnotate } from '../annotation/useCanAnnotate';
@@ -51,6 +51,7 @@ describe('Property', () => {
     const defaultProps: PropertyComponentProps = {
         className: 'class',
         field: {
+            _id: 'abc',
             name: 'field',
             label: 'My label',
             format: {
@@ -302,11 +303,10 @@ describe('Property', () => {
             const screen = render(
                 <PropertyComponent
                     {...defaultProps}
-                    isAdmin={false}
                     field={{
+                        _id: 'abc',
                         name: 'field',
                         label: 'My label with list',
-                        // @ts-expect-error TS2322
                         format: {
                             name: 'list',
                         },

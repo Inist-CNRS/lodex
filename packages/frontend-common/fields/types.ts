@@ -1,6 +1,9 @@
 export type Field<T extends object = { [key: string]: unknown }> = {
     _id: string;
     name: string;
+    language?: string;
+    completes?: boolean;
+    width?: number;
     label?: string;
     scheme?: string;
     subresourceId?: string;
@@ -12,6 +15,9 @@ export type Field<T extends object = { [key: string]: unknown }> = {
     format?: {
         name: string;
         args?: T;
+    };
+    composedOf?: {
+        fields: string[];
     };
 };
 

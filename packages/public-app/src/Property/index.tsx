@@ -12,26 +12,28 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '@lodex/common';
-import { shouldDisplayField } from './shouldDisplayField';
-import { getPredicate } from '@lodex/frontend-common/formats/getFormat';
-import addSchemePrefix from './addSchemePrefix';
 import Link from '@lodex/frontend-common/components/Link';
-import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
+import type { Field } from '@lodex/frontend-common/fields/types';
+import { getPredicate } from '@lodex/frontend-common/formats/getFormat';
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
+import { Settings } from '@mui/icons-material';
+import { Box, IconButton, Stack } from '@mui/material';
+import { useMemo, useRef } from 'react';
+import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
+import { useCanAnnotate } from '../annotation/useCanAnnotate';
 import Format from '../Format';
+import { GraphContextProvider } from '../graph/GraphContext';
 import GraphLink from '../graph/GraphLink';
+import type { State } from '../reducers';
 import { changeFieldStatus as changeFieldStatusAction } from '../resource';
 import { fromDisplayConfig, fromResource } from '../selectors';
+import addSchemePrefix from './addSchemePrefix';
 import CompositeProperty from './CompositeProperty';
 import ModerateButton from './ModerateButton';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
-import { Settings } from '@mui/icons-material';
-import { Box, IconButton } from '@mui/material';
-import { useMemo } from 'react';
-import { useCanAnnotate } from '../annotation/useCanAnnotate';
-import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
-import type { State } from '../reducers';
+import { shouldDisplayField } from './shouldDisplayField';
 
 const styles = {
     container: memoize(
@@ -86,6 +88,9 @@ const styles = {
     valueContainer: {
         display: 'flex',
         alignItems: 'center',
+        minWidth: '100%',
+        maxWidth: '100%',
+        width: '100%',
     },
     // @ts-expect-error TS7006
     value: (dense, isListFormat) => ({
@@ -116,25 +121,7 @@ export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
 
 export interface PropertyComponentProps {
     className?: string;
-    field: {
-        name: string;
-        format: {
-            name: string;
-            args: {
-                value: string;
-            };
-        };
-        composedOf?: {
-            fields: string[];
-        };
-        scope: string;
-        subresourceId?: string;
-        completes?: boolean;
-        label: string;
-        scheme?: string;
-        width?: string;
-        language?: string;
-    };
+    field: Field;
     isSub?: boolean;
     resource: Record<string, unknown>;
     parents: string[];
@@ -149,6 +136,7 @@ export const PropertyComponent = ({
     style,
     parents = [],
 }: PropertyComponentProps) => {
+    const portalContainer = useRef<HTMLDivElement | null>(null);
     const canAnnotate = useCanAnnotate();
     const isAdmin = useSelector(fromUser.isAdmin);
     const fieldStatus = useSelector((state: State) =>
@@ -175,7 +163,7 @@ export const PropertyComponent = ({
             resource,
             field,
             fieldStatus,
-            // @ts-expect-error TS7006
+            // @ts-expect-error TS2345
             predicate,
             isAdmin,
             canAnnotate,
@@ -196,14 +184,20 @@ export const PropertyComponent = ({
     };
 
     const formatChildren = [
-        <Format
-            key="format"
-            className={classnames('property_value', fieldClassName)}
+        <GraphContextProvider
+            portalContainer={portalContainer}
             field={field}
-            resource={resource}
-            fieldStatus={fieldStatus}
-            graphLink={field.scope === SCOPE_GRAPHIC}
-        />,
+            key="graph-context"
+        >
+            <Format
+                key="format"
+                className={classnames('property_value', fieldClassName)}
+                field={field}
+                resource={resource}
+                fieldStatus={fieldStatus}
+                graphLink={field.scope === SCOPE_GRAPHIC}
+            />
+        </GraphContextProvider>,
         <CompositeProperty
             key="composite"
             field={field}
@@ -243,43 +237,55 @@ export const PropertyComponent = ({
             sx={styles.container(style, field.width)}
         >
             <div className={classnames('property_label_container')}>
-                <div style={styles.labelContainer}>
-                    <span
-                        className={classnames('property_label', fieldClassName)}
-                        style={styles.label(fieldStatus, isSub)}
-                        id={`field-${field.name}`}
-                    >
-                        {field.label}
-                        {isAdmin && (
-                            // @ts-expect-error TS2769
-                            <IconButton
-                                onClick={handleEditField}
-                                classnames={'edit-field-icon'}
-                            >
-                                <Settings
-                                    sx={{
-                                        fontSize: '1.2rem',
-                                    }}
-                                />
-                            </IconButton>
-                        )}
-                        <CreateAnnotationButton
-                            field={field}
-                            resource={resource}
-                        />
-                    </span>
-                    <span
-                        className={classnames(
-                            'property_scheme',
-                            fieldClassName,
-                        )}
-                        style={styles.scheme}
-                    >
-                        <Link style={styles.schemeLink} href={field.scheme}>
-                            {addSchemePrefix(field.scheme)}
-                        </Link>
-                    </span>
-                </div>
+                <Stack direction="row" gap="8px">
+                    <div style={styles.labelContainer}>
+                        <span
+                            className={classnames(
+                                'property_label',
+                                fieldClassName,
+                            )}
+                            style={styles.label(fieldStatus, isSub)}
+                            id={`field-${field.name}`}
+                        >
+                            {field.label}
+                            {isAdmin && (
+                                // @ts-expect-error TS2769
+                                <IconButton
+                                    onClick={handleEditField}
+                                    classnames={'edit-field-icon'}
+                                >
+                                    <Settings
+                                        sx={{
+                                            fontSize: '1.2rem',
+                                        }}
+                                    />
+                                </IconButton>
+                            )}
+                            <CreateAnnotationButton
+                                field={field}
+                                resource={resource}
+                            />
+                        </span>
+                        <span
+                            className={classnames(
+                                'property_scheme',
+                                fieldClassName,
+                            )}
+                            style={styles.scheme}
+                        >
+                            <Link style={styles.schemeLink} href={field.scheme}>
+                                {addSchemePrefix(field.scheme)}
+                            </Link>
+                        </span>
+                    </div>
+                    <Stack
+                        flex="1"
+                        direction="row"
+                        gap="0.5rem"
+                        justifyContent="flex-end"
+                        ref={portalContainer}
+                    />
+                </Stack>
                 <PropertyContributor
                     // @ts-expect-error TS2322
                     fieldName={field.name}

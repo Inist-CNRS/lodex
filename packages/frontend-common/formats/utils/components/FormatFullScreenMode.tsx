@@ -156,7 +156,7 @@ const FormatFullScreenMode = memo(
                           gap: '1rem',
                           padding: '1rem',
                           width: '100%',
-                          zIndex: 9999,
+                          zIndex: 1299,
                       }
                     : {
                           position: 'relative',

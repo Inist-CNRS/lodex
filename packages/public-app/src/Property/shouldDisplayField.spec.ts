@@ -1,5 +1,5 @@
-import { shouldDisplayField } from './shouldDisplayField';
 import { PropositionStatus } from '@lodex/common';
+import { shouldDisplayField } from './shouldDisplayField';
 
 describe('shouldDisplayField', () => {
     describe('with an empty field', () => {
@@ -13,7 +13,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -33,7 +32,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -53,7 +51,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -72,7 +69,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -91,7 +87,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -112,7 +107,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -131,7 +125,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -150,7 +143,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -169,7 +161,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -188,7 +179,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -212,7 +202,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -234,7 +223,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -256,7 +244,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -278,7 +265,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -300,7 +286,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -322,7 +307,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
@@ -344,7 +328,6 @@ describe('shouldDisplayField', () => {
             expect(
                 shouldDisplayField(
                     resource,
-                    // @ts-expect-error TS2345
                     field,
                     fieldStatus,
                     predicate,
