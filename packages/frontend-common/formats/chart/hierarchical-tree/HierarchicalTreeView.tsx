@@ -1,5 +1,5 @@
 import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import {
     lazy,
     Suspense,
@@ -13,6 +13,8 @@ import { CloseAllIcon } from '../../../../public-app/src/annotation/icons/CloseA
 import { OpenAllIcon } from '../../../../public-app/src/annotation/icons/OpenAllIcon';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import type { Field } from '../../../fields/types';
+import { AutoComplete } from '../../../form-fields/AutoCompleteField';
+import { useTranslate } from '../../../i18n/I18NContext';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
@@ -37,8 +39,6 @@ import {
 import type { Datum } from './type';
 import { useFormatTreeData, type SortBy } from './useFormatTreeData';
 import { useHierarchicalTreeController } from './useHierarchicalTreeController';
-import { AutoComplete } from '../../../form-fields/AutoCompleteField';
-import { useTranslate } from '../../../i18n/I18NContext';
 
 const TreeView = lazy(async () => {
     const { Tree } = await import('react-d3-tree');
@@ -226,16 +226,18 @@ export function HierarchicalTreeView({
                     <MouseIcon />
                 </Box>
 
-                <IconButton
-                    onClick={resetZoom}
-                    sx={{
-                        position: 'absolute',
-                        left: '48px',
-                        bottom: '8px',
-                    }}
-                >
-                    <FilterCenterFocusIcon />
-                </IconButton>
+                <Tooltip title={translate('recenter_graph')}>
+                    <IconButton
+                        onClick={resetZoom}
+                        sx={{
+                            position: 'absolute',
+                            left: '48px',
+                            bottom: '8px',
+                        }}
+                    >
+                        <FilterCenterFocusIcon />
+                    </IconButton>
+                </Tooltip>
             </FormatFullScreenMode>
         </Box>
     );
