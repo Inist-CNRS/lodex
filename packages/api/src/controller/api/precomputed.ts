@@ -5,6 +5,7 @@ import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
 import config from 'config';
+import mount from 'koa-mount';
 
 import { getLocale, TaskStatus } from '@lodex/common';
 import asyncBusboy from '@recuperateur/async-busboy';
@@ -27,6 +28,7 @@ import {
     streamToJson,
     unlinkFile,
 } from '../../services/fsHelpers';
+import { uploadMiddleware } from '../uploadMiddleware';
 
 export const setup = async (
     ctx: { status: number; body: { error: any } },
@@ -458,9 +460,29 @@ const app = new Koa();
 
 app.use(setup);
 
-app.use(route.post('/:precomputedId/import', parseRequest));
-app.use(route.post('/:precomputedId/import', uploadChunkMiddleware));
-app.use(route.get('/:precomputedId/import', checkChunkMiddleware));
+app.use(
+    mount(
+        '/',
+        uploadMiddleware(
+            '/:precomputedId/import',
+            async (stream: any, ctx: any, precomputedId: string) => {
+                const json = await streamToJson(stream);
+                await ctx.precomputed.deleteManyResults({
+                    precomputedId,
+                });
+                await ctx.precomputed.insertManyResults(precomputedId, json);
+
+                await ctx.precomputed.updateStatus(
+                    precomputedId,
+                    TaskStatus.FINISHED,
+                    {
+                        hasData: true,
+                    },
+                );
+            },
+        ),
+    ),
+);
 
 // @ts-expect-error TS2345
 app.use(route.get('/', getAllPrecomputed));
