@@ -1,31 +1,122 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Tree, TreeNodeDatum, TreeProps } from 'react-d3-tree';
+import { useSearchPaneContextOrDefault } from '../../../search/useSearchPaneContext';
 
 export async function walkNodes(
     tree: TreeNodeDatum[],
     action: (node: TreeNodeDatum) => void,
 ) {
-    // We need to skip the root node here as it is visually hidden
-    const rootNodes = tree.at(0)?.children ?? [];
-    return new Promise<void>((resolve) => {
-        const nodeQueue = [...rootNodes];
+    for (const node of tree) {
+        action(node);
+        await new Promise((resolve) => setTimeout(resolve, 0));
+    }
 
-        const interval = setInterval(() => {
-            const node = nodeQueue.shift();
-            if (!node) {
-                clearInterval(interval);
-                resolve();
-                return;
-            }
-
-            action(node);
-
-            if (node.children?.length) {
-                nodeQueue.push(...node.children);
-            }
-        }, 1);
-    });
+    const allChildren = tree.flatMap((node) => node.children ?? []);
+    if (allChildren.length > 0) {
+        await walkNodes(allChildren, action);
+    }
 }
+
+export function getNodeAncestorById(
+    tree: TreeNodeDatum[],
+    id: string,
+): TreeNodeDatum[] {
+    const root = tree.at(0);
+    if (!root) {
+        return [];
+    }
+
+    function getNodeAncestorByIdInternal(
+        node: TreeNodeDatum,
+        id: string,
+        path: TreeNodeDatum[],
+    ): TreeNodeDatum[] {
+        if (node.__rd3t.id === id) {
+            return path;
+        }
+
+        if (node.children) {
+            for (const child of node.children) {
+                const result = getNodeAncestorByIdInternal(child, id, [
+                    ...path,
+                    node,
+                ]);
+                if (result.length > 0) {
+                    return result;
+                }
+            }
+        }
+
+        return [];
+    }
+
+    return getNodeAncestorByIdInternal(root, id, []);
+}
+
+export const openPath = async (
+    path: TreeNodeDatum[],
+    handleNodeToggle: Tree['handleNodeToggle'],
+) => {
+    if (!path.length) {
+        return;
+    }
+
+    const [currentNode, ...remainingPath] = path;
+
+    if (currentNode.__rd3t.collapsed) {
+        handleNodeToggle(currentNode.__rd3t.id);
+        // Wait a bit for the animation to complete
+        await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    await openPath(remainingPath, handleNodeToggle);
+};
+
+const getTreeNodeOptions = (
+    tree: TreeNodeDatum,
+    result: {
+        value: string;
+        label: string;
+    }[] = [],
+): {
+    value: string;
+    label: string;
+}[] => {
+    return [
+        {
+            value: tree.__rd3t.id,
+            label: tree.name,
+        },
+        ...(tree.children ?? []).flatMap((child) =>
+            getTreeNodeOptions(child, result),
+        ),
+    ];
+};
+
+export const getNodeOptions = (
+    tree: TreeNodeDatum[],
+    result: {
+        value: string;
+        label: string;
+    }[] = [],
+): {
+    value: string;
+    label: string;
+}[] => {
+    return tree
+        .flatMap((node) => getTreeNodeOptions(node, result))
+        .toSorted((a, b) => a.label.localeCompare(b.label));
+};
+
+export type HierarchicalTreeControllerParams = {
+    orientation: 'vertical' | 'horizontal';
+    nodeSize: { x: number; y: number };
+    spaceBetweenNodes: number;
+    initialZoom: number;
+    initialDepth: number;
+    tree: unknown;
+    fieldToFilter?: string | null;
+};
 
 export function useHierarchicalTreeController({
     orientation,
@@ -33,9 +124,25 @@ export function useHierarchicalTreeController({
     spaceBetweenNodes,
     initialZoom,
     initialDepth,
+    tree,
+    fieldToFilter,
 }: HierarchicalTreeControllerParams) {
     const parentRef = useRef<HTMLDivElement>(null);
     const treeRef = useRef<Tree>(null);
+
+    const { selectOne } = useSearchPaneContextOrDefault();
+
+    const [nodeOptions, setNodeOptions] = useState<
+        {
+            value: string;
+            label: string;
+        }[]
+    >([]);
+
+    const [selectedNodeOption, setSelectedNodeOption] = useState<{
+        value: string;
+        label: string;
+    } | null>(null);
 
     const [treeTranslate, setTreeTranslate] = useState<TreeProps['translate']>({
         x: 0,
@@ -98,19 +205,67 @@ export function useHierarchicalTreeController({
         };
     }, [handleResize]);
 
-    const centerOnNode = useCallback((nodeName?: string) => {
-        if (!treeRef.current || nodeName == null) {
-            return;
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (!treeRef.current) {
+                return;
+            }
+            const options = getNodeOptions(treeRef.current.state.data);
+            setNodeOptions(options);
+            clearInterval(interval);
+        }, 100);
+        return () => clearInterval(interval);
+        // recompute when tree changes
+    }, [tree]);
+
+    const selectNode = useCallback((node?: any) => {
+        if (fieldToFilter && node && node.data.__rd3t.depth > 0) {
+            const value =
+                typeof node.data.attributes?.title === 'string'
+                    ? node.data.attributes.title
+                    : node.data.name;
+            selectOne({ fieldName: fieldToFilter, value });
         }
 
-        const tree = treeRef.current.generateTree();
-        const node = tree.nodes.find((n) => n.data.name === nodeName);
-        if (!node) {
+        setSelectedNodeOption(
+            node
+                ? {
+                      value: node?.data.__rd3t.id,
+                      label: node?.data.name,
+                  }
+                : null,
+        );
+        if (!node || !treeRef.current) {
             return;
         }
 
         treeRef.current.centerNode(node);
     }, []);
+
+    const selectNodeById = useCallback(
+        async (nodeId?: string) => {
+            if (!treeRef.current || nodeId == null) {
+                return;
+            }
+
+            const ancestors = getNodeAncestorById(
+                treeRef.current.state.data,
+                nodeId,
+            );
+
+            await openPath(ancestors, treeRef.current.handleNodeToggle);
+
+            const tree = treeRef.current.generateTree();
+
+            const targetNode = tree.nodes.find(
+                (node) => node.data.__rd3t.id === nodeId,
+            );
+            if (targetNode) {
+                selectNode(targetNode);
+            }
+        },
+        [selectNode],
+    );
 
     const openAll = useCallback(() => {
         // We need to walk the nodes in order to open them one by one
@@ -137,8 +292,12 @@ export function useHierarchicalTreeController({
     }, []);
 
     const resetZoom = useCallback(() => {
-        centerOnNode(treeRef.current?.state.data.at(0)?.name);
-    }, [centerOnNode]);
+        selectNodeById(
+            selectedNodeOption
+                ? selectedNodeOption.value
+                : treeRef.current?.state.data.at(0)?.__rd3t.id,
+        );
+    }, [selectNodeById, selectedNodeOption]);
 
     return useMemo(
         () => ({
@@ -146,19 +305,24 @@ export function useHierarchicalTreeController({
             treeRef,
             dimensions,
             treeTranslate,
-            centerOnNode,
+            selectNode,
             openAll,
             closeAll,
             resetZoom,
+            selectedNodeOption,
+            selectNodeById,
+            nodeOptions,
         }),
-        [dimensions, treeTranslate, centerOnNode, openAll, closeAll, resetZoom],
+        [
+            dimensions,
+            treeTranslate,
+            selectNode,
+            openAll,
+            closeAll,
+            resetZoom,
+            selectedNodeOption,
+            selectNodeById,
+            nodeOptions,
+        ],
     );
 }
-
-export type HierarchicalTreeControllerParams = {
-    orientation: 'vertical' | 'horizontal';
-    nodeSize: { x: number; y: number };
-    spaceBetweenNodes: number;
-    initialZoom: number;
-    initialDepth: number;
-};
