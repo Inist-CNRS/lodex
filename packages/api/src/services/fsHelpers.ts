@@ -41,6 +41,24 @@ export const mergeChunksFactory =
 
 export const mergeChunks = mergeChunksFactory(createReadStream);
 
+export const streamToJson = (stream: MultiStream) => {
+    const chunks: any[] = [];
+
+    return new Promise((resolve, reject) => {
+        stream.on('data', (chunk) => {
+            chunks.push(chunk);
+        });
+        stream.on('end', () => {
+            try {
+                const data = JSON.parse(Buffer.concat(chunks).toString());
+                resolve(data);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    });
+};
+
 export const getFileStats = (filename: string) =>
     new Promise((resolve, reject) => {
         fs.stat(filename, (error, result) => {
