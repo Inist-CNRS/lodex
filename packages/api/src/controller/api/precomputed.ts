@@ -2,10 +2,10 @@ import Koa from 'koa';
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
-import fs from 'fs/promises';
 import koaBodyParser from 'koa-bodyparser';
-import mime from 'mime-types';
 import { v1 as uuid } from 'uuid';
+import config from 'config';
+import mount from 'koa-mount';
 
 import { getLocale, TaskStatus } from '@lodex/common';
 import asyncBusboy from '@recuperateur/async-busboy';
@@ -19,6 +19,16 @@ import { getOrCreateWorkerQueue } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { cancelJob } from '../../workers/tools';
 import { buildQuery } from './buildQuery';
+import {
+    checkFileExists,
+    clearChunks,
+    getUploadedFileSize,
+    mergeChunks,
+    saveStreamInFile,
+    streamToJson,
+    unlinkFile,
+} from '../../services/fsHelpers';
+import { uploadMiddleware } from '../uploadMiddleware';
 
 export const setup = async (
     ctx: { status: number; body: { error: any } },
@@ -290,53 +300,142 @@ export const previewDataPrecomputed = async (ctx: AppContext, id: string) => {
     }
 };
 
-export const postImportPrecomputedResult = async (
-    ctx: any,
-    precomputedId: string,
-) => {
-    try {
-        const { files } = await asyncBusboy(ctx.req);
-        if (files.length === 0) {
-            ctx.status = 400;
-            ctx.body = { message: 'File does not exist' };
-            return;
-        }
-        if (files.length > 1) {
-            ctx.status = 400;
-            ctx.body = { message: 'Only one file must be provided' };
-            return;
-        }
+export const requestToStream = async (req: any) => {
+    const { files, fields } = await asyncBusboy(req);
+    files[0].once('close', async () => {
+        await unlinkFile(files[0].path);
+    });
+    return { stream: files[0], fields };
+};
 
-        const type = mime.lookup(files[0].filename);
-        if (type !== 'application/json') {
-            ctx.status = 400;
-            ctx.body = {
-                message: 'Wrong mime type, application/json required',
-            };
-            return;
-        }
-        const file = await fs.readFile(files[0].path, 'utf8');
-        const precomputedResults = JSON.parse(file);
-        await ctx.precomputed.deleteManyResults({
-            precomputedId,
-        });
-        await ctx.precomputed.insertManyResults(
-            precomputedId,
-            precomputedResults,
-        );
+export const parseRequest = async (ctx: any, loaderName: any, next: any) => {
+    const { stream, fields } = await requestToStream(ctx.req);
 
-        await ctx.precomputed.updateStatus(precomputedId, TaskStatus.FINISHED, {
-            hasData: true,
-        });
-    } catch (error) {
-        ctx.status = 400;
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
-        ctx.body = { message: error.message };
-        return;
+    const {
+        resumableChunkNumber,
+        resumableIdentifier,
+        resumableTotalChunks,
+        resumableTotalSize,
+        resumableCurrentChunkSize,
+        resumableFilename = '',
+        customLoader = null,
+    } = fields;
+
+    const extension = resumableFilename.split('.').pop();
+    const chunkNumber = parseInt(resumableChunkNumber, 10);
+
+    let uploadDir: string = config.get('uploadDir');
+    if (!uploadDir.startsWith('/')) {
+        uploadDir = `../../${uploadDir}`;
     }
 
-    ctx.body = { message: 'Imported' };
+    ctx.resumable = {
+        totalChunks: parseInt(resumableTotalChunks, 10),
+        totalSize: parseInt(resumableTotalSize, 10),
+        currentChunkSize: parseInt(resumableCurrentChunkSize, 10),
+        filename: `${uploadDir}/${ctx.tenant}_${resumableIdentifier}`,
+        extension,
+        chunkname: `${uploadDir}/${ctx.tenant}_${resumableIdentifier}.${chunkNumber}`,
+        stream,
+        customLoader: loaderName === 'custom-loader' ? customLoader : null,
+    };
+    await next();
+};
+
+export async function uploadChunkMiddleware(ctx: any, precomputedId: string) {
+    const {
+        chunkname,
+        currentChunkSize,
+        stream,
+        filename,
+        totalChunks,
+        totalSize,
+    } = ctx.resumable;
+    if (!(await checkFileExists(chunkname, currentChunkSize))) {
+        await saveStreamInFile(stream, chunkname);
+    }
+
+    const uploadedFileSize = await getUploadedFileSize(filename, totalChunks);
+
+    if (uploadedFileSize >= totalSize) {
+        try {
+            const stream = mergeChunks(filename, totalChunks);
+
+            const precomputedResults = await streamToJson(stream);
+
+            await ctx.precomputed.deleteManyResults({
+                precomputedId,
+            });
+            await ctx.precomputed.insertManyResults(
+                precomputedId,
+                precomputedResults,
+            );
+
+            await ctx.precomputed.updateStatus(
+                precomputedId,
+                TaskStatus.FINISHED,
+                {
+                    hasData: true,
+                },
+            );
+            await clearChunks(filename, totalChunks);
+            ctx.body = { message: 'Imported' };
+        } catch (error) {
+            ctx.status = 400;
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
+            ctx.body = { message: error.message };
+            return;
+        }
+    }
+
     ctx.status = 200;
+}
+
+export const checkChunkMiddleware = async (ctx: any, precomputedId: string) => {
+    const {
+        resumableChunkNumber,
+        resumableTotalChunks,
+        resumableIdentifier,
+        resumableCurrentChunkSize,
+    } = ctx.request.query;
+    const chunkNumber = parseInt(resumableChunkNumber, 10);
+    const totalChunks = parseInt(resumableTotalChunks, 10);
+    const currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
+    const filename = `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}`;
+    const chunkname = `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}.${resumableChunkNumber}`;
+
+    const exists = await checkFileExists(chunkname, currentChunkSize);
+
+    if (exists && chunkNumber === totalChunks) {
+        try {
+            const stream = mergeChunks(filename, totalChunks);
+
+            const precomputedResults = await streamToJson(stream);
+
+            await ctx.precomputed.deleteManyResults({
+                precomputedId,
+            });
+            await ctx.precomputed.insertManyResults(
+                precomputedId,
+                precomputedResults,
+            );
+
+            await ctx.precomputed.updateStatus(
+                precomputedId,
+                TaskStatus.FINISHED,
+                {
+                    hasData: true,
+                },
+            );
+            ctx.body = { message: 'Imported' };
+        } catch (error) {
+            ctx.status = 400;
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
+            ctx.body = { message: error.message };
+            return;
+        }
+    }
+    ctx.status = exists ? 200 : 204;
 };
 
 export const cancelPrecomputedJob = async (
@@ -361,7 +460,29 @@ const app = new Koa();
 
 app.use(setup);
 
-app.use(route.post('/:precomputedId/import', postImportPrecomputedResult));
+app.use(
+    mount(
+        '/',
+        uploadMiddleware(
+            '/:precomputedId/import',
+            async (stream: any, ctx: any, precomputedId: string) => {
+                const json = await streamToJson(stream);
+                await ctx.precomputed.deleteManyResults({
+                    precomputedId,
+                });
+                await ctx.precomputed.insertManyResults(precomputedId, json);
+
+                await ctx.precomputed.updateStatus(
+                    precomputedId,
+                    TaskStatus.FINISHED,
+                    {
+                        hasData: true,
+                    },
+                );
+            },
+        ),
+    ),
+);
 
 // @ts-expect-error TS2345
 app.use(route.get('/', getAllPrecomputed));
