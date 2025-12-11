@@ -4,6 +4,7 @@ import {
     IconButton,
     ToggleButton,
     ToggleButtonGroup,
+    Tooltip,
 } from '@mui/material';
 import {
     lazy,
@@ -14,7 +15,11 @@ import {
     useRef,
     useState,
 } from 'react';
-import type { ForceGraphMethods, NodeObject } from 'react-force-graph-2d';
+import type {
+    ForceGraphMethods,
+    LinkObject,
+    NodeObject,
+} from 'react-force-graph-2d';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
 import Loading from '../../../components/Loading';
 import { AutoComplete } from '../../../form-fields/AutoCompleteField';
@@ -341,6 +346,155 @@ export const NetworkBase = ({
         fgRef.current.zoomToFit(250);
     };
 
+    const sortedGraphData = useMemo(() => {
+        return {
+            nodes: sortedNodes,
+            links,
+        };
+    }, [sortedNodes, links]);
+
+    const handleZoomEnd = useCallback(
+        ({ k, x, y }: { k: number; x: number; y: number }) => {
+            // We want to preserve the zoom level and position when switching from and to fullscreen
+            // so we skip the default value (k=1, x=0, y=0) that correspond to a reset zoom
+            if (x === 0 && y === 0 && k === 1) return;
+            setK(k);
+            setX(x);
+            setY(y);
+        },
+        [],
+    );
+
+    const nodeLabelFn = useCallback((node: NodeObject) => {
+        return node.label;
+    }, []);
+
+    const nodeValFn = useCallback((node: NodeObject) => {
+        return node.radius;
+    }, []);
+
+    const linkColorFn = useCallback(
+        (link: LinkObject) => linkColor(link as Link),
+        [linkColor],
+    );
+
+    const linkWidthFn = useCallback(
+        (l: LinkObject) => (showArrows && mode === 'arrow' ? 1 : l.value ?? 1),
+        [showArrows, mode],
+    );
+
+    const linkLabelFn = useCallback((l: LinkObject) => l.label ?? '', []);
+
+    const linkVisibilityFn = useCallback(
+        (link: LinkObject) =>
+            isLinkVisible({
+                link: link as {
+                    source: { id: string };
+                    target: { id: string };
+                },
+                highlightMode,
+                selectedNode: selectedNode as {
+                    id: string;
+                } | null,
+                hoveredNode: hoveredNode as {
+                    id: string;
+                } | null,
+            }),
+        [highlightMode, hoveredNode, selectedNode],
+    );
+
+    const nodeCanvasObjectFn = useCallback(
+        (
+            node: NodeObject,
+            ctx: CanvasRenderingContext2D,
+            globalScale: number,
+        ) => {
+            const isSelected = node.id === selectedNode?.id;
+
+            if (
+                highlightedNodeIds.length === 0 ||
+                highlightedNodeIds.some(
+                    (highlightNodeId) => highlightNodeId === node.id,
+                )
+            ) {
+                ctx.globalAlpha = 1;
+            } else {
+                ctx.globalAlpha = 0.1;
+            }
+            const circleRadius = zoomAdjustNodeSize
+                ? Math.max(node.radius, 1.5) / globalScale
+                : Math.max(node.radius, 1.5);
+
+            if (isSelected) {
+                ctx.fillStyle = '#880000';
+                ctx.beginPath();
+                ctx.arc(
+                    node.x!,
+                    node.y!,
+                    circleRadius + (zoomAdjustNodeSize ? 1 / globalScale : 1),
+                    0,
+                    2 * Math.PI,
+                    false,
+                );
+                ctx.fill();
+            }
+
+            ctx.fillStyle = node.color
+                ? addTransparency(node.color, isSelected ? 1 : 0.75)
+                : colorSet
+                  ? addTransparency(colorSet[0], isSelected ? 1 : 0.75)
+                  : '#000000e6';
+            ctx.beginPath();
+            ctx.arc(node.x!, node.y!, circleRadius, 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            const fontSize = Math.max(circleRadius / 2, 3);
+            ctx.font = `${isSelected ? 'bold ' : ''}${fontSize}px Sans-Serif`;
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'black';
+            ctx.fillText(node.label, node.x!, node.y!);
+
+            ctx.globalAlpha = 1;
+        },
+        [colorSet, highlightedNodeIds, zoomAdjustNodeSize, selectedNode?.id],
+    );
+
+    const nodePointerAreaFn = useCallback(
+        (
+            node: NodeObject,
+            color: string,
+            ctx: CanvasRenderingContext2D,
+            globalScale: number,
+        ) => {
+            const circleRadius = zoomAdjustNodeSize
+                ? Math.max(node.radius, 1.5) / globalScale
+                : Math.max(node.radius, 1.5);
+
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(node.x!, node.y!, circleRadius, 0, 2 * Math.PI, false);
+            ctx.fill();
+
+            const fontSize = Math.max(circleRadius / 2, 3);
+            ctx.font = `${fontSize}px Sans-Serif`;
+
+            const textWidth = ctx.measureText(node.label).width;
+            const bckgDimensions: [number, number] = [textWidth, fontSize].map(
+                (n) => n + fontSize * 0.2,
+            ) as [number, number]; // some padding
+
+            ctx.fillRect(
+                node.x! - bckgDimensions[0] / 2,
+                node.y! - bckgDimensions[1] / 2,
+                ...bckgDimensions,
+            );
+        },
+        [],
+    );
+
     return (
         <div style={{ height: `500px` }}>
             <FormatFullScreenMode>
@@ -392,163 +546,25 @@ export const NetworkBase = ({
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
                         <ForceGraph2D
-                            onZoomEnd={({ k, x, y }) => {
-                                // We want to preserve the zoom level and position when switching from and to fullscreen
-                                // so we skip the default value (k=1, x=0, y=0) that correspond to a reset zoom
-                                if (x === 0 && y === 0 && k === 1) return;
-                                setK(k);
-                                setX(x);
-                                setY(y);
-                            }}
                             ref={fgRef}
+                            onZoomEnd={handleZoomEnd}
                             width={width}
                             height={height}
-                            graphData={{
-                                nodes: sortedNodes,
-                                links,
-                            }}
-                            nodeLabel={(node) => {
-                                return node.label;
-                            }}
-                            nodeVal={(node) => node.radius}
-                            nodeCanvasObject={(node, ctx, globalScale) => {
-                                const isSelected = node.id === selectedNode?.id;
-
-                                if (
-                                    highlightedNodeIds.length === 0 ||
-                                    highlightedNodeIds.some(
-                                        (highlightNodeId) =>
-                                            highlightNodeId === node.id,
-                                    )
-                                ) {
-                                    ctx.globalAlpha = 1;
-                                } else {
-                                    ctx.globalAlpha = 0.1;
-                                }
-                                const circleRadius = zoomAdjustNodeSize
-                                    ? Math.max(node.radius, 1.5) / globalScale
-                                    : Math.max(node.radius, 1.5);
-
-                                if (isSelected) {
-                                    ctx.fillStyle = '#880000';
-                                    ctx.beginPath();
-                                    ctx.arc(
-                                        node.x!,
-                                        node.y!,
-                                        circleRadius +
-                                            (zoomAdjustNodeSize
-                                                ? 1 / globalScale
-                                                : 1),
-                                        0,
-                                        2 * Math.PI,
-                                        false,
-                                    );
-                                    ctx.fill();
-                                }
-
-                                ctx.fillStyle = node.color
-                                    ? addTransparency(
-                                          node.color,
-                                          isSelected ? 1 : 0.75,
-                                      )
-                                    : colorSet
-                                      ? addTransparency(
-                                            colorSet[0],
-                                            isSelected ? 1 : 0.75,
-                                        )
-                                      : '#000000e6';
-                                ctx.beginPath();
-                                ctx.arc(
-                                    node.x!,
-                                    node.y!,
-                                    circleRadius,
-                                    0,
-                                    2 * Math.PI,
-                                    false,
-                                );
-                                ctx.fill();
-
-                                const fontSize = Math.max(circleRadius / 2, 3);
-                                ctx.font = `${isSelected ? 'bold ' : ''}${fontSize}px Sans-Serif`;
-
-                                ctx.textAlign = 'center';
-                                ctx.textBaseline = 'middle';
-                                ctx.fillStyle = 'black';
-                                ctx.fillText(node.label, node.x!, node.y!);
-
-                                ctx.globalAlpha = 1;
-                            }}
-                            linkColor={(link) => linkColor(link as Link)}
-                            linkVisibility={(link) =>
-                                isLinkVisible({
-                                    link: link as {
-                                        source: { id: string };
-                                        target: { id: string };
-                                    },
-                                    highlightMode,
-                                    selectedNode: selectedNode as {
-                                        id: string;
-                                    } | null,
-                                    hoveredNode: hoveredNode as {
-                                        id: string;
-                                    } | null,
-                                })
-                            }
+                            graphData={sortedGraphData}
+                            nodeLabel={nodeLabelFn}
+                            nodeVal={nodeValFn}
+                            nodeCanvasObject={nodeCanvasObjectFn}
+                            linkColor={linkColorFn}
+                            linkVisibility={linkVisibilityFn}
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
-                            linkWidth={(l) =>
-                                showArrows && mode === 'arrow'
-                                    ? 1
-                                    : l.value ?? 1
-                            }
-                            linkLabel={(l) => l.label ?? ''}
+                            linkWidth={linkWidthFn}
+                            linkLabel={linkLabelFn}
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
                             linkCurvature={linkCurvature}
-                            nodePointerAreaPaint={(
-                                node,
-                                color,
-                                ctx,
-                                globalScale,
-                            ) => {
-                                const circleRadius = zoomAdjustNodeSize
-                                    ? Math.max(node.radius, 1.5) / globalScale
-                                    : Math.max(node.radius, 1.5);
-
-                                ctx.strokeStyle = color;
-                                ctx.fillStyle = color;
-                                ctx.beginPath();
-                                ctx.arc(
-                                    node.x!,
-                                    node.y!,
-                                    circleRadius,
-                                    0,
-                                    2 * Math.PI,
-                                    false,
-                                );
-                                ctx.fill();
-
-                                const fontSize = Math.max(circleRadius / 2, 3);
-                                ctx.font = `${fontSize}px Sans-Serif`;
-
-                                const textWidth = ctx.measureText(
-                                    node.label,
-                                ).width;
-                                const bckgDimensions: [number, number] = [
-                                    textWidth,
-                                    fontSize,
-                                ].map((n) => n + fontSize * 0.2) as [
-                                    number,
-                                    number,
-                                ]; // some padding
-
-                                ctx.fillRect(
-                                    node.x! - bckgDimensions[0] / 2,
-                                    node.y! - bckgDimensions[1] / 2,
-                                    ...bckgDimensions,
-                                );
-                            }}
+                            nodePointerAreaPaint={nodePointerAreaFn}
                             linkDirectionalParticleWidth={
                                 showArrows && mode === 'animated' ? 4 : 0
                             }
@@ -581,16 +597,18 @@ export const NetworkBase = ({
                         <MouseIcon />
                     </Box>
 
-                    <IconButton
-                        onClick={handleResetZoom}
-                        sx={{
-                            position: 'absolute',
-                            left: '48px',
-                            bottom: '8px',
-                        }}
-                    >
-                        <FilterCenterFocusIcon />
-                    </IconButton>
+                    <Tooltip title={translate('recenter_graph')}>
+                        <IconButton
+                            onClick={handleResetZoom}
+                            sx={{
+                                position: 'absolute',
+                                left: '48px',
+                                bottom: '8px',
+                            }}
+                        >
+                            <FilterCenterFocusIcon />
+                        </IconButton>
+                    </Tooltip>
                 </div>
                 <div>
                     <NetworkCaption

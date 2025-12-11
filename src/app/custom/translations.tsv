@@ -1520,3 +1520,4 @@
 "root"	"Root"	"Racine"
 "cancel_precomputation"	"Cancel precomputation"	"Annuler le précalcul"
 "precomputed_cancel_success"	"Precomputation successfully cancelled"	"Précalcul annulé avec succés"
+"recenter_graph"	"Recenter graph"	"Recentrer le graphique"

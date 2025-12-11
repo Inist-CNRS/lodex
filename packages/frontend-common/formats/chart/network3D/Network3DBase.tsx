@@ -8,7 +8,11 @@ import {
     useRef,
     useState,
 } from 'react';
-import type { ForceGraphMethods, NodeObject } from 'react-force-graph-3d';
+import type {
+    ForceGraphMethods,
+    LinkObject,
+    NodeObject,
+} from 'react-force-graph-3d';
 import {
     Group,
     Mesh,
@@ -28,6 +32,7 @@ import {
     IconButton,
     ToggleButton,
     ToggleButtonGroup,
+    Tooltip,
 } from '@mui/material';
 import SpriteText from 'three-spritetext';
 import { GraphAction } from '../../../../public-app/src/graph/GraphAction';
@@ -231,73 +236,82 @@ export const Network3DBase = ({
         };
     }, [animate]);
 
-    // @ts-expect-error TS7006
-    const handleNodeHover = (node) => {
+    const handleNodeHover = useCallback((node: NodeObject | null) => {
         // freeze the chart so that it does not rearrange itself every time we interact with it
         setCooldownTime(0);
         setHoveredNode(node);
-    };
+    }, []);
 
-    const handleNodeClick = (node: NodeObject | null) => {
-        // freeze the chart so that it does not rearrange itself every time we interact with it
-        setCooldownTime(0);
+    const handleNodeClick = useCallback(
+        (node: NodeObject | null) => {
+            // freeze the chart so that it does not rearrange itself every time we interact with it
+            setCooldownTime(0);
 
-        if (!node || selectedNode?.id === node?.id) {
-            setSelectedNode(null);
-            clearFilters();
-            return;
-        }
-        setSelectedNode(node);
+            if (!node || selectedNode?.id === node?.id) {
+                setSelectedNode(null);
+                clearFilters();
+                return;
+            }
+            setSelectedNode(node);
 
-        const nodeId = node.id?.toString();
-        const label =
-            node.label !== nodeId ? `${node.label} (${nodeId})` : nodeId;
+            const nodeId = node.id?.toString();
+            const label =
+                node.label !== nodeId ? `${node.label} (${nodeId})` : nodeId;
 
-        if (secondFieldToFilter && fieldToFilter && nodeId) {
-            selectOne(
-                node.isLeaf
-                    ? {
-                          fieldName: secondFieldToFilter,
-                          value: nodeId,
-                          label,
-                      }
-                    : {
-                          fieldName: fieldToFilter,
-                          value: nodeId,
-                          label,
-                      },
+            if (secondFieldToFilter && fieldToFilter && nodeId) {
+                selectOne(
+                    node.isLeaf
+                        ? {
+                              fieldName: secondFieldToFilter,
+                              value: nodeId,
+                              label,
+                          }
+                        : {
+                              fieldName: fieldToFilter,
+                              value: nodeId,
+                              label,
+                          },
+                );
+                return;
+            }
+
+            if (fieldToFilter && nodeId) {
+                selectOne({
+                    fieldName: fieldToFilter,
+                    value: nodeId,
+                    label,
+                });
+            }
+
+            if (!fgRef.current) {
+                return;
+            }
+            const distance = 80;
+            const distRatio =
+                1 + distance / Math.hypot(node.x!, node.y!, node.z!);
+
+            fgRef.current.cameraPosition(
+                {
+                    x: (node.x ?? 0) * distRatio,
+                    y: (node.y ?? 0) * distRatio,
+                    z: (node.z ?? 0) * distRatio,
+                },
+                {
+                    x: node.x ?? 0,
+                    y: node.y ?? 0,
+                    z: node.z ?? 0,
+                },
+                1000,
             );
-            return;
-        }
-
-        if (fieldToFilter && nodeId) {
-            selectOne({
-                fieldName: fieldToFilter,
-                value: nodeId,
-                label,
-            });
-        }
-
-        if (!fgRef.current) {
-            return;
-        }
-        const distance = 80;
-        const distRatio = 1 + distance / Math.hypot(node.x!, node.y!, node.z!);
-
-        fgRef.current.cameraPosition(
-            {
-                x: (node.x ?? 0) * distRatio,
-                y: (node.y ?? 0) * distRatio,
-                z: (node.z ?? 0) * distRatio,
-            },
-            {
-                x: node.x ?? 0,
-                y: node.y ?? 0,
-                z: node.z ?? 0,
-            },
-            1000,
-        );
-    };
+        },
+        [
+            clearFilters,
+            fieldToFilter,
+            secondFieldToFilter,
+            selectOne,
+            selectedNode,
+        ],
+    );
 
     const sortedNodes = useMemo(() => {
         return nodes.sort((a, b) =>
@@ -331,6 +345,99 @@ export const Network3DBase = ({
 
         fgRef.current.zoomToFit(250);
     };
+
+    const sortedGraphData = useMemo(() => {
+        return {
+            nodes: sortedNodes,
+            links,
+        };
+    }, [links, sortedNodes]);
+
+    const nodeLabelFn = useCallback((node: NodeObject) => {
+        return node.label;
+    }, []);
+    const nodeValFn = useCallback((n: NodeObject) => n.radius, []);
+    const nodeColorFn = useCallback(() => colorSet![0], [colorSet]);
+    const nodeThreeObjectFn = useCallback(
+        (node: NodeObject) => {
+            // Create a group to hold both sphere and text
+            const group = new Group();
+
+            // Determine if this node should be dimmed
+            const isHighlighted =
+                highlightedNodeIds.length === 0 ||
+                highlightedNodeIds.includes(node.id as string);
+            const opacity = isHighlighted ? 1.0 : 0.1;
+
+            // Create the sphere
+            const sphere = new SphereGeometry(Math.max(node.radius, 0.5));
+            const sphereMesh = new Mesh(
+                sphere,
+                new MeshLambertMaterial({
+                    color: node.color ?? colorSet?.[0] ?? '#ffffff',
+                    opacity: opacity,
+                    transparent: true,
+                }),
+            );
+
+            // Create the text sprite
+            const sprite = new SpriteText(node.label ?? node.id);
+            sprite.color = 'black';
+            sprite.textHeight = node.radius;
+            sprite.strokeColor = 'white';
+            sprite.strokeWidth = 0.5;
+            sprite.material.opacity = opacity;
+            sprite.material.transparent = true;
+
+            // Add both to the group
+            group.add(sphereMesh);
+            group.add(sprite);
+
+            // Store reference for dynamic positioning
+            nodeObjectsRef.current.set(node.id as string, {
+                group,
+                sprite,
+                node: node as Node,
+            });
+
+            return group;
+        },
+        [colorSet, highlightedNodeIds],
+    );
+
+    const linkColorFn = useCallback(
+        (link: LinkObject) => linkColor(link as Link),
+        [linkColor],
+    );
+
+    const linkVisibilityFn = useCallback(
+        (link: LinkObject) =>
+            isLinkVisible({
+                link: link as {
+                    source: { id: string };
+                    target: { id: string };
+                },
+                highlightMode,
+                selectedNode: selectedNode as {
+                    id: string;
+                } | null,
+                hoveredNode: hoveredNode as {
+                    id: string;
+                } | null,
+            }),
+        [highlightMode, hoveredNode, selectedNode],
+    );
+
+    const linkWidthFn = useCallback(
+        (link: LinkObject) =>
+            showArrows && mode === 'arrow' ? 1 : (link as Link).value ?? 1,
+        [mode, showArrows],
+    );
+
+    const linkLabelFn = useCallback(
+        (link: LinkObject) => (link as Link).label ?? '',
+        [],
+    );
 
     return (
         <div style={{ height: `500px` }}>
@@ -384,94 +491,20 @@ export const Network3DBase = ({
                         <ForceGraph3D
                             ref={fgRef}
                             backgroundColor="#ffffff00"
-                            nodeVal={(n) => n.radius}
-                            nodeColor={() => colorSet![0]}
-                            nodeThreeObject={(node) => {
-                                // Create a group to hold both sphere and text
-                                const group = new Group();
-
-                                // Determine if this node should be dimmed
-                                const isHighlighted =
-                                    highlightedNodeIds.length === 0 ||
-                                    highlightedNodeIds.includes(
-                                        node.id as string,
-                                    );
-                                const opacity = isHighlighted ? 1.0 : 0.1;
-
-                                // Create the sphere
-                                const sphere = new SphereGeometry(
-                                    Math.max(node.radius, 0.5),
-                                );
-                                const sphereMesh = new Mesh(
-                                    sphere,
-                                    new MeshLambertMaterial({
-                                        color:
-                                            node.color ??
-                                            colorSet?.[0] ??
-                                            '#ffffff',
-                                        opacity: opacity,
-                                        transparent: true,
-                                    }),
-                                );
-
-                                // Create the text sprite
-                                const sprite = new SpriteText(
-                                    node.label ?? node.id,
-                                );
-                                sprite.color = 'black';
-                                sprite.textHeight = node.radius;
-                                sprite.strokeColor = 'white';
-                                sprite.strokeWidth = 0.5;
-                                sprite.material.opacity = opacity;
-                                sprite.material.transparent = true;
-
-                                // Add both to the group
-                                group.add(sphereMesh);
-                                group.add(sprite);
-
-                                // Store reference for dynamic positioning
-                                nodeObjectsRef.current.set(node.id as string, {
-                                    group,
-                                    sprite,
-                                    node: node as Node,
-                                });
-
-                                return group;
-                            }}
+                            nodeVal={nodeValFn}
+                            nodeColor={nodeColorFn}
+                            nodeThreeObject={nodeThreeObjectFn}
                             width={width}
                             height={height}
-                            graphData={{
-                                nodes: sortedNodes,
-                                links,
-                            }}
-                            nodeLabel={(node) => {
-                                return node.label;
-                            }}
-                            linkColor={(link) => linkColor(link as Link)}
-                            linkVisibility={(link) =>
-                                isLinkVisible({
-                                    link: link as {
-                                        source: { id: string };
-                                        target: { id: string };
-                                    },
-                                    highlightMode,
-                                    selectedNode: selectedNode as {
-                                        id: string;
-                                    } | null,
-                                    hoveredNode: hoveredNode as {
-                                        id: string;
-                                    } | null,
-                                })
-                            }
+                            graphData={sortedGraphData}
+                            nodeLabel={nodeLabelFn}
+                            linkColor={linkColorFn}
+                            linkVisibility={linkVisibilityFn}
                             onNodeClick={handleNodeClick}
                             onNodeHover={handleNodeHover}
                             enableNodeDrag={false}
-                            linkWidth={(l) =>
-                                showArrows && mode === 'arrow'
-                                    ? 1
-                                    : l.value ?? 1
-                            }
-                            linkLabel={(l) => l.label ?? ''}
+                            linkWidth={linkWidthFn}
+                            linkLabel={linkLabelFn}
                             cooldownTime={forcePosition ? 0 : cooldownTime}
                             cooldownTicks={forcePosition ? 0 : undefined}
                             linkCurvature={linkCurvature}
@@ -507,17 +540,18 @@ export const Network3DBase = ({
                         <MouseIcon />
                     </Box>
 
-                    <IconButton
-                        onClick={handleResetZoom}
-                        sx={{
-                            position: 'absolute',
-                            left: '48px',
-                            bottom: '8px',
-                        }}
-                    >
-                        <FilterCenterFocusIcon />
-                    </IconButton>
-
+                    <Tooltip title={translate('recenter_graph')}>
+                        <IconButton
+                            onClick={handleResetZoom}
+                            sx={{
+                                position: 'absolute',
+                                left: '48px',
+                                bottom: '8px',
+                            }}
+                        >
+                            <FilterCenterFocusIcon />
+                        </IconButton>
+                    </Tooltip>
                     <NetworkCaption
                         captions={captions}
                         captionTitle={captionTitle}
