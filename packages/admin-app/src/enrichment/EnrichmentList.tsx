@@ -1,3 +1,6 @@
+import { TaskStatus, toast } from '@lodex/common';
+import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,11 +17,13 @@ import { default as React, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { launchAllEnrichment, retryEnrichment, type Enrichment } from './index';
-import { TaskStatus, toast } from '@lodex/common';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import EnrichmentStatus from './EnrichmentStatus';
+import {
+    launchAllEnrichment,
+    launchAllEnrichmentClearError,
+    retryEnrichment,
+    type Enrichment,
+} from './index';
 import RunButton from './RunButton';
 
 type EnrichmentListToolBarProps = {
@@ -114,6 +119,7 @@ type EnrichmentListProps = {
     runAllEnrichmentError: string | null;
     onLaunchAllEnrichment: () => void;
     onRetryEnrichment: (value: { id: string }) => void;
+    onRunAllEnrichmentClearError: () => void;
 };
 
 export const EnrichmentList = ({
@@ -123,6 +129,7 @@ export const EnrichmentList = ({
     runAllEnrichmentError,
     onLaunchAllEnrichment,
     onRetryEnrichment,
+    onRunAllEnrichmentClearError,
 }: EnrichmentListProps) => {
     const { translate } = useTranslate();
     const history = useHistory();
@@ -145,7 +152,9 @@ export const EnrichmentList = ({
         toast(translate(runAllEnrichmentError), {
             type: 'error',
         });
-    }, [runAllEnrichmentError, translate]);
+
+        onRunAllEnrichmentClearError();
+    }, [runAllEnrichmentError, translate, onRunAllEnrichmentClearError]);
 
     return (
         <Box>
@@ -263,6 +272,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     onLaunchAllEnrichment: launchAllEnrichment,
     onRetryEnrichment: retryEnrichment,
+    onRunAllEnrichmentClearError: launchAllEnrichmentClearError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EnrichmentList);

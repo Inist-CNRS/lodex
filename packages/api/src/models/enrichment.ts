@@ -14,6 +14,7 @@ export type Enrichment = {
     _id?: ObjectId;
     name: string;
     dataSource?: string;
+    sourceColumn?: string;
     description?: string;
     status: TaskStatusType;
     createdAt: Date;

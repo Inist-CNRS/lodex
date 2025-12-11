@@ -4,60 +4,46 @@
  * @property {string} sourceColumn
  */
 
-/**
- * @param {Enrichment[]} enrichments
- * @returns {Enrichment[]}
- */
-export function orderEnrichmentsByDependencies(
-    datasetColumns: any,
-    enrichments: any,
-) {
-    /**
-     * @type {Enrichment[]}
-     */
-    const enrichmentQueue = [].concat(enrichments);
+import type { Enrichment } from '../models/enrichment';
 
-    /**
-     * @type {Set<string>}
-     */
+export function orderEnrichmentsByDependencies<
+    T extends Pick<Enrichment, 'name' | 'sourceColumn'>,
+>(datasetColumns: string[], enrichments: T[]) {
+    const enrichmentQueue: T[] = [...enrichments];
+
     const visitedEnrichments = new Set(datasetColumns);
 
-    /**
-     * @type {Enrichment[]}
-     */
-    const orderedEnrichments: any = [];
+    const orderedEnrichments: T[] = [];
 
-    /**
-     * @type {Enrichment | null}
-     */
-    let loopDetector = null;
+    let loopDetector: T | null = null;
 
-    function visitEnrichment(enrichment: any) {
+    function visitEnrichment(enrichment: T) {
         orderedEnrichments.push(enrichment);
         visitedEnrichments.add(enrichment.name);
         loopDetector = null;
     }
 
     while (enrichmentQueue.length) {
-        const enrichment = enrichmentQueue.shift();
+        const enrichment = enrichmentQueue.shift()!;
 
         if (enrichment === loopDetector) {
+            console.error(
+                'Missing dependency or circular dependency detected for enrichments:',
+                enrichment.name,
+            );
             throw new Error('circular_dependency');
         }
 
-        // @ts-expect-error TS(18048): enrichment is possibly undefined
         if (!enrichment.sourceColumn) {
             visitEnrichment(enrichment);
             continue;
         }
 
-        // @ts-expect-error TS(18048): enrichment is possibly undefined
         if (visitedEnrichments.has(enrichment.sourceColumn)) {
             visitEnrichment(enrichment);
             continue;
         }
 
-        // @ts-expect-error TS(18048): enrichment is possibly undefined
         enrichmentQueue.push(enrichment);
         if (loopDetector === null) {
             loopDetector = enrichment;
