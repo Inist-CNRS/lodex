@@ -283,6 +283,7 @@ export const PropertyComponent = ({
                         direction="row"
                         gap="0.5rem"
                         justifyContent="flex-end"
+                        alignItems="center"
                         ref={portalContainer}
                     />
                 </Stack>
