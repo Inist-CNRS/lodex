@@ -146,7 +146,7 @@ export const AutoCompleteField = ({
     getOptionLabel: getOptionLabelProp,
     onInputChange,
     renderOption,
-    ...props
+    onChange,
 }: AutoCompleteProps) => {
     const { translate } = useTranslate();
     const { field, fieldState } = useController({
@@ -169,11 +169,11 @@ export const AutoCompleteField = ({
                 clearIdentifier();
             }
 
-            props.onChange?.(event, newValue, reason, details);
+            onChange?.(event, newValue, reason, details);
 
             field.onChange(newValue);
         },
-        [field.onChange, props.onChange, clearIdentifier],
+        [field, onChange, clearIdentifier],
     );
 
     const handleInputValueChange = useCallback<
@@ -185,7 +185,7 @@ export const AutoCompleteField = ({
                 field.onChange(value);
             }
         },
-        [field.onChange, allowNewItem],
+        [field, allowNewItem, onInputChange],
     );
 
     const getOptionLabel = useCallback(

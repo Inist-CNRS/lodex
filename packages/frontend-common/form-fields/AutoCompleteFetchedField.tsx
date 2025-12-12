@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetch as fetchAction } from '../fetch/reducer';
 import {
@@ -19,15 +19,27 @@ const AutoCompleteFetchedField = ({
     parseResponse,
     ...props
 }: AutoCompleteFetchedFieldProps) => {
+    const currentSearch = useRef<string | null>(null);
+
     const fetch = useSelector((state: SharedState) => state.fetch);
-    const dataSource = parseResponse(fetch[name] && fetch[name].response);
-    const source = dataSource || [];
+    const source = useMemo(
+        () => parseResponse(fetch[name] && fetch[name].response) || [],
+        [fetch, name, parseResponse],
+    );
 
     const dispatch = useDispatch();
-    const handleSearch = (searchText: string) => {
-        if (!searchText) return;
-        dispatch(fetchAction({ config: getFetchRequest(searchText), name }));
-    };
+
+    const handleSearch = useCallback(
+        (searchText: string) => {
+            if (!searchText || currentSearch.current === searchText) return;
+            // Avoid to re-fetch for the same search text
+            currentSearch.current = searchText;
+            dispatch(
+                fetchAction({ config: getFetchRequest(searchText), name }),
+            );
+        },
+        [dispatch, getFetchRequest, name],
+    );
 
     const handleComplete = useCallback(
         (_: unknown, searchText: string) => {
