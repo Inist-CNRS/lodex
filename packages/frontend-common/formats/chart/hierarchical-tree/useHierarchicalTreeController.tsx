@@ -245,6 +245,7 @@ export function useHierarchicalTreeController({
     const selectNodeById = useCallback(
         async (nodeId?: string) => {
             if (!treeRef.current || nodeId == null) {
+                setSelectedNodeOption(null);
                 return;
             }
 

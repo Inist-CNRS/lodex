@@ -124,7 +124,7 @@ export function HierarchicalTreeView({
                         label={translate('select_node')}
                         value={selectedNodeOption}
                         onChange={(_event, option) => {
-                            selectNodeById(option.value);
+                            selectNodeById(option ? option.value : null);
                         }}
                         getOptionLabel={(
                             option:
