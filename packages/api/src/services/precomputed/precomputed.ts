@@ -19,6 +19,7 @@ import { PRECOMPUTER } from '../../workers/precomputer';
 import { jobLogger } from '../../workers/tools';
 import getLogger from '../logger';
 import { mongoConnectionString } from '../mongoClient';
+import { addSidToUrl } from '../enrichment/enrichment';
 
 const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to the Web service entry point.
 ezs.use(Lodex);
@@ -160,7 +161,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
 
-    const webServiceRetrieveURL = new URL(webServiceUrl);
+    const webServiceRetrieveURL = new URL(addSidToUrl(webServiceUrl));
     webServiceRetrieveURL.pathname = path.join(
         path.dirname(webServiceRetrieveURL.pathname),
         RETRIEVE_ENTRY_POINT,
@@ -206,7 +207,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
                 value: [
                     importedDate.toDateString(),
                     precomputedId,
-                    webServiceUrl,
+                    addSidToUrl(webServiceUrl),
                 ],
             }),
         )
@@ -439,16 +440,17 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
             'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}&failure`,
         },
     };
+    const webServicePrecomputedURL = addSidToUrl(precomputed.webServiceUrl);
     logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] 4/10 - Get Token from ${precomputed.webServiceUrl}`,
+        message: `[Instance: ${ctx.tenant}] 4/10 - Get Token from ${webServicePrecomputedURL}`,
         timestamp: new Date(),
         status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
 
-    const response = await fetch(precomputed.webServiceUrl, parameters);
+    const response = await fetch(webServicePrecomputedURL, parameters);
     const token = await response.text();
     if (!response.ok) {
         const { type: responseErrorTitle, message: responseErrorMessage } =

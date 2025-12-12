@@ -19,6 +19,13 @@ import getLogger from '../logger';
 
 export const DATASET_COLLECTION = 'dataset';
 
+
+export const addSidToUrl = (url: string) => {
+    const urlObj = new URL(url);
+    urlObj.searchParams.append('sid', 'lodex');
+    return urlObj.toString();
+};
+
 const getSource = (ctx: Koa.Context, dataSource?: string): Source => {
     const collectionName =
         !dataSource || dataSource === DATASET_COLLECTION
@@ -177,7 +184,7 @@ export const getEnrichmentRuleModel = (
         rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
         if (enrichment.webServiceUrl) {
             rule = rule
-                .replace('[[WEB SERVICE URL]]', enrichment.webServiceUrl)
+                .replace('[[WEB SERVICE URL]]', addSidToUrl(enrichment.webServiceUrl))
                 .replace(
                     '[[WEB SERVICE TIMEOUT]]',
                     // @ts-expect-error TS(2304): Cannot find name 'Number'.
@@ -316,7 +323,7 @@ stop = false
 
 [group]
 length = ${BATCH_SIZE}
-    
+
 # Ensures that EZS does not write to the database if the job has been canceled
 [breaker]
 fusible = ${fusible}
