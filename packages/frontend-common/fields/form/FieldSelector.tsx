@@ -10,7 +10,7 @@ export function getFieldSelectorOptions(fieldsByName: Record<string, Field>) {
     return Object.keys(fieldsByName)
         .filter((name) => {
             const field = fieldsByName[name];
-            return field?.scope === 'document';
+            return ['document', 'collection'].includes(field?.scope as string);
         })
         .toSorted((a, b) => {
             const fieldA = fieldsByName[a]!;
