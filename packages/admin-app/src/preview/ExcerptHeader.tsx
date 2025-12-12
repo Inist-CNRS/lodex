@@ -1,19 +1,19 @@
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
-import memoize from 'lodash/memoize';
 import HiddenIcon from '@mui/icons-material/VisibilityOff';
+import memoize from 'lodash/memoize';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
 import { SCOPE_DATASET, URI_FIELD_NAME } from '@lodex/common';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import {
-    isLongText,
     getShortText,
+    isLongText,
 } from '@lodex/frontend-common/utils/longTexts';
 
-import FieldInternalIcon from '../fields/FieldInternalIcon';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Field } from '@lodex/frontend-common/fields/types';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import FieldInternalIcon from '../fields/FieldInternalIcon';
 
 const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {
@@ -64,10 +64,10 @@ interface ComposedOfProps {
 }
 
 const ComposedOf = ({ compositeFields }: ComposedOfProps) => {
+    const { translate } = useTranslate();
     if (!compositeFields.length) {
         return null;
     }
-    // @ts-expect-error TS18046
     const composedOfText = translate('composed_of_fields', {
         fields: compositeFields.join(', '),
     });

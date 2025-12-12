@@ -143,6 +143,7 @@ type NetworkBaseProps = {
     zoomAdjustNodeSize?: boolean;
     captionTitle?: string;
     captions?: Record<string, string>;
+    displayDifferentShape?: boolean;
 };
 
 export const NetworkBase = ({
@@ -158,6 +159,7 @@ export const NetworkBase = ({
     zoomAdjustNodeSize = false,
     captions,
     captionTitle,
+    displayDifferentShape = false,
 }: NetworkBaseProps) => {
     const { translate } = useTranslate();
     const { selectOne, clearFilters } = useSearchPaneContextOrDefault();
@@ -429,7 +431,7 @@ export const NetworkBase = ({
             if (isSelected) {
                 ctx.fillStyle = '#880000';
                 ctx.beginPath();
-                if (node.isLeaf) {
+                if (displayDifferentShape && node.isLeaf) {
                     const offset = (circleRadius + borderWidth) / 2;
                     ctx.fillRect(
                         node.x! - offset,
@@ -457,7 +459,7 @@ export const NetworkBase = ({
                   : '#000000e6';
             ctx.beginPath();
 
-            if (node.isLeaf) {
+            if (displayDifferentShape && node.isLeaf) {
                 const offset = circleRadius / 2;
                 ctx.fillRect(
                     node.x! - offset,
@@ -480,7 +482,13 @@ export const NetworkBase = ({
 
             ctx.globalAlpha = 1;
         },
-        [colorSet, highlightedNodeIds, zoomAdjustNodeSize, selectedNode?.id],
+        [
+            colorSet,
+            highlightedNodeIds,
+            zoomAdjustNodeSize,
+            displayDifferentShape,
+            selectedNode?.id,
+        ],
     );
 
     const nodePointerAreaFn = useCallback(

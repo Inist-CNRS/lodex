@@ -66,6 +66,7 @@ type NetworkBaseProps = {
     secondFieldToFilter?: string | null;
     captions?: Record<string, string>;
     captionTitle?: string;
+    displayDifferentShape?: boolean;
 };
 
 export const Network3DBase = ({
@@ -80,6 +81,7 @@ export const Network3DBase = ({
     secondFieldToFilter,
     captions,
     captionTitle,
+    displayDifferentShape = false,
 }: NetworkBaseProps) => {
     const fgRef = useRef<ForceGraphMethods>();
     const nodeObjectsRef = useRef<
@@ -372,9 +374,10 @@ export const Network3DBase = ({
 
             // Create the sphere
             const radius = Math.max(node.radius, 0.5);
-            const geometry = node.isLeaf
-                ? new BoxGeometry(radius, radius, radius)
-                : new SphereGeometry(radius);
+            const geometry =
+                displayDifferentShape && node.isLeaf
+                    ? new BoxGeometry(radius, radius, radius)
+                    : new SphereGeometry(radius);
             const geometryMesh = new Mesh(
                 geometry,
                 new MeshLambertMaterial({
@@ -406,7 +409,7 @@ export const Network3DBase = ({
 
             return group;
         },
-        [colorSet, highlightedNodeIds],
+        [colorSet, highlightedNodeIds, displayDifferentShape],
     );
 
     const linkColorFn = useCallback(
