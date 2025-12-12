@@ -8,7 +8,6 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 export function NetworkCaption({
@@ -16,29 +15,8 @@ export function NetworkCaption({
     captionTitle,
 }: NetworkCaptionProps) {
     const { translate } = useTranslate();
-    const otherLabel = useMemo(() => translate('other'), [translate]);
 
-    const captionList = useMemo(() => {
-        if (!captions) {
-            return [];
-        }
-        return Object.entries(captions)
-            .map(([caption, color]) => ({
-                caption: caption?.trim(),
-                color: color?.trim(),
-            }))
-            .filter(
-                (item): item is { caption: string; color: string } =>
-                    !!item.caption && !!item.color,
-            )
-            .toSorted((a, b) => {
-                if (a.caption === otherLabel) return 1;
-                if (b.caption === otherLabel) return -1;
-                return 0;
-            });
-    }, [captions, otherLabel]);
-
-    if (!captionList.length) {
+    if (!captions?.length) {
         return null;
     }
 
@@ -85,12 +63,12 @@ export function NetworkCaption({
                     gap: '12px',
                 }}
             >
-                {captionList.map(({ caption, color }) => (
+                {captions.map(({ label, color }) => (
                     <Stack
                         direction="row"
                         alignItems="center"
                         gap="8px"
-                        key={caption}
+                        key={label}
                     >
                         <Box
                             sx={{
@@ -103,7 +81,7 @@ export function NetworkCaption({
                                 border: '1px solid #00000033',
                             }}
                         />
-                        <Tooltip title={caption} placement="top">
+                        <Tooltip title={label} placement="top">
                             <Typography
                                 component="span"
                                 sx={{
@@ -114,7 +92,7 @@ export function NetworkCaption({
                                     flexGrow: 1,
                                 }}
                             >
-                                {caption}
+                                {label}
                             </Typography>
                         </Tooltip>
                     </Stack>
@@ -126,5 +104,8 @@ export function NetworkCaption({
 
 type NetworkCaptionProps = {
     captionTitle?: string;
-    captions?: Record<string, string>;
+    captions?: {
+        label: string;
+        color: string;
+    }[];
 };

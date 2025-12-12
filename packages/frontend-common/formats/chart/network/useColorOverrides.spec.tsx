@@ -18,25 +18,25 @@ describe('useColorOverrides', () => {
             label: 'isAdvancedColorMode is false',
             isAdvancedColorMode: false,
             colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'isAdvancedColorMode is undefined',
             isAdvancedColorMode: undefined,
             colorScale: [{ color: '#FF0000', values: ['A', 'B'] }],
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'colorScale is undefined',
             isAdvancedColorMode: true,
             colorScale: undefined,
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'colorScale is empty array',
             isAdvancedColorMode: true,
             colorScale: [],
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
     ])(
         'should return empty object when $label',
@@ -74,9 +74,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                'A, B, C': '#FF0000',
-            },
+            captions: [{ label: 'A, B, C', color: '#FF0000' }],
         });
     });
 
@@ -93,11 +91,11 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Red: '#FF0000',
-                Green: '#00FF00',
-                Blue: '#0000FF',
-            },
+            captions: [
+                { label: 'Red', color: '#FF0000' },
+                { label: 'Green', color: '#00FF00' },
+                { label: 'Blue', color: '#0000FF' },
+            ],
         });
     });
 
@@ -116,9 +114,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Caption: '#FF0000',
-            },
+            captions: [{ label: 'Caption', color: '#FF0000' }],
         });
     });
 
@@ -133,9 +129,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                'A, B, C': '#FF0000',
-            },
+            captions: [{ label: 'A, B, C', color: '#FF0000' }],
         });
     });
 
@@ -143,22 +137,22 @@ describe('useColorOverrides', () => {
         {
             label: 'item with missing color',
             colorScale: [{ values: ['A', 'B'] }] as ColorScaleItem[],
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'item with missing values',
             colorScale: [{ color: '#FF0000' }] as ColorScaleItem[],
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'item with empty color',
             colorScale: [{ color: '', values: ['A', 'B'] }] as ColorScaleItem[],
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'item with empty values array',
             colorScale: [{ color: '#FF0000', values: [] }] as ColorScaleItem[],
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'removal of item with whitespace-only color',
@@ -167,7 +161,7 @@ describe('useColorOverrides', () => {
             ] as ColorScaleItem[],
             expected: {
                 colorOverrides: expect.any(Function),
-                captions: {},
+                captions: [],
             },
         },
     ])('should handle $label', ({ colorScale, expected }) => {
@@ -193,10 +187,10 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Red: '#FF0000',
-                D: '#00FF00',
-            },
+            captions: [
+                { label: 'Red', color: '#FF0000' },
+                { label: 'D', color: '#00FF00' },
+            ],
         });
     });
 
@@ -212,10 +206,10 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Red: '#FF0000',
-                Green: '#00FF00',
-            },
+            captions: [
+                { label: 'Red', color: '#FF0000' },
+                { label: 'Green', color: '#00FF00' },
+            ],
         });
     });
 
@@ -231,23 +225,21 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {},
+            captions: [],
         });
 
         rerender({ advanced: true });
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                'A, B': '#FF0000',
-            },
+            captions: [{ label: 'A, B', color: '#FF0000' }],
         });
 
         rerender({ advanced: false });
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {},
+            captions: [],
         });
     });
 
@@ -266,18 +258,14 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Red: '#FF0000',
-            },
+            captions: [{ label: 'Red', color: '#FF0000' }],
         });
 
         rerender({ scale: colorScale2 });
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Green: '#00FF00',
-            },
+            captions: [{ label: 'Green', color: '#00FF00' }],
         });
     });
 
@@ -297,19 +285,17 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                A: '#FF0000',
-            },
+            captions: [{ label: 'A', color: '#FF0000' }],
         });
 
         rerender({ scale: colorScale2 });
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                A: '#FF0000',
-                Green: '#00FF00',
-            },
+            captions: [
+                { label: 'A', color: '#FF0000' },
+                { label: 'Green', color: '#00FF00' },
+            ],
         });
     });
 
@@ -327,7 +313,9 @@ describe('useColorOverrides', () => {
         rerender();
 
         expect(result.current).toBe(firstResult);
-        expect(result.current.captions).toEqual({ 'A, B': '#FF0000' });
+        expect(result.current.captions).toEqual([
+            { label: 'A, B', color: '#FF0000' },
+        ]);
     });
 
     it('should handle single value', () => {
@@ -341,9 +329,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Single: '#FF0000',
-            },
+            captions: [{ label: 'Single', color: '#FF0000' }],
         });
     });
 
@@ -368,9 +354,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Complex: '#FF0000',
-            },
+            captions: [{ label: 'Complex', color: '#FF0000' }],
         });
     });
 
@@ -388,9 +372,12 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                'value-1, value_2, value.3, value@4': '#FF0000',
-            },
+            captions: [
+                {
+                    label: 'value-1, value_2, value.3, value@4',
+                    color: '#FF0000',
+                },
+            ],
         });
     });
 
@@ -407,7 +394,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {},
+            captions: [],
         });
     });
 
@@ -424,7 +411,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {},
+            captions: [],
         });
 
         const colorScale: ColorScaleItem[] = [
@@ -435,9 +422,7 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Red: '#FF0000',
-            },
+            captions: [{ label: 'Red', color: '#FF0000' }],
         });
     });
 
@@ -458,16 +443,14 @@ describe('useColorOverrides', () => {
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {
-                Red: '#FF0000',
-            },
+            captions: [{ label: 'Red', color: '#FF0000' }],
         });
 
         rerender({ scale: undefined });
 
         expect(result.current).toEqual({
             colorOverrides: expect.any(Function),
-            captions: {},
+            captions: [],
         });
     });
 
@@ -480,7 +463,10 @@ describe('useColorOverrides', () => {
             defaultColor: '#CCCCCC',
             expected: {
                 colorOverrides: expect.any(Function),
-                captions: { Red: '#FF0000', other: '#CCCCCC' },
+                captions: [
+                    { label: 'Red', color: '#FF0000' },
+                    { label: 'other', color: '#CCCCCC' },
+                ],
             },
         },
         {
@@ -491,7 +477,7 @@ describe('useColorOverrides', () => {
             defaultColor: undefined,
             expected: {
                 colorOverrides: expect.any(Function),
-                captions: { Red: '#FF0000' },
+                captions: [{ label: 'Red', color: '#FF0000' }],
             },
         },
         {
@@ -500,7 +486,7 @@ describe('useColorOverrides', () => {
             defaultColor: '#999999',
             expected: {
                 colorOverrides: expect.any(Function),
-                captions: { other: '#999999' },
+                captions: [{ label: 'other', color: '#999999' }],
             },
         },
         {
@@ -509,7 +495,7 @@ describe('useColorOverrides', () => {
             defaultColor: '#888888',
             expected: {
                 colorOverrides: expect.any(Function),
-                captions: { other: '#888888' },
+                captions: [{ label: 'other', color: '#888888' }],
             },
         },
         {
@@ -519,7 +505,7 @@ describe('useColorOverrides', () => {
             ] as ColorScaleItem[],
             defaultColor: '#CCCCCC',
             isAdvancedColorMode: false,
-            expected: { colorOverrides: expect.any(Function), captions: {} },
+            expected: { colorOverrides: expect.any(Function), captions: [] },
         },
         {
             label: 'with empty string as defaultColor',
@@ -529,7 +515,7 @@ describe('useColorOverrides', () => {
             defaultColor: '',
             expected: {
                 colorOverrides: expect.any(Function),
-                captions: { A: '#FF0000' },
+                captions: [{ label: 'A', color: '#FF0000' }],
             },
         },
         {
@@ -542,12 +528,12 @@ describe('useColorOverrides', () => {
             defaultColor: '#CCCCCC',
             expected: {
                 colorOverrides: expect.any(Function),
-                captions: {
-                    Red: '#FF0000',
-                    Green: '#00FF00',
-                    'D, E': '#0000FF',
-                    other: '#CCCCCC',
-                },
+                captions: [
+                    { label: 'Red', color: '#FF0000' },
+                    { label: 'Green', color: '#00FF00' },
+                    { label: 'D, E', color: '#0000FF' },
+                    { label: 'other', color: '#CCCCCC' },
+                ],
             },
         },
     ])(
@@ -580,23 +566,29 @@ describe('useColorOverrides', () => {
             { initialProps: { color: '#AAAAAA' as string | undefined } },
         );
 
-        expect(result.current.captions).toEqual({
-            Red: '#FF0000',
-            other: '#AAAAAA',
-        });
+        expect(result.current.captions).toEqual([
+            {
+                label: 'Red',
+                color: '#FF0000',
+            },
+            {
+                label: 'other',
+                color: '#AAAAAA',
+            },
+        ]);
 
         rerender({ color: '#BBBBBB' });
 
-        expect(result.current.captions).toEqual({
-            Red: '#FF0000',
-            other: '#BBBBBB',
-        });
+        expect(result.current.captions).toEqual([
+            { label: 'Red', color: '#FF0000' },
+            { label: 'other', color: '#BBBBBB' },
+        ]);
 
         rerender({ color: undefined });
 
-        expect(result.current.captions).toEqual({
-            Red: '#FF0000',
-        });
+        expect(result.current.captions).toEqual([
+            { label: 'Red', color: '#FF0000' },
+        ]);
     });
 
     it('should return a colorOverrides function that uses defaultColor when no match is found', () => {
