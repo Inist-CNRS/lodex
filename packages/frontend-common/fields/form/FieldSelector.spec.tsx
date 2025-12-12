@@ -83,7 +83,7 @@ describe('getFieldSelectorOptions', () => {
                     scope: 'collection',
                 } as Field,
             },
-            expected: [],
+            expected: ['collectionField'],
         },
         {
             label: 'graphic scope',
@@ -367,17 +367,6 @@ describe('FieldSelector', () => {
             ] as Field[],
         },
         {
-            label: 'collection scope field',
-            fields: [
-                {
-                    _id: '1',
-                    name: 'collectionField',
-                    label: 'Collection Field',
-                    scope: 'collection',
-                },
-            ] as Field[],
-        },
-        {
             label: 'graphic scope field',
             fields: [
                 {
@@ -602,13 +591,13 @@ describe('FieldSelector', () => {
                 },
                 {
                     _id: '3',
-                    name: 'doc2',
+                    name: 'col1',
                     label: 'Banana',
-                    scope: 'document',
+                    scope: 'collection',
                 },
                 {
                     _id: '4',
-                    name: 'doc3',
+                    name: 'doc2',
                     label: 'Cherry',
                     scope: 'document',
                 },
@@ -626,9 +615,9 @@ describe('FieldSelector', () => {
                 },
                 {
                     _id: '2',
-                    name: 'collection1',
-                    label: 'Collection',
-                    scope: 'collection',
+                    name: 'graphic1',
+                    label: 'Graphic',
+                    scope: 'graphic',
                 },
             ] as Field[],
             expectedOptionsCount: 0,
