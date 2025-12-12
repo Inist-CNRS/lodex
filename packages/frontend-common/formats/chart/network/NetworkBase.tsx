@@ -142,7 +142,10 @@ type NetworkBaseProps = {
     secondFieldToFilter?: string | null;
     zoomAdjustNodeSize?: boolean;
     captionTitle?: string;
-    captions?: Record<string, string>;
+    captions?: {
+        label: string;
+        color: string;
+    }[];
 };
 
 export const NetworkBase = ({

@@ -23,7 +23,7 @@ export function useColorOverrides(
         if (!isAdvancedColorMode) {
             return {
                 colorOverrides: () => defaultColor || 'gray',
-                captions: {},
+                captions: [],
             };
         }
 
@@ -38,27 +38,25 @@ export function useColorOverrides(
             };
         });
 
-        const captions = {
-            ...(sanitizedColorScale ?? []).reduce<ColorOverrides['captions']>(
-                (acc, item) => {
-                    if (item?.values && item?.color) {
-                        const color = item.color;
+        const captions: { color: string; label: string }[] = (
+            sanitizedColorScale ?? []
+        )
+            .map((item) => {
+                if (item?.values && item?.values?.length && item?.color) {
+                    return { label: item.caption, color: item.color };
+                }
 
-                        const caption = item.caption;
-                        if (caption) {
-                            acc[caption] = color;
-                        }
-                    }
-
-                    return acc;
-                },
-                (defaultColor
+                return null;
+            })
+            .filter(Boolean)
+            .concat(
+                defaultColor
                     ? {
-                          [translate('other')]: defaultColor,
+                          label: translate('other'),
+                          color: defaultColor,
                       }
-                    : {}) as ColorOverrides['captions'],
-            ),
-        };
+                    : [],
+            ) as { color: string; label: string }[];
 
         const colorOverrides = (content: string): string => {
             if (!colorScale) {
@@ -82,7 +80,7 @@ export function useColorOverrides(
 
 export type ColorOverrides = {
     colorOverrides: (content: string) => string;
-    captions: Record<string, string>;
+    captions: { label: string; color: string }[];
 };
 
 export type ColorScaleItem = {

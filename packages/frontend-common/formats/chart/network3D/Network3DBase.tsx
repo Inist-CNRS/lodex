@@ -63,7 +63,10 @@ type NetworkBaseProps = {
     showArrows?: boolean;
     fieldToFilter?: string | null;
     secondFieldToFilter?: string | null;
-    captions?: Record<string, string>;
+    captions?: {
+        label: string;
+        color: string;
+    }[];
     captionTitle?: string;
 };
 
