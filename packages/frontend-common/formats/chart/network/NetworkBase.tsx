@@ -425,17 +425,28 @@ export const NetworkBase = ({
                 ? Math.max(node.radius, 1.5) / globalScale
                 : Math.max(node.radius, 1.5);
 
+            const borderWidth = zoomAdjustNodeSize ? 1 / globalScale : 1;
             if (isSelected) {
                 ctx.fillStyle = '#880000';
                 ctx.beginPath();
-                ctx.arc(
-                    node.x!,
-                    node.y!,
-                    circleRadius + (zoomAdjustNodeSize ? 1 / globalScale : 1),
-                    0,
-                    2 * Math.PI,
-                    false,
-                );
+                if (node.isLeaf) {
+                    const offset = (circleRadius + borderWidth) / 2;
+                    ctx.fillRect(
+                        node.x! - offset,
+                        node.y! - offset,
+                        circleRadius + borderWidth,
+                        circleRadius + borderWidth,
+                    );
+                } else {
+                    ctx.arc(
+                        node.x!,
+                        node.y!,
+                        circleRadius + borderWidth,
+                        0,
+                        2 * Math.PI,
+                        false,
+                    );
+                }
                 ctx.fill();
             }
 
@@ -445,7 +456,18 @@ export const NetworkBase = ({
                   ? addTransparency(colorSet[0], isSelected ? 1 : 0.75)
                   : '#000000e6';
             ctx.beginPath();
-            ctx.arc(node.x!, node.y!, circleRadius, 0, 2 * Math.PI, false);
+
+            if (node.isLeaf) {
+                const offset = circleRadius / 2;
+                ctx.fillRect(
+                    node.x! - offset,
+                    node.y! - offset,
+                    circleRadius,
+                    circleRadius,
+                );
+            } else {
+                ctx.arc(node.x!, node.y!, circleRadius, 0, 2 * Math.PI, false);
+            }
             ctx.fill();
 
             const fontSize = Math.max(circleRadius / 2, 3);
@@ -492,7 +514,7 @@ export const NetworkBase = ({
                 ...bckgDimensions,
             );
         },
-        [],
+        [zoomAdjustNodeSize],
     );
 
     return (

@@ -1,4 +1,4 @@
-import Remove from '@mui/icons-material/Remove';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, IconButton, Stack } from '@mui/material';
 import { useCallback, type FunctionComponent } from 'react';
 import { useTranslate } from '../i18n/I18NContext';
@@ -79,7 +79,7 @@ export const ArrayInput = <
                             }}
                             aria-label={translate('remove')}
                         >
-                            <Remove />
+                            <DeleteIcon />
                         </IconButton>
                     </Box>
                 </Stack>
