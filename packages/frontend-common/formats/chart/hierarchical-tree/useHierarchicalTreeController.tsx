@@ -82,10 +82,14 @@ const getTreeNodeOptions = (
     value: string;
     label: string;
 }[] => {
+    const label =
+        typeof tree?.attributes?.title === 'string'
+            ? tree.attributes.title
+            : tree.name;
     return [
         {
             value: tree.__rd3t.id,
-            label: tree.name,
+            label,
         },
         ...(tree.children ?? []).flatMap((child) =>
             getTreeNodeOptions(child, result),
@@ -231,7 +235,10 @@ export function useHierarchicalTreeController({
             node
                 ? {
                       value: node?.data.__rd3t.id,
-                      label: node?.data.name,
+                      label:
+                          typeof node?.data?.attributes?.title === 'string'
+                              ? node?.data.attributes.title
+                              : node?.data.name,
                   }
                 : null,
         );
