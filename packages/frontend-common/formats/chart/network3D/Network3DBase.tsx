@@ -14,6 +14,7 @@ import type {
     NodeObject,
 } from 'react-force-graph-3d';
 import {
+    BoxGeometry,
     Group,
     Mesh,
     MeshLambertMaterial,
@@ -68,6 +69,7 @@ type NetworkBaseProps = {
         color: string;
     }[];
     captionTitle?: string;
+    displayDifferentShape?: boolean;
 };
 
 export const Network3DBase = ({
@@ -82,6 +84,7 @@ export const Network3DBase = ({
     secondFieldToFilter,
     captions,
     captionTitle,
+    displayDifferentShape = false,
 }: NetworkBaseProps) => {
     const fgRef = useRef<ForceGraphMethods>();
     const nodeObjectsRef = useRef<
@@ -373,9 +376,13 @@ export const Network3DBase = ({
             const opacity = isHighlighted ? 1.0 : 0.1;
 
             // Create the sphere
-            const sphere = new SphereGeometry(Math.max(node.radius, 0.5));
-            const sphereMesh = new Mesh(
-                sphere,
+            const radius = Math.max(node.radius, 0.5);
+            const geometry =
+                displayDifferentShape && node.isLeaf
+                    ? new BoxGeometry(radius, radius, radius)
+                    : new SphereGeometry(radius);
+            const geometryMesh = new Mesh(
+                geometry,
                 new MeshLambertMaterial({
                     color: node.color ?? colorSet?.[0] ?? '#ffffff',
                     opacity: opacity,
@@ -393,7 +400,7 @@ export const Network3DBase = ({
             sprite.material.transparent = true;
 
             // Add both to the group
-            group.add(sphereMesh);
+            group.add(geometryMesh);
             group.add(sprite);
 
             // Store reference for dynamic positioning
@@ -405,7 +412,7 @@ export const Network3DBase = ({
 
             return group;
         },
-        [colorSet, highlightedNodeIds],
+        [colorSet, highlightedNodeIds, displayDifferentShape],
     );
 
     const linkColorFn = useCallback(

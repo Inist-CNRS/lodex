@@ -29,6 +29,7 @@ type NetworkArgs = {
         uri?: string;
     };
     displayWeighted?: boolean;
+    displayDifferentShape?: boolean;
     zoomAdjustNodeSize?: boolean;
     minRadius?: number;
     maxRadius?: number;
@@ -49,6 +50,7 @@ export const defaultArgs: NetworkArgs = {
         uri: undefined,
     },
     displayWeighted: true,
+    displayDifferentShape: false,
     zoomAdjustNodeSize: false,
     minRadius: 5,
     maxRadius: 25,
@@ -186,6 +188,20 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                         width: '100%',
                     }}
                 />
+
+                {format === 'network3D' && (
+                    <FormControlLabel
+                        control={<Switch />}
+                        checked={args.displayDifferentShape ?? false}
+                        onChange={(_, checked) => {
+                            onChange({
+                                ...args,
+                                displayDifferentShape: checked,
+                            });
+                        }}
+                        label={translate('network_display_different_shape')}
+                    />
+                )}
 
                 <TextField
                     type="number"
