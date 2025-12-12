@@ -33,7 +33,6 @@ const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
         field?.format?.args?.colorScale,
         colorSet?.at(0),
     );
-
     const {
         minRadius,
         maxRadius,
