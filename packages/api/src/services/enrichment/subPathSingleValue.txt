@@ -15,8 +15,8 @@ size = [[BATCH SIZE]]
 [expand/URLConnect]
 url = [[WEB SERVICE URL]]
 timeout = [[WEB SERVICE TIMEOUT]]
-noerror = false
-retries = 5
+noerror = true
+retries = 3
 
 # lodex need that only the processed field is kept
 [assign]
