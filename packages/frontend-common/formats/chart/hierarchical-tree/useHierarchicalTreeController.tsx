@@ -292,13 +292,34 @@ export function useHierarchicalTreeController({
         });
     }, []);
 
-    const resetZoom = useCallback(() => {
-        selectNodeById(
-            selectedNodeOption
-                ? selectedNodeOption.value
-                : treeRef.current?.state.data.at(0)?.__rd3t.id,
+    const resetZoom = useCallback(async () => {
+        if (!treeRef.current) {
+            return;
+        }
+
+        if (!selectedNodeOption) {
+            const tree = treeRef.current.generateTree();
+            const targetNode = tree.nodes[0];
+            treeRef.current.centerNode(targetNode);
+            return;
+        }
+
+        const ancestors = getNodeAncestorById(
+            treeRef.current.state.data,
+            selectedNodeOption.value,
         );
-    }, [selectNodeById, selectedNodeOption]);
+
+        await openPath(ancestors, treeRef.current.handleNodeToggle);
+        // we need to generate the tree after opening the path to have the updated nodes
+        const tree = treeRef.current.generateTree();
+        const targetNode = tree.nodes.find(
+            (node) => node.data.__rd3t.id === selectedNodeOption.value,
+        );
+        if (!targetNode) {
+            return;
+        }
+        treeRef.current.centerNode(targetNode);
+    }, [selectedNodeOption]);
 
     return useMemo(
         () => ({
