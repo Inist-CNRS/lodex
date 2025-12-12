@@ -2,7 +2,7 @@
     "private": true,
     "name": "@lodex/api",
     "description": "Lodex API",
-    "version": "16.9.1",
+    "version": "16.9.2",
     "main": "./src/index.ts",
     "scripts": {
         "dev": "NODE_CONFIG_DIR=../../config tsx watch --max-http-header-size=32768 src",
