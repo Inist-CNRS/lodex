@@ -33,6 +33,7 @@ type NetworkArgs = {
         uri?: string;
     };
     displayWeighted?: boolean;
+    displayDifferentShape?: boolean;
     zoomAdjustNodeSize?: boolean;
     minRadius?: number;
     maxRadius?: number;
@@ -53,6 +54,7 @@ export const defaultArgs: NetworkArgs = {
         uri: undefined,
     },
     displayWeighted: true,
+    displayDifferentShape: false,
     zoomAdjustNodeSize: false,
     minRadius: 1,
     maxRadius: 20,
@@ -197,6 +199,21 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                     onChange={handleChangeDisplayWeighted}
                     label={translate('display_weighted')}
                 />
+
+                {format === 'network' && (
+                    <FormControlLabel
+                        control={<Switch />}
+                        checked={args.displayDifferentShape ?? false}
+                        onChange={(_, checked) => {
+                            onChange({
+                                ...args,
+                                displayDifferentShape: checked,
+                            });
+                        }}
+                        label={translate('network_display_different_shape')}
+                    />
+                )}
+
                 <FormControl fullWidth>
                     <FormLabel
                         sx={{

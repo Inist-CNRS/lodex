@@ -19,6 +19,7 @@ interface NetworkProps {
         colorScale?: ColorScaleItem[];
         captionTitle?: string;
         displayWeighted?: boolean;
+        displayDifferentShape?: boolean;
         fieldToFilter?: string;
         secondFieldToFilter?: string;
         zoomAdjustNodeSize?: boolean;
@@ -71,6 +72,7 @@ const Network3D = ({ formatData, colorSet, field }: NetworkProps) => {
             secondFieldToFilter={secondFieldToFilter}
             captions={captions}
             captionTitle={field.format?.args?.captionTitle}
+            displayDifferentShape={field?.format?.args?.displayDifferentShape}
         />
     );
 };
