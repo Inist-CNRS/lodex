@@ -68,10 +68,10 @@ export function HierarchicalTreeView({
     const sortBy = useMemo(() => {
         const sortByParam = params?.orderBy ?? 'label/asc';
         const [kind, direction] = sortByParam.split('/') as [
-            SortBy['kind'],
+            SortBy['kind'] | '_id',
             SortBy['direction'],
         ];
-        return { kind, direction };
+        return { kind: kind === '_id' ? 'label' : kind, direction };
     }, [params?.orderBy]);
 
     const nodeSize = useMemo(
@@ -183,7 +183,7 @@ export function HierarchicalTreeView({
                                         ? BUTTON_SIZE +
                                           BUTTON_SPACING +
                                           spacing * 11
-                                        : 0),
+                                        : spacing),
                                 y:
                                     nodeSize.y +
                                     (orientation === 'vertical'

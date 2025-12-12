@@ -82,6 +82,7 @@ const FullScreenHeading = forwardRef<HTMLDivElement, FullScreenHeadingProps>(
                     direction="row"
                     gap="0.5rem"
                     justifyContent="flex-end"
+                    alignItems="center"
                     ref={ref}
                 />
 

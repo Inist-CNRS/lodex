@@ -223,6 +223,7 @@ const Graph = ({
                                                 direction="row"
                                                 gap="0.5rem"
                                                 justifyContent="flex-end"
+                                                alignItems="center"
                                                 ref={graphActionRef}
                                             />
                                         </Stack>
