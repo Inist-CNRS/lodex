@@ -181,6 +181,43 @@ describe('useHierarchicalTreeController', () => {
                 { value: '0', label: 'Root' },
             ]);
         });
+        it('should return all tree nodes as select options ordered by label using attributes.title when available', () => {
+            const tree: TreeNodeDatum[] = [
+                {
+                    name: 'Root',
+                    __rd3t: { id: '0' },
+                    children: [
+                        {
+                            name: 'uid:/1234',
+                            attributes: { hasParent: false, title: 'Child1' },
+                            __rd3t: { id: '1' },
+                        },
+                        {
+                            name: 'Child2',
+                            attributes: { hasParent: true },
+                            __rd3t: { id: '2' },
+                            children: [
+                                {
+                                    name: 'uid:/7894',
+                                    attributes: {
+                                        hasParent: true,
+                                        title: 'GrandChild1',
+                                    },
+                                    __rd3t: { id: '3' },
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ] as unknown as TreeNodeDatum[];
+            const options = getNodeOptions(tree);
+            expect(options).toEqual([
+                { value: '1', label: 'Child1' },
+                { value: '2', label: 'Child2' },
+                { value: '3', label: 'GrandChild1' },
+                { value: '0', label: 'Root' },
+            ]);
+        });
 
         it('should return an empty array for an empty tree', () => {
             const options = getNodeOptions([]);

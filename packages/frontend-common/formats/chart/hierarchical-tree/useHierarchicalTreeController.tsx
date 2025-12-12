@@ -82,10 +82,14 @@ const getTreeNodeOptions = (
     value: string;
     label: string;
 }[] => {
+    const label =
+        typeof tree?.attributes?.title === 'string'
+            ? tree.attributes.title
+            : tree.name;
     return [
         {
             value: tree.__rd3t.id,
-            label: tree.name,
+            label,
         },
         ...(tree.children ?? []).flatMap((child) =>
             getTreeNodeOptions(child, result),
@@ -231,7 +235,10 @@ export function useHierarchicalTreeController({
             node
                 ? {
                       value: node?.data.__rd3t.id,
-                      label: node?.data.name,
+                      label:
+                          typeof node?.data?.attributes?.title === 'string'
+                              ? node?.data.attributes.title
+                              : node?.data.name,
                   }
                 : null,
         );
@@ -245,6 +252,7 @@ export function useHierarchicalTreeController({
     const selectNodeById = useCallback(
         async (nodeId?: string) => {
             if (!treeRef.current || nodeId == null) {
+                setSelectedNodeOption(null);
                 return;
             }
 
@@ -291,13 +299,34 @@ export function useHierarchicalTreeController({
         });
     }, []);
 
-    const resetZoom = useCallback(() => {
-        selectNodeById(
-            selectedNodeOption
-                ? selectedNodeOption.value
-                : treeRef.current?.state.data.at(0)?.__rd3t.id,
+    const resetZoom = useCallback(async () => {
+        if (!treeRef.current) {
+            return;
+        }
+
+        if (!selectedNodeOption) {
+            const tree = treeRef.current.generateTree();
+            const targetNode = tree.nodes[0];
+            treeRef.current.centerNode(targetNode);
+            return;
+        }
+
+        const ancestors = getNodeAncestorById(
+            treeRef.current.state.data,
+            selectedNodeOption.value,
         );
-    }, [selectNodeById, selectedNodeOption]);
+
+        await openPath(ancestors, treeRef.current.handleNodeToggle);
+        // we need to generate the tree after opening the path to have the updated nodes
+        const tree = treeRef.current.generateTree();
+        const targetNode = tree.nodes.find(
+            (node) => node.data.__rd3t.id === selectedNodeOption.value,
+        );
+        if (!targetNode) {
+            return;
+        }
+        treeRef.current.centerNode(targetNode);
+    }, [selectedNodeOption]);
 
     return useMemo(
         () => ({
