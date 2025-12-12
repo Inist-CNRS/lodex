@@ -9,7 +9,9 @@ import {
     type ReactElement,
     type ReactNode,
 } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
+import { fromFacet } from '../../public-app/src/selectors';
 
 export const SearchPaneContext = createContext<
     SearchPaneContextType | undefined
@@ -39,6 +41,15 @@ export function SearchPaneContextProvider({
     const { pathname } = useLocation();
     const [filters, setFilters] = useState<SearchPaneFilter>(defaultFilters);
     const theme = useTheme();
+
+    const facets: Record<
+        string,
+        { value: string; count: number; id: string }[]
+    > = useSelector(fromFacet('dataset').getAppliedFacets);
+
+    useEffect(() => {
+        setFilters([]);
+    }, [facets]);
 
     const handleClear = useCallback(() => {
         setFilters(defaultFilters);
