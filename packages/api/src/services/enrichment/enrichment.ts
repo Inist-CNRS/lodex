@@ -19,7 +19,6 @@ import getLogger from '../logger';
 
 export const DATASET_COLLECTION = 'dataset';
 
-
 export const addSidToUrl = (url: string) => {
     const urlObj = new URL(url);
     urlObj.searchParams.append('sid', 'lodex');
@@ -184,7 +183,10 @@ export const getEnrichmentRuleModel = (
         rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
         if (enrichment.webServiceUrl) {
             rule = rule
-                .replace('[[WEB SERVICE URL]]', addSidToUrl(enrichment.webServiceUrl))
+                .replace(
+                    '[[WEB SERVICE URL]]',
+                    addSidToUrl(enrichment.webServiceUrl),
+                )
                 .replace(
                     '[[WEB SERVICE TIMEOUT]]',
                     // @ts-expect-error TS(2304): Cannot find name 'Number'.
