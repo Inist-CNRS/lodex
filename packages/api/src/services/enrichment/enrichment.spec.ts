@@ -63,7 +63,7 @@ describe('enrichment', () => {
                 sourceColumn: 'source',
                 subPath: null,
                 advancedMode: false,
-                webServiceUrl: 'lodex.fr',
+                webServiceUrl: 'https://lodex.fr',
             };
 
             // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
@@ -79,7 +79,7 @@ describe('enrichment', () => {
                 sourceColumn: 'source',
                 subPath: null,
                 advancedMode: false,
-                webServiceUrl: 'lodex.fr',
+                webServiceUrl: 'https://lodex.fr',
             };
 
             // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
@@ -95,7 +95,7 @@ describe('enrichment', () => {
                 sourceColumn: 'source',
                 subPath: 'sub',
                 advancedMode: false,
-                webServiceUrl: 'lodex.fr',
+                webServiceUrl: 'https://lodex.fr',
             };
 
             // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
@@ -112,7 +112,7 @@ describe('enrichment', () => {
                 sourceColumn: 'source',
                 subPath: 'sub',
                 advancedMode: false,
-                webServiceUrl: 'lodex.fr',
+                webServiceUrl: 'https://lodex.fr',
             };
 
             // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
@@ -126,7 +126,7 @@ describe('enrichment', () => {
             const enrichment = {
                 name: 'Test',
                 advancedMode: false,
-                webServiceUrl: 'lodex.fr',
+                webServiceUrl: 'https://lodex.fr',
             };
 
             expect(() =>
