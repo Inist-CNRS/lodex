@@ -124,7 +124,7 @@ describe('Enrichment', () => {
 
         precomputation.createPrecomputation({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
         });
 

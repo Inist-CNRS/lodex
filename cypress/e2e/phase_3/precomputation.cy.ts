@@ -28,7 +28,7 @@ describe('Precomputation', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
         });
         adminNavigation.goToData();
@@ -46,7 +46,7 @@ describe('Precomputation', () => {
         cy.contains('Statistics').click();
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
             status: 'Not started',
         });
@@ -54,7 +54,7 @@ describe('Precomputation', () => {
         cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
             status: 'Done',
         });
@@ -80,7 +80,7 @@ describe('Precomputation', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
         });
         cy.waitForNetworkIdle(500);
@@ -88,7 +88,7 @@ describe('Precomputation', () => {
         cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
             status: 'Done',
         });
@@ -110,7 +110,7 @@ describe('Precomputation', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
         });
         cy.waitForNetworkIdle(500);
@@ -123,7 +123,7 @@ describe('Precomputation', () => {
         // cy.findByRole('button', { name: 'Run' }).click();
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
             status: 'Done',
         });
@@ -138,7 +138,7 @@ describe('Precomputation', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
         });
         cy.waitForNetworkIdle(500);
@@ -147,7 +147,7 @@ describe('Precomputation', () => {
         cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
             status: 'Done',
         });
@@ -166,7 +166,7 @@ describe('Precomputation', () => {
         cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
             status: 'Done',
         });
@@ -187,7 +187,7 @@ describe('Precomputation', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
         });
         cy.waitForNetworkIdle(500);
@@ -198,7 +198,7 @@ describe('Precomputation', () => {
         cy.waitForNetworkIdle(500);
         precomputation.checkPrecomputationFormValues({
             name: 'Statistics',
-            url: 'http://data-computer:31976/v1/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
             status: 'Done',
         });

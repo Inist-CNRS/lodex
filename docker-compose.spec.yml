@@ -17,9 +17,11 @@ services:
             WORKERS_URL: 'http://localhost:31976'
         links:
             - mongo
+            - workers
             - maildev
         depends_on:
             - mongo
+            - workers
             - maildev
         ports:
             - "3000:3000"
@@ -47,7 +49,38 @@ services:
                 limits:
                     cpus: '2'
                     memory: 2G
-
+    workers:
+        image: node:22.12-bookworm
+        extra_hosts:  # for linux hosts since version 20.10
+            - host.docker.internal:host-gateway
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: ${NODE_ENV}
+            NODE_OPTIONS: ${NODE_OPTIONS}
+            http_proxy: ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: 'localhost,127.0.0.1'
+            EZS_TITLE: 'Lodex internals workers'
+            EZS_DESCRIPTION: 'All scripts through a webserver'
+            EZS_METRICS: 'true'
+            EZS_CONCURRENCY: '4'
+            EZS_CONTINUE_DELAY: '60'
+            EZS_NSHARDS: '31'
+            EZS_CACHE: 'false'
+        ports:
+            - "31976:31976"
+        command: npm run production:workers
+        links:
+            - mongo
+        depends_on:
+            - mongo
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 2G
     mongo:
         image: mongodb/mongodb-community-server:7.0.9-ubi9
         ports:
@@ -57,13 +90,6 @@ services:
                 limits:
                     cpus: '2'
                     memory: 1G
-    data-computer:
-        image: cnrsinist/ws-data-computer:2.18.1
-        extra_hosts: # for linux hosts since version 20.10
-            - host.docker.internal:host-gateway
-        links:
-            - api
-
     maildev:
         image: maildev/maildev
         ports:
