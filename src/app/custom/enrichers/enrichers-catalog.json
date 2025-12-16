@@ -489,10 +489,10 @@
     },
         {
         "id": "post-v1-translit-generic",
-        "url": "https://services.istex.fr/translitteration-en-caracteres-latins/",
+        "url": "https://transli-tal.services.istex.fr/v1/translit",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/transli-tal",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=transli-tal%20-%20TransliTAL%20is%20a%20suite%20of%20tools%20for%20producing%20and%20correcting%20romanizations%20for%20library%20records./",
-        "objectifTDM": "https://services.istex.fr/",
+        "objectifTDM": "https://services.istex.fr/translitteration-en-caracteres-latins/",
         "type": "traitement automatique du langage"
     }
 ]
