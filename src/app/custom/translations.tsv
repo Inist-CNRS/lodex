@@ -928,7 +928,6 @@
 "value_not_an_object"	"Value is not an object"	"La valeur n’est pas un objet"
 "value_not_an_array"	"Value is not an array"	"La valeur n’est pas un tableau"
 "value_not_a_number"	"Value is not a number"	"La valeur n’est pas un nombre"
-
 "enrichment_advanced_mode_tooltip"	"Don't forget to add enrichment for having preview"	"N'oubliez pas d'ajouter l'enrichissement pour avoir la preview"
 "setting_field_tooltip"	"Edit field"	"Configurer le champ"
 "duplicate_field_tooltip"	"Duplicate field"	"Dupliquer le champ"
