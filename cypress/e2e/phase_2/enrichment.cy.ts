@@ -124,7 +124,7 @@ describe('Enrichment', () => {
 
         precomputation.createPrecomputation({
             name: 'Statistics',
-            url: 'http://lodex-workers-1:31976/precomputed/statistics',
+            url: 'http://workers:31976/precomputed/statistics',
             sourceColumns: ['actors'],
         });
 
