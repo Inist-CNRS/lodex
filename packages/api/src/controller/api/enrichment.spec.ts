@@ -89,7 +89,7 @@ describe('Enrichment controller', () => {
             const ctx = {
                 request: {
                     body: {
-                        webServiceUrl: 'dummy.url',
+                        webServiceUrl: 'http://dummy.url',
                         dataSource: 'dataset',
                         sourceColumn: 'dummyColumn',
                     },
@@ -139,7 +139,7 @@ describe('Enrichment controller', () => {
             expect(ctx.enrichment.update).toHaveBeenCalledWith(
                 42,
                 expect.objectContaining({
-                    webServiceUrl: 'dummy.url',
+                    webServiceUrl: 'http://dummy.url',
                     sourceColumn: 'dummyColumn',
                 }),
             );
