@@ -305,17 +305,17 @@ const processEnrichmentPipeline = (
 plugin = lodex
 
 [LodexRunQuery]
-collection = ${source.collectionName}
+collection = fix(${JSON.stringify(source.collectionName)})
 
 [breaker]
 fusible = ${fusible}
 
 [replace]
 path = id
-value = get('${source.idField}')
+value = get(${JSON.stringify(source.idField)})
 
 path = value
-value = self().omit(['_id', '${source.idField}'])
+value = self().omit(['_id', ${JSON.stringify(source.idField)}])
 
 ${enrichment.rule}
 
@@ -331,9 +331,9 @@ length = ${BATCH_SIZE}
 fusible = ${fusible}
 
 [LodexUpdateDocuments]
-idField = ${source.idField}
-collection = ${source.collectionName}
-field = ${enrichment.name}
+idField = fix(${JSON.stringify(source.idField)})
+collection = fix(${JSON.stringify(source.collectionName)})
+field = fix(${JSON.stringify(enrichment.name)})
 
 [breaker]
 fusible = ${fusible}
