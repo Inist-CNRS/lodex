@@ -30,6 +30,7 @@ import updateDocument from './updateDocument.js';
 import updateDocuments from './updateDocuments.js';
 import useFieldNames from './useFieldNames.js';
 import createVectorEmbeddings from './createVectorEmbeddings.js';
+import runVSearchPrecomputed from './runVSearchPrecomputed.js';
 
 const funcs = {
     flattenPatch,
@@ -52,6 +53,7 @@ const funcs = {
     labelizeFieldID,
     runQuery,
     runQueryPrecomputed,
+    runVSearchPrecomputed,
     reduceQuery,
     formatOutput,
     buildContext,
@@ -74,6 +76,7 @@ const funcs = {
     LodexDocuments: runQuery.runQuery,
     LodexRunQuery: runQuery.runQuery,
     LodexRunQueryPrecomputed: runQueryPrecomputed.runQueryPrecomputed,
+    LodexVSearchQueryPrecomputed: runVSearchPrecomputed.runQueryPrecomputed,
     LodexReduceQuery: reduceQuery.reduceQuery,
     LodexOutput: formatOutput.formatOutput,
     LodexBuildContext: buildContext.buildContext,
