@@ -2,7 +2,7 @@
     "private": true,
     "name": "@lodex/common",
     "description": "Lodex common utilities",
-    "version": "16.9.2",
+    "version": "16.9.3",
     "main": "./src/index.ts",
     "dependencies": {
         "@ezs/transformers": "file:../transformers"
