@@ -82,7 +82,7 @@ services:
                     cpus: '2'
                     memory: 2G
     mongo:
-        image: mongodb/mongodb-community-server:7.0.9-ubi9
+        image: mongodb/mongodb-community-server:8.2.3-ubi8
         ports:
             - "27017:27017"
         deploy:
