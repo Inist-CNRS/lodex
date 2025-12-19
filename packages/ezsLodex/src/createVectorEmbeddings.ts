@@ -19,8 +19,7 @@ const createVectorEmbeddings = async (data: any, feed: any, ctx: any) => {
             normalize: true,
         }
     );
-    set(data, path, result.data);
-    console.log({ data });
+    set(data, path, Array.from(result.data));
     feed.send(data);
 }
 
