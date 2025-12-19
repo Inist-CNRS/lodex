@@ -58,7 +58,7 @@ services:
                     memory: 4G
 
     mongo:
-        image: mongodb/mongodb-community-server:7.0.9-ubi9
+        image: mongodb/mongodb-community-server:8.2.3-ubi8
         logging:
             driver: none
         command: --quiet
