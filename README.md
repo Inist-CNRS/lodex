@@ -13,7 +13,7 @@ The platform also offers features to manipulate the data in a back-office enviro
 To see what Lodex can do, please refer to the website at <https://data.istex.fr/> or 
 consult the user documentation available at <https://lodex.inist.fr/docs/>.
 
-![preview](https://docs.google.com/drawings/d/e/2PACX-1vQA8ze2ktkRLXZB9sNWkft0cUpf_jOJbTfQA7AtzvwsRfswBCuiWwEsI3kvHzAzmZNhz4CxcePQ02cA/pub?w=904&h=581)
+![LODEX - couveture](https://github.com/user-attachments/assets/b09fefc0-443e-4e67-9a14-577181b2be9b)
 
 ## Installation
 
