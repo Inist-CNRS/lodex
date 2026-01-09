@@ -8,6 +8,10 @@ const createVectorEmbeddings = async (data: any, feed: any, ctx: any) => {
     }
     const path = Array().concat(ctx.getParam('path', 'value')).shift();
     const value = get(data, path);
+    if (!value) {
+        set(data, path, []);
+        return feed.send(data);
+    }
     const extractor = await pipeline(
         'feature-extraction',
         'Xenova/all-MiniLM-L6-v2'
