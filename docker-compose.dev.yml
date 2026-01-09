@@ -3,8 +3,8 @@ version: '3'
 services:
     api:
         image: node:22.12-bookworm
-        extra_hosts: # for linux hosts since version 20.10
-            - host.docker.internal:host-gateway
+        extra_hosts:  # for linux hosts since version 20.10
+            - "host.docker.internal:host-gateway"
         volumes:
             - .:/app
         working_dir: /app
@@ -16,14 +16,13 @@ services:
             https_proxy: ${https_proxy}
             no_proxy: 'localhost,127.0.0.1,'
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
-            REDIS_URL: 'redis://redis:6379'
-            WORKERS_URL: 'http://workers:31976'
+            REDIS_URL: 'redis://redis.lodex-net:6379'
+            WORKERS_URL: 'http://workers.lodex-net:31976'
+            MONGO_HOST: 'mongo.lodex-net:27017'
+            MAILER_HOST: 'maildev.lodex-net:1025'
             CI: ${CI}
-        links:
-            - mongo
-            - redis
-            - workers
-            - maildev
+        networks:
+            - lodex-net
         depends_on:
             - mongo
             - redis
@@ -31,7 +30,7 @@ services:
             - maildev
         ports:
             - "3000:3000"
-            - "9229:9229" # Enable Nodemon inspect to attach to Docker Node
+            - "9229:9229"  # Enable Nodemon inspect to attach to Docker Node
         command: npm run development:backend
         deploy:
             resources:
@@ -39,7 +38,7 @@ services:
                     cpus: '2'
                     memory: 4G
 
-    dev-server: ## Enable hot-reload in development
+    dev-server:  ## Enable hot-reload in development
         image: node:22.12-bookworm
         volumes:
             - .:/app
@@ -65,6 +64,8 @@ services:
         command: --quiet
         ports:
             - "27017:27017"
+        networks:
+            - lodex-net
         deploy:
             resources:
                 limits:
@@ -75,6 +76,8 @@ services:
         image: redis:6
         ports:
             - "6379:6379"
+        networks:
+            - lodex-net
         deploy:
             resources:
                 limits:
@@ -84,7 +87,7 @@ services:
     workers:
         image: node:22.12-bookworm
         extra_hosts:  # for linux hosts since version 20.10
-            - host.docker.internal:host-gateway
+            - "host.docker.internal:host-gateway"
         volumes:
             - .:/app
         working_dir: /app
@@ -104,9 +107,9 @@ services:
             EZS_CACHE: 'false'
         ports:
             - "31976:31976"
+        networks:
+            - lodex-net
         command: npm run production:workers
-        links:
-            - mongo
         depends_on:
             - mongo
         deploy:
@@ -119,3 +122,8 @@ services:
         ports:
             - "1080:1080"
             - "1025:1025"
+        networks:
+            - lodex-net
+networks:
+    lodex-net:
+        name: lodex-net
