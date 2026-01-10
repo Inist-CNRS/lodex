@@ -2,13 +2,15 @@ import nodemailer from 'nodemailer';
 import config from '../../../../../config.json';
 
 // see docker-compose.dev.yml
-const [ host, port ] = String(process.env.MAILER_HOST || 'localhost:1025').split(':')
+const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
+    ':',
+);
 const transporterConfig =
     process.env.NODE_ENV === 'production'
         ? config.mail
         : {
               host,
-              port,
+              port: Number(port),
           };
 
 const transporter = transporterConfig
