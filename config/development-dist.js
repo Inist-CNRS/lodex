@@ -11,7 +11,7 @@ module.exports = {
         maxAge: 60, // 1 minute
     },
     mongo: {
-        host: 'mongo:27017',
+        host: process.env.MONGO_HOST || 'localhost:27017', // see  docker-compose.dev.yml
         dbName: 'lodex',
     },
     host: process.env.EZMASTER_PUBLIC_URL || 'http://localhost:3000',
