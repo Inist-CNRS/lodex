@@ -27,7 +27,7 @@ function getNumber(numb) {
         // just an array
         return Number(numb.length);
     }
-    if (typeof numb === 'string' && !isNaN(numb)) {
+    if (typeof numb === 'string' && !isNaN(parseInt(numb, 10))) {
         return Number(numb);
     }
     if (Number.isInteger(numb.total)) {
