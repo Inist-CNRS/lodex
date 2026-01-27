@@ -189,7 +189,7 @@
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/nlp-tools2/v1",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-lemma",
         "objectifTDM": "https://services.istex.fr/lemmatiseur_eng/",
-        "type": "tal"
+        "type": "traitement automatique de la langue"
     },
     {
         "id": "post-v1-entityTag-multiling",
