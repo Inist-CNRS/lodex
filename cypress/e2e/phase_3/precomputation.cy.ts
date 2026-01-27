@@ -181,9 +181,9 @@ describe('Precomputation', () => {
         cy.contains('Precomputed data').click();
         cy.waitForNetworkIdle(500);
         cy.contains('1–25 of 26').should('be.visible');
-    });
+    }, 60 * 1000);
 
-    it.skip('should allow to export precomputed results to a file', () => {
+    it('should allow to export precomputed results to a file', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
@@ -215,5 +215,5 @@ describe('Precomputation', () => {
             expect(precomputationResults).to.be.an('array').with.length(26);
             expect(precomputationResults[0]).to.have.all.keys(['id', 'value']);
         });
-    });
+    }, 60 * 1000);
 });
