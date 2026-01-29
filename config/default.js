@@ -71,6 +71,7 @@ module.exports = {
         'hal-cnrs',
         'istex',
         'istex-legacy',
+        'default',
     ],
     scripts: {
         routines: [
@@ -159,7 +160,12 @@ module.exports = {
             'doi-list',
             'tar-gz',
         ],
-        exporters: ['csv', 'csv-full', 'json', 'tsv', 'tsv-full'],
-        formatExporters: ['jsonallvalue'],
+        exporters: [
+            'csv',
+            'csv-full',
+            'json',
+            'tsv',
+            'tsv-full',
+        ],
     },
 };

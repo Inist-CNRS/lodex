@@ -56,7 +56,9 @@ export const postLogin = (date: any) => async (ctx: any) => {
 
     if (
         rootAuth &&
+        // @ts-expect-error TS(TS2339): Property 'username' does not exist on type '{}'.
         username === rootAuth.username &&
+        // @ts-expect-error TS(TS2339): Property 'password' does not exist on type '{}'.
         password === rootAuth.password
     ) {
         role = ROOT_ROLE;

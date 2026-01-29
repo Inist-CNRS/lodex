@@ -105,10 +105,8 @@ export const getThemeFile = (theme: any, file: any) => {
 // --- Theme initialisation
 const init = async () => {
     // Default theme
-    const allowedThemes = config.get('themes');
-    const themes = Array.from(new Set([...allowedThemes, 'default'])).filter(
-        Boolean,
-    );
+    const allowedThemes: string[] = config.get('themes');
+    const themes: string[] = Array.from(new Set([...allowedThemes.filter(Boolean), 'default']));
 
     // Load custom themes
     for (const theme of themes) {

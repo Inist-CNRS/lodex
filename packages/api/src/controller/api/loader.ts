@@ -3,6 +3,7 @@ import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
 import ezsLodex from '@ezs/lodex';
+import config from 'config';
 
 import { getHost, getCleanHost } from '@lodex/common';
 import Script from '../../services/script';
@@ -61,7 +62,7 @@ export async function setup(ctx: any, next: any) {
 }
 
 export async function getLoaders(ctx: any) {
-    const configuredLoaders = config.loaders || [];
+    const configuredLoaders = Array(config.get('scripts.loaders'));
 
     const availableLoaderStreamFactoryPromises = configuredLoaders.map(
         (loader: any) => ctx.getLoader(loader),
