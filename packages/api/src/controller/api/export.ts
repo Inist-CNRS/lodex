@@ -9,7 +9,6 @@ import cacheControl from 'koa-cache-control';
 import config from 'config';
 
 import Script from '../../services/script';
-import localConfig from '../../../../../config.json';
 import { getCleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import { ObjectId } from 'mongodb';
@@ -79,7 +78,7 @@ const middlewareScript = (isFormatExporters = false) => {
         ].join('/');
 
         const environment = {
-            ...localConfig,
+            timeout: config.get('timeout'),
         };
         const host = getCleanHost();
 
@@ -151,7 +150,7 @@ const middlewareScript = (isFormatExporters = false) => {
         [URLConnect]
         url = ${workers_url}
         // @ts-expect-error TS(2304): Cannot find name 'Number'.
-        timeout = ${Number(localConfig.timeout) || 120000}
+        timeout = ${config.get('timeout')}
         streaming = true,
         json = false
         encoder = pack

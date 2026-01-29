@@ -5,12 +5,17 @@ import ezs from '@ezs/core';
 import ezsLodex from '@ezs/lodex';
 
 import { getHost, getCleanHost } from '@lodex/common';
-import config from '../../../../../config.json';
 import Script from '../../services/script';
 
 ezs.use(ezsLodex);
 
 const loaders = new Script('loaders');
+
+export const getLoadersConfig = () => ({
+    host: getCleanHost(),
+    rawHost: getHost(),
+    cleanHost: getCleanHost(),
+});
 
 export const getLoader = async (type: any) => {
     const loader = await loaders.get(type);
@@ -34,16 +39,9 @@ export const getLoader = async (type: any) => {
                     'delegate',
                     { script },
                     {
-                        cleanHost: config.cleanHost,
-                        collectionClass: config.collectionClass,
-                        datasetClass: config.datasetClass,
-                        exportDataset: config.exportDataset,
-                        schemeForDatasetLink: config.schemeForDatasetLink,
-                        labels: config.istexQuery.labels,
-                        linked: config.istexQuery.linked,
-                        context: config.istexQuery.context,
-                        fields,
-                        characteristics,
+                        cleanHost: config.cleanHost, // useless ?
+                        fields, // useless ?
+                        characteristics, // useless ?
                     },
                 ),
             );
@@ -55,13 +53,6 @@ export const getLoader = async (type: any) => {
 
     return loaderStreamFactory;
 };
-
-export const getLoadersConfig = () => ({
-    ...config,
-    host: getCleanHost(),
-    rawHost: getHost(),
-    cleanHost: getCleanHost(),
-});
 
 export async function setup(ctx: any, next: any) {
     ctx.getLoader = getLoader;

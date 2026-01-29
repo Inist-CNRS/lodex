@@ -15,10 +15,6 @@ import {
 const auth = config.get('auth');
 
 export const postLogin = (date: any) => async (ctx: any) => {
-    if (!ctx.ezMasterConfig) {
-        throw new Error('Invalid EzMaster configuration.');
-    }
-
     const { username: usernameAdmin, password: passwordAdmin } =
         await ctx.tenantCollection.findOneByName(ctx.tenant.toLowerCase());
 
@@ -33,7 +29,7 @@ export const postLogin = (date: any) => async (ctx: any) => {
     const { username, password } = ctx.request.body;
     const userAuth = get(ctx, 'configTenant.userAuth', {});
     const contributorAuth = get(ctx, 'configTenant.contributorAuth', {});
-    const rootAuth = get(ctx, 'ezMasterConfig.rootAuth', {});
+    const rootAuth = config.get('rootAuth');
 
     let role;
     if (username === usernameAdmin && password === passwordAdmin) {

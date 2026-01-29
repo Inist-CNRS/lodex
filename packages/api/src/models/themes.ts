@@ -1,4 +1,4 @@
-import config from '../../../../config.json';
+import config from 'config';
 import path from 'path';
 import getLogger from '../services/logger';
 import defaultMuiTheme from '../../../../src/app/custom/themes/default/defaultTheme';
@@ -105,7 +105,8 @@ export const getThemeFile = (theme: any, file: any) => {
 // --- Theme initialisation
 const init = async () => {
     // Default theme
-    const themes = Array.from(new Set([...config.themes, 'default'])).filter(
+    const allowedThemes = config.get('themes');
+    const themes = Array.from(new Set([...allowedThemes, 'default'])).filter(
         Boolean,
     );
 

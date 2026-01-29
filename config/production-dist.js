@@ -1,30 +1,10 @@
-import config from '../config.json';
-
-const getMongoConfig = () => {
-    const { mongo } = config;
-
-    const defaultConfig = {
-        host: String(
-            process.env.EZMASTER_MONGODB_HOST_PORT || 'localhost:27017',
-        ),
+module.exports = {
+    port: 3000,
+    mongo: {
         dbName: String(
             process.env.EZMASTER_TECHNICAL_NAME || 'local-lodex',
         ).replace(/(-[^-]*)-[0-9]+$/, '$1'),
-    };
-
-    if (!mongo) {
-        return defaultConfig;
-    }
-
-    return {
-        host: mongo.host,
-        dbName: mongo.dbName || defaultConfig.dbName,
-    };
-};
-
-module.exports = {
-    port: 3000,
-    mongo: getMongoConfig(),
+    },
     auth: {
         cookieSecret: 'cookie',
         headerSecret: 'header',
@@ -37,5 +17,10 @@ module.exports = {
     ezs: {
         verbose: 'ezs:*,-ezs:debug', // ezs:*,-ezs:debug,-ezs:trace
         cacheEnable: true,
+    },
+    mail: {
+        host: 'smtpout.intra.inist.fr',
+        port: 25,
+        from: 'noreply@inist.fr',
     },
 };

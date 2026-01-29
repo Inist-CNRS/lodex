@@ -26,7 +26,8 @@ RUN apk add --no-cache su-exec redis
 # change uid/gid to be compilant with Debian/Ubuntu container (and so with ezmaster-webdav)
 RUN echo '{ \
     "httpPort": 3000, \
-    "configPath": "/app/config.json", \
+    "configPath": "/app/config.env", \
+    "configType": "text", \
     "dataPath": "/app/src/app/custom" \
     }' > /etc/ezmaster.json  && \
     sed -i -e "s/daemon:x:2:2/daemon:x:1:1/" /etc/passwd && \

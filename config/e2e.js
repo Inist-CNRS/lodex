@@ -8,4 +8,5 @@ module.exports = {
     ezs: {
         cacheEnable: true,
     },
+    alternativePrecomputedBaseUrl: 'http://api:3000',
 };

@@ -7,7 +7,7 @@
 !upload/.gitkeep
 !src/
 !config/
-!config.json
+!config.env
 !configTenant.json
 !babel.config.js
 !ecosystem.config.js
