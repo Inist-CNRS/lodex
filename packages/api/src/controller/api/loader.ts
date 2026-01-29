@@ -62,7 +62,7 @@ export async function setup(ctx: any, next: any) {
 }
 
 export async function getLoaders(ctx: any) {
-    const configuredLoaders = Array(config.get('scripts.loaders'));
+    const configuredLoaders: string[] = config.get('scripts.loaders');
 
     const availableLoaderStreamFactoryPromises = configuredLoaders.map(
         (loader: any) => ctx.getLoader(loader),

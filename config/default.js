@@ -160,12 +160,6 @@ module.exports = {
             'doi-list',
             'tar-gz',
         ],
-        exporters: [
-            'csv',
-            'csv-full',
-            'json',
-            'tsv',
-            'tsv-full',
-        ],
+        exporters: ['csv', 'csv-full', 'json', 'tsv', 'tsv-full'],
     },
 };
