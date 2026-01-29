@@ -24,4 +24,7 @@ module.exports = {
     logger: {
         disabled: true,
     },
+    ezs: {
+        cacheEnable: true,
+    },
 };

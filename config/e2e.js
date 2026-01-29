@@ -5,4 +5,7 @@ module.exports = {
         host: 'mongo:27017',
         dbName: 'lodex_test',
     },
+    ezs: {
+        cacheEnable: true,
+    },
 };
