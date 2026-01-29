@@ -134,99 +134,86 @@ describe('Precomputation', () => {
         cy.contains('1–25 of 26').should('be.visible');
     });
 
-    it(
-        'should overwrite existing precomputed results when importing from a file on a run precomputation',
-        () => {
-            cy.contains('No rows').should('be.visible');
-            precomputation.createPrecomputation({
-                name: 'Statistics',
-                url: 'http://workers:31976/precomputed/statistics',
-                sourceColumns: ['actors'],
-            });
-            cy.waitForNetworkIdle(500);
+    it('should overwrite existing precomputed results when importing from a file on a run precomputation', () => {
+        cy.contains('No rows').should('be.visible');
+        precomputation.createPrecomputation({
+            name: 'Statistics',
+            url: 'http://workers:31976/precomputed/statistics',
+            sourceColumns: ['actors'],
+        });
+        cy.waitForNetworkIdle(500);
 
-            cy.findByRole('button', { name: 'Run' }).click();
-            cy.waitForNetworkIdle(500);
-            precomputation.checkPrecomputationFormValues({
-                name: 'Statistics',
-                url: 'http://workers:31976/precomputed/statistics',
-                sourceColumns: ['actors'],
-                status: 'Done',
-            });
+        cy.findByRole('button', { name: 'Run' }).click();
+        cy.waitForNetworkIdle(500);
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://workers:31976/precomputed/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
 
-            adminNavigation.goToData();
-            cy.waitForNetworkIdle(500);
-            cy.contains('Precomputed data').click();
-            cy.waitForNetworkIdle(500);
+        adminNavigation.goToData();
+        cy.waitForNetworkIdle(500);
+        cy.contains('Precomputed data').click();
+        cy.waitForNetworkIdle(500);
 
-            cy.contains('1–25 of 30').should('be.visible');
+        cy.contains('1–25 of 30').should('be.visible');
 
-            adminNavigation.goToPreComputation();
-            cy.waitForNetworkIdle(500);
-            cy.contains('1–1 of 1').should('be.visible');
-            cy.findByRole('grid').within(() =>
-                cy.contains('Statistics').click(),
-            );
-            cy.waitForNetworkIdle(500);
-            precomputation.checkPrecomputationFormValues({
-                name: 'Statistics',
-                url: 'http://workers:31976/precomputed/statistics',
-                sourceColumns: ['actors'],
-                status: 'Done',
-            });
+        adminNavigation.goToPreComputation();
+        cy.waitForNetworkIdle(500);
+        cy.contains('1–1 of 1').should('be.visible');
+        cy.findByRole('grid').within(() => cy.contains('Statistics').click());
+        cy.waitForNetworkIdle(500);
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://workers:31976/precomputed/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
 
-            precomputation.importPrecomputationResultsWithDialog({
-                filePath: 'precomputations/simple.json',
-            });
-            cy.waitForNetworkIdle(500);
+        precomputation.importPrecomputationResultsWithDialog({
+            filePath: 'precomputations/simple.json',
+        });
+        cy.waitForNetworkIdle(500);
 
-            adminNavigation.goToData();
-            cy.waitForNetworkIdle(500);
-            cy.contains('Precomputed data').click();
-            cy.waitForNetworkIdle(500);
-            cy.contains('1–25 of 26').should('be.visible');
-        },
-        60 * 1000,
-    );
+        adminNavigation.goToData();
+        cy.waitForNetworkIdle(500);
+        cy.contains('Precomputed data').click();
+        cy.waitForNetworkIdle(500);
+        cy.contains('1–25 of 26').should('be.visible');
+    });
 
-    it(
-        'should allow to export precomputed results to a file',
-        () => {
-            cy.contains('No rows').should('be.visible');
-            precomputation.createPrecomputation({
-                name: 'Statistics',
-                url: 'http://workers:31976/precomputed/statistics',
-                sourceColumns: ['actors'],
-            });
-            cy.waitForNetworkIdle(500);
+    it('should allow to export precomputed results to a file', () => {
+        cy.contains('No rows').should('be.visible');
+        precomputation.createPrecomputation({
+            name: 'Statistics',
+            url: 'http://workers:31976/precomputed/statistics',
+            sourceColumns: ['actors'],
+        });
+        cy.waitForNetworkIdle(500);
 
-            precomputation.importPrecomputationResults({
-                filePath: 'precomputations/simple.json',
-            });
-            cy.waitForNetworkIdle(500);
-            precomputation.checkPrecomputationFormValues({
-                name: 'Statistics',
-                url: 'http://workers:31976/precomputed/statistics',
-                sourceColumns: ['actors'],
-                status: 'Done',
-            });
+        precomputation.importPrecomputationResults({
+            filePath: 'precomputations/simple.json',
+        });
+        cy.waitForNetworkIdle(500);
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://workers:31976/precomputed/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
 
-            precomputation.exportPrecomputationResults();
+        precomputation.exportPrecomputationResults();
 
-            cy.task('getFileContent', {
-                directory: Cypress.config('downloadsFolder'),
-                pattern: /precomputed-data-/,
-            }).then((content) => {
-                expect(content).not.to.equal(null);
-                // @ts-expect-error TS2345
-                const precomputationResults = JSON.parse(content);
-                expect(precomputationResults).to.be.an('array').with.length(26);
-                expect(precomputationResults[0]).to.have.all.keys([
-                    'id',
-                    'value',
-                ]);
-            });
-        },
-        60 * 1000,
-    );
+        cy.task('getFileContent', {
+            directory: Cypress.config('downloadsFolder'),
+            pattern: /precomputed-data-/,
+        }).then((content) => {
+            expect(content).not.to.equal(null);
+            // @ts-expect-error TS2345
+            const precomputationResults = JSON.parse(content);
+            expect(precomputationResults).to.be.an('array').with.length(26);
+            expect(precomputationResults[0]).to.have.all.keys(['id', 'value']);
+        });
+    });
 });
