@@ -91,10 +91,10 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
     // @ts-expect-error TS7006
     (FormatView) => {
         const createUrl = getCreateUrl(url);
+
         const GraphItem = (props: GraphItemProps) => {
             const location = useLocation();
             const dispatch = useDispatch();
-            const inputValue = createUrl(props);
             const formatState = useSelector(
                 (state: any) => state.format[props.field.name],
             );
@@ -132,15 +132,18 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
 
             const loadFormatData = useCallback(
                 (values: object) => {
-                    if (!inputValue) {
+                    const value = createUrl(props);
+
+                    if (!value) {
                         return;
                     }
+
                     const withFacets = !isHomePage(location);
                     dispatch(
                         loadFormatDataAction({
                             field: props.field,
                             resource: props.resource,
-                            value: inputValue,
+                            value,
                             withUri,
                             withFacets,
                             ...values,
@@ -212,7 +215,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 );
             }
 
-            if (inputValue && !isLoaded) {
+            if (!isLoaded) {
                 return <Loading>{translate('loading')}</Loading>;
             }
 
