@@ -10,7 +10,6 @@ import config from 'config';
 import Script from '../../services/script';
 import { getCleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
-import localConfig from '../../../../../config.json';
 
 ezs.use(Lodex);
 
@@ -99,7 +98,7 @@ const middlewareScript = async (
         [URLConnect]
         url = ${workers_url}
         // @ts-expect-error TS(2304): Cannot find name 'Number'.
-        timeout = ${Number(localConfig.timeout) || 120000}
+        timeout = ${config.get('timeout')}
         streaming = true,
         json = false
         encoder = pack

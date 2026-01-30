@@ -1,6 +1,6 @@
 import { getHost, ProgressStatus, TaskStatus } from '@lodex/common';
 import streamToPromise from 'stream-to-promise';
-import localConfig from '../../../../../config.json';
+import config from 'config';
 import { unlinkFile } from '../fsHelpers';
 import progress from '../progress';
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
@@ -25,11 +25,10 @@ const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to t
 ezs.use(Lodex);
 ezs.use(Basics);
 const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
-const baseUrl = getHost();
-const webhookBaseUrl = String(
-    localConfig.alternativePrecomputedBaseUrl,
-).startsWith('http')
-    ? localConfig.alternativePrecomputedBaseUrl
+const baseUrl: string = getHost();
+
+const webhookBaseUrl: string = config.has('alternativePrecomputedBaseUrl')
+    ? config.get('alternativePrecomputedBaseUrl')
     : baseUrl;
 export const getPrecomputedDataPreview = async (ctx: any) => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
@@ -177,7 +176,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
                 streaming: true,
                 json: true,
                 encoder: 'transit',
-                timeout: Number(localConfig.timeout) || 120000,
+                timeout: config.get('timeout'),
             }),
         )
         .pipe(
@@ -430,7 +429,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
     // @ts-expect-error TS(2339): Property filename does not exist on type Number
     const { size: fileSize, filename: fileToUpload } = fileDescription;
     const parameters = {
-        timeout: Number(localConfig.timeout) || 120000,
+        timeout: config.get('timeout'),
         method: 'POST',
         body: createReadStream(fileToUpload),
         headers: {

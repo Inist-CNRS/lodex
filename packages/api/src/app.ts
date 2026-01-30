@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import { activateBullDashboard, timeout } from '../../../config.json';
+import config from 'config';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
@@ -28,7 +28,7 @@ import { insertConfigTenant } from './services/configTenant';
 const meters = Meter([], { loadStandards: true, loadDefaults: true });
 
 // set timeout as ezs server (see workers/index.js)
-ezs.settings.feed.timeout = Number(timeout) || 120000;
+ezs.settings.feed.timeout = config.get('ezs.timeout');
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -113,7 +113,10 @@ const initQueueAndBullDashboard = async () => {
 initQueueAndBullDashboard();
 
 // Display It only in development mode or if activateBullDashboard is true
-if (process.env.NODE_ENV === 'development' || activateBullDashboard) {
+if (
+    process.env.NODE_ENV === 'development' ||
+    config.get('activateBullDashboard')
+) {
     app.use(serverAdapter.registerPlugin());
 }
 

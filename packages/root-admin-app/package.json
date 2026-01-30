@@ -5,8 +5,8 @@
     "version": "16.0.5",
     "main": "./src/index.ts",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "dev": "NODE_CONFIG_DIR=../../config vite",
+        "build": "NODE_CONFIG_DIR=../../config vite build"
     },
     "devDependencies": {
         "@types/node": "^24.9.1",

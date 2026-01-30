@@ -7,7 +7,6 @@ import get from 'lodash/get';
 
 import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
 import tenant from '../../models/tenant';
-import ezMasterConfig from '../../services/ezMasterConfig';
 import mongoClient from '../../services/mongoClient';
 import annotation from './annotation';
 import breadcrumbs from './breadcrumb';
@@ -43,8 +42,6 @@ import upload from './upload';
 const auth = config.get('auth');
 
 const app = new Koa();
-
-app.use(ezMasterConfig);
 
 app.use(async (ctx: any, next: any) => {
     if (ctx.tenant !== 'admin') {

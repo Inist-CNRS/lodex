@@ -1,31 +1,14 @@
 import nodemailer from 'nodemailer';
-import config from '../../../../../config.json';
+import config from 'config';
 
-// see docker-compose.dev.yml
-const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
-    ':',
-);
-const transporterConfig =
-    process.env.NODE_ENV === 'production'
-        ? config.mail
-        : {
-              host,
-              port: Number(port),
-          };
-
-const transporter = transporterConfig
-    ? nodemailer.createTransport(transporterConfig)
-    : null;
-
-const from = config.mail.from;
+const transporter = nodemailer.createTransport({
+    host: config.get('mail.host'),
+    port: config.get('mail.port'),
+});
 
 export async function sendMail({ to, subject, text }: any) {
-    if (!transporter) {
-        console.error('Mail not configured');
-        return;
-    }
     return await transporter.sendMail({
-        from,
+        from: config.get('mail.from'),
         to,
         subject,
         text,

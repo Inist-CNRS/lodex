@@ -20,6 +20,7 @@ services:
             WORKERS_URL: 'http://workers.lodex-net:31976'
             MONGO_HOST: 'mongo.lodex-net:27017'
             MAILER_HOST: 'maildev.lodex-net:1025'
+            PRECOMPUTED_URL: 'http://api.lodex-net:3000'
             CI: ${CI}
         networks:
             - lodex-net

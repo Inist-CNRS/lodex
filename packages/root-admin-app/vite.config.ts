@@ -1,11 +1,12 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
+import config from 'config';
 
 import translations from '../api/src/services/translations';
-import { loaders } from '../../config.json';
 
+const loaders = config.get('scripts.loaders');
 const port = 8081;
 
 export default defineConfig(({ mode }) => {

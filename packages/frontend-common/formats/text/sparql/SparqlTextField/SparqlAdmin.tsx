@@ -3,7 +3,6 @@ import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
 import ContentClear from '@mui/icons-material/Clear';
 
-import config from '../../../../../../config.json';
 import SelectFormat from '../../../SelectFormat';
 import { FORMATS, getAdminComponent } from '../../../getFormat';
 import {
@@ -12,7 +11,16 @@ import {
 } from '../../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
-const endpoints = config.sparqlEndpoints;
+const endpoints = [
+    'https://lod.abes.fr/sparql',
+    'http://data.persee.fr/sparql/',
+    'https://data.istex.fr/sparql/',
+    'http://data.bnf.fr/sparql',
+    'http://dbpedia.org/sparql',
+    'http://fr.dbpedia.org/sparql',
+    'https://query.wikidata.org/sparql',
+    'http://www.lotico.com:3030/lotico/sparql',
+];
 
 export const defaultArgs = {
     sparql: {

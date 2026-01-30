@@ -13,7 +13,6 @@ describe('login', () => {
         it('should set ctx.status to 401, if ctx.body.username do not match with config', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {},
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -40,7 +39,6 @@ describe('login', () => {
         it('should set ctx.status to 401, if ctx.body.password do not match with config', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {},
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -67,7 +65,6 @@ describe('login', () => {
         it('should return header token and set cookie with cookie token for admin when password and user name match config', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {},
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -122,18 +119,6 @@ describe('login', () => {
         it('should set ctx.status to 401, if user auth is not active', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {
-                    userAuth: {
-                        username: 'user',
-                        password: 'secret',
-                        active: false,
-                    },
-                    contributorAuth: {
-                        username: 'contributor',
-                        password: 'secret',
-                        active: true,
-                    },
-                },
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -159,18 +144,6 @@ describe('login', () => {
         it('should set ctx.status to 401, if ctx.body.username do not match with userAuth config', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {
-                    userAuth: {
-                        username: 'user',
-                        password: 'secret',
-                        active: true,
-                    },
-                    contributorAuth: {
-                        username: 'contributor',
-                        password: 'secret',
-                        active: true,
-                    },
-                },
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -197,18 +170,6 @@ describe('login', () => {
         it('should set ctx.status to 401, if ctx.body.password do not match with config', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {
-                    userAuth: {
-                        username: 'user',
-                        password: 'secret',
-                        active: true,
-                    },
-                    contributorAuth: {
-                        username: 'contributor',
-                        password: 'secret',
-                        active: true,
-                    },
-                },
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -242,7 +203,6 @@ describe('login', () => {
                         active: true,
                     },
                 },
-                ezMasterConfig: {},
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -309,12 +269,6 @@ describe('login', () => {
                         active: false,
                     },
                 },
-                ezMasterConfig: {
-                    rootAuth: {
-                        username: 'root',
-                        password: 'secret',
-                    },
-                },
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -340,18 +294,6 @@ describe('login', () => {
         it('should set ctx.status to 401, if ctx.body.username do not match with userAuth config', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {
-                    userAuth: {
-                        username: 'user',
-                        password: 'secret',
-                        active: true,
-                    },
-                    contributorAuth: {
-                        username: 'contributor',
-                        password: 'secret',
-                        active: true,
-                    },
-                },
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -378,18 +320,6 @@ describe('login', () => {
         it('should set ctx.status to 401, if ctx.body.password do not match with config', async () => {
             const setCookies = jest.fn();
             const ctx = {
-                ezMasterConfig: {
-                    userAuth: {
-                        username: 'user',
-                        password: 'secret',
-                        active: true,
-                    },
-                    contributorAuth: {
-                        username: 'contributor',
-                        password: 'secret',
-                        active: true,
-                    },
-                },
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',
@@ -428,7 +358,6 @@ describe('login', () => {
                         active: true,
                     },
                 },
-                ezMasterConfig: {},
                 tenantCollection: {
                     findOneByName: () => ({
                         username: 'admin',

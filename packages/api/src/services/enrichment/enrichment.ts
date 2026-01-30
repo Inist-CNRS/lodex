@@ -6,7 +6,7 @@ import type Koa from 'koa';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/compile'. Did you mean to ... Remove this comment to see the full error message
 import { checkFusible, createFusible, enableFusible } from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
-import localConfig from '../../../../../config.json';
+import config from 'config';
 import { mongoConnectionString } from '../mongoClient';
 import progress from '../progress';
 
@@ -187,11 +187,7 @@ export const getEnrichmentRuleModel = (
                     '[[WEB SERVICE URL]]',
                     addSidToUrl(enrichment.webServiceUrl),
                 )
-                .replace(
-                    '[[WEB SERVICE TIMEOUT]]',
-                    // @ts-expect-error TS(2304): Cannot find name 'Number'.
-                    Number(localConfig.timeout) || 120000,
-                );
+                .replace('[[WEB SERVICE TIMEOUT]]', config.get('timeout'));
         } else {
             rule = cleanWebServiceRule(rule);
         }

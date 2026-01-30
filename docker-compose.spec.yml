@@ -15,6 +15,7 @@ services:
             EXPOSE_TEST_CONTROLLER: 'true'
             REDIS_URL: 'redis://localhost:6379'
             WORKERS_URL: 'http://localhost:31976'
+            PRECOMPUTED_URL: 'http://api:3000'
         links:
             - mongo
             - workers
