@@ -26,12 +26,4 @@ module.exports = {
     logger: {
         disabled: false,
     },
-    ezs: {
-        verbose: 'ezs:*,-ezs:debug',
-        timeout: 12000,
-        cacheEnable: false,
-        cacheDelay: 60 * 60 * 12,
-        mainStatement: 'delegate',
-        encoding: '',
-    },
 };

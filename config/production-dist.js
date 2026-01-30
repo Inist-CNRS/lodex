@@ -34,8 +34,4 @@ module.exports = {
         max: 500,
         maxAge: 60 * 60, // 1 hour
     },
-    ezs: {
-        verbose: 'ezs:*,-ezs:debug', // ezs:*,-ezs:debug,-ezs:trace
-        cacheEnable: true,
-    },
 };
