@@ -60,7 +60,9 @@ module.exports = {
         encoding: '',
     },
     timeout: 3600000,
-    alternativePrecomputedBaseUrl: String(process.env.PRECOMPUTED_URL || 'http://localhost:3000'),
+    alternativePrecomputedBaseUrl: String(
+        process.env.PRECOMPUTED_URL || 'http://localhost:3000',
+    ),
     activateBullDashboard: Boolean(process.env.BULL_ENABLE || false),
     mail: {
         host,
