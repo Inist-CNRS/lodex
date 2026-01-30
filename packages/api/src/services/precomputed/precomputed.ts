@@ -25,10 +25,9 @@ const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to t
 ezs.use(Lodex);
 ezs.use(Basics);
 const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
-const baseUrl = getHost();
-const webhookBaseUrl = String(
-    config.get('alternativePrecomputedBaseUrl'),
-).startsWith('http')
+const baseUrl: string = getHost();
+
+const webhookBaseUrl: string = config.has('alternativePrecomputedBaseUrl')
     ? config.get('alternativePrecomputedBaseUrl')
     : baseUrl;
 export const getPrecomputedDataPreview = async (ctx: any) => {
