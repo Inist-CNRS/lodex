@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { MongoClient, ObjectId } from 'mongodb';
 import path from 'path';
 import progress from '../progress';
+import { mongoConnectionString } from '../mongoClient';
 import {
     getEnrichmentDataPreview,
     getEnrichmentRuleModel,
@@ -402,7 +403,7 @@ describe('enrichment', () => {
     });
 
     describe('processEnrichment', () => {
-        const connectionStringURI = process.env.MONGO_URL;
+        const connectionStringURI: string = mongoConnectionString('');
         let db: any;
         let connection: any;
         let dbName: string;

@@ -1,10 +1,11 @@
 import dump from './dump';
 import createDatasetModel from '../../models/dataset';
 import { MongoClient } from 'mongodb';
+import { mongoConnectionString } from '../../services/mongoClient';
 import { Writable } from 'stream';
 
 describe('API: Dump', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI: string = mongoConnectionString('');
     let datasetModel: any;
     let connection: any;
     let db;
