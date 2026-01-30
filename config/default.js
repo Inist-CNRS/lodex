@@ -56,7 +56,7 @@ module.exports = {
         encoding: '',
     },
     timeout: 3600000,
-    alternativePrecomputedBaseUrl: '',
+    alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL,
     activateBullDashboard: false,
     mail: {
         host,
