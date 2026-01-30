@@ -57,6 +57,13 @@ publish: build  ## publish version to docker hub
 	docker build -t cnrsinist/lodex:16.10.0-beta.0 --build-arg http_proxy --build-arg https_proxy .
 	docker push cnrsinist/lodex:16.10.0-beta.0
 
+## Local Production Mode =================================================================
+
+run-prod: ## Run the code in production mode
+	docker compose -f docker-compose.prod.yml build --build-arg http_proxy --build-arg https_proxy
+	NODE_ENV=production docker compose -f docker-compose.prod.yml up --force-recreate
+start-prod: run-prod ## Start the code in production mode (alias of make run-prod)
+
 ## Development =================================================================
 
 run-dev: ## Run the project in dev mode

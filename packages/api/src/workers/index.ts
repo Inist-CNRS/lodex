@@ -1,4 +1,5 @@
 import Queue from 'bull';
+import config from 'config';
 import bullBoard from '../bullBoard';
 import { ENRICHER, processEnrichment, RETRY_ENRICHER } from './enricher';
 import { IMPORT, processImport } from './import';
@@ -26,8 +27,7 @@ export const getOrCreateWorkerQueue = (
         return workerQueues[queueName];
     }
 
-    // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
-    const workerQueue = new Queue(queueName, process.env.REDIS_URL, {
+    const workerQueue = new Queue(queueName, config.get('redis.url'), {
         defaultJobOptions: {
             removeOnComplete: 10,
             removeOnFail: 10,

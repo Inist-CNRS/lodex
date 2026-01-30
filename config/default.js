@@ -18,12 +18,12 @@ const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
 module.exports = {
     port: 3000,
     mongo: {
-        host: process.env.MONGO_HOST,
+        host: String(process.env.MONGO_HOST || 'localhost:21017'),
         dbName: 'lodex',
     },
     rootAuth: {
-        username: process.env.ROOT_LOGIN,
-        password: process.env.ROOT_PASSWORD,
+        username: String(process.env.ROOT_LOGIN || 'root'),
+        password: String(process.env.ROOT_PASSWORD || 'secret'),
     },
     auth: {
         cookieSecret: 'cookie',
@@ -47,7 +47,11 @@ module.exports = {
     logger: {
         disabled: false,
     },
+    redis: {
+        url: String(process.env.REDIS_URL || 'redis://localhost:6379'),
+    },
     ezs: {
+        url: String(process.env.WORKERS_URL || 'http://localhost:31976'),
         verbose: 'ezs:*,-ezs:debug',
         timeout: 12000,
         cacheEnable: false,
@@ -56,8 +60,8 @@ module.exports = {
         encoding: '',
     },
     timeout: 3600000,
-    alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL,
-    activateBullDashboard: false,
+    alternativePrecomputedBaseUrl: String(process.env.PRECOMPUTED_URL || 'http://localhost:3000'),
+    activateBullDashboard: Boolean(process.env.BULL_ENABLE || false),
     mail: {
         host,
         port: Number(port),

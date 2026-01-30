@@ -43,9 +43,7 @@ const middlewareScript = (isFormatExporters = false) => {
         ? formatExportersScripts
         : exportersScripts;
 
-    const workersUrlPrefix = `${
-        process.env.WORKERS_URL || 'http://localhost:31976'
-    }/${isFormatExporters ? 'formatExporters' : 'exporters'}`;
+    const workersUrlPrefix = `${config.get('ezs.url')}/${isFormatExporters ? 'formatExporters' : 'exporters'}`;
 
     return async (ctx: any, scriptNameCalledParam: any, fieldsParams: any) => {
         const currentScript = await scripts.get(scriptNameCalledParam);

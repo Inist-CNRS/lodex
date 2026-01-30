@@ -82,9 +82,7 @@ const middlewareScript = async (
                 );
             }
         };
-        const workers_url = `${
-            process.env.WORKERS_URL || 'http://localhost:31976'
-        }/routines/${routineName}?${ctx.querystring}`;
+        const workers_url = `${config.get('ezs.url')}/routines/${routineName}?${ctx.querystring}`;
         console.error('Connecting to workers', workers_url, 'with', query);
 
         const script = `
