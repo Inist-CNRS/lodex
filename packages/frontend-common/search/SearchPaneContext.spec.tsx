@@ -9,15 +9,6 @@ import { MemoryRouter, useHistory } from 'react-router-dom';
 import { SearchPaneContextProvider } from './SearchPaneContext';
 import { useSearchPaneContext } from './useSearchPaneContext';
 
-jest.mock('react-redux', () => {
-    const originalModule = jest.requireActual('react-redux');
-    return {
-        __esModule: true,
-        ...originalModule,
-        useSelector: jest.fn().mockReturnValue([]),
-    };
-});
-
 function TestContent() {
     const { selectOne } = useSearchPaneContext();
     const history = useHistory();

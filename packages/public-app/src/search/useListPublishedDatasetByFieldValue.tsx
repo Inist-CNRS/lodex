@@ -2,8 +2,6 @@ import { useApiClient } from '@lodex/frontend-common/api/useApiClient';
 import type { SearchPaneFilter } from '@lodex/frontend-common/search/SearchPaneContext';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { fromFacet } from '../selectors';
 
 const PAGE_SIZE = 10;
 
@@ -11,33 +9,15 @@ export function useListPublishedDatasetByFieldValue(
     filters: UseListPublishedDatasetByFieldValueParams = null,
 ) {
     const { fetch } = useApiClient();
-    const facets: Record<
-        string,
-        { value: string; count: number; id: string }[]
-    > = useSelector(fromFacet('dataset').getAppliedFacets);
-
-    const filtersWithFacets = useMemo(() => {
-        if (!facets || Object.keys(facets).length === 0) {
-            return filters;
-        }
-        const facetFilters = Object.entries(facets).flatMap(
-            ([fieldName, values]) =>
-                values.map((v) => ({
-                    fieldName,
-                    value: v.value,
-                })),
-        );
-        return filters ? [...filters, ...facetFilters] : facetFilters;
-    }, [filters, facets]);
 
     const {
         isLoading: isListSearchResultPending,
         fetchNextPage: fetchMoreResults,
         data,
     } = useInfiniteQuery({
-        queryKey: ['search', 'list', JSON.stringify(filtersWithFacets)],
+        queryKey: ['search', 'list', JSON.stringify(filters)],
         queryFn({ pageParam = 0 }) {
-            if (!filtersWithFacets?.length) {
+            if (!filters?.length) {
                 return {
                     total: 0,
                     data: [],
@@ -48,7 +28,7 @@ export function useListPublishedDatasetByFieldValue(
                 url: `/api/publishedDataset/search`,
                 method: 'POST',
                 body: JSON.stringify({
-                    filters: filtersWithFacets,
+                    filters,
                     page: pageParam,
                     pageSize: PAGE_SIZE,
                 }),
