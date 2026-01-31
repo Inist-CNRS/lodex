@@ -8,9 +8,11 @@ import { MongoClient, type Db } from 'mongodb';
 const clients = new Map();
 
 export const mongoConnectionString = (tenant: string) =>
-    `mongodb://${config.get('mongo.host')}/${config.get('mongo.dbName')}_${
-        tenant || DEFAULT_TENANT
-    }`;
+       process.env.NODE_ENV === 'test' && process.env.MONGODB_URI_FOR_TESTS
+        ? process.env.MONGODB_URI_FOR_TESTS
+        : `mongodb://${config.get('mongo.host')}/${config.get('mongo.dbName')}_${
+              tenant || DEFAULT_TENANT
+        }`;
 
 /**
  * Get the DBMS client

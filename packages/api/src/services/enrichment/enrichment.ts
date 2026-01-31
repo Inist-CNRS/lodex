@@ -296,13 +296,15 @@ const processEnrichmentPipeline = (
             filter,
         };
         let errorCount = 0;
+        console.error({environment}, process.env.NODE_ENV, process.env.MONGODB_URI_FOR_TESTS);
         const script = `
 [use]
 plugin = lodex
-
+[debug]
 [LodexRunQuery]
 collection = fix(${JSON.stringify(source.collectionName)})
 
+[debug]
 [breaker]
 fusible = ${fusible}
 
