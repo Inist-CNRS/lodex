@@ -2,7 +2,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import createAnnotationModel from './annotation';
 
 describe('annotation', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
     let db: any;
     let connection: any;
     let annotationModel: any;

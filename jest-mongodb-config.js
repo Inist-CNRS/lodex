@@ -7,4 +7,5 @@ module.exports = {
         },
         autoStart: false,
     },
+    mongoURLEnvName: 'MONGODB_URI_FOR_TESTS',
 };

@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb';
 import { Writable } from 'stream';
 
 describe('API: Dump', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
     let datasetModel: any;
     let connection: any;
     let db;

@@ -9,7 +9,7 @@ describe('restoreModel', () => {
 
     beforeAll(async () => {
         // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
-        connection = await MongoClient.connect(process.env.MONGO_URL, {
+        connection = await MongoClient.connect(process.env.MONGODB_URI_FOR_TESTS, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -26,7 +26,7 @@ describe('restoreModel', () => {
         );
 
         try {
-            await restoreModel(process.env.MONGO_URL, stream, [
+            await restoreModel(process.env.MONGODB_URI_FOR_TESTS, stream, [
                 'field',
                 'subresource',
                 'enrichment',

@@ -82,7 +82,7 @@ jest.mock('./recaptcha', () => ({
 }));
 
 describe('annotation', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
     let annotationModel: any;
     let publishedDatasetModel: any;
     let configTenantModel: any;

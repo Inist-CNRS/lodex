@@ -8,7 +8,7 @@ import fieldFactory, {
 
 describe('field', () => {
     describe('fieldFactory', () => {
-        const connectionStringURI = process.env.MONGO_URL;
+        const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
         let fieldCollection: any;
         let db: any;
         let connection: any;

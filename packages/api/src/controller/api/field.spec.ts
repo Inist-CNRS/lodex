@@ -31,7 +31,7 @@ import publishFacets from './publishFacets';
 jest.mock('../../services/indexSearchableFields');
 
 describe('field routes', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
     let fieldModel: any,
         enrichmentModel: any,
         precomputedModel: any,

@@ -118,7 +118,7 @@ describe('publishedDataset', () => {
 
             beforeAll(async () => {
                 // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
-                connection = await MongoClient.connect(process.env.MONGO_URL, {
+                connection = await MongoClient.connect(process.env.MONGODB_URI_FOR_TESTS, {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
                 });
@@ -562,7 +562,7 @@ describe('publishedDataset', () => {
 
         beforeAll(async () => {
             // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
-            connection = await MongoClient.connect(process.env.MONGO_URL, {
+            connection = await MongoClient.connect(process.env.MONGODB_URI_FOR_TESTS, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             });
@@ -1559,7 +1559,7 @@ describe('publishedDataset', () => {
         let defaultCtx: any;
 
         beforeAll(async () => {
-            const connectionStringURI = process.env.MONGO_URL;
+            const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
             const connection = await MongoClient.connect(connectionStringURI!);
             db = connection.db();
             defaultCtx = {
@@ -1747,7 +1747,7 @@ describe('publishedDataset', () => {
         let db: any;
 
         beforeAll(async () => {
-            const connectionStringURI = process.env.MONGO_URL;
+            const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
             const connection = await MongoClient.connect(connectionStringURI!);
             db = connection.db();
             defaultCtx = {
@@ -1955,7 +1955,7 @@ describe('publishedDataset', () => {
     });
 
     describe('completeFilters', () => {
-        const connectionStringURI = process.env.MONGO_URL;
+        const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
         let db;
         let connection: any;
         let annotationModel: any;

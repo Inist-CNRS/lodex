@@ -23,7 +23,7 @@ import precomputedDataset from './lodexV14.precomputedDataset.json';
 ezs.use(ezsLodex);
 
 describe('mongo queries', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
     let connection: any;
     let db: any;
 

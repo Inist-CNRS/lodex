@@ -10,7 +10,7 @@ interface FacetDocument extends WithId<Document> {
 }
 
 describe('publishedFacet', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
 
     let connection: MongoClient;
     let db: Db;

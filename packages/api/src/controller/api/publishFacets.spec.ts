@@ -4,7 +4,7 @@ import publishedFacet from '../../models/publishedFacet';
 import publishedDataset from '../../models/publishedDataset';
 
 describe('publishFacets', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
     let db: any;
     let connection: any;
     let ctx: any;

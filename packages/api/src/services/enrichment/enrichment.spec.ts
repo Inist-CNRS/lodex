@@ -402,7 +402,7 @@ describe('enrichment', () => {
     });
 
     describe('processEnrichment', () => {
-        const connectionStringURI = process.env.MONGO_URL;
+        const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
         let db: any;
         let connection: any;
         let dbName: string;
