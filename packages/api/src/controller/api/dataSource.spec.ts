@@ -33,7 +33,9 @@ describe('dataSource', () => {
     let precomputedDataCollection: Collection;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(process.env.MONGODB_URI_FOR_TESTS!);
+        connection = await MongoClient.connect(
+            process.env.MONGODB_URI_FOR_TESTS!,
+        );
         db = connection.db();
 
         datasetService = await dataset(db);

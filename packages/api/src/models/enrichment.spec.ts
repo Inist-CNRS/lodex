@@ -7,7 +7,9 @@ describe('enrichment model', () => {
     let enrichmentModel: Awaited<ReturnType<typeof createEnrichmentModel>>;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(process.env.MONGODB_URI_FOR_TESTS!);
+        connection = await MongoClient.connect(
+            process.env.MONGODB_URI_FOR_TESTS!,
+        );
         db = connection.db();
         enrichmentModel = await createEnrichmentModel(db);
     });
