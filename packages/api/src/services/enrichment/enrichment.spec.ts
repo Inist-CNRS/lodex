@@ -402,13 +402,13 @@ describe('enrichment', () => {
     });
 
     describe('processEnrichment', () => {
-        const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
+        const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
         let db: any;
         let connection: any;
         let dbName: string;
 
         beforeAll(async () => {
-            connection = await MongoClient.connect(connectionStringURI!);
+            connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             dbName = connection.s.options.dbName;
         });

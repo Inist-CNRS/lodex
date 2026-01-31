@@ -2,14 +2,13 @@ import { Db, MongoClient, ObjectId } from 'mongodb';
 import createEnrichmentModel, { type Enrichment } from './enrichment';
 
 describe('enrichment model', () => {
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let connection: MongoClient;
     let db: Db;
     let enrichmentModel: Awaited<ReturnType<typeof createEnrichmentModel>>;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(
-            process.env.MONGODB_URI_FOR_TESTS!,
-        );
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
         enrichmentModel = await createEnrichmentModel(db);
     });

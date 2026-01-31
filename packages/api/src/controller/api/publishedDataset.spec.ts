@@ -20,6 +20,7 @@ import {
 import publishFacets from './publishFacets';
 
 describe('publishedDataset', () => {
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     describe('getPage', () => {
         const ctx = {
             publishedDataset: {
@@ -117,9 +118,7 @@ describe('publishedDataset', () => {
             let publishedDatasetModel: any;
 
             beforeAll(async () => {
-                connection = await MongoClient.connect(
-                    String(process.env.MONGODB_URI_FOR_TESTS),
-                );
+                connection = await MongoClient.connect(connectionStringURI);
                 db = connection.db();
                 annotationModel = await createAnnotationModel(db);
                 publishedDatasetModel = await createPublishedDatasetModel(db);
@@ -559,9 +558,7 @@ describe('publishedDataset', () => {
         >;
 
         beforeAll(async () => {
-            connection = await MongoClient.connect(
-                String(process.env.MONGODB_URI_FOR_TESTS),
-            );
+            connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             publishedDatasetModel = await createPublishedDatasetModel(db);
         });
@@ -1555,8 +1552,7 @@ describe('publishedDataset', () => {
         let defaultCtx: any;
 
         beforeAll(async () => {
-            const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
-            const connection = await MongoClient.connect(connectionStringURI!);
+            const connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             defaultCtx = {
                 tenant: 'tenant',
@@ -1743,8 +1739,7 @@ describe('publishedDataset', () => {
         let db: any;
 
         beforeAll(async () => {
-            const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
-            const connection = await MongoClient.connect(connectionStringURI!);
+            const connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             defaultCtx = {
                 tenant: 'tenant',
@@ -1951,13 +1946,12 @@ describe('publishedDataset', () => {
     });
 
     describe('completeFilters', () => {
-        const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
         let db;
         let connection: any;
         let annotationModel: any;
 
         beforeAll(async () => {
-            connection = await MongoClient.connect(connectionStringURI!);
+            connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             annotationModel = await createAnnotationModel(db);
         });

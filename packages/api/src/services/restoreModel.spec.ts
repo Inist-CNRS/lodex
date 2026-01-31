@@ -4,13 +4,12 @@ import { MongoClient } from 'mongodb';
 import { restoreModel } from './restoreModel';
 
 describe('restoreModel', () => {
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let connection: any;
     let db: any;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(
-            String(process.env.MONGODB_URI_FOR_TESTS),
-        );
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
     });
 
@@ -24,7 +23,7 @@ describe('restoreModel', () => {
         );
 
         try {
-            await restoreModel(process.env.MONGODB_URI_FOR_TESTS, stream, [
+            await restoreModel(connectionStringURI, stream, [
                 'field',
                 'subresource',
                 'enrichment',

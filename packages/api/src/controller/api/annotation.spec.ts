@@ -82,7 +82,7 @@ jest.mock('./recaptcha', () => ({
 }));
 
 describe('annotation', () => {
-    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let annotationModel: any;
     let publishedDatasetModel: any;
     let configTenantModel: any;
@@ -90,7 +90,7 @@ describe('annotation', () => {
     let connection: any;
     let db: any;
     beforeAll(async () => {
-        connection = await MongoClient.connect(connectionStringURI!);
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
         annotationModel = await createAnnotationModel(db);
         fieldModel = await createFieldModel(db);

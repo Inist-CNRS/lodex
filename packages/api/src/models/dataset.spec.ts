@@ -2,13 +2,13 @@ import { MongoClient } from 'mongodb';
 import createDatasetModel from './dataset';
 
 describe('Dataset Model', () => {
-    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let db: any;
     let connection: any;
     let datasetModel: any;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(connectionStringURI!);
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
         datasetModel = await createDatasetModel(db);
     });
