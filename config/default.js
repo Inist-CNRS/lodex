@@ -60,9 +60,7 @@ module.exports = {
         encoding: '',
     },
     timeout: 3600000,
-    alternativePrecomputedBaseUrl: String(
-        process.env.PRECOMPUTED_URL || 'http://localhost:3000',
-    ),
+    alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, getHost is used
     activateBullDashboard: Boolean(process.env.BULL_ENABLE || false),
     mail: {
         host,
