@@ -147,7 +147,6 @@ const middlewareScript = (isFormatExporters = false) => {
         ; connect to the ezs server
         [URLConnect]
         url = ${workers_url}
-        // @ts-expect-error TS(2304): Cannot find name 'Number'.
         timeout = ${config.get('timeout')}
         streaming = true,
         json = false
@@ -158,7 +157,7 @@ const middlewareScript = (isFormatExporters = false) => {
             .pipe(ezs('pack')) // encode to transfert to the thread
             .pipe(
                 ezs(
-                    'detach', // thread dedicated to processing the response, otherwise you can simply use “delegate”
+                    config.get('ezs.mainStatement'),
                     {
                         script,
                         encoder: 'transit',

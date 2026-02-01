@@ -7,7 +7,7 @@ import { MongoClient, type Db } from 'mongodb';
  */
 const clients = new Map();
 
-export const mongoConnectionString = (tenant: string) =>
+export const mongoConnectionString = (tenant?: string) =>
     process.env.NODE_ENV === 'test' && process.env.MONGODB_URI_FOR_TESTS
         ? process.env.MONGODB_URI_FOR_TESTS
         : `mongodb://${config.get('mongo.host')}/${config.get('mongo.dbName')}_${

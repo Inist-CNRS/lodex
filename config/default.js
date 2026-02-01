@@ -56,7 +56,7 @@ module.exports = {
         timeout: 12000,
         cacheEnable: false,
         cacheDelay: 60 * 60 * 12,
-        mainStatement: 'delegate',
+        mainStatement: 'delegate', // use detatch to have a thread dedicated to processing the response, otherwise you can simply use “delegate”
         encoding: '',
     },
     timeout: 3600000,
