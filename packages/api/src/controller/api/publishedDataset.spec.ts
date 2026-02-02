@@ -20,6 +20,7 @@ import {
 import publishFacets from './publishFacets';
 
 describe('publishedDataset', () => {
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     describe('getPage', () => {
         const ctx = {
             publishedDataset: {
@@ -117,11 +118,7 @@ describe('publishedDataset', () => {
             let publishedDatasetModel: any;
 
             beforeAll(async () => {
-                // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
-                connection = await MongoClient.connect(process.env.MONGO_URL, {
-                    useNewUrlParser: true,
-                    useUnifiedTopology: true,
-                });
+                connection = await MongoClient.connect(connectionStringURI);
                 db = connection.db();
                 annotationModel = await createAnnotationModel(db);
                 publishedDatasetModel = await createPublishedDatasetModel(db);
@@ -561,11 +558,7 @@ describe('publishedDataset', () => {
         >;
 
         beforeAll(async () => {
-            // @ts-expect-error TS(2580): Cannot find name 'process'. Do you need to install... Remove this comment to see the full error message
-            connection = await MongoClient.connect(process.env.MONGO_URL, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            });
+            connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             publishedDatasetModel = await createPublishedDatasetModel(db);
         });
@@ -1559,8 +1552,7 @@ describe('publishedDataset', () => {
         let defaultCtx: any;
 
         beforeAll(async () => {
-            const connectionStringURI = process.env.MONGO_URL;
-            const connection = await MongoClient.connect(connectionStringURI!);
+            const connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             defaultCtx = {
                 tenant: 'tenant',
@@ -1747,8 +1739,7 @@ describe('publishedDataset', () => {
         let db: any;
 
         beforeAll(async () => {
-            const connectionStringURI = process.env.MONGO_URL;
-            const connection = await MongoClient.connect(connectionStringURI!);
+            const connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             defaultCtx = {
                 tenant: 'tenant',
@@ -1955,13 +1946,12 @@ describe('publishedDataset', () => {
     });
 
     describe('completeFilters', () => {
-        const connectionStringURI = process.env.MONGO_URL;
         let db;
         let connection: any;
         let annotationModel: any;
 
         beforeAll(async () => {
-            connection = await MongoClient.connect(connectionStringURI!);
+            connection = await MongoClient.connect(connectionStringURI);
             db = connection.db();
             annotationModel = await createAnnotationModel(db);
         });

@@ -82,9 +82,7 @@ const middlewareScript = async (
                 );
             }
         };
-        const workers_url = `${
-            process.env.WORKERS_URL || 'http://localhost:31976'
-        }/routines/${routineName}?${ctx.querystring}`;
+        const workers_url = `${config.get('ezs.url')}/routines/${routineName}?${ctx.querystring}`;
         console.error('Connecting to workers', workers_url, 'with', query);
 
         const script = `
@@ -108,7 +106,7 @@ const middlewareScript = async (
             .pipe(ezs('pack')) // encode to transfert to the thread
             .pipe(
                 ezs(
-                    'detach', // thread dedicated to processing the response, otherwise you can simply use “delegate”
+                    config.get('ezs.mainStatement'),
                     {
                         script,
                         encoder: 'transit',

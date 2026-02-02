@@ -31,7 +31,7 @@ import publishFacets from './publishFacets';
 jest.mock('../../services/indexSearchableFields');
 
 describe('field routes', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let fieldModel: any,
         enrichmentModel: any,
         precomputedModel: any,
@@ -41,7 +41,7 @@ describe('field routes', () => {
     let connection: any;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(connectionStringURI!);
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
         // @ts-expect-error TS(2339): Property 'mockImplementation' does not exist on ty... Remove this comment to see the full error message
         indexSearchableFields.mockImplementation(() => null);

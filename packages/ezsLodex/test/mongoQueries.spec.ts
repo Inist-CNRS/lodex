@@ -23,16 +23,13 @@ import precomputedDataset from './lodexV14.precomputedDataset.json';
 ezs.use(ezsLodex);
 
 describe('mongo queries', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let connection: any;
     let db: any;
 
     // @ts-expect-error TS(2304): Cannot find name 'beforeAll'.
     beforeAll(async () => {
-        connection = await MongoClient.connect(connectionStringURI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
     });
 

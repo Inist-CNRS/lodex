@@ -24,9 +24,7 @@ export const getLoader =
         return stream
             .pipe(
                 ezs('URLConnect', {
-                    url: `${
-                        process.env.WORKERS_URL || 'http://localhost:31976'
-                    }/loaders/${loaderName}?${env2query}`,
+                    url: `${config.get('ezs.url')}/loaders/${loaderName}?${env2query}`,
                     streaming: true,
                     timeout: config.get('timeout'),
                     json: false,

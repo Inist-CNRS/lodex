@@ -21,6 +21,7 @@ jest.mock('../../services/enrichment/enrichment', () => ({
 
 const PRECOMPUTED_ID = '64b64c4f2f4d88b6f0e4d1a1';
 describe('dataSource', () => {
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let connection: MongoClient;
     let db: Db;
 
@@ -33,7 +34,7 @@ describe('dataSource', () => {
     let precomputedDataCollection: Collection;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(process.env.MONGO_URL!);
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
 
         datasetService = await dataset(db);

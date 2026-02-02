@@ -4,7 +4,7 @@ import createPrecomputedModel, {
 } from './precomputed';
 
 describe('PrecomputedModel', () => {
-    const connectionStringURI = process.env.MONGO_URL as string;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let connection: any;
     let db: any;
     let precomputedCollection: PrecomputedCollection;

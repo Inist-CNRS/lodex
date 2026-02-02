@@ -4,13 +4,13 @@ import publishedFacet from '../../models/publishedFacet';
 import publishedDataset from '../../models/publishedDataset';
 
 describe('publishFacets', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let db: any;
     let connection: any;
     let ctx: any;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(connectionStringURI!);
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
         ctx = {
             tenant: 'test',

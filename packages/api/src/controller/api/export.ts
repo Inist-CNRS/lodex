@@ -43,9 +43,7 @@ const middlewareScript = (isFormatExporters = false) => {
         ? formatExportersScripts
         : exportersScripts;
 
-    const workersUrlPrefix = `${
-        process.env.WORKERS_URL || 'http://localhost:31976'
-    }/${isFormatExporters ? 'formatExporters' : 'exporters'}`;
+    const workersUrlPrefix = `${config.get('ezs.url')}/${isFormatExporters ? 'formatExporters' : 'exporters'}`;
 
     return async (ctx: any, scriptNameCalledParam: any, fieldsParams: any) => {
         const currentScript = await scripts.get(scriptNameCalledParam);
@@ -149,7 +147,6 @@ const middlewareScript = (isFormatExporters = false) => {
         ; connect to the ezs server
         [URLConnect]
         url = ${workers_url}
-        // @ts-expect-error TS(2304): Cannot find name 'Number'.
         timeout = ${config.get('timeout')}
         streaming = true,
         json = false
@@ -160,7 +157,7 @@ const middlewareScript = (isFormatExporters = false) => {
             .pipe(ezs('pack')) // encode to transfert to the thread
             .pipe(
                 ezs(
-                    'detach', // thread dedicated to processing the response, otherwise you can simply use “delegate”
+                    config.get('ezs.mainStatement'),
                     {
                         script,
                         encoder: 'transit',

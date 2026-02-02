@@ -4,13 +4,13 @@ import { MongoClient } from 'mongodb';
 import { Writable } from 'stream';
 
 describe('API: Dump', () => {
-    const connectionStringURI = process.env.MONGO_URL;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let datasetModel: any;
     let connection: any;
     let db;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(connectionStringURI!);
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
         datasetModel = await createDatasetModel(db);
     });
