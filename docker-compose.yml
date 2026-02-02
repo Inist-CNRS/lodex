@@ -12,6 +12,8 @@ services:
             ROOT_LOGIN: ${ROOT_LOGIN}
             ROOT_PASSWORD: ${ROOT_PASSWORD}
             PRECOMPUTED_URL: ${PRECOMPUTED_URL}
+            # Prefix commun à toutes les instances,
+            # équivalent du technical name avec ezmaste
             MONGO_DATABASE_PREFIX: ${MONGO_DATABASE_PREFIX}
             MONGO_HOST: 'mongo:27017'
         links:

@@ -299,7 +299,7 @@ const processEnrichmentPipeline = (
         const script = `
 [use]
 plugin = lodex
-[debug]
+
 [LodexRunQuery]
 collection = fix(${JSON.stringify(source.collectionName)})
 
