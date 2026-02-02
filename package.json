@@ -34,7 +34,7 @@
         "test:e2e:phase:three": "cypress run --browser chrome --config-file cypress.config.ts  --spec \"cypress/e2e/phase_3/*.cy.ts\"",
         "test:e2e:phase:four": "cypress run --browser chrome --config-file cypress.config.ts --spec \"cypress/e2e/phase_4/*.cy.ts\"",
         "test:e2e:all": "cypress run --browser chrome",
-        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/api/package*.json packages/common/package*.json packages/workers/package*.json",
+        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile docker-compose.yml packages/api/package*.json packages/common/package*.json packages/workers/package*.json",
         "insertversion:readme": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" README.md",
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
