@@ -18,4 +18,5 @@ module.exports = {
         public: 'http://localhost:8083',
     },
     themesHost: 'http://localhost:3000',
+    activateBullDashboard: true,
 };

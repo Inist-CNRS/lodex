@@ -8,8 +8,11 @@ services:
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             NODE_OPTIONS: ${NODE_OPTIONS}
-            EZMASTER_TECHNICAL_NAME: 'lodex'
-            no_proxy: 'localhost,127.0.0.1,'
+            no_proxy: ${https_proxy}
+            ROOT_LOGIN: ${ROOT_LOGIN}
+            ROOT_PASSWORD: ${ROOT_PASSWORD}
+            PRECOMPUTED_URL: ${PRECOMPUTED_URL}
+            MONGO_DATABASE_PREFIX: ${MONGO_DATABASE_PREFIX}
             MONGO_HOST: 'mongo:27017'
         links:
             - mongo

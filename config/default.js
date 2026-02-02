@@ -61,7 +61,7 @@ module.exports = {
     },
     timeout: 3600000,
     alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, getHost is used
-    activateBullDashboard: Boolean(process.env.BULL_ENABLE || false),
+    activateBullDashboard: false,
     mail: {
         host,
         port: Number(port),

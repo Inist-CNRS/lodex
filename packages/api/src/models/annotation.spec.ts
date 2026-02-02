@@ -2,13 +2,13 @@ import { MongoClient, ObjectId } from 'mongodb';
 import createAnnotationModel from './annotation';
 
 describe('annotation', () => {
-    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS;
+    const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
     let db: any;
     let connection: any;
     let annotationModel: any;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(connectionStringURI!);
+        connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
         annotationModel = await createAnnotationModel(db);
     });
