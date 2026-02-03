@@ -1,4 +1,4 @@
-FROM node:22.12-alpine AS build
+FROM node:24.13-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
 COPY ./package.json /app
@@ -18,7 +18,7 @@ RUN npm run build && \
     npm run clean  && \
     npm prune --production --legacy-peer-deps
 
-FROM node:22.12-alpine AS release
+FROM node:24.13-alpine AS release
 RUN apk add --no-cache su-exec redis
 
 # ezmasterizing of lodex

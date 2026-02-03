@@ -2,7 +2,7 @@ version: '3'
 
 services:
     api:
-        image: node:22.12-bookworm
+        image: node:24.13-alpine
         extra_hosts:  # for linux hosts since version 20.10
             - "host.docker.internal:host-gateway"
         volumes:
@@ -40,7 +40,7 @@ services:
                     memory: 4G
 
     dev-server:  ## Enable hot-reload in development
-        image: node:22.12-bookworm
+        image: node:24.13-alpine
         volumes:
             - .:/app
         working_dir: /app
@@ -86,7 +86,7 @@ services:
                     memory: 1G
 
     workers:
-        image: node:22.12-bookworm
+        image: node:24.13-alpine
         extra_hosts:  # for linux hosts since version 20.10
             - "host.docker.internal:host-gateway"
         volumes:
