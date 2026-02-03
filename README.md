@@ -30,11 +30,10 @@ docker-compose up
 
 ## Useful links
 
-- Data and Model ready to use: <https://github.com/Inist-CNRS/lodex-use-cases>
-- User Documentation: <https://lodex.inist.fr/docs/> (French Only)
-- Lodex home page: <http://www.lodex.fr/>
-- Contribute (for developer): <https://github.com/Inist-CNRS/lodex/wiki>
-- Contact: <https://www.lodex.fr/contact/>
+- **Data and Model ready to use**: <https://github.com/Inist-CNRS/lodex-use-cases>
+- **User Documentation**: <http://www.lodex.fr/> (French Only)
+- **Technical Documenation (for developer)**: <https://github.com/Inist-CNRS/lodex/wiki>
+- **Contact**: <https://www.lodex.fr/contact/>
 
 ## Licence
 
