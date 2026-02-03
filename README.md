@@ -1,7 +1,7 @@
 [![Lodex CI](https://github.com/Inist-CNRS/lodex/actions/workflows/lodex-ci.yml/badge.svg)](https://github.com/Inist-CNRS/lodex/actions/workflows/lodex-ci.yml)
 [![Licence](https://img.shields.io/badge/licence-CeCILL%202.1-yellow.svg)](http://www.cecill.info)
 [![Documentation](https://img.shields.io/badge/Documentation-f48022)](https://lodex.inist.fr/docs/)
-[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/inistcnrs/lodex)](https://hub.docker.com/r/inistcnrs/lodex/)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/cnrsinist/lodex)](https://hub.docker.com/r/cnrsinist/lodex/)
 
 # [Lodex](http://www.lodex.fr)
 
