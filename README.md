@@ -65,6 +65,14 @@ Note: You can disable end-to-end tests in the `make test` command by setting the
 
 You can create an instance via four methods.
 
+
+#### Docker Compose
+
+```bash
+wget https://raw.githubusercontent.com/Inist-CNRS/lodex/refs/tags/v16.10.4/docker-compose.yml
+docker-compose up
+```
+
 #### Github
 
 ```bash
@@ -72,7 +80,6 @@ git clone https://github.com/Inist-CNRS/lodex.git
 cd lodex
 make start
 ```
-
 
 #### GitHub Release
 
@@ -89,12 +96,6 @@ make start
 To install Lodex in EzMaster, you should download the image (`inistcnrs/lodex`) through the applications menu.
 Once the image has been loaded, you can create a Lodex instance through the Instances menu.
 
-#### Docker Hub
-
-```bash
-docker pull inistcnrs/lodex
-docker run -it inistcnrs/lodex
-```
 
 ## Useful links
 
