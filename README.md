@@ -22,80 +22,11 @@ To use Lodex, you must install Docker and Docker Compose. You can install them b
 
 It is possible to run Lodex on modest Linux servers with at least 32 GB RAM and 64 GB hard disk and 4 CPUs corresponding to the 4 underlying middleware (web server, database, processing server, background task server).
 
-### Development
-
-#### Clone and install
-
-```bash
-git clone https://github.com/Inist-CNRS/lodex.git
-cd lodex
-make install
-```
-
-#### Run dev server
-
-```bash
-make run-dev
-```
-
-Go to <http://localhost:3000/instances> and log in using the credentials `root`/`secret`.
-From there, you can create a new instance (tenant) on the instances page in order to publish new datasets and models.
-
-Note: Upon instance creation, the default user/password combination is set to `admin`/`secret`.
-
-#### Run test suite
-
-Different tests can be run to verify that changes made to the source code at various levels do not cause any issues in the application.
-
-- The `test-unit` suite focuses on testing individual functions and systems without considering the entire application.
-- The `test-api-e2e` suite aims to test the API without taking the frontend into consideration.
-- The `test-e2e` suite's goal is to test various scenarios with both the frontend and backend in mind.
-
-```bash
-make test-unit
-make test-api-e2e
-make test-e2e # Those tests may take up to 30 minutes to complete.
-
-make test # Run all of the above tests
-```
-
-Note: You can disable end-to-end tests in the `make test` command by setting the `DISABLE_E2E_TESTS` environment variable to `true`.
-
-### Production
-
-You can create an instance via four methods.
-
-
-#### Docker Compose
 
 ```bash
 wget https://raw.githubusercontent.com/Inist-CNRS/lodex/refs/tags/v16.10.4/docker-compose.yml
 docker-compose up
 ```
-
-#### Github
-
-```bash
-git clone https://github.com/Inist-CNRS/lodex.git
-cd lodex
-make start
-```
-
-#### GitHub Release
-
-```bash
-wget https://github.com/Inist-CNRS/lodex/archive/refs/tags/v14.0.18-alpha.zip
-unzip v14.0.18-alpha.zip
-cd lodex-14.0.18-alpha
-make start
-```
-
-#### EzMaster
-
-[EzMaster](https://github.com/Inist-CNRS/ezmaster) is a Docker orchestration tool designed for non-technical administrators.
-To install Lodex in EzMaster, you should download the image (`inistcnrs/lodex`) through the applications menu.
-Once the image has been loaded, you can create a Lodex instance through the Instances menu.
-
 
 ## Useful links
 
