@@ -121,7 +121,7 @@
         "cli-truncate": "^1.1.0",
         "comma-number": "^2.0.2",
         "concurrently": "7.6.0",
-        "config": "^2.0.2",
+        "config": "^4.2.0",
         "copy-to-clipboard": "3.3.1",
         "csv-string": "3.2.0",
         "d3": "^7.9.0",
