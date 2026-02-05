@@ -71,8 +71,7 @@ export const getYearUrl = ({
 export const getDecadeYearUrl =
     // @ts-expect-error TS7031
 
-
-        ({ value, to, from, searchedField }) =>
+    ({ value, to, from, searchedField }) =>
         () => ({
             url: buildIstexQuery({
                 query: `${getFilterQuery(

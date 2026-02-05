@@ -197,7 +197,7 @@ export const AnnotationList = () => {
                 headerName: translate('annotation_field_internal_scopes'),
                 // @ts-expect-error TS7031
                 valueGetter: ({ row }) =>
-                    row?.field ? row.field?.internalScopes ?? [] : null,
+                    row?.field ? (row.field?.internalScopes ?? []) : null,
                 filterOperators: getGridStringOperators()
                     .filter((operator) => operator.value === 'contains')
                     .map((operator) => ({

@@ -19,8 +19,7 @@ export default compose(
         handleClick:
             // @ts-expect-error TS7031
 
-
-                ({ onClick, uri, exportID }) =>
+            ({ onClick, uri, exportID }) =>
                 () =>
                     onClick({ uri, exportID }),
     }),

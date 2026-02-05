@@ -235,13 +235,13 @@ export const getFieldFormData = (state) => {
             annotationFormatListKind:
                 values.annotable &&
                 values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
-                    ? values.annotationFormatListKind ??
-                      FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE
+                    ? (values.annotationFormatListKind ??
+                      FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE)
                     : FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
             annotationFormatListSupportsNewValues:
                 values.annotable &&
                 values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
-                    ? values.annotationFormatListSupportsNewValues ?? true
+                    ? (values.annotationFormatListSupportsNewValues ?? true)
                     : false,
         };
     } catch (error) {

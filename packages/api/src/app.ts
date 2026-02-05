@@ -33,7 +33,6 @@ ezs.settings.feed.timeout = config.get('ezs.timeout');
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
 // https://github.com/ljharb/qs#parsing-arrays
-// @ts-expect-error The third argument of koaQs is not defined in the type definition, but it is supported.
 const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
 // Prometheus metrics

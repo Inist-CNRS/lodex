@@ -308,7 +308,6 @@ export const PropertyComponent = ({
                             'property_language',
                             fieldClassName,
                         )}
-                        // @ts-expect-error TS2322
                         style={styles.language}
                     >
                         {field.language}

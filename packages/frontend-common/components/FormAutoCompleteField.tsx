@@ -86,8 +86,7 @@ const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) =>
 const handleValueChosen =
     // @ts-expect-error TS7031
 
-
-        ({ allowNewItem, input: { onChange } }) =>
+    ({ allowNewItem, input: { onChange } }) =>
         // @ts-expect-error TS7006
         (event, value) => {
             // Material UI doc: index is the index in dataSource of the list item selected,
@@ -102,8 +101,7 @@ const handleValueChosen =
 const handleComplete =
     // @ts-expect-error TS7031
 
-
-        ({ allowNewItem, input: { onChange }, handleSearch }) =>
+    ({ allowNewItem, input: { onChange }, handleSearch }) =>
         // @ts-expect-error TS7006
         (event, searchText) => {
             if (allowNewItem) {

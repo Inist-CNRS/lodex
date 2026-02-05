@@ -61,8 +61,7 @@ export default compose(
         handleAddColumn:
             // @ts-expect-error TS7031
 
-
-                ({ name, onAddColumn }) =>
+            ({ name, onAddColumn }) =>
                 () =>
                     onAddColumn(name),
     }),
