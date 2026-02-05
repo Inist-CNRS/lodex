@@ -103,4 +103,7 @@ export const EJSAdminView = connect((state, { dataset }) => {
 })(EJSView);
 
 // @ts-expect-error TS2345
-export default compose(injectData(), connect(mapStateToProps))(EJSView);
+export default compose(
+    injectData(null, null, true),
+    connect(mapStateToProps),
+)(EJSView);
