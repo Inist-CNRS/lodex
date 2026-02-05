@@ -37,3 +37,11 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     rect: jest.fn(),
     clip: jest.fn(),
 })) as any;
+
+
+// cf. https://www.tutorialpedia.org/blog/referenceerror-structuredclone-is-not-defined-using-jest-with-nodejs-typescript/
+if (!globalThis.structuredClone) {
+    globalThis.structuredClone = (obj: any) => {
+        return JSON.parse(JSON.stringify(obj));
+    };
+}

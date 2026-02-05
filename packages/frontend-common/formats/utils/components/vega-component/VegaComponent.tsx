@@ -83,8 +83,6 @@ function CustomActionVega(props: CustomActionVegaProps) {
         <FormatFullScreenMode forceRerenderOnToggle>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             <div ref={graphParentRef} style={{ width: '100%', height: '100%' }}>
-                {/*
-                 // @ts-expect-error TS2786 */}
                 <Vega
                     style={
                         props.aspectRatio === ASPECT_RATIO_NONE

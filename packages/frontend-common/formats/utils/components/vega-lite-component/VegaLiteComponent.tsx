@@ -83,7 +83,6 @@ function CustomActionVegaLite({
     );
 
     const vegaGraphElement = (
-        // @ts-expect-error TS2786
         <Vega
             style={
                 aspectRatio === ASPECT_RATIO_NONE
