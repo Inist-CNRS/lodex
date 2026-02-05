@@ -12,7 +12,9 @@ if (!module.parent) {
     const mongo = config.get('mongo');
 
     const httpServer = app.listen(config.get('port'), () => {
-        global.console.log(`Server listening on port ${config.get('port')}, Go to ${getCleanHost()}/instances/ to get started...`);
+        global.console.log(
+            `Server listening on port ${config.get('port')}, Go to ${getCleanHost()}/instances/ to get started...`,
+        );
         // only available only for cluster mode (IPC channel)
         if (process.send) {
             // Here we send the ready signal to PM2
