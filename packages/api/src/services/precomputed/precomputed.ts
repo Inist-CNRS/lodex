@@ -532,10 +532,10 @@ export const startAskForPrecomputed = async (ctx: any) => {
 
 export const startGetPrecomputed = async (ctx: any) => {
     const logger = getLogger(ctx.tenant);
-    logger.info(`Precompute webhook call for ${ctx.tenant}`);
+    logger.debug(`Precompute webhook call for ${ctx.tenant}`);
 
     if (ctx.job?.data?.failure !== undefined) {
-        logger.info('Precompute webservice call with failure');
+        logger.debug('Precompute webservice call with failure');
         await getFailureFromWebservice(ctx);
         return;
     }

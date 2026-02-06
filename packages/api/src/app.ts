@@ -174,7 +174,8 @@ app.use(function* (this: any, next: any) {
         this.status = err.status || 500;
         // @ts-expect-error TS(2571): Object is of type 'unknown'.
         this.body = err.message;
-        this.app.emit('error', err, this);
+        const logger = getLogger();
+        logger.error('Catch error', err);
     }
 });
 

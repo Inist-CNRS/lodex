@@ -20,7 +20,7 @@ export const jobLogger = {
             return;
         }
         const logger = getLogger(job.data.tenant);
-        logger.info(message);
+        logger.debug(message);
         job.log(message);
     },
     error: (job: any, message: any) => {
