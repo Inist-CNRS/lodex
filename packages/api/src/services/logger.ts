@@ -62,11 +62,11 @@ const httpLogger = winston.createLogger({
     format: format.combine(format.metadata(), apacheCombined),
     transports: [
         new winston.transports.File({
-            filename: path.join(config.get('logger.logpath'), 'combined.log'),
+            filename: path.join(config.get('logger.logpath'), 'access.log'),
             level: 'info',
         }),
         new winston.transports.File({
-            filename: path.join(config.get('logger.logpath'), 'errors.log'),
+            filename: path.join(config.get('logger.logpath'), 'error.log'),
             level: 'error',
         }),
     ],
