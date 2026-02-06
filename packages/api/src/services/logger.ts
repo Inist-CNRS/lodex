@@ -63,14 +63,15 @@ const httpLogger = winston.createLogger({
 });
 
 if (config.get('logger.accessLogFile')) {
-    httpLogger.add(new winston.transports.File({
-        filename: path.join(config.get('logger.logpath'), 'access.log'),
-        level: 'info',
-    }));
+    httpLogger.add(
+        new winston.transports.File({
+            filename: path.join(config.get('logger.logpath'), 'access.log'),
+            level: 'info',
+        }),
+    );
 } else {
     httpLogger.add(new winston.transports.Console());
 }
-
 
 export const getHttpLogger = () => httpLogger;
 
