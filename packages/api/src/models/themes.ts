@@ -11,7 +11,7 @@ export const THEMES_VERSION = '7';
 export const THEMES_FOLDER = '../../../../src/app/custom/themes';
 
 // --- Global function for the Theme system
-const logger = getLogger('system');
+const logger = getLogger();
 
 // --- TypeScript without TypeScript (Required an ide with TypeScript support)
 /**

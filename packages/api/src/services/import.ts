@@ -14,6 +14,7 @@ import progress from './progress';
 import { ProgressStatus } from '@lodex/common';
 import { Readable } from 'stream';
 import config from 'config';
+import getLogger from './logger';
 
 ezs.use(ezsBasics);
 
@@ -120,7 +121,8 @@ export const startImport = async (ctx: any) => {
         });
         await ctx.dataset.indexColumns();
     } catch (error) {
-        console.error('Error during import', error);
+        const logger = getLogger(ctx.tenant);
+        logger.error('Error during import', error);
         throw new Error(`Error during import: ${error}`);
     } finally {
         await disableFusible(fusible);

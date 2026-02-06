@@ -8,6 +8,9 @@ import {
     type UpdateResult,
 } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
+import getLogger from '../services/logger';
+
+const logger = getLogger();
 
 const checkMissingFields = (data: Partial<PreComputation>) =>
     !data.name ||
@@ -133,7 +136,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             await db.collection(`pc_${id}`).drop();
         } catch {
             // Collection does not exist, no big deal
-            console.warn(`Failed to drop collection 'pc_${id}'`);
+            logger.warn(`Failed to drop collection 'pc_${id}'`);
         }
         return collection.deleteOne({
             // @ts-expect-error TS2345

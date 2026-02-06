@@ -9,6 +9,9 @@ import { Transform } from 'stream';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 import { getCreatedCollection } from './utils';
+import getLogger from '../services/logger';
+
+const logger = getLogger();
 
 export default async (db: any) => {
     const collection: any = await getCreatedCollection(db, 'dataset');
@@ -220,11 +223,11 @@ export default async (db: any) => {
                 try {
                     await collection.createIndex({ [key]: 1 });
                 } catch {
-                    console.error(`Failed to index ${key}`);
+                    logger.error(`Failed to index ${key}`);
                 }
             }
         } else {
-            console.warn(
+            logger.warn(
                 'Unable to create datagrid indexes, columns are invalid.',
             );
         }

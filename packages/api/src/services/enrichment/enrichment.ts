@@ -194,8 +194,6 @@ export const getEnrichmentRuleModel = (
 
         return rule;
     } catch (e) {
-        // @ts-expect-error TS(2584): Cannot find name 'console'. Do you need to change ... Remove this comment to see the full error message
-        console.error('Error:', e.stack);
         throw e;
     }
 };
@@ -500,7 +498,8 @@ export const setEnrichmentError = async (ctx: any, err: any) => {
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
     // very useful for identifying the origin of production errors.
-    console.warn('handleEnrichmentError', err);
+    const logger = getLogger(ctx.tenant);
+    logger.warn('handleEnrichmentError', err);
     notifyListeners(`${ctx.tenant}-enricher`, {
         isEnriching: false,
         success: false,

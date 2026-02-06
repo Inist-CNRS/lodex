@@ -10,6 +10,7 @@ import config from 'config';
 import Script from '../../services/script';
 import { getCleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
+import getLogger from '../../services/logger';
 
 ezs.use(Lodex);
 
@@ -30,6 +31,7 @@ const middlewareScript = async (
         ctx.throw(404, `Unknown script '${scriptNameCalledParam}'.ini`);
     }
 
+    const logger = getLogger(ctx.tenant);
     try {
         const [, metaData, routineName] = currentScript;
         ctx.type = metaData.mimeType;
@@ -63,18 +65,12 @@ const middlewareScript = async (
             ctx.status = 503;
             ctx.body.destroy();
             input.destroy();
-            global.console.error(
-                'Error with ',
-                ctx.path,
-                ' and',
-                ctx.query,
-                err,
-            );
+            logger.error('Error with ', ctx.path, ' and', ctx.query, err);
         };
         const emptyHandle = () => {
             if (ctx.headerSent === false) {
                 ctx.body.write('{"total":0}');
-                global.console.error(
+                logger.error(
                     'Empty response with ',
                     ctx.path,
                     ' and',
@@ -83,7 +79,7 @@ const middlewareScript = async (
             }
         };
         const workers_url = `${config.get('ezs.url')}/routines/${routineName}?${ctx.querystring}`;
-        console.error('Connecting to workers', workers_url, 'with', query);
+        logger.info('Connecting to workers', workers_url, 'with', query);
 
         const script = `
         [use]
@@ -122,7 +118,7 @@ const middlewareScript = async (
         input.write(query);
         input.end();
     } catch (err) {
-        console.error(err);
+        logger.error(err);
         ctx.throw(500, err);
     }
 };

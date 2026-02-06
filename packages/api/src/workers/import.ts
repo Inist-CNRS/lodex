@@ -11,6 +11,7 @@ import { saveParsedStream } from '../services/saveParsedStream';
 import publishDocuments from '../services/publishDocuments';
 import publishFacets from '../controller/api/publishFacets';
 import saveStream from '../services/saveStream';
+import getLogger from '../services/logger';
 import { CancelWorkerError, cleanWaitingJobsOfType } from './index';
 
 export const IMPORT = 'import';
@@ -59,7 +60,8 @@ const handleImportError = async (job: any, err: any) => {
         await ctx.dataset.drop();
     }
     // very useful for identifying the origin of production errors.
-    console.warn('handleImportError', err);
+    const logger = getLogger(ctx.tenant);
+    logger.warn('handleImportError', err);
     notifyListeners(`${job.data.tenant}-import`, {
         isImporting: false,
         success: false,

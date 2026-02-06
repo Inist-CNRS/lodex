@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const envname = path.resolve(__dirname, '../config.env');
 const result = dotenv.config({
     path: envname,
-    quiet: false,
+    quiet: process.NODE_ENV === 'production' ? true : false,
 });
 if (result.error) {
     console.warn(`Unable to parse ${envname} `);
@@ -46,6 +46,8 @@ module.exports = {
     themesHost: '',
     logger: {
         disabled: false,
+        level: 'debug',
+        logpath: path.resolve(__dirname, '../log/'),
     },
     redis: {
         url: String(process.env.REDIS_URL || 'redis://localhost:6379'),
