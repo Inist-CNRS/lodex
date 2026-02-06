@@ -60,17 +60,17 @@ const getLogger = (tenant = '_lodex_') => {
 
 const httpLogger = winston.createLogger({
     format: format.combine(format.metadata(), apacheCombined),
-    transports: [
-        new winston.transports.File({
-            filename: path.join(config.get('logger.logpath'), 'access.log'),
-            level: 'info',
-        }),
-        new winston.transports.File({
-            filename: path.join(config.get('logger.logpath'), 'error.log'),
-            level: 'error',
-        }),
-    ],
 });
+
+if (config.get('logger.accessLogFile')) {
+    httpLogger.add(new winston.transports.File({
+        filename: path.join(config.get('logger.logpath'), 'access.log'),
+        level: 'info',
+    }));
+} else {
+    httpLogger.add(new winston.transports.Console());
+}
+
 
 export const getHttpLogger = () => httpLogger;
 
