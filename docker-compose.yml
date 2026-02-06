@@ -2,7 +2,7 @@ version: '3'
 
 services:
     lodex:
-        image: cnrsinist/lodex:16.10.6
+        image: cnrsinist/lodex:16.10.7
         environment:
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
