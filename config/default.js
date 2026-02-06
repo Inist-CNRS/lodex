@@ -1,17 +1,6 @@
 // node-config use CJS see https://github.com/node-config/node-config/wiki/Special-features-for-JavaScript-configuration-files
-
 const path = require('node:path');
-const dotenv = require('dotenv');
 
-const envname = path.resolve(__dirname, '../config.env');
-const result = dotenv.config({
-    path: envname,
-    quiet: process.NODE_ENV === 'production' ? true : false,
-});
-if (result.error) {
-    console.warn(`Unable to parse ${envname} `);
-    throw result.error;
-}
 const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
     ':',
 );

@@ -26,8 +26,8 @@ RUN apk add --no-cache su-exec redis
 # change uid/gid to be compilant with Debian/Ubuntu container (and so with ezmaster-webdav)
 RUN echo '{ \
     "httpPort": 3000, \
-    "configPath": "/app/config.env", \
-    "configType": "text", \
+    "configPath": "/app/config/local-production.json", \
+    "configType": "json", \
     "dataPath": "/app/src/app/custom" \
     }' > /etc/ezmaster.json  && \
     sed -i -e "s/daemon:x:2:2/daemon:x:1:1/" /etc/passwd && \
@@ -41,7 +41,6 @@ WORKDIR /app
 ENV NODE_ENV="production"
 ENV PM2_HOME=/app/.pm2
 ENV npm_config_cache=/app/.npm
-ENV DEBUG="ezs:*,-ezs:debug,-ezs:trace"
 ENV DEBUG_COLORS="0"
 EXPOSE 3000
 ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
