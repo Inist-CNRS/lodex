@@ -79,7 +79,7 @@ const middlewareScript = async (
             }
         };
         const workers_url = `${config.get('ezs.url')}/routines/${routineName}?${ctx.querystring}`;
-        logger.info('Connecting to workers', workers_url, 'with', query);
+        logger.debug(`Connecting to ${workers_url} with ${query}`);
 
         const script = `
         [use]

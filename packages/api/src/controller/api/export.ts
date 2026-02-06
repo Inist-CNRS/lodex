@@ -132,7 +132,7 @@ const middlewareScript = (isFormatExporters = false) => {
             }
         };
         const workers_url = `${workersUrlPrefix}/${exporterName}`;
-        logger.info('Connecting to workers', workers_url, 'with', query);
+        logger.debug(`Connecting to ${workers_url} with ${query}`);
         const script = `
         [use]
         plugin = basics
