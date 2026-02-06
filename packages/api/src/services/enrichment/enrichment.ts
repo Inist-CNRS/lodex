@@ -161,41 +161,37 @@ export const getEnrichmentRuleModel = (
     enrichment: any,
     BATCH_SIZE: any,
 ) => {
-    try {
-        let rule;
-        if (!enrichment.sourceColumn) {
-            throw new Error(`Missing source column parameter`);
-        }
-        let file;
-        if (!enrichment.subPath) {
-            file = Array.isArray(sourceData)
-                ? './directPathMultipleValues.txt'
-                : './directPathSingleValue.txt';
-        } else {
-            file = Array.isArray(sourceData)
-                ? './subPathMultipleValues.txt'
-                : './subPathSingleValue.txt';
-        }
-
-        rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-        rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
-        rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-        rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
-        if (enrichment.webServiceUrl) {
-            rule = rule
-                .replace(
-                    '[[WEB SERVICE URL]]',
-                    addSidToUrl(enrichment.webServiceUrl),
-                )
-                .replace('[[WEB SERVICE TIMEOUT]]', config.get('timeout'));
-        } else {
-            rule = cleanWebServiceRule(rule);
-        }
-
-        return rule;
-    } catch (e) {
-        throw e;
+    let rule;
+    if (!enrichment.sourceColumn) {
+        throw new Error(`Missing source column parameter`);
     }
+    let file;
+    if (!enrichment.subPath) {
+        file = Array.isArray(sourceData)
+            ? './directPathMultipleValues.txt'
+            : './directPathSingleValue.txt';
+    } else {
+        file = Array.isArray(sourceData)
+            ? './subPathMultipleValues.txt'
+            : './subPathSingleValue.txt';
+    }
+
+    rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+    rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
+    rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+    rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
+    if (enrichment.webServiceUrl) {
+        rule = rule
+            .replace(
+                '[[WEB SERVICE URL]]',
+                addSidToUrl(enrichment.webServiceUrl),
+            )
+            .replace('[[WEB SERVICE TIMEOUT]]', config.get('timeout'));
+    } else {
+        rule = cleanWebServiceRule(rule);
+    }
+
+    return rule;
 };
 
 const createEzsRuleCommands = (rule: any) => ezs.compileScript(rule).get();
