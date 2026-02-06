@@ -1,6 +1,7 @@
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import progress from './progress';
+import getLogger from './logger';
 
 async function insert(this: any, data: any, feed: any) {
     const method = this.getParam('method');
@@ -31,7 +32,8 @@ export default async (stream: any, ctx: any) => {
             .pipe(ezs(insert, { method }, ctx))
             .pipe(ezs.catch())
             .on('error', (e: any) => {
-                console.error('Error in the import stream pipeline', e);
+                const logger = getLogger(ctx.tenant);
+                logger.error('Error in the import stream pipeline', e);
                 reject(e.sourceError || e);
             })
             .on('data', ({ insertedCount = 0 }) => {

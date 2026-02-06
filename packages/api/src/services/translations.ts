@@ -2,6 +2,7 @@ import fs from 'fs';
 import { resolve } from 'path';
 import CSV from 'csv-string';
 import moment from 'moment';
+import getLogger from './logger';
 
 const getFileUpdatedDate = (path: any) => {
     const stats = fs.statSync(path);
@@ -42,7 +43,8 @@ const getTranslations = (
 ) => {
     const path = resolve(__dirname, filePath);
     if (!fs.existsSync(path)) {
-        console.error('The translation file is missing.');
+        const logger = getLogger();
+        logger.error('The translation file is missing.');
         return {};
     }
 

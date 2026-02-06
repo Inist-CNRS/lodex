@@ -5,6 +5,7 @@ import publishDocuments from '../services/publishDocuments';
 import repositoryMiddleware from '../services/repositoryMiddleware';
 import { CancelWorkerError, cleanWaitingJobsOfType } from './index';
 import clearPublished from '../services/clearPublished';
+import getLogger from '../services/logger';
 
 export const PUBLISHER = 'publisher';
 const listeners: any = [];
@@ -41,7 +42,8 @@ const handlePublishError = async (job: any, error: any) => {
     // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
     await clearPublished(ctx);
     // very useful for identifying the origin of production errors.
-    console.warn('handlePublisherError', error);
+    const logger = getLogger(job.data.tenant);
+    logger.warn('handlePublisherError', error);
     notifyListeners(`${job.data.tenant}-publisher`, {
         isPublishing: false,
         success: false,

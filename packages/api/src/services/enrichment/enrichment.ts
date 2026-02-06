@@ -161,43 +161,37 @@ export const getEnrichmentRuleModel = (
     enrichment: any,
     BATCH_SIZE: any,
 ) => {
-    try {
-        let rule;
-        if (!enrichment.sourceColumn) {
-            throw new Error(`Missing source column parameter`);
-        }
-        let file;
-        if (!enrichment.subPath) {
-            file = Array.isArray(sourceData)
-                ? './directPathMultipleValues.txt'
-                : './directPathSingleValue.txt';
-        } else {
-            file = Array.isArray(sourceData)
-                ? './subPathMultipleValues.txt'
-                : './subPathSingleValue.txt';
-        }
-
-        rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
-        rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
-        rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-        rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
-        if (enrichment.webServiceUrl) {
-            rule = rule
-                .replace(
-                    '[[WEB SERVICE URL]]',
-                    addSidToUrl(enrichment.webServiceUrl),
-                )
-                .replace('[[WEB SERVICE TIMEOUT]]', config.get('timeout'));
-        } else {
-            rule = cleanWebServiceRule(rule);
-        }
-
-        return rule;
-    } catch (e) {
-        // @ts-expect-error TS(2584): Cannot find name 'console'. Do you need to change ... Remove this comment to see the full error message
-        console.error('Error:', e.stack);
-        throw e;
+    let rule;
+    if (!enrichment.sourceColumn) {
+        throw new Error(`Missing source column parameter`);
     }
+    let file;
+    if (!enrichment.subPath) {
+        file = Array.isArray(sourceData)
+            ? './directPathMultipleValues.txt'
+            : './directPathSingleValue.txt';
+    } else {
+        file = Array.isArray(sourceData)
+            ? './subPathMultipleValues.txt'
+            : './subPathSingleValue.txt';
+    }
+
+    rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+    rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
+    rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
+    rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
+    if (enrichment.webServiceUrl) {
+        rule = rule
+            .replace(
+                '[[WEB SERVICE URL]]',
+                addSidToUrl(enrichment.webServiceUrl),
+            )
+            .replace('[[WEB SERVICE TIMEOUT]]', config.get('timeout'));
+    } else {
+        rule = cleanWebServiceRule(rule);
+    }
+
+    return rule;
 };
 
 const createEzsRuleCommands = (rule: any) => ezs.compileScript(rule).get();
@@ -500,7 +494,8 @@ export const setEnrichmentError = async (ctx: any, err: any) => {
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
     // very useful for identifying the origin of production errors.
-    console.warn('handleEnrichmentError', err);
+    const logger = getLogger(ctx.tenant);
+    logger.warn('handleEnrichmentError', err);
     notifyListeners(`${ctx.tenant}-enricher`, {
         isEnriching: false,
         success: false,

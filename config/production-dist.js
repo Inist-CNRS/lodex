@@ -20,6 +20,9 @@ module.exports = {
         verbose: 'ezs:*,-ezs:debug,-ezs:trace',
         cacheEnable: true,
     },
+    logger: {
+        level: 'info',
+    },
     mail: {
         host: 'smtpout.intra.inist.fr',
         port: 25,

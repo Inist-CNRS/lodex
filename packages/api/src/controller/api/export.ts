@@ -12,6 +12,7 @@ import Script from '../../services/script';
 import { getCleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import { ObjectId } from 'mongodb';
+import getLogger from '../../services/logger';
 
 ezs.use(Basics);
 const exportersScripts = new Script('exporters');
@@ -81,6 +82,7 @@ const middlewareScript = (isFormatExporters = false) => {
         const host = getCleanHost();
 
         const facets = {};
+        const logger = getLogger(ctx.tenant);
 
         for (const [facetName, facetValueIds = []] of Object.entries(
             facetsWithValueIds,
@@ -115,19 +117,13 @@ const middlewareScript = (isFormatExporters = false) => {
             ctx.status = 503;
             ctx.body.destroy();
             input.destroy();
-            global.console.error(
-                'Error with ',
-                ctx.path,
-                ' and',
-                ctx.query,
-                err,
-            );
+            logger.error('Error with ', ctx.path, ' and', ctx.query, err);
         };
         const emptyHandle = () => {
             if (ctx.headerSent === false) {
                 ctx.status = 204;
                 // ctx.body.write('{"total":0}');  JSON is not the only export format
-                global.console.error(
+                logger.error(
                     'Empty response with ',
                     ctx.path,
                     ' and',
@@ -136,7 +132,7 @@ const middlewareScript = (isFormatExporters = false) => {
             }
         };
         const workers_url = `${workersUrlPrefix}/${exporterName}`;
-        console.error('Connecting to workers', workers_url, 'with', query);
+        logger.info('Connecting to workers', workers_url, 'with', query);
         const script = `
         [use]
         plugin = basics

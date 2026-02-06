@@ -4,6 +4,7 @@ import PDFDocument from 'pdfkit';
 import moment from 'moment';
 import { Overview } from '@lodex/common';
 import { ObjectId } from 'mongodb';
+import getLogger from '../../services/logger';
 
 const PDF_MARGIN_LEFT = 70;
 const PDF_IMAGE_TOP_POSITION = 50;
@@ -98,8 +99,8 @@ function renderHeader(doc: any, PDFTitle: any, ctx: any) {
                     },
                 );
         } catch (e) {
-            console.error(e);
-
+            const logger = getLogger(ctx.tenant);
+            logger.warn('renderHeader', e);
             doc.font('Helvetica-Bold')
                 .fontSize(20)
                 .text(PDFTitle, PDF_MARGIN_LEFT, PDF_TITLE_TOP_POSITION, {

@@ -46,6 +46,8 @@ build
 typings
 /upload/*
 !/upload/.gitkeep
+/log/*
+!/log/.gitkeep
 
 # Cypress
 cypress/videos

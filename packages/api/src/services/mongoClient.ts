@@ -1,6 +1,7 @@
 import { DEFAULT_TENANT } from '@lodex/common';
 import config from 'config';
 import { MongoClient, type Db } from 'mongodb';
+import getLogger from './logger';
 
 /**
  * @type {Map<string, MongoClient>}
@@ -37,7 +38,8 @@ const mongoClientConnectionFactory = async (tenant: string) => {
         clients.set(tenant, await client.connect());
         return client;
     } catch (error) {
-        console.error(error);
+        const logger = getLogger(tenant);
+        logger.error(error);
         throw new Error(
             `L'url de la base mongoDB n'est pas bonne, ou non renseignée.`,
         );

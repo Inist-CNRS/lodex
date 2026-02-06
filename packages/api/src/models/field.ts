@@ -11,6 +11,9 @@ import {
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 import generateUid from '../services/generateUid';
 import { castIdsFactory, getCreatedCollection } from './utils';
+import getLogger from '../services/logger';
+
+const logger = getLogger();
 
 export const buildInvalidPropertiesMessage = (name: any) =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
@@ -22,12 +25,12 @@ export const validateField = (data: any, isContribution: any) => {
     const validation = validateFieldIsomorphic(data, isContribution);
 
     if (!validation.propertiesAreValid) {
-        console.error('propertiesAreValid', JSON.stringify(validation));
+        logger.error('propertiesAreValid', JSON.stringify(validation));
         throw new Error(buildInvalidPropertiesMessage(data.label));
     }
 
     if (!validation.transformersAreValid) {
-        console.error('transformersAreValid', JSON.stringify(validation));
+        logger.error('transformersAreValid', JSON.stringify(validation));
         throw new Error(buildInvalidTransformersMessage(data.label));
     }
 
@@ -211,7 +214,7 @@ export default async (db: any) => {
                 );
             }
         } else {
-            console.warn(`field #${id} is not found`);
+            logger.warn(`field #${id} is not found`);
         }
 
         return collection.findOneAndUpdate(

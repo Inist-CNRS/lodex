@@ -27,10 +27,6 @@ export function orderEnrichmentsByDependencies<
         const enrichment = enrichmentQueue.shift()!;
 
         if (enrichment === loopDetector) {
-            console.error(
-                'Missing dependency or circular dependency detected for enrichments:',
-                enrichment.name,
-            );
             throw new Error('circular_dependency');
         }
 

@@ -12,6 +12,7 @@ import {
 } from '@lodex/common';
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
+import getLogger from '../services/logger';
 import mongoClient from '../services/mongoClient';
 import os from 'os';
 
@@ -136,7 +137,8 @@ export const deleteTenant = async (ctx: any) => {
             deleteWorkerQueue(tenantExists.name).then();
             bullBoard.removeDashboardQueue(tenantExists.name);
         } catch (e) {
-            console.warn(
+            const logger = getLogger(ctx.tenant);
+            logger.warn(
                 `Failed to delete in queue for one tenant (${tenantExists.name})`,
                 e,
             );

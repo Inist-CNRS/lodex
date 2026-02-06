@@ -4,6 +4,7 @@ import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
+import moment from 'moment';
 import { KoaAdapter } from '@bull-board/koa';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
@@ -18,7 +19,7 @@ import Meter, { collectMetrics } from '@uswitch/koa-prometheus';
 import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 // @ts-expect-error TS(2792): Cannot find module '@uswitch/koa-access'. Did you ... Remove this comment to see the full error message
 import access, { eventAccess } from '@uswitch/koa-access';
-import getLogger from './services/logger';
+import getLogger, { getHttpLogger } from './services/logger';
 import tenant from './models/tenant';
 import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
@@ -113,10 +114,7 @@ const initQueueAndBullDashboard = async () => {
 initQueueAndBullDashboard();
 
 // Display It only in development mode or if activateBullDashboard is true
-if (
-    process.env.NODE_ENV === 'development' ||
-    config.get('activateBullDashboard')
-) {
+if (config.get('activateBullDashboard')) {
     app.use(serverAdapter.registerPlugin());
 }
 
@@ -151,19 +149,21 @@ app.use(async (ctx: any, next: any) => {
 
 // server logs
 app.use(async (ctx: any, next: any) => {
-    ctx.httpLog = {
-        method: ctx.request.method,
-        remoteIP: ctx.request.ip,
-        userAgent: ctx.request.headers['user-agent'],
-    };
-    const authorization = ctx.get('authorization');
-    if (authorization) {
-        ctx.httpLog.authorization = authorization;
-    }
+    const requestReceived = moment();
     await next();
-    ctx.httpLog.status = ctx.status;
-    const logger = getLogger(ctx.tenant);
-    logger.info(ctx.request.url, ctx.httpLog);
+
+    getHttpLogger().info('http_request', {
+        ip: ctx.request.ip,
+        user: ctx.get('authorization') || '-',
+        date: requestReceived.toISOString(),
+        method: ctx.request.method,
+        url: ctx.url,
+        httpVersion: ctx.req.httpVersion,
+        status: ctx.status,
+        size: ctx.response.length || 0,
+        referer: ctx.get('referer') || '-',
+        ua: ctx.get('user-agent') || '-',
+    });
 });
 
 app.use(function* (this: any, next: any) {
@@ -188,15 +188,18 @@ app.use(async (ctx: any, next: any) => {
 });
 
 app.on('uncaughtException', (error: any) => {
-    console.error('Uncaught Exception', error);
+    const logger = getLogger();
+    logger.error('Uncaught Exception', error);
 });
 
 process.on('unhandledRejection', (error: any) => {
-    console.error('Uncaught Rejection', error);
+    const logger = getLogger();
+    logger.error('Uncaught Rejection', error);
 });
 
 process.on('uncaughtException', (error: any) => {
-    console.error('Uncaught Exception', error);
+    const logger = getLogger();
+    logger.error('Uncaught Exception', error);
 });
 
 export default app;
