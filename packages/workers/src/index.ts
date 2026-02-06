@@ -1,3 +1,6 @@
+import config from 'config';
+process.env.DEBUG = config.get('ezs.verbose');
+
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/basics'. Did you mean to ... Remove this comment to see the full error message
@@ -12,9 +15,6 @@ import Istex from '@ezs/istex';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/storage'. Did you mean to... Remove this comment to see the full error message
 import Storage from '@ezs/storage';
 
-import config from 'config';
-
-process.env.DEBUG = config.get('ezs.verbose');
 ezs.settings.feed.timeout = config.get('ezs.timeout');
 ezs.settings.cacheEnable = config.get('ezs.cacheEnable');
 ezs.settings.cacheDelay = config.get('ezs.cacheDelay');
