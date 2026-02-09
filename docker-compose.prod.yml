@@ -19,6 +19,6 @@ services:
         ports:
             - "3000:3000"
     mongo:
-        image: mongodb/mongodb-community-server:7.0.9-ubi9
+        image: mongodb/mongodb-community-server:8.2.3-ubi9
         ports:
             - "27017:27017"
