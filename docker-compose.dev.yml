@@ -2,7 +2,7 @@ version: '3'
 
 services:
     api:
-        image: node:24.13-alpine
+        image: node:24.13-slim
         extra_hosts:  # for linux hosts since version 20.10
             - "host.docker.internal:host-gateway"
         volumes:
@@ -18,14 +18,14 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             REDIS_URL: 'redis://redis.lodex-net:6379'
             WORKERS_URL: 'http://workers.lodex-net:31976'
-            MONGO_HOST: 'mongo.lodex-net:27017'
+            MONGO_HOST: 'mongod.lodex-net:27017'
             MAILER_HOST: 'maildev.lodex-net:1025'
             PRECOMPUTED_URL: 'http://api.lodex-net:3000'
             CI: ${CI}
         networks:
             - lodex-net
         depends_on:
-            - mongo
+            - mongod
             - redis
             - workers
             - maildev
@@ -40,7 +40,7 @@ services:
                     memory: 4G
 
     dev-server:  ## Enable hot-reload in development
-        image: node:24.13-alpine
+        image: node:24.13-slim
         volumes:
             - .:/app
         working_dir: /app
@@ -58,13 +58,20 @@ services:
                     cpus: '2'
                     memory: 4G
 
-    mongo:
+    mongod:
         image: mongodb/mongodb-community-server:8.2.3-ubi9
-        logging:
-            driver: none
-        command: --quiet
+        command: >-
+             mongod
+             --config /etc/mongod.conf
+             --replSetMember=mongod.lodex-net:27017
         ports:
             - "27017:27017"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        volumes:
+            - mongod_data:/data/db
+            - ./etc/mongod.conf:/etc/mongod.conf:ro
+            - ./bin/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
         networks:
             - lodex-net
         deploy:
@@ -72,7 +79,23 @@ services:
                 limits:
                     cpus: '2'
                     memory: 1G
-
+    mongot:
+        image: mongodb/mongodb-community-search:latest
+        entrypoint:
+            - /mongot-community/mongot
+            - --config=/mongot-community/config.default.yml
+            - --internalListAllIndexesForTesting=true
+        networks:
+            - lodex-net
+        volumes:
+            - mongot_data:/data/mongot
+            - ./etc/mongot.conf:/mongot-community/config.default.yml
+            - ./etc/pwfile:/mongot-community/pwfile:ro
+        depends_on:
+            - mongod
+        ports:
+            - 27028:27028  # Query server port from config
+            - 9946:9946    # Metrics port from config
     redis:
         image: redis:6
         ports:
@@ -84,9 +107,8 @@ services:
                 limits:
                     cpus: '1'
                     memory: 1G
-
     workers:
-        image: node:24.13-alpine
+        image: node:24.13-slim
         extra_hosts:  # for linux hosts since version 20.10
             - "host.docker.internal:host-gateway"
         volumes:
@@ -112,7 +134,7 @@ services:
             - lodex-net
         command: npm run production:workers
         depends_on:
-            - mongo
+            - mongod
         deploy:
             resources:
                 limits:
@@ -125,6 +147,10 @@ services:
             - "1025:1025"
         networks:
             - lodex-net
+volumes:
+    mongod_data:
+    mongot_data:
+
 networks:
     lodex-net:
         name: lodex-net

@@ -2,7 +2,7 @@
 set -e
 
 echo "Starting MongoDB initialization..."
-sleep 2
+sleep 3
 
 # Create user using local connection (no port specification needed)
 echo "Creating user..."

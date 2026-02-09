@@ -45,7 +45,7 @@ module.exports = {
     ezs: {
         url: String(process.env.WORKERS_URL || 'http://localhost:31976'),
         verbose: 'ezs:*,-ezs:debug',
-        timeout: 30000,
+        timeout: 60000,
         cacheEnable: false,
         cacheDelay: 60 * 60 * 12,
         mainStatement: 'delegate', // use detatch to have a thread dedicated to processing the response, otherwise you can simply use “delegate”
@@ -101,7 +101,7 @@ module.exports = {
             'values-precomputed',
             'values-precomputed-nofilter',
             'raw-precomputed-nofilter',
-            'vsearch-precomputed,
+            'vsearch-precomputed',
             'group-and-sum-with',
             'hello-world',
             'istex-facet',
