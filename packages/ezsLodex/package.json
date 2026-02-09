@@ -9,6 +9,7 @@
         "dev": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "@huggingface/transformers": "^3.8.1",
         "lodash": "4.17.21",
         "mongodb": "6.12.0",
         "node-object-hash": "2.3.10",
