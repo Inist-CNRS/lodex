@@ -72,3 +72,6 @@ globalConfig.json
 
 # bundle analyzer result
 stats.html
+
+# Windows alternate data streams created for downloaded files (Zone.Identifier)
+*:Zone.Identifier
