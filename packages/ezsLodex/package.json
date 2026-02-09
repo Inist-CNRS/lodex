@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "lodash": "4.18.1",
+        "@huggingface/transformers": "^3.8.1",
         "mongodb": "6.12.0",
         "node-object-hash": "2.3.10",
         "quick-lru": "4.0.1",

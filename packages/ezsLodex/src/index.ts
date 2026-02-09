@@ -31,6 +31,8 @@ import saveDocuments from './saveDocuments.js';
 import updateDocument from './updateDocument.js';
 import updateDocuments from './updateDocuments.js';
 import useFieldNames from './useFieldNames.js';
+import createVectorEmbeddings from './createVectorEmbeddings.js';
+import runVSearchPrecomputed from './runVSearchPrecomputed.js';
 
 const funcs = {
     flattenPatch,
@@ -55,6 +57,7 @@ const funcs = {
     runQuery,
     paginateQuery,
     runQueryPrecomputed,
+    runVSearchPrecomputed,
     reduceQuery,
     formatOutput,
     buildContext,
@@ -65,6 +68,7 @@ const funcs = {
     homogenizedObject,
     updateDocument,
     updateDocuments,
+    createVectorEmbeddings,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,
@@ -77,6 +81,7 @@ const funcs = {
     LodexEnsureIndex: ensureIndex,
     LodexRunQuery: runQuery.runQuery,
     LodexRunQueryPrecomputed: runQueryPrecomputed.runQueryPrecomputed,
+    LodexVSearchQueryPrecomputed: runVSearchPrecomputed.runQueryPrecomputed,
     LodexReduceQuery: reduceQuery.reduceQuery,
     LodexOutput: formatOutput.formatOutput,
     LodexBuildContext: buildContext.buildContext,
