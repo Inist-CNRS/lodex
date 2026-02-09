@@ -110,7 +110,7 @@ module.exports = {
             'values-precomputed',
             'values-precomputed-nofilter',
             'raw-precomputed-nofilter',
-            'vsearch-precomputed,
+            'vsearch-precomputed',
             'group-and-sum-with',
             'hello-world',
             'istex-facet',
