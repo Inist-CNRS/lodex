@@ -317,7 +317,7 @@ div:is(.graph-page.graph-container, .resource) {
     > div.property
     > div:is(.property_label_container, .property_value_container) {
     max-width: var(--maxWidth) !important;
-    min-width: 360px;
+    min-width: 360px !important;
     width: 100%;
     padding: 0 10px;
     margin: 0 auto;
