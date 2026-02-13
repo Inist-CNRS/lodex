@@ -6,12 +6,15 @@ import { v1 as uuid } from 'uuid';
 
 import { getOrCreateWorkerQueue } from '../workers';
 import { PRECOMPUTER } from '../workers/precomputer';
+import getLogger from '../services/logger';
 
 export const getComputedWebserviceData = async (ctx: any) => {
     const { precomputedId, tenant, jobId, failure } = ctx.request.query;
     const { identifier, generator, state } = ctx.request.body;
     const callId = JSON.stringify([{ id: generator, value: identifier }]);
 
+    const logger = getLogger(ctx.tenant);
+    logger.debug(`Webhook trigered for ${callId} and failure: ${failure}`);
     const data = {
         id: precomputedId,
         jobType: PRECOMPUTER,
