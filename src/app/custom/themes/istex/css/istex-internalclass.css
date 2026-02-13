@@ -250,6 +250,11 @@ div[class*='BanniereSimple'] div.MuiBox-root {
     margin: 0 auto !important;
     padding: 0 0 !important;
 }
+div[class*="BanniereSimple"] div.MuiBox-root > div .property_value_container {
+max-width: var(--maxWidth) !important;
+min-width: 360px !important;
+width: max-content !important;
+}
 div[class*='BanniereSimple'] div.MuiBox-root > div .surtitre p {
     font-size: 1.2rem !important;
     font-weight: bold;
