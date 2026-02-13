@@ -154,7 +154,7 @@
         "leaflet": "1.9.4",
         "leaflet.markercluster": "1.5.3",
         "lodash": "4.17.21",
-        "markdown-it": "13.0.2",
+        "markdown-it": "14.1.1",
         "md5": "2.3.0",
         "memorystream": "0.3.1",
         "mime": "1.6.0",
