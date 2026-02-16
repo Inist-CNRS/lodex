@@ -11,14 +11,24 @@
     --filtreBlancMainHFA: invert(100%) sepia(100%) saturate(0%)
         hue-rotate(327deg) brightness(107%) contrast(101%);
 }
+/* lien nav .nav-bar-menu*/
+.nav-bar-menu a.menu-item-active,
+a:not(:empty):is(:hover, :focus) {
+    color: var(--link-secondary);
+    fill: var(--link-secondary);
+}
+
 /************************/
 /* Lien au fil du texte */
 /* Lien du contenu      */
+/* icone nav            */
 /************************/
-/*#content a:not(:empty, .property_value) {
+/* correctif dans style.css pour underline
+#content a:not(:empty, .property_value) {
     text-decoration: underline;
     cursor: pointer;
 }*/
+
 /**************/
 /* Fond clair */
 /**************/
