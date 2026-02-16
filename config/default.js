@@ -101,6 +101,7 @@ module.exports = {
             'values-precomputed',
             'values-precomputed-nofilter',
             'raw-precomputed-nofilter',
+            'download-pdf-by',
             'group-and-sum-with',
             'hello-world',
             'istex-facet',
