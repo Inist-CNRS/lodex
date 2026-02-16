@@ -20,6 +20,7 @@ import istexCitation from './other/istexCitation';
 import istexRefbibs from './other/istexRefbibs';
 import istexSummary from './other/istexSummary';
 import json from './other/json';
+import objet from './other/object';
 import resourcesGrid from './other/resources-grid';
 import paginatedTable from './other/table/paginated';
 import unpaginatedTable from './other/table/unpaginated';
@@ -588,6 +589,16 @@ export const FORMATS_CATALOG = [
         description: 'formatJsonDebugDescription',
         componentName: 'json',
         component: json,
+        type: 'other',
+        isValueAnnotable: true,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
+        isUrlValue: true,
+    },
+    {
+        name: 'formatObject',
+        description: 'formatObjectDescription',
+        componentName: 'objet',
+        component: objet,
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
