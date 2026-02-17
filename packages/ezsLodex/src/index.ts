@@ -27,12 +27,12 @@ import reduceQuery from './reduceQuery.js';
 import runQuery from './runQuery.js';
 import paginateQuery from './paginateQuery.js';
 import runQueryPrecomputed from './runQueryPrecomputed.js';
+import runVSearchPrecomputed from './runVSearchPrecomputed.js';
 import saveDocuments from './saveDocuments.js';
 import updateDocument from './updateDocument.js';
 import updateDocuments from './updateDocuments.js';
 import useFieldNames from './useFieldNames.js';
 import createVectorEmbeddings from './createVectorEmbeddings.js';
-import runVSearchPrecomputed from './runVSearchPrecomputed.js';
 
 const funcs = {
     flattenPatch,
@@ -81,7 +81,6 @@ const funcs = {
     LodexEnsureIndex: ensureIndex,
     LodexRunQuery: runQuery.runQuery,
     LodexRunQueryPrecomputed: runQueryPrecomputed.runQueryPrecomputed,
-    LodexVSearchQueryPrecomputed: runVSearchPrecomputed.runQueryPrecomputed,
     LodexReduceQuery: reduceQuery.reduceQuery,
     LodexOutput: formatOutput.formatOutput,
     LodexBuildContext: buildContext.buildContext,
