@@ -61,9 +61,6 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
             ...maxFilter,
         };
     }
-    const [order, dir] = String(orderBy).split('/');
-    const ord = order === 'value' ? valueFieldName : labelFieldName;
-    const sort = order && dir ? { [ord]: dir === 'asc' ? 1 : -1 } : {};
 
     const db = await mongoDatabase(connectionStringURI);
     const collection = db.collection(collectionName);
@@ -91,14 +88,12 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
         await collection.createSearchIndex(index);
     }
 
-        /*
     const postFilter =
         Object.keys(filterDocuments).length === 0
             ? {}
             : {
                   documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
             };
-            */
     const aggregatePipeline = [
         {
             $vectorSearch: {
@@ -107,14 +102,23 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
                 filter,
                 queryVector,
                 numCandidates: 150,
+                limit: 10,
             },
         },
-        /*
+        {
+            $project: {
+                _id: 0,
+                id: 1,
+                value: {
+                    $meta: "vectorSearchScore"
+                }
+            }
+        },
         {
 
             $lookup: {
                 from: 'publishedDataset',
-                localField: 'origin',
+                localField: 'id',
                 foreignField: 'uri',
                 as: 'documents',
             },
@@ -122,7 +126,6 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
         {
             $match: postFilter,
         },
-        */
     ];
     console.log('aggregatePipeline', aggregatePipeline );
     const cursor = collection.aggregate(
@@ -149,7 +152,6 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
     }
 
     const stream = cursor
-        .sort(sort)
         .skip(Number(skip || 0))
         .limit(Number(maxSize || 1000000))
         .stream()
