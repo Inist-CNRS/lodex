@@ -1,8 +1,8 @@
 import zipObject from 'lodash/zipObject.js';
 import unset from 'lodash/unset.js';
 import mongoDatabase from './mongoDatabase.js';
-import { pipeline } from "@huggingface/transformers";
 
+let isIndexExist = false;
 /**
  * Take `Object` containing a MongoDB query and throw the result
  *
@@ -14,7 +14,7 @@ import { pipeline } from "@huggingface/transformers";
  * @param {Object}  [labelFieldName=id] field to use as label
  * @returns {Object}
  */
-async function LodexRunVSearchPrecomputed(this: any, data: any, feed: any) {
+export default async function LodexRunVSearchPrecomputed(this: any, data: any, feed: any) {
     if (this.isLast()) {
         return feed.close();
     }
@@ -30,7 +30,6 @@ async function LodexRunVSearchPrecomputed(this: any, data: any, feed: any) {
         maxValue,
         maxSize,
         orderBy,
-        $query,
         queryVector = [],
     } = data;
 
@@ -70,8 +69,6 @@ async function LodexRunVSearchPrecomputed(this: any, data: any, feed: any) {
     const collection = db.collection(collectionName);
     unset(filterDocuments, '$text');
 
-
-
     // define your MongoDB Vector Search index
     // https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-type/?deployment-type=self&interface=driver&language=nodejs
     const index = {
@@ -81,38 +78,27 @@ async function LodexRunVSearchPrecomputed(this: any, data: any, feed: any) {
             "fields": [
                 {
                     "type": "vector",
-                    "numDimensions": 2048,
+                    "numDimensions": 384,
                     "path": "value",
-                    "similarity": "dotProduct",
+                    "similarity": "cosine",
                     "quantization": "scalar"
                 }
             ]
         }
+    };
+
+    if (!isIndexExist) {
+        await collection.createSearchIndex(index);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /*
     const postFilter =
         Object.keys(filterDocuments).length === 0
             ? {}
             : {
                   documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
             };
+            */
     const aggregatePipeline = [
         {
             $vectorSearch: {
@@ -171,7 +157,3 @@ async function LodexRunVSearchPrecomputed(this: any, data: any, feed: any) {
         .pipe(ezs('assign', { path, value }));
     await feed.flow(stream);
 }
-
-export default {
-    runQueryPrecomputed: LodexRunVSearchPrecomputed,
-};

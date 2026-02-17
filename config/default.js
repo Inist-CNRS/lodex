@@ -94,6 +94,8 @@ module.exports = {
             'distribute-by-decadal',
             'distribute-by-interval',
             'filter',
+            'join-by',
+            'similar-by',
             'get-fields',
             'graph-by',
             'segments-precomputed',

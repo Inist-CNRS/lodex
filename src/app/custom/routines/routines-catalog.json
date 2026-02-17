@@ -138,6 +138,18 @@
         "recommendedWith": ["RessourcesGrid","PaginatedTable","UnpaginatedTable"]
     },
     {
+        "id": "r-join-by",
+        "url": "/api/run/join-by/",
+        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+        "recommendedWith": ["RessourcesGrid","PaginatedTable","UnpaginatedTable"]
+    },
+    {
+        "id": "r-similar-by",
+        "url": "/api/run/similar-by/",
+        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+        "recommendedWith": ["RessourcesGrid","PaginatedTable","UnpaginatedTable"]
+    },
+    {
         "id": "r-get-fields",
         "url": "/api/run/get-fields/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#get-fields",
