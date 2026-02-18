@@ -15,9 +15,9 @@
             "palette": "defaultTheme.js"
         },
         "variables": {
-            "information": "Par défaut, le theme est prérempli aux couleurs de LODEX.Toutes les configurations ci-dessous sont optionnelles. Pour les désactiver, supprimer \"le texte entre les guillemets\". Pour en savoir plus :https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/le-theme/#le-th%C3%A8me-%E2%80%98voscouleurs%E2%80%99",
+            "information": "Par défaut, le theme est prérempli aux couleurs de LODEX. Pour les désactiver, supprimer \"le texte entre les guillemets\". Pour en savoir plus :https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/le-theme/theme-voscouleurs",
             "siteTitle": "titre du site",
-            "summary": "promesse du site, sous-titre",
+            "summary": "sous-titre",
             "logo": {
                 "file": "https://www.lodex.fr/wp-content/uploads/logo_carre_couleur-fond-blanc-01.svg",
                 "alt": "LODEX",
@@ -35,19 +35,17 @@
                 "titleHeaderSize": "3rem"
             },
             "color": {
-                "info-theme": "Note : les trois couleurs suivantes permettent de mémoriser les codes couleur de 2 couleurs qui font l'identité de votre organisme",
+                "info-theme": "Note : themePrimary et themeSecondary permettent de mémoriser les codes couleur de 2 couleurs qui font l'identité de votre organisme",
                 "themePrimary": "darkorange ",
                 "themeSecondary": "#7cbc41",
-                "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages. 'bgContrast' permet de visualiser tout objet (texte, icon,...) dans le bg.",
                 "bgBody": "white",
                 "bgContrast": "DarkSlateGray",
                 "bgHeader": "white",
                 "titleHeader": "#7cbc41",
                 "bgContent": "white",
-                "bgFacet": "",
+                "bgFacet": "var(--background-default)",
                 "titles": "#7cbc41",
                 "titleGraph": "darkorange",
-                "info-bouton": "couleurs des liens, icons et boutons",
                 "linkText": "#7cbc41",
                 "linkTextHover": "darkorange",
                 "icon": "#7cbc41",
@@ -56,8 +54,8 @@
                 "buttonHover": "darkorange",
                 "textContrast": "white"
             },
-            "matomoID": "39",
-            "matomoHost": "https://piwik2.inist.fr/"
+            "matomoID": "",
+            "matomoHost": ""
         }
     }
 }
