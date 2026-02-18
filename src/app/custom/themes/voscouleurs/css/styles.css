@@ -20,28 +20,37 @@
 /* CNRS Inist - juin 2024 */
 
 /*config*/
-/*"color": {
---bgBody: <%= custom.color.bgBody %>;
---bgContrast: <%= custom.color.bgContrast %>;
---bgHeader: <%= custom.color.bgHeader %>;
---titleHeader: <%= custom.color.titleHeader %>;
---bgContent: <%= custom.color.bgContent %>;
---bgFacet: <%= custom.color.bgFacet %>;
---titles: <%= custom.color.titles %>;
---titleGraph: <%= custom.color.titleGraph %>;
---linkText: <%= custom.color.linkText %>;
---linkTextHover: <%= custom.color.linkTextHover %>;
---icon: <%= custom.color.icon %>;
---iconHover: <%= custom.color.iconHover %>;
---button: <%= custom.color.button %>;
---buttonHover: <%= custom.color.buttonHover %>;
---textContrast: <%= custom.color.textContrast %>;
+/*
+"font": {
+    --font-titleHeader: <%= custom.font.titleHeader %>;
+    --fontSize-titleHeader: <%= custom.font.titleHeaderSize %>;
+    --font-title: <%= custom.font.title %>;
+    --fontSize-title: <%= custom.font.titleSize %>;
+    --font-titleGraph: <%= custom.font.titleGraph %>;
+    --fontSize-titleGraph: <%= custom.font.titleGraphSize %>;
+    }
+"color": {
+    --bgBody: <%= custom.color.bgBody %>;
+    --bgContrast: <%= custom.color.bgContrast %>;
+    --bgHeader: <%= custom.color.bgHeader %>;
+    --titleHeader: <%= custom.color.titleHeader %>;
+    --bgContent: <%= custom.color.bgContent %>;
+    --bgFacet: <%= custom.color.bgFacet %>;
+    --titles: <%= custom.color.titles %>;
+    --titleGraph: <%= custom.color.titleGraph %>;
+    --linkText: <%= custom.color.linkText %>;
+    --linkTextHover: <%= custom.color.linkTextHover %>;
+    --icon: <%= custom.color.icon %>;
+    --iconHover: <%= custom.color.iconHover %>;
+    --button: <%= custom.color.button %>;
+    --buttonHover: <%= custom.color.buttonHover %>;
+    --textContrast: <%= custom.color.textContrast %>;
 }
 */
 :root {
     /*search-results : couleur resultat visited*/
     --secondary-main: var(--neutral-dark-secondary) !important;
-    --maxWidthXl: 1536px;
+    --maxWidthXl: 1700px;
 }
 /*bgBody + text*/
 body {
@@ -132,18 +141,30 @@ footer p {
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
+/* patch container*/
+@media (min-width: 1536px) {
+    .css-19r6kue-MuiContainer-root {
+        max-width: var(--maxWidthXl) !important;
+    }
+}
+/* drawer container */
+.graph-summary-container,
+.search.search-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+@media screen and (max-width: 991px) {
+    .container,
+    .container-fluid,
+    .search.search-container,
+    .graph-summary-container {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
 /*bgContent*/
 #content .container {
     background-color: var(--bgContent);
-}
-.drawer .search-content {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-/*bgFacet : facet search et graph*/
-.search-content ul.search-facets,
-.graph-facets {
-    background-color: var(--bgFacet) !important;
 }
 /* nav lodex */
 #root nav {
@@ -172,18 +193,88 @@ h2 {
     color: var(--titles) !important;
     font-size: var(--fontSize-title) !important;
 }
+/*patch graph-page*/
+.content_ihqspq.graph-content {
+    gap: 0.5rem !important;
+}
+/*patch graph-header search*/
+.header_a4xuhy.graph-header {
+    background-color: var(--common-white) !important;}
+/*search graph&search page*/
+.css-9yxe53-MuiGrid-root {
+    margin-top: auto !important;
+    width: 100% !important;
+    margin-left: auto !important;
+}
+.css-9yxe53-MuiGrid-root > .MuiGrid-item {
+    padding: 0.5rem !important;
+}
+
+/*graph search input */
+/* -> div.MuiOutlinedInput-root*/
+.css-9u5d18-MuiInputBase-root-MuiOutlinedInput-root {
+    background-color: var(--contrast-main);
+}
+/* patch graph search nbr result responsive */
+.advanced_17ii5m2.graph-advanced .stats {
+    height: auto !important;
+}
+/*patch graph-results*/
+.graph-results {
+    padding: 0 0 !important;
+}
+.graph-results .css-pxbk40-MuiPaper-root-MuiCard-root {
+    background-color: var(--contrast-main);
+}
+/*bgFacet : facet search et graph*/
+.search-content ul.search-facets,
+ul.graph-facets {
+    background-color: var(--bgFacet) !important;
+    z-index: 1100;
+}
+/* patch search */
+.content_1eoh2kv.search-content {
+    background-color: white !important;
+}
+/*facettes : search in facettes*/
+.css-134m6vv-MuiInputBase-root-MuiInput-root::after {
+    border-bottom-color: var(--buttonHover) !important;
+}
+/*background search content*/
+div._1eoh2kv.search-content {
+    background-color: var(--bgContent);
+}
+/*fieldset active*/
+fieldset.MuiOutlinedInput-notchedOutline {
+    border-color: var(--icon) !important;
+}
+.Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
+    border-color: var(--iconHover) !important;
+}
+.MuiListItemText-secondary {
+    background-color: #fff;
+}
 /*titleGraph*/
 .property.format_fieldClone .property_label,
-.graph-results .MuiCardHeader-content {
+.graph-results .MuiCardHeader-content,
+.graph-results .property_label {
     color: var(--titleGraph) !important;
     font-family: var(--font-titleGraph) !important;
     font-size: var(--fontSize-titleGraph) !important;
     font-stretch: normal;
 }
+/*graph-results composed*/
+.graph-results .MuiCardHeader-content {
+    font-size: calc(var(--fontSize-titleGraph) + 2px) !important;
+}
+.graph-results .property[class*='compose'] {
+    margin: auto;
+}
 /*etiquette*/
 .property_label {
     font-stretch: ultra-condensed;
     font-weight: 500 !important;
+    color: var(--grey-600) !important;
 }
 /*texte*/
 .property_value {
@@ -251,25 +342,30 @@ a.graph-link.graph-summary-link:hover {
     color: var(--buttonHover) !important;
     fill: var(--buttonHover) !important;
 }
-/*facettes : search in facettes*/
-.css-134m6vv-MuiInputBase-root-MuiInput-root::after {
-    border-bottom-color: var(--buttonHover) !important;
-}
-/*background search content*/
-div._1eoh2kv.search-content {
-    background-color: var(--bgContent);
-}
-/*fieldset active*/
-fieldset.MuiOutlinedInput-notchedOutline {
-    border-color: var(--icon) !important;
-}
-.Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
-    border-color: var(--iconHover) !important;
-}
-.MuiListItemText-secondary {
-    background-color: #fff;
-}
+/*page de ressource*/
+/* header-resource-section : pas de format*/
+/* choisir en admin format text - titre */
+
 /*resource feuilletage*/
+.resource {
+    text-align: center;
+}
+.resource .detail {
+    max-width: calc(var(--maxWidthXl) - 200px);
+    display: inline-block;
+    margin: 0 auto;
+}
+.resource .detail .main-resource-section > div > div:first-child {
+    justify-content: center;
+}
+@media (min-width: 1900px) {
+    .resource-navigation-left.left_9ndhu8 {
+        margin-left: 8% !important;
+    }
+    .resource-navigation-right.right_1c58htc {
+        margin-right: 8% !important;
+    }
+}
 .resource .nav-button-root {
     background-color: var(--grey-200) !important;
     color: var(--button) !important;
@@ -283,12 +379,6 @@ fieldset.MuiOutlinedInput-notchedOutline {
 }
 .resource .nav-button-root:is(:hover, :focus, :active) svg {
     fill: var(--buttonHover) !important;
-}
-/*resource : title*/
-.header-resource-section .property_value_container > div > div > :first-child {
-    font-weight: 600;
-    font-size: 1.3rem;
-    line-height: 1.5rem;
 }
 /*resource space property*/
 .resource .property {
