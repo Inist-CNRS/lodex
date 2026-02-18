@@ -411,7 +411,7 @@ export const SourceValueToggle = ({
                     </Typography>
                 </ToggleButton>
 
-                <ToggleButton disabled={!arbitraryMode} value="precomputed">
+                <ToggleButton value="precomputed">
                     <ProcessingIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
                         {translate('precomputed_processing')}
