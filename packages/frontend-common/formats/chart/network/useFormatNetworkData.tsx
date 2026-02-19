@@ -63,7 +63,7 @@ export function useFormatNetworkData({
                 [source]: {
                     id: source,
                     label: source_title ?? source,
-                    radius: get(acc, [source, 'radius'], 0) + 1,
+                    radius: get(acc, [source, 'radius'], 0) + weight,
                     isLeaf: false,
                 },
                 [target]: {
