@@ -88,6 +88,7 @@ module.exports = {
             'distinct-by',
             'hierarchy-by',
             'ventilate-by',
+            'join-by',
             'distinct-ISO3166-1-alpha2-from',
             'distinct-ISO3166-1-alpha3-from',
             'distribute-by-date',

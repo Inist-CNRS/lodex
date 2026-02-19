@@ -87,7 +87,7 @@ const ResourcesGridView = ({
 
     return (
         <div>
-            {/* 
+            {/*
             // @ts-expect-error TS2322 */}
             <ul className={styles.list}>
                 {filteredData.map((entry, index) => (
@@ -96,7 +96,7 @@ const ResourcesGridView = ({
                         // @ts-expect-error TS2322
                         className={styles.item}
                     >
-                        {/* 
+                        {/*
                         // @ts-expect-error TS2322 */}
                         <div className={styles.content}>
                             <LodexResource
@@ -143,7 +143,7 @@ const mapStateToProps = (_, { formatData, spaceWidth }) => {
 
 export default compose(
     // @ts-expect-error TS2345
-    injectData(null, (field) => !!field),
+    injectData(null, (field) => !!field, true),
     connect(mapStateToProps),
     // @ts-expect-error TS2345
 )(ResourcesGridView);

@@ -1184,6 +1184,8 @@
 "ws_post-v1-diseaseTag_description"	"Detects disease named entities in English text"	"Détecte des entités nommées de maladies sur des textes en anglais"
 "ws_post-v1-astroTag_title"	"astroTag - Extracting named entities in astronomy"	"astroTag - Extraction d’entités nommées en astronomie"
 "ws_post-v1-astroTag_description"	"Detects entities named in astronomy on English texts and distributes them between 16 predefined classes"	"Détecte des entités nommées en astronomie sur des textes en anglais et les répartit entre 16 classes prédéfinies"
+"r-join-by_title"	"join"	"join"
+"r-join-by_description"	"From a single resource, retrieve resources that share the same value for the same field."	"À partir d'une seule ressource, récupérez les ressources qui partagent la même valeur pour le même champ."
 "r-filter_title"	"filter"	"filter"
 "r-filter_description"	"Identifies, for a given sub-resource, all the resources in which this sub-resource is present"	"Identifie, pour une sous-ressource donnée, toutes les ressources dans lesquelles cette sous-ressource est présente."
 "r-labeled-resources_title"	"labeled-resources"	"labeled-resources"
