@@ -158,5 +158,6 @@ module.exports = {
             'tar-gz',
         ],
         exporters: ['csv', 'csv-full', 'json', 'tsv', 'tsv-full'],
+        formatExporters: ['jsonallvalue'],
     },
 };
