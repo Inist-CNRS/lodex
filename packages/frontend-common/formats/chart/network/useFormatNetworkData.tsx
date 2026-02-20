@@ -57,20 +57,19 @@ export function useFormatNetworkData({
         const sanitizedFormatData = formatData.filter(
             ({ source, target }) => source && target,
         );
-
         const nodesDic = sanitizedFormatData.reduce<Record<string, Node>>(
-            (acc, { source, source_title, target, target_title }) => ({
+            (acc, { source, source_title, target, target_title, weight }) => ({
                 ...acc,
                 [source]: {
                     id: source,
                     label: source_title ?? source,
-                    radius: get(acc, [source, 'radius'], 0) + 1,
+                    radius: get(acc, [source, 'radius'], 0) + weight,
                     isLeaf: false,
                 },
                 [target]: {
                     id: target,
                     label: target_title ?? target,
-                    radius: get(acc, [target, 'radius'], 0) + 1,
+                    radius: get(acc, [target, 'radius'], 0) + weight,
                     isLeaf: acc['source'] ? false : true,
                 },
             }),

@@ -111,7 +111,7 @@ describe('useFormatNetworkData', () => {
 
         expect(A?.radius).toBe(20);
         expect(B?.radius).toBe(1);
-        expect(C?.radius).toBe(1);
+        expect(C?.radius).toBeGreaterThan(1);
         expect(A!.radius > B!.radius).toBe(true);
         expect(A!.radius > C!.radius).toBe(true);
     });
@@ -259,7 +259,7 @@ describe('useFormatNetworkData', () => {
         const nodeC = result.current.nodes.find((n) => n.id === 'C');
         expect(nodeA?.radius).toBe(20);
         expect(nodeB?.radius).toBe(1);
-        expect(nodeC?.radius).toBe(1);
+        expect(nodeC?.radius).toBeGreaterThan(1);
 
         const linkAB = result.current.links.find(
             (l) => l.source === 'A' && l.target === 'B',
