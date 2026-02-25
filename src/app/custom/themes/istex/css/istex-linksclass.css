@@ -277,6 +277,24 @@ div[class*='ButtonShadow']
     background-color: var(--link-dark) !important;
     color: var(--contrast-main) !important;
 }
+/* revue de sommaire */
+button.MuiButton-text:not(.select-version),
+button.MuiIconButton-root:not(.edit-field) {
+    color: var(--primary-main);
+    background-color: #fff;
+    font-weight: bold;
+}
+button.MuiButton-text:not(.select-version):hover,
+button.MuiButton-text:not(.select-version):focus,
+button.MuiIconButton-root:hover,
+button.MuiIconButton-root:focus {
+    background-color: var(--primary-main);
+    color: #fff;
+}
+.fetch-fold-count,
+.property_value_container button:hover .fetch-fold-count {
+    color: #000;
+}
 /* lien badge identifiant */
 /* format texte - */
 .format_identifierBadge a {
