@@ -250,14 +250,10 @@ div[class*='BanniereSimple'] div.MuiBox-root {
     margin: 0 auto !important;
     padding: 0 0 !important;
 }
-div[class*="BanniereSimple"] div.MuiBox-root > div .property_value_container {
-max-width: var(--maxWidth) !important;
-min-width: 360px !important;
-width: max-content !important;
-}
-div[class*='BanniereSimple'] div.MuiBox-root > div .surtitre p {
-    font-size: 1.2rem !important;
-    font-weight: bold;
+div[class*='BanniereSimple'] div.MuiBox-root > div .property_value_container {
+    max-width: var(--maxWidth) !important;
+    min-width: min-content !important;
+    width: fit-content !important;
 }
 div.property[class*='BanniereSimple']
     > .property_value_container
@@ -267,10 +263,20 @@ div.property[class*='BanniereSimple']
     flex-direction: column !important;
     justify-content: space-around;
 }
+/* surtitre dans banniere simple*/
+#content
+    div.property[class*='BanniereSimple']
+    div.property:first-child
+    .property_value
+    * {
+    font-size: 1.2rem !important;
+    font-weight: bold;
+}
 #content div[class*='BanniereSimple'] *:is(h2, h3) {
     font-size: 2.3rem;
     margin-bottom: 0 !important;
     text-align: center !important;
+    color: var(--lime1);
 }
 /* a est un bouton primaire*/
 
