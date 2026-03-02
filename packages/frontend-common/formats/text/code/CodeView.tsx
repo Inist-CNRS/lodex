@@ -1,7 +1,7 @@
 // @ts-expect-error TS7016
 import SyntaxHighlighter from 'react-syntax-highlighter';
 // @ts-expect-error TS7016
-import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { monokaiSublime } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import type { Field } from '../../../fields/types';
 
 interface ComponentProps {
@@ -15,7 +15,7 @@ const Component = ({
     field,
     languageToHighlight,
 }: ComponentProps) => (
-    <SyntaxHighlighter language={languageToHighlight} style={tomorrow}>
+    <SyntaxHighlighter language={languageToHighlight} style={monokaiSublime}>
         {/*
          // @ts-expect-error TS7053 */}
         {resource[field.name]}
