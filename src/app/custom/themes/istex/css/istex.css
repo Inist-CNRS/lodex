@@ -602,6 +602,15 @@ div.property div.MuiBox-root > div > * + div {
     padding: 0 !important;
     flex: 1;
 }
+/* graph composé titre*/
+#content .graph-results .MuiCardHeader-root.title .MuiStack-root {
+    font-family: var(--font-titre) !important;
+    font-size: 1.5rem !important;
+    font-weight: bold;
+}
+.graph-results .property[class*='compose'] {
+    margin: auto;
+}
 /*facettes*/
 ul.MuiList-root.facets-list {
     display: flex;
