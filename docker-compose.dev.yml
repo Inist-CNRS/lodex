@@ -85,6 +85,18 @@ services:
                     cpus: '1'
                     memory: 1G
 
+    qdrant:
+        image: qdrant/qdrant:1.7
+        ports:
+            - "6333:6333"
+        networks:
+            - lodex-net
+        deploy:
+            resources:
+                limits:
+                    cpus: '1'
+                    memory: 1G
+
     workers:
         image: node:24.13-alpine
         extra_hosts:  # for linux hosts since version 20.10
