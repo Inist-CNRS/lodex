@@ -1,0 +1,19 @@
+name: "🛠️ Task"
+description: Une unité de travail spécifique.
+labels: ["type: task"]
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: Description claire du travail à effectuer.
+  - type: textarea
+    attributes:
+      label: Notes Techniques
+      description: Détails d'implémentation, endpoints API, etc.
+  - type: checklist
+    attributes:
+      label: Définition du "Terminé" (DoD)
+      options:
+        - label: Tests unitaires validés
+        - label: Documentation mise à jour
+        - label: Revue de code effectuée

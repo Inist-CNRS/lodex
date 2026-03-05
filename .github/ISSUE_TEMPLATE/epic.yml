@@ -1,0 +1,22 @@
+name: "🏗️ Epic"
+description: Groupement d'issues liées à un objectif commun.
+labels: ["type: epic"]
+body:
+  - type: textarea
+    attributes:
+      label: Objectif Métier
+      description: Quel est l'objectif principal de cette Epic ?
+      placeholder: "ex: Implémenter le nouveau format d'affichage"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Périmètre et Livrables
+      description: Ce qui est inclus (et ce qui ne l'est pas).
+  - type: textarea
+    attributes:
+      label: Tâches / Issues liées
+      description: Utilisez les Tasklists GitHub pour suivre la progression.
+      value: |
+        - [ ] #IssueID1
+        - [ ] #IssueID2

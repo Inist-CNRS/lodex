@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💡 Idée & Proposition
+    url: https://github.com/Inist-CNRS/lodex/discussions
+    about: Propposez vos idées ici plutôt que d'ouvrir une issue.
+  - name: 💬 Questions & Support
+    url: https://groupes.renater.fr/sympa/info/lodex
+    about: Posez vos questions ici plutôt que d'ouvrir une issue.

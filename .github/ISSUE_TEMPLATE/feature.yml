@@ -1,0 +1,23 @@
+name: "✨ Feature"
+description: Une demande, une idée ou une nouvelle fonctionnalité.
+labels: ["type: feature"]
+body:
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: En tant que [utilisateur], je veux [action] afin de [bénéfice].
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Solution Proposée
+      description: Décrivez brièvement comment vous imaginez cette fonctionnalité.
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorité
+      options:
+        - Basse
+        - Moyenne
+        - Haute
