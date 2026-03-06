@@ -71,14 +71,6 @@
         "objectifTDM": "https://services.istex.fr/validation-de-reference-bibliographique/",
         "type": "validation"
     },
-     {
-        "id": "post-v1-bibCheck-validate-pdf",
-        "url": "https://biblio-ref.services.istex.fr/v1/validate-pdf",
-        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-ref",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-ref%20-%20Valide%20une%20r%C3%A9f%C3%A9rence%20bibliographique#/biblio-ref/post-v1-validate",
-        "objectifTDM": "https://services.istex.fr/validation-de-reference-bibliographique/",
-        "type": "validation"
-    },
     {
         "id": "post-v1-bibCheck-validate-url",
         "url": "https://biblio-ref.services.istex.fr/v1/validate-url",
@@ -301,7 +293,7 @@
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
         "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-identify",
         "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
-        "type": "geography"
+        "type": "indexation"
     },
         {
         "id": "post-v1-Loterre-expand-generic",
@@ -309,15 +301,23 @@
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
         "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-expand",
         "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
-        "type": "geography"
+        "type": "indexation"
     },
             {
-        "id": "post-v1-Loterre-annotate",
+        "id": "post-v1-Loterre-annotate-generic",
         "url": "https://loterre-resolvers.services.istex.fr/v1/annotate?loterreID=identifiant",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
         "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-annotate",
         "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
-        "type": "geography"
+        "type": "indexation"
+    },
+            {
+        "id": "post-v1-oalDocTypeClass",
+        "url": "https://openalex-doctype.services.istex.fr/v1/isresearch-id",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/openalex-doctype",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=openalex-doctype%20-%20V%C3%A9rifie%20si%20un%20document%20OpenAlex%20est%20un%20document%20de%20recherche%20ou%20non#/openalex-doctype/post_v1_isresearch_id",
+        "objectifTDM": "https://services.istex.fr/classification-de-documents-openalex-par-type-de-document/",
+        "type": "classification"
     },
     {
         "id": "post-v1-en-classify-3",
@@ -489,7 +489,7 @@
     },
         {
         "id": "post-v1-translit-generic",
-        "url": "https://transli-tal.services.istex.fr/v1/translit",
+        "url": "https://transli-tal.services.istex.fr/v1/translit/cyr",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/transli-tal",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=transli-tal%20-%20TransliTAL%20is%20a%20suite%20of%20tools%20for%20producing%20and%20correcting%20romanizations%20for%20library%20records./",
         "objectifTDM": "https://services.istex.fr/translitteration-en-caracteres-latins/",
