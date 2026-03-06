@@ -1,5 +1,21 @@
 [
     {
+        "id": "post-v1-dataGraph",
+        "url": "https://data-graph.services.istex.fr/v1/graph",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-graph",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-graph%20-%20ws%20to%20create%20graph%20in%20gexf%20format#/data-graph/post-v1-graph",
+        "objectifTDM": "https://services.istex.fr/graphe-de-mots-cles/",
+        "type": "graphe"
+    },
+        {
+        "id": "post-v1-TeeftGraph",
+        "url": "https://data-graph.services.istex.fr/v1/teeft-graph",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-graph",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-graph%20-%20ws%20to%20create%20graph%20in%20gexf%20format#/data-graph/post-v1-teeft-graph",
+        "objectifTDM": "https://services.istex.fr/graphe-de-mots-cles/",
+        "type": "graphe"
+    },  
+    {
         "id": "post-v1-dataHomogenise",
         "url": "https://data-homogenise.services.istex.fr/v1/homogenise",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-homogenise",
@@ -11,7 +27,7 @@
         "id": "post-v1-graph-segment",
         "url": "https://data-computer.services.istex.fr/v1/graph-segment",
         "code": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252fgraph-segment",
-        "type": "other"
+        "type": "graphe"
     },
     {
         "id": "post-v1-ldaClass",
