@@ -1,0 +1,21 @@
+name: "🐛 Bug"
+description: Signaler un problème inattendu.
+labels: ["type: bug"]
+body:
+  - type: textarea
+    attributes:
+      label: Comportement Actuel
+      description: Que se passe-t-il exactement ?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Étapes pour reproduire
+      placeholder: |
+        1. Aller sur...
+        2. Cliquer sur...
+        3. Constater l'erreur...
+  - type: input
+    attributes:
+      label: Environnement
+      placeholder: "ex: Chrome v120 / iOS 17"
