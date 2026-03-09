@@ -5,8 +5,8 @@ body:
   - type: textarea
     id: user-story
     attributes:
-      label: User Story
-      description: En tant que [utilisateur], je veux [action] afin de [bénéfice].
+      label: Motivation & Cas d'usage
+      description: Détaillez les limites de l'implémentation actuelle et la valeur ajoutée de cette évolution pour un type d'utilisateur.
     validations:
       required: true
   - type: textarea
