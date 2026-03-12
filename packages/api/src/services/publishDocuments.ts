@@ -1,5 +1,10 @@
 import omit from 'lodash/omit';
 import get from 'lodash/get';
+import config from 'config';
+// @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
+import ezs from '@ezs/core';
+import Lodex from '@ezs/lodex';
+import { PassThrough } from 'stream';
 
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
@@ -13,6 +18,8 @@ import {
 } from '@lodex/common';
 import { jobLogger } from '../workers/tools';
 import getLogger from './logger';
+
+ezs.use(Lodex);
 
 export const versionTransformerDecorator =
     (transformDocument: any, subresourceId = null, hiddenResources = null) =>
@@ -223,10 +230,24 @@ export const publishDocumentsFactory =
             }),
         );
 
+        const input = new PassThrough({ objectMode: true });
+        const environment = {};
+        const parameters = {
+            url: `${config.get('ezs.url')}/publish.ini`,
+            timeout: config.get('timeout'),
+            streaming: true,
+            json: false,
+            encoder: 'pack',
+        };
+        input.pipe(ezs('URLConnect', parameters, environment));
+
         await transformAllDocuments(
             count,
             ctx.dataset.findLimitFromSkip,
-            ctx.publishedDataset.insertBatch,
+            (documents: any) => {
+                input.write(documents);
+                return ctx.publishedDataset.insertBatch(documents)
+            },
             versionTransformerDecorator(
                 transformMainResourceDocument,
                 null,
@@ -235,6 +256,7 @@ export const publishDocumentsFactory =
             undefined,
             ctx.job,
         );
+        input.end();
 
         ctx.job.isActive()
             ? jobLogger.info(ctx.job, 'Documents published')
