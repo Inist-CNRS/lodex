@@ -485,6 +485,8 @@
 "extended-nquads-compressed"	"N-Quads Extended (Compressed)"	"N-Quads étendus (Compressé)"
 "ris"	"RIS - Research Information Systems"	"RIS - Research Information Systems"
 "ris-comment"	"The RIS file is a tagged format for expressing bibliographic citations."	"RIS est un format informatique de balisage standardisé de données bibliographiques."
+"blank"	"Blank file"	"Fichier vide"
+"blank-comment"	"Empty file to be filled in with your own configuration adapted to your data"	"Fichier vide à remplir avec votre propre configuration adaptée à vos données"
 "csv"	"CSV - auto-detected separator"	"CSV - détection automatique du séparateur"
 "csv-comment"	"Fichier au format CSV qui contient une liste de ressources et se caractérise par une représentation de données tabulaires sous forme de texte, les valeurs de chaque cellule étant séparées par des virgules ou des points-virgules"	"Fichier au format CSV qui contient une liste de ressources et se caractérise par une représentation de données tabulaires sous forme de texte, les valeurs de chaque cellule étant séparées par des virgules ou des points-virgules"
 "csv-semicolon"	"CSV - with semicolon"	"CSV - avec des points virgules"

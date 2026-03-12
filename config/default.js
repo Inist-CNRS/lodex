@@ -121,6 +121,7 @@ module.exports = {
             'unwind-by',
         ],
         loaders: [
+            'blank',
             'bib',
             'csv',
             'csv-semicolon',
