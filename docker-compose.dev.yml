@@ -79,23 +79,15 @@ services:
                 limits:
                     cpus: '2'
                     memory: 1G
-    mongot:
-        image: mongodb/mongodb-community-search:latest
-        entrypoint:
-            - /mongot-community/mongot
-            - --config=/mongot-community/config.default.yml
-            - --internalListAllIndexesForTesting=true
+    qdrant:
+        image: qdrant/qdrant:v1.17
         networks:
             - lodex-net
-        volumes:
-            - mongot_data:/data/mongot
-            - ./etc/mongot.conf:/mongot-community/config.default.yml
-            - ./etc/pwfile:/mongot-community/pwfile:ro
         depends_on:
-            - mongod
+            - api
+            - workers
         ports:
-            - 27028:27028  # Query server port from config
-            - 9946:9946    # Metrics port from config
+            - 6333:6333
     redis:
         image: redis:6
         ports:
