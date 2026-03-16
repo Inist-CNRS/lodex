@@ -1,4 +1,5 @@
 import omit from 'lodash/omit';
+import find from 'lodash/find';
 import get from 'lodash/get';
 import config from 'config';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
@@ -231,15 +232,23 @@ export const publishDocumentsFactory =
         );
 
         const input = new PassThrough({ objectMode: true });
-        const environment = {};
+        const environment = {
+            titleFieldName: find(fields, {'overview':1})?.name,
+            summaryFieldName:  find(fields, {'overview':2})?.name,
+            detail1FieldName: find(fields, {'overview':3})?.name,
+            detail2FieldName:  find(fields, {'overview':4})?.name,
+            subtitleFieldName:  find(fields, {'overview':6})?.name,
+        };
+        const queryString = new URLSearchParams(environment).toString();
         const parameters = {
-            url: `${config.get('ezs.url')}/publish.ini`,
+            url: `${config.get('ezs.url')}/publish.ini?${queryString}`,
             timeout: config.get('timeout'),
             streaming: true,
             json: false,
             encoder: 'pack',
         };
-        input.pipe(ezs('URLConnect', parameters, environment));
+        console.error({parameters});
+        input.pipe(ezs('URLConnect', parameters));
 
         await transformAllDocuments(
             count,
