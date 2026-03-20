@@ -283,7 +283,9 @@ export const getVolumeData = ({
     );
 
 const getVolumeQuery = (volume: string) =>
-    (isEmpty(volume) || volume === 'other') ? '-host.volume.raw:*' : `host.volume.raw:"${volume}"`;
+    isEmpty(volume) || volume === 'other'
+        ? '-host.volume.raw:*'
+        : `host.volume.raw:"${volume}"`;
 
 export const getIssueUrl =
     ({
@@ -393,7 +395,9 @@ export const getIssueData = ({
         addOtherIssueData({ value, year, volume, searchedField }),
     );
 const getIssueQuery = (issue: string) =>
-    (isEmpty(issue) || issue === 'other') ? '-host.issue.raw:*' : `host.issue.raw:"${issue}"`;
+    isEmpty(issue) || issue === 'other'
+        ? '-host.issue.raw:*'
+        : `host.issue.raw:"${issue}"`;
 
 export const getDocumentUrl =
     ({
