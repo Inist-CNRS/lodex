@@ -94,5 +94,7 @@ export default defineConfig(({ mode }) => {
             ],
             exclude: [],
         },
+
+        publicDir: resolve(__dirname, '../../src/app/custom/assets/'),
     };
 });
