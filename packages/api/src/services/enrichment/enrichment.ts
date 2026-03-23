@@ -305,7 +305,7 @@ path = id
 value = get(${JSON.stringify(source.idField)})
 
 path = value
-value = self().omit(['_id', ${JSON.stringify(source.idField)}])
+value = self()
 
 ${enrichment.rule}
 
