@@ -565,6 +565,8 @@
 "query-istex-comment"	"Direct loading of query results for the ISTEX archive."	"Chargement direct des résultats d'une requête d'interrogation pour l'archive ISTEX."
 "query-openalex"	"TXT - query for OpenAlex"	"TXT - requête d'interrogation pour OpenAlex"
 "query-openalex-comment"	"Direct loading of query results for the OpenAlex database."	"Chargement direct des résultats d'une requête d'interrogation pour la base OpenAlex."
+"query-openalex-for-model"	"TXT - OpenAlex query for Lodex model"	"TXT - requête OpenAlex pour modèle Lodex"
+"query-openalex-for-model-comment"	"Direct loading of query results from OpenAlex database for Lodex model."	"Chargement des résultats d'une requête OpenAlex permettant de récupérer les données utilisées dans le modèle Lodex associé."
 "automatic-loader"	"AUTO - with filename extension"	"AUTO - avec l'extension du nom de fichier"
 "custom-loader"	"CUSTOM - modified loader"	"CUSTOM - Loader customisé"
 "add-custom-loader"	"Customize loader"	"Customiser le loader"

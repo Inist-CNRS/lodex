@@ -146,7 +146,7 @@ module.exports = {
             'query-istex',
             'query-conditor',
             'query-conditor-for-halcnrs',
-            'query-openalex',
+            'query-openalex-for-model',
             'rss',
             'atom',
             'mods',
