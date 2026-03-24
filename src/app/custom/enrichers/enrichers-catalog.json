@@ -349,7 +349,7 @@
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1rnsrjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-json",
         "objectifTDM": "https://services.istex.fr/identifiants-rnsr-adresse/",
-        "type": "homogeneisation"
+        "type": "affiliation"
     },
     {
         "id": "post-v1-rnsr-info",
@@ -357,15 +357,7 @@
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1rnsrjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-json",
         "objectifTDM": "https://services.istex.fr/identifiants-rnsr-adresse/",
-        "type": "homogeneisation"
-    },
-    {
-        "id": "post-v2-affiliation-rnsr",
-        "url": "https://affiliation-rnsr.services.istex.fr/v2/affiliation/rnsr",
-        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliation-rnsr#readme",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v2_affiliation_rnsr",
-        "objectifTDM": "https://services.istex.fr/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
-        "type": "homogeneisation"
+        "type": "affiliation"
     },
     {
         "id": "post-v3-affiliation-rnsr",
@@ -373,7 +365,7 @@
         "code": "",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v3_affiliation_rnsr",
         "objectifTDM": "https://services.istex.fr/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
-        "type": "homogeneisation"
+        "type": "affiliation"
     },
     {
         "id": "post-v1-sciencemetrixClass",
