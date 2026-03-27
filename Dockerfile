@@ -19,7 +19,11 @@ RUN npm run build && \
     npm prune --production --legacy-peer-deps
 
 FROM node:24.13-alpine AS release
-RUN apk add --no-cache su-exec redis
+ARG BUN_VERSION=v1.3.11
+
+RUN apk add --no-cache su-exec redis curl unzip bash && \
+    curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr/local bash -s "bun-${BUN_VERSION}" && \
+    apk del curl unzip bash
 
 # ezmasterizing of lodex
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application

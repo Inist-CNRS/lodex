@@ -86,7 +86,8 @@ services:
                     memory: 1G
 
     workers:
-        image: node:24.13-alpine
+        build:
+            context: ./packages/workers/
         extra_hosts:  # for linux hosts since version 20.10
             - "host.docker.internal:host-gateway"
         volumes:
