@@ -4,27 +4,27 @@
     font-family: 'Montserrat';
     src:
         local('Montserrat'),
-        url('/themes/istex/fonts/Montserrat/Montserrat-Regular.ttf')
+        url('fonts/Montserrat/Montserrat-Regular.ttf')
             format('truetype');
     font-style: normal;
     font-display: swap;
     font-weight: 400;
 }
 @font-face {
-    font-family: 'Montserrat';
+    font-family: 'Montserrat Medium';
     src:
         local('Montserrat Medium'),
-        url('/themes/istex/fonts/Montserrat/Montserrat-Medium.ttf')
+        url('fonts/Montserrat/Montserrat-Medium.ttf')
             format('truetype');
     font-style: normal;
     font-display: swap;
     font-weight: 500;
 }
 @font-face {
-    font-family: 'Montserrat';
+    font-family: 'Montserrat bold';
     src:
         local('Montserrat'),
-        url('/themes/istex/fonts/Montserrat/Montserrat-Bold.ttf')
+        url('fonts/Montserrat/Montserrat-Bold.ttf')
             format('truetype');
     font-style: normal;
     font-display: swap;
@@ -32,13 +32,13 @@
 }
 @font-face {
     font-family: 'Open Sans';
-    src: url('/themes/istex/fonts/Open_Sans/static/OpenSans/OpenSans-Regular.ttf')
+    src: url('fonts/Open_Sans/static/OpenSans/OpenSans-Regular.ttf')
         format('truetype');
     font-weight: normal;
 }
 @font-face {
-    font-family: 'Open Sans';
-    src: url('/themes/istex/fonts/Open_Sans/static/OpenSans/OpenSans-Bold.ttf')
+    font-family: 'Open Sans bold';
+    src: url('fonts/Open_Sans/static/OpenSans/OpenSans-Bold.ttf')
         format('truetype');
     font-weight: bold;
 }

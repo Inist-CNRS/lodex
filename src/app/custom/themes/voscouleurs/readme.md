@@ -29,10 +29,9 @@ zone de saisie de la configuration
         "titleHeaderSize": "taille de cette font pour les titres de la banière"
     },
     "color": {
-        "info-theme": "EN DEVELOPPEMENT : les trois couleurs suivantes permettent de mémoriser les codes hexadecimaux de 2 couleurs qui font l'identité de votre organisme",
+        "info-theme": les deux couleurs suivantes permettent de mémoriser les codes hexadecimaux de 2 couleurs qui font l'identité de votre organisme",
         "themePrimary": "code hexa ",
         "themeSecondary": "code hexa",
-        "themeRGBA": "code rgba de primary ou secondary",
         "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages. 'bgContrast' permet de visualiser tout objet (texte, icon,...) dans le bg.",
         "bgBody": "",
         "bgContrast": "",

@@ -27,8 +27,7 @@
 /* footer inist */
 @font-face {
     font-family: "Satoshi-Regular";
-    src: local("Satoshi-Regular"),
-        url("fonts/Satoshi-Regular.woff2") format("woff2"),
+    src: url("fonts/Satoshi-Regular.woff2") format("woff2"),
         url("fonts/Satoshi-Regular.woff") format("woff"),
         url("fonts/Satoshi-Regular.ttf") format("truetype");
     font-weight: 400;
@@ -37,7 +36,7 @@
 }
 @font-face {
     font-family: "Satoshi-Bold";
-    src: local("Satoshi-Bold"), url("fonts/Satoshi-Bold.woff2") format("woff2"),
+    src:  url("fonts/Satoshi-Bold.woff2") format("woff2"),
         url("fonts/Satoshi-Bold.woff") format("woff"),
         url("fonts/Satoshi-Bold.ttf") format("truetype");
     font-weight: 400;
