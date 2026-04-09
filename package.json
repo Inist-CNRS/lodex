@@ -253,6 +253,7 @@
         "vega-view-transforms": "4.6.2",
         "vega-voronoi": "4.2.5",
         "vega-wordcloud": "4.1.7",
+        "fmin": "0.0.4",
         "venn.js": "0.2.20",
         "winston": "^3.11.0",
         "zod": "^3.24.1"
