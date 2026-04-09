@@ -1,11 +1,9 @@
 @font-face {
     font-family: 'Quicksand';
     font-display: swap;
-    src: url(../font/Quicksand/Quicksand-VariableFont_wght.ttf)
+    src: url(fonts/Quicksand/Quicksand-VariableFont_wght.ttf)
         format('ttf-variations');
-    font-weight: 125 950;
-    font-stretch: 75% 125%;
-    font-style: oblique 0deg 20deg;
+    font-style: normal;
 }
 *,
 *::before,
@@ -62,7 +60,7 @@ body {
 }
 body * {
     font-family:
-        Quicksand,
+        'Quicksand',
         -apple-system,
         BlinkMacSystemFont,
         'Segoe UI',
@@ -199,7 +197,8 @@ h2 {
 }
 /*patch graph-header search*/
 .header_a4xuhy.graph-header {
-    background-color: var(--common-white) !important;}
+    background-color: var(--common-white) !important;
+}
 /*search graph&search page*/
 .css-9yxe53-MuiGrid-root {
     margin-top: auto !important;

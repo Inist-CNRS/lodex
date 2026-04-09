@@ -56,7 +56,7 @@
 }
 :root {
     --font-titre: IBM Plex Sans bold, Arial, Helvetica, sans-serif;
-    --font-texte: Satoshi Regular, Arial, Helvetica, sans-serif;
+    --font-texte: Satoshi-Regular, Arial, Helvetica, sans-serif;
     --maxWidth: 1500px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
 }
 /* text : font, size, color*/

@@ -1,5 +1,5 @@
 @import url('fonts-style.css');
-/*lodex theme_inist lodex14*/
+/*lodex theme_inist lodex16*/
 /* MOBILE FIRST*/
 @media (min-width: 794px) {
     h1 {
@@ -42,8 +42,8 @@
     box-sizing: border-box;
 }
 :root {
-    --font-titre: IBM Plex Sans bold, Arial, Helvetica, sans-serif;
-    --font-texte: Satoshi Regular, Arial, Helvetica, sans-serif;
+    --font-titre: "IBM Plex Sans" bold, Arial, Helvetica, sans-serif;
+    --font-texte: Satoshi-Regular, Arial, Helvetica, sans-serif;
     --maxWidth: 1700px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
     /*fond semi opaque*/
     --fondsemiopaque: background-color: rgba(24, 20, 79, 0.6);
@@ -149,16 +149,16 @@ header a.logoinist {
     line-height: normal;
 }
 header a.logoinist > span:first-child {
-    font-family: 'Satoshi-Bold', Arial, Helvetica, sans-serif;
+    font-family: Satoshi-Bold, Arial, Helvetica, sans-serif;
     font-size: 1.875rem;
 }
 header a.logoinist span.inist {
-    font-family: 'Satoshi-Regular', Arial, Helvetica, sans-serif;
+    font-family: Satoshi-Regular, Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
 header a.logoinist > span:first-child::after {
     content: '|';
-    font-family: 'Satoshi-Regular', Arial, Helvetica, sans-serif;
+    font-family: Satoshi-Regular, Arial, Helvetica, sans-serif;
     font-weight: normal;
     opacity: 0.8;
     padding-left: 0.5rem;
