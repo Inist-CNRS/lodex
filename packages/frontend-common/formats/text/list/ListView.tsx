@@ -111,7 +111,7 @@ const ListView = ({
         <List className={classnames(localStyles[type], className)}>
             {values.map((value, index) => (
                 <li
-                    key={value}
+                    key={`${field.name}-${value}-${index}`}
                     // @ts-expect-error TS7053
                     className={classnames(localStyles[`${type}_li`])}
                 >
