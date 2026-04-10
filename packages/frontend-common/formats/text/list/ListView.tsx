@@ -117,10 +117,10 @@ const ListView = ({
                 >
                     {subFormat ? (
                         <ViewComponent
-                            resource={values}
+                            resource={{ [`${field.name}_${index}`]: value }}
                             field={{
                                 ...field,
-                                name: index.toString(),
+                                name: `${field.name}_${index}`,
                                 valueOfList: value,
                                 format: {
                                     name: subFormat,
