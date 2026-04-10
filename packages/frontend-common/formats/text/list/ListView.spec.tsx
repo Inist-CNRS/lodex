@@ -55,7 +55,7 @@ describe('list format view <ListView />', () => {
         const subFormat = component.find('Translated(CheckedComponent)');
         expect(subFormat).toHaveLength(3);
         subFormat.forEach((t, index) => {
-            expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
+            expect(t.props().resource).toEqual({'name_0': 'value1'});
             // @ts-expect-error TS2339
             expect(t.props().field.name).toBe(index.toString());
             // @ts-expect-error TS2339
@@ -88,7 +88,7 @@ describe('list format view <ListView />', () => {
         const title = component.find('Translated(CheckedComponent)');
         expect(title).toHaveLength(3);
         title.forEach((t, index) => {
-            expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
+            expect(t.props().resource).toEqual({"name_0": "value1"});
             // @ts-expect-error TS2339
             expect(t.props().field.name).toBe(index.toString());
             // @ts-expect-error TS2339
