@@ -1,4 +1,4 @@
-import DOMPurify from 'dompurify';
+import { sanitize } from '../../../utils/sanitize';
 import type { Field } from '../../../fields/types';
 
 interface HtmlViewProps {
@@ -9,7 +9,7 @@ interface HtmlViewProps {
 
 const HtmlView = ({ className, resource, field }: HtmlViewProps) => {
     // @ts-expect-error TS7053
-    const sanitizedHTML = DOMPurify.sanitize(resource[field.name]);
+    const sanitizedHTML = sanitize(resource[field.name]);
     return (
         <div
             className={className}

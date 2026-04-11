@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 // @ts-expect-error TS7016
 import ejs from 'ejs/ejs.min.js'; // import the browser-friendly build from ejs
 import injectData from '../../injectData';
-import DOMPurify from 'dompurify';
+import { sanitize } from '../../../utils/sanitize';
 import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -43,7 +43,7 @@ const EJSView = ({ field, data, template }: EJSViewProps) => {
         try {
             const buildedHTML = compiledTemplate({ root: data, _ });
             setOnError(false);
-            const sanitizedHTML = DOMPurify.sanitize(buildedHTML);
+            const sanitizedHTML = sanitize(buildedHTML);
             return sanitizedHTML;
         } catch (err) {
             setOnError(true);
