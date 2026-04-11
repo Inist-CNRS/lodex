@@ -15,8 +15,6 @@ export const sanitize = (dirty: unknown, defaultValue = ''): string => {
     }
 
     return DOMPurify.sanitize(dirty!.toString(), {
-        ALLOWED_TAGS: ['a'],
-        ALLOWED_ATTR: ['href', 'rel'],
         ADD_ATTR: ['target'],
     });
 };
