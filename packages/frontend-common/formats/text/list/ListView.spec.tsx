@@ -46,19 +46,18 @@ describe('list format view <ListView />', () => {
     });
 
     it('should render list of value', () => {
-        // @ts-expect-error TS2322
         const component = shallow(<ListView {...defaultProps} />);
-
         const listComponent = component.find(UL);
         expect(listComponent).toHaveLength(1);
 
         const subFormat = component.find('Translated(CheckedComponent)');
         expect(subFormat).toHaveLength(3);
+        const expectedValues = ['value1', 'value2', 'value3'];
         subFormat.forEach((t, index) => {
-            expect(t.props().resource).toEqual({'name_0': 'value1'});
-            // @ts-expect-error TS2339
-            expect(t.props().field.name).toBe(index.toString());
-            // @ts-expect-error TS2339
+            expect(t.props().resource).toEqual({
+                [`name_${index}`]: expectedValues[index],
+            });
+            expect(t.props().field.name).toBe(`name_${index}`);
             expect(t.props().field.format.name).toBe('none');
         });
     });
@@ -87,13 +86,13 @@ describe('list format view <ListView />', () => {
         const component = shallow(<ListView {...props} />);
         const title = component.find('Translated(CheckedComponent)');
         expect(title).toHaveLength(3);
+        const expectedValues = ['value1', 'value2', 'value3'];
         title.forEach((t, index) => {
-            expect(t.props().resource).toEqual({"name_0": "value1"});
-            // @ts-expect-error TS2339
-            expect(t.props().field.name).toBe(index.toString());
-            // @ts-expect-error TS2339
+            expect(t.props().resource).toEqual({
+                [`name_${index}`]: expectedValues[index],
+            });
+            expect(t.props().field.name).toBe(`name_${index}`);
             expect(t.props().field.format.name).toBe('title');
-            // @ts-expect-error TS2339
             expect(t.props().field.format.args).toEqual({ level: 2 });
         });
     });
