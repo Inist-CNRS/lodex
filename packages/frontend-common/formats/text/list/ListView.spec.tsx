@@ -46,6 +46,7 @@ describe('list format view <ListView />', () => {
     });
 
     it('should render list of value', () => {
+        // @ts-expect-error TS2322
         const component = shallow(<ListView {...defaultProps} />);
         const listComponent = component.find(UL);
         expect(listComponent).toHaveLength(1);
@@ -57,7 +58,9 @@ describe('list format view <ListView />', () => {
             expect(t.props().resource).toEqual({
                 [`name_${index}`]: expectedValues[index],
             });
+            // @ts-expect-error TS2322
             expect(t.props().field.name).toBe(`name_${index}`);
+            // @ts-expect-error TS2322
             expect(t.props().field.format.name).toBe('none');
         });
     });
@@ -91,8 +94,11 @@ describe('list format view <ListView />', () => {
             expect(t.props().resource).toEqual({
                 [`name_${index}`]: expectedValues[index],
             });
+            // @ts-expect-error TS2322
             expect(t.props().field.name).toBe(`name_${index}`);
+            // @ts-expect-error TS2322
             expect(t.props().field.format.name).toBe('title');
+            // @ts-expect-error TS2322
             expect(t.props().field.format.args).toEqual({ level: 2 });
         });
     });
