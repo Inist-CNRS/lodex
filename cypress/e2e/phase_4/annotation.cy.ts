@@ -1380,7 +1380,7 @@ Revue`);
 
             cy.findByLabelText('value').should('not.be.empty');
 
-            cy.findAllByRole('cell').should('have.length', 11);
+            cy.findAllByRole('cell').should('have.length', 12); // nombre de colonnes dans le tableau + cellule en bas à droite (pagination)
         });
 
         it('should disable the "See the resource" button if the resource does not exist', () => {
