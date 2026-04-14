@@ -25,6 +25,7 @@ module.exports = {
     },
     hostname: 'http://data.istex.fr/',
     uploadDir: 'upload',
+    uploadLimit: 5, // en giga
     istexApiUrl: 'https://api.istex.fr',
     jsHost: '',
     jsHosts: {

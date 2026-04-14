@@ -305,7 +305,7 @@ export const UploadComponent = ({
                 {tab === 0 ? (
                     <>
                         <p style={styles.formDesc}>
-                            {translate('upload_file')}
+                            {translate('upload_file').replace('$UPLOAD_LIMIT$', UPLOAD_LIMIT)}
                         </p>
                         {dropping ? (
                             <DroppingLoader text={translate('inspect_file')} />
@@ -313,7 +313,7 @@ export const UploadComponent = ({
                             <DropzoneAreaBase
                                 fileObjects={files}
                                 filesLimit={1}
-                                maxFileSize={1 * 1024 * 1024 * 1024}
+                                maxFileSize={UPLOAD_LIMIT * 1024 * 1024 * 1024}
                                 // @ts-expect-error TS2322 --- mui component type only accept string
                                 dropzoneText={
                                     <Typography variant="h6">
