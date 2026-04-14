@@ -2,6 +2,8 @@ import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 import Alert from '@lodex/frontend-common/components/Alert';
 
+global.UPLOAD_LIMIT = 1;
+
 import { UploadComponent as Upload, type UploadComponentProps } from './Upload';
 
 describe('<Upload />', () => {
