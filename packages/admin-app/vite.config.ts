@@ -7,6 +7,7 @@ import config from 'config';
 import translations from '../api/src/services/translations';
 
 const loaders = config.get('scripts.loaders');
+const uploadLimit = config.get('uploadLimit');
 const port = 8082;
 
 export default defineConfig(({ mode }) => {
@@ -68,6 +69,7 @@ export default defineConfig(({ mode }) => {
             __EN__: JSON.stringify(translations.getByLanguage('english')),
             __FR__: JSON.stringify(translations.getByLanguage('french')),
             LOADERS: JSON.stringify(loaders),
+            UPLOAD_LIMIT: Number(uploadLimit),
             'process.env.NODE_ENV': JSON.stringify(mode),
         },
 
