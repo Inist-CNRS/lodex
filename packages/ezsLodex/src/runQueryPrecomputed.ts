@@ -81,10 +81,10 @@ async function LodexRunQueryPrecomputed(this: any, data: any, feed: any) {
                 as: 'documents',
             },
         });
-        aggregatePipeline.push( {
+        aggregatePipeline.push({
             $match: {
                 documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
-              },
+            },
         });
     }
     const cursor = collection.aggregate(
