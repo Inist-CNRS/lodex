@@ -20,7 +20,7 @@ services:
             WORKERS_URL: 'http://workers.lodex-net:31976'
             MONGO_HOST: 'mongo.lodex-net:27017'
             MAILER_HOST: 'maildev.lodex-net:1025'
-            PRECOMPUTED_URL: 'http://api.lodex-net:3000'
+            PRECOMPUTED_URL: ${PRECOMPUTED_URL:-http://api.lodex-net:3000}
             CI: ${CI}
         networks:
             - lodex-net
@@ -60,9 +60,12 @@ services:
 
     mongo:
         image: mongodb/mongodb-community-server:7.0.9-ubi9
-        logging:
-            driver: none
-        command: --quiet
+        memswap_limit: -1  # désactive le swap pour ce container
+        command: >
+            mongod
+            --wiredTigerCacheSizeGB 0.5
+            --setParameter maxIndexBuildMemoryUsageMegabytes=500
+            --bind_ip_all
         ports:
             - "27017:27017"
         networks:
@@ -71,7 +74,7 @@ services:
             resources:
                 limits:
                     cpus: '2'
-                    memory: 1G
+                    memory: 4G
 
     redis:
         image: redis:6
