@@ -75,18 +75,24 @@ async function LodexRunQueryPrecomputed(this: any, data: any, feed: any) {
     if (Object.keys(filterDocuments).length > 0) {
         aggregatePipeline.push({
             $lookup: {
-                from: 'publishedDataset',
-                localField: 'origin',
-                foreignField: 'uri',
+                "from": 'publishedDataset',
+                "let": { origin: '$origin' },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: { $eq: ['$uri', '$$origin'] },
+                            ...filterDocuments, // filtre appliqué côté publishedDataset
+                        },
+                    },
+                    {
+                        $project: { _id: 1 }, // ne ramener que le strict minimum
+                    },
+                ],
                 as: 'documents',
             },
         });
-        aggregatePipeline.push( {
-            $match: {
-                documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
-              },
-        });
     }
+    console.dir(aggregatePipeline, {depth: null})
     const cursor = collection.aggregate(
         aggregatePipeline,
         fields.length > 0
@@ -116,6 +122,7 @@ async function LodexRunQueryPrecomputed(this: any, data: any, feed: any) {
         .limit(Number(maxSize || 1000000))
         .stream()
         .on('error', (e: any) => feed.stop(e))
+        .pipe(ezs('debug', { text: 'LodexRunQueryPrecomputed', path: '_id' }))
         .pipe(ezs('assign', { path, value }));
     await feed.flow(stream);
 }
