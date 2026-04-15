@@ -254,8 +254,9 @@ const processEzsEnrichment = (
                     // try to obtain only the lodash error message
                     const errorMessage =
                         []
+                            .concat(error?.sourceError.toString().split('\n'))
                             .concat(error?.traceback)
-                            .filter((x: any) => x.search(/Error:/) >= 0)
+                            .filter((x: any) => String(x).search(/Error:/) >= 0)
                             .shift() || error?.message;
 
                     return values.push({
