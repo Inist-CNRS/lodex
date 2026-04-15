@@ -65,28 +65,28 @@ async function LodexRunQueryPrecomputed(this: any, data: any, feed: any) {
     const db = await mongoDatabase(connectionStringURI);
     const collection = db.collection(collectionName);
 
-    const postFilter =
-        Object.keys(filterDocuments).length === 0
-            ? {}
-            : {
-                  documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
-              };
-    const aggregatePipeline = [
-        {
+    const aggregatePipeline = [];
+
+    if (Object.keys(filter).length > 0) {
+        aggregatePipeline.push({
             $match: filter,
-        },
-        {
+        });
+    }
+    if (Object.keys(filterDocuments).length > 0) {
+        aggregatePipeline.push({
             $lookup: {
                 from: 'publishedDataset',
                 localField: 'origin',
                 foreignField: 'uri',
                 as: 'documents',
             },
-        },
-        {
-            $match: postFilter,
-        },
-    ];
+        });
+        aggregatePipeline.push({
+            $match: {
+                documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
+            },
+        });
+    }
     const cursor = collection.aggregate(
         aggregatePipeline,
         fields.length > 0
