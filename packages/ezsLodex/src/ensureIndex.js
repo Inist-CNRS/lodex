@@ -16,10 +16,7 @@ export default async function ensureQuery(data, feed) {
         return feed.close();
     }
     const { ezs } = this;
-    const field = this.getParam(
-        'field',
-        data.field || data.$field || 'uri',
-    );
+    const field = this.getParam('field', data.field || data.$field || 'uri');
     const collectionName = String(
         this.getParam('collection', data.collection || 'publishedDataset'),
     );
@@ -32,19 +29,21 @@ export default async function ensureQuery(data, feed) {
     const db = await mongoDatabase(connectionStringURI);
     const collection = db.collection(collectionName);
 
-
     const indexes = await collection.indexes();
 
-    await Promise.all(fields.map(fieldName => {
-        const isIndexExists = indexes.some(index =>
-            Object.keys(index.key).some(key =>
-                key === fieldName || key.startsWith(fieldName + ".")
-            )
-        );
-        if (!isIndexExists) {
-            return collection.createIndex({ [fieldName]: 1 });
-        }
-        return Promise.resolve(true);
-    }));
+    await Promise.all(
+        fields.map((fieldName) => {
+            const isIndexExists = indexes.some((index) =>
+                Object.keys(index.key).some(
+                    (key) =>
+                        key === fieldName || key.startsWith(fieldName + '.'),
+                ),
+            );
+            if (!isIndexExists) {
+                return collection.createIndex({ [fieldName]: 1 });
+            }
+            return Promise.resolve(true);
+        }),
+    );
     feed.send(data);
-};
+}

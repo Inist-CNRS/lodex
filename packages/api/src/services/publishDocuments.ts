@@ -32,9 +32,7 @@ export const versionTransformerDecorator =
             uri: doc.uri,
             subresourceId,
             lastVersion,
-            versions: [
-                lastVersion,
-            ],
+            versions: [lastVersion],
         };
     };
 
