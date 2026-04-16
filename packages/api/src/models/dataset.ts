@@ -206,6 +206,7 @@ export default async (db: any) => {
     };
 
     collection.indexColumns = async () => {
+        await collection.createIndex({ lodex_published: 1 });
         const aggregation = await collection
             .aggregate([
                 { $project: { keyValue: { $objectToArray: '$$ROOT' } } },
