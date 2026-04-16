@@ -12,10 +12,11 @@ export default async (ctx: any, triggeredFromPublication: any) => {
     });
     await ctx.dataset.updateMany(
         {},
-        { $unset: { lodex_published: '' } },
+        { $set: { lodex_published: false } },
         { multi: true },
     );
     progress.incrementProgress(ctx.tenant, 25);
+    await ctx.publishedDataset.deleteIndexes();
     await ctx.publishedDataset.deleteMany({});
     progress.incrementProgress(ctx.tenant, 25);
     await ctx.publishedCharacteristic.deleteMany({});
