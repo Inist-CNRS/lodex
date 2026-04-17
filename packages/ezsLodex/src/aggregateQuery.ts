@@ -49,7 +49,7 @@ export const createFunction = () =>
             [{ $match: filter }].concat(stages),
             {
                 allowDiskUse: true,
-            }
+            },
         );
         const count = await collection
             .aggregate([{ $match: filter }, { $count: 'value' }])

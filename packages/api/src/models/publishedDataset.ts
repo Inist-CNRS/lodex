@@ -55,18 +55,15 @@ export default async (db: any) => {
         );
 
     // Avant publication
-    collection.avoidDuplicates = () => Promise.all([
-        collection.createIndex({ uri: 1 }, { unique: true }),
-    ]);
+    collection.avoidDuplicates = () =>
+        Promise.all([collection.createIndex({ uri: 1 }, { unique: true })]);
     // Aprés publication
-    collection.createIndexes = () => Promise.all([
-        collection.createIndex({ removedAt: 1, subresourceId: 1 }),
-        collection.createIndex({ 'lastVersion.$**': 1 }),
-    ]);
+    collection.createIndexes = () =>
+        Promise.all([
+            collection.createIndex({ removedAt: 1, subresourceId: 1 }),
+        ]);
     // Avant dépublication
-    collection.deleteIndexes = () => Promise.all([
-        collection.dropIndexes(),
-    ]);
+    collection.deleteIndexes = () => Promise.all([collection.dropIndexes()]);
 
     collection.insertBatchIgnoreDuplicate = (documents: any) =>
         Promise.all(
