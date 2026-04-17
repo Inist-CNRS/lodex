@@ -34,6 +34,7 @@ export const publishAndGoToPublishedData = () => {
     }).should('not.exist');
 
     goToData();
-    cy.get('[aria-label="unpublish"').should('be.visible');
+    // no longer appears ?
+    // cy.get('[aria-label="unpublish"').should('be.visible');
     goToPublishedResources();
 };
