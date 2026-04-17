@@ -28,6 +28,10 @@ export const buildQuery = <
             return {
                 [filterBy]: { $lt: parseFloat(filterValue) },
             } as Filter<Document>;
+        case 'equals':
+            return {
+                [filterBy]: filterValue,
+            } as Filter<Document>;
         default:
             return {
                 [filterBy]: createDiacriticSafeContainRegex(filterValue),

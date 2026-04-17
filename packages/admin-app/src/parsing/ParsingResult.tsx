@@ -107,7 +107,9 @@ const getFiltersOperatorsForType = (type) => {
             return getGridBooleanOperators();
         default:
             return getGridStringOperators().filter(
-                (operator) => operator.value === 'contains',
+                (operator) =>
+                    operator.value === 'contains' ||
+                    operator.value === 'equals',
             );
     }
 };

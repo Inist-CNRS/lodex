@@ -15,7 +15,6 @@ export default async function ensureQuery(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
-    const { ezs } = this;
     const field = this.getParam('field', data.field || data.$field || 'uri');
     const collectionName = String(
         this.getParam('collection', data.collection || 'publishedDataset'),
