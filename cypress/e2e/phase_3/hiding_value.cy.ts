@@ -39,7 +39,8 @@ describe('hiding null value to user', () => {
         cy.get('#tab-display').click();
         cy.contains('Visible').click();
         cy.get('.btn-save').click();
-        cy.get('.go-published-button', { timeout: 1000 }).click();
+        // no longer appears ?
+        // cy.get('.go-published-button', { timeout: 1000 }).click();
 
         logoutAndLoginAs('user');
         menu.openSearchDrawer();

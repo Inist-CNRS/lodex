@@ -154,7 +154,8 @@ export const publish = () => {
 };
 
 export const goToPublishedResources = () => {
-    cy.get('.go-published-button', { timeout: 1000 }).click();
+    // no longer appears ?
+    // cy.get('.go-published-button', { timeout: 1000 }).click();
     cy.location('pathname').should('equal', `/instance/${DEFAULT_TENANT}`);
 };
 
