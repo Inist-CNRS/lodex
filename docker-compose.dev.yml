@@ -18,8 +18,7 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             REDIS_URL: 'redis://redis.lodex-net:6379'
             WORKERS_URL: 'http://workers.lodex-net:31976'
-            #MONGODB_URI: 'mongodb://mongo.lodex-net:27017/lodex'
-            MONGODB_URI: 'mongodb://lodexadm_velodexdck:admlodex@vemongos.intra.inist.fr:35000/lodex?authSource=admin'
+            MONGODB_URI: 'mongodb://mongo.lodex-net:27017/lodex'
             MAILER_HOST: 'maildev.lodex-net:1025'
             PRECOMPUTED_URL: 'http://api.lodex-net:3000'
             CI: ${CI}
