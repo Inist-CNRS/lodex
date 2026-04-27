@@ -19,11 +19,11 @@ export const mongoConnectionString = (tenant?: string) => {
         cs.hosts = [].concat(config.get('mongo.host'));
     }
     if (config.has('mongo.dbName')) {
-        cs.pathname = config.get('mongo.dbName')
+        cs.pathname = config.get('mongo.dbName');
     }
     cs.pathname = `${cs.pathname}_${tenant || DEFAULT_TENANT}`;
     return cs.toString();
-}
+};
 
 /**
  * Get the DBMS client
