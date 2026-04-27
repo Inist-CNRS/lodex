@@ -13,8 +13,8 @@ services:
             PRECOMPUTED_URL: ${PRECOMPUTED_URL}
             # Prefix commun à toutes les instances,
             # équivalent du technical name avec ezmaste
-            MONGO_DATABASE_PREFIX: ${MONGO_DATABASE_PREFIX}
-            MONGO_HOST: 'mongo:27017'
+            MONGODB_DATABASE_PREFIX: ${MONGO_DATABASE_PREFIX}
+            MONGODB_URI: 'mongodb://mongo:27017/lodex'
         links:
             - mongo
         ports:
