@@ -68,8 +68,7 @@ export const importMoreDataset = (filename: string, mimeType = 'text/csv') => {
     cy.get('#confirm-upload', { timeout: 3000 }).should('be.visible');
     cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    // no longer appears ?
-    // cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
+    cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
 export const fillTabDisplayFormat = (format: string, save = true) => {
@@ -149,13 +148,11 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
 export const publish = () => {
     cy.get('.btn-publish button').click();
     adminNavigation.goToData();
-    // no longer appears ?
-    // cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
+    cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
 export const goToPublishedResources = () => {
-    // no longer appears ?
-    // cy.get('.go-published-button', { timeout: 1000 }).click();
+    cy.get('.go-published-button', { timeout: 1000 }).click();
     cy.location('pathname').should('equal', `/instance/${DEFAULT_TENANT}`);
 };
 

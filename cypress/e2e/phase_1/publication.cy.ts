@@ -1,7 +1,24 @@
+import 'cypress-real-events';
 import * as adminNavigation from '../../support/adminNavigation';
 import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as menu from '../../support/menu';
+
+
+function datagridFilter(colname: string) {
+
+    cy.get(`[role=columnheader][data-field=${colname}]`).realHover();
+    cy.get(`[role=columnheader][data-field=${colname}] [aria-label=Menu]`)
+        .should('be.visible')
+        .realClick();
+
+    cy.get(`[role=columnheader][data-field=${colname}] [aria-label=Menu]`)
+        .invoke('attr', 'aria-controls')
+        .then((menuId) => {
+            cy.get(`[id="${menuId}"]`).should('be.visible');
+            cy.get(`[id="${menuId}"] :nth-child(4)`).click();
+        });
+}
 
 describe('Dataset Publication', () => {
     beforeEach(() => teardown());
@@ -117,10 +134,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset(
                 'dataset/simpleForFilterTests.json',
             );
-            cy.get('[role=columnheader][data-field=uri] [aria-label=Menu]', {
-                timeout: 500,
-            }).click({ force: true });
-            cy.get('[role=menu] :nth-child(4)').click();
+            datagridFilter('uri');
             cy.focused().type('2');
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
@@ -135,14 +149,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset(
                 'dataset/simpleForFilterTests.json',
             );
-            cy.get(
-                '[role=columnheader][data-field=firstName] [aria-label=Menu]',
-                {
-                    timeout: 500,
-                },
-            ).click({ force: true });
-            cy.wait(100);
-            cy.get('[role=menu] :nth-child(4)').click({ force: true });
+            datagridFilter('firstName');
             cy.focused().type('b');
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
@@ -163,14 +170,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset(
                 'dataset/simpleForFilterTests.json',
             );
-            cy.get(
-                '[role=columnheader][data-field=firstName] [aria-label=Menu]',
-                {
-                    timeout: 500,
-                },
-            ).click({ force: true });
-            cy.wait(100);
-            cy.get('[role=menu] :nth-child(4)').click({ force: true });
+            datagridFilter('firstName');
             cy.focused().type('öbby');
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
@@ -186,13 +186,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset(
                 'dataset/simpleForFilterTests.json',
             );
-            cy.get(
-                '[role=columnheader][data-field=boolean] [aria-label=Menu]',
-                {
-                    timeout: 500,
-                },
-            ).click({ force: true });
-            cy.get('[role=menu] :nth-child(4)').click();
+            datagridFilter('boolean');
             cy.focused().select('true');
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
@@ -213,10 +207,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset(
                 'dataset/simpleForFilterTests.json',
             );
-            cy.get('[role=columnheader][data-field=uri] [aria-label=Menu]', {
-                timeout: 500,
-            }).click({ force: true });
-            cy.get('[role=menu] :nth-child(4)').click();
+            datagridFilter('uri');
             cy.focused().type('2');
 
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
@@ -257,10 +248,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset(
                 'dataset/simpleForFilterTests.json',
             );
-            cy.get('[role=columnheader][data-field=uri] [aria-label=Menu]', {
-                timeout: 500,
-            }).click({ force: true });
-            cy.get('[role=menu] :nth-child(4)').click();
+            datagridFilter('uri');
             cy.focused().type('259');
 
             cy.findByText('No rows').should('be.visible');
@@ -277,15 +265,7 @@ describe('Dataset Publication', () => {
 
             cy.get('[data-testid="KeyboardArrowRightIcon"]').click();
 
-            cy.get(
-                '[role=columnheader][data-field=firstName] [aria-label=Menu]',
-                {
-                    timeout: 500,
-                },
-            ).click({ force: true });
-
-            cy.wait(100);
-            cy.get('[role=menu] :nth-child(4)').click({ force: true });
+            datagridFilter('firstName');
             cy.focused().type('Helga');
 
             cy.get('.MuiTablePagination-displayedRows', {
@@ -568,6 +548,7 @@ describe('Dataset Publication', () => {
             cy.log('import 1');
             datasetImportPage.importMoreDataset('dataset/simplewithouturi.csv');
 
+            cy.wait(3000);
             cy.log('go to published resource');
             datasetImportPage.goToPublishedResources();
 

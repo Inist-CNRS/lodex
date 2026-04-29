@@ -134,6 +134,7 @@
         "fetch-with-proxy": "^1.1.0",
         "file-loader": "6.2.0",
         "file-saver": "^2.0.5",
+        "fmin": "0.0.4",
         "from": "0.1.7",
         "history": "^4.7.2",
         "inist-ark": "^2.1.3",
@@ -253,7 +254,6 @@
         "vega-view-transforms": "4.6.2",
         "vega-voronoi": "4.2.5",
         "vega-wordcloud": "4.1.7",
-        "fmin": "0.0.4",
         "venn.js": "0.2.20",
         "winston": "^3.11.0",
         "zod": "^3.24.1"
@@ -323,6 +323,7 @@
         "cypress": "^13.17.0",
         "cypress-file-upload": "^5.0.8",
         "cypress-network-idle": "^1.15.0",
+        "cypress-real-events": "1.15.0",
         "enzyme": "^3.11.0",
         "eslint": "^9.36.0",
         "eslint-config-prettier": "^10.1.8",
