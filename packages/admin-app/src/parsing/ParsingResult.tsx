@@ -167,6 +167,7 @@ export const ParsingResultComponent = ({
                 .filter(({ key }) => {
                     const isEnrichment = enrichmentsNames.includes(key);
                     return (
+                        key.startsWith('_lodex') !== true &&
                         key !== '_id' &&
                         (key === 'uri' ||
                             (showEnrichmentColumns && isEnrichment) ||

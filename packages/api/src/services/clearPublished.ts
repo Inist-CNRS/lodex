@@ -12,7 +12,7 @@ export default async (ctx: any, triggeredFromPublication: any) => {
     });
     await ctx.dataset.updateMany(
         {},
-        { $set: { lodex_published: false } },
+        { $set: { _lodexPublished: false } },
         { multi: true },
     );
     progress.incrementProgress(ctx.tenant, 25);

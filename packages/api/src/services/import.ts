@@ -113,7 +113,7 @@ export const startImport = async (ctx: any) => {
         const inputStream = stream.pipe(ezs('breaker', { fusible }));
         const parsedStream = parseStream(inputStream);
         const outputStream = parsedStream
-            .pipe(ezs('assign', { path: 'lodex_published', value: false }))
+            .pipe(ezs('assign', { path: '_lodexPublished', value: false }))
             .pipe(ezs('breaker', { fusible }));
 
         await ctx.saveParsedStream(ctx, outputStream);

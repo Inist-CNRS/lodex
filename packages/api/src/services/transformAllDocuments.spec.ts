@@ -34,13 +34,22 @@ describe('tranformAllDocuments', () => {
 
     it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
         expect(findLimitFromSkip).toHaveBeenCalledWith(200, 0, {
-            lodex_published: false,
+            $or: [
+                { _lodexPublished: false },
+                { _lodexPublished: { $exists: false } }
+            ]
         });
         expect(findLimitFromSkip).toHaveBeenCalledWith(200, 200, {
-            lodex_published: false,
+            $or: [
+                { _lodexPublished: false },
+                { _lodexPublished: { $exists: false } }
+            ]
         });
         expect(findLimitFromSkip).toHaveBeenCalledWith(200, 400, {
-            lodex_published: false,
+            $or: [
+                { _lodexPublished: false },
+                { _lodexPublished: { $exists: false } }
+            ]
         });
     });
 
