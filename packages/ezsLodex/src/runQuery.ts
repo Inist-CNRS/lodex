@@ -31,7 +31,10 @@ export const createFunction = () =>
         filter.removedAt = { $exists: false };
         const sortOn = this.getParam('sortOn', data.sortOn);
         const sortOrder = this.getParam('sortOrder', data.sortOrder);
-        const field = this.getParam('field', data.field || data.$field || 'uri');
+        const field = this.getParam(
+            'field',
+            data.field || data.$field || 'uri',
+        );
         const collectionName = String(
             this.getParam('collection', data.collection || 'publishedDataset'),
         );
@@ -86,7 +89,10 @@ export const createFunction = () =>
 
                 if (sortOn) {
                     query = query
-                        .sort(`versions.${sortOn}`, sortOrder === 'desc' ? -1 : 1)
+                        .sort(
+                            `versions.${sortOn}`,
+                            sortOrder === 'desc' ? -1 : 1,
+                        )
                         .allowDiskUse();
                 }
 
