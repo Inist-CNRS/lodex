@@ -43,17 +43,27 @@ const getSort = (
 export default async (db: any) => {
     const collection: any = await getCreatedCollection(db, 'publishedDataset');
 
-    await collection.createIndex({ uri: 1 }, { unique: true });
-
     collection.insertBatch = (documents: any) =>
         Promise.all(
             chunk(documents, 1000).map((data: any) =>
                 collection.insertMany(data, {
                     forceServerObjectId: true,
+                    ordered: false,
                     w: 1,
                 }),
             ),
         );
+
+    // Avant publication
+    collection.avoidDuplicates = () =>
+        Promise.all([collection.createIndex({ uri: 1 }, { unique: true })]);
+    // Aprés publication
+    collection.createIndexes = () =>
+        Promise.all([
+            collection.createIndex({ removedAt: 1, subresourceId: 1 }),
+        ]);
+    // Avant dépublication
+    collection.deleteIndexes = () => Promise.all([collection.dropIndexes()]);
 
     collection.insertBatchIgnoreDuplicate = (documents: any) =>
         Promise.all(

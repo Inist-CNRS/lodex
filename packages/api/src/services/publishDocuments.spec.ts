@@ -44,6 +44,8 @@ const getCtx = ({ subresources }: any = {}) => ({
     },
     publishedDataset: {
         insertBatch: 'publishedDataset.insertBatch()',
+        avoidDuplicates: jest.fn().mockImplementation(() => 'avoidDuplicates'),
+        createIndexes: jest.fn().mockImplementation(() => 'createIndexes'),
     },
     hiddenResource: {
         findAll: jest.fn().mockImplementation(() => []),
@@ -218,6 +220,10 @@ describe('publishDocuments', () => {
             ).toEqual({
                 uri: 'transformedUri',
                 subresourceId: null,
+                lastVersion: {
+                    transformed: 'data',
+                    publicationDate: date,
+                },
                 versions: [
                     {
                         transformed: 'data',
@@ -265,6 +271,10 @@ describe('publishDocuments', () => {
                 subresourceId: null,
                 removedAt: date,
                 reason: 'because',
+                lastVersion: {
+                    transformed: 'data',
+                    publicationDate: date,
+                },
                 versions: [
                     {
                         transformed: 'data',

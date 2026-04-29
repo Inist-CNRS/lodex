@@ -22,17 +22,17 @@ export const versionTransformerDecorator =
         const hiddenResource = hiddenResources?.find(
             (hidden: any) => hidden.uri === doc.uri,
         );
+        const lastVersion = {
+            ...omit(doc, ['uri']),
+            publicationDate,
+        };
 
         return {
             ...hiddenResource,
             uri: doc.uri,
             subresourceId,
-            versions: [
-                {
-                    ...omit(doc, ['uri']),
-                    publicationDate,
-                },
-            ],
+            lastVersion,
+            versions: [lastVersion],
         };
     };
 
@@ -223,6 +223,7 @@ export const publishDocumentsFactory =
             }),
         );
 
+        await ctx.publishedDataset.avoidDuplicates();
         await transformAllDocuments(
             count,
             ctx.dataset.findLimitFromSkip,
@@ -235,6 +236,7 @@ export const publishDocumentsFactory =
             undefined,
             ctx.job,
         );
+        await ctx.publishedDataset.createIndexes();
 
         ctx.job.isActive()
             ? jobLogger.info(ctx.job, 'Documents published')

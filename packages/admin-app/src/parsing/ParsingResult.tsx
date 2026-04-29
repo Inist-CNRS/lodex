@@ -107,7 +107,9 @@ const getFiltersOperatorsForType = (type) => {
             return getGridBooleanOperators();
         default:
             return getGridStringOperators().filter(
-                (operator) => operator.value === 'contains',
+                (operator) =>
+                    operator.value === 'contains' ||
+                    operator.value === 'equals',
             );
     }
 };
@@ -165,6 +167,7 @@ export const ParsingResultComponent = ({
                 .filter(({ key }) => {
                     const isEnrichment = enrichmentsNames.includes(key);
                     return (
+                        String(key).startsWith('_lodex') !== true &&
                         key !== '_id' &&
                         (key === 'uri' ||
                             (showEnrichmentColumns && isEnrichment) ||

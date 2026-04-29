@@ -206,6 +206,7 @@ export default async (db: any) => {
     };
 
     collection.indexColumns = async () => {
+        await collection.createIndex({ _lodexPublished: 1 });
         const aggregation = await collection
             .aggregate([
                 { $project: { keyValue: { $objectToArray: '$$ROOT' } } },
@@ -219,12 +220,10 @@ export default async (db: any) => {
             ])
             .toArray();
         if (aggregation[0]) {
-            for (const key of aggregation[0].keys) {
-                try {
-                    await collection.createIndex({ [key]: 1 });
-                } catch {
-                    logger.error(`Failed to index ${key}`);
-                }
+            try {
+                await collection.createIndex({ '$**': 1 });
+            } catch {
+                logger.error(`Failed to index $**`);
             }
         } else {
             logger.warn(

@@ -47,6 +47,9 @@ export const createFunction = () =>
         const collection = db.collection(collectionName);
         const cursor = collection.aggregate(
             [{ $match: filter }].concat(stages),
+            {
+                allowDiskUse: true,
+            },
         );
         const count = await collection
             .aggregate([{ $match: filter }, { $count: 'value' }])
