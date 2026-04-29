@@ -2,7 +2,7 @@ module.exports = {
     port: 3000,
     mongo: {
         dbName: String(
-            process.env.MONGO_DATABASE_PREFIX ||
+            process.env.MONGODB_DATABASE_PREFIX ||
                 process.env.EZMASTER_TECHNICAL_NAME ||
                 'lodex',
         ).replace(/(-[^-]*)-[0-9]+$/, '$1'),
