@@ -36,20 +36,20 @@ describe('tranformAllDocuments', () => {
         expect(findLimitFromSkip).toHaveBeenCalledWith(200, 0, {
             $or: [
                 { _lodexPublished: false },
-                { _lodexPublished: { $exists: false } }
-            ]
+                { _lodexPublished: { $exists: false } },
+            ],
         });
         expect(findLimitFromSkip).toHaveBeenCalledWith(200, 200, {
             $or: [
                 { _lodexPublished: false },
-                { _lodexPublished: { $exists: false } }
-            ]
+                { _lodexPublished: { $exists: false } },
+            ],
         });
         expect(findLimitFromSkip).toHaveBeenCalledWith(200, 400, {
             $or: [
                 { _lodexPublished: false },
-                { _lodexPublished: { $exists: false } }
-            ]
+                { _lodexPublished: { $exists: false } },
+            ],
         });
     });
 

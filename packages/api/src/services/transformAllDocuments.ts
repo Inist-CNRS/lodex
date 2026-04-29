@@ -26,8 +26,8 @@ export default async function transformAllDocument(
             await findLimitFromSkip(chunkSize, handled, {
                 $or: [
                     { _lodexPublished: false },
-                    { _lodexPublished: { $exists: false } }
-                ]
+                    { _lodexPublished: { $exists: false } },
+                ],
             }),
         );
         // avoid infinite loop

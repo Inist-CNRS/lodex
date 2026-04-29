@@ -4,9 +4,7 @@ import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as menu from '../../support/menu';
 
-
 function datagridFilter(colname: string) {
-
     cy.get(`[role=columnheader][data-field=${colname}]`).realHover();
     cy.get(`[role=columnheader][data-field=${colname}] [aria-label=Menu]`)
         .should('be.visible')
