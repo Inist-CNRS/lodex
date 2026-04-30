@@ -25,6 +25,11 @@ export const mongoConnectionString = (tenant?: string) => {
     return cs.toString();
 };
 
+export const mongoDatabaseName = (tenant?: string) => {
+    const cs = new ConnectionString(mongoConnectionString(tenant));
+    return cs.pathname;
+}
+
 /**
  * Get the DBMS client
  * @param tenant Name of the Lodex instance
