@@ -15,13 +15,13 @@ export const saveParsedStream = async (ctx: any, parsedStream: any) => {
     try {
         await ctx.dataset.updateMany(
             {},
-            { $set: { _lodexPublished: true } },
+            { $set: { lodex_published: true } },
             { multi: true },
         );
 
         await ctx.publishedDataset.updateMany(
             {},
-            { $set: { _lodexPublished: true } },
+            { $set: { lodex_published: true } },
             { multi: true },
         );
 
@@ -33,7 +33,7 @@ export const saveParsedStream = async (ctx: any, parsedStream: any) => {
         );
 
         const count = await ctx.dataset.count({
-            _lodexPublished: { $exists: false },
+            lodex_published: { $exists: false },
         });
 
         await ctx.publishDocuments(ctx, count, collectionScopeFields);
@@ -41,9 +41,9 @@ export const saveParsedStream = async (ctx: any, parsedStream: any) => {
 
         return ctx.dataset.count();
     } catch (error) {
-        await ctx.dataset.deleteOne({ _lodexPublished: { $exists: false } });
+        await ctx.dataset.deleteOne({ lodex_published: { $exists: false } });
         await ctx.publishedDataset.deleteOne({
-            _lodexPublished: { $exists: false },
+            lodex_published: { $exists: false },
         });
 
         throw error;

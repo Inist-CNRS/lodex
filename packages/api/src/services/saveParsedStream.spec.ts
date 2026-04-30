@@ -91,15 +91,15 @@ describe('saveParsedStream', () => {
             expect(ctx.dataset.deleteOne).not.toHaveBeenCalled();
         });
 
-        it('should have called updateMany on dataset and publishedDataset to set _lodexPublished to true', () => {
+        it('should have called updateMany on dataset and publishedDataset to set lodex_published to true', () => {
             expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
                 {},
-                { $set: { _lodexPublished: true } },
+                { $set: { lodex_published: true } },
                 { multi: true },
             );
             expect(ctx.publishedDataset.updateMany).toHaveBeenCalledWith(
                 {},
-                { $set: { _lodexPublished: true } },
+                { $set: { lodex_published: true } },
                 { multi: true },
             );
         });
@@ -110,7 +110,7 @@ describe('saveParsedStream', () => {
 
         it('should have called dataset.count to count unpublished document', () => {
             expect(ctx.dataset.count).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
+                lodex_published: { $exists: false },
             });
         });
 
@@ -181,15 +181,15 @@ describe('saveParsedStream', () => {
             expect(ctx.publishedDataset.count).toHaveBeenCalled();
         });
 
-        it('should have called updateMany on dataset and publishedDataset to set _lodexPublished to true', () => {
+        it('should have called updateMany on dataset and publishedDataset to set lodex_published to true', () => {
             expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
                 {},
-                { $set: { _lodexPublished: true } },
+                { $set: { lodex_published: true } },
                 { multi: true },
             );
             expect(ctx.publishedDataset.updateMany).toHaveBeenCalledWith(
                 {},
-                { $set: { _lodexPublished: true } },
+                { $set: { lodex_published: true } },
                 { multi: true },
             );
         });
@@ -200,7 +200,7 @@ describe('saveParsedStream', () => {
 
         it('should have called dataset.count to count unpublished document', () => {
             expect(ctx.dataset.count).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
+                lodex_published: { $exists: false },
             });
         });
 
@@ -220,10 +220,10 @@ describe('saveParsedStream', () => {
 
         it('should remove all unpublished document from dataset and publishedDataset', () => {
             expect(ctx.dataset.deleteOne).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
+                lodex_published: { $exists: false },
             });
             expect(ctx.publishedDataset.deleteOne).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
+                lodex_published: { $exists: false },
             });
         });
     });

@@ -140,19 +140,19 @@ describe('e2e upload saveparsedStream', () => {
                     id: 1,
                     name: 'rock',
                     stronger_than: 2,
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     id: 2,
                     name: 'scissor',
                     stronger_than: 3,
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     id: 3,
                     name: 'paper',
                     stronger_than: 1,
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 { id: 4, name: 'spock', stronger_than: 1 },
                 { id: 5, name: 'lizard', stronger_than: 3 },
@@ -177,17 +177,17 @@ describe('e2e upload saveparsedStream', () => {
                 {
                     uri: 'uid:/rock',
                     versions: [{ NAME: 'rock', STRONGER: 'uid:/scissor' }],
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     uri: 'uid:/scissor',
                     versions: [{ NAME: 'scissor', STRONGER: 'uid:/paper' }],
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     uri: 'uid:/paper',
                     versions: [{ NAME: 'paper', STRONGER: 'uid:/rock' }],
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     uri: 'uid:/spock',
@@ -255,19 +255,19 @@ describe('e2e upload saveparsedStream', () => {
                     id: 1,
                     name: 'rock',
                     stronger_than: 2,
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     id: 2,
                     name: 'scissor',
                     stronger_than: 3,
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     id: 3,
                     name: 'paper',
                     stronger_than: 1,
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
             ]);
             expect(await ctx.publishedDataset.count()).toBe(3);
@@ -290,17 +290,17 @@ describe('e2e upload saveparsedStream', () => {
                 {
                     uri: 'uid:/rock',
                     versions: [{ NAME: 'rock', STRONGER: 'uid:/scissor' }],
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     uri: 'uid:/scissor',
                     versions: [{ NAME: 'scissor', STRONGER: 'uid:/paper' }],
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
                 {
                     uri: 'uid:/paper',
                     versions: [{ NAME: 'paper', STRONGER: 'uid:/rock' }],
-                    _lodexPublished: true,
+                    lodex_published: true,
                 },
             ]);
 

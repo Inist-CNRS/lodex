@@ -24,10 +24,7 @@ export default async function transformAllDocument(
 
         const dataset = datasetChunkExtractor(
             await findLimitFromSkip(chunkSize, handled, {
-                $or: [
-                    { _lodexPublished: false },
-                    { _lodexPublished: { $exists: false } },
-                ],
+                lodex_published: { $exists: false },
             }),
         );
         // avoid infinite loop

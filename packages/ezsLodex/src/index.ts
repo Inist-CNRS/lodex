@@ -22,7 +22,6 @@ import linkDataset from './linkDataset.js';
 import LodexJoinQuery from './joinQuery.js';
 import objects2columns from './objects2columns.js';
 import precomputedSelect from './precomputedSelect.js';
-import ensureIndex from './ensureIndex.js';
 import reduceQuery from './reduceQuery.js';
 import runQuery from './runQuery.js';
 import runQueryPrecomputed from './runQueryPrecomputed.js';
@@ -50,7 +49,6 @@ const funcs = {
     injectSyndicationFrom,
     injectCountFrom,
     labelizeFieldID,
-    ensureIndex,
     runQuery,
     runQueryPrecomputed,
     reduceQuery,
@@ -72,7 +70,6 @@ const funcs = {
     LodexGetFields: getFields.getFields,
     LodexGetCharacteristics: getCharacteristics.getCharacteristics,
     LodexDocuments: runQuery.runQuery,
-    LodexEnsureIndex: ensureIndex,
     LodexRunQuery: runQuery.runQuery,
     LodexRunQueryPrecomputed: runQueryPrecomputed.runQueryPrecomputed,
     LodexReduceQuery: reduceQuery.reduceQuery,
