@@ -13,9 +13,7 @@ import {
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
 import getLogger from '../services/logger';
-import mongoClient, {
-    mongoDatabaseName,
-} from '../services/mongoClient';
+import mongoClient, { mongoDatabaseName } from '../services/mongoClient';
 import os from 'os';
 
 const auth = config.get('auth');
