@@ -7,9 +7,8 @@ const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
 module.exports = {
     port: 3000,
     mongo: {
-        uri: String(
-            process.env.MONGODB_URI || 'mongodb://localhost:21017/lodex',
-        ),
+        host: String(process.env.MONGO_HOST || 'localhost:21017'),
+        dbName: 'lodex',
     },
     rootAuth: {
         username: String(process.env.ROOT_LOGIN || 'root'),
