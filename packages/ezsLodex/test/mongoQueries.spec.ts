@@ -869,7 +869,7 @@ describe('mongo queries', () => {
                         // @ts-expect-error TS(2339): Property 'toBeGreaterThanOrEqual' does not exist o... Remove this comment to see the full error message
                         expect(data['6gfz_count']).toBeGreaterThanOrEqual(1);
                         res = [...res, data];
-                    } catch(e) {
+                    } catch (e) {
                         done(e);
                     }
                 })

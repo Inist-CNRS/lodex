@@ -86,7 +86,10 @@ export const createFunction = () =>
 
                 if (sortOn) {
                     query = query
-                        .sort(`versions.${sortOn}`, sortOrder === 'desc' ? -1 : 1)
+                        .sort(
+                            `versions.${sortOn}`,
+                            sortOrder === 'desc' ? -1 : 1,
+                        )
                         .allowDiskUse();
                 }
 
