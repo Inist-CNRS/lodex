@@ -13,7 +13,7 @@ services:
             EZMASTER_TECHNICAL_NAME: 'lodex'
             no_proxy: 'localhost,127.0.0.1,'
             BABEL_DISABLE_CACHE: 1
-            MONGODB_URI: 'mongodb://mongo:27017/lodex'
+            MONGO_HOST: 'mongo:27017'
         links:
             - mongo
         ports:
