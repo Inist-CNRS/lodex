@@ -14,7 +14,7 @@ import mongoDatabase from './mongoDatabase.js';
  * @param {Object}  [filter]       MongoDB filter
  * @param {String}  [sortOn]       Field to sort on
  * @param {String}  [sortOrder]    Oder to sort
- * @param {Object}  [field="uri"]  limit the result to some fields
+ * @param {Object}  [field]  limit the result to some fields
  * @param {Object}  [limit]        limit the result
  * @param {Object}  [skip]         limit the result
  * @returns {Object}
@@ -33,7 +33,7 @@ export const createFunction = () =>
         const sortOrder = this.getParam('sortOrder', data.sortOrder);
         const field = this.getParam(
             'field',
-            data.field || data.$field || 'uri',
+            data.field || data.$field,
         );
         const collectionName = String(
             this.getParam('collection', data.collection || 'publishedDataset'),

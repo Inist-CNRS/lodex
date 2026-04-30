@@ -322,7 +322,6 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexRunQuery'))
-                .pipe(ezs('debug'))
                 .on('data', (data: any) => {
                     res = [...res, data];
                 })
@@ -349,7 +348,6 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexReduceQuery'))
-                .pipe(ezs('debug'))
                 .on('error', (err: any) => {
                     // @ts-expect-error TS(2339): Property 'toBeInstanceOf' does not exist on type '... Remove this comment to see the full error message
                     expect(err).toBeInstanceOf(Error);
@@ -371,7 +369,6 @@ describe('mongo queries', () => {
                 },
             ])
                 .pipe(ezs('LodexReduceQuery', { reducer: 'foo' }))
-                .pipe(ezs('debug'))
                 .on('error', (err: any) => {
                     // @ts-expect-error TS(2339): Property 'toBeInstanceOf' does not exist on type '... Remove this comment to see the full error message
                     expect(err).toBeInstanceOf(Error);
@@ -581,7 +578,6 @@ describe('mongo queries', () => {
                         path: 'source',
                     }),
                 )
-                .pipe(ezs('debug'))
                 .on('data', (data: any) => {
                     res.push(data);
                 })
@@ -869,9 +865,13 @@ describe('mongo queries', () => {
                     }),
                 )
                 .on('data', (data: any) => {
-                    // @ts-expect-error TS(2339): Property 'toBeGreaterThanOrEqual' does not exist o... Remove this comment to see the full error message
-                    expect(data['6gfz_count']).toBeGreaterThanOrEqual(1);
-                    res = [...res, data];
+                    try {
+                        // @ts-expect-error TS(2339): Property 'toBeGreaterThanOrEqual' does not exist o... Remove this comment to see the full error message
+                        expect(data['6gfz_count']).toBeGreaterThanOrEqual(1);
+                        res = [...res, data];
+                    } catch(e) {
+                        done(e);
+                    }
                 })
                 .on('end', () => {
                     // @ts-expect-error TS(2339): Property 'toHaveLength' does not exist on type 'As... Remove this comment to see the full error message
