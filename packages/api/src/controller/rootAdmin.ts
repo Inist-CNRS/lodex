@@ -22,7 +22,7 @@ const checkNameTooLong = (value: string) => {
     const prefix = mongoDatabasePrefix(value);
     if (!prefix) return;
     return value.length > getTenantMaxSize(prefix);
-}
+};
 
 const app = new Koa();
 app.use(
