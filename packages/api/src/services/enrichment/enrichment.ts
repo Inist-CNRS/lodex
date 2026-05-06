@@ -321,9 +321,6 @@ length = ${BATCH_SIZE}
 [breaker]
 fusible = ${fusible}
 
-[debug]
-text = before update
-
 [LodexUpdateDocuments]
 idField = fix(${JSON.stringify(source.idField)})
 collection = fix(${JSON.stringify(source.collectionName)})
