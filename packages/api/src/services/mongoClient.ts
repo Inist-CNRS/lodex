@@ -25,9 +25,9 @@ export const mongoConnectionString = (tenant?: string) => {
     return cs.toString();
 };
 
-export const mongoDatabaseName = (tenant?: string) => {
+export const mongoDatabasePrefix = (tenant?: string) => {
     const cs = new ConnectionString(mongoConnectionString(tenant));
-    return cs.pathname;
+    return String(cs.pathname).substring(1).split('_').shift();
 }
 
 /**

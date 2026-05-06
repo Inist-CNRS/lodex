@@ -14,14 +14,14 @@ import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
 import getLogger from '../services/logger';
 import mongoClient, {
-    mongoDatabaseName,
+    mongoDatabasePrefix,
 } from '../services/mongoClient';
 import os from 'os';
 
 const auth = config.get('auth');
 
 const checkNameTooLong = (value: any) =>
-    value.length > getTenantMaxSize(mongoDatabaseName(value));
+    value.length > getTenantMaxSize(mongoDatabasePrefix(value));
 
 const app = new Koa();
 app.use(
