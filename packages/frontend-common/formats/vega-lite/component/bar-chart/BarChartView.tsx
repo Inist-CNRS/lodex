@@ -203,8 +203,8 @@ export const BarChartAdminView = connect((_state, props) => {
     // @ts-expect-error TS2345
 })(BarChartView);
 
-// @ts-expect-error TS2345
 export default compose(
-        injectData(null, null, true),
-        connect(mapStateToProps),
-    )(BarChartView);
+    injectData(null, null, true),
+    connect(mapStateToProps),
+    // @ts-expect-error TS2345
+)(BarChartView);

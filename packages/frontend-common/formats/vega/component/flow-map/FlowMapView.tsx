@@ -143,8 +143,8 @@ export const FlowMapAdminView = connect((_state, props) => {
     };
 })(FlowMapView);
 
-// @ts-expect-error TS2345
 export default compose(
-        injectData(null, null, true),
-        connect(mapStateToProps),
+    injectData(null, null, true),
+    connect(mapStateToProps),
+    // @ts-expect-error TS2345
 )(FlowMapView);
