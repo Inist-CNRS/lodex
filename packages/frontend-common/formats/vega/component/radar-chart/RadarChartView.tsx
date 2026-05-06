@@ -163,4 +163,7 @@ export const RadarChartAdminView = connect((_state, props) => {
 })(RadarChartView);
 
 // @ts-expect-error TS2345
-export default compose(injectData(), connect(mapStateToProps))(RadarChartView);
+export default compose(
+        injectData(null, null, true),
+        connect(mapStateToProps),
+)(RadarChartView);

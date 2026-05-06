@@ -57,6 +57,6 @@ const AdvancedNetwork = ({ formatData, colorSet, field }: NetworkProps) => {
     );
 };
 
-export default compose<NetworkProps, NetworkProps>(injectData())(
+export default compose<NetworkProps, NetworkProps>(injectData(null, null, true))(
     AdvancedNetwork,
 );

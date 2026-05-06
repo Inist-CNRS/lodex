@@ -181,4 +181,7 @@ export const TreeMapAdminView = connect((_state, props) => {
 })(TreeMapView);
 
 // @ts-expect-error TS2345
-export default compose(injectData(), connect(mapStateToProps))(TreeMapView);
+export default compose(
+        injectData(null, null, true),
+        connect(mapStateToProps),
+)(TreeMapView);
