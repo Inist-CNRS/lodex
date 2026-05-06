@@ -22,6 +22,7 @@ import Routes from '../../../public-app/src/Routes';
 import sagas from '../../../public-app/src/sagas';
 import { getLocale, getCatalogFromArray, DEFAULT_TENANT } from '@lodex/common';
 import translations from '../services/translations';
+import { mongoDatabaseName } from '../services/mongoClient';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
@@ -254,7 +255,7 @@ const renderAdminIndexHtml = (ctx: any) => {
     renderAdmin({
         tenant: ctx.tenant,
         // @ts-expect-error: TS7006
-        dbName: mongo.dbName,
+        dbName: mongoDatabaseName(ctx.tenant),
         jsHost: adminJsHost,
         themesHost: themesHost,
     }).then((html) => {
@@ -266,7 +267,7 @@ const renderRootAdminIndexHtml = (ctx: any) => {
     renderRootAdmin({
         tenant: ctx.tenant,
         // @ts-expect-error: TS7006
-        dbName: mongo.dbName,
+        dbName: mongoDatabaseName(ctx.tenant),
         jsHost: rootAdminJsHost,
         themesHost: themesHost,
     }).then((html) => {
