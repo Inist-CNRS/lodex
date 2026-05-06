@@ -1,11 +1,3 @@
-const getSourceError = (error: any) => {
-    const sourceError = error?.sourceError;
-    if (sourceError?.sourceError) {
-        return getSourceError(sourceError);
-    }
-    return error;
-};
-
 const formatError = (e: Error) => {
     const newmsg = String(e.message).replace(/Error: /, '');
     return `[Error]: ${newmsg}`; // Lodex uses this label to recognize errors
