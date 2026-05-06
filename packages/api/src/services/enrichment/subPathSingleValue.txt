@@ -16,7 +16,7 @@ size = [[BATCH SIZE]]
 url = [[WEB SERVICE URL]]
 timeout = [[WEB SERVICE TIMEOUT]]
 noerror = true
-retries = 3
+retries = 1 
 
 # lodex need that only the processed field is kept
 [assign]

@@ -22,7 +22,7 @@ path = value
 url = [[WEB SERVICE URL]]
 timeout = [[WEB SERVICE TIMEOUT]]
 noerror = true
-retries = 3
+retries = 1 
 
 #
 #  file: directPathSingleValue.txt
