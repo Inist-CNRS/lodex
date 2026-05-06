@@ -6,48 +6,37 @@ const getSourceError = (error: any) => {
     return error;
 };
 
+const formatError = (e: Error) => {
+    const newmsg = String(e.message).replace(/Error: /, '');
+    return `[Error]: ${newmsg}`; // Lodex uses this label to recognize errors
+}
+
 function homogenizedObject(this: any, data: any, feed: any) {
     if (this.isLast()) {
         return feed.close();
     }
-
-    if (data.scope && data.stack) {
-        // Erreur serializée par [catch]
-        const error = getSourceError(data);
-        let sourceChunk = null;
-        if (error?.sourceChunk) {
-            try {
-                sourceChunk = JSON.parse(error.sourceChunk);
-            } catch (e) {
-                feed.stop(
-                    // @ts-expect-error TS(2304): Cannot find name 'Error'.
-                    new Error(`Error while parsing sourceChunk (${e.message}`),
-                );
-            }
-        }
-        // try to obtain only the lodash error message
-        const errorMessage =
-            []
-                .concat(error?.traceback)
-                .filter((x: any) => x.search(/Error:/) >= 0)
-                .shift() || error?.message;
-
-        return feed.send({
-            id: sourceChunk?.id,
-            value: errorMessage, // for the preview
-            error: errorMessage, // for the log
-        });
-    }
-
+    let id = data?.id;
     let value;
-    if (data.error) {
-        value = `[Error]: ${data.error}`;
+    let error;
+    if (data instanceof Error) {
+        id = 'n/a';
+        value = formatError(data);
+        error = data;
+
+    } else if (data?.value instanceof Error) {
+        value = formatError(data.value);
+        error = data.value;
+
+    }
+    else if (data.error) {
+        value = formatError(data.error);
+        error = data.error;
     } else if (data.value !== undefined && data.value !== null) {
         value = data.value;
     } else {
         value = 'n/a';
     }
-    feed.send({ id: data.id, value, error: data.error });
+    feed.send({ id, value, error });
 }
 export default {
     homogenizedObject,

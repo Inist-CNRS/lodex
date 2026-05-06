@@ -46,13 +46,13 @@ module.exports = {
     ezs: {
         url: String(process.env.WORKERS_URL || 'http://localhost:31976'),
         verbose: 'ezs:*,-ezs:debug',
-        timeout: 3600000,
+        timeout: 900000, // 15 minutes sans passage de données dans un flux ezs
         cacheEnable: false,
         cacheDelay: 60 * 60 * 12,
         mainStatement: 'delegate', // use detatch to have a thread dedicated to processing the response, otherwise you can simply use “delegate”
         encoding: '',
     },
-    timeout: 3600000,
+    timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
     alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, getHost is used
     activateBullDashboard: false,
     mail: {
