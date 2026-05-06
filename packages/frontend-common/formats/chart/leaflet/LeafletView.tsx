@@ -174,4 +174,4 @@ const LeafletView = ({
 };
 
 // @ts-expect-error TS2345
-export default compose(injectData())(LeafletView);
+export default compose(injectData(null, null, true))(LeafletView);
