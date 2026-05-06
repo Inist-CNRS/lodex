@@ -9,7 +9,7 @@ const getSourceError = (error: any) => {
 const formatError = (e: Error) => {
     const newmsg = String(e.message).replace(/Error: /, '');
     return `[Error]: ${newmsg}`; // Lodex uses this label to recognize errors
-}
+};
 
 function homogenizedObject(this: any, data: any, feed: any) {
     if (this.isLast()) {
@@ -22,13 +22,10 @@ function homogenizedObject(this: any, data: any, feed: any) {
         id = 'n/a';
         value = formatError(data);
         error = data;
-
     } else if (data?.value instanceof Error) {
         value = formatError(data.value);
         error = data.value;
-
-    }
-    else if (data.error) {
+    } else if (data.error) {
         value = formatError(data.error);
         error = data.error;
     } else if (data.value !== undefined && data.value !== null) {
