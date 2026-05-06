@@ -31,7 +31,6 @@ import { getPublication } from './api/publication';
 
 const auth = config.get('auth');
 const istexApiUrl = config.get('istexApiUrl');
-const mongo = config.get('mongo');
 const themesHost = config.get('themesHost');
 const jsHost = config.get('jsHost');
 const rootAdminJsHost = config.has('jsHosts.rootAdmin')
@@ -254,7 +253,6 @@ const handleRender = async (ctx: Koa.Context, next: any) => {
 const renderAdminIndexHtml = (ctx: any) => {
     renderAdmin({
         tenant: ctx.tenant,
-        // @ts-expect-error: TS7006
         dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: adminJsHost,
         themesHost: themesHost,
@@ -266,7 +264,6 @@ const renderAdminIndexHtml = (ctx: any) => {
 const renderRootAdminIndexHtml = (ctx: any) => {
     renderRootAdmin({
         tenant: ctx.tenant,
-        // @ts-expect-error: TS7006
         dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: rootAdminJsHost,
         themesHost: themesHost,

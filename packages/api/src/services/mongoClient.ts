@@ -28,7 +28,7 @@ export const mongoConnectionString = (tenant?: string) => {
 export const mongoDatabasePrefix = (tenant?: string) => {
     const cs = new ConnectionString(mongoConnectionString(tenant));
     return String(cs.pathname).substring(1).split('_').shift();
-}
+};
 
 /**
  * Get the DBMS client

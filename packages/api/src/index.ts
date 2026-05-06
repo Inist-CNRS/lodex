@@ -26,7 +26,10 @@ if (!module.parent) {
 
     io.on('connection', (socket: any) => {
         const emitPayload = (payload: any) => {
-            socket.emit(`${mongoDatabasePrefix()}_${payload.room}`, payload.data);
+            socket.emit(
+                `${mongoDatabasePrefix()}_${payload.room}`,
+                payload.data,
+            );
         };
         progress.addProgressListener(emitPayload);
         addPublisherListener(emitPayload);

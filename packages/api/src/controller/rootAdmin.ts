@@ -13,15 +13,16 @@ import {
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
 import getLogger from '../services/logger';
-import mongoClient, {
-    mongoDatabasePrefix,
-} from '../services/mongoClient';
+import mongoClient, { mongoDatabasePrefix } from '../services/mongoClient';
 import os from 'os';
 
 const auth = config.get('auth');
 
-const checkNameTooLong = (value: any) =>
-    value.length > getTenantMaxSize(mongoDatabasePrefix(value));
+const checkNameTooLong = (value: string) => {
+    const prefix = mongoDatabasePrefix(value);
+    if (!prefix) return;
+    return value.length > getTenantMaxSize(prefix);
+}
 
 const app = new Koa();
 app.use(
