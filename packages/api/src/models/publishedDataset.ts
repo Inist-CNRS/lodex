@@ -56,12 +56,13 @@ export default async (db: any) => {
 
     // Avant publication
     collection.avoidDuplicates = () =>
-        Promise.all([collection.createIndex({ uri: 1 }, { unique: true })]);
+        Promise.all([collection.createIndex({ uri: 1 }, { unique: true, name: 'avoidDuplicates' })]);
     // Aprés publication
-    collection.createIndexes = () =>
-        Promise.all([
-            collection.createIndex({ removedAt: 1, subresourceId: 1 }),
-        ]);
+    collection.createIndexes = async() => {
+        await collection.dropIndex('avoidDuplicates');
+        await collection.createIndex({ removedAt: 1, subresourceId: 1 });
+        await collection.createIndex({ uri: "hashed" });
+    };
     // Avant dépublication
     collection.deleteIndexes = () => Promise.all([collection.dropIndexes()]);
 
