@@ -8,10 +8,9 @@ import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 import { addPrecomputedJobListener } from './services/precomputed/precomputed';
 import { addImportListener } from './workers/import';
 import getLogger from './services/logger';
+import { mongoDatabasePrefix } from './services/mongoClient';
 
 if (!module.parent) {
-    const mongo = config.get('mongo');
-
     const httpServer = app.listen(config.get('port'), () => {
         const logger = getLogger();
         logger.info(
@@ -27,10 +26,11 @@ if (!module.parent) {
 
     io.on('connection', (socket: any) => {
         const emitPayload = (payload: any) => {
-            // @ts-expect-error TS(18046): mongo is of type unknown
-            socket.emit(`${mongo.dbName}_${payload.room}`, payload.data);
+            socket.emit(
+                `${mongoDatabasePrefix()}_${payload.room}`,
+                payload.data,
+            );
         };
-
         progress.addProgressListener(emitPayload);
         addPublisherListener(emitPayload);
         addEnrichmentJobListener(emitPayload);

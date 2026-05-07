@@ -22,6 +22,7 @@ import Routes from '../../../public-app/src/Routes';
 import sagas from '../../../public-app/src/sagas';
 import { getLocale, getCatalogFromArray, DEFAULT_TENANT } from '@lodex/common';
 import translations from '../services/translations';
+import { mongoDatabasePrefix } from '../services/mongoClient';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
@@ -30,7 +31,6 @@ import { getPublication } from './api/publication';
 
 const auth = config.get('auth');
 const istexApiUrl = config.get('istexApiUrl');
-const mongo = config.get('mongo');
 const themesHost = config.get('themesHost');
 const jsHost = config.get('jsHost');
 const rootAdminJsHost = config.has('jsHosts.rootAdmin')
@@ -253,8 +253,7 @@ const handleRender = async (ctx: Koa.Context, next: any) => {
 const renderAdminIndexHtml = (ctx: any) => {
     renderAdmin({
         tenant: ctx.tenant,
-        // @ts-expect-error: TS7006
-        dbName: mongo.dbName,
+        dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: adminJsHost,
         themesHost: themesHost,
     }).then((html) => {
@@ -265,8 +264,7 @@ const renderAdminIndexHtml = (ctx: any) => {
 const renderRootAdminIndexHtml = (ctx: any) => {
     renderRootAdmin({
         tenant: ctx.tenant,
-        // @ts-expect-error: TS7006
-        dbName: mongo.dbName,
+        dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: rootAdminJsHost,
         themesHost: themesHost,
     }).then((html) => {
