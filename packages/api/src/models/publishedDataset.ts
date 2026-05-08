@@ -57,11 +57,11 @@ export default async (db: any) => {
     // Avant publication
     collection.createIndexesBeforeInsert = async () => {
         await collection.createIndex(
-                { uri: 0, subresourceId: 1 },
-                { unique: true, name: 'avoidDuplicates' },
-            );
+            { uri: 0, subresourceId: 1 },
+            { unique: true, name: 'avoidDuplicates' },
+        );
         await collection.createIndex({ uri: 'hashed' });
-    }
+    };
     // Aprés publication
     collection.createIndexesAfterInsert = async () => {
         await collection.dropIndex('avoidDuplicates');
