@@ -160,7 +160,7 @@ export const publishDocumentsFactory =
             type: 'publisher',
         });
 
-        await ctx.publishedDataset.avoidDuplicates();
+        await ctx.publishedDataset.createIndexesBeforeInsert();
 
         await Promise.all(
             Object.keys(groupedSubresourceFields).map((subresourceId: any) => {
@@ -237,7 +237,7 @@ export const publishDocumentsFactory =
             undefined,
             ctx.job,
         );
-        await ctx.publishedDataset.createIndexes();
+        await ctx.publishedDataset.createIndexesAfterInsert();
 
         ctx.job.isActive()
             ? jobLogger.info(ctx.job, 'Documents published')

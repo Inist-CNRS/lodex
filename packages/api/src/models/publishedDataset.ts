@@ -55,18 +55,17 @@ export default async (db: any) => {
         );
 
     // Avant publication
-    collection.avoidDuplicates = () =>
-        Promise.all([
-            collection.createIndex(
-                { uri: 1, subresourceId: 1 },
+    collection.createIndexesBeforeInsert = async () => {
+        await collection.createIndex(
+                { uri: 0, subresourceId: 1 },
                 { unique: true, name: 'avoidDuplicates' },
-            ),
-        ]);
+            );
+        await collection.createIndex({ uri: 'hashed' });
+    }
     // Aprés publication
-    collection.createIndexes = async () => {
+    collection.createIndexesAfterInsert = async () => {
         await collection.dropIndex('avoidDuplicates');
         await collection.createIndex({ removedAt: 1, subresourceId: 1 });
-        await collection.createIndex({ uri: 'hashed' });
     };
     // Avant dépublication
     collection.deleteIndexes = () => Promise.all([collection.dropIndexes()]);
