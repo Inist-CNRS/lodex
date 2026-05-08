@@ -58,7 +58,7 @@ export default async (db: any) => {
     collection.avoidDuplicates = () =>
         Promise.all([
             collection.createIndex(
-                { uri: 1 },
+                { uri: 1, subresourceId: 1 },
                 { unique: true, name: 'avoidDuplicates' },
             ),
         ]);

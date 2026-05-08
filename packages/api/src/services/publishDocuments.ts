@@ -160,6 +160,8 @@ export const publishDocumentsFactory =
             type: 'publisher',
         });
 
+        await ctx.publishedDataset.avoidDuplicates();
+
         await Promise.all(
             Object.keys(groupedSubresourceFields).map((subresourceId: any) => {
                 const subresourceFields =
@@ -223,7 +225,6 @@ export const publishDocumentsFactory =
             }),
         );
 
-        await ctx.publishedDataset.avoidDuplicates();
         await transformAllDocuments(
             count,
             ctx.dataset.findLimitFromSkip,
