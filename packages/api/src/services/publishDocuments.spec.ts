@@ -44,8 +44,12 @@ const getCtx = ({ subresources }: any = {}) => ({
     },
     publishedDataset: {
         insertBatch: 'publishedDataset.insertBatch()',
-        avoidDuplicates: jest.fn().mockImplementation(() => 'avoidDuplicates'),
-        createIndexes: jest.fn().mockImplementation(() => 'createIndexes'),
+        createIndexesBeforeInsert: jest
+            .fn()
+            .mockImplementation(() => 'createIndexesBeforeInsert'),
+        createIndexesAfterInsert: jest
+            .fn()
+            .mockImplementation(() => 'createIndexesAfterInsert'),
     },
     hiddenResource: {
         findAll: jest.fn().mockImplementation(() => []),
