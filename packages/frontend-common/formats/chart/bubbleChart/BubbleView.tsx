@@ -120,7 +120,7 @@ export default compose<
     BubbleViewProps,
     Omit<BubbleViewProps, 'data' | 'diameter'>
 >(
-    injectData(),
+    injectData(null, null, true),
     connect(mapStateToProps),
 )(BubbleView);
 
