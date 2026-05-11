@@ -855,4 +855,4 @@ class Streamgraph extends PureComponent<StreamgraphProps> {
     }
 }
 
-export default compose(injectData(null, null, true))(Streamgraph);
+export default compose(injectData())(Streamgraph);

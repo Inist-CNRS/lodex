@@ -58,5 +58,5 @@ const Directed3DNetwork = ({
 };
 
 export default compose<Directed3DNetworkProps, Directed3DNetworkProps>(
-    injectData(null, null, true),
+    injectData(),
 )(Directed3DNetwork);

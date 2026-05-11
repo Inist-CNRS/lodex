@@ -100,7 +100,7 @@ const mapStateToProps = (state, { formatData }) => {
 };
 
 export default compose(
-    injectData(null, null, true),
+    injectData(),
     connect(mapStateToProps),
     // @ts-expect-error TS2345
 )(ClusteredChartView);

@@ -207,8 +207,5 @@ export const BubblePlotAdminView = connect((_state, props) => {
     // @ts-expect-error TS2345
 })(BubblePlotView);
 
-export default compose(
-    injectData(null, null, true),
-    connect(mapStateToProps),
-    // @ts-expect-error TS2345
-)(BubblePlotView);
+// @ts-expect-error TS2345
+export default compose(injectData(), connect(mapStateToProps))(BubblePlotView);

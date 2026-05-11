@@ -78,4 +78,4 @@ const Venn = ({ formatData, colorSet }: VennProps) => {
 };
 
 // @ts-expect-error TS2345
-export default compose(injectData(null, null, true))(Venn);
+export default compose(injectData())(Venn);
