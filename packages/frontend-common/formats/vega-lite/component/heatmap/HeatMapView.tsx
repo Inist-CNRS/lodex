@@ -208,6 +208,6 @@ export const HeatMapAdminView = connect((_state, props) => {
 })(HeatMapView);
 
 export default compose<HeatMapViewProps, HeatMapViewProps>(
-    injectData(null, null, true),
+    injectData(),
     connect(mapStateToProps),
 )(HeatMapView);

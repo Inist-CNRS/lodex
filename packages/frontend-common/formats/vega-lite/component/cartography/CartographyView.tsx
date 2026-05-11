@@ -156,8 +156,5 @@ export const CartographyAdminView = connect((_state, props) => {
     // @ts-expect-error TS2345
 })(CartographyView);
 
-export default compose(
-    injectData(null, null, true),
-    connect(mapStateToProps),
-    // @ts-expect-error TS2345
-)(CartographyView);
+// @ts-expect-error TS2345
+export default compose(injectData(), connect(mapStateToProps))(CartographyView);

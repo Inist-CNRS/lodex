@@ -62,5 +62,5 @@ const DirectedNetwork = ({
 };
 
 export default compose<DirectedNetworkProps, DirectedNetworkProps>(
-    injectData(null, null, true),
+    injectData(),
 )(DirectedNetwork);
