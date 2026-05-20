@@ -1,0 +1,113 @@
+<% /* Ceci est un exemple qui peut prendre en compte plusieurs types de données. */ %>
+<% /* Vous pouvez changer les données dans l'aperçu pour voir les différentes possibilités */ %>
+
+<% /* This is an example that takes into account several types of data. */ %>
+<% /* You can change the data in the preview to see the different possibilities. */ %>
+
+
+<% /* On vérifie si les données ne sont pas une liste */ %>
+<% /* We check if the data is not a list */ %>
+<% if (!Array.isArray(root.values)) { %>
+
+    <% /* affichage d'une donnée simple */ %>
+    <% /* simple data display */ %>
+    <style>
+        .text-value {
+            background-color: rgba(0, 255, 255, 0.25);
+            padding: 24px;
+            max-width: 200px;
+            text-align: center;
+        }
+    </style>
+    <div class="text-value">
+        <%= root.values %>
+    </div>
+
+<% } %>
+
+
+<% /* On vérifie si les données sont une liste de paires _id / value */ %>
+<% /* We check if the data is a list of _id / value pairs */ %>
+<% if (Array.isArray(root.values) && root.values[0]._id !== undefined) { %>
+
+    <% /* affichage des données sous forme de tableau */ %>
+    <% /* display data in table format */ %>
+    <table>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% /* on crée une entrée dans le tableau pour chaque valeur */ %>
+        <% /* create an entry in the table for each value */ %>
+        <% for (let datum of root.values) { %>
+            <tr>
+                <td>
+                    <%= datum._id %>
+                </td>
+                <td>
+                    <i>
+                        <%= datum.value %>
+                    </i>
+                </td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+
+<% } %>
+
+
+<% /* On vérifie si les données sont une liste de tuples source / target / weight */ %>
+<% /* We check if the data is a list with source / target / weight tuples */ %>
+<% if (Array.isArray(root.values) && root.values[0].source !== undefined) { %>
+
+    <% /* affichage des données sous forme de tableau */ %>
+    <% /* display data in table format */ %>
+        <style>
+            .case-tableau {
+                border: 1px solid rgb(128, 128, 128);
+                border-radius: 8px;
+                margin: 4px;
+                text-align: center;
+                padding: 8px;
+            }
+        </style>
+    <table>
+        <thead>
+        <tr>
+            <th class="case-tableau">
+                source
+            </th>
+            <th class="case-tableau">
+                target
+            </th>
+            <th class="case-tableau">
+                weight
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <% /* on crée une entrée dans le tableau pour chaque valeur */ %>
+        <% /* create an entry in the table for each value */ %>
+        <% for (let datum of root.values) { %>
+            <tr>
+                <td class="case-tableau">
+                    <%= datum.source %>
+                </td>
+                <td class="case-tableau">
+                    <%= datum.target %>
+                </td>
+                <td class="case-tableau">
+                    <i>
+                        <%= datum.weight %>
+                    </i>
+                </td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+
+<% } %>

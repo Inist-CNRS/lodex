@@ -25,6 +25,7 @@ import paginatedTable from './other/table/paginated';
 import unpaginatedTable from './other/table/unpaginated';
 import code from './text/code';
 import ejs from './text/ejs';
+import css from './text/css';
 import emphasedNumber from './text/emphased-number';
 import html from './text/html';
 import identifierBadge from './text/identifier-badge';
@@ -210,6 +211,16 @@ export const FORMATS_CATALOG = [
         description: 'formatEJSDescription',
         componentName: 'ejs',
         component: ejs,
+        type: 'text',
+        isValueAnnotable: true,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
+        isUrlValue: false,
+    },
+    {
+        name: 'formatCSS',
+        description: 'formatCSSDescription',
+        componentName: 'css',
+        component: css,
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
