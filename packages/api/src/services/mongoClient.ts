@@ -48,10 +48,7 @@ const mongoClientConnectionFactory = async (tenant: string) => {
 
     const cnxstr = mongoConnectionString(tenant);
     try {
-        const client = new MongoClient(cnxstr, {
-            maxPoolSize: 10,
-            authSource: 'admin',
-        });
+        const client = new MongoClient(cnxstr, config.get('mongo.options'));
         clients.set(tenant, await client.connect());
         return client;
     } catch (error) {

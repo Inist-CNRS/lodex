@@ -15,6 +15,8 @@ import Istex from '@ezs/istex';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/storage'. Did you mean to... Remove this comment to see the full error message
 import Storage from '@ezs/storage';
 
+// @ts-expect-error
+global.MongoOptions = config.get('mongo.options');
 ezs.settings.feed.timeout = config.get('ezs.timeout');
 ezs.settings.cacheEnable = config.get('ezs.cacheEnable');
 ezs.settings.cacheDelay = config.get('ezs.cacheDelay');
