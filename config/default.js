@@ -13,7 +13,7 @@ module.exports = {
         options: {
             authSource: 'admin',
         },
-        maxTimeMS: 120000, // 2 minutes pour chaque requete
+        maxTimeMS: 60000,
     },
     rootAuth: {
         username: String(process.env.ROOT_LOGIN || 'root'),

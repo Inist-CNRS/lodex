@@ -57,7 +57,10 @@ export const createFunction = () =>
             },
         );
         const count = await collection
-            .aggregate([{ $match: filter }, { $count: 'value' }])
+            .aggregate([{ $match: filter }, { $count: 'value' }], {
+                allowDiskUse: true,
+                maxTimeMS,
+            })
             .toArray();
         if (count.length === 0) {
             return feed.send({ total: 0 });
