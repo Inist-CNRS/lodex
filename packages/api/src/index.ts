@@ -8,13 +8,47 @@ import { addEnrichmentJobListener } from './services/enrichment/enrichment';
 import { addPrecomputedJobListener } from './services/precomputed/precomputed';
 import { addImportListener } from './workers/import';
 import getLogger from './services/logger';
-import { mongoDatabasePrefix } from './services/mongoClient';
+import {
+    mongoDatabasePrefix,
+    mongoConnectionString,
+} from './services/mongoClient';
+
+function logAsciiBox(lines: string[]): string {
+    const contentWidth: number = 80;
+    const border: string = '═'.repeat(contentWidth + 4);
+    const emptyContent: string = ' '.repeat(contentWidth);
+    const emptyLine: string = `║  ${emptyContent}  ║`;
+
+    const contentLines: string[] = lines.map((line: string) =>
+        line === '' ? emptyLine : `║  ${line.padEnd(contentWidth)}  ║`,
+    );
+
+    return [
+        '\n',
+        `╔${border}╗`,
+        emptyLine,
+        ...contentLines,
+        emptyLine,
+        `╚${border}╝`,
+        '\n',
+    ].join('\n');
+}
 
 if (!module.parent) {
     const httpServer = app.listen(config.get('port'), () => {
         const logger = getLogger();
         logger.info(
-            `Server listening on port ${config.get('port')}, Go to ${getCleanHost()}/instances/ to get started...`,
+            logAsciiBox([
+                ` ★ LODEX is running in ${String(process.env.NODE_ENV || 'development').toUpperCase()} mode ★`,
+                '',
+                ` It will connect to the following middlewares:`,
+                `   - MongoDB on ⊳ ${mongoConnectionString()} ⊲`,
+                `   - Redis on ⊳ ${config.get('redis.url')} ⊲`,
+                `   - EZS Server on ⊳ ${config.get('ezs.url')} ⊲`,
+                '',
+                `To start managing your instances,`,
+                `   go to ${getCleanHost()}/instances/`,
+            ]),
         );
         // only available only for cluster mode (IPC channel)
         if (process.send) {
