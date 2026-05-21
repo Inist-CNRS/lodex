@@ -4,6 +4,7 @@ import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupe
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { translate, useTranslate } from '../../../i18n/I18NContext';
 import { useCallback } from 'react';
+import type { ChangeEvent } from 'react';
 
 type CSSArgs = {
     template?: string;
@@ -28,18 +29,10 @@ export const defaultArgs = {
 type CSSAdminProps = {
     args: CSSArgs;
     onChange: (args: CSSArgs) => void;
-    showMaxSize?: boolean;
-    showOrderBy?: boolean;
-    showMinValue?: boolean;
-    showMaxValue?: boolean;
 };
 
 const CSSAdmin = ({
     args = defaultArgs,
-    showMaxSize = true,
-    showMaxValue = true,
-    showMinValue = true,
-    showOrderBy = true,
     onChange,
 }: CSSAdminProps) => {
     const { translate } = useTranslate();
