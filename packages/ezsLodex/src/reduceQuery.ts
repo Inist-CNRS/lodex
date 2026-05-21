@@ -22,6 +22,7 @@ const hashCoerce = hasher({ sort: false, coerce: true });
  * @param {Object}   [maxValue]      limit the result
  * @param {Object}   [maxSize=1000000]  limit the result
  * @param {Object}   [orderBy]       sort the result
+ * @param {Number}   [maxTimeMS]    Query timeout
  * @returns {Object}
  */
 export const createFunction = () =>
@@ -32,6 +33,7 @@ export const createFunction = () =>
 
         const { ezs } = this;
         const referer = this.getParam('referer', data.referer);
+        const maxTimeMS = Number(this.getParam('maxTimeMS', data.maxTimeMS || 0));
         const filter = this.getParam('filter', data.filter || {});
         filter.removedAt = { $exists: false }; // Ignore removed resources
         const field = this.getParam(
@@ -78,6 +80,7 @@ export const createFunction = () =>
             scope: {
                 fields,
             },
+            maxTimeMS,
         };
 
         const { result: collectionResult, ok } = await db.command(command);
@@ -115,7 +118,7 @@ export const createFunction = () =>
                       [fieldname(order)]: dir === 'asc' ? 1 : -1,
                   }
                 : {};
-        const cursor = result.find(findFilter);
+        const cursor = result.find(findFilter).maxTimeMS(maxTimeMS);
         const count = await cursor.count();
 
         if (total === 0 || count === 0) {

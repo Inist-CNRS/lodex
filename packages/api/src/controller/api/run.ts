@@ -59,6 +59,7 @@ const middlewareScript = async (
             tenant: ctx.tenant,
             connectionStringURI: mongoConnectionString(ctx.tenant),
             host,
+            maxTimeMS: config.get('mongo.maxTimeMS'),
         };
         const input = new PassThrough({ objectMode: true });
         const errorHandle = (err: any) => {

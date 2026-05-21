@@ -16,6 +16,7 @@ import mongoDatabase from './mongoDatabase.js';
  * @param {Object}  [field="uri"]  limit the result to some fields
  * @param {Object}  [limit]        limit the result
  * @param {Object}  [skip]         limit the result
+ * @param {Number}  [maxTimeMS]    Query timeout
  * @returns {Object}
  */
 export const createFunction = () =>
@@ -28,6 +29,7 @@ export const createFunction = () =>
         const filter = this.getParam('filter', data.filter || {});
 
         filter.removedAt = { $exists: false }; // Ignore removed resources
+        const maxTimeMS = Number(this.getParam('maxTimeMS', data.maxTimeMS || 0));
         const sortOn = this.getParam('sortOn', data.sortOn);
         const sortOrder = this.getParam('sortOrder', data.sortOrder);
         const field = this.getParam(
@@ -51,7 +53,7 @@ export const createFunction = () =>
         let cursor = collection.find(
             filter,
             fields.length > 0 ? projection : null,
-        );
+        ).maxTimeMS(maxTimeMS);
 
         if (sortOn) {
             cursor = cursor
