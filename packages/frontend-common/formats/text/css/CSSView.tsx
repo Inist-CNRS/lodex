@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import type { Field } from '../../../fields/types';
 
 const StyledDiv = styled.div<{ css?: string }>`
-  ${props => props.css}
+    ${(props) => props.css}
 `;
 
 interface CSSViewProps {

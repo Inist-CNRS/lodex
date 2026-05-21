@@ -31,10 +31,7 @@ type CSSAdminProps = {
     onChange: (args: CSSArgs) => void;
 };
 
-const CSSAdmin = ({
-    args = defaultArgs,
-    onChange,
-}: CSSAdminProps) => {
+const CSSAdmin = ({ args = defaultArgs, onChange }: CSSAdminProps) => {
     const { translate } = useTranslate();
 
     const { template, globalMode } = args;
