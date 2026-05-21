@@ -13,8 +13,9 @@ const stageNameTest = /^\$/;
  * @param {String}  [collection="publishedDataset"]  collection to use
  * @param {Object}  [referer]      data injected into every result object
  * @param {Object}  [filter]       MongoDB filter
- * @param {Object}  [limit]        limit the result
- * @param {Object}  [skip]         limit the result
+ * @param {Number}  [limit]        limit the result
+ * @param {Number}  [skip]         skip X items from the result
+ * @param {Number}  [maxTimeMS]    Query timeout
  * @returns {Object}
  */
 export const createFunction = () =>
@@ -24,6 +25,9 @@ export const createFunction = () =>
         }
         const { ezs } = this;
         const referer = this.getParam('referer', data.referer);
+        const maxTimeMS = Number(
+            this.getParam('maxTimeMS', data.maxTimeMS || 0),
+        );
         const filter = this.getParam('filter', data.filter || {});
         const stages = []
             .concat(this.getParam('stage'))
@@ -49,10 +53,14 @@ export const createFunction = () =>
             [{ $match: filter }].concat(stages),
             {
                 allowDiskUse: true,
+                maxTimeMS,
             },
         );
         const count = await collection
-            .aggregate([{ $match: filter }, { $count: 'value' }])
+            .aggregate([{ $match: filter }, { $count: 'value' }], {
+                allowDiskUse: true,
+                maxTimeMS,
+            })
             .toArray();
         if (count.length === 0) {
             return feed.send({ total: 0 });
