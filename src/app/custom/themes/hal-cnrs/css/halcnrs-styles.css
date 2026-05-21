@@ -1,4 +1,3 @@
-@import url('fonts-style.css');
 /*lodex theme_inist lodex14*/
 /* MOBILE FIRST*/
 @media (min-width: 794px) {
@@ -55,8 +54,8 @@
     box-sizing: border-box;
 }
 :root {
-    --font-titre: IBM Plex Sans bold, Arial, Helvetica, sans-serif;
-    --font-texte: Satoshi-Regular, Arial, Helvetica, sans-serif;
+    --font-titre: 'ibm_plex_sansregular', Arial, Helvetica, sans-serif;
+    --font-texte: 'Satoshi', Arial, Helvetica, sans-serif;
     --maxWidth: 1500px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
 }
 /* text : font, size, color*/
