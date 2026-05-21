@@ -29,7 +29,9 @@ export const createFunction = () =>
         const filter = this.getParam('filter', data.filter || {});
 
         filter.removedAt = { $exists: false }; // Ignore removed resources
-        const maxTimeMS = Number(this.getParam('maxTimeMS', data.maxTimeMS || 0));
+        const maxTimeMS = Number(
+            this.getParam('maxTimeMS', data.maxTimeMS || 0),
+        );
         const sortOn = this.getParam('sortOn', data.sortOn);
         const sortOrder = this.getParam('sortOrder', data.sortOrder);
         const field = this.getParam(
@@ -50,10 +52,9 @@ export const createFunction = () =>
         );
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
-        let cursor = collection.find(
-            filter,
-            fields.length > 0 ? projection : null,
-        ).maxTimeMS(maxTimeMS);
+        let cursor = collection
+            .find(filter, fields.length > 0 ? projection : null)
+            .maxTimeMS(maxTimeMS);
 
         if (sortOn) {
             cursor = cursor

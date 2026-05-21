@@ -33,7 +33,9 @@ export const createFunction = () =>
 
         const { ezs } = this;
         const referer = this.getParam('referer', data.referer);
-        const maxTimeMS = Number(this.getParam('maxTimeMS', data.maxTimeMS || 0));
+        const maxTimeMS = Number(
+            this.getParam('maxTimeMS', data.maxTimeMS || 0),
+        );
         const filter = this.getParam('filter', data.filter || {});
         filter.removedAt = { $exists: false }; // Ignore removed resources
         const field = this.getParam(
