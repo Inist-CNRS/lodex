@@ -36,7 +36,7 @@ bySecond = 1
     cy.contains('Save').click({
         force: true,
     });
-    cy.waitForNetworkIdle(500);
+    cy.waitForNetworkIdle(1000);
     cy.contains('Enrichment added successfully').should('exist');
 };
 
