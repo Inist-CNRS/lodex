@@ -10,6 +10,10 @@ module.exports = {
         uri: String(
             process.env.MONGODB_URI || 'mongodb://localhost:21017/lodex',
         ),
+        options: {
+            authSource: 'admin',
+        },
+        maxTimeMS: 60000,
     },
     rootAuth: {
         username: String(process.env.ROOT_LOGIN || 'root'),

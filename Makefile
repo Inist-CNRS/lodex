@@ -45,17 +45,15 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 
 ## Production =================================================================
 
-run: build ## Run the project in production mode
+run-dist: ## Run the project in production mode using Docker images (i.e., without using the source code)
 	docker compose up --force-recreate
-start: run ## Start the project (alias of make run)
-build:
-	docker compose build --build-arg http_proxy --build-arg https_proxy
+start-dist: run ## alias of make run-dist
 
 ## Deploy =================================================================
 
 publish: build-prod  ## publish version to docker hub
-	docker build -t cnrsinist/lodex:16.11.2 --build-arg http_proxy --build-arg https_proxy .
-	docker push cnrsinist/lodex:16.11.2
+	docker build -t cnrsinist/lodex:16.12.0 --build-arg http_proxy --build-arg https_proxy .
+	docker push cnrsinist/lodex:16.12.0
 
 ## Local Production Mode =================================================================
 
@@ -87,7 +85,7 @@ test-unit-watch: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec
 ## You can use other Jest options (https://jestjs.io/fr/docs/cli)
 	NODE_ENV=test docker compose -f docker-compose.dev.yml run --no-deps --rm api npm run test:unit:watch -- $(JEST_OPTIONS)
 
-test-e2e-start-dockers:
+test-e2e-start-dockers: ## Start the containers to use Cypress in interactive mode (with test-e2e-open-cypress)
 ifeq "$(CI)" "true"
 	docker compose -f docker-compose.spec.yml up -d --build
 else
@@ -103,7 +101,7 @@ test-e2e-logs-watch:
 test-e2e-stop-dockers:
 	docker compose -f docker-compose.spec.yml down
 
-test-e2e-open-cypress:
+test-e2e-open-cypress: ## Start the Cypress interactive interface
 	NODE_ENV=e2e npx cypress open
 
 test-e2e:
