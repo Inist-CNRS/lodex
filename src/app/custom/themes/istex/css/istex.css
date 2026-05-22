@@ -1,51 +1,8 @@
 @import 'istex-internalclass.css';
 @import 'istex-linksclass.css';
-@font-face {
-    font-family: 'Montserrat';
-    src:
-        local('Montserrat'),
-        url('fonts/Montserrat/Montserrat-Regular.ttf')
-            format('truetype');
-    font-style: normal;
-    font-display: swap;
-    font-weight: 400;
-}
-@font-face {
-    font-family: 'Montserrat Medium';
-    src:
-        local('Montserrat Medium'),
-        url('fonts/Montserrat/Montserrat-Medium.ttf')
-            format('truetype');
-    font-style: normal;
-    font-display: swap;
-    font-weight: 500;
-}
-@font-face {
-    font-family: 'Montserrat bold';
-    src:
-        local('Montserrat'),
-        url('fonts/Montserrat/Montserrat-Bold.ttf')
-            format('truetype');
-    font-style: normal;
-    font-display: swap;
-    font-weight: 700;
-}
-@font-face {
-    font-family: 'Open Sans';
-    src: url('fonts/Open_Sans/static/OpenSans/OpenSans-Regular.ttf')
-        format('truetype');
-    font-weight: normal;
-}
-@font-face {
-    font-family: 'Open Sans bold';
-    src: url('fonts/Open_Sans/static/OpenSans/OpenSans-Bold.ttf')
-        format('truetype');
-    font-weight: bold;
-}
-
 :root {
-    --font-titre: Montserrat, Arial, Helvetica, sans-serif;
-    --font-titre-medium: Montserrat Medium, Arial, Helvetica, sans-serif;
+    --font-titre: 'Montserrat', Arial, Helvetica, sans-serif;
+    --font-titre-medium: 'Montserrat Medium', Arial, Helvetica, sans-serif;
     --font-texte: 'Open Sans', Arial, Helvetica, sans-serif;
     --maxWidth: 1200px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
     --font-size-texte: 0.875rem;
