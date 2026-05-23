@@ -61,20 +61,32 @@ export const BubbleView = ({
 
     return (
         <FormatFullScreenMode>
-            <div style={styles.container({ diameter })}>
-                {data.map(({ data: { _id: key }, r, x, y, value }, index) => (
-                    <Bubble
-                        key={key}
-                        r={r}
-                        x={x}
-                        y={y}
-                        name={key}
-                        value={value}
-                        color={getColor(colorSet, index)}
-                        onClick={fieldToFilter ? handleClick : undefined}
-                        isSelected={key === filters?.at(0)?.value}
-                    />
-                ))}
+            <div
+                style={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}
+            >
+                <div style={styles.container({ diameter })}>
+                    {data.map(
+                        ({ data: { _id: key }, r, x, y, value }, index) => (
+                            <Bubble
+                                key={key}
+                                r={r}
+                                x={x}
+                                y={y}
+                                name={key}
+                                value={value}
+                                color={getColor(colorSet, index)}
+                                onClick={
+                                    fieldToFilter ? handleClick : undefined
+                                }
+                                isSelected={key === filters?.at(0)?.value}
+                            />
+                        ),
+                    )}
+                </div>
             </div>
         </FormatFullScreenMode>
     );
