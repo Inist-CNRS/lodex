@@ -5,18 +5,11 @@ import ezs from '@ezs/core';
 import ezsLodex from '@ezs/lodex';
 import config from 'config';
 
-import { getHost, getCleanHost } from '@lodex/common';
 import Script from '../../services/script';
 
 ezs.use(ezsLodex);
 
 const loaders = new Script('loaders');
-
-export const getLoadersConfig = () => ({
-    host: getCleanHost(),
-    rawHost: getHost(),
-    cleanHost: getCleanHost(),
-});
 
 export const getLoader = async (type: any) => {
     const loader = await loaders.get(type);
@@ -57,7 +50,6 @@ export const getLoader = async (type: any) => {
 
 export async function setup(ctx: any, next: any) {
     ctx.getLoader = getLoader;
-    ctx.getLoadersConfig = getLoadersConfig;
     await next();
 }
 

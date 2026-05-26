@@ -14,6 +14,10 @@ import getLogger from '../../services/logger';
 
 ezs.use(Lodex);
 
+const baseURL: string = config.has('baseURL')
+    ? config.get('baseURL')
+    : `http://localhost:${config.get('port')}`;
+
 const scripts = new Script('routines');
 
 const parseFieldsParams = (fieldsParams: any) =>
@@ -51,7 +55,7 @@ const middlewareScript = async (
 
         const field = parseFieldsParams(fieldsParams);
         const environment = {};
-        const host = getCleanHost();
+        const host = getCleanHost(baseURL);
         const query = {
             orderBy,
             field,
