@@ -1,4 +1,4 @@
-import { getHost, ProgressStatus, TaskStatus } from '@lodex/common';
+import { ProgressStatus, TaskStatus } from '@lodex/common';
 import streamToPromise from 'stream-to-promise';
 import config from 'config';
 import { unlinkFile } from '../fsHelpers';
@@ -25,11 +25,13 @@ const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to t
 ezs.use(Lodex);
 ezs.use(Basics);
 const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
-const baseUrl: string = getHost();
+const baseURL: string = config.has('baseURL')
+    ? config.get('baseURL')
+    : `http://localhost:${config.get('port')}`;
 
 const webhookBaseUrl: string = config.has('alternativePrecomputedBaseUrl')
     ? config.get('alternativePrecomputedBaseUrl')
-    : baseUrl;
+    : baseURL;
 export const getPrecomputedDataPreview = async (ctx: any) => {
     const { enrichmentBatchSize: BATCH_SIZE = 10 } = ctx.configTenant;
     const { sourceColumns } = ctx.request.body;

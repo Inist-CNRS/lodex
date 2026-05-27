@@ -43,8 +43,9 @@ export const getResourceUri = (resource: any) => {
     return `/uid:/${encodeURIComponent(uri)}`;
 };
 
-export const getCleanHost = () => {
-    const host = getHost();
+// drop ezmaster baseURL suffix
+export const getCleanHost = (baseURL?: string) => {
+    const host = baseURL || getHost();
     const reg = new RegExp('(\\-\\d+)(\\.[a-z0-9]+)+');
     const match = reg.exec(host);
     if (match) {
@@ -62,11 +63,9 @@ export const getHost = () => {
     return host;
 };
 
-export const getFullResourceUri = (resource: any, defaultBaseUri?: any) => {
-    const baseUri = getCleanHost() || defaultBaseUri;
+export const getFullResourceUri = (resource: any, baseURL: string) => {
     const uri = getResourceUri(resource);
-
-    return `${baseUri}${uri}`;
+    return `${baseURL}${uri}`;
 };
 
 export const moveUriToFirstPosition = (data: any) => {

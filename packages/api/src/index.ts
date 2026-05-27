@@ -1,4 +1,3 @@
-import { getCleanHost } from '@lodex/common';
 import app from './app';
 import { Server } from 'socket.io';
 import config from 'config';
@@ -35,7 +34,11 @@ function logAsciiBox(lines: string[]): string {
 }
 
 if (!module.parent) {
-    const httpServer = app.listen(config.get('port'), () => {
+    const port = Number(config.get('port'));
+    const baseURL = config.has('baseURL')
+        ? config.get('baseURL')
+        : `http://localhost:${port}`;
+    const httpServer = app.listen(port, () => {
         const logger = getLogger();
         logger.info(
             logAsciiBox([
@@ -47,7 +50,7 @@ if (!module.parent) {
                 `   - EZS Server on ⊳ ${config.get('ezs.url')} ⊲`,
                 '',
                 `To start managing your instances,`,
-                `   go to ${getCleanHost()}/instances/`,
+                `   go to ${baseURL}/instances/`,
             ]),
         );
         // only available only for cluster mode (IPC channel)

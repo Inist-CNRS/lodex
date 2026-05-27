@@ -15,6 +15,9 @@ import { ObjectId } from 'mongodb';
 import getLogger from '../../services/logger';
 
 ezs.use(Basics);
+const baseURL: string = config.has('baseURL')
+    ? config.get('baseURL')
+    : `http://localhost:${config.get('port')}`;
 const exportersScripts = new Script('exporters');
 const formatExportersScripts = new Script('formatExporters');
 
@@ -79,7 +82,7 @@ const middlewareScript = (isFormatExporters = false) => {
         const environment = {
             timeout: config.get('timeout'),
         };
-        const host = getCleanHost();
+        const host = getCleanHost(baseURL);
 
         const facets = {};
         const logger = getLogger(ctx.tenant);
