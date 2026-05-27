@@ -141,6 +141,9 @@ mongo-shell: ## Start the mongo shell
 mongo-shell-test: ## Start the mongo shell for the test database
 	docker compose exec mongo mongosh lodex_test_${DB_TENANT}
 
+clear-npm: ## Clear all node_module diretories
+	docker compose -f docker-compose.dev.yml run --no-deps --rm api npm run clear
+
 clear-database: ## Clear the whole database named by DB_TENANT (use "default" if missing)
 	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
 		db.publishedDataset.deleteMany(); \
@@ -165,7 +168,15 @@ clear-tenants: ## Clear all tenants databases in mongo
 	docker compose exec mongo mongo lodex_admin --eval "db.tenant.remove({});"
 	docker compose exec mongo mongo --quiet --eval 'db.getMongo().getDBNames().forEach(function(i){ if (i !== "lodex_admin") {db.getSiblingDB(i).dropDatabase()}})'
 
-clear-docker:
-	docker stop lodex-lodex-1 || true
-	docker rm lodex-lodex-1 || true
-	docker image rm lodex-lodex
+clear-docker: ## Clear containers, images & volumes created by docker
+	docker compose -f docker-compose.dev.yml down -v  --remove-orphans --rmi all
+	docker compose -f docker-compose.prod.yml down -v  --remove-orphans --rmi all
+	docker compose -f docker-compose.spec.yml down -v --remove-orphans --rmi all
+	docker compose -f docker-compose.yml down -v --remove-orphans --rmi all
+	@LODEX_IMAGES=$$(docker images -q cnrsinist/lodex); \
+	if [ -z "$$LODEX_IMAGES" ]; then \
+		echo "Aucune image cnrsinist/lodex trouvée."; \
+	else \
+		docker rmi $$LODEX_IMAGES; \
+	fi
+
