@@ -58,7 +58,7 @@ export const getHost = () => {
         return `${window.location.protocol}//${window.location.host}`;
     }
 
-    throw new Error('Use must use config.get(\'baseURL\')');
+    throw new Error("Use must use config.get('baseURL')");
 };
 
 export const getFullResourceUri = (resource: any, baseURL: string) => {
