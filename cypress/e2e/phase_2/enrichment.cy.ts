@@ -56,10 +56,13 @@ describe('Enrichment', () => {
             cy.contains('Run All').click();
         });
 
+        cy.waitForNetworkIdle(25000);
+        cy.findAllByText('Done').should('have.length', 3);
+        /* to prevent a GitHub timeout if the enrichments are too slow or too fast
         cy.findAllByText('Not started').should('have.length', 0);
         cy.findAllByText('Running').should('have.length', 1);
         cy.findAllByText('Pending').should('have.length', 2);
-
+        */
         adminMenu.clearWorkers();
         cy.waitForNetworkIdle(500);
         cy.contains('All jobs have been cleared').should('exist');
