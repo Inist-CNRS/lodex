@@ -1,8 +1,5 @@
 sudo: required
 
-addons:
-    chrome: stable
-
 language: node_js
 
 services:
@@ -12,15 +9,16 @@ node_js:
     - 12
 
 addons:
-  apt:
-    packages:
-      # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-      - libgconf-2-4
+    chrome: stable
+    apt:
+        packages:
+            # Ubuntu 16+ does not install this dependency by default,
+            # so we need to install it ourselves
+            - libgconf-2-4
 
 env:
     global:
         - NODE_ENV=test
-        - EZMASTER_PUBLIC_URL=http://localhost:3000
         - NODE_OPTIONS=--max_old_space_size=8192
 
 # dist: bionic
