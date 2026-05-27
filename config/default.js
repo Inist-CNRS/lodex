@@ -6,6 +6,7 @@ const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
 );
 module.exports = {
     port: 3000,
+    baseURL: process.env.EZMASTER_PUBLIC_URL || process.env.PUBLIC_URL,
     mongo: {
         uri: String(
             process.env.MONGODB_URI || 'mongodb://localhost:21017/lodex',
@@ -28,7 +29,6 @@ module.exports = {
         max: 500,
         maxAge: 60 * 60, // 1 hour
     },
-    hostname: 'http://data.istex.fr/',
     uploadDir: 'upload',
     uploadLimit: 5, // en giga
     istexApiUrl: 'https://api.istex.fr',
@@ -58,7 +58,7 @@ module.exports = {
         encoding: '',
     },
     timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
-    alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, getHost is used
+    alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, baseURL is used
     activateBullDashboard: false,
     mail: {
         host,

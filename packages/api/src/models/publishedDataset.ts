@@ -1,12 +1,16 @@
 import { ObjectId } from 'mongodb';
 import chunk from 'lodash/chunk';
 import omit from 'lodash/omit';
+import config from 'config';
 
 import { getFullResourceUri, PropositionStatus } from '@lodex/common';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
 import { getCreatedCollection } from './utils';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
+const baseURL: string = config.has('baseURL')
+    ? config.get('baseURL')
+    : `http://localhost:${config.get('port')}`;
 const getMeta = (match: any, searchableFieldNames: any) => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
         return null;
@@ -222,7 +226,7 @@ export default async (db: any) => {
                     ? resource
                     : {
                           ...resource,
-                          uri: getFullResourceUri(resource),
+                          uri: getFullResourceUri(resource, baseURL),
                       },
             )
             .stream();
