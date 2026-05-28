@@ -66,8 +66,12 @@ describe('enrichment', () => {
                 webServiceUrl: 'https://lodex.fr',
             };
 
-            // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
-            const result = getEnrichmentRuleModel(sourceData, enrichment);
+            const result = getEnrichmentRuleModel(
+                sourceData,
+                enrichment,
+                10,
+                enrichment.webServiceUrl,
+            );
             expect(result).toMatch(/(URLConnect)/i);
             expect(result).not.toMatch(/(expand\/exploding)/i);
         });
@@ -82,8 +86,12 @@ describe('enrichment', () => {
                 webServiceUrl: 'https://lodex.fr',
             };
 
-            // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
-            const result = getEnrichmentRuleModel(sourceData, enrichment);
+            const result = getEnrichmentRuleModel(
+                sourceData,
+                enrichment,
+                10,
+                enrichment.webServiceUrl,
+            );
             expect(result).toMatch(/(URLConnect)/i);
             expect(result).toMatch(/(expand\/exploding)/i);
         });
@@ -98,8 +106,12 @@ describe('enrichment', () => {
                 webServiceUrl: 'https://lodex.fr',
             };
 
-            // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
-            const result = getEnrichmentRuleModel(sourceData, enrichment);
+            const result = getEnrichmentRuleModel(
+                sourceData,
+                enrichment,
+                10,
+                enrichment.webServiceUrl,
+            );
             expect(result).toMatch(/(expand\/URLConnect)/i);
             expect(result).toMatch(/(expand\/exploding)/i);
             expect(result).toMatch(/(expand\/expand)/i);
@@ -115,8 +127,12 @@ describe('enrichment', () => {
                 webServiceUrl: 'https://lodex.fr',
             };
 
-            // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
-            const result = getEnrichmentRuleModel(sourceData, enrichment);
+            const result = getEnrichmentRuleModel(
+                sourceData,
+                enrichment,
+                10,
+                enrichment.webServiceUrl,
+            );
             expect(result).toMatch(/(expand\/exploding)/i);
             expect(result).toMatch(/(expand\/expand\/URLConnect)/i);
         });
@@ -130,8 +146,12 @@ describe('enrichment', () => {
             };
 
             expect(() =>
-                // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
-                getEnrichmentRuleModel(sourceData, enrichment),
+                getEnrichmentRuleModel(
+                    sourceData,
+                    enrichment,
+                    10,
+                    enrichment.webServiceUrl,
+                ),
             ).toThrow('Missing source column parameter');
         });
     });
