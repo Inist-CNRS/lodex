@@ -168,7 +168,7 @@ export const getEnrichmentDataPreview = async (ctx: any) => {
 export const getEnrichmentRuleModel = (
     sourceData: any,
     enrichment: any,
-    BATCH_SIZE: any,
+    BATCH_SIZE: number,
     WEB_SERVICE_URL?: string,
 ) => {
     let rule;
@@ -189,7 +189,7 @@ export const getEnrichmentRuleModel = (
     rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
     rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
     rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-    rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
+    rule = rule.replace(/\[\[BATCH SIZE\]\]/g, String(BATCH_SIZE));
     if (WEB_SERVICE_URL) {
         rule = rule
             .replace('[[WEB SERVICE URL]]', WEB_SERVICE_URL)
