@@ -19,9 +19,9 @@ import getLogger from '../logger';
 
 export const DATASET_COLLECTION = 'dataset';
 
-export const addSidToUrl = (url: string) => {
+export const addSidToUrl = (url: string, sid: string) => {
     const urlObj = new URL(url);
-    urlObj.searchParams.append('sid', 'lodex');
+    urlObj.searchParams.append('sid', sid);
     return urlObj.toString();
 };
 
@@ -81,6 +81,10 @@ const getSourceData = async (source: Source, sourceColumn: string) => {
 export const createEnrichmentRule = async (ctx: any, enrichment: any) => {
     const { enrichmentBatchSize } = ctx.configTenant;
     const BATCH_SIZE = Number(enrichmentBatchSize || 10);
+    const WEB_SERVICE_URL = addSidToUrl(
+        enrichment.webServiceUrl,
+        `lodex-${ctx.tenant}`,
+    );
     if (enrichment.advancedMode) {
         return enrichment;
     }
@@ -91,7 +95,12 @@ export const createEnrichmentRule = async (ctx: any, enrichment: any) => {
 
     const source = getSource(ctx, enrichment.dataSource);
     const data = await getSourceData(source, enrichment.sourceColumn);
-    const rule = getEnrichmentRuleModel(data, enrichment, BATCH_SIZE);
+    const rule = getEnrichmentRuleModel(
+        data,
+        enrichment,
+        BATCH_SIZE,
+        WEB_SERVICE_URL,
+    );
 
     return {
         ...enrichment,
@@ -160,6 +169,7 @@ export const getEnrichmentRuleModel = (
     sourceData: any,
     enrichment: any,
     BATCH_SIZE: any,
+    WEB_SERVICE_URL?: string,
 ) => {
     let rule;
     if (!enrichment.sourceColumn) {
@@ -180,12 +190,9 @@ export const getEnrichmentRuleModel = (
     rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
     rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
     rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
-    if (enrichment.webServiceUrl) {
+    if (WEB_SERVICE_URL) {
         rule = rule
-            .replace(
-                '[[WEB SERVICE URL]]',
-                addSidToUrl(enrichment.webServiceUrl),
-            )
+            .replace('[[WEB SERVICE URL]]', WEB_SERVICE_URL)
             .replace('[[WEB SERVICE TIMEOUT]]', config.get('timeout'));
     } else {
         rule = cleanWebServiceRule(rule);
