@@ -81,10 +81,6 @@ const getSourceData = async (source: Source, sourceColumn: string) => {
 export const createEnrichmentRule = async (ctx: any, enrichment: any) => {
     const { enrichmentBatchSize } = ctx.configTenant;
     const BATCH_SIZE = Number(enrichmentBatchSize || 10);
-    const WEB_SERVICE_URL = addSidToUrl(
-        enrichment.webServiceUrl,
-        `lodex-${ctx.tenant}`,
-    );
     if (enrichment.advancedMode) {
         return enrichment;
     }
@@ -93,6 +89,10 @@ export const createEnrichmentRule = async (ctx: any, enrichment: any) => {
         throw new Error(`Missing parameters`);
     }
 
+    const WEB_SERVICE_URL = addSidToUrl(
+        enrichment.webServiceUrl,
+        `lodex-${ctx.tenant}`,
+    );
     const source = getSource(ctx, enrichment.dataSource);
     const data = await getSourceData(source, enrichment.sourceColumn);
     const rule = getEnrichmentRuleModel(
