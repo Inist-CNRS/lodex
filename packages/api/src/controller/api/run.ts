@@ -8,7 +8,7 @@ import cacheControl from 'koa-cache-control';
 import config from 'config';
 
 import Script from '../../services/script';
-import { getCleanHost } from '@lodex/common';
+import { cleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import getLogger from '../../services/logger';
 
@@ -55,7 +55,7 @@ const middlewareScript = async (
 
         const field = parseFieldsParams(fieldsParams);
         const environment = {};
-        const host = getCleanHost(baseURL);
+        const host = cleanHost(baseURL);
         const query = {
             orderBy,
             field,

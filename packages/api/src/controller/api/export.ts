@@ -9,7 +9,7 @@ import cacheControl from 'koa-cache-control';
 import config from 'config';
 
 import Script from '../../services/script';
-import { getCleanHost } from '@lodex/common';
+import { cleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import { ObjectId } from 'mongodb';
 import getLogger from '../../services/logger';
@@ -82,7 +82,7 @@ const middlewareScript = (isFormatExporters = false) => {
         const environment = {
             timeout: config.get('timeout'),
         };
-        const host = getCleanHost(baseURL);
+        const host = cleanHost(baseURL);
 
         const facets = {};
         const logger = getLogger(ctx.tenant);

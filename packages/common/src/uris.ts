@@ -44,14 +44,13 @@ export const getResourceUri = (resource: any) => {
 };
 
 // drop ezmaster baseURL suffix
-export const getCleanHost = (baseURL?: string) => {
-    const host = baseURL || getHost();
+export const cleanHost = (baseURL: string) => {
     const reg = new RegExp('(\\-\\d+)(\\.[a-z0-9]+)+');
-    const match = reg.exec(host);
+    const match = reg.exec(baseURL);
     if (match) {
-        return host.replace(match[1], '');
+        return baseURL.replace(match[1], '');
     }
-    return host;
+    return baseURL;
 };
 
 export const getHost = () => {
@@ -59,8 +58,7 @@ export const getHost = () => {
         return `${window.location.protocol}//${window.location.host}`;
     }
 
-    const host = process.env.EZMASTER_PUBLIC_URL || `http://localhost:3000`;
-    return host;
+    throw new Error("Use must use config.get('baseURL')");
 };
 
 export const getFullResourceUri = (resource: any, baseURL: string) => {
