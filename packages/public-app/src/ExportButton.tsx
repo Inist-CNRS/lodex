@@ -21,7 +21,7 @@ const styles = stylesToClassname(
         menuContainer: {
             display: 'flex',
             flexDirection: 'column',
-            zIndex: 1003,
+            zIndex: 1003, // on top of Navbar (with zIndex 1002)
         },
         menuTitle: {
             padding: '0px 16px',
@@ -82,6 +82,7 @@ const ExportButton = ({
 
     // @ts-expect-error TS7006
     const handleOpen = (event) => {
+        // This prevents ghost click.
         event.preventDefault();
 
         setPopover({
@@ -128,6 +129,7 @@ const ExportButton = ({
         try {
             const response = await PDFApi.exportPDF(options);
 
+            // Detect if the user is on a mobile device and redirect to the PDF
             if (
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
                     navigator.userAgent,
@@ -160,9 +162,11 @@ const ExportButton = ({
             >
                 {buttonLabel}
             </Button>
-
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.menuContainer}>
                 <Menu
+                    // @ts-expect-error TS2339
                     className={styles.menuList}
                     // @ts-expect-error TS2339
                     anchorEl={popover.anchorEl}
@@ -170,8 +174,12 @@ const ExportButton = ({
                     open={popover.open}
                     onClose={handleClose}
                 >
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <h3 className={styles.menuTitle}>{menuTitle}</h3>
 
+                    {/*
+                     // @ts-expect-error TS7031 */}
                     {exporters.map(({ exportID, label }) => (
                         <Tooltip
                             key={exportID}
@@ -181,6 +189,7 @@ const ExportButton = ({
                         >
                             <span style={{ display: 'block' }}>
                                 <ExportItem
+                                    // @ts-expect-error TS2322
                                     label={label}
                                     exportID={exportID}
                                     uri={uri}
