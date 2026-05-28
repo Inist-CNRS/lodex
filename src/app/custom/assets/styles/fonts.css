@@ -79,7 +79,7 @@
     font-style: normal;
     font-weight: 400;
     src:
-        url('../fonts/src/app/custom/assets/fonts/quicksand-regular-webfont.woff2')
+        url('../fonts/quicksand-regular-webfont.woff2')
             format('woff2'),
         url('../fonts/Quicksand-VariableFont_wght.ttf') format('truetype'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }

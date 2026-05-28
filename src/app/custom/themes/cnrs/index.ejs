@@ -23,23 +23,33 @@
 <body>
 <header>
     <div class="container">
-        <div id="logos">
-            <a class="logo logocnrs" href="https://www.cnrs.fr">
+        <div id="Editeurs">
+            <a class="logo cnrs" href="https://www.cnrs.fr">
                 <img src="<%= theme.current.href %>/img/cnrs-blanc.svg" alt="CNRS"/>
             </a>
-    <% if (custom.cotutelle ) { %>
-            <a class="logo" href="<%= custom.cotutelle.url %>" target="_blank">
-                <img src="<%= custom.cotutelle.logofile %>" alt="<%= custom.cotutelle.alt %>" width="<%= custom.cotutelle.size %>" />
+        <% if (custom.cotutelle1 && custom.cotutelle1.siteWebUrl != null) { %>
+            <a class="logo cotutelle cotutelle1" href="<%= custom.cotutelle1.siteWebUrl %>" target="_blank">
+                <img src="<%= custom.cotutelle1.logoFileUrl %>" alt="<%= custom.cotutelle1.logoTexteAlternatif %>" width="<%= custom.cotutelle1.logoLargeur %>"/>
             </a>
-        <% } %>
-    <% if (custom.unite ) { %>
-            <a class="logo logoLabo" href="<%= custom.unite.url %>" aria-label="accueil du site">
+        <% }
+        if (custom.cotutelle2 && custom.cotutelle2.siteWebUrl != null ) { %>
+            <a class="logo cotutelle  cotutelle2" href="<%= custom.cotutelle2.siteWebUrl %>" target="_blank">
+                <img src="<%= custom.cotutelle2.logoFileUrl %>" alt="<%= custom.cotutelle2.logoTexteAlternatif %>" width="<%= custom.cotutelle2.logoLargeur %>"/>
+            </a>
+        <% }
+        if (custom.cotutelle3 && custom.cotutelle3.siteWebUrl != "" ) { %>
+            <a class="logo cotutelle cotutelle3" href="<%= custom.cotutelle3.siteWebUrl %>" target="_blank">
+                <img src="<%= custom.cotutelle3.logoFileUrl %>" alt="<%= custom.cotutelle3.logoTexteAlternatif %>" width="<%= custom.cotutelle3.logoLargeur %>"/>
+            </a>
+        <% } 
+        if (custom.unite ) { %>
+            <a class="logo unite" href="<%= custom.unite.siteWebUrl %>" aria-label="accueil du site">
                 <span><%= custom.unite.sigle %></span>
-                <span class="inist"><%= custom.unite.intitule %></span>
+                <span class="uniteIntitule"><%= custom.unite.intitule %></span>
             </a>
         <% } %>
         </div>
-            <% if (custom.siteTitle ) { %>
+        <% if (custom.siteTitle ) { %>
         <h1 id="titre_lodex" class="bl3">
             <a href="/instance/<%= lodex.tenant %>"><%= custom.siteTitle %></a>
         </h1>

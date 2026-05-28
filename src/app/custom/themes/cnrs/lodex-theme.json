@@ -19,13 +19,25 @@
             "unite": {
                 "sigle": "sigle de l'unité de recherche",
                 "intitule": "nom de l'unité de recherche",
-                "url": "url de l'unité de recherche"
+                "siteWebUrl": "url de l'unité de recherche"
             },
-            "cotutelle": {
-                "logofile": "https://..site.../nomdufichierdulogo.extension",
-                "alt": "nom de la cotutelle",
-                "url": "",
-                "size": "100"
+            "cotutelle1": {
+                "logoTexteAlternatif": "nom de la cotutelle",
+                "siteWebUrl": "",
+                "logoFileUrl": "https://..site.../nomdufichierdulogo.extension",
+                "logoLargeur": ""
+            },
+            "cotutelle2": {
+                "logoTexteAlternatif": "",
+                "siteWebUrl": "",
+                "logoFileUrl": "",
+                "logoLargeur": ""
+            },
+            "cotutelle3": {
+                "logoTexteAlternatif": "",
+                "siteWebUrl": "",
+                "logoFileUrl": "",
+                "logoLargeur": ""
             }
             
         }
