@@ -162,7 +162,9 @@ export const getComputedFromWebservice = async (ctx: any) => {
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
 
-    const webServiceRetrieveURL = new URL(addSidToUrl(webServiceUrl, `lodex-${tenant}`));
+    const webServiceRetrieveURL = new URL(
+        addSidToUrl(webServiceUrl, `lodex-${tenant}`),
+    );
     webServiceRetrieveURL.pathname = path.join(
         path.dirname(webServiceRetrieveURL.pathname),
         RETRIEVE_ENTRY_POINT,
@@ -441,7 +443,10 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
             'X-Webhook-Failure': `${webhookBaseUrl}/webhook/compute_webservice/?precomputedId=${precomputedId}&tenant=${ctx.tenant}&jobId=${room}&failure`,
         },
     };
-    const webServicePrecomputedURL = addSidToUrl(precomputed.webServiceUrl, `lodex-${ctx.tenant}`);
+    const webServicePrecomputedURL = addSidToUrl(
+        precomputed.webServiceUrl,
+        `lodex-${ctx.tenant}`,
+    );
     logData = JSON.stringify({
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] 4/10 - Get Token from ${webServicePrecomputedURL}`,
