@@ -150,7 +150,7 @@ const RoutineCatalog = ({
             numeric: true,
             ignorePunctuation: true,
         });
-        // @ts-expect-error TS2345
+
         return formatedRoutineCatalog.sort((a, b) =>
             sorter.compare(a.title, b.title),
         );
