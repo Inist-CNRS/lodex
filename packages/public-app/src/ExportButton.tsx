@@ -50,19 +50,8 @@ interface ExportButtonProps {
     invertedFacets?: string[];
 }
 
-const getExportTooltip = (exportID: unknown) => {
-    const id = String(exportID).toLowerCase();
-
-    if (id.includes('full')) {
-        return 'Exporte l’ensemble des données des ressources, y compris celles non affichées sur les pages ressources mais utilisées pour certains traitements, visualisations ou enrichissements.';
-    }
-
-    if (id.includes('csv') || id.includes('tsv')) {
-        return 'Exporte uniquement les données issues des champs affichés sur les pages ressources.';
-    }
-
-    return '';
-};
+const getExportTooltip = (exportID: unknown, polyglot: any) =>
+    polyglot.t(`${String(exportID).toLowerCase()}-tooltip`);
 
 const ExportButton = ({
     exporters,
@@ -183,7 +172,7 @@ const ExportButton = ({
                     {exporters.map(({ exportID, label }) => (
                         <Tooltip
                             key={exportID}
-                            title={getExportTooltip(exportID)}
+                            title={getExportTooltip(exportID, polyglot)}
                             arrow
                             placement="right"
                         >
