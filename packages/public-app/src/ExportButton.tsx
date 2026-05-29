@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, Button, MenuItem } from '@mui/material';
+import { Menu, Button, MenuItem, Tooltip } from '@mui/material';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -49,6 +49,9 @@ interface ExportButtonProps {
     sort?: any;
     invertedFacets?: string[];
 }
+
+const getExportTooltip = (exportID: unknown, polyglot: any) =>
+    polyglot.t(`${String(exportID).toLowerCase()}-tooltip`);
 
 const ExportButton = ({
     exporters,
@@ -163,18 +166,28 @@ const ExportButton = ({
                     {/*
                      // @ts-expect-error TS2339 */}
                     <h3 className={styles.menuTitle}>{menuTitle}</h3>
+
                     {/*
                      // @ts-expect-error TS7031 */}
                     {exporters.map(({ exportID, label }) => (
-                        <ExportItem
+                        <Tooltip
                             key={exportID}
-                            // @ts-expect-error TS2322
-                            label={label}
-                            exportID={exportID}
-                            uri={uri}
-                            onClick={handleExport}
-                        />
+                            title={getExportTooltip(exportID, polyglot)}
+                            arrow
+                            placement="right"
+                        >
+                            <span style={{ display: 'block' }}>
+                                <ExportItem
+                                    // @ts-expect-error TS2322
+                                    label={label}
+                                    exportID={exportID}
+                                    uri={uri}
+                                    onClick={handleExport}
+                                />
+                            </span>
+                        </Tooltip>
                     ))}
+
                     {displayExportPDF && !isResourceExport && (
                         <MenuItem onClick={handleExportPDF}>PDF</MenuItem>
                     )}
