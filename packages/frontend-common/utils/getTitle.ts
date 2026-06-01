@@ -1,4 +1,4 @@
-import { getCleanHost } from '@lodex/common';
+import { cleanHost, getHost } from '@lodex/common';
 
 const HOST_REGEX = /https?:\/\/([\w-]+)/;
 
@@ -9,7 +9,7 @@ const HOST_REGEX = /https?:\/\/([\w-]+)/;
  */
 // @ts-expect-error TS7006
 export default (tenant, prefix) => {
-    const host = getCleanHost();
+    const host = cleanHost(getHost());
 
     /**
      * @type {string[]}

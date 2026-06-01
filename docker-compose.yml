@@ -2,7 +2,7 @@ version: '3'
 
 services:
     lodex:
-        image: cnrsinist/lodex:16.12.1
+        image: cnrsinist/lodex:16.12.2
         environment:
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
@@ -10,6 +10,7 @@ services:
             no_proxy: ${https_proxy}
             ROOT_LOGIN: ${ROOT_LOGIN}
             ROOT_PASSWORD: ${ROOT_PASSWORD}
+            PUBLIC_URL: ${PUBLIC_URL}
             PRECOMPUTED_URL: ${PRECOMPUTED_URL}
             # Prefix commun à toutes les instances,
             # équivalent du technical name avec ezmaste

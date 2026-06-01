@@ -19,9 +19,9 @@ import getLogger from '../logger';
 
 export const DATASET_COLLECTION = 'dataset';
 
-export const addSidToUrl = (url: string) => {
+export const addSidToUrl = (url: string, sid: string) => {
     const urlObj = new URL(url);
-    urlObj.searchParams.append('sid', 'lodex');
+    urlObj.searchParams.append('sid', sid);
     return urlObj.toString();
 };
 
@@ -89,9 +89,18 @@ export const createEnrichmentRule = async (ctx: any, enrichment: any) => {
         throw new Error(`Missing parameters`);
     }
 
+    const WEB_SERVICE_URL = addSidToUrl(
+        enrichment.webServiceUrl,
+        `lodex-${ctx.tenant}`,
+    );
     const source = getSource(ctx, enrichment.dataSource);
     const data = await getSourceData(source, enrichment.sourceColumn);
-    const rule = getEnrichmentRuleModel(data, enrichment, BATCH_SIZE);
+    const rule = getEnrichmentRuleModel(
+        data,
+        enrichment,
+        BATCH_SIZE,
+        WEB_SERVICE_URL,
+    );
 
     return {
         ...enrichment,
@@ -159,7 +168,8 @@ export const getEnrichmentDataPreview = async (ctx: any) => {
 export const getEnrichmentRuleModel = (
     sourceData: any,
     enrichment: any,
-    BATCH_SIZE: any,
+    BATCH_SIZE: number,
+    WEB_SERVICE_URL?: string,
 ) => {
     let rule;
     if (!enrichment.sourceColumn) {
@@ -179,13 +189,10 @@ export const getEnrichmentRuleModel = (
     rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
     rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
     rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
-    rule = rule.replace(/\[\[BATCH SIZE\]\]/g, BATCH_SIZE);
-    if (enrichment.webServiceUrl) {
+    rule = rule.replace(/\[\[BATCH SIZE\]\]/g, String(BATCH_SIZE));
+    if (WEB_SERVICE_URL) {
         rule = rule
-            .replace(
-                '[[WEB SERVICE URL]]',
-                addSidToUrl(enrichment.webServiceUrl),
-            )
+            .replace('[[WEB SERVICE URL]]', WEB_SERVICE_URL)
             .replace('[[WEB SERVICE TIMEOUT]]', config.get('timeout'));
     } else {
         rule = cleanWebServiceRule(rule);

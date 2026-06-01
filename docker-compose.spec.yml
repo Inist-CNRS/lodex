@@ -10,8 +10,8 @@ services:
             NODE_ENV: 'e2e'
             npm_config_cache: /app/.npm
             CYPRESS_CACHE_FOLDER: /app/.cache
-            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
-            EZMASTER_MONGODB_HOST_PORT: mongo:27017
+            PUBLIC_URL: ${PUBLIC_URL}
+            MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: 'true'
             REDIS_URL: 'redis://localhost:6379'
             WORKERS_URL: 'http://localhost:31976'

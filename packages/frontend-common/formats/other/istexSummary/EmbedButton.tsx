@@ -4,7 +4,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
 
 import ButtonWithDialog from '../../../components/ButtonWithDialog';
-import { getCleanHost } from '@lodex/common';
+import { cleanHost, getHost } from '@lodex/common';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 interface EmbedButtonProps {
@@ -35,7 +35,7 @@ const EmbedButton = ({ className, uri, fieldName }: EmbedButtonProps) => {
     };
 
     const renderDialog = () => {
-        const host = getCleanHost();
+        const host = cleanHost(getHost());
 
         return (
             <>
