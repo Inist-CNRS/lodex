@@ -6,7 +6,7 @@
         "en": "CNRS"
     },
     "description": {
-        "fr": "Thème CNRS (restreint)",
+        "fr": "Thème CNRS (restreint) ",
         "en": "CNRS theme (restricted)"
     },
     "configuration": {
@@ -15,6 +15,7 @@
             "palette": "cnrsTheme.js"
         },
         "variables": {
+            "information sur le thème": "la documentation du thème CNRS est disponible sur lodex.fr rubrique principales fonctionnalités > le thème > le thème restreint CNRS : https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/le-theme/theme-restreint-cnrs-nouveau/",
             "siteTitle": "Titre de l'étude",
             "unite": {
                 "sigle": "sigle de l'unité de recherche",
@@ -39,7 +40,6 @@
                 "logoFileUrl": "",
                 "logoLargeur": ""
             }
-            
         }
     }
 }
