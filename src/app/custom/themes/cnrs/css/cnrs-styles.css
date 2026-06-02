@@ -11,6 +11,11 @@
         padding: 0 4rem !important;
     }
 }
+@media (max-width: 1100px) {
+    header div.container {
+        flex-wrap: wrap;
+    }
+}
 @media only screen and (min-width: 481px) and (max-width: 793.9px) {
     h1 {
         font-size: 1.5rem;
@@ -90,23 +95,38 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    background-image: url('../img/bg_projets.jpg');
-    background-repeat: no-repeat;
+    position: relative;
+    background-image: url('../img/trames_cnrs_couleurs_7_resize_double_flou-x_qualite50.jpg');
+    background-repeat: repeat-x;
     background-position: top center;
-    opacity: 1;
-    gap: 0 !important;
-    background-size: contain;
+    background-size: auto;
+}
+body::before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-image: inherit;
+    background-repeat: inherit;
+    background-position: inherit;
+    background-size: inherit;
+    filter: blur(0px) brightness(100%) grayscale(0%);
+    z-index: -1;
 }
 /*header theme cnrs*/
 header {
     margin: 0;
     width: 100vw;
+    z-index: 1;
 }
 header div.container {
     display: flex;
     margin: 0 auto;
     padding: 1rem 0 0.2rem;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 1rem 7rem;
 }
 header div.container * {
     color: var(--primary-contrast-text);
@@ -123,12 +143,6 @@ header a.logo {
 }
 header a.cnrs img {
     height: 55px;
-}
-header a.cotutelle1,
-header a.cotutelle2,
-header a.cotutelle3 {
-    overflow: hidden;
-    width: 55px;
 }
 header a.cotutelle1 img,
 header a.cotutelle2 img,
@@ -158,7 +172,11 @@ header a.unite {
     line-height: normal;
 }
 header a.unite > span:first-child {
-    font-family: var(--font-texte) bold, Arial, Helvetica, sans-serif;
+    font-family:
+        var(--font-texte) bold,
+        Arial,
+        Helvetica,
+        sans-serif;
     font-size: 1.875rem;
 }
 header a.unite span.uniteIntitule {
@@ -275,6 +293,7 @@ footer p {
     padding-left: 1.6rem;
     padding-right: 1.6rem;
     background-color: white;
+    position: relative;
 }
 /*drawer entre header et nav fixed*/
 .drawer-drawerOpen {

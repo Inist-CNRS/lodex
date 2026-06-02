@@ -1,5 +1,10 @@
 /*lodex theme_inist lodex16*/
 /* MOBILE FIRST*/
+@media (max-width: 1100px) {
+    header div.container {
+        flex-wrap: wrap;
+    }
+}
 @media (min-width: 794px) {
     h1 {
         font-size: 1.7rem;
