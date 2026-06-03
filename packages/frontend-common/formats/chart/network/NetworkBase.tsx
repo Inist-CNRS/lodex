@@ -172,7 +172,7 @@ export const NetworkBase = ({
         width: 0,
         height: 0,
     });
-    const [cooldownTime, setCooldownTime] = useState(10000);
+    const [cooldownTime, setCooldownTime] = useState(1000);
     const [selectedNode, setSelectedNode] = useState<NodeObject | null>(null);
     const [hoveredNode, setHoveredNode] = useState<NodeObject | null>(null);
     const [x, setX] = useState(0);
@@ -255,7 +255,7 @@ export const NetworkBase = ({
     }, []);
 
     useEffect(() => {
-        setCooldownTime(10000);
+        setCooldownTime(1000);
         setSelectedNode(null);
         setHoveredNode(null);
     }, [nodes, links]);
@@ -343,13 +343,13 @@ export const NetworkBase = ({
         maxLinkSize,
     });
 
-    const handleResetZoom = () => {
+    const handleResetZoom = useCallback(() => {
         if (!fgRef.current) {
             return;
         }
 
         fgRef.current.zoomToFit(250);
-    };
+    }, []);
 
     const sortedGraphData = useMemo(() => {
         return {
@@ -581,6 +581,7 @@ export const NetworkBase = ({
                         <ForceGraph2D
                             ref={fgRef}
                             onZoomEnd={handleZoomEnd}
+                            onEngineStop={handleResetZoom}
                             width={width}
                             height={height}
                             graphData={sortedGraphData}
