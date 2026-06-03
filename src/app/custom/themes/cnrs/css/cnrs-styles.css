@@ -1,10 +1,5 @@
 /*lodex theme_inist lodex16*/
 /* MOBILE FIRST*/
-@media (max-width: 1100px) {
-    header div.container {
-        flex-wrap: wrap;
-    }
-}
 @media (min-width: 794px) {
     h1 {
         font-size: 1.7rem;
@@ -14,6 +9,11 @@
     }
     div.dataset-characteristics > div > div.property:nth-child(2) {
         padding: 0 4rem !important;
+    }
+}
+@media (max-width: 1100px) {
+    header div.container {
+        flex-wrap: wrap;
     }
 }
 @media only screen and (min-width: 481px) and (max-width: 793.9px) {
@@ -95,51 +95,70 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    background-image: url('../img/bg_projets.jpg');
-    background-repeat: no-repeat;
-    background-position: top center;
-    opacity: 1;
-    gap: 0 !important;
-    background-size: contain;
-}
-/*header theme inist*/
-header {
     position: relative;
-    margin: 0;
+    background-image: url('../img/trames_cnrs_couleurs_7_resize_double_flou-x_qualite50.jpg');
+    background-repeat: repeat-x;
+    background-position: top center;
+    background-size: auto;
+}
+body::before {
+    content: ' ';
+    position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-image: inherit;
+    background-repeat: inherit;
+    background-position: inherit;
+    background-size: inherit;
+    filter: blur(0px) brightness(100%) grayscale(0%);
     z-index: -1;
+}
+/*header theme cnrs*/
+header {
+    margin: 0;
     width: 100vw;
+    z-index: 1;
 }
 header div.container {
     display: flex;
     margin: 0 auto;
     padding: 1rem 0 0.2rem;
-    gap: 10%;
+    justify-content: flex-start;
+    gap: 1rem 7rem;
 }
 header div.container * {
     color: var(--primary-contrast-text);
 }
-header div#logos {
+header div#Editeurs {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: max-content;
 }
-header a.logocnrs {
+header a.logo {
     height: 56px;
-    padding-right: 30px;
+    margin-right: 27.5px;
 }
-header a.logocnrs img {
+header a.cnrs img {
     height: 55px;
 }
-header a.logoinist {
+header a.cotutelle1 img,
+header a.cotutelle2 img,
+header a.cotutelle3 img {
+    height: 55px;
+    min-width: 55px;
+}
+header a.unite {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    width: 240px;
+    min-width: 240px;
+    max-width: 350px;
 }
 /*header font decoration*/
 header a.logo,
@@ -148,21 +167,25 @@ header a:focus.logo,
 header a:active.logo {
     text-decoration: none;
 }
-header a.logoinist {
+header a.unite {
     font-size: 0.8125rem;
     line-height: normal;
 }
-header a.logoinist > span:first-child {
-    font-family: Satoshi-Bold, Arial, Helvetica, sans-serif;
+header a.unite > span:first-child {
+    font-family:
+        var(--font-texte) bold,
+        Arial,
+        Helvetica,
+        sans-serif;
     font-size: 1.875rem;
 }
-header a.logoinist span.inist {
-    font-family: Satoshi-Regular, Arial, Helvetica, sans-serif;
+header a.unite span.uniteIntitule {
+    font-family: var(--font-texte), Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
-header a.logoinist > span:first-child::after {
+header a.unite > span:first-child::after {
     content: '|';
-    font-family: Satoshi-Regular, Arial, Helvetica, sans-serif;
+    font-family: var(--font-texte), Arial, Helvetica, sans-serif;
     font-weight: normal;
     opacity: 0.8;
     padding-left: 0.5rem;
@@ -172,53 +195,13 @@ header a.logoinist > span:first-child::after {
 header #logos, header #titre_lodex/*,
 .breadcrumb-trail a[href*="https"]*/ {
     background-color: var(--fondsemiopaque);
-    box-shadow: 0px 0px 10px rgba(24, 20, 79, 0.9);
 }
-/*footer theme inist*/
+/*footer theme cnrs*/
 footer {
     flex-grow: 0;
     flex-shrink: 0;
     margin-bottom: 90px;
     background-color: #fff;
-}
-footer ul.container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-left: 1.6rem !important;
-    padding-right: 1.6rem !important;
-    margin: 5px auto;
-}
-footer ul li {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    list-style: none;
-    padding: 7px 30px;
-    margin: 15px 0;
-}
-footer li a,
-footer li a:is(:hover, :focus, :active) {
-    font-family: var(--font-texte);
-    font-size: 18px;
-    border-bottom: 1px solid var(--info-main);
-    color: #434148;
-    text-decoration: none;
-    width: max-content;
-}
-footer li a[href*='https']::after {
-    background-image: url('../img/external-link-alt_gris.svg');
-}
-footer li#lodex::before {
-    width: 30px;
-    height: 30px;
-    content: ' ';
-    background: #fff left center no-repeat scroll url('/favicon.ico');
-    background-size: contain;
 }
 footer p {
     text-align: center;
@@ -310,6 +293,7 @@ footer p {
     padding-left: 1.6rem;
     padding-right: 1.6rem;
     background-color: white;
+    position: relative;
 }
 /*drawer entre header et nav fixed*/
 .drawer-drawerOpen {

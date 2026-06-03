@@ -1,0 +1,45 @@
+{
+    "version": "7",
+    "licence": "All Right Reserved",
+    "name": {
+        "fr": "CNRS",
+        "en": "CNRS"
+    },
+    "description": {
+        "fr": "Thème CNRS (restreint) ",
+        "en": "CNRS theme (restricted)"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": "cnrsTheme.js"
+        },
+        "variables": {
+            "information sur le thème": "la documentation du thème CNRS est disponible sur lodex.fr rubrique principales fonctionnalités > le thème > le thème restreint CNRS : https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/le-theme/theme-restreint-cnrs-nouveau/",
+            "siteTitle": "Titre de l'étude",
+            "unite": {
+                "sigle": "sigle de l'unité de recherche",
+                "intitule": "nom de l'unité de recherche",
+                "siteWebUrl": "url de l'unité de recherche"
+            },
+            "cotutelle1": {
+                "logoTexteAlternatif": "nom de la cotutelle",
+                "siteWebUrl": "",
+                "logoFileUrl": "https://..site.../nomdufichierdulogo.extension",
+                "logoLargeur": ""
+            },
+            "cotutelle2": {
+                "logoTexteAlternatif": "",
+                "siteWebUrl": "",
+                "logoFileUrl": "",
+                "logoLargeur": ""
+            },
+            "cotutelle3": {
+                "logoTexteAlternatif": "",
+                "siteWebUrl": "",
+                "logoFileUrl": "",
+                "logoLargeur": ""
+            }
+        }
+    }
+}

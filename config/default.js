@@ -70,6 +70,7 @@ module.exports = {
         'void',
         'nougat',
         'inist',
+        'cnrs',
         'hal-cnrs',
         'istex',
         'istex-legacy',
