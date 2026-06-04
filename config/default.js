@@ -58,6 +58,7 @@ module.exports = {
         encoding: '',
     },
     timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
+    streaming: true, // Connexion à un web service via un mode streaming ou non
     alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, baseURL is used
     activateBullDashboard: false,
     mail: {

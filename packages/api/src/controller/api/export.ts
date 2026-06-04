@@ -147,7 +147,7 @@ const middlewareScript = (isFormatExporters = false) => {
         [URLConnect]
         url = ${workers_url}
         timeout = ${config.get('timeout')}
-        streaming = true,
+        streaming = ${config.get('streaming')},
         json = false
         encoder = pack
 
