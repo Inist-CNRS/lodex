@@ -98,7 +98,7 @@ const middlewareScript = async (
         url = ${workers_url}
         // @ts-expect-error TS(2304): Cannot find name 'Number'.
         timeout = ${config.get('timeout')}
-        streaming = true,
+        streaming = ${config.get('streaming')}
         json = false
         encoder = pack
 

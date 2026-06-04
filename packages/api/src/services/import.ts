@@ -26,7 +26,7 @@ export const getLoader =
             .pipe(
                 ezs('URLConnect', {
                     url: `${config.get('ezs.url')}/loaders/${loaderName}?${env2query}`,
-                    streaming: true,
+                    streaming: config.get('streaming'),
                     timeout: config.get('timeout'),
                     json: false,
                     encoder: 'transit',
