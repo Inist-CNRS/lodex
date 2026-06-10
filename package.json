@@ -87,7 +87,7 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
         "@ezs/analytics": "2.3.8",
-        "@ezs/basics": "2.12.1",
+        "@ezs/basics": "2.13.0",
         "@ezs/conditor": "2.14.1",
         "@ezs/core": "4.2.4",
         "@ezs/istex": "1.5.12",
