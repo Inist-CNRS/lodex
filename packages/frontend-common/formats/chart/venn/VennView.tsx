@@ -9,14 +9,26 @@ import MouseIcon from '../../utils/components/MouseIcon';
 import VennDiagram from './VennDiagram';
 
 const styles = {
+    wrapper: {
+        width: '100%',
+        height: 'min(70vh, 600px)',
+        minHeight: '350px',
+        position: 'relative',
+    },
     container: {
         overflow: 'hidden',
         userSelect: 'none',
         width: '100%',
         height: '100%',
-        maxHeight: typeof window !== 'undefined' ? window.innerHeight - 96 : 0,
+        position: 'relative',
     },
-};
+    mouseIcon: {
+        position: 'absolute',
+        right: 8,
+        top: 8,
+        zIndex: 2,
+    },
+} as const;
 
 interface VennProps {
     colorSet?: string[];
@@ -25,6 +37,7 @@ interface VennProps {
 
 const Venn = ({ formatData, colorSet }: VennProps) => {
     const { translate } = useTranslate();
+
     const [{ width, height }, setDimensions] = useState({
         width: 0,
         height: 0,
@@ -32,14 +45,17 @@ const Venn = ({ formatData, colorSet }: VennProps) => {
 
     // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
-        if (!node) return;
+        if (!node) {
+            return;
+        }
+
         const resizeObserver = new ResizeObserver(() => {
-            if (node)
-                setDimensions({
-                    width: node.clientWidth,
-                    height: node.clientHeight,
-                });
+            setDimensions({
+                width: node.clientWidth,
+                height: node.clientHeight,
+            });
         });
+
         resizeObserver.observe(node);
     }, []);
 
@@ -49,28 +65,30 @@ const Venn = ({ formatData, colorSet }: VennProps) => {
                 input: [],
             };
         }
+
         return {
             input: formatData.map((x) => x),
         };
     }, [formatData]);
 
     return (
-        <div style={{ height: `500px` }}>
+        <div style={styles.wrapper}>
             <FormatFullScreenMode forceRerenderOnToggle>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
                         <VennDiagram
                             input={input}
-                            width={width}
-                            height={height}
+                            width={Math.max(width - 40, 0)}
+                            height={Math.max(height - 40, 0)}
                             colorSet={colorSet}
                         />
                     </Suspense>
-                    <div>{<MouseIcon />}</div>
+
+                    <div style={styles.mouseIcon}>
+                        <MouseIcon />
+                    </div>
                 </div>
             </FormatFullScreenMode>
         </div>
