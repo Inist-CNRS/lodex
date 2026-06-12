@@ -329,6 +329,9 @@ delete = true
 
 [unpack]
 
+[breaker]
+fusible = ${fusible}
+
 ${enrichment.rule}
 
 [catch]
