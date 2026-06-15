@@ -70,10 +70,17 @@ export default async function paginateQuery(this: any, data: any, feed: any) {
     const referer = this.getParam('referer', data.referer);
     const filter = this.getParam('filter', data.filter || {});
     filter.removedAt = { $exists: false };
-    const maxTimeMS = Number(this.getParam('maxTimeMS', data.maxTimeMS || 0)) || undefined;
+    const maxTimeMS =
+        Number(this.getParam('maxTimeMS', data.maxTimeMS || 0)) || undefined;
     const sortOn = this.getParam('sortOn', data.sortOn) as string | undefined;
-    const sortOrder = this.getParam('sortOrder', data.sortOrder) as 'asc' | 'desc' | undefined;
-    const field = this.getParam('field', data.field || data.$field || undefined);
+    const sortOrder = this.getParam('sortOrder', data.sortOrder) as
+        | 'asc'
+        | 'desc'
+        | undefined;
+    const field = this.getParam(
+        'field',
+        data.field || data.$field || undefined,
+    );
     const collectionName = String(
         this.getParam('collection', data.collection || 'publishedDataset'),
     );
@@ -81,7 +88,10 @@ export default async function paginateQuery(this: any, data: any, feed: any) {
     const fields = fds.filter(Boolean) as string[];
     const limit = Number(this.getParam('limit', data.limit || 1000000));
     const skip = Number(this.getParam('skip', data.skip || 0));
-    const projection = zipObject(fields, Array(fields.length).fill(true)) as Record<string, boolean>;
+    const projection = zipObject(
+        fields,
+        Array(fields.length).fill(true),
+    ) as Record<string, boolean>;
     const connectionStringURI = this.getParam(
         'connectionStringURI',
         data.connectionStringURI || this.getEnv('connectionStringURI'),
@@ -90,7 +100,10 @@ export default async function paginateQuery(this: any, data: any, feed: any) {
     const db = await mongoDatabase(connectionStringURI);
     const collection = db.collection(collectionName);
 
-    const total = await collection.countDocuments(filter, maxTimeMS ? { maxTimeMS } : {});
+    const total = await collection.countDocuments(
+        filter,
+        maxTimeMS ? { maxTimeMS } : {},
+    );
     if (total === 0) {
         return feed.send({ total: 0 });
     }
@@ -103,7 +116,17 @@ export default async function paginateQuery(this: any, data: any, feed: any) {
     }
 
     const stream = Readable.from(
-        paginateCursor(collection, filter, limit, skip, fields, projection, sortOn, sortOrder, maxTimeMS),
+        paginateCursor(
+            collection,
+            filter,
+            limit,
+            skip,
+            fields,
+            projection,
+            sortOn,
+            sortOrder,
+            maxTimeMS,
+        ),
     )
         .on('error', (e: any) => feed.stop(e))
         .pipe(ezs('assign', { path, value }));
