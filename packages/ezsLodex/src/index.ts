@@ -75,6 +75,7 @@ const funcs = {
     LodexGetCharacteristics: getCharacteristics.getCharacteristics,
     LodexDocuments: runQuery.runQuery,
     LodexEnsureIndex: ensureIndex,
+    LodexRunQuery: runQuery.runQuery,
     LodexRunQueryPrecomputed: runQueryPrecomputed.runQueryPrecomputed,
     LodexReduceQuery: reduceQuery.reduceQuery,
     LodexOutput: formatOutput.formatOutput,
