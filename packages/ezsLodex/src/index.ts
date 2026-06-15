@@ -25,6 +25,7 @@ import precomputedSelect from './precomputedSelect.js';
 import ensureIndex from './ensureIndex.js';
 import reduceQuery from './reduceQuery.js';
 import runQuery from './runQuery.js';
+import paginateQuery from './paginateQuery.js';
 import runQueryPrecomputed from './runQueryPrecomputed.js';
 import saveDocuments from './saveDocuments.js';
 import updateDocument from './updateDocument.js';
@@ -52,6 +53,7 @@ const funcs = {
     labelizeFieldID,
     ensureIndex,
     runQuery,
+    paginateQuery,
     runQueryPrecomputed,
     reduceQuery,
     formatOutput,

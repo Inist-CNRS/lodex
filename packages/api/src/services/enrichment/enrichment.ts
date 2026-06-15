@@ -302,7 +302,7 @@ const processEnrichmentPipeline = (
 [use]
 plugin = lodex
 
-[LodexRunQuery]
+[paginateQuery]
 collection = fix(${JSON.stringify(source.collectionName)})
 
 [breaker]
@@ -314,20 +314,6 @@ value = get(${JSON.stringify(source.idField)})
 
 path = value
 value = self()
-
-[pack]
-
-[FILESave]
-compress = true
-
-[exchange]
-value = get('filename')
-
-[FILELoad]
-compress = true
-delete = true
-
-[unpack]
 
 ${enrichment.rule}
 
