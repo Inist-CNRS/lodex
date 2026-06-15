@@ -304,7 +304,7 @@ plugin = lodex
 
 [paginateQuery]
 collection = fix(${JSON.stringify(source.collectionName)})
-[debug]
+
 [breaker]
 fusible = ${fusible}
 
