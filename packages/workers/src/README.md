@@ -33,6 +33,6 @@ On peut créer ou modifier des **workers** existants en suivant la structure exi
 Pour créer un `worker` il convient de :
 - Déposer le fichier `ini` dans le dossier adéquat.
 - Déclarer le nouveau `worker` dans le fichier (`translations`)[https://github.com/Inist-CNRS/lodex/blob/master/src/app/custom/translations.tsv] avec son nom, sa description en anglais et en français.
-- Déclarer le nouveau `worker` dans le fichier de configuration.
+- Déclarer le nouveau `worker` dans le fichier de configuration (config/default.js)[https://github.com/Inist-CNRS/lodex/blob/master/config/default.js] afin qu'il soit disponible dans l'interface d'administration..
 
 ! D'autres modifications peuvent êtres nécessaires, notament pour les `exporters`.
