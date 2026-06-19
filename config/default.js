@@ -134,6 +134,7 @@ module.exports = {
             'csv',
             'csv-semicolon',
             'csv-comma',
+            'csv-hal2lodex',
             'tsv',
             'tsv-double-quotes',
             'tsv-wos',
