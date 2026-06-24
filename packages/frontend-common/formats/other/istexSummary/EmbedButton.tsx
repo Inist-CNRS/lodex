@@ -41,7 +41,7 @@ const EmbedButton = ({ className, uri, fieldName }: EmbedButtonProps) => {
             <>
                 <p>{translate('embed_step_head')}</p>
                 <pre>
-                    {`<script src="${host}/embeddedIstexSummary.js" defer></script>`}
+                    {`<script type="module" src="${host}/embeddedIstexSummary.js" defer></script>`}
                 </pre>
                 <p>{translate('embed_step_div')}</p>
                 <pre>
