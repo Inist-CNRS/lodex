@@ -100,11 +100,31 @@ const LeafletView = ({
                         // @ts-expect-error TS18046
                         typeof x._id === 'string' &&
                         // @ts-expect-error TS18046
-                        typeof x.value === 'object'
+                        typeof x.value === 'object' &&
+                        // @ts-expect-error TS18046
+                        x.value.lat &&
+                        // @ts-expect-error TS18046
+                        x.value.lnt
                     ) {
                         // Exemple : { "_id": "FRANCE" , "value": {lat: "39.5015541259931", lnt:"-99.0602406280213"} }
                         // @ts-expect-error TS18046
-                        a = [x.value];
+                        a = [[x.value.lat, x.value.lnt]];
+                        // @ts-expect-error TS18046
+                        b = [x._id];
+                    }
+                    if (
+                        // @ts-expect-error TS18046
+                        typeof x._id === 'string' &&
+                        // @ts-expect-error TS18046
+                        typeof x.value === 'object' &&
+                        // @ts-expect-error TS18046
+                        x.value.latitude &&
+                        // @ts-expect-error TS18046
+                        x.value.longitude
+                    ) {
+                        // Exemple : { "_id": "FRANCE" , "value": {latitude: "39.5015541259931", longitude:"-99.0602406280213"} }
+                        // @ts-expect-error TS18046
+                        a = [[x.value.latitude, x.value.longitude]];
                         // @ts-expect-error TS18046
                         b = [x._id];
                     }
@@ -116,11 +136,35 @@ const LeafletView = ({
                         // @ts-expect-error TS18046
                         b = [x.value];
                     }
-                    // @ts-expect-error TS18046
-                    if (typeof x._id === 'object') {
+                    if (
+                        // @ts-expect-error TS18046
+                        typeof x._id === 'object' &&
+                        // @ts-expect-error TS18046
+                        x._id.lat &&
+                        // @ts-expect-error TS18046
+                        x._id.lnt &&
+                        // @ts-expect-error TS18046
+                        typeof x.value === 'string'
+                    ) {
                         // Exemple : { "_id":  {lat: "39.5015541259931", lnt:"-99.0602406280213"}, "value": "FRANCE" }
                         // @ts-expect-error TS18046
-                        a = [x._id];
+                        a = [[x._id.lat, x._id.lnt]];
+                        // @ts-expect-error TS18046
+                        b = [x.value];
+                    }
+                    if (
+                        // @ts-expect-error TS18046
+                        typeof x._id === 'object' &&
+                        // @ts-expect-error TS18046
+                        x._id.latitude &&
+                        // @ts-expect-error TS18046
+                        x._id.longitude &&
+                        // @ts-expect-error TS18046
+                        typeof x.value === 'string'
+                    ) {
+                        // Exemple : { "_id":  {latitude: "39.5015541259931", longitude:"-99.0602406280213"}, "value": "FRANCE" }
+                        // @ts-expect-error TS18046
+                        a = [[x._id.latitude, x._id.longitude]];
                         // @ts-expect-error TS18046
                         b = [x.value];
                     }
@@ -160,20 +204,6 @@ const LeafletView = ({
                     txt,
                     lat: Number(latlng[0]),
                     lng: Number(latlng[1]),
-                };
-            }
-            if (latlng.lng && latlng.lat) {
-                return {
-                    txt,
-                    lat: Number(latlng.lat),
-                    lng: Number(latlng.lng),
-                };
-            }
-            if (latlng.longitude && latlng.latitude) {
-                return {
-                    txt,
-                    lat: Number(latlng.latitude),
-                    lng: Number(latlng.longitude),
                 };
             }
             return {};
