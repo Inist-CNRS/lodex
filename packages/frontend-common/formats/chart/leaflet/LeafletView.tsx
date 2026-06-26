@@ -70,25 +70,57 @@ const LeafletView = ({
                     let a = x._id;
                     // @ts-expect-error TS18046
                     let b = x.value;
-                    // @ts-expect-error TS2304
-                    if (typeof _id === 'string') {
+                    if (
                         // @ts-expect-error TS18046
-                        a = [x._id]; // '["39.5015541259931","-99.0602406280213"]'
+                        typeof x._id === 'string' &&
+                        // @ts-expect-error TS18046
+                        typeof x.value === 'string'
+                    ) {
+                        // Exemple : { "_id": "39.5015541259931", "value": "-99.0602406280213"] }
+                        // @ts-expect-error TS18046
+                        a = [[x._id, x.value]];
+                        // @ts-expect-error TS18046
+                        b = [[x._id, x.value]];
+                    }
+                    if (
+                        // @ts-expect-error TS18046
+                        typeof x._id === 'string' &&
+                        // @ts-expect-error TS18046
+                        Array.isArray(x.value) &&
+                        // @ts-expect-error TS18046
+                        x.value.length === 2
+                    ) {
+                        // Exemple : { "_id": "FRANCE" , "value": ["39.5015541259931","-99.0602406280213"] }
+                        // @ts-expect-error TS18046
+                        a = [x.value];
+                        // @ts-expect-error TS18046
+                        b = [x._id];
+                    }
+                    if (
+                        // @ts-expect-error TS18046
+                        typeof x._id === 'string' &&
+                        // @ts-expect-error TS18046
+                        typeof x.value === 'object'
+                    ) {
+                        // Exemple : { "_id": "FRANCE" , "value": {lat: "39.5015541259931", lnt:"-99.0602406280213"} }
+                        // @ts-expect-error TS18046
+                        a = [x.value];
+                        // @ts-expect-error TS18046
+                        b = [x._id];
                     }
                     // @ts-expect-error TS18046
                     if (Array.isArray(x._id) && x._id.length === 2) {
-                        // example: [46.123, 23.344]
+                        // Exemple : { "_id": ["39.5015541259931","-99.0602406280213"], "value": "FRANCE" }
                         // @ts-expect-error TS18046
                         a = [x._id];
+                        // @ts-expect-error TS18046
+                        b = [x.value];
                     }
                     // @ts-expect-error TS18046
-                    if (!Array.isArray(x._id)) {
-                        // example: { lat: 46.123, lnt : 23.344 }
+                    if (typeof x._id === 'object') {
+                        // Exemple : { "_id":  {lat: "39.5015541259931", lnt:"-99.0602406280213"}, "value": "FRANCE" }
                         // @ts-expect-error TS18046
                         a = [x._id];
-                    }
-                    // @ts-expect-error TS18046
-                    if (!Array.isArray(x.value)) {
                         // @ts-expect-error TS18046
                         b = [x.value];
                     }
@@ -101,65 +133,70 @@ const LeafletView = ({
                     return zip(y.a, y.b);
                 }),
         );
-        return {
-            input: formatDataNormalized.map(([_id, value]) => {
-                let latlng; // see https://leafletjs.com/reference.html#latlng
-                try {
-                    latlng = typeof _id === 'string' ? JSON.parse(_id) : _id;
-                } catch (e) {
-                    console.warn('Unable to parse latlng', e);
-                }
-                if (!latlng) {
-                    return {};
-                }
-                let txt;
+        const input = formatDataNormalized.map(([_id, value]) => {
+            let latlng; // see https://leafletjs.com/reference.html#latlng
+            try {
+                latlng = typeof _id === 'string' ? JSON.parse(_id) : _id;
+            } catch (e) {
+                console.warn('Unable to parse latlng', e);
+            }
+            if (!latlng && !value) {
+                return {};
+            }
+            let txt;
+            if (!latlng && value) {
+                latlng = value;
+                txt = _id;
+            }
+            if (!txt) {
                 if (typeof value === 'number') {
                     txt = `${value} ${translate('document_tooltip')}(s)`;
                 } else {
                     txt = String(value);
                 }
-                if (Array.isArray(latlng)) {
-                    return {
-                        txt,
-                        lat: Number(latlng[0]),
-                        lng: Number(latlng[1]),
-                    };
-                }
-                if (latlng.lng && latlng.lat) {
-                    return {
-                        txt,
-                        lat: Number(latlng.lat),
-                        lng: Number(latlng.lng),
-                    };
-                }
-                if (latlng.longitude && latlng.latitude) {
-                    return {
-                        txt,
-                        lat: Number(latlng.latitude),
-                        lng: Number(latlng.longitude),
-                    };
-                }
-                return {};
-            }),
+            }
+            if (Array.isArray(latlng)) {
+                return {
+                    txt,
+                    lat: Number(latlng[0]),
+                    lng: Number(latlng[1]),
+                };
+            }
+            if (latlng.lng && latlng.lat) {
+                return {
+                    txt,
+                    lat: Number(latlng.lat),
+                    lng: Number(latlng.lng),
+                };
+            }
+            if (latlng.longitude && latlng.latitude) {
+                return {
+                    txt,
+                    lat: Number(latlng.latitude),
+                    lng: Number(latlng.longitude),
+                };
+            }
+            return {};
+        });
+        return {
+            input,
         };
     }, [formatData, translate]);
-
     if (!mounted) {
         return <Loading>{translate('loading')}</Loading>;
     }
     return (
         <div style={{ height }}>
             {/*
-             // @ts-expect-error TS2559 */}
+                // @ts-expect-error TS2559 */}
             <ClientOnly>
                 {/*
-                 // @ts-expect-error TS2322 */}
+                        // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
                         <LazyMap
-                            // @ts-expect-error TS2322
                             input={input}
                             width={width}
                             height={height}
