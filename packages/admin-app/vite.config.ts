@@ -84,6 +84,8 @@ export default defineConfig(({ mode }) => {
                 'react',
                 'react-dom',
                 'lodash',
+                'leaflet',
+                '@changey/react-leaflet-markercluster',
                 '@mui/material',
                 '@mui/icons-material',
             ],

@@ -76,6 +76,7 @@ export default defineConfig(({ mode }) => {
             __FR__: JSON.stringify(translations.getByLanguage('french')),
             LOADERS: JSON.stringify(loaders),
             'process.env.NODE_ENV': JSON.stringify(mode),
+            __VITE_PORT__: JSON.stringify(isDevelopment ? String(port) : null),
         },
 
         css: {
@@ -89,6 +90,8 @@ export default defineConfig(({ mode }) => {
                 'react',
                 'react-dom',
                 'lodash',
+                'leaflet',
+                '@changey/react-leaflet-markercluster',
                 '@mui/material',
                 '@mui/icons-material',
             ],
