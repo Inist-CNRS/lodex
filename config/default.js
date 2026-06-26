@@ -138,6 +138,7 @@ module.exports = {
             'tsv',
             'tsv-double-quotes',
             'tsv-wos',
+            'txt-wos',
             'rdf',
             'skos',
             'json',
