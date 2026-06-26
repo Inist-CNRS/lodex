@@ -52,8 +52,8 @@ start-dist: run ## alias of make run-dist
 ## Deploy =================================================================
 
 publish: build-prod  ## publish version to docker hub
-	docker build -t cnrsinist/lodex:16.12.6 --build-arg http_proxy --build-arg https_proxy .
-	docker push cnrsinist/lodex:16.12.6
+	docker build -t cnrsinist/lodex:16.12.7 --build-arg http_proxy --build-arg https_proxy .
+	docker push cnrsinist/lodex:16.12.7
 
 ## Local Production Mode =================================================================
 
