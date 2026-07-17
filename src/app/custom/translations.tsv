@@ -1532,6 +1532,7 @@
 "precomputed_cancel_success"	"Precomputation successfully cancelled"	"Précalcul annulé avec succés"
 "recenter_graph"	"Recenter graph"	"Recentrer le graphique"
 "network_display_different_shape"	"Display nodes with different shapes according to their source (cross-by)"	"Afficher les noeuds avec des formes différentes selon leur source (cross-by)"
+"json-tooltip"	"Exports resource data in JavaScript Object Notation format."	"Exporte les données des ressources au format JSON (JavaScript Object Notation)."
 "csv-tooltip"	"Exports only data from fields visible on resource pages."	"Exporte uniquement les données issues des champs affichés sur les pages ressources."
 "tsv-tooltip"	"Exports only data from fields visible on resource pages."	"Exporte uniquement les données issues des champs affichés sur les pages ressources."
 "csv-full-tooltip"	"Exports all resource data, including fields not displayed on resource pages but used for processing, visualizations, or enrichments."	"Exporte l’ensemble des données des ressources, y compris celles non affichées sur les pages ressources mais utilisées pour certains traitements, visualisations ou enrichissements."
