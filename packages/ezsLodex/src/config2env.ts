@@ -14,7 +14,7 @@ export default function config2env(this: any, data: any, feed: any) {
     }
     if (this.isFirst()) {
         const envar = this.getEnv();
-        const paths = Array().concat(this.getParam('path', []));
+        const paths = [].concat(this.getParam('path', []));
         paths.forEach((cur) => {
             if (config.has(cur)) {
                 set(envar, cur, config.get(cur));
