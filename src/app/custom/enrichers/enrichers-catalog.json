@@ -319,6 +319,14 @@
         "objectifTDM": "https://services.istex.fr/classification-de-documents-openalex-par-type-de-document/",
         "type": "classification"
     },
+            {
+        "id": "post-v1-classif",
+        "url": "https://openalex-classification.services.istex.fr/v1/classif",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/openalex-classification",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=openalex-classification%20-%20Classification%20hi%C3%A9rarchique%20(domains%20et%20fields)%20Openalex#/openalex-classification/post_v1_classif",
+        "objectifTDM": "https://services.istex.fr/classification-en-domaines-scientifiques-openalex/",
+        "type": "classification"
+    },
     {
         "id": "post-v1-en-classify-3",
         "url": "https://domains-classifier.services.istex.fr/v1/en/classify",
