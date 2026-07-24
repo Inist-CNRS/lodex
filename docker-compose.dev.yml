@@ -1,5 +1,3 @@
-version: '3'
-
 services:
     api:
         image: node:24.13-slim
@@ -18,14 +16,14 @@ services:
             PUBLIC_URL: ${PUBLIC_URL}
             REDIS_URL: 'redis://redis.lodex-net:6379'
             WORKERS_URL: 'http://workers.lodex-net:31976'
-            MONGODB_URI: 'mongodb://mongo.lodex-net:27017/lodex'
+            MONGODB_URI: 'mongodb://mongo.lodex-net:27017/lodex?directConnection=true&serverSelectionTimeoutMS=5000'
             MAILER_HOST: 'maildev.lodex-net:1025'
             PRECOMPUTED_URL: 'http://api.lodex-net:3000'
             CI: ${CI}
         networks:
             - lodex-net
         depends_on:
-            - mongod
+            - mongo
             - redis
             - workers
             - maildev
@@ -58,44 +56,15 @@ services:
                     cpus: '2'
                     memory: 4G
 
-    mongod:
-        image: mongodb/mongodb-community-server:8.2.3-ubi9
-        command: >-
-             mongod
-             --config /etc/mongod.conf
-             --replSetMember=mongod.lodex-net:27017
+    mongo:
+        image: inistcnrs/ezmaster-mongot:1.67.1-7
         ports:
             - "27017:27017"
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        volumes:
-            - mongod_data:/data/db
-            - ./etc/mongod.conf:/etc/mongod.conf:ro
-            - ./bin/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
-        networks:
-            - lodex-net
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 1G
-    mongot:
-        image: mongodb/mongodb-community-search:latest
-        entrypoint:
-            - /mongot-community/mongot
-            - --config=/mongot-community/config.default.yml
-            - --internalListAllIndexesForTesting=true
         networks:
             - lodex-net
         volumes:
-            - mongot_data:/data/mongot
-            - ./etc/mongot.conf:/mongot-community/config.default.yml
-            - ./etc/pwfile:/mongot-community/pwfile:ro
-        depends_on:
-            - mongod
-        ports:
-            - 27028:27028  # Query server port from config
-            - 9946:9946    # Metrics port from config
+            - lodex_mongot-7_data:/data
+
     redis:
         image: redis:6
         ports:
@@ -107,6 +76,7 @@ services:
                 limits:
                     cpus: '1'
                     memory: 1G
+
     workers:
         image: node:24.13-slim
         extra_hosts:  # for linux hosts since version 20.10
@@ -134,7 +104,7 @@ services:
             - lodex-net
         command: npm run production:workers
         depends_on:
-            - mongod
+            - mongo
         deploy:
             resources:
                 limits:
@@ -147,10 +117,9 @@ services:
             - "1025:1025"
         networks:
             - lodex-net
-volumes:
-    mongod_data:
-    mongot_data:
-
 networks:
     lodex-net:
         name: lodex-net
+volumes:
+    lodex_mongot-7_data:
+        name: lodex_mongot-7_data
