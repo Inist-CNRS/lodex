@@ -10,6 +10,7 @@ const isIndexExist = false;
  * the connection string to MongoDB.
  *
  * @name LodexRunVSearchPrecomputed
+ * @param {string}  [precomputedName] precomputed user name
  * @param {Object}  [valueFieldName=value] field to use as value
  * @param {Object}  [labelFieldName=id] field to use as label
  * @returns {Object}
@@ -36,7 +37,7 @@ export default async function LodexRunVSearchPrecomputed(
         queryVector = [],
     } = data;
 
-    const collectionName = `pc_${precomputedId}`;
+
     const fds = Array.isArray(field) ? field : [field];
     const fields = fds.filter(Boolean);
     const projection = zipObject(fields, Array(fields.length).fill(true));
@@ -66,6 +67,12 @@ export default async function LodexRunVSearchPrecomputed(
     }
 
     const db = await mongoDatabase(connectionStringURI);
+
+    const collectionPrecomputed = db.collection('precomputed');
+    const document = await collectionPrecomputed.findOne({ name: this.getParam('precomputedName') });
+
+    const collectionName = `pc_${document ? document._id : precomputedId}`;
+
     const collection = db.collection(collectionName);
     unset(filterDocuments, '$text');
 

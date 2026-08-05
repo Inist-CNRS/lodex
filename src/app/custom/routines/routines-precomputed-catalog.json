@@ -33,6 +33,12 @@
         "id": "r-vsearch-precomputed",
         "url": "/api/run/vsearch-precomputed/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
-        "recommendedWith": []
+        "recommendedWith": ["ResourceGrid"]
+    },
+    {
+        "id": "r-vsimilar-precomputed",
+        "url": "/api/run/vsimilar-precomputed/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
+        "recommendedWith": ["ResourceGrid"]
     }
 ]
