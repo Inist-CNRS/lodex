@@ -2,7 +2,7 @@ import zipObject from 'lodash/zipObject.js';
 import unset from 'lodash/unset.js';
 import mongoDatabase from './mongoDatabase.js';
 
-let isIndexExist = false;
+const isIndexExist = false;
 /**
  * Take `Object` containing a MongoDB query and throw the result
  *
@@ -14,7 +14,11 @@ let isIndexExist = false;
  * @param {Object}  [labelFieldName=id] field to use as label
  * @returns {Object}
  */
-export default async function LodexRunVSearchPrecomputed(this: any, data: any, feed: any) {
+export default async function LodexRunVSearchPrecomputed(
+    this: any,
+    data: any,
+    feed: any,
+) {
     if (this.isLast()) {
         return feed.close();
     }
@@ -29,7 +33,6 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
         minValue,
         maxValue,
         maxSize,
-        orderBy,
         queryVector = [],
     } = data;
 
@@ -39,7 +42,7 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
     const projection = zipObject(fields, Array(fields.length).fill(true));
 
     const valueFieldName = this.getParam('valueFieldName');
-    const labelFieldName = this.getParam('labelFieldName');
+    // const labelFieldName = this.getParam('labelFieldName');
 
     const filter = {};
 
@@ -69,19 +72,19 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
     // define your MongoDB Vector Search index
     // https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-type/?deployment-type=self&interface=driver&language=nodejs
     const index = {
-        name: "vector_index",
-        type: "vectorSearch",
+        name: 'vector_index',
+        type: 'vectorSearch',
         definition: {
-            "fields": [
+            fields: [
                 {
-                    "type": "vector",
-                    "numDimensions": 384,
-                    "path": "value",
-                    "similarity": "cosine",
-                    "quantization": "scalar"
-                }
-            ]
-        }
+                    type: 'vector',
+                    numDimensions: 384,
+                    path: 'value',
+                    similarity: 'cosine',
+                    quantization: 'scalar',
+                },
+            ],
+        },
     };
 
     if (!isIndexExist) {
@@ -93,7 +96,7 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
             ? {}
             : {
                   documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
-            };
+              };
     const aggregatePipeline = [
         {
             $vectorSearch: {
@@ -110,12 +113,11 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
                 _id: 0,
                 id: 1,
                 value: {
-                    $meta: "vectorSearchScore"
-                }
-            }
+                    $meta: 'vectorSearchScore',
+                },
+            },
         },
         {
-
             $lookup: {
                 from: 'publishedDataset',
                 localField: 'id',
@@ -127,7 +129,7 @@ export default async function LodexRunVSearchPrecomputed(this: any, data: any, f
             $match: postFilter,
         },
     ];
-    console.log('aggregatePipeline', aggregatePipeline );
+    // console.log('aggregatePipeline', aggregatePipeline );
     const cursor = collection.aggregate(
         aggregatePipeline,
         fields.length > 0
