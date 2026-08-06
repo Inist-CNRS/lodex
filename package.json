@@ -24,7 +24,7 @@
         "type-check": "tsc --noEmit && (cd packages/ezsLodex && tsc --noEmit) && (cd packages/common && tsc --noEmit) && (cd packages/api && tsc --noEmit) && (cd packages/workers && tsc --noEmit) && (cd packages/frontend-common && tsc --noEmit) && (cd packages/root-admin-app && tsc --noEmit) && (cd packages/admin-app && tsc --noEmit) && (cd packages/public-app && tsc --noEmit)",
         "lint": "eslint --fix",
         "lint:test": "eslint",
-        "clear": "rimraf node_modules packages/*/node_modules",
+        "clear": "rimraf node_modules packages/*/node_modules; rm ./package-lock.json",
         "clean": "concurrently \"npm:clean:*\"",
         "clean:modules": "modclean -Pr -n ./modclean.config.js:*",
         "clean:packages": "modclean -Pr -n ./modclean.config.js:* -D packages",
