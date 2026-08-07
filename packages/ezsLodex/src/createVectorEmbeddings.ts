@@ -7,6 +7,9 @@ const createVectorEmbeddings = async (data: any, feed: any, ctx: any) => {
         return feed.close();
     }
     const path = [].concat(ctx.getParam('path', 'value')).shift();
+    if (!path) {
+        throw new Error('Invalid path');
+    }
     const value = get(data, path);
     if (!value) {
         set(data, path, []);
