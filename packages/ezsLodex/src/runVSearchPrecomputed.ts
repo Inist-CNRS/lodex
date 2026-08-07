@@ -37,7 +37,6 @@ export default async function LodexRunVSearchPrecomputed(
         queryVector = [],
     } = data;
 
-
     const fds = Array.isArray(field) ? field : [field];
     const fields = fds.filter(Boolean);
     const projection = zipObject(fields, Array(fields.length).fill(true));
@@ -69,7 +68,9 @@ export default async function LodexRunVSearchPrecomputed(
     const db = await mongoDatabase(connectionStringURI);
 
     const collectionPrecomputed = db.collection('precomputed');
-    const document = await collectionPrecomputed.findOne({ name: this.getParam('precomputedName') });
+    const document = await collectionPrecomputed.findOne({
+        name: this.getParam('precomputedName'),
+    });
 
     const collectionName = `pc_${document ? document._id : precomputedId}`;
 
