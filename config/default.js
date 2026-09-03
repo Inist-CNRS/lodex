@@ -166,6 +166,7 @@ module.exports = {
             'query-conditor',
             'query-conditor-for-halcnrs',
             'query-openalex-for-model',
+            'query-theses-fr-for-model',
             'rss',
             'atom',
             'mods',
