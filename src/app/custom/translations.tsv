@@ -867,6 +867,8 @@
 "pc_post-v1-datatableExtract_description"	"Extracts the different tables present in the PDFs of a corpus, and returns the result in json or csv format."	"Extrait les différents tableaux présents dans les pdf d'un corpus, et renvoie le résultat sous format json ou csv."
 "pc_post-v1-dataGraph_title"	"dataGraph - Keyword relations graph"	"dataGraph - Graphe des relations entre mots-clés"
 "pc_post-v1-dataGraph_description"	"Generates a keyword graph from a set of already extracted English keywords."	"Génère un graphe de mots-clés à partir d’un ensemble de mots-clés anglais déjà extraits."
+"pc_internal-vectors_title"	"Internal - Semantic indexation"	"Internal - Indexation sémantique"
+"pc_internal-vectors_description"	"Creation of vectors (embeddings) to enable semantic search. Note: The processing uses an external AI."	"Création de vecteurs (embeddings) permettant une recherche sémantique. Note: Le traitement utilise une IA externe."
 "pc_post-v1-TeeftGraph_title"	"dataGraph - Keyword relations graph"	"dataGraph - Graphe des relations entre mots-clés"
 "pc_post-v1-TeeftGraph_description"	"Generates a keyword graph from a corpus of English abstracts."	"Génère un graphe de mots-clés à partir d’un corpus de résumés en anglais."
 "pc_post-v1-dataHomogenise_title"	"dataHomogenise - Automatic keyword homogenization"	"dataHomogenise - Homogénéisation automatique de mots-clés"

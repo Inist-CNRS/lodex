@@ -41,6 +41,7 @@ export default async function LodexRunVSearchPrecomputed(
     const fields = fds.filter(Boolean);
     const projection = zipObject(fields, Array(fields.length).fill(true));
 
+    const numDimensions = Number(this.getParam('dimensions'));
     const valueFieldName = this.getParam('valueFieldName');
     // const labelFieldName = this.getParam('labelFieldName');
 
@@ -86,7 +87,7 @@ export default async function LodexRunVSearchPrecomputed(
             fields: [
                 {
                     type: 'vector',
-                    numDimensions: 384,
+                    numDimensions,
                     path: 'value',
                     similarity: 'cosine',
                     quantization: 'scalar',

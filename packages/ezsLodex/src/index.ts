@@ -32,7 +32,7 @@ import saveDocuments from './saveDocuments.js';
 import updateDocument from './updateDocument.js';
 import updateDocuments from './updateDocuments.js';
 import useFieldNames from './useFieldNames.js';
-import createVectorEmbeddings from './createVectorEmbeddings.js';
+import config2env from './config2env.js';
 
 const funcs = {
     flattenPatch,
@@ -68,7 +68,7 @@ const funcs = {
     homogenizedObject,
     updateDocument,
     updateDocuments,
-    createVectorEmbeddings,
+    config2env,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,

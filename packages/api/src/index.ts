@@ -13,7 +13,7 @@ import {
 } from './services/mongoClient';
 
 function logAsciiBox(lines: string[]): string {
-    const contentWidth: number = 80;
+    const contentWidth: number = 120;
     const border: string = '═'.repeat(contentWidth + 4);
     const emptyContent: string = ' '.repeat(contentWidth);
     const emptyLine: string = `║  ${emptyContent}  ║`;
