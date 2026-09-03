@@ -9,8 +9,7 @@
         "start": "NODE_CONFIG_DIR=../../config tsx --max-http-header-size=32768 src"
     },
     "dependencies": {
-        "@ezs/transformers": "file:../transformers",
-        "lodash": "4.17.21"
+        "@ezs/transformers": "file:../transformers"
     },
     "devDependencies": {
         "tsx": "^4.20.6",

@@ -57,6 +57,12 @@ module.exports = {
         mainStatement: 'delegate', // use detatch to have a thread dedicated to processing the response, otherwise you can simply use “delegate”
         encoding: '',
     },
+    tdmservices: {
+        embedding: {
+            url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/embedding',
+            dimensions: 1024,
+        },
+    },
     timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
     streaming: true, // Connexion à un web service via un mode streaming ou non
     alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, baseURL is used
@@ -103,6 +109,7 @@ module.exports = {
             'distribute-by-decadal',
             'distribute-by-interval',
             'filter',
+            'join-by',
             'get-fields',
             'graph-by',
             'segments-precomputed',
@@ -110,6 +117,8 @@ module.exports = {
             'values-precomputed',
             'values-precomputed-nofilter',
             'raw-precomputed-nofilter',
+            'vsearch-precomputed',
+            'vsimilar-precomputed',
             'group-and-sum-with',
             'hello-world',
             'istex-facet',

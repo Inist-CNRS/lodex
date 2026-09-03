@@ -19,7 +19,7 @@ import { PRECOMPUTER } from '../../workers/precomputer';
 import { jobLogger } from '../../workers/tools';
 import getLogger from '../logger';
 import { mongoConnectionString } from '../mongoClient';
-import { addSidToUrl } from '../enrichment/enrichment';
+import { addSidToUrl, ezsProtocolUrl } from '../enrichment/enrichment';
 
 const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to the Web service entry point.
 ezs.use(Lodex);
@@ -163,7 +163,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
     notifyListeners(room, logData);
 
     const webServiceRetrieveURL = new URL(
-        addSidToUrl(webServiceUrl, `lodex-${tenant}`),
+        addSidToUrl(ezsProtocolUrl(webServiceUrl), `lodex-${tenant}`),
     );
     webServiceRetrieveURL.pathname = path.join(
         path.dirname(webServiceRetrieveURL.pathname),
@@ -210,7 +210,10 @@ export const getComputedFromWebservice = async (ctx: any) => {
                 value: [
                     importedDate.toDateString(),
                     precomputedId,
-                    addSidToUrl(webServiceUrl, `lodex-${tenant}`),
+                    addSidToUrl(
+                        ezsProtocolUrl(webServiceUrl),
+                        `lodex-${tenant}`,
+                    ),
                 ],
             }),
         )
@@ -444,7 +447,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
         },
     };
     const webServicePrecomputedURL = addSidToUrl(
-        precomputed.webServiceUrl,
+        ezsProtocolUrl(precomputed.webServiceUrl),
         `lodex-${ctx.tenant}`,
     );
     logData = JSON.stringify({

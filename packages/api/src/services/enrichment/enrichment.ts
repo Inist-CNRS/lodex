@@ -25,6 +25,14 @@ export const addSidToUrl = (url: string, sid: string) => {
     return urlObj.toString();
 };
 
+export const ezsProtocolUrl = (url: string): string => {
+    const urlObject = new URL(url);
+    if (urlObject.protocol !== 'ezs:') {
+        return url;
+    }
+    return url.replace('ezs:', config.get('ezs.url'));
+};
+
 const getSource = (ctx: Koa.Context, dataSource?: string): Source => {
     const collectionName =
         !dataSource || dataSource === DATASET_COLLECTION

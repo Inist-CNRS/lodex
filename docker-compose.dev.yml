@@ -1,8 +1,6 @@
-version: '3'
-
 services:
     api:
-        image: node:24.13-alpine
+        image: node:24.13-slim
         extra_hosts:  # for linux hosts since version 20.10
             - "host.docker.internal:host-gateway"
         volumes:
@@ -18,7 +16,7 @@ services:
             PUBLIC_URL: ${PUBLIC_URL}
             REDIS_URL: 'redis://redis.lodex-net:6379'
             WORKERS_URL: 'http://workers.lodex-net:31976'
-            MONGODB_URI: 'mongodb://mongo.lodex-net:27017/lodex'
+            MONGODB_URI: 'mongodb://mongo.lodex-net:27017/lodex?directConnection=true&serverSelectionTimeoutMS=5000'
             MAILER_HOST: 'maildev.lodex-net:1025'
             PRECOMPUTED_URL: 'http://api.lodex-net:3000'
             CI: ${CI}
@@ -40,7 +38,7 @@ services:
                     memory: 4G
 
     dev-server:  ## Enable hot-reload in development
-        image: node:24.13-alpine
+        image: node:24.13-slim
         volumes:
             - .:/app
         working_dir: /app
@@ -59,19 +57,13 @@ services:
                     memory: 4G
 
     mongo:
-        image: mongodb/mongodb-community-server:7.0.9-ubi9
-        logging:
-            driver: none
-        command: --quiet
+        image: inistcnrs/ezmaster-mongot:1.67.1-7
         ports:
             - "27017:27017"
         networks:
             - lodex-net
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 1G
+        volumes:
+            - lodex_mongot-7_data:/data
 
     redis:
         image: redis:6
@@ -86,7 +78,7 @@ services:
                     memory: 1G
 
     workers:
-        image: node:24.13-alpine
+        image: node:24.13-slim
         extra_hosts:  # for linux hosts since version 20.10
             - "host.docker.internal:host-gateway"
         volumes:
@@ -128,3 +120,6 @@ services:
 networks:
     lodex-net:
         name: lodex-net
+volumes:
+    lodex_mongot-7_data:
+        name: lodex_mongot-7_data
