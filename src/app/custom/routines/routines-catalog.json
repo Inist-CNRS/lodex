@@ -45,7 +45,11 @@
         "id": "r-join-by",
         "url": "/api/run/join-by/",
         "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": ["RessourcesGrid","PaginatedTable","UnpaginatedTable"]
+        "recommendedWith": [
+            "RessourcesGrid",
+            "PaginatedTable",
+            "UnpaginatedTable"
+        ]
     },
     {
         "id": "r-decompose-by",
@@ -141,13 +145,11 @@
         "id": "r-filter",
         "url": "/api/run/filter/",
         "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": ["RessourcesGrid","PaginatedTable","UnpaginatedTable"]
-    },
-    {
-        "id": "r-join-by",
-        "url": "/api/run/join-by/",
-        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": ["RessourcesGrid","PaginatedTable","UnpaginatedTable"]
+        "recommendedWith": [
+            "RessourcesGrid",
+            "PaginatedTable",
+            "UnpaginatedTable"
+        ]
     },
     {
         "id": "r-get-fields",
@@ -161,7 +163,7 @@
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#graph-by",
         "recommendedWith": ["Network", "HeatMap"]
     },
-        {
+    {
         "id": "r-group-and-sum-with",
         "url": "/api/run/group-and-sum-with/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#group-and-sum-with",
@@ -185,7 +187,7 @@
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#sparql-query",
         "recommendedWith": ["BubbleChart", "BarChart", "PieChart", "RadarChart"]
     },
-        {
+    {
         "id": "r-sub-resources-asterplot",
         "url": "/api/run/sub-resources-asterplot/",
         "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
@@ -195,7 +197,7 @@
         "id": "r-sub-resources-co-occurrences",
         "url": "/api/run/sub-resources-co-occurrences/",
         "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": ["PaginatedTable","UnpaginatedTable"]
+        "recommendedWith": ["PaginatedTable", "UnpaginatedTable"]
     },
     {
         "id": "r-syndication",
@@ -231,9 +233,6 @@
         "id": "r-ventilate-by",
         "url": "/api/run/ventilate-by/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#ventilate-by",
-        "recommendedWith": [
-            "Network",
-            "HeatMap"
-        ]
+        "recommendedWith": ["Network", "HeatMap"]
     }
 ]

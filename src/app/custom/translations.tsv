@@ -1207,7 +1207,7 @@
 "ws_post-v1-oalDocTypeClass_description"	"Takes an OpenAlex identifier as input and checks whether the associated document is a research document or not."	"Prend en entrée un identifiant OpenAlex et vérifie si le document associé est un document de recherche ou non."
 "ws_post-v1-classif_title"	"openAlexClass - Automatically classifies scientific documents in English according to the first two levels of the OpenAlex hierarchy (Domains, Fields)."	"Classe automatiquement des documents scientifiques en anglais selon les 2 premiers niveaux de la hiérarchie OpenAlex (Domains, Fields)."
 "ws_post-v1-classif_description"	"Applies a supervised learning approach that predicts domains based on a corpus of English documents containing the domains to be predicted."	"Applique une démarche d’apprentissage supervisé qui prédit des domaines en s’appuyant sur un corpus de documents en anglais contenant les domaines à prédire."
-"r-join-by_title"	"join"	"join"
+"r-join-by_title"	"join-by"	"join-by"
 "r-join-by_description"	"From a single resource, retrieve resources that share the same value for the same field."	"À partir d'une seule ressource, récupérez les ressources qui partagent la même valeur pour le même champ."
 "r-filter_title"	"filter"	"filter"
 "r-filter_description"	"Identifies, for a given sub-resource, all the resources in which this sub-resource is present"	"Identifie, pour une sous-ressource donnée, toutes les ressources dans lesquelles cette sous-ressource est présente."
