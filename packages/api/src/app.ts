@@ -6,6 +6,8 @@ import cors from 'kcors';
 import koaQs from 'koa-qs';
 import moment from 'moment';
 import { KoaAdapter } from '@bull-board/koa';
+import toobusy from 'toobusy-js';
+
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import controller from './controller';
@@ -30,6 +32,10 @@ const meters = Meter([], { loadStandards: true, loadDefaults: true });
 
 // set timeout as ezs server (see workers/index.js)
 ezs.settings.feed.timeout = config.get('ezs.timeout');
+
+// set 503 error parameter
+toobusy.maxLag(70);
+toobusy.interval(500);
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
@@ -59,6 +65,14 @@ app.on(eventAccess, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
 app.on(eventTrace, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
 app.on(eventError, () => meters.koaErrorsPerSecond.mark(1));
 
+app.use(function* koaToobusy(this: any, next: any) {
+    if (toobusy()) {
+        this.status = 503;
+        this.body = 'Server is too busy, try again later.';
+        return;
+    }
+    yield* next;
+});
 app.use(cors({ credentials: true }));
 
 function extractTenantFromUrl(url: any) {
