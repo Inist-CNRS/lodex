@@ -40,18 +40,20 @@ const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 // Prometheus metrics
 // to enable koa-prometheus log process.env.DEBUG_KOA = true;
 app.use(tracer());
-app.use(access(['id', 'trace', 'errors']));
+app.use(access(['id', 'trace', 'errors', 'meters']));
 collectMetrics({ prefix: '' }); // no prefix to be compatible with standard dashboards
 app.use(async (ctx, next) => {
-    ctx._matchedRoute = ctx.originalUrl; // _matchedRoute is used by koa-prometheus
     await next();
+    if (!ctx._matchedRoute) {
+        ctx._matchedRoute = ctx.path; // fallback, sans query string ni id dynamique
+    }
 });
+app.use(meters.middleware); // The middleware that makes the meters available
 app.use(
     route.get('/metrics', async (ctx) => {
         ctx.body = await meters.print();
     }),
 );
-app.use(meters.middleware); // The middleware that makes the meters available
 
 app.on(eventAccess, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
 app.on(eventTrace, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
@@ -170,6 +172,7 @@ app.use(function* (this: any, next: any) {
     try {
         yield next;
     } catch (err) {
+        this.state.errorsCount = 1;
         // @ts-expect-error TS(2571): Object is of type 'unknown'.
         this.status = err.status || 500;
         // @ts-expect-error TS(2571): Object is of type 'unknown'.
