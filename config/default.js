@@ -124,6 +124,7 @@ module.exports = {
             'istex-facet',
             'labeled-resources',
             'pairing-with',
+            'pairing-with-v2',
             'percentage-of',
             'refs',
             'select-by',
