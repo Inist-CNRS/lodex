@@ -25,7 +25,6 @@ export const createFunction = () =>
         }
 
         const { ezs } = this;
-        const logs = Boolean(this.getParam('logs', false));
         const referer = this.getParam('referer', data.referer);
         const maxTimeMS = Number(
             this.getParam('maxTimeMS', data.maxTimeMS || 0),
@@ -52,9 +51,8 @@ export const createFunction = () =>
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
         const queryAggregate = [{ $match: filter }].concat(stages);
-        if (logs) {
-            console.dir(queryAggregate, { depth: 99 });
-        }
+        // #debug
+        // console.dir(queryAggregate, { depth: 99 });
         const cursor = collection.aggregate(queryAggregate, {
             allowDiskUse: true,
             maxTimeMS,
