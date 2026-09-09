@@ -1,8 +1,8 @@
 services:
     api:
         image: node:24.13-slim
-        extra_hosts:  # for linux hosts since version 20.10
-            - "host.docker.internal:host-gateway"
+        extra_hosts: # for linux hosts since version 20.10
+            - 'host.docker.internal:host-gateway'
         volumes:
             - .:/app
         working_dir: /app
@@ -28,8 +28,8 @@ services:
             - workers
             - maildev
         ports:
-            - "3000:3000"
-            - "9229:9229"  # Enable Nodemon inspect to attach to Docker Node
+            - '3000:3000'
+            - '9229:9229' # Enable Nodemon inspect to attach to Docker Node
         command: npm run development:backend
         deploy:
             resources:
@@ -37,7 +37,7 @@ services:
                     cpus: '2'
                     memory: 4G
 
-    dev-server:  ## Enable hot-reload in development
+    dev-server: ## Enable hot-reload in development
         image: node:24.13-slim
         volumes:
             - .:/app
@@ -45,10 +45,10 @@ services:
         environment:
             NODE_ENV: development
         ports:
-            - "8080:8080"
-            - "8081:8081"
-            - "8082:8082"
-            - "8083:8083"
+            - '8080:8080'
+            - '8081:8081'
+            - '8082:8082'
+            - '8083:8083'
         command: npm run development:app
         deploy:
             resources:
@@ -57,9 +57,9 @@ services:
                     memory: 4G
 
     mongo:
-        image: inistcnrs/ezmaster-mongot:1.67.1-7
+        image: inistcnrs/ezmaster-mongot:1.67.1-9
         ports:
-            - "27017:27017"
+            - '27017:27017'
         networks:
             - lodex-net
         volumes:
@@ -68,7 +68,7 @@ services:
     redis:
         image: redis:6
         ports:
-            - "6379:6379"
+            - '6379:6379'
         networks:
             - lodex-net
         deploy:
@@ -79,8 +79,8 @@ services:
 
     workers:
         image: node:24.13-slim
-        extra_hosts:  # for linux hosts since version 20.10
-            - "host.docker.internal:host-gateway"
+        extra_hosts: # for linux hosts since version 20.10
+            - 'host.docker.internal:host-gateway'
         volumes:
             - .:/app
         working_dir: /app
@@ -99,7 +99,7 @@ services:
             EZS_NSHARDS: '31'
             EZS_CACHE: 'false'
         ports:
-            - "31976:31976"
+            - '31976:31976'
         networks:
             - lodex-net
         command: npm run production:workers
@@ -113,8 +113,8 @@ services:
     maildev:
         image: maildev/maildev
         ports:
-            - "1080:1080"
-            - "1025:1025"
+            - '1080:1080'
+            - '1025:1025'
         networks:
             - lodex-net
 networks:
