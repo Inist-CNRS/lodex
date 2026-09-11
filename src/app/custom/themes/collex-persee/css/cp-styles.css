@@ -99,7 +99,7 @@ body {
     flex-direction: column;
     gap: 0 !important;
     background: linear-gradient(
-        var(--common-black) 558px,
+        var(--common-black) 560px,
         var(--common-black) 2px,
         white 2px,
         white
@@ -183,13 +183,6 @@ footer li a:is(:hover, :focus, :active) {
 footer li a[href*='https']::after {
     background-image: url('../img/external-link-alt_gris.svg');
 }
-footer li#lodex::before {
-    width: 30px;
-    height: 30px;
-    content: ' ';
-    background: #fff left center no-repeat scroll url('/favicon.ico');
-    background-size: contain;
-}
 footer p {
     text-align: center;
 }
@@ -268,7 +261,9 @@ footer p {
 #root nav {
     box-shadow: 0px -5px 3px rgba(0, 0, 0, 0.2);
 }
-/*#content*/
+nav.nav-bar-menu div.nav-bar-container > img {
+  display: none;
+}
 /*#content {
     transform: translateY(-1rem);
 }*/
@@ -341,9 +336,9 @@ div.resource span.property_label {
 /*facets page graph, drawer search*/
 /*facettes*/
 ul.MuiList-root.facets-list {
+    background-color: var(--common-white);
     display: flex;
     flex-direction: column;
-    background-color: var(--neutral-main);
     flex-shrink: 0;
     border-radius: 4px;
     min-width: 370px !important;
@@ -356,13 +351,13 @@ ul.MuiList-root.facets-list {
     padding: 2px !important;
 }
 /*facette filtre*/
-ul.MuiList-root.facets-list > li {
+/*ul.MuiList-root.facets-list > li {
     background-color: transparent;
     border-bottom: 1px solid var(--neutral-dark-light);
 }
 /*facette filtre plier-deplier*/
 /*.css-yb0lig*/
-ul.MuiList-root.facets-list > li span.MuiListItemText-primary {
+/*ul.MuiList-root.facets-list > li span.MuiListItemText-primary {
     font-weight: 600;
 }
 ul.MuiList-root.facets-list > li .MuiGrid-root.MuiGrid-container {
@@ -386,7 +381,7 @@ ul.MuiList-root.facets-list
     font-size: 1.8rem;
 }
 /*facet filtre list valeurs */
-ul.MuiList-root.facets-list > li .facet-value-list {
+/*ul.MuiList-root.facets-list > li .facet-value-list {
     padding: 8px 16px 16px;
     background-color: var(--contrast-main);
 }
@@ -394,7 +389,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     font-size: 1.8rem;
 }
 /*facet input search filtre */
-.facet-value-list .MuiInput-root {
+/*.facet-value-list .MuiInput-root {
     border: 1px solid var(--primary-main) !important;
     border-radius: 4px;
     background-color: var(--background-default);
