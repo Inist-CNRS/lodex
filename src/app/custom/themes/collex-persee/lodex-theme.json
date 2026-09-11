@@ -1,0 +1,23 @@
+{
+    "version": "7",
+    "licence": "All Right Reserved",
+    "name": {
+        "fr": "Collex-Persée",
+        "en": "Collex-Persée"
+    },
+    "description": {
+        "fr": "Thème Collex-Persée (restreint)",
+        "en": "Collex-Persée theme (restricted)"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": "collexPerseeTheme.js"
+        },
+        "variables": {
+            "siteTitle": "Titre a modifier/supprimer dans la config du theme",
+            "matomoID": "",
+            "matomoHost": "https://piwik2.inist.fr/"
+        }
+    }
+}
