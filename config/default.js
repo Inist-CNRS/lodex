@@ -79,6 +79,7 @@ module.exports = {
         'inist',
         'cnrs',
         'hal-cnrs',
+        'collex-persee',
         'istex',
         'istex-legacy',
         'default',
