@@ -42,6 +42,8 @@ export default async function LodexRunVSearchPrecomputed(
     const projection = zipObject(fields, Array(fields.length).fill(true));
 
     const numDimensions = Number(this.getParam('dimensions'));
+    const threshold = Number(this.getParam('threshold'));
+    console.dir({ threshold });
     const valueFieldName = this.getParam('valueFieldName');
     // const labelFieldName = this.getParam('labelFieldName');
 
@@ -105,6 +107,7 @@ export default async function LodexRunVSearchPrecomputed(
             ? {}
             : {
                   documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
+                  value: { $gt: threshold },
               };
     const aggregatePipeline = [
         {
@@ -138,7 +141,7 @@ export default async function LodexRunVSearchPrecomputed(
             $match: postFilter,
         },
     ];
-    // console.log('aggregatePipeline', aggregatePipeline );
+    console.dir({ aggregatePipeline }, { depth: null });
     const cursor = collection.aggregate(
         aggregatePipeline,
         fields.length > 0
@@ -167,6 +170,7 @@ export default async function LodexRunVSearchPrecomputed(
         .limit(Number(maxSize || 1000000))
         .stream()
         .on('error', (e: any) => feed.stop(e))
+        .pipe(ezs('debug'))
         .pipe(ezs('assign', { path, value }));
     await feed.flow(stream);
 }
