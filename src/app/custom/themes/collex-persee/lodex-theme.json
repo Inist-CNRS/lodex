@@ -1,0 +1,29 @@
+{
+    "version": "7",
+    "licence": "All Right Reserved",
+    "name": {
+        "fr": "Collex-Persée",
+        "en": "Collex-Persée"
+    },
+    "description": {
+        "fr": "Thème Collex-Persée (restreint)",
+        "en": "Collex-Persée theme (restricted)"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": "collexPerseeTheme.js"
+        },
+        "variables": {
+            "siteTitle": "indiquer la Bibliothèque ou collection suivie dans ce lodex",
+            "typeDocument": "Thèses, Revues, Mélange discipline",
+            "logo": {
+                "file": "https://www.bnu.fr/themes/custom/boots/assets/images/bnu-logo-white.svg",
+                "alt": "l'intitulé de votre bibliothèque",
+                "url": "https://www.bnu.fr/fr"
+            },
+            "matomoID": "",
+            "matomoHost": "https://piwik2.inist.fr/"
+        }
+    }
+}
