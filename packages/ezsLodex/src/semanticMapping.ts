@@ -38,7 +38,7 @@ import mongoDatabase from './mongoDatabase.js';
  *
  * @export
  * @param {string} connectionStringURI MongoDB connection string
- * @param {string} fields use local model  
+ * @param {string} fields use local model
  * @param {string} from scheme
  * @param {string} to new name
  * @name semanticMapping
