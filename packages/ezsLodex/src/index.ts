@@ -33,6 +33,7 @@ import updateDocument from './updateDocument.js';
 import updateDocuments from './updateDocuments.js';
 import useFieldNames from './useFieldNames.js';
 import config2env from './config2env.js';
+import semanticMapping from './semanticMapping.js';
 
 const funcs = {
     flattenPatch,
@@ -69,6 +70,7 @@ const funcs = {
     updateDocument,
     updateDocuments,
     config2env,
+    semanticMapping,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,
