@@ -108,10 +108,6 @@ body {
 }
 /*header theme collex-persee*/
 header {
-    position: relative;
-    margin: 0;
-    top: 0;
-    z-index: -1;
     width: 100vw;
 }
 header div.container {
@@ -130,11 +126,11 @@ header div#logos {
     width: max-content;
 }
 header a.logocollexpersee {
-    height: 56px;
+    height: 70px;
     padding-right: 30px;
 }
-header a.logocnrs img {
-    height: 55px;
+header a.logobibliotheque img {
+    height: 70px;
 }
 /*header font decoration*/
 header a.logo,
@@ -142,6 +138,11 @@ header a:hover.logo,
 header a:focus.logo,
 header a:active.logo {
     text-decoration: none;
+}
+header div.container .description {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-secondary);
 }
 
 /*footer theme cp*/
@@ -262,7 +263,7 @@ footer p {
     box-shadow: 0px -5px 3px rgba(0, 0, 0, 0.2);
 }
 nav.nav-bar-menu div.nav-bar-container > img {
-  display: none;
+    display: none;
 }
 /*#content {
     transform: translateY(-1rem);

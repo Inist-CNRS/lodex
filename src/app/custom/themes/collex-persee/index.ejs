@@ -28,20 +28,31 @@
     <style><%= theme.cssVariable %></style>
 </head>
 <body>
-<header>
-    <div class="container">
-        <div id="logos">
-            <a class="logo logocollexpersee" href="https://www.collexpersee.eu/" target="_blank" title="CollEx-Persée">
-                <img src="<%= theme.current.href %>/img/collex-persee.svg" alt="CollEx-Persée, développer les services documentaires de demain"/>
-            </a>
-        </div>
-            <% if (custom.siteTitle ) { %>
-        <h1 id="titre_lodex" class="">
-            <a href="/instance/<%= lodex.tenant %>"><%= custom.siteTitle %></a>
-        </h1>
+    <header>
+        <div id="banner" class="container">
+            <div id="logos">
+                <a class="logo logocollexpersee" href="https://www.collexpersee.eu/" target="_blank" title="CollEx-Persée">
+                    <img src="<%= theme.current.href %>/img/collex-persee.svg" alt="CollEx-Persée, développer les services documentaires de demain"/>
+                </a>
+            <% if (custom.logo.url) { %>
+                <a class="logo logobibliotheque" href="<%= custom.logo.url %>" target="_blank" title="<%= custom.logo.alt %>">
+                    <img src="<%= custom.logo.file %>" alt="<%= custom.logo.alt %>" />
+                </a>
             <% } %>
-    </div>
-</header>
+        </div>
+       <% if (custom.siteTitle) { %>
+        <div>
+            <% if (custom.siteTitle) { %>
+			    <h1><%= custom.siteTitle %></h1>
+            <% } %>
+            <% if (custom.typeDocument) { %>
+			    <p class="description">Suivi de <span><%= custom.typeDocument %></span></p>
+            <% } %>
+            </div>
+    <% } %> 
+        </div>
+    </header>      
+
 <div id="root"></div>
 <footer class="bt">
     <ul class="container">
