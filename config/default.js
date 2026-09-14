@@ -61,6 +61,7 @@ module.exports = {
         embedding: {
             url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/embedding',
             dimensions: 1024,
+            threshold: 0.7,
         },
     },
     timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
