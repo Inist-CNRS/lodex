@@ -264,6 +264,14 @@
         "type": "other"
     },
     {
+        "id": "post-v1-Loterre-annotate-generic",
+        "url": "https://loterre-annotate.services.istex.fr/v1/{langue}/loterre-annotate/annotate?loterreID={code_vocabulaire}",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-annotate",
+        "swagger": "https://api.services.istex.fr/?urls.primaryName=Loterre%20Annotate%20%E2%80%94%20Reconnaissance%20de%20termes%20Loterre#/",
+        "objectifTDM": "https://services.istex.fr/annotation-dun-texte-avec-les-vocabulaires-loterre/",
+        "type": "indexation"
+    },
+    {
         "id": "post-v1-9SD-identify-exemple",
         "url": "https://loterre-resolvers.services.istex.fr/v1/identify?loterreID=9SD",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
@@ -279,15 +287,7 @@
         "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
         "type": "geography"
     },
-            {
-        "id": "post-v1-9SD-annotate-exemple",
-        "url": "https://loterre-resolvers.services.istex.fr/v1/annotate?loterreID=9SD",
-        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
-        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-annotate",
-        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
-        "type": "geography"
-    },
-        {
+       {
         "id": "post-v1-Loterre-identify-generic",
         "url": "https://loterre-resolvers.services.istex.fr/v1/identify?loterreID=identifiant",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
@@ -300,14 +300,6 @@
         "url": "https://loterre-resolvers.services.istex.fr/v1/expand?loterreID=identifiant",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
         "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-expand",
-        "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
-        "type": "indexation"
-    },
-            {
-        "id": "post-v1-Loterre-annotate-generic",
-        "url": "https://loterre-resolvers.services.istex.fr/v1/annotate?loterreID=identifiant",
-        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
-        "swagger": "https://api.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-annotate",
         "objectifTDM": "https://services.istex.fr/enrichissement-a-laide-des-vocabulaires-loterre/",
         "type": "indexation"
     },
