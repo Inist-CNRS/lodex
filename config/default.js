@@ -31,6 +31,7 @@ module.exports = {
     },
     uploadDir: 'upload',
     uploadLimit: 5, // en giga
+    importLimit: 50000, // nb. de documents
     istexApiUrl: 'https://api.istex.fr',
     jsHost: '',
     jsHosts: {
