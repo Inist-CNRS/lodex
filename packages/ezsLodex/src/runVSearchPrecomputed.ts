@@ -43,7 +43,6 @@ export default async function LodexRunVSearchPrecomputed(
 
     const numDimensions = Number(this.getParam('dimensions'));
     const threshold = Number(this.getParam('threshold'));
-    console.dir({ threshold });
     const valueFieldName = this.getParam('valueFieldName');
     // const labelFieldName = this.getParam('labelFieldName');
 
@@ -141,7 +140,7 @@ export default async function LodexRunVSearchPrecomputed(
             $match: postFilter,
         },
     ];
-    console.dir({ aggregatePipeline }, { depth: null });
+    //console.dir({ aggregatePipeline }, { depth: null });
     const cursor = collection.aggregate(
         aggregatePipeline,
         fields.length > 0
@@ -170,7 +169,6 @@ export default async function LodexRunVSearchPrecomputed(
         .limit(Number(maxSize || 1000000))
         .stream()
         .on('error', (e: any) => feed.stop(e))
-        .pipe(ezs('debug'))
         .pipe(ezs('assign', { path, value }));
     await feed.flow(stream);
 }
