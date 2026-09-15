@@ -62,6 +62,16 @@ module.exports = {
             url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/embedding',
             dimensions: 1024,
             threshold: 0.7,
+            timeout: 5000,
+        },
+        rerank: {
+            url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/rerank',
+            size: 10,
+            timeout: 5000,
+        },
+        rag: {
+            url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/rag',
+            timeout: 5000,
         },
     },
     timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
@@ -121,6 +131,7 @@ module.exports = {
             'values-precomputed-nofilter',
             'raw-precomputed-nofilter',
             'vsearch-precomputed',
+            'vanswer-precomputed',
             'vsimilar-precomputed',
             'group-and-sum-with',
             'hello-world',
