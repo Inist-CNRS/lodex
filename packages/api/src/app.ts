@@ -67,14 +67,16 @@ app.on(eventAccess, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
 app.on(eventTrace, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
 app.on(eventError, () => meters.koaErrorsPerSecond.mark(1));
 
-app.use(function* koaToobusy(this: any, next: any) {
-    if (toobusy()) {
-        this.status = 503;
-        this.body = 'Server is too busy, try again later.';
-        return;
-    }
-    yield* next;
-});
+if (config.get('activateLagCheck')) {
+    app.use(function* koaToobusy(this: any, next: any) {
+        if (toobusy()) {
+            this.status = 503;
+            this.body = 'Server is too busy, try again later.';
+            return;
+        }
+        yield* next;
+    });
+}
 app.use(cors({ credentials: true }));
 
 function extractTenantFromUrl(url: any) {
