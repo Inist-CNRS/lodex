@@ -67,7 +67,8 @@ module.exports = {
     timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
     streaming: true, // Connexion à un web service via un mode streaming ou non
     alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, baseURL is used
-    activateBullDashboard: false,
+    activateBullDashboard: false, // Active la route /bull pour avoir une vision sur toutes les taches de fond
+    activateLagCheck: false, // Active le controle de latence et génére  une erreur 503 le cas écheant
     mail: {
         host,
         port: Number(port),
