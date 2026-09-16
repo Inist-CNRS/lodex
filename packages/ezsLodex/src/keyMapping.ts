@@ -1,3 +1,5 @@
+import get from 'lodash/get.js';
+import setObject from 'lodash/set.js';
 import zipObject from 'lodash/zipObject.js';
 
 /**
@@ -39,6 +41,7 @@ import zipObject from 'lodash/zipObject.js';
  * @export
  */
 export default function keyMapping(this: any, data: any, feed: any) {
+    const path = this.getParam('path');
     const from = this.getParam('from', []);
     const to = this.getParam('to', []);
     const froms = Array.isArray(from) ? from : [from];
@@ -48,13 +51,17 @@ export default function keyMapping(this: any, data: any, feed: any) {
     if (this.isLast()) {
         return feed.close();
     }
-    const res = Object.keys(data).reduce(
+    const obj = path ? get(data, path) : data;
+    const res = Object.keys(obj).reduce(
         (o, key) => ({
             ...o,
-            [mapping[key] ? mapping[key] : key]: data[key],
+            [mapping[key] ? mapping[key] : key]: get(obj, key),
         }),
         {},
     );
-    feed.write(res);
-    return feed.end();
+    if (path) {
+        setObject(data, path, res);
+        return feed.send(data);
+    }
+    return feed.send(res);
 }

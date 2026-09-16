@@ -1,3 +1,5 @@
+import get from 'lodash/get.js';
+import setObject from 'lodash/set.js';
 import mapKeys from 'lodash/mapKeys.js';
 import find from 'lodash/find.js';
 import take from 'lodash/take.js';
@@ -48,6 +50,7 @@ export async function semanticMapping(this: any, data: any, feed: any) {
         return feed.close();
     }
 
+    const path = this.getParam('path');
     const localFields = this.getParam('fields', []);
     const from = this.getParam('from', []);
     const to = this.getParam('to', []);
@@ -69,8 +72,9 @@ export async function semanticMapping(this: any, data: any, feed: any) {
         }
     }
 
+    const obj = path ? get(data, path) : data;
     // @ts-expect-error TS(6133): 'value' is declared but its value is never read.
-    const res = mapKeys(data, (value: any, key: any) => {
+    const res = mapKeys(obj, (value: any, key: any) => {
         const field = find(this.fields, { name: key });
         // SI le champ n'est pas dans le modèle on n'y touche pas
         if (!field) return key;
@@ -79,6 +83,10 @@ export async function semanticMapping(this: any, data: any, feed: any) {
         return mapping[field.scheme];
     });
     delete res['__'];
+    if (path) {
+        setObject(data, path, res);
+        return feed.send(data);
+    }
     return feed.send(res);
 }
 

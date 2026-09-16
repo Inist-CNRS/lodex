@@ -1,238 +1,312 @@
 [
-    {
-        "id": "r-all-documents",
-        "url": "/api/run/all-documents/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#all-documents",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-classif-by",
-        "url": "/api/run/classif-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#classif-by",
-        "recommendedWith": ["StreamGraph", "AreaGraph"]
-    },
-    {
-        "id": "r-close-by",
-        "url": "/api/run/close-by/",
-        "doc": "https://lodex.inist.fr/docs/partie-2-2/les-routines-et-graphes/les-routines/",
-        "recommendedWith": ["AsterPlot"]
-    },
-    {
-        "id": "r-count-all",
-        "url": "/api/run/count-all/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-all",
-        "recommendedWith": ["EmphasedNumber"]
-    },
-    {
-        "id": "r-count-by-fields",
-        "url": "/api/run/count-by-fields/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-by-fields",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-count-distinct-by",
-        "url": "/api/run/count-distinct-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-by-fields",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-cross-by",
-        "url": "/api/run/cross-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#cross-by",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-join-by",
-        "url": "/api/run/join-by/",
-        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": [
-            "RessourcesGrid",
-            "PaginatedTable",
-            "UnpaginatedTable"
-        ]
-    },
-    {
-        "id": "r-decompose-by",
-        "url": "/api/run/decompose-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#decompose-by",
-        "recommendedWith": ["Network", "HeatMap"]
-    },
-    {
-        "id": "r-distinct-ISO3166-1-alpha2-from",
-        "url": "/api/run/distinct-ISO3166-1-alpha2-from/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-iso3166-1-alpha2-from",
-        "recommendedWith": ["Cartography"]
-    },
-    {
-        "id": "r-distinct-ISO3166-1-alpha3-from",
-        "url": "/api/run/distinct-ISO3166-1-alpha3-from/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-iso3166-1-alpha3-from",
-        "recommendedWith": ["Cartography"]
-    },
-    {
-        "id": "r-distinct-alpha-2-alpha3-from",
-        "url": "/api/run/distinct-alpha-2-alpha3-from/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-2-alpha3-from",
-        "recommendedWith": ["Cartography"]
-    },
-    {
-        "id": "r-distinct-alpha-3-alpha2-from",
-        "url": "/api/run/distinct-alpha-3-alpha2-from/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-3-alpha-2-from",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-distinct-alpha-3-ISO3166-1-from",
-        "url": "/api/run/distinct-alpha-3-ISO3166-1-from/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-3-iso3166-1-from",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-distinct-alpha-3-ISO639-from",
-        "url": "/api/run/distinct-alpha-3-ISO639-from/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-3-iso639-from",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-distance-with",
-        "url": "/api/run/distance-with/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distance-with",
-        "recommendedWith": ["AsterPlot", "ParallelCoordinates"]
-    },
-    {
-        "id": "r-distinct-by",
-        "url": "/api/run/distinct-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-by",
-        "recommendedWith": [
-            "BubbleChart",
-            "BarChart",
-            "PieChart",
-            "RadarChart",
-            "Cartography"
-        ]
-    },
-    {
-        "id": "r-distinct-by-field",
-        "url": "/api/run/distinct-by-field/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-by-field",
-        "recommendedWith": [
-            "BubbleChart",
-            "BarChart",
-            "PieChart",
-            "RadarChart",
-            "Cartography"
-        ]
-    },
-    {
-        "id": "r-distribute-by-date",
-        "url": "/api/run/distribute-by-date/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distribute-by-date",
-        "recommendedWith": ["BarChart"]
-    },
-    {
-        "id": "r-distribute-by-decadal",
-        "url": "/api/run/distribute-by-decadal/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distribute-by-decadal",
-        "recommendedWith": ["BarChart"]
-    },
-    {
-        "id": "r-distribute-by-interval",
-        "url": "/api/run/distribute-by-interval/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distribute-by-interval",
-        "recommendedWith": ["BarChart", "PieChart", "RadarChart"]
-    },
-    {
-        "id": "r-filter",
-        "url": "/api/run/filter/",
-        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": [
-            "RessourcesGrid",
-            "PaginatedTable",
-            "UnpaginatedTable"
-        ]
-    },
-    {
-        "id": "r-get-fields",
-        "url": "/api/run/get-fields/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#get-fields",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-graph-by",
-        "url": "/api/run/graph-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#graph-by",
-        "recommendedWith": ["Network", "HeatMap"]
-    },
-    {
-        "id": "r-group-and-sum-with",
-        "url": "/api/run/group-and-sum-with/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#group-and-sum-with",
-        "recommendedWith": ["BarChart"]
-    },
-    {
-        "id": "r-pairing-with",
-        "url": "/api/run/pairing-with/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#pairing-with",
-        "recommendedWith": ["Network", "HeatMap"]
-    },
-    {
-        "id": "r-labeled-ressources",
-        "url": "/api/run/labeled-ressources/",
-        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": ["All"]
-    },
-    {
-        "id": "r-sparql-query",
-        "url": "/api/run/sparql-query/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#sparql-query",
-        "recommendedWith": ["BubbleChart", "BarChart", "PieChart", "RadarChart"]
-    },
-    {
-        "id": "r-sub-resources-asterplot",
-        "url": "/api/run/sub-resources-asterplot/",
-        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": ["AsterPlot"]
-    },
-    {
-        "id": "r-sub-resources-co-occurrences",
-        "url": "/api/run/sub-resources-co-occurrences/",
-        "doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
-        "recommendedWith": ["PaginatedTable", "UnpaginatedTable"]
-    },
-    {
-        "id": "r-syndication",
-        "url": "/api/run/syndication/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#syndication",
-        "recommendedWith": ["RessourcesGrid"]
-    },
-    {
-        "id": "r-syndication-from",
-        "url": "/api/run/syndication-from/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#syndication-from",
-        "recommendedWith": ["RessourcesGrid"]
-    },
-    {
-        "id": "r-total-of",
-        "url": "/api/run/total-of/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#total-of",
-        "recommendedWith": ["EmphasedNumber"]
-    },
-    {
-        "id": "r-tree-by",
-        "url": "/api/run/tree-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#tree-by",
-        "recommendedWith": ["HierarchicalGraph"]
-    },
-    {
-        "id": "r-hierarchy-by",
-        "url": "/api/run/hierarchy-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#hierarchy-by",
-        "recommendedWith": []
-    },
-    {
-        "id": "r-ventilate-by",
-        "url": "/api/run/ventilate-by/",
-        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#ventilate-by",
-        "recommendedWith": ["Network", "HeatMap"]
-    }
+	{
+		"id": "r-all-documents",
+		"url": "/api/run/all-documents/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#all-documents",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-classif-by",
+		"url": "/api/run/classif-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#classif-by",
+		"recommendedWith": [
+			"StreamGraph",
+			"AreaGraph"
+		]
+	},
+	{
+		"id": "r-close-by",
+		"url": "/api/run/close-by/",
+		"doc": "https://lodex.inist.fr/docs/partie-2-2/les-routines-et-graphes/les-routines/",
+		"recommendedWith": [
+			"AsterPlot"
+		]
+	},
+	{
+		"id": "r-count-all",
+		"url": "/api/run/count-all/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-all",
+		"recommendedWith": [
+			"EmphasedNumber"
+		]
+	},
+	{
+		"id": "r-count-by-fields",
+		"url": "/api/run/count-by-fields/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-by-fields",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-count-distinct-by",
+		"url": "/api/run/count-distinct-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-by-fields",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-cross-by",
+		"url": "/api/run/cross-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#cross-by",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-join-by",
+		"url": "/api/run/join-by/",
+		"doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+		"recommendedWith": [
+			"RessourcesGrid",
+			"PaginatedTable",
+			"UnpaginatedTable"
+		]
+	},
+	{
+		"id": "r-decompose-by",
+		"url": "/api/run/decompose-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#decompose-by",
+		"recommendedWith": [
+			"Network",
+			"HeatMap"
+		]
+	},
+	{
+		"id": "r-distinct-ISO3166-1-alpha2-from",
+		"url": "/api/run/distinct-ISO3166-1-alpha2-from/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-iso3166-1-alpha2-from",
+		"recommendedWith": [
+			"Cartography"
+		]
+	},
+	{
+		"id": "r-distinct-ISO3166-1-alpha3-from",
+		"url": "/api/run/distinct-ISO3166-1-alpha3-from/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-iso3166-1-alpha3-from",
+		"recommendedWith": [
+			"Cartography"
+		]
+	},
+	{
+		"id": "r-distinct-alpha-2-alpha3-from",
+		"url": "/api/run/distinct-alpha-2-alpha3-from/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-2-alpha3-from",
+		"recommendedWith": [
+			"Cartography"
+		]
+	},
+	{
+		"id": "r-distinct-alpha-3-alpha2-from",
+		"url": "/api/run/distinct-alpha-3-alpha2-from/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-3-alpha-2-from",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-distinct-alpha-3-ISO3166-1-from",
+		"url": "/api/run/distinct-alpha-3-ISO3166-1-from/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-3-iso3166-1-from",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-distinct-alpha-3-ISO639-from",
+		"url": "/api/run/distinct-alpha-3-ISO639-from/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-alpha-3-iso639-from",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-distance-with",
+		"url": "/api/run/distance-with/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distance-with",
+		"recommendedWith": [
+			"AsterPlot",
+			"ParallelCoordinates"
+		]
+	},
+	{
+		"id": "r-distinct-by",
+		"url": "/api/run/distinct-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-by",
+		"recommendedWith": [
+			"BubbleChart",
+			"BarChart",
+			"PieChart",
+			"RadarChart",
+			"Cartography"
+		]
+	},
+	{
+		"id": "r-distinct-by-field",
+		"url": "/api/run/distinct-by-field/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-by-field",
+		"recommendedWith": [
+			"BubbleChart",
+			"BarChart",
+			"PieChart",
+			"RadarChart",
+			"Cartography"
+		]
+	},
+	{
+		"id": "r-distribute-by-date",
+		"url": "/api/run/distribute-by-date/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distribute-by-date",
+		"recommendedWith": [
+			"BarChart"
+		]
+	},
+	{
+		"id": "r-distribute-by-decadal",
+		"url": "/api/run/distribute-by-decadal/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distribute-by-decadal",
+		"recommendedWith": [
+			"BarChart"
+		]
+	},
+	{
+		"id": "r-distribute-by-interval",
+		"url": "/api/run/distribute-by-interval/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distribute-by-interval",
+		"recommendedWith": [
+			"BarChart",
+			"PieChart",
+			"RadarChart"
+		]
+	},
+	{
+		"id": "r-filter",
+		"url": "/api/run/filter/",
+		"doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+		"recommendedWith": [
+			"RessourcesGrid",
+			"PaginatedTable",
+			"UnpaginatedTable"
+		]
+	},
+	{
+		"id": "r-get-fields",
+		"url": "/api/run/get-fields/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#get-fields",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-graph-by",
+		"url": "/api/run/graph-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#graph-by",
+		"recommendedWith": [
+			"Network",
+			"HeatMap"
+		]
+	},
+	{
+		"id": "r-group-and-sum-with",
+		"url": "/api/run/group-and-sum-with/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#group-and-sum-with",
+		"recommendedWith": [
+			"BarChart"
+		]
+	},
+	{
+		"id": "r-pairing-with",
+		"url": "/api/run/pairing-with/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#pairing-with",
+		"recommendedWith": [
+			"Network",
+			"HeatMap"
+		]
+	},
+	{
+		"id": "r-labeled-ressources",
+		"url": "/api/run/labeled-ressources/",
+		"doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+		"recommendedWith": [
+			"All"
+		]
+	},
+	{
+		"id": "r-sparql-query",
+		"url": "/api/run/sparql-query/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#sparql-query",
+		"recommendedWith": [
+			"BubbleChart",
+			"BarChart",
+			"PieChart",
+			"RadarChart"
+		]
+	},
+	{
+		"id": "r-sub-resources-asterplot",
+		"url": "/api/run/sub-resources-asterplot/",
+		"doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+		"recommendedWith": [
+			"AsterPlot"
+		]
+	},
+	{
+		"id": "r-sub-resources-co-occurrences",
+		"url": "/api/run/sub-resources-co-occurrences/",
+		"doc": "https://github.com/Inist-CNRS/lodex-extended/tree/sub-resources-routine/public/routines",
+		"recommendedWith": [
+			"PaginatedTable",
+			"UnpaginatedTable"
+		]
+	},
+	{
+		"id": "r-syndication",
+		"url": "/api/run/syndication/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#syndication",
+		"recommendedWith": [
+			"RessourcesGrid"
+		]
+	},
+	{
+		"id": "r-syndication-from",
+		"url": "/api/run/syndication-from/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#syndication-from",
+		"recommendedWith": [
+			"RessourcesGrid"
+		]
+	},
+	{
+		"id": "r-total-of",
+		"url": "/api/run/total-of/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#total-of",
+		"recommendedWith": [
+			"EmphasedNumber"
+		]
+	},
+	{
+		"id": "r-tree-by",
+		"url": "/api/run/tree-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#tree-by",
+		"recommendedWith": [
+			"HierarchicalGraph"
+		]
+	},
+	{
+		"id": "r-hierarchy-by",
+		"url": "/api/run/hierarchy-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#hierarchy-by",
+		"recommendedWith": []
+	},
+	{
+		"id": "r-ventilate-by",
+		"url": "/api/run/ventilate-by/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#ventilate-by",
+		"recommendedWith": [
+			"Network",
+			"HeatMap"
+		]
+	}
 ]
