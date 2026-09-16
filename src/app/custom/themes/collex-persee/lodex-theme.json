@@ -18,9 +18,9 @@
             "siteTitle": "indiquer la Bibliothèque ou collection suivie dans ce lodex",
             "typeDocument": "Thèses, Revues, Mélange discipline",
             "logo": {
-                "file": "https://www.bnu.fr/themes/custom/boots/assets/images/bnu-logo-white.svg",
+                "file": "https://www.univ-lille.fr/_assets/cf96958808510cb4a29e461391f0eb9e/assets/img/logos/ULille-nb.svg",
                 "alt": "l'intitulé de votre bibliothèque",
-                "url": "https://www.bnu.fr/fr"
+                "url": "https://bu.univ-lille.fr/"
             },
             "matomoID": "",
             "matomoHost": "https://piwik2.inist.fr/"
