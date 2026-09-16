@@ -113,6 +113,7 @@ module.exports = {
             'distinct-alpha-3-ISO639-from',
             'distinct-by-field',
             'distinct-by',
+            'distinct-by-v2',
             'hierarchy-by',
             'ventilate-by',
             'join-by',
