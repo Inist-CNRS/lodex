@@ -18,7 +18,7 @@ export default async (db: any) => {
     try {
         await collection.createIndex({ uri: 'hashed' });
     } catch (err) {
-        logger.error(`Failed to creete the hashed index : `, err);
+        logger.error(`Failed to create the hashed index : `, err);
     }
 
     collection.insertBatch = (documents: any) => {

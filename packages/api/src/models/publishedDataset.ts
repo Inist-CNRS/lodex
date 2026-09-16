@@ -7,6 +7,9 @@ import { getFullResourceUri, PropositionStatus } from '@lodex/common';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
 import { getCreatedCollection } from './utils';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
+import getLogger from '../services/logger';
+
+const logger = getLogger();
 
 const baseURL: string = config.has('baseURL')
     ? config.get('baseURL')
@@ -64,7 +67,11 @@ export default async (db: any) => {
             { uri: 1, subresourceId: 1 },
             { unique: true, name: 'avoidDuplicates' },
         );
-        await collection.createIndex({ uri: 'hashed' });
+        try {
+            await collection.createIndex({ uri: 'hashed' });
+        } catch (err) {
+            logger.error(`Failed to create the hashed index : `, err);
+        }
     };
     // Aprés publication
     collection.createIndexesAfterInsert = async () => {
