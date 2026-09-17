@@ -110,7 +110,9 @@ export const startImport = async (ctx: any) => {
             loaderEnvironment.source = 'text input';
             stream = ctx.getStreamFromText(text);
         }
-        const inputStream = stream.pipe(ezs('breaker', { fusible }));
+        const inputStream = stream
+            .pipe(ezs('breaker', { fusible }))
+            .pipe(ezs('truncate', { length: config.get('importLimit') }));
         const parsedStream = parseStream(inputStream);
         const outputStream = parsedStream
             .pipe(ezs('assign', { path: '_lodexPublished', value: false }))
