@@ -301,3 +301,11 @@ button.MuiIconButton-root:focus {
 .format_identifierBadge a {
     text-decoration: none !important;
 }
+/* modale revue de sommaire */
+.property.istex-summary-embedButton button {
+    background-color: var(--gris3);
+}
+.property.istex-summary-embedButton button:is(:hover, :focus) {
+    background-color: var(--canard0);
+}
+
