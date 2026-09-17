@@ -336,9 +336,6 @@ a.graph-link.graph-summary-link:hover {
     display: inline-block;
     margin: 0 auto;
 }
-.resource .detail .main-resource-section > div > div:first-child {
-    justify-content: center;
-}
 @media (min-width: 1900px) {
     .resource-navigation-left.left_9ndhu8 {
         margin-left: 8% !important;
