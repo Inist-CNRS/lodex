@@ -9,8 +9,9 @@
         "dev": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "lodash": "4.18.1",
         "config": "^4.2.0",
+        "debug": "^4.4.3",
+        "lodash": "4.18.1",
         "mongodb": "6.12.0",
         "node-object-hash": "2.3.10",
         "quick-lru": "4.0.1",
@@ -24,5 +25,9 @@
     "main": "./lib/index.js",
     "peerDependencies": {
         "@ezs/core": "*"
+    },
+    "devDependencies": {
+        "@types/debug": "^4.1.13",
+        "@types/relaxed-json": "^1.0.4"
     }
 }
