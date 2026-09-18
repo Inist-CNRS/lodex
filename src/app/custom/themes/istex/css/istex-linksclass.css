@@ -49,7 +49,8 @@ a:not(:empty):is(:hover, :focus) {
         :empty,
         div[class*='ButtonPrimary'] :is(button, a),
         div[class*='ButtonSecondary'] :is(button, a),
-        div[class*='ButtonShadow'] :is(button, a)
+        div[class*='ButtonShadow'] :is(button, a),
+        div[class*='format_istex'] a[target="_blank"]/*resoud aussi format_istexCitation*/
     )[target='_blank']::after {
     color: black;
     filter: var(--filtreBleuMain);
@@ -300,3 +301,11 @@ button.MuiIconButton-root:focus {
 .format_identifierBadge a {
     text-decoration: none !important;
 }
+/* modale revue de sommaire */
+.property.istex-summary-embedButton button {
+    background-color: var(--gris3);
+}
+.property.istex-summary-embedButton button:is(:hover, :focus) {
+    background-color: var(--canard0);
+}
+

@@ -21,7 +21,7 @@
 
     --black: #000000;
     --gris0: #1d1d1d; /*gris 0*/
-    --gris1: #fafafa; /*gris 1*/
+    --gris1: #4a4a4a; /*gris 1*/
     --gris2: #8f8f8f; /*gris 2*/
     --gris3: #f0f0f0; /*gris 3*/
     --white: #ffffff;
@@ -117,10 +117,11 @@ header {
 }
 .accesIstex img {
     margin-right: 5px;
+    height: 8px;
 }
 .menuIstex a {
     text-decoration: none;
-    color: #434148;
+    color: var(--gris1);
 }
 .menuIstex ul li:hover a {
     color: var(--second-color);
@@ -653,7 +654,7 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
     background-color: var(--gris3);
 }
 .resource .nav-button-root:is(:hover, focus, :active) {
-    background-color: var(--gris1);
+    background-color: var(--gris3);
 }
 /*labels en noir*/
 .resource span.property_label[style*='color: rgb(158, 158, 158)'] {
