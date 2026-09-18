@@ -63,6 +63,7 @@ module.exports = {
             dimensions: 1024,
             threshold: 0.7,
             timeout: 5000,
+            limit: 100,
         },
         rerank: {
             url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/rerank',

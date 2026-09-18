@@ -353,8 +353,12 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
                     return feed.close();
                 }
                 const colums: any = [];
+                const columsNames: any = [];
                 precomputed.sourceColumns.map((column: any) => {
                     colums.push(entry[column]);
+                });
+                precomputed.sourceColumns.map((column: any) => {
+                    columsNames.push(column);
                 });
                 // Please note, it is important to produce identifiers identical to those that will be used in the published data.
                 // Otherwise, the join will be impossible
@@ -368,6 +372,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
                     value: tryParseJsonString(
                         colums.length > 1 ? colums : colums[0],
                     ),
+                    name: columsNames, // special case, see vectors.ini
                 });
             }),
         )
