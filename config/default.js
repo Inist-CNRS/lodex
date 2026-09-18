@@ -62,7 +62,7 @@ module.exports = {
             url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/embedding',
             dimensions: 1024,
             threshold: 0.7,
-            timeout: 5000,
+            timeout: 30000,
             limit: 100,
         },
         rerank: {

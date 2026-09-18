@@ -360,15 +360,8 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
                 precomputed.sourceColumns.map((column: any) => {
                     columsNames.push(column);
                 });
-                // Please note, it is important to produce identifiers identical to those that will be used in the published data.
-                // Otherwise, the join will be impossible
-                // see src/common/transformers/AUTOGENERATE_URI.js#L26
-                const identifier =
-                    String(entry.uri).indexOf('uid:/') !== 0
-                        ? `uid:/${entry.uri}`
-                        : entry.uri;
                 feed.send({
-                    id: identifier,
+                    id: entry.uri,
                     value: tryParseJsonString(
                         colums.length > 1 ? colums : colums[0],
                     ),
