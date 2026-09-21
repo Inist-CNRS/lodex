@@ -1,3 +1,4 @@
+import debug from 'debug';
 import zipObject from 'lodash/zipObject.js';
 import unset from 'lodash/unset.js';
 import mongoDatabase from './mongoDatabase.js';
@@ -140,7 +141,9 @@ export default async function LodexRunVSearchPrecomputed(
             $match: postFilter,
         },
     ];
-    //console.dir({ aggregatePipeline }, { depth: null });
+    debug('ezs:debug')(
+        `collection.aggregate(${JSON.stringify(aggregatePipeline)})`,
+    );
     const cursor = collection.aggregate(
         aggregatePipeline,
         fields.length > 0

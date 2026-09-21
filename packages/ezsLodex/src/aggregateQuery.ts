@@ -1,4 +1,4 @@
-// @ts-expect-error TS(2792): Cannot find module 'relaxed-json'. Did you mean to... Remove this comment to see the full error message
+import debug from 'debug';
 import RJSON from 'relaxed-json';
 import mongoDatabase from './mongoDatabase.js';
 
@@ -50,9 +50,11 @@ export const createFunction = () =>
         );
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
-        const queryAggregate = [{ $match: filter }].concat(stages);
-        // #debug
-        // console.dir(queryAggregate, { depth: 99 });
+        const queryAggregate = [{ $match: filter }, ...stages];
+        debug('ezs:debug')(
+            `collection.aggregate(${JSON.stringify(queryAggregate)})`,
+        );
+
         const cursor = collection.aggregate(queryAggregate, {
             allowDiskUse: true,
             maxTimeMS,

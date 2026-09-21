@@ -7,6 +7,7 @@
 // @ts-expect-error TS7006
 export const truncateByWords = (stringIn, sizeIn) => {
     // Trivial case
+    if (!stringIn) return stringIn;
     if (sizeIn <= 0 || sizeIn >= stringIn.length) return stringIn;
 
     // setup necessary variable
