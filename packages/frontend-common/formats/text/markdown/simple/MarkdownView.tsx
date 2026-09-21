@@ -26,7 +26,6 @@ export const MarkdownView = ({
     const [value, content] = useMemo(() => {
         // La valeur externe (URL) est prioritaire, sinon la valeur locale
         const value = formatData ?? resource[field.name];
-
         try {
             if (value.items && Array.isArray(value.items)) {
                 return [
@@ -34,7 +33,7 @@ export const MarkdownView = ({
                     markdown.render(value.items.map(toString).join('\n')),
                 ];
             }
-            return [value, markdown.render(toString(value))];
+            return [value, markdown.render(value)];
         } catch (e) {
             return [value, null];
         }

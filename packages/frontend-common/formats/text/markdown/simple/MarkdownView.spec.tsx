@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 
-import MarkdownView from './MarkdownView';
+import { MarkdownView } from './MarkdownView';
 import InvalidFormat from '../../../InvalidFormat';
 
 describe('<MarkdownView />', () => {
