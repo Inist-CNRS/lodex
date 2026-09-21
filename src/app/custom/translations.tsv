@@ -1023,6 +1023,8 @@
 "r-raw-precomputed-nofilter_title"	"raw-precomputed-nofilter"	"raw-precomputed-nofilter"
 "r-vsearch-precomputed_description"	"Enables semantic similarity search."	"Permet une recherche par similarité sémantique."
 "r-vsearch-precomputed_title"	"vsearch-precomputed"	"vsearch-precomputed"
+"r-vanswer-precomputed_description"	"Enables an AI to answer questions (RAG)"	"Permet à une IA de répondre à des questions (RAG)"
+"r-vanswer-precomputed_title"	"vanswer-precomputed"	"vanswer-precomputed"
 "r-vsimilar-precomputed_description"	"Allows you to search by semantic similarity based on a selected resource."	"Permet d'effectuer une recherche par similarité sémantique à partir d'une ressource sélectionnée."
 "r-vsimilar-precomputed_title"	"vsimilar-precomputed"	"vsimilar-precomputed"
 "add_file_success"	"File %{name} successfully added"	"Fichier %{name} ajouté avec succès"

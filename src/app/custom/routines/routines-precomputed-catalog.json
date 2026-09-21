@@ -58,6 +58,14 @@
 		]
 	},
 	{
+		"id": "r-vanswer-precomputed",
+		"url": "/api/run/vsimilar-precomputed/",
+		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
+		"recommendedWith": [
+			"Markdown"
+		]
+	},
+	{
 		"id": "r-vsimilar-precomputed",
 		"url": "/api/run/vsimilar-precomputed/",
 		"doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/",
