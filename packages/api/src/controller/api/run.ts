@@ -107,7 +107,7 @@ const middlewareScript = async (
             .pipe(ezs('pack')) // encode to transfert to the thread
             .pipe(
                 ezs(
-                    config.get('ezs.mainStatement'),
+                    config.get('ezs.mainStatement.run'),
                     {
                         script,
                         encoder: 'transit',

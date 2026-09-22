@@ -348,7 +348,13 @@ fusible = ${fusible}
     `;
         const input = new PassThrough({ objectMode: true });
         input
-            .pipe(ezs('delegate', { script }, environment))
+            .pipe(
+                ezs(
+                    config.get('ezs.mainStatement.enrichment'),
+                    { script },
+                    environment,
+                ),
+            )
             .on('data', async (data: any) => {
                 if (!(await ctx.job?.isActive())) {
                     return reject(
