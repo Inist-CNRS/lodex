@@ -59,6 +59,7 @@ module.exports = {
             enrichment: 'delegate',
             run: 'delegate',
             export: 'delegate',
+            workers: 'delegate',
         },
         encoding: '',
     },
