@@ -54,7 +54,13 @@ module.exports = {
         timeout: 900000, // 15 minutes sans passage de données dans un flux ezs
         cacheEnable: false,
         cacheDelay: 60 * 60 * 12,
-        mainStatement: 'delegate', // use detatch to have a thread dedicated to processing the response, otherwise you can simply use “delegate”
+        // use detatch to have a thread dedicated to processing the response, otherwise you can simply use “delegate”
+        mainStatement: {
+            enrichment: 'delegate',
+            run: 'delegate',
+            export: 'delegate',
+            workers: 'delegate',
+        },
         encoding: '',
     },
     tdmservices: {

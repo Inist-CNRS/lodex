@@ -20,7 +20,7 @@ global.MongoOptions = config.get('mongo.options');
 ezs.settings.feed.timeout = config.get('ezs.timeout');
 ezs.settings.cacheEnable = config.get('ezs.cacheEnable');
 ezs.settings.cacheDelay = config.get('ezs.cacheDelay');
-ezs.settings.mainStatement = config.get('ezs.mainStatement');
+ezs.settings.mainStatement = config.get('ezs.mainStatement.workers');
 ezs.settings.encoding = config.get('ezs.encoding');
 ezs.use(Basics);
 ezs.use(Analytics);

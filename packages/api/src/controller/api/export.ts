@@ -156,7 +156,7 @@ const middlewareScript = (isFormatExporters = false) => {
             .pipe(ezs('pack')) // encode to transfert to the thread
             .pipe(
                 ezs(
-                    config.get('ezs.mainStatement'),
+                    config.get('ezs.mainStatement.export'),
                     {
                         script,
                         encoder: 'transit',
