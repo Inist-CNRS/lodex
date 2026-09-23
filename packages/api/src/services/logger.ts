@@ -3,6 +3,19 @@ import path from 'path';
 import config from 'config';
 import { MESSAGE } from 'triple-beam';
 
+interface AccessLogMetadata {
+    ip: string;
+    user: string;
+    date: string;
+    method: string;
+    url: string;
+    httpVersion: string;
+    status: number;
+    size: number | string;
+    referer: string;
+    ua: string;
+}
+
 // Configuration du format Apache Combined (Strict)
 const apacheCombined = format.printf(({ metadata }) => {
     const {
@@ -16,7 +29,7 @@ const apacheCombined = format.printf(({ metadata }) => {
         size,
         referer,
         ua,
-    } = metadata;
+    } = metadata as AccessLogMetadata;
 
     // https://httpd.apache.org/docs/2.4/logs.html#combined
     // Exemple :
