@@ -1,7 +1,5 @@
 import Koa from 'koa';
 import config from 'config';
-process.env.DEBUG = config.get('ezs.verbose');
-
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
