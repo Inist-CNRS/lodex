@@ -135,7 +135,9 @@ const middlewareScript = (isFormatExporters = false) => {
             }
         };
         const workers_url = `${workersUrlPrefix}/${exporterName}`;
-        logger.debug(`Connecting to ${workers_url} with ${query}`);
+        logger.debug(
+            `Connecting to ${workers_url} with ${JSON.stringify(query)}`,
+        );
         const script = `
         [use]
         plugin = basics

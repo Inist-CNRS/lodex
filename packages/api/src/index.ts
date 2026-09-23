@@ -1,6 +1,10 @@
+import config from 'config';
+process.env.DEBUG = config.get('ezs.verbose');
+import debug from 'debug';
+debug.enable(String(process.env.DEBUG));
+
 import app from './app';
 import { Server } from 'socket.io';
-import config from 'config';
 import progress from './services/progress';
 import { addPublisherListener } from './workers/publisher';
 import { addEnrichmentJobListener } from './services/enrichment/enrichment';

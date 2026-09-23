@@ -83,7 +83,7 @@ const middlewareScript = async (
                 );
             }
         };
-        const workers_url = `${config.get('ezs.url')}/routines/${routineName}?${ctx.querystring}`;
+        const workers_url = `${config.get('ezs.url')}/routines/${routineName}?${JSON.stringify(ctx.querystring)}`;
         logger.debug(`Connecting to ${workers_url} with ${query}`);
 
         const script = `
