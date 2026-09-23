@@ -36,8 +36,7 @@ export const parseCitationData = (formatData) => ({
 export const getCitationDocumentUrl =
     // @ts-expect-error TS7031
 
-
-        ({ value, name, searchedField, documentSortBy }) =>
+    ({ value, name, searchedField, documentSortBy }) =>
         () => ({
             url: buildIstexQuery({
                 query: `${getFilterQuery(

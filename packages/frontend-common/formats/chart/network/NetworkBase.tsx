@@ -384,7 +384,8 @@ export const NetworkBase = ({
     );
 
     const linkWidthFn = useCallback(
-        (l: LinkObject) => (showArrows && mode === 'arrow' ? 1 : l.value ?? 1),
+        (l: LinkObject) =>
+            showArrows && mode === 'arrow' ? 1 : (l.value ?? 1),
         [showArrows, mode],
     );
 

@@ -119,7 +119,7 @@ const TransformerUpsertDialog = ({
 }: TransformerUpsertDialogProps) => {
     const { translate } = useTranslate();
     const [transformer, setTransformer] = React.useState(
-        indexFieldToEdit !== null ? fields?.[indexFieldToEdit] ?? {} : {},
+        indexFieldToEdit !== null ? (fields?.[indexFieldToEdit] ?? {}) : {},
     );
 
     if (!isOpen) {

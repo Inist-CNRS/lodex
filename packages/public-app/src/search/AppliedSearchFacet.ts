@@ -21,8 +21,7 @@ export default compose<AppliedFacetProps, AppliedFacetProps>(
         onRequestDelete:
             // @ts-expect-error TS7031
 
-
-                ({ name, onClearFacet }) =>
+            ({ name, onClearFacet }) =>
                 () =>
                     onClearFacet(name),
     }),

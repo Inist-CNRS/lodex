@@ -440,7 +440,7 @@ export const Network3DBase = ({
 
     const linkWidthFn = useCallback(
         (link: LinkObject) =>
-            showArrows && mode === 'arrow' ? 1 : (link as Link).value ?? 1,
+            showArrows && mode === 'arrow' ? 1 : ((link as Link).value ?? 1),
         [mode, showArrows],
     );
 

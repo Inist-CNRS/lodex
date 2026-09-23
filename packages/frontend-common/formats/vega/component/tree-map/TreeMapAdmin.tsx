@@ -191,8 +191,7 @@ const TreeMapAdmin = ({
             onChange({
                 ...args,
                 flatType: event.target.value as
-                    | 'id/value'
-                    | 'source/target/weight',
+                    'id/value' | 'source/target/weight',
             });
         },
         [args, onChange],

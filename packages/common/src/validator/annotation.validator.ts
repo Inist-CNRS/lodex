@@ -26,11 +26,7 @@ export type AnnotationKind =
     | typeof ANNOTATION_KIND_CORRECTION
     | typeof ANNOTATION_KIND_ADDITION;
 export type AnnotationStatus =
-    | 'to_review'
-    | 'ongoing'
-    | 'validated'
-    | 'rejected'
-    | 'parking';
+    'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking';
 
 export const annotationCreationSchema = z
     .object({

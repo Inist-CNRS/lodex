@@ -74,9 +74,7 @@ export default async function paginateQuery(this: any, data: any, feed: any) {
         Number(this.getParam('maxTimeMS', data.maxTimeMS || 0)) || undefined;
     const sortOn = this.getParam('sortOn', data.sortOn) as string | undefined;
     const sortOrder = this.getParam('sortOrder', data.sortOrder) as
-        | 'asc'
-        | 'desc'
-        | undefined;
+        'asc' | 'desc' | undefined;
     const field = this.getParam(
         'field',
         data.field || data.$field || undefined,

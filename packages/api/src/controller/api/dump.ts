@@ -6,7 +6,7 @@ export default async (ctx: any) => {
     const { fields } = ctx.query;
     const fieldsArray = !Array.isArray(fields)
         ? fields.split(',')
-        : fields ?? [];
+        : (fields ?? []);
     const filename = `dataset_${moment().format('YYYY-MM-DD-HHmmss')}.jsonl`;
 
     const stream = await ctx.dataset.dumpAsJsonLStream(fieldsArray);
