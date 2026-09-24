@@ -39,6 +39,7 @@ COPY --chown=daemon:daemon --from=build /app /app
 COPY --chown=daemon:daemon ./config/production-dist.js /app/config/production.js
 WORKDIR /app
 ENV NODE_ENV="production"
+ENV NODE_USE_ENV_PROXY=1
 ENV PM2_HOME=/app/.pm2
 ENV npm_config_cache=/app/.npm
 ENV DEBUG_COLORS="0"
