@@ -25,7 +25,7 @@ services:
             - workers
             - maildev
         ports:
-            - "3000:3000"
+            - '3000:3000'
         volumes:
             - ./cypress/mocks/external:/app/external
         deploy:
@@ -43,7 +43,7 @@ services:
         environment:
             NODE_ENV: 'test'
         ports:
-            - "3011:3011"
+            - '3011:3011'
         command: node --require @babel/register ./cypress/mocks/istexApi.js
         deploy:
             resources:
@@ -52,7 +52,7 @@ services:
                     memory: 2G
     workers:
         image: node:24.13-alpine
-        extra_hosts:  # for linux hosts since version 20.10
+        extra_hosts: # for linux hosts since version 20.10
             - host.docker.internal:host-gateway
         volumes:
             - .:/app
@@ -60,6 +60,7 @@ services:
         environment:
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
+            NODE_USE_ENV_PROXY: 1
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             no_proxy: 'localhost,127.0.0.1'
@@ -71,7 +72,7 @@ services:
             EZS_NSHARDS: '31'
             EZS_CACHE: 'false'
         ports:
-            - "31976:31976"
+            - '31976:31976'
         command: npm run production:workers
         links:
             - mongo
@@ -85,7 +86,7 @@ services:
     mongo:
         image: mongodb/mongodb-community-server:7.0.9-ubi9
         ports:
-            - "27017:27017"
+            - '27017:27017'
         deploy:
             resources:
                 limits:
@@ -94,5 +95,5 @@ services:
     maildev:
         image: maildev/maildev
         ports:
-            - "1080:1080"
-            - "1025:1025"
+            - '1080:1080'
+            - '1025:1025'
