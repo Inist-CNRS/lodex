@@ -64,6 +64,10 @@ module.exports = {
         encoding: '',
     },
     tdmservices: {
+        reformulate: {
+            url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/reformulate',
+            timeout: 5000,
+        },
         embedding: {
             url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/embedding',
             dimensions: 1024,
