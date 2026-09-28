@@ -40,11 +40,7 @@ describe('API: Dump', () => {
         const set = jest.fn();
         let data = '';
 
-        writableStream._write = (
-            chunk: any,
-            _encoding: any,
-            callback: any,
-        ) => {
+        writableStream._write = (chunk: any, _encoding: any, callback: any) => {
             data += chunk.toString();
             callback();
         };
@@ -79,11 +75,7 @@ describe('API: Dump', () => {
         const writableStream = new Writable();
         let data = '';
 
-        writableStream._write = (
-            chunk: any,
-            _encoding: any,
-            callback: any,
-        ) => {
+        writableStream._write = (chunk: any, _encoding: any, callback: any) => {
             data += chunk.toString();
             callback();
         };
