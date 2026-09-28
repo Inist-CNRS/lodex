@@ -179,6 +179,7 @@ describe('field routes', () => {
             req: 'request',
             set: jest.fn(),
             res: 'result',
+            tenant: 'instance-name',
         };
 
         beforeEach(() => {
@@ -191,7 +192,7 @@ describe('field routes', () => {
             expect(ctx.set.mock.calls[0][0]).toBe('Content-disposition');
             expect(
                 ctx.set.mock.calls[0][1].startsWith(
-                    'attachment; filename=model_',
+                    'attachment; filename=instance-name_model_',
                 ) && ctx.set.mock.calls[0][1].endsWith('.tar'),
             ).toBeTruthy();
 

@@ -325,7 +325,7 @@ export const removeField = async (ctx: any, id: any) => {
 };
 
 export const exportFields = async (ctx: any) => {
-    const filename = `model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
+    const filename = `${ctx.tenant}_model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
     ctx.set('Content-disposition', `attachment; filename=${filename}`);
     ctx.set('Content-type', 'application/x-tar');
     try {
