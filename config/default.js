@@ -1,5 +1,4 @@
 // node-config use CJS see https://github.com/node-config/node-config/wiki/Special-features-for-JavaScript-configuration-files
-const { interval } = require('d3');
 const path = require('node:path');
 
 const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
