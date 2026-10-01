@@ -1,4 +1,5 @@
 // node-config use CJS see https://github.com/node-config/node-config/wiki/Special-features-for-JavaScript-configuration-files
+const { interval } = require('d3');
 const path = require('node:path');
 
 const [host, port] = String(process.env.MAILER_HOST || 'localhost:1025').split(
@@ -62,6 +63,19 @@ module.exports = {
             workers: 'delegate',
         },
         encoding: '',
+    },
+    toobusy: {
+        enabled: true,
+        maxLag: 70,
+        interval: 500,
+    },
+    blocked: {
+        enabled: true,
+        threshold: 50,
+    },
+    cpuLagProfiler: {
+        enabled: true,
+        threshold: 100,
     },
     tdmservices: {
         reformulate: {

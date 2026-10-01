@@ -7,6 +7,8 @@ import koaQs from 'koa-qs';
 import moment from 'moment';
 import { KoaAdapter } from '@bull-board/koa';
 import toobusy from 'toobusy-js';
+import blocked from 'blocked-at';
+import { startCpuLagProfiler, stopCpuLagProfiler } from './cpuLagProfiler';
 
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
@@ -27,17 +29,40 @@ import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '@lodex/common';
 import { insertConfigTenant } from './services/configTenant';
+import { tmpdir } from 'node:os';
 
 const meters = Meter([], { loadStandards: true, loadDefaults: true });
 
 // set timeout as ezs server (see workers/index.js)
 ezs.settings.feed.timeout = config.get('ezs.timeout');
 
-// set 503 error parameter
-if (config.get('activateLagCheck')) {
-    toobusy.maxLag(70);
-    toobusy.interval(500);
+// Detects slow synchronous execution and reports where it started.
+if (config.get('blocked.enabled')) {
+    blocked(
+        (time, stack) => {
+            const logger = getLogger();
+            logger.error(
+                `Blocked for ${time}ms, operation started here:`,
+                stack,
+            );
+        },
+        { threshold: config.get('blocked.threshold') },
+    );
 }
+
+// set 503 error parameter
+if (config.get('toobusy.enabled')) {
+    toobusy.maxLag(config.get('toobusy.maxLag'));
+    toobusy.interval(config.get('toobusy.interval'));
+}
+startCpuLagProfiler({
+    enabled: config.get('cpuLagProfiler.enabled'),
+    lagThresholdMs: Number(config.get('cpuLagProfiler.threshold')),
+    dumpDir: tmpdir(),
+});
+process.on('SIGTERM', () => {
+    stopCpuLagProfiler();
+});
 
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
