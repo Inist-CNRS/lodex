@@ -51,7 +51,7 @@ export function startCpuLagProfiler(config: CpuLagProfilerConfig): void {
         }
     }, opts.checkIntervalMs);
 
-    console.info(
+    console.warn(
         `[cpuLagProfiler] actif (seuil=${opts.lagThresholdMs}ms, dossier=${opts.dumpDir})`,
     );
 }
