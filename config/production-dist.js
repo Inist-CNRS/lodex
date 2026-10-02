@@ -25,13 +25,10 @@ module.exports = {
         accessLogFile: process.env.EZMASTER_TECHNICAL_NAME ? false : true, // with ezmaster do not save log in file
     },
     toobusy: {
-        enabled: true,
-        maxLag: 100,
-        interval: 500,
+        enabled: false,
     },
     blocked: {
         enabled: false,
-        threshold: 50,
     },
     cpuLagProfiler: {
         enabled: false,
