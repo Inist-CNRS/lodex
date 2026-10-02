@@ -23,6 +23,12 @@ const apacheCombined = format.printf(({ metadata }) => {
     // 127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326 "http://www.example.com/start.html" "Mozilla/4.08 [en] (Win98; I ;Nav)"
     return `${ip} - ${user} [${date}] "${method} ${url} HTTP/${httpVersion}" ${status} ${size} "${referer}" "${ua}"`;
 });
+// Configuration du format Minimal (Development)
+const apacheMinimal = format.printf(({ metadata }) => {
+    const { method, url, status } = metadata;
+
+    return `${method} ${url} ${status}`;
+});
 
 const loggers = new Map();
 
@@ -58,8 +64,12 @@ const getLogger = (tenant = '_lodex_') => {
     return logger;
 };
 
+const httpFormat = config.get('logger.apacheCombined')
+    ? format.combine(format.metadata(), apacheCombined)
+    : format.combine(format.metadata(), apacheMinimal);
+
 const httpLogger = winston.createLogger({
-    format: format.combine(format.metadata(), apacheCombined),
+    format: httpFormat,
 });
 
 if (config.get('logger.accessLogFile')) {
