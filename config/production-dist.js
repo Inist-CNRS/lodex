@@ -23,6 +23,7 @@ module.exports = {
     logger: {
         level: 'info',
         accessLogFile: process.env.EZMASTER_TECHNICAL_NAME ? false : true, // with ezmaster do not save log in file
+        apacheCombined: true,
     },
     toobusy: {
         enabled: false,

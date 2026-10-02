@@ -44,6 +44,7 @@ module.exports = {
         level: 'debug',
         logpath: path.resolve(__dirname, '../log/'),
         accessLogFile: false,
+        apacheCombined: false,
     },
     redis: {
         url: String(process.env.REDIS_URL || 'redis://localhost:6379'),
