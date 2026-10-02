@@ -1,5 +1,7 @@
 import { ProgressStatus } from '@lodex/common';
 
+const MIN_EMIT_INTERVAL_MS = 250;
+
 export class Progress {
     listeners = [];
 
@@ -11,6 +13,7 @@ export class Progress {
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         this[tenant] = {
             status: ProgressStatus.PENDING,
+            lastEmitAt: 0,
         };
     }
 
@@ -35,7 +38,7 @@ export class Progress {
         this[tenant].type = type;
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         this[tenant].subLabel = subLabel;
-        this.notifyListeners(tenant);
+        this.emitNow(tenant);
     }
 
     finish(tenant: any) {
@@ -45,7 +48,7 @@ export class Progress {
         }
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         this[tenant].status = ProgressStatus.PENDING;
-        this.notifyListeners(tenant);
+        this.emitNow(tenant);
     }
 
     throw(tenant: any, error: any) {
@@ -66,7 +69,10 @@ export class Progress {
         }
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         this[tenant].progress += progress;
-        this.notifyListeners(tenant);
+
+        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        const isComplete = this[tenant].progress >= this[tenant].target;
+        this.notifyListenersThrottled(tenant, isComplete);
     }
 
     setProgress(tenant: any, progress: any) {
@@ -81,7 +87,7 @@ export class Progress {
 
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         this[tenant].progress = progress;
-        this.notifyListeners(tenant);
+        this.emitNow(tenant);
     }
 
     getProgress(tenant: any) {
@@ -139,6 +145,21 @@ export class Progress {
             }),
         );
     };
+
+    private emitNow(tenant: any): void {
+        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        this[tenant].lastEmitAt = Date.now();
+        this.notifyListeners(tenant);
+    }
+
+    private notifyListenersThrottled(tenant: any, force: boolean): void {
+        const now = Date.now();
+        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+        if (!force && now - this[tenant].lastEmitAt < MIN_EMIT_INTERVAL_MS) {
+            return;
+        }
+        this.emitNow(tenant);
+    }
 }
 
 export default new Progress();

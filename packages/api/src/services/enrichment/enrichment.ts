@@ -370,7 +370,7 @@ fusible = ${fusible}
                         level: error ? 'error' : 'info',
                         message: error
                             ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
-                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
+                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${JSON.stringify(value)})`,
                         timestamp: new Date(),
                         status: TaskStatus.IN_PROGRESS,
                     });
