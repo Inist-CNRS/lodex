@@ -1,69 +1,43 @@
 import * as inspector from 'node:inspector';
 import * as fs from 'node:fs';
-import toobusy from 'toobusy-js';
 import getLogger from './services/logger';
-
-const logger = getLogger();
-
 export interface CpuLagProfilerConfig {
     enabled: boolean;
-    lagThresholdMs?: number;
     minIntervalBetweenDumpsMs?: number;
     dumpDir?: string;
     samplingIntervalUs?: number;
-    checkIntervalMs?: number;
 }
 
 const DEFAULTS: Required<Omit<CpuLagProfilerConfig, 'enabled'>> = {
-    lagThresholdMs: 100,
     minIntervalBetweenDumpsMs: 60_000,
     dumpDir: '/tmp',
     samplingIntervalUs: 200,
-    checkIntervalMs: 1000,
 };
 
 let session: inspector.Session | null = null;
-let checkTimer: NodeJS.Timeout | null = null;
 let lastDump = 0;
+let activeOpts: Required<Omit<CpuLagProfilerConfig, 'enabled'>> = DEFAULTS;
 
 export function startCpuLagProfiler(config: CpuLagProfilerConfig): void {
     if (!config.enabled) return;
+
+    const logger = getLogger();
 
     if (session) {
         logger.warn('[cpuLagProfiler] déjà démarré, appel ignoré');
         return;
     }
 
-    const opts = { ...DEFAULTS, ...config };
+    activeOpts = { ...DEFAULTS, ...config };
 
     session = new inspector.Session();
     session.connect();
+    startProfiling(activeOpts.samplingIntervalUs);
 
-    startProfiling(opts.samplingIntervalUs);
-
-    checkTimer = setInterval(() => {
-        const lag = toobusy.lag();
-        const now = Date.now();
-
-        if (
-            lag > opts.lagThresholdMs &&
-            now - lastDump > opts.minIntervalBetweenDumpsMs
-        ) {
-            lastDump = now;
-            dumpProfile(opts.dumpDir, opts.samplingIntervalUs);
-        }
-    }, opts.checkIntervalMs);
-
-    logger.info(
-        `[cpuLagProfiler] actif (seuil=${opts.lagThresholdMs}ms, dossier=${opts.dumpDir})`,
-    );
+    logger.info(`[cpuLagProfiler] actif (dossier=${activeOpts.dumpDir})`);
 }
 
 export function stopCpuLagProfiler(): void {
-    if (checkTimer) {
-        clearInterval(checkTimer);
-        checkTimer = null;
-    }
     if (session) {
         session.post('Profiler.stop', () => {
             session?.disconnect();
@@ -72,8 +46,24 @@ export function stopCpuLagProfiler(): void {
     }
 }
 
+/**
+ * À appeler depuis le callback `blocked-at` existant dans app.js.
+ * Ne fait rien si le profiler n'est pas actif, ou si on est encore
+ * dans la fenêtre anti-spam depuis le dernier dump.
+ */
+export function onBlockedEvent(): void {
+    if (!session) return;
+
+    const now = Date.now();
+    if (now - lastDump < activeOpts.minIntervalBetweenDumpsMs) return;
+
+    lastDump = now;
+    dumpProfile(activeOpts.dumpDir, activeOpts.samplingIntervalUs);
+}
+
 function startProfiling(samplingIntervalUs: number): void {
     if (!session) return;
+    const logger = getLogger();
     session.post(
         'Profiler.setSamplingInterval',
         { interval: samplingIntervalUs },
@@ -95,6 +85,7 @@ function startProfiling(samplingIntervalUs: number): void {
 
 function dumpProfile(dumpDir: string, samplingIntervalUs: number): void {
     if (!session) return;
+    const logger = getLogger();
     session.post('Profiler.stop', (err, params) => {
         if (err || !params) {
             logger.error('[cpuLagProfiler] erreur stop profiler', err);

@@ -8,7 +8,11 @@ import moment from 'moment';
 import { KoaAdapter } from '@bull-board/koa';
 import toobusy from 'toobusy-js';
 import blocked from 'blocked-at';
-import { startCpuLagProfiler, stopCpuLagProfiler } from './cpuLagProfiler';
+import {
+    startCpuLagProfiler,
+    stopCpuLagProfiler,
+    onBlockedEvent,
+} from './cpuLagProfiler';
 
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
@@ -45,6 +49,7 @@ if (config.get('blocked.enabled')) {
                 `Blocked for ${time}ms, operation started here:`,
                 stack,
             );
+            onBlockedEvent();
         },
         { threshold: config.get('blocked.threshold') },
     );
@@ -57,7 +62,6 @@ if (config.get('toobusy.enabled')) {
 }
 startCpuLagProfiler({
     enabled: config.get('cpuLagProfiler.enabled'),
-    lagThresholdMs: Number(config.get('cpuLagProfiler.threshold')),
     dumpDir: tmpdir(),
 });
 process.on('SIGTERM', () => {
