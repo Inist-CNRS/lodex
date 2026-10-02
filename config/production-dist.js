@@ -24,6 +24,15 @@ module.exports = {
         level: 'info',
         accessLogFile: process.env.EZMASTER_TECHNICAL_NAME ? false : true, // with ezmaster do not save log in file
     },
+    toobusy: {
+        enabled: false,
+    },
+    blocked: {
+        enabled: false,
+    },
+    cpuLagProfiler: {
+        enabled: false,
+    },
     mail: {
         host: 'smtpout.intra.inist.fr',
         port: 25,

@@ -8,5 +8,14 @@ module.exports = {
     ezs: {
         cacheEnable: true,
     },
+    toobusy: {
+        enabled: false,
+    },
+    blocked: {
+        enabled: false,
+    },
+    cpuLagProfiler: {
+        enabled: false,
+    },
     alternativePrecomputedBaseUrl: 'http://api:3000',
 };

@@ -63,6 +63,19 @@ module.exports = {
         },
         encoding: '',
     },
+    toobusy: {
+        enabled: true,
+        maxLag: 70,
+        interval: 500,
+    },
+    blocked: {
+        enabled: true,
+        threshold: 50,
+    },
+    cpuLagProfiler: {
+        enabled: true,
+        threshold: 100,
+    },
     tdmservices: {
         reformulate: {
             url: 'https://rag-tool.tdmservices.intra.inist.fr/v1/reformulate',
