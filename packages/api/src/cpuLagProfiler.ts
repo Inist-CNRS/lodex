@@ -1,6 +1,9 @@
 import * as inspector from 'node:inspector';
 import * as fs from 'node:fs';
 import toobusy from 'toobusy-js';
+import getLogger from './services/logger';
+
+const logger = getLogger();
 
 export interface CpuLagProfilerConfig {
     enabled: boolean;
@@ -27,7 +30,7 @@ export function startCpuLagProfiler(config: CpuLagProfilerConfig): void {
     if (!config.enabled) return;
 
     if (session) {
-        console.warn('[cpuLagProfiler] déjà démarré, appel ignoré');
+        logger.warn('[cpuLagProfiler] déjà démarré, appel ignoré');
         return;
     }
 
@@ -51,7 +54,7 @@ export function startCpuLagProfiler(config: CpuLagProfilerConfig): void {
         }
     }, opts.checkIntervalMs);
 
-    console.warn(
+    logger.info(
         `[cpuLagProfiler] actif (seuil=${opts.lagThresholdMs}ms, dossier=${opts.dumpDir})`,
     );
 }
@@ -76,16 +79,16 @@ function startProfiling(samplingIntervalUs: number): void {
         { interval: samplingIntervalUs },
         (err) => {
             if (err)
-                console.error(
+                logger.error(
                     '[cpuLagProfiler] erreur setSamplingInterval',
                     err,
                 );
         },
     );
     session.post('Profiler.enable', (err) => {
-        if (err) return console.error('[cpuLagProfiler] erreur enable', err);
+        if (err) return logger.error('[cpuLagProfiler] erreur enable', err);
         session?.post('Profiler.start', (err2) => {
-            if (err2) console.error('[cpuLagProfiler] erreur start', err2);
+            if (err2) logger.error('[cpuLagProfiler] erreur start', err2);
         });
     });
 }
@@ -94,15 +97,15 @@ function dumpProfile(dumpDir: string, samplingIntervalUs: number): void {
     if (!session) return;
     session.post('Profiler.stop', (err, params) => {
         if (err || !params) {
-            console.error('[cpuLagProfiler] erreur stop profiler', err);
+            logger.error('[cpuLagProfiler] erreur stop profiler', err);
             return;
         }
         const path = `${dumpDir}/incident-${Date.now()}.cpuprofile`;
         try {
             fs.writeFileSync(path, JSON.stringify(params.profile));
-            console.warn(`[cpuLagProfiler] profil écrit: ${path}`);
+            logger.warn(`[cpuLagProfiler] profil écrit: ${path}`);
         } catch (writeErr) {
-            console.error('[cpuLagProfiler] erreur écriture profil', writeErr);
+            logger.error('[cpuLagProfiler] erreur écriture profil', writeErr);
         }
 
         // relance pour couvrir la fenêtre suivante
