@@ -1,5 +1,6 @@
 import omit from 'lodash/omit';
 import get from 'lodash/get';
+import { checkFusible, createFusible, enableFusible } from '@ezs/core/fusible';
 
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
@@ -13,6 +14,8 @@ import {
 } from '@lodex/common';
 import { jobLogger } from '../workers/tools';
 import getLogger from './logger';
+import buildPublishStream from './publishProcess.ts';
+import { mongoConnectionString } from './mongoClient';
 
 export const versionTransformerDecorator =
     (transformDocument: any, subresourceId = null, hiddenResources = null) =>
@@ -225,23 +228,35 @@ export const publishDocumentsFactory =
             }),
         );
 
-        await transformAllDocuments(
-            count,
-            ctx.dataset.findLimitFromSkip,
-            ctx.publishedDataset.insertBatch,
-            versionTransformerDecorator(
-                transformMainResourceDocument,
-                null,
-                hiddenResources,
-            ),
-            undefined,
-            ctx.job,
+        const fusible = await createFusible();
+        await enableFusible(fusible);
+        await ctx.job.update({
+            ...ctx.job.data,
+            fusible,
+        });
+        const environment = {
+            connectionStringURI: mongoConnectionString(ctx.tenant),
+            hiddenResources,
+        };
+        await buildPublishStream(
+            mainResourceFields,
+            fusible,
+            environment,
+            (data: any) => {
+                progress.incrementProgress(ctx.tenant, 1);
+                console.error(data);
+            },
         );
-        await ctx.publishedDataset.createIndexesAfterInsert();
 
         ctx.job.isActive()
             ? jobLogger.info(ctx.job, 'Documents published')
             : jobLogger.error(ctx.job, 'Publication cancelled');
+
+        await ctx.publishedDataset.createIndexesAfterInsert();
+
+        ctx.job.isActive()
+            ? jobLogger.info(ctx.job, 'Documents Indexed')
+            : jobLogger.error(ctx.job, 'Indexation cancelled');
     };
 
 export default publishDocumentsFactory({

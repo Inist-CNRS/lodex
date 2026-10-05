@@ -31,6 +31,7 @@ import runVSearchPrecomputed from './runVSearchPrecomputed.js';
 import saveDocuments from './saveDocuments.js';
 import updateDocument from './updateDocument.js';
 import updateDocuments from './updateDocuments.js';
+import insertDocuments from './insertDocuments.js';
 import useFieldNames from './useFieldNames.js';
 import config2env from './config2env.js';
 import semanticMapping from './semanticMapping.js';
@@ -69,6 +70,7 @@ const funcs = {
     homogenizedObject,
     updateDocument,
     updateDocuments,
+    insertDocuments,
     config2env,
     semanticMapping,
     // aliases
@@ -94,6 +96,7 @@ const funcs = {
     LodexHomogenizedObject: homogenizedObject.homogenizedObject,
     LodexUpdateDocument: updateDocument.updateDocument,
     LodexUpdateDocuments: updateDocuments.updateDocuments,
+    LodexInsertDocuments: insertDocuments.insertDocuments,
 };
 
 export default funcs;
