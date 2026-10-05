@@ -8,7 +8,6 @@ import {
     getSourceError,
     processEnrichment,
 } from './enrichment';
-// @ts-expect-error TS7016
 import { disableFusible } from '@ezs/core/fusible';
 import { CancelWorkerError } from '../../workers';
 

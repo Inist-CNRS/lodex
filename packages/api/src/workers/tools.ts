@@ -3,7 +3,6 @@ import {
     cleanWaitingJobsOfType,
     getOrCreateWorkerQueue,
 } from './index';
-// @ts-expect-error TS(2792): Cannot find module 'uuid'. Did you mean to install... Remove this comment to see the full error message
 import { disableFusible } from '@ezs/core/fusible';
 
 import { ProgressStatus } from '@lodex/common';

@@ -6,7 +6,6 @@ import {
     createFusible,
     enableFusible,
     disableFusible,
-    // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 } from '@ezs/core/fusible';
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
@@ -62,7 +61,7 @@ export const startImport = async (ctx: any) => {
         extension,
         customLoader,
     } = ctx.job?.data || {};
-    let fusible;
+    const fusible = await createFusible();
     try {
         // @ts-expect-error TS(2339): Property 'status' does not exist on type 'Progress... Remove this comment to see the full error message
         if (progress.status !== ProgressStatus.SAVING_DATASET) {
@@ -76,7 +75,6 @@ export const startImport = async (ctx: any) => {
         const parser =
             !loaderName || loaderName === 'automatic' ? extension : loaderName;
 
-        fusible = await createFusible();
         await enableFusible(fusible);
         ctx.job.update({
             ...ctx.job.data,

@@ -1,6 +1,6 @@
 import omit from 'lodash/omit';
 import get from 'lodash/get';
-import { checkFusible, createFusible, enableFusible } from '@ezs/core/fusible';
+import { createFusible, enableFusible } from '@ezs/core/fusible';
 
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
@@ -95,11 +95,7 @@ const getSubresourceTransformer = (
 };
 
 export const publishDocumentsFactory =
-    ({
-        versionTransformerDecorator,
-        getDocumentTransformer,
-        transformAllDocuments,
-    }: any) =>
+    ({ versionTransformerDecorator, transformAllDocuments }: any) =>
     async (ctx: any, count: any, fields: any) => {
         if (!ctx.job) {
             const logger = getLogger(ctx.tenant);
@@ -150,11 +146,6 @@ export const publishDocumentsFactory =
         const groupedSubresourceFields =
             groupSubresourceFields(subresourceFields);
         const hiddenResources = await ctx.hiddenResource.findAll();
-
-        const transformMainResourceDocument = getDocumentTransformer(
-            ctx.dataset.findBy,
-            mainResourceFields,
-        );
 
         progress.start(ctx.tenant, {
             status: ProgressStatus.PUBLISH_DOCUMENT,
@@ -242,9 +233,8 @@ export const publishDocumentsFactory =
             mainResourceFields,
             fusible,
             environment,
-            (data: any) => {
+            () => {
                 progress.incrementProgress(ctx.tenant, 1);
-                console.error(data);
             },
         );
 
@@ -261,6 +251,5 @@ export const publishDocumentsFactory =
 
 export default publishDocumentsFactory({
     versionTransformerDecorator,
-    getDocumentTransformer,
     transformAllDocuments,
 });

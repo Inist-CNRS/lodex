@@ -3,7 +3,6 @@ import path from 'path';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import type Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/compile'. Did you mean to ... Remove this comment to see the full error message
 import { checkFusible, createFusible, enableFusible } from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
 import config from 'config';
