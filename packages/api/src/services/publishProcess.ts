@@ -52,7 +52,7 @@ stop = false
 
 [replace]
 path = uri
-value = get('uri')
+value = get('uri').toString().thru((uri) => ((uri.startsWith('ark:') || uri.startsWith('uid:')) ? uri : String('uid:/').concat(uri)))
 path = lastVersion
 value = self().omit(['$origin', 'uri'])
 path = publicationDate
@@ -63,6 +63,7 @@ path = versions
 value = get('lastVersion').castArray()
 path = hiddenResource
 value = env('hiddenResources').castArray().find((hidden) => hidden.uri === self.uri)
+
 
 [group]
 length = ${BATCH_SIZE}
