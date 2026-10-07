@@ -28,12 +28,12 @@ transformation.getMetas = () => ({
     type: 'value',
     args: [
         {
-            name: 'columns',
-            type: 'columns',
+            name: 'column',
+            type: 'column',
         },
         {
-            name: 'columns',
-            type: 'columns',
+            name: 'column',
+            type: 'column',
         },
     ],
     docUrl: documentationByOperation['CONCAT'],
