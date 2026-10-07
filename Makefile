@@ -66,7 +66,7 @@ build-prod:
 ## Development =================================================================
 
 run-dev: ## Run the project in dev mode
-	NODE_ENV=development docker compose -f docker-compose.dev.yml up --force-recreate
+	NODE_ENV=development docker compose --ansi always -f docker-compose.dev.yml up --force-recreate 2>&1 | grep --line-buffered -v "mongo-1"
 start-dev: run-dev ## Start the project (alias of make run-dev)
 
 build-app:
