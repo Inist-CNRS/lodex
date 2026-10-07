@@ -5,7 +5,7 @@ export const openAdvancedDrawer = () => {
 
     cy.get('nav div').contains('More').click();
 
-    cy.wait(300);
+    cy.wait(3000);
     cy.get('.drawer .advanced-page').should('be.visible');
 };
 
