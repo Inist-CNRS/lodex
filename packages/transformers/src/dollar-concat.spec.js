@@ -9,8 +9,8 @@ describe('$CONCAT', () => {
         const script = `
             [$CONCAT]
             field = d
-            columns = a
-            columns = b
+            column = a
+            column = b
 
             [exchange]
             value = omit('$origin')

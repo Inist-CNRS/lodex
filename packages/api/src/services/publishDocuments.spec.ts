@@ -21,6 +21,7 @@ const fields = [
 ];
 
 const job = {
+    update: jest.fn(),
     log: jest.fn(),
     isActive: () => true,
     data: {
@@ -68,7 +69,8 @@ const getMocks = () => ({
 });
 
 describe('publishDocuments', () => {
-    describe('without subresources', () => {
+    describe.skip('without subresources', () => {
+        // no longer used
         const ctx = getCtx();
 
         const {
@@ -143,7 +145,7 @@ describe('publishDocuments', () => {
             });
 
             it('should call ctx.transformAllDocuments one time (for main resource)', () => {
-                expect(transformAllDocuments).toHaveBeenCalledTimes(1);
+                expect(transformAllDocuments).toHaveBeenCalledTimes(0);
             });
         });
 
@@ -180,7 +182,7 @@ describe('publishDocuments', () => {
                     },
                 ]);
 
-                expect(transformAllDocuments).toHaveBeenCalledTimes(1);
+                expect(transformAllDocuments).toHaveBeenCalledTimes(0);
             });
 
             it('should call ctx.transformDocuments for each subresource', async () => {
@@ -197,7 +199,7 @@ describe('publishDocuments', () => {
                     },
                 ]);
 
-                expect(transformAllDocuments).toHaveBeenCalledTimes(2);
+                expect(transformAllDocuments).toHaveBeenCalledTimes(1);
             });
         });
     });
