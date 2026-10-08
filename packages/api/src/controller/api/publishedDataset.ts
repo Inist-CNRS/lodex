@@ -2,7 +2,8 @@ import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 
-import { PropositionStatus, autoGenerateUriTransformer } from '@lodex/common';
+import { autoGenerateUri } from '../../services/generateUid.ts';
+import { PropositionStatus } from '@lodex/common';
 import { uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import updateFacetValue from '../../services/updateFacetValue';
@@ -386,7 +387,7 @@ export const editResource = async (ctx: any) => {
 export const createResource = async (ctx: any) => {
     const newResource = ctx.request.body;
     if (!newResource.uri) {
-        newResource.uri = await autoGenerateUriTransformer()();
+        newResource.uri = await autoGenerateUri({});
     }
 
     const resource = await ctx.publishedDataset.findByUri(newResource.uri);
