@@ -2,6 +2,14 @@ import {
     transformers as ezsTransformers,
     transformersMetas,
 } from '@ezs/transformers';
+import AUTOGENERATE_URI from './AUTOGENERATE_URI';
+
+// @ts-expect-error TS2339
+ezsTransformers.AUTOGENERATE_URI = AUTOGENERATE_URI;
+// @ts-expect-error TS(2339): Property 'getMetas' does not exist on type '() => ... Remove this comment to see the full error message
+transformersMetas.push(AUTOGENERATE_URI.getMetas());
+
+export const autoGenerateUriTransformer = AUTOGENERATE_URI;
 
 export default ezsTransformers;
 export const transformers = ezsTransformers;
