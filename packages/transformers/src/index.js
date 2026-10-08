@@ -22,6 +22,7 @@ import TRUNCATE_WORDS from './operations/TRUNCATE_WORDS';
 import SHIFT from './operations/SHIFT';
 import TRIM from './operations/TRIM';
 import CAPITALIZE from './operations/CAPITALIZE';
+import MD5 from './operations/MD5';
 import UNIQ from './operations/UNIQ';
 import FORMAT from './operations/FORMAT';
 import PARSE from './operations/PARSE';
@@ -37,6 +38,7 @@ import PRECOMPUTED from './operations/PRECOMPUTED';
 import $ARRAY from './dollar-array';
 import $BOOLEAN from './dollar-boolean';
 import $CAPITALIZE from './dollar-capitalize';
+import $MD5 from './dollar-md5';
 import $COLUMN from './dollar-column';
 import $CONCAT from './dollar-concat';
 import $CONCAT_URI from './dollar-concat-uri';
@@ -71,6 +73,7 @@ export default {
     $ARRAY,
     $BOOLEAN,
     $CAPITALIZE,
+    $MD5,
     $COLUMN,
     $CONCAT,
     $CONCAT_URI,
@@ -126,6 +129,7 @@ export const transformers = {
     SHIFT,
     TRIM,
     CAPITALIZE,
+    MD5,
     UNIQ,
     FORMAT,
     PARSE,
@@ -162,6 +166,7 @@ export const transformersMetas = [
     SHIFT,
     TRIM,
     CAPITALIZE,
+    MD5,
     UNIQ,
     FORMAT,
     PARSE,

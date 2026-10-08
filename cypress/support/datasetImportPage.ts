@@ -17,6 +17,7 @@ export const addFile = (filename: string, mimeType = 'text/csv') => {
     cy.wait(300);
     selectLoader();
     cy.get('.btn-upload-dataset').click({ force: true });
+    cy.wait(1000);
 };
 
 export const addFileWithoutClick = (
@@ -148,6 +149,7 @@ export const setOperationTypeInWizard = (value = 'DEFAULT') => {
 export const publish = () => {
     cy.get('.btn-publish button').click();
     adminNavigation.goToData();
+    cy.wait(3000);
     cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 

@@ -118,6 +118,7 @@ describe('Subresource Page', () => {
         cy.get('.wizard').should('not.exist');
 
         cy.contains('button', 'Published data').click();
+        cy.wait(1000); // fix unexpected refresh after page change
 
         let fieldName;
         cy.contains('span', 'Animal crossing')

@@ -57,6 +57,7 @@ module.exports = {
         cacheDelay: 60 * 60 * 12,
         // use detatch to have a thread dedicated to processing the response, otherwise you can simply use “delegate”
         mainStatement: {
+            publish: 'delegate',
             enrichment: 'delegate',
             run: 'delegate',
             export: 'delegate',

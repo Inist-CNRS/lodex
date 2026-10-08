@@ -8,7 +8,10 @@ export const replace = (value, searchValue, replaceValue) => {
         .trim()
         .replace(/^[/]+/, '')
         .replace(/[/]+$/, '');
-    return value.replace(RegExp(cleantemplate, 'gi'), replaceValue);
+    return String(value || '').replace(
+        RegExp(cleantemplate, 'gi'),
+        replaceValue,
+    );
 };
 
 const transformation = (_, args) => (value) =>

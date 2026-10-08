@@ -1,5 +1,6 @@
 import omit from 'lodash/omit';
 import get from 'lodash/get';
+import { createFusible, enableFusible } from '@ezs/core/fusible';
 
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
@@ -13,6 +14,8 @@ import {
 } from '@lodex/common';
 import { jobLogger } from '../workers/tools';
 import getLogger from './logger';
+import buildPublishStream from './publishProcess.ts';
+import { mongoConnectionString } from './mongoClient';
 
 export const versionTransformerDecorator =
     (transformDocument: any, subresourceId = null, hiddenResources = null) =>
@@ -92,11 +95,7 @@ const getSubresourceTransformer = (
 };
 
 export const publishDocumentsFactory =
-    ({
-        versionTransformerDecorator,
-        getDocumentTransformer,
-        transformAllDocuments,
-    }: any) =>
+    ({ versionTransformerDecorator, transformAllDocuments }: any) =>
     async (ctx: any, count: any, fields: any) => {
         if (!ctx.job) {
             const logger = getLogger(ctx.tenant);
@@ -147,11 +146,6 @@ export const publishDocumentsFactory =
         const groupedSubresourceFields =
             groupSubresourceFields(subresourceFields);
         const hiddenResources = await ctx.hiddenResource.findAll();
-
-        const transformMainResourceDocument = getDocumentTransformer(
-            ctx.dataset.findBy,
-            mainResourceFields,
-        );
 
         progress.start(ctx.tenant, {
             status: ProgressStatus.PUBLISH_DOCUMENT,
@@ -225,27 +219,37 @@ export const publishDocumentsFactory =
             }),
         );
 
-        await transformAllDocuments(
-            count,
-            ctx.dataset.findLimitFromSkip,
-            ctx.publishedDataset.insertBatch,
-            versionTransformerDecorator(
-                transformMainResourceDocument,
-                null,
-                hiddenResources,
-            ),
-            undefined,
-            ctx.job,
+        const fusible = await createFusible();
+        await enableFusible(fusible);
+        await ctx.job.update({
+            ...ctx.job.data,
+            fusible,
+        });
+        const environment = {
+            connectionStringURI: mongoConnectionString(ctx.tenant),
+            hiddenResources,
+        };
+        await buildPublishStream(
+            mainResourceFields,
+            fusible,
+            environment,
+            () => {
+                progress.incrementProgress(ctx.tenant, 1);
+            },
         );
-        await ctx.publishedDataset.createIndexesAfterInsert();
 
         ctx.job.isActive()
             ? jobLogger.info(ctx.job, 'Documents published')
             : jobLogger.error(ctx.job, 'Publication cancelled');
+
+        await ctx.publishedDataset.createIndexesAfterInsert();
+
+        ctx.job.isActive()
+            ? jobLogger.info(ctx.job, 'Documents Indexed')
+            : jobLogger.error(ctx.job, 'Indexation cancelled');
     };
 
 export default publishDocumentsFactory({
     versionTransformerDecorator,
-    getDocumentTransformer,
     transformAllDocuments,
 });
