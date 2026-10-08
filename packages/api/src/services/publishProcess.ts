@@ -80,7 +80,6 @@ fusible = ${fusible}
 
 [ungroup]
     `;
-        console.error(script);
         const primer = {};
         const errorCount = 0;
         const input = new PassThrough({ objectMode: true });
