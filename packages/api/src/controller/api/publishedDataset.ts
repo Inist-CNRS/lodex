@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
+//  @ts-expect-error TS7016
 import InistArk from 'inist-ark';
 
 import { PropositionStatus } from '@lodex/common';

@@ -335,8 +335,14 @@ export default async (db: any) => {
                 name: URI_FIELD_NAME,
                 transformers: [
                     {
-                        operation: 'AUTOGENERATE_URI',
-                        args: [],
+                        operation: 'COLUMN',
+                        args: [
+                            {
+                                name: 'column',
+                                type: 'column',
+                                value: 'uri',
+                            },
+                        ],
                     },
                 ],
                 position: 0,
