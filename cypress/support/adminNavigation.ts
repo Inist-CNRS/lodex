@@ -33,6 +33,7 @@ export const publishAndGoToPublishedData = () => {
         timeout: 10000,
     }).should('not.exist');
 
+    cy.wait(1000);
     goToData();
     // no longer appears ?
     // cy.get('[aria-label="unpublish"').should('be.visible');
