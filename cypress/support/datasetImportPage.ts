@@ -17,6 +17,7 @@ export const addFile = (filename: string, mimeType = 'text/csv') => {
     cy.wait(300);
     selectLoader();
     cy.get('.btn-upload-dataset').click({ force: true });
+    cy.wait(1000);
 };
 
 export const addFileWithoutClick = (
