@@ -4,6 +4,8 @@ export const openEnrichment = () => {
     adminNavigation.goToData();
     cy.get('.sidebar').contains('Enrichment').click({ force: true });
     cy.waitForNetworkIdle(500);
+    // Attendre que les enrichissements chargent complètement
+    cy.get('[data-testid="enrichment-list"], .enrichment-item').should('exist');
 };
 
 export const fillAdvancedEnrichment = (name = 'Enrichment') => {
