@@ -136,7 +136,6 @@ export const translateOldField = (ctx: any, oldField: any, index: any) => {
             transformer && transformer.operation === 'AUTOGENERATE_URI',
     );
     if (uriField) {
-        console.log(uriField);
         return ctx.field.create(
             {
                 scope,
