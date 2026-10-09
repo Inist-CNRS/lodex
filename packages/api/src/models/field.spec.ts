@@ -336,8 +336,14 @@ describe('field', () => {
                         scope: 'collection',
                         transformers: [
                             {
-                                args: [],
-                                operation: 'AUTOGENERATE_URI',
+                                operation: 'COLUMN',
+                                args: [
+                                    {
+                                        name: 'column',
+                                        type: 'column',
+                                        value: 'uri',
+                                    },
+                                ],
                             },
                         ],
                     },
@@ -352,8 +358,14 @@ describe('field', () => {
                         scope: 'collection',
                         transformers: [
                             {
-                                args: [],
-                                operation: 'AUTOGENERATE_URI',
+                                operation: 'COLUMN',
+                                args: [
+                                    {
+                                        name: 'column',
+                                        type: 'column',
+                                        value: 'uri',
+                                    },
+                                ],
                             },
                         ],
                     },

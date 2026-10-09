@@ -31,6 +31,29 @@ async function extractModelFromArchive(
                         return next();
                     }
 
+                    // backward compatibility : AUTOGENERATE_URI no longer exists
+                    if (document && document.transformers) {
+                        const uriField = document.transformers.find(
+                            (transformer: any): any =>
+                                transformer &&
+                                transformer.operation === 'AUTOGENERATE_URI',
+                        );
+                        if (uriField) {
+                            document.transformers = [
+                                {
+                                    operation: 'COLUMN',
+                                    args: [
+                                        {
+                                            name: 'column',
+                                            type: 'column',
+                                            value: 'uri',
+                                        },
+                                    ],
+                                },
+                            ];
+                        }
+                    }
+
                     // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                     extractedData[collection].push(document);
                     next();

@@ -1,8 +1,10 @@
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
+//  @ts-expect-error TS7016
+import InistArk from 'inist-ark';
 
-import { PropositionStatus, autoGenerateUriTransformer } from '@lodex/common';
+import { PropositionStatus } from '@lodex/common';
 import { uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import updateFacetValue from '../../services/updateFacetValue';
@@ -386,7 +388,11 @@ export const editResource = async (ctx: any) => {
 export const createResource = async (ctx: any) => {
     const newResource = ctx.request.body;
     if (!newResource.uri) {
-        newResource.uri = await autoGenerateUriTransformer()();
+        const ark = new InistArk({
+            subpublisher: '39D', // ARBITRARY_SUBPUBLISHER
+        });
+        const { identifier } = ark.parse(ark.generate());
+        newResource.uri = `uid:/${identifier}`;
     }
 
     const resource = await ctx.publishedDataset.findByUri(newResource.uri);

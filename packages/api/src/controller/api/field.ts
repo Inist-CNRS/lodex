@@ -131,6 +131,34 @@ export const translateOldField = (ctx: any, oldField: any, index: any) => {
             false,
         );
     }
+    const uriField = oldField.transformers.find(
+        (transformer: any): any =>
+            transformer && transformer.operation === 'AUTOGENERATE_URI',
+    );
+    if (uriField) {
+        return ctx.field.create(
+            {
+                scope,
+                display,
+                ...newField,
+                position: index,
+                transformers: [
+                    {
+                        operation: 'COLUMN',
+                        args: [
+                            {
+                                name: 'column',
+                                type: 'column',
+                                value: 'uri',
+                            },
+                        ],
+                    },
+                ],
+            },
+            name,
+            false,
+        );
+    }
 
     return ctx.field.create(
         {
