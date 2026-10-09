@@ -11,9 +11,9 @@ services:
             npm_config_cache: /app/.npm
             CYPRESS_CACHE_FOLDER: /app/.cache
             PUBLIC_URL: ${PUBLIC_URL}
-            MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: 'true'
             REDIS_URL: 'redis://localhost:6379'
+            MONGODB_URI: 'mongodb://mongo:27017/lodex?directConnection=true&serverSelectionTimeoutMS=5000'
             WORKERS_URL: 'http://localhost:31976'
             PRECOMPUTED_URL: 'http://api:3000'
         links:
@@ -84,7 +84,7 @@ services:
                     cpus: '2'
                     memory: 2G
     mongo:
-        image: mongodb/mongodb-community-server:7.0.9-ubi9
+        image: inistcnrs/ezmaster-mongot:1.67.1-9
         ports:
             - '27017:27017'
         deploy:
