@@ -200,6 +200,13 @@ export const validateTransformer = (
     // @ts-expect-error TS7053
     const transformerOperation = transformers[transformer.operation];
 
+    // backward compatibility for databases containing older models
+    if (transformer.operation === 'AUTOGENERATE_URI') {
+        return {
+            name: 'transformer.operation',
+            isValid: true,
+        };
+    }
     if (!transformerOperation) {
         return {
             name: 'transformer.operation',
