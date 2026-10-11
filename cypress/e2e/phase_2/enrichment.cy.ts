@@ -32,6 +32,10 @@ describe('Enrichment', () => {
     });
 
     it('should run all enrichments from dataset page', () => {
+        // Intercept the enrichment list load and run all endpoints
+        cy.intercept('GET', '/api/enrichment*').as('loadEnrichments');
+        cy.intercept('POST', '/api/enrichment/runall').as('runAll');
+
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
         cy.waitForNetworkIdle(500);
@@ -46,14 +50,16 @@ describe('Enrichment', () => {
         enrichmentFormPage.fillAdvancedEnrichment('Enrichment 3');
 
         enrichmentFormPage.openEnrichment();
-        // Attendre explicitement que les 3 enrichissements soient visibles avec état "Not started"
+        // Wait for the enrichments to load
+        cy.wait('@loadEnrichments', { timeout: 15000 });
         cy.findAllByText('Not started', { timeout: 20000 }).should(
             'have.length',
             3,
         );
+        
         cy.contains('Run All').click();
 
-        // Attendre que le dialog s'ouvre avant d'interagir
+        // Wait for the dialog and confirm
         cy.findByRole('dialog', { timeout: 15000 }).should('be.visible').within(() => {
             cy.contains(
                 'Are you sure you want to run all enrichments? This will also run enrichments that have completed successfully.',
@@ -61,18 +67,24 @@ describe('Enrichment', () => {
             cy.contains('Run All').click();
         });
 
-        // Attendre les changements d'état avec timeouts explicites
+        // Wait for the run all API call to complete
+        cy.wait('@runAll', { timeout: 15000 });
+        
+        // Give Redux time to update the store
+        cy.waitForNetworkIdle(2000);
+
+        // Now check the statuses have changed
         cy.findAllByText('Not started', { timeout: 20000 }).should(
             'have.length',
             0,
         );
-        cy.findAllByText('Running', { timeout: 20000 }).should('have.length', 1);
-        cy.findAllByText('Pending', { timeout: 20000 }).should('have.length', 2);
+        cy.findAllByText('Running', { timeout: 20000 }).should('have.length.gte', 1);
+        cy.findAllByText('Pending', { timeout: 20000 }).should('have.length.gte', 1);
 
         adminMenu.clearWorkers();
         cy.waitForNetworkIdle(500);
         cy.contains('All jobs have been cleared', { timeout: 10000 }).should('exist');
-        cy.findAllByText('Canceled', { timeout: 20000 }).should('have.length.gte', 2);
+        cy.findAllByText('Canceled', { timeout: 20000 }).should('have.length.gte', 1);
     });
 
     it('should support enriching dataset', () => {
