@@ -68,6 +68,7 @@ import $URLENCODE from './dollar-urlencode';
 import $MAPPING from './dollar-mapping';
 import $VALUE from './dollar-value';
 import $PRECOMPUTED from './dollar-precomputed';
+import $ROUTINE from './dollar-routine';
 
 export default {
     $ARRAY,
@@ -103,6 +104,7 @@ export default {
     $MAPPING,
     $TRUNCATE_WORDS,
     $PRECOMPUTED,
+    $ROUTINE,
 };
 
 export const transformers = {
