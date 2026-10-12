@@ -2,7 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
-import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -11,8 +10,6 @@ import Script from '../../services/script';
 import { cleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import getLogger from '../../services/logger';
-
-ezs.use(Lodex);
 
 const baseURL: string = config.has('baseURL')
     ? config.get('baseURL')

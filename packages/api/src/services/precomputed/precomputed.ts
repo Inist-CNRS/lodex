@@ -10,9 +10,6 @@ import { tmpdir } from 'os';
 import path from 'path';
 // @ts-expect-error TS(2792): Cannot find module 'stream-to-promise'. Did you me... Remove this comment to see the full error message
 import ezs from '@ezs/core';
-import Lodex from '@ezs/lodex';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/basics'. Did you mean to ... Remove this comment to see the full error message
-import Basics from '@ezs/basics';
 import { Readable } from 'stream';
 import { CancelWorkerError, getOrCreateWorkerQueue } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
@@ -22,8 +19,6 @@ import { mongoConnectionString } from '../mongoClient';
 import { addSidToUrl, ezsProtocolUrl } from '../enrichment/enrichment';
 
 const RETRIEVE_ENTRY_POINT = 'retrieve-json'; // The path must be identical to the Web service entry point.
-ezs.use(Lodex);
-ezs.use(Basics);
 const tmpDirectory = path.resolve(tmpdir(), 'precomputed');
 const baseURL: string = config.has('baseURL')
     ? config.get('baseURL')

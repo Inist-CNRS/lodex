@@ -2,12 +2,9 @@ import Koa from 'koa';
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
-import ezsLodex from '@ezs/lodex';
 import config from 'config';
 
 import Script from '../../services/script';
-
-ezs.use(ezsLodex);
 
 const loaders = new Script('loaders');
 
