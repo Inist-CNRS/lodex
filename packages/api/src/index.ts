@@ -1,5 +1,5 @@
 import config from 'config';
-process.env.DEBUG = 'ezs:*';
+process.env.DEBUG = config.get('ezs.verbose');
 import debug from 'debug';
 debug.enable(String(process.env.DEBUG));
 
