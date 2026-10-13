@@ -14,8 +14,14 @@ import {
     onBlockedEvent,
 } from './cpuLagProfiler';
 
-// @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
+// @ts-expect-error TS(2792): Cannot find module
 import ezs from '@ezs/core';
+import Lodex from '@ezs/lodex';
+// @ts-expect-error TS(2792): Cannot find module '@ezs/basics'. Did you mean to ... Remove this comment to see the full error message
+import Basics from '@ezs/basics';
+// @ts-expect-error TS(2792): Cannot find module
+import Analytics from '@ezs/analytics';
+import Transformers from '@ezs/transformers';
 import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
@@ -35,10 +41,18 @@ import { DEFAULT_TENANT } from '@lodex/common';
 import { insertConfigTenant } from './services/configTenant';
 import { tmpdir } from 'node:os';
 
-const meters = Meter([], { loadStandards: true, loadDefaults: true });
-
-// set timeout as ezs server (see workers/index.js)
+// settings as the same of the ezs server (see workers/index.js)
 ezs.settings.feed.timeout = config.get('ezs.timeout');
+ezs.settings.cacheEnable = config.get('ezs.cacheEnable');
+ezs.settings.cacheDelay = config.get('ezs.cacheDelay');
+ezs.settings.mainStatement = config.get('ezs.mainStatement.workers');
+ezs.settings.encoding = config.get('ezs.encoding');
+ezs.use(Basics);
+ezs.use(Analytics);
+ezs.use(Lodex);
+ezs.use(Transformers);
+
+const meters = Meter([], { loadStandards: true, loadDefaults: true });
 
 // Detects slow synchronous execution and reports where it started.
 if (config.get('blocked.enabled')) {

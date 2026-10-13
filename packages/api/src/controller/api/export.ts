@@ -2,8 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/basics'. Did you mean to ... Remove this comment to see the full error message
-import Basics from '@ezs/basics';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -14,7 +12,6 @@ import { mongoConnectionString } from '../../services/mongoClient';
 import { ObjectId } from 'mongodb';
 import getLogger from '../../services/logger';
 
-ezs.use(Basics);
 const baseURL: string = config.has('baseURL')
     ? config.get('baseURL')
     : `http://localhost:${config.get('port')}`;
