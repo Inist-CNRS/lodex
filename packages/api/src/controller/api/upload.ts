@@ -1,4 +1,3 @@
-import asyncBusboy from '@recuperateur/async-busboy';
 import config from 'config';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
@@ -12,6 +11,7 @@ import {
     unlinkFile,
 } from '../../services/fsHelpers';
 import progress from '../../services/progress';
+import { parseMultipart } from '../../services/multipartParser';
 
 import { v1 as uuid } from 'uuid';
 import { getOrCreateWorkerQueue } from '../../workers';
@@ -31,7 +31,7 @@ export const clearUpload = async (ctx: any) => {
 };
 
 export const prepareUpload = async (ctx: any, next: any) => {
-    ctx.requestToStream = requestToStream(asyncBusboy);
+    ctx.requestToStream = requestToStream(parseMultipart);
     ctx.checkFileExists = checkFileExists;
     ctx.saveStreamInFile = saveStreamInFile;
     ctx.getUploadedFileSize = getUploadedFileSize;

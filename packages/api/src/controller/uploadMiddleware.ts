@@ -1,6 +1,7 @@
-import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
 import config from 'config';
+
+import { parseMultipart } from '../services/multipartParser';
 import route from 'koa-route';
 
 import {
@@ -13,7 +14,7 @@ import {
 } from '../services/fsHelpers';
 
 export const requestToStream = async (req: any) => {
-    const { files, fields } = await asyncBusboy(req);
+    const { files, fields } = await parseMultipart(req);
     files[0].once('close', async () => {
         await unlinkFile(files[0].path);
     });
