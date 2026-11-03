@@ -1,4 +1,5 @@
 import hasher from 'node-object-hash';
+import { randomUUID } from 'node:crypto';
 import mongoDatabase from './mongoDatabase.js';
 import reducers from './reducers/index.js';
 
@@ -23,6 +24,7 @@ const hashCoerce = hasher({ sort: false, coerce: true });
  * @param {Object}   [maxSize=1000000]  limit the result
  * @param {Object}   [orderBy]       sort the result
  * @param {Number}   [maxTimeMS]    Query timeout
+ * @param {Number}   [collectionTTL=3600000] Delay in milliseconds before dropping the result collection
  * @returns {Object}
  */
 export const createFunction = () =>
@@ -47,6 +49,18 @@ export const createFunction = () =>
         const orderBy = this.getParam('orderBy', data.orderBy);
         const limit = Number(this.getParam('maxSize', data.maxSize || 1000000));
         const skip = Number(this.getParam('skip', data.skip || 0));
+        const defaultCollectionTTL = 60 * 60 * 1000;
+        const requestedCollectionTTL = Number(
+            this.getParam(
+                'collectionTTL',
+                data.collectionTTL ?? defaultCollectionTTL,
+            ),
+        );
+        const collectionTTL =
+            Number.isFinite(requestedCollectionTTL) &&
+            requestedCollectionTTL >= 0
+                ? requestedCollectionTTL
+                : defaultCollectionTTL;
 
         const reducer = this.getParam('reducer');
         if (!reducer) {
@@ -61,8 +75,12 @@ export const createFunction = () =>
         const { map, reduce, finalize, fieldname } = reducers[reducer];
         const fds = Array.isArray(field) ? field : [field];
         const fields = fds.filter(Boolean);
+        // Give each execution its own output collection: concurrent requests
+        // must not replace or remove one another's mapReduce result.
         const collName = String('mp_').concat(
             hashCoerce.hash({ reducer, fields }),
+            '_',
+            randomUUID().replace(/-/g, ''),
         );
 
         const connectionStringURI = this.getParam(
@@ -70,77 +88,90 @@ export const createFunction = () =>
             data.connectionStringURI || '',
         );
         const db = await mongoDatabase(connectionStringURI);
-        const command = {
-            mapReduce: 'publishedDataset',
-            map: map,
-            reduce: reduce,
-            query: filter,
-            finalize: finalize,
-            out: {
-                replace: collName,
-            },
-            scope: {
-                fields,
-            },
-            maxTimeMS,
-        };
 
-        const { result: collectionResult, ok } = await db.command(command);
-        if (ok !== 1) {
-            return feed.stop(new Error('MongoDB command return an error'));
-        }
-
-        const result = await db.collection(collectionResult);
-        const total = await result.estimatedDocumentCount();
-
-        const findFilter = {};
-
-        if (minValue) {
-            const minFilter = {
-                $gte: Number(minValue),
+        try {
+            const command = {
+                mapReduce: 'publishedDataset',
+                map: map,
+                reduce: reduce,
+                query: filter,
+                finalize: finalize,
+                out: {
+                    replace: collName,
+                },
+                scope: {
+                    fields,
+                },
+                maxTimeMS,
             };
-            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-            findFilter[fieldname('value')] = {
-                ...minFilter,
-            };
-        }
-        if (maxValue) {
-            const maxFilter = {
-                $lte: Number(maxValue),
-            };
-            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-            findFilter[fieldname('value')] = {
-                ...maxFilter,
-            };
-        }
-        const [order, dir] = String(orderBy).split('/');
-        const sort =
-            order && dir
-                ? {
-                      [fieldname(order)]: dir === 'asc' ? 1 : -1,
-                  }
-                : {};
-        const cursor = result.find(findFilter).maxTimeMS(maxTimeMS);
-        const count = await cursor.count();
 
-        if (total === 0 || count === 0) {
-            return feed.send({ total: 0 });
-        }
-        const path = ['total'];
-        const value = [total];
-        if (referer) {
-            path.push('referer');
-            value.push(referer);
-        }
-        const stream = cursor
-            .sort(sort)
-            .skip(skip)
-            .limit(limit)
-            .stream()
-            .on('error', (e: any) => feed.stop(e))
-            .pipe(ezs('assign', { path, value }));
+            const { result: collectionResult, ok } = await db.command(command);
+            if (ok !== 1) {
+                return feed.stop(new Error('MongoDB command return an error'));
+            }
 
-        feed.flow(stream);
+            const result = await db.collection(collectionResult);
+            const total = await result.estimatedDocumentCount();
+
+            const findFilter = {};
+
+            if (minValue) {
+                const minFilter = {
+                    $gte: Number(minValue),
+                };
+                // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+                findFilter[fieldname('value')] = {
+                    ...minFilter,
+                };
+            }
+            if (maxValue) {
+                const maxFilter = {
+                    $lte: Number(maxValue),
+                };
+                // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+                findFilter[fieldname('value')] = {
+                    ...maxFilter,
+                };
+            }
+            const [order, dir] = String(orderBy).split('/');
+            const sort =
+                order && dir
+                    ? {
+                          [fieldname(order)]: dir === 'asc' ? 1 : -1,
+                      }
+                    : {};
+            const cursor = result.find(findFilter).maxTimeMS(maxTimeMS);
+            const count = await cursor.count();
+
+            if (total === 0 || count === 0) {
+                return feed.send({ total: 0 });
+            }
+            const path = ['total'];
+            const value = [total];
+            if (referer) {
+                path.push('referer');
+                value.push(referer);
+            }
+            const stream = cursor
+                .sort(sort)
+                .skip(skip)
+                .limit(limit)
+                .stream()
+                .on('error', (e: any) => feed.stop(e))
+                .pipe(ezs('assign', { path, value }));
+
+            await feed.flow(stream);
+        } finally {
+            // The timer is created after the result has been consumed so that
+            // it cannot drop a collection while its cursor is still in use.
+            const cleanupTimer = setTimeout(() => {
+                db.dropCollection(collName).catch(() => {
+                    // The collection may already have been dropped (or the
+                    // mapReduce command may have failed before creating it).
+                });
+            }, collectionTTL);
+            cleanupTimer.unref?.();
+        }
     };
 
 export default {
