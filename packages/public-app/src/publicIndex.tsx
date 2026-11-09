@@ -29,6 +29,9 @@ const initialState = {
 
 // @ts-expect-error TS2339
 const tenant = window.__TENANT__;
+// Tab title suffix: the site title set in the theme configuration, else the tenant
+// @ts-expect-error TS2339
+const siteName: string = window.__SITE_TITLE__ || tenant;
 
 const browserHistory = createBrowserHistory({
     basename: `/instance/${tenant}`,
@@ -53,11 +56,7 @@ root.render(
                 <AnnotationStorageProvider>
                     <Router history={history}>
                         <LodexThemeProvider>
-                            <Routes
-                                history={history}
-                                // @ts-expect-error TS2339
-                                tenant={window.__TENANT__}
-                            />
+                            <Routes history={history} tenant={siteName} />
                         </LodexThemeProvider>
                     </Router>
                 </AnnotationStorageProvider>
