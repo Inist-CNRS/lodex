@@ -3,6 +3,7 @@ RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
 COPY ./package.json ./package-lock.json /app/
 # Only manifests before install, so source changes don't invalidate the npm install layer
+# Keep in sync with the packages installed by the root package.json postinstall
 COPY ./packages/@recuperateur/async-busboy/package.json /app/packages/@recuperateur/async-busboy/
 COPY ./packages/@recuperateur/resumablejs/package.json /app/packages/@recuperateur/resumablejs/
 COPY ./packages/admin-app/package*.json /app/packages/admin-app/

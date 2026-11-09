@@ -134,10 +134,15 @@ jobs:
             # Run lint
             - run: npm run type-check
 
-    # The e2e tests no longer use the production image: check it still builds
+    # The e2e tests no longer use the production image: check it builds and boots
     docker-build:
         runs-on: ubuntu-22.04
         timeout-minutes: 20
         steps:
             - uses: actions/checkout@v4
-            - run: docker build .
+            - run: docker compose -f docker-compose.prod.yml up -d --build
+            - run: ./bin/wait-for -t 180 localhost:3000
+            - run: curl -fsS -o /dev/null localhost:3000
+            - name: Dump logs
+              if: failure()
+              run: docker compose -f docker-compose.prod.yml logs --no-color lodex
