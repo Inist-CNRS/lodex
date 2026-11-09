@@ -387,7 +387,7 @@ describe('field routes', () => {
             const configTenantCollection = await configTenantFactory(db);
             await configTenantCollection.create({
                 theme: 'default',
-                front: { multilingual: false },
+                front: { multilingual: false, theme: { color: 'blue' } },
                 userAuth: { username: 'user', active: true },
             });
             ctx = { configTenantCollection };
@@ -410,13 +410,17 @@ describe('field routes', () => {
         it('should keep the current theme and report it when the theme is unknown', async () => {
             const result = await applyConfigTenant(ctx, {
                 theme: 'unknown',
-                front: { multilingual: true },
+                front: { multilingual: true, theme: { color: 'red' } },
             });
 
             expect(result).toEqual({ themeNotFound: 'unknown' });
-            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
-                theme: 'default',
-                front: { multilingual: true },
+            const { theme, front } =
+                await ctx.configTenantCollection.findLast();
+            expect(theme).toBe('default');
+            // front.theme holds the theme's template variables: keep the current ones
+            expect(front).toEqual({
+                multilingual: true,
+                theme: { color: 'blue' },
             });
         });
 
@@ -426,7 +430,7 @@ describe('field routes', () => {
             expect(result).toEqual({});
             expect(await ctx.configTenantCollection.findLast()).toMatchObject({
                 theme: 'default',
-                front: { multilingual: false },
+                front: { multilingual: false, theme: { color: 'blue' } },
             });
         });
     });

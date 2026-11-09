@@ -89,9 +89,16 @@ export const applyConfigTenant = async (ctx: any, imported: any) => {
     const current = await ctx.configTenantCollection.findLast();
     const themeFound = !imported.theme || getTheme(imported.theme);
 
+    // front.theme holds the theme's template variables: keep the current
+    // ones when the imported theme cannot be applied
+    const front =
+        imported.front && !themeFound
+            ? { ...imported.front, theme: current.front?.theme }
+            : imported.front ?? current.front;
+
     await ctx.configTenantCollection.update(current._id, {
         ...current,
-        front: imported.front ?? current.front,
+        front,
         theme: themeFound && imported.theme ? imported.theme : current.theme,
     });
 
