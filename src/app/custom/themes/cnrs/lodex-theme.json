@@ -17,6 +17,7 @@
         "variables": {
             "information sur le thème": "la documentation du thème CNRS est disponible sur lodex.fr rubrique principales fonctionnalités > le thème > le thème restreint CNRS : https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/le-theme/theme-restreint-cnrs-nouveau/",
             "siteTitle": "Titre de l'étude",
+            "summary": "",
             "unite": {
                 "sigle": "sigle de l'unité de recherche",
                 "intitule": "nom de l'unité de recherche",

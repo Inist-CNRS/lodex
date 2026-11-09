@@ -13,6 +13,10 @@
     "files": {
       "index": "index.ejs",
       "palette": "defaultTheme.js"
+    },
+    "variables": {
+      "siteTitle": "",
+      "summary": ""
     }
   }
 }

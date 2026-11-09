@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lodex</title>
+        <title><%= custom.siteTitle || 'Lodex' %></title>
+        <% if (custom.summary) { %><meta name="description" content="<%= custom.summary %>"/><% } %>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
@@ -19,6 +20,16 @@
         <style><%= theme.cssVariable %></style>
     </head>
     <body>
+        <% if (custom.siteTitle || custom.summary) { %>
+        <header id="site-header">
+            <% if (custom.siteTitle) { %>
+            <h1><%= custom.siteTitle %></h1>
+            <% } %>
+            <% if (custom.summary) { %>
+            <p><%= custom.summary %></p>
+            <% } %>
+        </header>
+        <% } %>
         <div id="root"></div>
         <% if (isDev) { %>
             <script type="module">
