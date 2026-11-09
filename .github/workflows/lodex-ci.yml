@@ -47,7 +47,13 @@ jobs:
             matrix:
                 node-version: [24.x]
                 test-phase:
-                    ['phase:one', 'phase:two', 'phase:three', 'phase:four']
+                    [
+                        'phase:one',
+                        'phase:two',
+                        'phase:three',
+                        'phase:four',
+                        'phase:five',
+                    ]
                 # Use this line to ignore the phase system
                 # test-phase: [ 'all' ]
 
@@ -60,18 +66,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            # Build the api image with layer cache shared between runs
-            - uses: docker/setup-buildx-action@v3
-            - uses: docker/build-push-action@v6
-              with:
-                  context: .
-                  build-args: node_env=e2e
-                  load: true
-                  tags: lodex-e2e-api:local
-                  cache-from: type=gha,scope=e2e-api
-                  cache-to: type=gha,mode=max,scope=e2e-api
-
-            # Start e2e environment (reuses the image built above)
+            # Start e2e environment (api runs from the build above, see docker-compose.spec.ci.yml)
             - run: make test-e2e-start-dockers
 
             # Wait for the e2e environment to start and then run e2e subset tests suite
@@ -130,3 +125,11 @@ jobs:
 
             # Run lint
             - run: npm run type-check
+
+    # The e2e tests no longer use the production image: check it still builds
+    docker-build:
+        runs-on: ubuntu-22.04
+        timeout-minutes: 20
+        steps:
+            - uses: actions/checkout@v4
+            - run: docker build .

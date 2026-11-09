@@ -87,7 +87,7 @@ test-unit-watch: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec
 
 test-e2e-start-dockers: ## Start the containers to use Cypress in interactive mode (with test-e2e-open-cypress)
 ifeq "$(CI)" "true"
-	docker compose -f docker-compose.spec.yml up -d
+	docker compose -f docker-compose.spec.yml -f docker-compose.spec.ci.yml up -d
 else
 	docker compose -f docker-compose.spec.yml up --build
 endif
@@ -99,7 +99,11 @@ test-e2e-logs-watch:
 	docker compose -f docker-compose.spec.yml logs -f
 
 test-e2e-stop-dockers:
+ifeq "$(CI)" "true"
+	docker compose -f docker-compose.spec.yml -f docker-compose.spec.ci.yml down
+else
 	docker compose -f docker-compose.spec.yml down
+endif
 
 test-e2e-open-cypress: ## Start the Cypress interactive interface
 	NODE_ENV=e2e npx cypress open
