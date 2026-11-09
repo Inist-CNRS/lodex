@@ -1,5 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 
+import { LOGOUT, SIGNOUT } from '@lodex/frontend-common/user/reducer';
+
 export const IMPORT_FIELDS = 'IMPORT_FIELDS';
 export const IMPORT_FIELDS_ERROR = 'IMPORT_FIELDS_ERROR';
 export const IMPORT_FIELDS_SUCCESS = 'IMPORT_FIELDS_SUCCESS';
@@ -35,6 +37,9 @@ export default handleActions(
             hasPrecomputed: payload.hasPrecomputed,
             themeNotFound: payload.themeNotFound ?? null,
         }),
+        // Menu remounts on the next login and would replay the last result
+        [LOGOUT]: () => initialState,
+        [SIGNOUT]: () => initialState,
     },
     initialState,
 );
