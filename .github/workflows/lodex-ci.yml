@@ -76,12 +76,18 @@ jobs:
             # Stop e2e environment
             - run: make test-e2e-stop-dockers
 
+            # Print api/workers logs on failure to debug e2e errors
+            - name: Dump e2e logs
+              if: failure()
+              run: docker compose -f docker-compose.spec.yml -f docker-compose.spec.ci.yml logs --no-color --timestamps --tail=1000 api workers
+
             # Upload debug screenshots on failure
             - name: Upload screenshots
               uses: actions/upload-artifact@v4
               if: failure()
               with:
-                  name: cypress-screenshots
+                  # One artifact per shard: v4 refuses two uploads with the same name
+                  name: cypress-screenshots-${{ strategy.job-index }}
                   path: cypress/screenshots
     lint:
         runs-on: ubuntu-22.04

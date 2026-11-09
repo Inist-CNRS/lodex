@@ -36,8 +36,9 @@ bySecond = 1
     cy.contains('Save').click({
         force: true,
     });
-    cy.waitForNetworkIdle(2000);
+    // The toast closes after 5s: check it before waiting for the network, which can take longer
     cy.contains('Enrichment added successfully').should('exist');
+    cy.waitForNetworkIdle(2000);
 };
 
 export const updateNameEnrichment = () => {
