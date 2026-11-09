@@ -1,0 +1,50 @@
+[
+    {
+        "id": "theses-fr",
+        "url": "https://www.lodex.fr/wp-content/uploads/modeleThesesPourLodex.tar",
+        "loader": "query-theses-fr-for-model",
+        "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-theses-fr/",
+        "demo": "https://catalogue-modeles.lodex.inist.fr/instance/theses-fr",
+        "importTypes": ["text"],
+        "launchOrder": [
+            { "name": "clusterRameau", "type": "precomputed", "position": 1 },
+            { "name": "xml", "type": "enrichment", "position": 2 },
+            { "name": "resume", "type": "enrichment", "position": 3 },
+            { "name": "resumeEN", "type": "enrichment", "position": 4 },
+            { "name": "langueISO6391", "type": "enrichment", "position": 5 },
+            { "name": "lienHAL", "type": "enrichment", "position": 6 },
+            { "name": "lienDocument", "type": "enrichment", "position": 7 },
+            { "name": "teeft", "type": "enrichment", "position": 8 },
+            {
+                "name": "AccesAuTexteIntegral",
+                "type": "enrichment",
+                "position": 9
+            },
+            { "name": "genre", "type": "enrichment", "position": 10 },
+            { "name": "hasDOI", "type": "enrichment", "position": 11 }
+        ]
+    },
+    {
+        "id": "hal2lodex",
+        "url": "https://www.lodex.fr/wp-content/uploads/modele_HAL2LODEX_pourLodex.tar",
+        "loader": "csv-hal2lodex",
+        "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-hal2lodex/",
+        "demo": "https://catalogue-modeles.lodex.inist.fr/instance/hal2lodex",
+        "theme": "hal-cnrs",
+        "importTypes": ["file", "url"],
+        "launchOrder": [
+            { "name": "KeywordsTeeften", "type": "enrichment", "position": 1 },
+            { "name": "KeywordsTeeftfr", "type": "enrichment", "position": 2 },
+            { "name": "OAunpaywallWS", "type": "enrichment", "position": 3 }
+        ]
+    },
+    {
+        "id": "openalex",
+        "url": "https://www.lodex.fr/wp-content/uploads/modeleOpenAlexPourLodex02-10-26.tar",
+        "loader": "query-openalex-for-model",
+        "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-openalex/",
+        "demo": "https://catalogue-modeles.lodex.inist.fr/instance/open-alex",
+        "theme": "inist",
+        "importTypes": ["text"]
+    }
+]
