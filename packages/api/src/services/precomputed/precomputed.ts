@@ -336,7 +336,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
 
-    let dataSetSize;
+    let dataSetSize: number = 0;
     let fileDescription;
 
     try {
