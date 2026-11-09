@@ -3,13 +3,16 @@ import { text } from 'stream/consumers';
 import { MongoClient } from 'mongodb';
 import * as tar from 'tar-stream';
 
+export const CONFIG_TENANT_ENTRY = 'config/configTenant.json';
+
 async function extractModelFromArchive(
     fileStream: any,
     authorizedCollections: any,
-) {
+): Promise<{ collections: unknown; configTenant: unknown }> {
     return new Promise((resolve: any, reject: any) => {
         const extract = tar.extract();
         const extractedData = {};
+        let configTenant: unknown;
 
         for (const collection of authorizedCollections) {
             // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
@@ -23,6 +26,12 @@ async function extractModelFromArchive(
 
                 try {
                     const document = JSON.parse(serializedDocument);
+
+                    if (header.name === CONFIG_TENANT_ENTRY) {
+                        configTenant = document;
+                        return next();
+                    }
+
                     // header.name is dataset/{collection}/{id}.json
                     const [, collection] = header.name.split('/');
 
@@ -64,7 +73,9 @@ async function extractModelFromArchive(
         );
 
         extract.on('error', reject);
-        extract.on('finish', () => resolve(extractedData));
+        extract.on('finish', () =>
+            resolve({ collections: extractedData, configTenant }),
+        );
 
         fileStream.pipe(extract);
     });
@@ -75,10 +86,8 @@ export async function restoreModel(
     fileStream: any,
     authorizedCollections: any,
 ) {
-    const extractedModels = await extractModelFromArchive(
-        fileStream,
-        authorizedCollections,
-    );
+    const { collections: extractedModels, configTenant } =
+        await extractModelFromArchive(fileStream, authorizedCollections);
 
     const mongoConnection = await MongoClient.connect(connectionStringURI!);
 
@@ -101,4 +110,6 @@ export async function restoreModel(
     } finally {
         await mongoConnection.close();
     }
+
+    return { configTenant };
 }

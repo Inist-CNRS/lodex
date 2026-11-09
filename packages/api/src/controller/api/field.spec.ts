@@ -7,12 +7,16 @@ import {
 } from '@lodex/common';
 import _ from 'lodash';
 import { MongoClient } from 'mongodb';
+import { text } from 'stream/consumers';
+import tar from 'tar-stream';
+import { default as configTenantFactory } from '../../models/configTenant';
 import { default as enrichmentFactory } from '../../models/enrichment';
 import { default as fieldFactory, validateField } from '../../models/field';
 import { default as precomputedFactory } from '../../models/precomputed';
 import { default as publishedDatasetModelFactory } from '../../models/publishedDataset';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import {
+    applyConfigTenant,
     exportFields,
     getAllField,
     importFields,
@@ -29,6 +33,22 @@ import {
 import publishFacets from './publishFacets';
 
 jest.mock('../../services/indexSearchableFields');
+jest.mock('../../models/themes', () => ({
+    getTheme: (name: string) => (name === 'istex' ? {} : undefined),
+}));
+
+const readTarEntries = (stream: any): Promise<Record<string, string>> =>
+    new Promise((resolve, reject) => {
+        const entries: Record<string, string> = {};
+        const extract = tar.extract();
+        extract.on('entry', async (header: any, entry: any, next: any) => {
+            entries[header.name] = await text(entry);
+            next();
+        });
+        extract.on('finish', () => resolve(entries));
+        extract.on('error', reject);
+        stream.pipe(extract);
+    });
 
 describe('field routes', () => {
     const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
@@ -207,6 +227,32 @@ describe('field routes', () => {
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(500);
         });
+
+        it('should export only theme and front from the tenant config', async () => {
+            await db.collection('configTenant').deleteMany({});
+            const configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'istex',
+                front: { multilingual: true },
+                userAuth: { username: 'user', password: 'secret' },
+                enableAutoPublication: true,
+                enrichmentBatchSize: 10,
+            });
+            const exportCtx: any = {
+                set: jest.fn(),
+                tenant: 'instance-name',
+                db,
+                configTenantCollection,
+            };
+
+            await exportFields(exportCtx);
+
+            const entries = await readTarEntries(exportCtx.body);
+            expect(JSON.parse(entries['config/configTenant.json'])).toEqual({
+                theme: 'istex',
+                front: { multilingual: true },
+            });
+        });
     });
 
     describe('importFields', () => {
@@ -302,6 +348,20 @@ describe('field routes', () => {
             expect(ctx.body.hasEnrichments).toBe(true);
         });
 
+        it('should return the theme that could not be applied', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+            ctx.restoreFields.mockImplementationOnce(() =>
+                Promise.resolve({ themeNotFound: 'unknown' }),
+            );
+
+            await importFields(asyncBusboyImpl)(ctx);
+
+            // @ts-expect-error TS(2339): Property 'body' does not exist
+            expect(ctx.body.themeNotFound).toBe('unknown');
+        });
+
         it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
             const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
                 files: ['file0'],
@@ -316,6 +376,62 @@ describe('field routes', () => {
             expect(ctx.status).toBe(500);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toBe('Error!');
+        });
+    });
+
+    describe('applyConfigTenant', () => {
+        let ctx: any;
+
+        beforeEach(async () => {
+            await db.collection('configTenant').deleteMany({});
+            const configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'default',
+                front: { multilingual: false, theme: { color: 'blue' } },
+                userAuth: { username: 'user', active: true },
+            });
+            ctx = { configTenantCollection };
+        });
+
+        it('should replace theme and front and keep the other settings', async () => {
+            const result = await applyConfigTenant(ctx, {
+                theme: 'istex',
+                front: { multilingual: true },
+            });
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'istex',
+                front: { multilingual: true },
+                userAuth: { username: 'user', active: true },
+            });
+        });
+
+        it('should keep the current theme and report it when the theme is unknown', async () => {
+            const result = await applyConfigTenant(ctx, {
+                theme: 'unknown',
+                front: { multilingual: true, theme: { color: 'red' } },
+            });
+
+            expect(result).toEqual({ themeNotFound: 'unknown' });
+            const { theme, front } =
+                await ctx.configTenantCollection.findLast();
+            expect(theme).toBe('default');
+            // front.theme holds the theme's template variables: keep the current ones
+            expect(front).toEqual({
+                multilingual: true,
+                theme: { color: 'blue' },
+            });
+        });
+
+        it('should leave the config untouched when the archive has none', async () => {
+            const result = await applyConfigTenant(ctx, undefined);
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: { multilingual: false, theme: { color: 'blue' } },
+            });
         });
     });
 

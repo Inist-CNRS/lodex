@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 
 import { MongoClient } from 'mongodb';
-import { restoreModel } from './restoreModel';
+import * as tar from 'tar-stream';
+import { CONFIG_TENANT_ENTRY, restoreModel } from './restoreModel';
 
 describe('restoreModel', () => {
     const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
@@ -37,5 +38,46 @@ describe('restoreModel', () => {
         } finally {
             stream.close();
         }
+    });
+
+    it('should return undefined config for an archive without tenant config', async () => {
+        const stream = fs.createReadStream(
+            './packages/api/src/services/restoreModel.testdata.tar',
+        );
+
+        try {
+            const { configTenant } = await restoreModel(
+                connectionStringURI,
+                stream,
+                ['field'],
+            );
+
+            expect(configTenant).toBeUndefined();
+        } finally {
+            stream.close();
+        }
+    });
+
+    it('should return the tenant config without restoring it as a collection', async () => {
+        const pack = tar.pack();
+        pack.entry(
+            { name: 'dataset/field/1.json' },
+            JSON.stringify({ _id: '1', name: 'uri' }),
+        );
+        pack.entry(
+            { name: CONFIG_TENANT_ENTRY },
+            JSON.stringify({ theme: 'istex', front: { multilingual: true } }),
+        );
+        pack.finalize();
+
+        const { configTenant } = await restoreModel(connectionStringURI, pack, [
+            'field',
+        ]);
+
+        expect(configTenant).toEqual({
+            theme: 'istex',
+            front: { multilingual: true },
+        });
+        expect(await db.collection('field').countDocuments()).toBe(1);
     });
 });
