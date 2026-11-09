@@ -87,7 +87,7 @@ test-unit-watch: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec
 
 test-e2e-start-dockers: ## Start the containers to use Cypress in interactive mode (with test-e2e-open-cypress)
 ifeq "$(CI)" "true"
-	docker compose -f docker-compose.spec.yml up -d --build
+	docker compose -f docker-compose.spec.yml up -d
 else
 	docker compose -f docker-compose.spec.yml up --build
 endif

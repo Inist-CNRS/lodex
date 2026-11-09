@@ -2,6 +2,8 @@ version: '3'
 
 services:
     api:
+        # Prebuilt by CI (docker/build-push-action), built here otherwise
+        image: lodex-e2e-api:local
         build:
             context: .
             args:

@@ -26,19 +26,10 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Build project
-            - run: npm run build
 
             # Run unit test suite
             - run: npm run test:unit
@@ -64,21 +55,23 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
 
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
+            # Build the api image with layer cache shared between runs
+            - uses: docker/setup-buildx-action@v3
+            - uses: docker/build-push-action@v6
+              with:
+                  context: .
+                  build-args: node_env=e2e
+                  load: true
+                  tags: lodex-e2e-api:local
+                  cache-from: type=gha,scope=e2e-api
+                  cache-to: type=gha,mode=max,scope=e2e-api
 
-            # Build project
-            - run: npm run build
-
-            # Start e2e environment
+            # Start e2e environment (reuses the image built above)
             - run: make test-e2e-start-dockers
 
             # Wait for the e2e environment to start and then run e2e subset tests suite
@@ -109,19 +102,10 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Build project
-            - run: npm run build
 
             # Run lint
             - run: npm run lint:test
@@ -139,19 +123,10 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Build project
-            - run: npm run build
 
             # Run lint
             - run: npm run type-check

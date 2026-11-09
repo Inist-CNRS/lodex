@@ -1,0 +1,38 @@
+name: Setup Lodex
+description: Install Node.js, restore or install dependencies, then build Lodex
+
+inputs:
+    node-version:
+        description: Node.js version to use
+        required: true
+
+runs:
+    using: composite
+    steps:
+        - shell: bash
+          run: make copy-conf
+
+        - name: Use Node.js ${{ inputs.node-version }}
+          uses: actions/setup-node@v4
+          with:
+              node-version: ${{ inputs.node-version }}
+              cache: 'npm'
+
+        # npm ci + the nested postinstall installs take ~2 min, skip them when no manifest changed
+        - name: Restore dependencies
+          id: modules
+          uses: actions/cache@v4
+          with:
+              path: |
+                  node_modules
+                  packages/*/node_modules
+                  ~/.cache/Cypress
+              key: modules-${{ runner.os }}-node${{ inputs.node-version }}-${{ hashFiles('package-lock.json', 'packages/*/package.json', 'packages/*/package-lock.json', 'packages/@recuperateur/*/package.json') }}
+
+        - name: Install dependencies
+          if: steps.modules.outputs.cache-hit != 'true'
+          shell: bash
+          run: npm ci --legacy-peer-deps
+
+        - shell: bash
+          run: npm run build
