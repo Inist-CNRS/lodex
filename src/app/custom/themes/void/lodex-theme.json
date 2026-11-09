@@ -12,6 +12,10 @@
   "configuration": {
     "files": {
       "palette": "voidTheme.js"
+    },
+    "variables": {
+      "siteTitle": "",
+      "summary": ""
     }
   }
 }

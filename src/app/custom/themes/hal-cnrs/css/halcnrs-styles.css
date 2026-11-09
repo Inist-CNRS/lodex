@@ -140,8 +140,10 @@ header a.logohalcnrs {
     padding-right: 56px;
     flex: 1;
 }
-header h1 {
+header #titre_lodex {
     flex: 4;
+}
+header h1 {
     margin: 1rem 0rem 0.5rem;
 }
 header #inist {

@@ -32,11 +32,16 @@
             <a class="logo logohalcnrs" href="https://cnrs.hal.science/">HAL - CNRS
             </a>
         </div>
-            <% if (custom.siteTitle ) { %>
-        <h1 id="titre_lodex" class="bl3">
-            <a href="/instance/<%= lodex.tenant %>"><%= custom.siteTitle %></a>
-        </h1>
+        <% if (custom.siteTitle || custom.summary) { %>
+        <div id="titre_lodex" class="bl3">
+            <% if (custom.siteTitle) { %>
+            <h1><a href="/instance/<%= lodex.tenant %>"><%= custom.siteTitle %></a></h1>
             <% } %>
+            <% if (custom.summary) { %>
+            <p class="summary"><%= custom.summary %></p>
+            <% } %>
+        </div>
+        <% } %>
     </div>
         <p id="inist" class="container"><strong>Opéré par l'Inist CNRS</strong></p>
 </header>

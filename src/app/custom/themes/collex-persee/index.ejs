@@ -40,13 +40,16 @@
                 </a>
             <% } %>
         </div>
-       <% if (custom.siteTitle) { %>
+       <% if (custom.siteTitle || custom.summary) { %>
         <div>
             <% if (custom.siteTitle) { %>
 			    <h1><%= custom.siteTitle %></h1>
             <% } %>
             <% if (custom.typeDocument) { %>
 			    <p class="description">Suivi de <span><%= custom.typeDocument %></span></p>
+            <% } %>
+            <% if (custom.summary) { %>
+			    <p class="summary"><%= custom.summary %></p>
             <% } %>
             </div>
     <% } %> 

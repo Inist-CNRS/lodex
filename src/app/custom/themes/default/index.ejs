@@ -19,6 +19,16 @@
         <style><%= theme.cssVariable %></style>
     </head>
     <body>
+        <% if (custom.siteTitle || custom.summary) { %>
+        <header id="site-header">
+            <% if (custom.siteTitle) { %>
+            <h1><%= custom.siteTitle %></h1>
+            <% } %>
+            <% if (custom.summary) { %>
+            <p><%= custom.summary %></p>
+            <% } %>
+        </header>
+        <% } %>
         <div id="root"></div>
         <% if (isDev) { %>
             <script type="module">

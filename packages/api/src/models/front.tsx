@@ -97,6 +97,40 @@ const renderTemplate = (file, data) => {
  */
 
 /**
+ * Site title set by the admin in the theme configuration.
+ * The theme's own default is ignored: it is a placeholder ("Titre a modifier...").
+ * The ISTEX themes name this variable `title`, the others `siteTitle`.
+ */
+export const getSiteTitle = (
+    themeVariables: Record<string, unknown> = {},
+    tenantVariables: Record<string, unknown> = {},
+): string | null => {
+    const key = 'title' in themeVariables ? 'title' : 'siteTitle';
+    const value = tenantVariables[key];
+    if (typeof value !== 'string' || value === themeVariables[key]) {
+        return null;
+    }
+    return value.trim() || null;
+};
+
+/**
+ * Use the site title as the page <title>, and expose it to the public app
+ * so that the tab titles it sets end with the site title instead of the tenant.
+ */
+export const injectSiteTitle = (html: string, siteTitle: string | null) => {
+    if (!siteTitle) {
+        return html;
+    }
+    // < prevents a "</script>" in the title from closing the script tag
+    const json = JSON.stringify(siteTitle).replace(/</g, '\\u003c');
+    return html.replace(
+        /<title>[\s\S]*?<\/title>/,
+        () =>
+            `<title>${escape(siteTitle)}</title><script>window.__SITE_TITLE__ = ${json};</script>`,
+    );
+};
+
+/**
  * @param {string} themeId
  * @param {RenderData} data
  * @return {Promise<string>}
@@ -143,8 +177,15 @@ export const renderPublic = (themeId, data) => {
         recaptchaClientKey: data.recaptchaClientKey,
     };
 
+    const siteTitle = getSiteTitle(
+        lodexTheme.customTemplateVariables,
+        data.customTemplateVariables,
+    );
+
     try {
-        return renderTemplate(lodexTheme.index, extendedData);
+        return renderTemplate(lodexTheme.index, extendedData).then((html) =>
+            injectSiteTitle(html as string, siteTitle),
+        );
     } catch (e) {
         if (themeId !== 'default') {
             return renderPublic('default', data);
