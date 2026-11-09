@@ -3,9 +3,9 @@ name: Lodex CI
 # Run this ci only on pull request who targets master and on master branch only
 on:
     push:
-        branches: [master, v14, v16]
+        branches: [master, v14, v16, marmelab]
     pull_request:
-        branches: [master, v14, v16]
+        branches: [master, v14, v16, marmelab]
 
 jobs:
     # Job use to create the test environment and run unit test suite
@@ -26,19 +26,10 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Build project
-            - run: npm run build
 
             # Run unit test suite
             - run: npm run test:unit
@@ -56,7 +47,13 @@ jobs:
             matrix:
                 node-version: [24.x]
                 test-phase:
-                    ['phase:one', 'phase:two', 'phase:three', 'phase:four']
+                    [
+                        'phase:one',
+                        'phase:two',
+                        'phase:three',
+                        'phase:four',
+                        'phase:five',
+                    ]
                 # Use this line to ignore the phase system
                 # test-phase: [ 'all' ]
 
@@ -64,21 +61,12 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
 
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Build project
-            - run: npm run build
-
-            # Start e2e environment
+            # Start e2e environment (api runs from the build above, see docker-compose.spec.ci.yml)
             - run: make test-e2e-start-dockers
 
             # Wait for the e2e environment to start and then run e2e subset tests suite
@@ -88,12 +76,20 @@ jobs:
             # Stop e2e environment
             - run: make test-e2e-stop-dockers
 
+            # Save api/workers logs on failure (uploaded with the screenshots)
+            - name: Dump e2e logs
+              if: failure()
+              run: |
+                  mkdir -p cypress/screenshots
+                  docker compose -f docker-compose.spec.yml -f docker-compose.spec.ci.yml logs --no-color --timestamps api workers > cypress/screenshots/docker-logs.txt
+
             # Upload debug screenshots on failure
             - name: Upload screenshots
               uses: actions/upload-artifact@v4
               if: failure()
               with:
-                  name: cypress-screenshots
+                  # One artifact per shard: v4 refuses two uploads with the same name
+                  name: cypress-screenshots-${{ strategy.job-index }}
                   path: cypress/screenshots
     lint:
         runs-on: ubuntu-22.04
@@ -109,19 +105,10 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Build project
-            - run: npm run build
 
             # Run lint
             - run: npm run lint:test
@@ -139,19 +126,23 @@ jobs:
             # Pull repository content
             - uses: actions/checkout@v4
 
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+            # Install (cached) dependencies and build project
+            - uses: ./.github/actions/setup
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Build project
-            - run: npm run build
 
             # Run lint
             - run: npm run type-check
+
+    # The e2e tests no longer use the production image: check it builds and boots
+    docker-build:
+        runs-on: ubuntu-22.04
+        timeout-minutes: 20
+        steps:
+            - uses: actions/checkout@v4
+            - run: docker compose -f docker-compose.prod.yml up -d --build
+            - run: ./bin/wait-for -t 180 localhost:3000
+            - run: curl -fsS -o /dev/null localhost:3000
+            - name: Dump logs
+              if: failure()
+              run: docker compose -f docker-compose.prod.yml logs --no-color lodex

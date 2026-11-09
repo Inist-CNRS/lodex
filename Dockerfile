@@ -1,9 +1,21 @@
 FROM node:24.13-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
-COPY ./package.json /app
-COPY ./package-lock.json /app
-COPY ./packages /app/packages
+COPY ./package.json ./package-lock.json /app/
+# Only manifests before install, so source changes don't invalidate the npm install layer
+# Keep in sync with the packages installed by the root package.json postinstall
+COPY ./packages/@recuperateur/async-busboy/package.json /app/packages/@recuperateur/async-busboy/
+COPY ./packages/@recuperateur/resumablejs/package.json /app/packages/@recuperateur/resumablejs/
+COPY ./packages/admin-app/package*.json /app/packages/admin-app/
+COPY ./packages/api/package*.json /app/packages/api/
+COPY ./packages/common/package*.json /app/packages/common/
+COPY ./packages/ezsLodex/package*.json /app/packages/ezsLodex/
+COPY ./packages/frontend-common/package*.json /app/packages/frontend-common/
+COPY ./packages/public-app/package*.json /app/packages/public-app/
+COPY ./packages/root-admin-app/package*.json /app/packages/root-admin-app/
+# transformers builds itself on install (prepublish), it needs its sources
+COPY ./packages/transformers /app/packages/transformers/
+COPY ./packages/workers/package*.json /app/packages/workers/
 
 RUN npm install --legacy-peer-deps
 # see .dockerignore to know all copied files

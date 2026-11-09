@@ -8,6 +8,7 @@ import tar from 'tar-stream';
 import { v1 as uuid } from 'uuid';
 
 import { validateField } from '../../models/field';
+import { getTheme } from '../../models/themes';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import { mongoConnectionString } from '../../services/mongoClient';
 import publishFacets from './publishFacets';
@@ -23,7 +24,7 @@ import { ObjectId } from 'mongodb';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
 import generateUid from '../../services/generateUid';
 import { restorePrecomputed } from '../../services/precomputed/precomputed';
-import { restoreModel } from '../../services/restoreModel';
+import { CONFIG_TENANT_ENTRY, restoreModel } from '../../services/restoreModel';
 import { ENRICHER } from '../../workers/enricher';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { dropJobs } from '../../workers/tools';
@@ -68,14 +69,40 @@ export const restoreFields = (fileStream: any, ctx: any) => {
     return ctx.field
         .deleteMany({})
         .then(restoreTask)
-        .then(() =>
-            Promise.all([
+        .then(async ({ configTenant }: any) => {
+            await Promise.all([
                 ctx.field.castIds(),
                 ctx.subresource.castIds(),
                 restoreEnrichments(ctx),
                 restorePrecomputed(ctx),
-            ]),
-        );
+            ]);
+            return applyConfigTenant(ctx, configTenant);
+        });
+};
+
+// Only theme and front are exported with the model (see exportFields)
+export const applyConfigTenant = async (ctx: any, imported: any) => {
+    if (!imported) {
+        return {};
+    }
+
+    const current = await ctx.configTenantCollection.findLast();
+    const themeFound = !imported.theme || getTheme(imported.theme);
+
+    // front.theme holds the theme's template variables: keep the current
+    // ones when the imported theme cannot be applied
+    const front =
+        imported.front && !themeFound
+            ? { ...imported.front, theme: current.front?.theme }
+            : imported.front ?? current.front;
+
+    await ctx.configTenantCollection.update(current._id, {
+        ...current,
+        front,
+        theme: themeFound && imported.theme ? imported.theme : current.theme,
+    });
+
+    return themeFound ? {} : { themeNotFound: imported.theme };
 };
 
 export const translateOldField = (ctx: any, oldField: any, index: any) => {
@@ -384,6 +411,14 @@ export const exportFields = async (ctx: any) => {
             }
         }
 
+        // Outside dataset/: restoreModel wipes every collection it restores
+        const { theme, front } =
+            (await ctx.configTenantCollection.findLast()) ?? {};
+        await pack.entry(
+            { name: CONFIG_TENANT_ENTRY },
+            JSON.stringify({ theme, front }),
+        );
+
         await pack.finalize();
         ctx.status = 200;
         ctx.body = pack;
@@ -399,7 +434,8 @@ export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
     const fileStream = files[0];
 
     try {
-        await ctx.restoreFields(fileStream, ctx);
+        const { themeNotFound } =
+            (await ctx.restoreFields(fileStream, ctx)) ?? {};
         const enrichments = await ctx.enrichment.findAll();
         const precomputed = await ctx.precomputed.findAll();
 
@@ -407,6 +443,7 @@ export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
             message: 'Model imported successfully',
             hasEnrichments: enrichments?.length > 0,
             hasPrecomputed: precomputed?.length > 0,
+            themeNotFound,
         };
         ctx.status = 200;
     } catch (e) {
