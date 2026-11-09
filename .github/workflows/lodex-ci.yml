@@ -76,10 +76,12 @@ jobs:
             # Stop e2e environment
             - run: make test-e2e-stop-dockers
 
-            # Print api/workers logs on failure to debug e2e errors
+            # Save api/workers logs on failure (uploaded with the screenshots)
             - name: Dump e2e logs
               if: failure()
-              run: docker compose -f docker-compose.spec.yml -f docker-compose.spec.ci.yml logs --no-color --timestamps --tail=1000 api workers
+              run: |
+                  mkdir -p cypress/screenshots
+                  docker compose -f docker-compose.spec.yml -f docker-compose.spec.ci.yml logs --no-color --timestamps api workers > cypress/screenshots/docker-logs.txt
 
             # Upload debug screenshots on failure
             - name: Upload screenshots

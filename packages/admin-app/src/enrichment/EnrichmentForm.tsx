@@ -10,6 +10,7 @@ import {
     Box,
     Button,
     FormGroup,
+    LinearProgress,
     ListItem,
     Stack,
     Typography,
@@ -481,11 +482,16 @@ const mapStateToProps = (
     }: {
         match: { params: { enrichmentId: string } };
     },
-): Pick<EnrichmentFormProps, 'initialValues'> => {
+): Pick<EnrichmentFormProps, 'initialValues'> & { isLoading: boolean } => {
     const enrichment = fromEnrichments
         .enrichments(state)
         .find((enrichment) => enrichment._id === match.params.enrichmentId);
     return {
+        // useForm reads its defaultValues on mount only: wait for the edited enrichment
+        isLoading:
+            !!match.params.enrichmentId &&
+            !enrichment &&
+            fromEnrichments.isLoadEnrichmentsPending(state),
         initialValues: {
             dataSource: 'dataset',
             ...enrichment,
@@ -498,7 +504,16 @@ const mapDispatchToProps = {
     onRetryEnrichment: retryEnrichment,
 };
 
-export default compose<EnrichmentFormProps, Record<string, never>>(
+const EnrichmentFormLoader = ({
+    isLoading,
+    ...props
+}: EnrichmentFormProps & { isLoading: boolean }) =>
+    isLoading ? <LinearProgress /> : <EnrichmentForm {...props} />;
+
+export default compose<
+    EnrichmentFormProps & { isLoading: boolean },
+    Record<string, never>
+>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-)(EnrichmentForm);
+)(EnrichmentFormLoader);
