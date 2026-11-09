@@ -182,7 +182,10 @@ describe('getDisplayableModels', () => {
 
     it('should keep only the first model when ids are duplicated', () => {
         expect(
-            getDisplayableModels([valid, { ...valid, url: 'other' }], options),
+            getDisplayableModels(
+                [valid, { ...valid, url: 'https://x/other.tar' }],
+                options,
+            ),
         ).toStrictEqual([valid]);
     });
 

@@ -96,7 +96,7 @@ A model is offered to the user only if:
 5. no previous model in the file uses the same `id`.
 
 A model that does not follow these rules is accepted in the file and breaks nothing: it is simply not offered.
-However, the file must stay valid JSON: a syntax error makes the test `packages/common/src/models/modelsCatalog.spec.ts` fail.
+However, the test `packages/common/src/models/modelsCatalog.spec.ts` fails when the file is not valid JSON, or when one of its models does not follow the format above (rules 1 and 2 are not checked by this test). This catches typos in the models shipped with LODEX.
 
 ## Full example
 
