@@ -3,24 +3,25 @@ import { createAction, handleActions } from 'redux-actions';
 export const IMPORT_FIELDS = 'IMPORT_FIELDS';
 export const IMPORT_FIELDS_ERROR = 'IMPORT_FIELDS_ERROR';
 export const IMPORT_FIELDS_SUCCESS = 'IMPORT_FIELDS_SUCCESS';
-export const IMPORT_FIELDS_CLOSED = 'IMPORT_FIELDS_CLOSED';
 
 export const importFields = createAction(IMPORT_FIELDS);
 export const importFieldsError = createAction(IMPORT_FIELDS_ERROR);
 export const importFieldsSuccess = createAction(IMPORT_FIELDS_SUCCESS);
-export const importFieldsClosed = createAction(IMPORT_FIELDS_CLOSED);
 
 export const initialState = {
     status: null,
     loading: false,
     hasEnrichments: false,
     hasPrecomputed: false,
+    themeNotFound: null,
 };
 
 // @ts-expect-error TS7006
 export default handleActions(
     {
-        IMPORT_FIELDS: (state) => ({ ...state, loading: true }),
+        // Reset on start, not right after the result: React 18 would batch
+        // both updates and Menu would never see the result to toast it
+        IMPORT_FIELDS: () => ({ ...initialState, loading: true }),
         IMPORT_FIELDS_ERROR: (state) => ({
             ...state,
             status: 'error',
@@ -32,12 +33,7 @@ export default handleActions(
             loading: false,
             hasEnrichments: payload.hasEnrichments,
             hasPrecomputed: payload.hasPrecomputed,
-        }),
-        IMPORT_FIELDS_CLOSED: (state) => ({
-            ...state,
-            status: null,
-            hasEnrichments: false,
-            hasPrecomputed: false,
+            themeNotFound: payload.themeNotFound ?? null,
         }),
     },
     initialState,
@@ -51,10 +47,13 @@ export const hasImportSucceeded = (state) => state.status === 'success';
 export const hasEnrichments = (state) => state.hasEnrichments;
 // @ts-expect-error TS7006
 export const hasPrecomputed = (state) => state.hasPrecomputed;
+// @ts-expect-error TS7006
+export const getThemeNotFound = (state) => state.themeNotFound;
 
 export const selectors = {
     hasImportFailed,
     hasImportSucceeded,
     hasEnrichments,
     hasPrecomputed,
+    getThemeNotFound,
 };

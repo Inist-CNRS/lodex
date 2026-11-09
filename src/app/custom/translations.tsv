@@ -677,6 +677,7 @@
 "add_more"	"Add more"	"Ajouter"
 "hidden_resources"	"Hidden resources"	"Ressources cachées"
 "model_imported_with_success"	"Model successfully imported"	"Modèle importé avec succès"
+"model_import_theme_not_found"	"The %{theme} theme is not available on this server and could not be applied"	"Le thème %{theme} n'est pas disponible sur ce serveur et n'a pas pu être appliqué"
 "main_resource"	"Main resource"	"Ressource principale"
 "subresources"	"Subresources"	"Sous-ressources"
 "new_resource"	"New resource"	"Nouvelle ressource"
