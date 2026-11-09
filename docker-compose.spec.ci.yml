@@ -1,0 +1,22 @@
+# CI override: run the api from the repository already installed and built by the
+# CI job, instead of building the production image (saves ~5 min per e2e job).
+# The production image is still built by the docker-build job.
+services:
+    api:
+        build: !reset null
+        # Debian (glibc) like the CI runner that installed node_modules
+        image: node:24.13-slim
+        working_dir: /app
+        # api + workers, as pm2 does in the production image
+        command: npm start
+        volumes:
+            - .:/app
+        environment:
+            REDIS_URL: 'redis://redis:6379'
+        links:
+            - redis
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:7-alpine

@@ -18,3 +18,8 @@
 !typings.json
 !docker-entrypoint.sh
 !vite.config.ts
+
+# Dependencies are installed inside the image, never copy the host ones
+**/node_modules
+# Rebuilt in the image by the transformers prepublish script
+packages/transformers/lib
