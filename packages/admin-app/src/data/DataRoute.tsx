@@ -7,7 +7,7 @@ import Upload from '../upload/Upload';
 import { preLoadLoaders } from '../loader';
 import withInitialData from '../withInitialData';
 import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import {
     Redirect,
     Route,
@@ -19,6 +19,7 @@ import {
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { PreComputationSelector } from './PreComputationSelector';
 import { useFetchPrecomputations } from './useFetchPrecomputations';
+import { SiteWizardContext } from '../siteWizard/SiteWizardContext';
 
 interface DataRouteComponentProps {
     canUploadFile: boolean;
@@ -30,6 +31,8 @@ export const DataRouteComponent = ({
 }: DataRouteComponentProps) => {
     const { translate } = useTranslate();
     const { pathname, search } = useLocation();
+
+    const { openWizard } = useContext(SiteWizardContext);
 
     const { path } = useRouteMatch();
     const history = useHistory();
@@ -70,8 +73,14 @@ export const DataRouteComponent = ({
         useFetchPrecomputations();
 
     if (canUploadFile) {
-        // @ts-expect-error TS2322
-        return <Upload className="admin" isFirstFile={canUploadFile} />;
+        return (
+            <Upload
+                // @ts-expect-error TS2322
+                className="admin"
+                isFirstFile={canUploadFile}
+                onOpenWizard={openWizard}
+            />
+        );
     }
 
     if (!pathname.endsWith('dataset') && !pathname.endsWith('precomputation')) {
