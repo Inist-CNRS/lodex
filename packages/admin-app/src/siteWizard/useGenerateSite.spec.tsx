@@ -273,6 +273,26 @@ describe('useGenerateSite', () => {
         expect(uploadDataset).toHaveBeenLastCalledWith(otherSource, 'la');
     });
 
+    it('clears the previous data again on the next retry when the clear failed', async () => {
+        (importCatalogModel as jest.Mock).mockRejectedValueOnce(
+            new Error('boom'),
+        );
+        (clearDataset as jest.Mock).mockRejectedValueOnce(new Error('clear'));
+        const { result } = renderGenerateSite();
+        await act(async () => {
+            await result.current.generate(model, source).catch(() => {});
+        });
+        const otherSource = { type: 'url' as const, url: 'https://other' };
+        await act(async () => {
+            await result.current.generate(model, otherSource).catch(() => {});
+        });
+        expect(uploadDataset).toHaveBeenCalledTimes(1);
+        await act(() => result.current.generate(model, otherSource));
+        // the old rows are not kept under the new import
+        expect(clearDataset).toHaveBeenCalledTimes(2);
+        expect(uploadDataset).toHaveBeenCalledTimes(2);
+    });
+
     it('cannot cancel during the model import, once the data is imported', async () => {
         let finishModel: () => void = () => {};
         (importCatalogModel as jest.Mock).mockImplementation(

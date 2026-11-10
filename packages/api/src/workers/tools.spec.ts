@@ -21,6 +21,7 @@ describe('cancelJob', () => {
     const ctx = { tenant: 'tools-spec' } as any;
 
     beforeEach(() => {
+        jest.clearAllMocks();
         mockActiveJobs.length = 0;
         progress.finish(ctx.tenant);
     });
@@ -39,7 +40,18 @@ describe('cancelJob', () => {
         );
     });
 
-    it('does not stop the stream of another type of job', async () => {
+    it('stops a retry enrichment cancelled as an enrichment', async () => {
+        mockActiveJobs.push({
+            data: { jobType: 'retry-enricher', fusible: 'fusible' },
+            moveToFailed: jest.fn(),
+        });
+
+        await cancelJob(ctx, 'enricher');
+
+        expect(disableFusible).toHaveBeenCalledWith('fusible');
+    });
+
+    it('does not stop the stream of another job when cancelling an import', async () => {
         const moveToFailed = jest.fn();
         mockActiveJobs.push({
             data: { jobType: 'enricher', fusible: 'fusible' },

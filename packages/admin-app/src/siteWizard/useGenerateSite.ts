@@ -184,8 +184,10 @@ export const useGenerateSite = () => {
                 const imported = importedDataRef.current;
                 if (!imported || !isSameData(imported, data)) {
                     if (imported) {
-                        importedDataRef.current = null;
+                        // forgotten once cleared only: a failed clear is
+                        // tried again on the next retry
                         await clearDataset();
+                        importedDataRef.current = null;
                     }
                     await importData(model, source);
                     importedDataRef.current = data;

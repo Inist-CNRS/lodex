@@ -71,8 +71,11 @@ export const cancelJob = async (
     subLabel: string | undefined | null = null,
 ) => {
     const activeJob = await getActiveJob(ctx.tenant);
-    // only stop the stream of a job of the requested type
-    if (activeJob?.data?.fusible && activeJob.data.jobType === jobType) {
+    // cancelling an import must not stop another job. Other types are not
+    // compared: a retry enrichment (retry-enricher) is cancelled as enricher
+    const isOtherJobThanImport =
+        jobType === 'import' && activeJob?.data?.jobType !== 'import';
+    if (activeJob?.data?.fusible && !isOtherJobThanImport) {
         await disableFusible(activeJob.data.fusible);
     }
     if (activeJob?.data?.jobType === jobType) {
