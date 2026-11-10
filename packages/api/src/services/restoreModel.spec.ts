@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { PassThrough } from 'stream';
 
 import { MongoClient } from 'mongodb';
 import * as tar from 'tar-stream';
@@ -79,5 +80,14 @@ describe('restoreModel', () => {
             front: { multilingual: true },
         });
         expect(await db.collection('field').countDocuments()).toBe(1);
+    });
+
+    it('should reject when the source stream errors mid-body', async () => {
+        const source = new PassThrough();
+        const promise = restoreModel(connectionStringURI, source, ['field']);
+        source.write(Buffer.alloc(512));
+        source.destroy(new Error('connection reset'));
+
+        await expect(promise).rejects.toThrow('connection reset');
     });
 });
