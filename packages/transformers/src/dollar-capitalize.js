@@ -1,5 +1,5 @@
-import transformer from './operations/CAPITALIZE';
-import dollar from './dollar';
+import transformer from './operations/CAPITALIZE.js';
+import dollar from './dollar.js';
 
 /**
  * mettre le premier caractère en majuscule

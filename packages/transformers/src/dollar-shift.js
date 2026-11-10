@@ -1,5 +1,5 @@
-import transformer from './operations/SHIFT';
-import dollar from './dollar';
+import transformer from './operations/SHIFT.js';
+import dollar from './dollar.js';
 
 /**
  * décaler une valeur multiple (tableau ou chaîne de caractères)

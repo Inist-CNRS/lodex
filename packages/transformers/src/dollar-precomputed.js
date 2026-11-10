@@ -1,5 +1,5 @@
-import transformer from './operations/PRECOMPUTED';
-import dollar from './dollar';
+import transformer from './operations/PRECOMPUTED.js';
+import dollar from './dollar.js';
 
 /**
  * Fixer une adresse de precomputed

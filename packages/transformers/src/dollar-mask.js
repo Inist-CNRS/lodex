@@ -1,5 +1,5 @@
-import transformer from './operations/MASK';
-import dollar from './dollar';
+import transformer from './operations/MASK.js';
+import dollar from './dollar.js';
 
 /**
  * S'assure que la valeur respecte une expression régulière

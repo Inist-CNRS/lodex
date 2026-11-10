@@ -1,5 +1,5 @@
-import transformer from './operations/MD5';
-import dollar from './dollar';
+import transformer from './operations/MD5.js';
+import dollar from './dollar.js';
 
 /**
  * empreinte MD5 d'un champ

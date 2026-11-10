@@ -6,7 +6,7 @@ module.exports = {
             script: './dist/index.js',
             interpreter: 'node',
             interpreter_args:
-                '--conditions=ezs-compiled --enable-source-maps --max-http-header-size=32768',
+                '--enable-source-maps --max-http-header-size=32768',
             exec_mode: 'cluster',
             cwd: './packages/api',
             wait_ready: true,
@@ -20,7 +20,6 @@ module.exports = {
         {
             name: 'worker',
             script: './src/index.ts',
-            interpreter_args: '--conditions=ezs-compiled',
             cwd: './packages/workers',
             interpreter: 'node',
             exec_mode: 'fork',

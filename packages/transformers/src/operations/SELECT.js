@@ -1,6 +1,6 @@
-import get from 'lodash/get';
-import documentationByOperation from './documentationByOperation';
-import { rawTransformerWithArg } from './transformer';
+import get from 'lodash/get.js';
+import documentationByOperation from './documentationByOperation.js';
+import { rawTransformerWithArg } from './transformer.js';
 
 export const select = (value, path) => {
     if (!value) {

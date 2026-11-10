@@ -14,20 +14,29 @@ const relativeToOutdir = (dir) => path.relative(outdir, dir);
 const keepSourceDirname = {
     name: 'keep-source-dirname',
     setup(builder) {
-        builder.onLoad({ filter: /\.tsx?$/ }, async (args) => {
+        builder.onLoad({ filter: /\.[cm]?[jt]sx?$/ }, async (args) => {
+            if (args.path.includes(`${path.sep}node_modules${path.sep}`)) {
+                return undefined;
+            }
             const contents = await readFile(args.path, 'utf8');
             if (!contents.includes('__dirname')) {
                 return undefined;
+            }
+            if (/\b(const|let|var)\s+__dirname\b/.test(contents)) {
+                throw new Error(
+                    `${args.path} declares __dirname: build.mjs can not rewrite it`,
+                );
             }
             const sourceDir = JSON.stringify(
                 relativeToOutdir(path.dirname(args.path)),
             );
             return {
+                // identifier uses only, not properties like `foo.__dirname`
                 contents: contents.replaceAll(
-                    /\b__dirname\b/g,
+                    /(?<![\w$.])__dirname(?![\w$])/g,
                     `require('node:path').resolve(__dirname, ${sourceDir})`,
                 ),
-                loader: path.extname(args.path).slice(1),
+                loader: path.extname(args.path).slice(1).replace(/^[cm]/, ''),
             };
         });
     },
@@ -55,14 +64,41 @@ const isLoadedAsEsm = (file) => {
 // require() of an ES module returns its namespace: expose it like a transpiled module
 const ESM_INTEROP = `const esmInterop = (m) => m && m[Symbol.toStringTag] === 'Module' ? { __esModule: true, ...m } : m;`;
 const SKIP = Symbol('skip');
-const REPO_PACKAGES_DIR = path.resolve(import.meta.dirname, '..') + path.sep;
+// ezmaster data directory: instances may edit these files, they are read at runtime
+const CUSTOM_DIR =
+    path.resolve(import.meta.dirname, '../../src/app/custom') + path.sep;
+
+// require() of the file at runtime, relative to dist/
+const requireAtRuntime = (file) => ({
+    // suffix: the shim is CommonJS even when the target file is .mjs
+    path: `${file}|cjs-shim`,
+    namespace: 'require-file',
+});
 
 // Dependencies are not bundled. They are required from the directory of the importing file,
 // like tsx does, since some packages only exist in a nested node_modules (e.g. frontend-common).
-// @lodex/* packages are TypeScript sources: they are bundled.
+// @lodex/* packages are TypeScript sources: they are bundled. Ezs plugins (@ezs/lodex,
+// @ezs/transformers...) stay external, so ezs loading them by name gets the same instance.
 const requireFromImporter = {
     name: 'require-from-importer',
     setup(builder) {
+        builder.onResolve({ filter: /^\./ }, async (args) => {
+            if (args.pluginData === SKIP) {
+                return undefined;
+            }
+            const resolved = await builder.resolve(args.path, {
+                resolveDir: args.resolveDir,
+                kind: args.kind,
+                pluginData: SKIP,
+            });
+            if (
+                resolved.errors.length ||
+                !resolved.path.startsWith(CUSTOM_DIR)
+            ) {
+                return undefined;
+            }
+            return requireAtRuntime(resolved.path);
+        });
         builder.onResolve({ filter: /^[^./]/ }, async (args) => {
             if (
                 args.pluginData === SKIP ||
@@ -79,14 +115,6 @@ const requireFromImporter = {
                 ...options,
                 kind: 'require-call',
             });
-            // In-repo packages (@ezs/lodex, @ezs/transformers...) need transpilation, like @lodex/*
-            if (
-                !required.errors.length &&
-                required.path.startsWith(REPO_PACKAGES_DIR) &&
-                !required.path.includes(`${path.sep}node_modules${path.sep}`)
-            ) {
-                return undefined;
-            }
             // Some packages (e.g. @ezs/core) declare "type": "module" but point their
             // "require" export to CommonJS files: node can only load their ESM entry.
             if (!required.errors.length && isLoadedAsEsm(required.path)) {
@@ -94,11 +122,7 @@ const requireFromImporter = {
                     ...options,
                     kind: 'import-statement',
                 });
-                return {
-                    // suffix: the shim is CommonJS even when the target file is .mjs
-                    path: `${imported.path}|cjs-shim`,
-                    namespace: 'require-esm',
-                };
+                return requireAtRuntime(imported.path);
             }
             return {
                 path: `${args.resolveDir}|${args.path}`,
@@ -119,7 +143,7 @@ const requireFromImporter = {
             },
         );
         builder.onLoad(
-            { filter: /.*/, namespace: 'require-esm' },
+            { filter: /.*/, namespace: 'require-file' },
             ({ path: key }) => ({
                 contents: `${ESM_INTEROP}\nmodule.exports = esmInterop(require(require('node:path').resolve(__dirname, ${JSON.stringify(relativeToOutdir(key.split('|')[0]))})));`,
                 loader: 'js',
@@ -136,7 +160,9 @@ await build({
     format: 'cjs',
     target: 'node24',
     jsx: 'automatic',
+    // mappings only: enough for stack traces (--enable-source-maps), much lighter to load
     sourcemap: true,
+    sourcesContent: false,
     // styles and images are irrelevant server side
     loader: { '.css': 'empty', '.svg': 'dataurl' },
     logLevel: 'warning',

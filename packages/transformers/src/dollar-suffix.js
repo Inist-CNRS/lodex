@@ -1,5 +1,5 @@
-import transformer from './operations/SUFFIX';
-import dollar from './dollar';
+import transformer from './operations/SUFFIX.js';
+import dollar from './dollar.js';
 
 /**
  * ajoute une chaîne de caractères à la fin d'une chaîne ou d'un tableau

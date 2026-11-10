@@ -1,4 +1,4 @@
-import documentationByOperation from './documentationByOperation';
+import documentationByOperation from './documentationByOperation.js';
 
 const isUndefinedOrEmpty = (value) =>
     typeof value === 'undefined' || value === '' || value === null;

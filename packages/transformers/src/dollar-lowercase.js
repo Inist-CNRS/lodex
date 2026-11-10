@@ -1,5 +1,5 @@
-import transformer from './operations/LOWERCASE';
-import dollar from './dollar';
+import transformer from './operations/LOWERCASE.js';
+import dollar from './dollar.js';
 
 /**
  * mettre en bas de casse (minuscules)

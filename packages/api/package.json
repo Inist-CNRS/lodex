@@ -7,7 +7,7 @@
     "scripts": {
         "dev": "NODE_CONFIG_DIR=../../config tsx watch --max-http-header-size=32768 src",
         "build": "node build.mjs",
-        "start": "NODE_CONFIG_DIR=../../config node --conditions=ezs-compiled --enable-source-maps --max-http-header-size=32768 dist/index.js"
+        "start": "NODE_CONFIG_DIR=../../config node --enable-source-maps --max-http-header-size=32768 dist/index.js"
     },
     "dependencies": {
         "@ezs/transformers": "file:../transformers"
