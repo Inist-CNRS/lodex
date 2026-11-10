@@ -107,11 +107,12 @@ const dataStep: WizardStep = {
 
 const STEPS: WizardStep[] = [modelStep, dataStep];
 
-export type SiteWizardCloseReason = 'generated' | 'dismissed';
+// dismissed: the user chose to configure the site manually (first step);
+// cancelled: the user left a later step
+export type SiteWizardCloseReason = 'generated' | 'dismissed' | 'cancelled';
 
 type SiteWizardProps = {
     open: boolean;
-    // dismissed: the user chose to configure the site manually
     onClose: (reason: SiteWizardCloseReason) => void;
 };
 
@@ -312,7 +313,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 cancelLabel={translate('cancel')}
                 confirmLabel={translate('confirm')}
                 onCancel={() => setIsCancelConfirmOpen(false)}
-                onConfirm={() => close('dismissed')}
+                onConfirm={() => close(index === 0 ? 'dismissed' : 'cancelled')}
             />
         </Dialog>
     );

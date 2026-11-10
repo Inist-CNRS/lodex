@@ -222,7 +222,8 @@ describe('SiteWizard', () => {
 
         await userEvent.click(button('site_wizard_cancel'));
         await userEvent.click(button('confirm'));
-        expect(onClose).toHaveBeenCalled();
+        // leaving the data step is not the choice of the manual configuration
+        expect(onClose).toHaveBeenCalledWith('cancelled');
     });
 
     it('clears the error once the inputs change', async () => {

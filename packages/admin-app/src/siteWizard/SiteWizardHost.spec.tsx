@@ -27,6 +27,7 @@ jest.mock('./SiteWizard', () => ({
                     close wizard
                 </button>
                 <button onClick={() => onClose('generated')}>generated</button>
+                <button onClick={() => onClose('cancelled')}>cancelled</button>
             </div>
         );
     },
@@ -164,6 +165,14 @@ describe('SiteWizardHost', () => {
         expect(
             localStorage.getItem('lodex-site-wizard-dismissed-default'),
         ).toBe('true');
+    });
+
+    it('does not remember a wizard cancelled from a later step', async () => {
+        renderHost();
+        await userEvent.click(screen.getByText('cancelled'));
+        expect(
+            localStorage.getItem('lodex-site-wizard-dismissed-default'),
+        ).toBeNull();
     });
 
     it('does not remember a generated site', async () => {
