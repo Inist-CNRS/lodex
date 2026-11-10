@@ -9,14 +9,16 @@ This file only describes the models. The model itself (its fields, enrichments, 
 ## Model archives
 
 The model archives are versioned in this repository, in [`archives/`](archives/), one file per model named after its `id` (e.g. `archives/hal2lodex.tar`).
-The `url` of a model points to its raw file on GitHub, on the `master` branch:
+The `url` of a model points to its raw file on GitHub, on the `marmelab` branch:
 
 ```
-https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/custom/models/archives/<id>.tar
+https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/<id>.tar
 ```
 
 This link downloads the archive directly, so it can also be shared with users who want the model file.
-The archive is only reachable once it is merged on `master`.
+The archive is only reachable once it is merged on `marmelab`.
+
+> **When `marmelab` is merged into `master`**: replace `lodex/marmelab/` with `lodex/master/` in every `url` of `models-catalog.json`, in this file, and in `REPO_MODELS_URL` of `packages/common/src/models/modelsCatalog.spec.ts`.
 
 ## Model fields
 
@@ -116,7 +118,7 @@ However, the test `packages/common/src/models/modelsCatalog.spec.ts` fails when 
 ```json
 {
     "id": "hal2lodex",
-    "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/custom/models/archives/hal2lodex.tar",
+    "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/hal2lodex.tar",
     "loader": "csv-hal2lodex",
     "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-hal2lodex/",
     "demo": "https://catalogue-modeles.lodex.inist.fr/instance/hal2lodex",

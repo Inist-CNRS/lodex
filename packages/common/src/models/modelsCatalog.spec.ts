@@ -5,7 +5,7 @@ import { catalogModelSchema } from './modelCatalog';
 const MODELS_DIR = path.resolve(__dirname, '../../../../src/app/custom/models');
 const CATALOG_PATH = path.join(MODELS_DIR, 'models-catalog.json');
 const REPO_MODELS_URL =
-    'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/custom/models/';
+    'https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/';
 
 describe('models catalog', () => {
     const catalog = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf8'));
