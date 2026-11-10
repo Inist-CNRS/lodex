@@ -1,3 +1,4 @@
+import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
@@ -30,6 +31,9 @@ export const clearDataset = async (ctx: any) => {
             error,
         });
         ctx.body = { status: 'error', error };
+    } finally {
+        // even after a partial drop: the dropped collections need their indexes back
+        invalidateRepositories(ctx.tenant);
     }
 };
 

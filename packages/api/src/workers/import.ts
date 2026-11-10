@@ -1,4 +1,6 @@
-import repositoryMiddleware from '../services/repositoryMiddleware';
+import repositoryMiddleware, {
+    invalidateRepositories,
+} from '../services/repositoryMiddleware';
 import {
     startImport,
     getLoader,
@@ -58,6 +60,7 @@ const handleImportError = async (job: any, err: any) => {
     const ctx = await prepareContext({ job });
     if (err instanceof CancelWorkerError) {
         await ctx.dataset.drop();
+        invalidateRepositories(ctx.tenant);
     }
     // very useful for identifying the origin of production errors.
     const logger = getLogger(ctx.tenant);
