@@ -12,6 +12,7 @@ import { ProgressStatus } from '@lodex/common';
 import { Readable } from 'stream';
 import config from 'config';
 import getLogger from './logger';
+import { isUploadCancelled, removeUploadChunks } from './uploadCancellation';
 
 export const getLoader =
     (loaderName: any, loaderEnvironment: any, loaderHeader: any) =>
@@ -57,6 +58,12 @@ export const startImport = async (ctx: any) => {
         extension,
         customLoader,
     } = ctx.job?.data || {};
+    // the upload was cancelled after its import was queued: reported as a
+    // cancel, without touching the dataset
+    if (filename && totalChunks && (await isUploadCancelled(filename))) {
+        await removeUploadChunks(filename);
+        throw new Error('cancelled_import');
+    }
     const fusible = await createFusible();
     try {
         // @ts-expect-error TS(2339): Property 'status' does not exist on type 'Progress... Remove this comment to see the full error message

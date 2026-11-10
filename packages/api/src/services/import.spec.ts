@@ -1,10 +1,34 @@
 import { startImport } from './import';
 import progress from './progress';
+import { isUploadCancelled, removeUploadChunks } from './uploadCancellation';
+jest.mock('./uploadCancellation', () => ({
+    isUploadCancelled: jest.fn(async () => false),
+    removeUploadChunks: jest.fn(),
+}));
 jest.mock('./progress', () => ({
     start: jest.fn(),
     finish: jest.fn(),
     status: 'PENDING',
 }));
+describe('startImport of a cancelled upload', () => {
+    it('reports a cancel and drops the chunks without importing', async () => {
+        (isUploadCancelled as jest.Mock).mockResolvedValueOnce(true);
+        const ctx = {
+            tenant: 'lodex',
+            job: {
+                data: { filename: 'upload/lodex_id', totalChunks: 3 },
+                update: jest.fn(),
+            },
+            mergeChunks: jest.fn(),
+            saveParsedStream: jest.fn(),
+        };
+        await expect(startImport(ctx)).rejects.toThrow('cancelled_import');
+        expect(removeUploadChunks).toHaveBeenCalledWith('upload/lodex_id');
+        expect(ctx.mergeChunks).not.toHaveBeenCalled();
+        expect(ctx.saveParsedStream).not.toHaveBeenCalled();
+    });
+});
+
 describe.skip('import', () => {
     describe('startImport with file and automatic loader', () => {
         const stream = {
