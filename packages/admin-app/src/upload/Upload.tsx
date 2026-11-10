@@ -2,22 +2,11 @@ import { useState, type ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
-import { DropzoneAreaBase, type FileObject } from 'mui-file-dropzone';
+import { type FileObject } from 'mui-file-dropzone';
 import Alert from '@lodex/frontend-common/components/Alert';
-import {
-    Box,
-    Button,
-    TextField,
-    Grid,
-    CircularProgress,
-    Typography,
-    Tabs,
-    Tab,
-} from '@mui/material';
+import { Box, Button } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import LinkIcon from '@mui/icons-material/Link';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import {
     uploadFile,
@@ -29,12 +18,14 @@ import {
 } from './index';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
-import { toast } from '@lodex/common';
-import SourceCodeField from '@lodex/frontend-common/components/SourceCodeField';
 import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { State } from '../reducers';
 import type { Loader } from './ListDialog';
+import {
+    DatasetSourceInput,
+    type DatasetSourceTab,
+} from './DatasetSourceInput';
 
 const styles = {
     button: {
@@ -43,14 +34,11 @@ const styles = {
         alignSelf: 'center',
         alignItems: 'flex-start',
     },
-    input: {
-        '@media (min-width: 992px)': {
-            marginBottom: '16px',
-        },
-    },
-    textInput: {
-        width: '100%',
-        height: '50vh',
+    wizardButton: {
+        alignSelf: 'flex-start',
+        textDecoration: 'underline',
+        marginLeft: 4,
+        marginBottom: 2,
     },
     container: {
         width: '100%',
@@ -58,100 +46,6 @@ const styles = {
         flexDirection: 'column',
         marginTop: '24px',
     },
-    tabs: {
-        marginBottom: '12px',
-        borderBottom: 'solid 1px #00000018',
-    },
-    formDesc: {
-        textAlign: 'center' as const,
-        marginBottom: '24px',
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        alignItems: 'center',
-        margin: '0 10%',
-    },
-    loader: {
-        minHeight: '220px',
-        backgroundColor: 'var(--contrast-main)',
-        color: 'var(--primary-secondary)',
-    },
-    divider: {
-        textTransform: 'uppercase',
-        position: 'relative',
-        textAlign: 'center' as const,
-        width: '100%',
-        marginTop: '32px',
-        '&:before': {
-            width: '100%',
-            height: '2px',
-            content: '""',
-            backgroundColor: 'var(--primary-secondary)',
-            position: 'absolute',
-            top: '50%',
-            left: 0,
-            transform: 'translateY(-50%)',
-        },
-        '@media (min-width: 992px)': {
-            width: 'auto',
-            marginTop: 0,
-            alignSelf: 'stretch',
-            display: 'flex',
-            alignItems: 'center',
-            '&:before': {
-                width: '2px',
-                height: '100%',
-                top: 0,
-                left: '50%',
-                transform: 'translateX(-50%)',
-            },
-        },
-    },
-    dividerLabel: {
-        padding: '1rem',
-        backgroundColor: 'var(--contrast-main)',
-        position: 'relative',
-        display: 'inline-block',
-        '@media (min-width: 992px)': {
-            display: 'block',
-            margin: '0 40px',
-        },
-    },
-    dropzone: {
-        minHeight: '220px',
-        padding: '0 1rem',
-    },
-    disabledDropzone: {
-        opacity: 0.5,
-        cursor: 'not-allowed',
-    },
-    dropzonePreview: {
-        justifyContent: 'center',
-        '& .MuiGrid-item, & .MuiChip-root': {
-            maxWidth: '100%',
-        },
-    },
-};
-
-type DroppingLoaderProps = {
-    text: string;
-};
-
-const DroppingLoader = ({ text }: DroppingLoaderProps) => {
-    return (
-        <Grid
-            sx={styles.loader}
-            container
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <CircularProgress />
-            <span>{text}</span>
-        </Grid>
-    );
 };
 
 export type UploadComponentProps = {
@@ -173,6 +67,7 @@ export type UploadComponentProps = {
     onTextUpload: (...params: unknown[]) => void;
     loaders: Loader[];
     isFirstFile: boolean;
+    onOpenWizard?: () => void;
 };
 
 export const UploadComponent = ({
@@ -191,51 +86,28 @@ export const UploadComponent = ({
     onTextUpload,
     loaders,
     isFirstFile,
+    onOpenWizard,
 }: UploadComponentProps) => {
     const { translate } = useTranslate();
-    const [tab, setTab] = useState<number>(0);
+    const [tab, setTab] = useState<DatasetSourceTab>('file');
     const [files, setFiles] = useState<FileObject[]>([]);
-    const [dropping, setDropping] = useState(false);
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
-    const handleImportType = (_: unknown, newTab: number) => {
-        setTab(newTab);
-    };
-
-    const handleAdding = () => {
-        setDropping(true);
-    };
-
-    const handleAddRejected = () => {
-        setDropping(false);
-    };
-
-    const handleFileAdded = (list: FileObject[]) => {
-        setDropping(false);
-        if (!list || list.length === 0) return;
-
-        setFiles([...list]);
-        toast(translate('add_file_success', { name: list[0].file.name }), {
-            type: 'success',
-        });
-    };
-
     const handleConfirm = (...params: any[]) => {
-        // 0 = File, 1 = URL and 2 = TEXT
         switch (tab) {
-            case 0: {
+            case 'file': {
                 if (files.length === 0) return;
                 onFileLoad(files[0].file);
                 break;
             }
-            case 1: {
+            case 'url': {
                 if (files.length !== 0 || !url || !isUrlValid) return;
                 onUrlUpload(...params);
                 break;
             }
-            case 2: {
+            case 'text': {
                 if (!textContent || textContent === '') return;
                 onTextUpload(...params);
                 break;
@@ -254,146 +126,44 @@ export const UploadComponent = ({
         }
         handleConfirm(...params);
     };
-
     return (
         <Box sx={styles.container}>
-            {/* Tabs selector use to select the import type */}
-            <Box sx={styles.tabs}>
-                <Tabs
-                    value={tab}
-                    onChange={handleImportType}
-                    variant="fullWidth"
+            {onOpenWizard && (
+                <Button
+                    variant="text"
+                    color="primary"
+                    className="btn-open-site-wizard"
+                    sx={styles.wizardButton}
+                    startIcon={<ArrowBackIcon />}
+                    onClick={onOpenWizard}
                 >
-                    <Tab
-                        icon={<UploadFileIcon />}
-                        iconPosition="start"
-                        label={translate('upload_by_file')}
-                    />
-                    <Tab
-                        icon={<LinkIcon />}
-                        iconPosition="start"
-                        label={translate('upload_by_url')}
-                    />
-                    <Tab
-                        icon={<EditNoteIcon />}
-                        iconPosition="start"
-                        label={translate('upload_by_text')}
-                    />
-                </Tabs>
-            </Box>
-
-            {/* Show error */}
-            {error ? (
-                <Alert>
-                    <p>Error uploading given file: </p>
-                    <p>{error}</p>
-                </Alert>
-            ) : (
-                <span />
+                    {translate('site_wizard_open')}
+                </Button>
             )}
-
-            {/* Display tabs content */}
-            <Box
-                sx={{
-                    ...styles.form,
-                    '& .dropzone': styles.dropzone,
-                    '& .disabledDropzone': styles.disabledDropzone,
-                    '& .dropzonePreview': styles.dropzonePreview,
-                }}
+            <DatasetSourceInput
+                tab={tab}
+                onTabChange={setTab}
+                files={files}
+                onFilesChange={setFiles}
+                url={url}
+                onUrlChange={(value) =>
+                    onChangeUrl({
+                        target: { value },
+                    } as ChangeEvent<HTMLInputElement>)
+                }
+                text={textContent}
+                onTextChange={onChangeTextContent}
             >
-                {/* Display the content of the first tab */}
-                {tab === 0 ? (
-                    <>
-                        <p style={styles.formDesc}>
-                            {translate('upload_file').replace(
-                                '$UPLOAD_LIMIT$',
-                                // @ts-expect-error TS2322
-                                UPLOAD_LIMIT,
-                            )}
-                        </p>
-                        {dropping ? (
-                            <DroppingLoader text={translate('inspect_file')} />
-                        ) : (
-                            <DropzoneAreaBase
-                                fileObjects={files}
-                                filesLimit={1}
-                                // @ts-expect-error TS2322
-                                maxFileSize={UPLOAD_LIMIT * 1024 * 1024 * 1024}
-                                // @ts-expect-error TS2322 --- mui component type only accept string
-                                dropzoneText={
-                                    <Typography variant="h6">
-                                        {translate('import_file_text')}
-                                    </Typography>
-                                }
-                                dropzoneProps={{
-                                    disabled: !!url,
-                                }}
-                                dropzoneClass={`dropzone ${
-                                    !!url && 'disabledDropzone'
-                                }`}
-                                showAlerts={['error']}
-                                showPreviewsInDropzone
-                                showFileNamesInPreview
-                                previewGridClasses={{
-                                    container: 'dropzonePreview',
-                                }}
-                                useChipsForPreview
-                                alertSnackbarProps={{
-                                    anchorOrigin: {
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    },
-                                }}
-                                onAdd={(fileObjs) => handleFileAdded(fileObjs)}
-                                onDrop={handleAdding}
-                                onDropRejected={handleAddRejected}
-                                onDelete={() => setFiles([])}
-                            />
-                        )}
-                    </>
-                ) : null}
-
-                {/* Display the content of the second tab */}
-                {tab === 1 ? (
-                    <>
-                        <p style={styles.formDesc}>
-                            {translate('upload_via_url')}
-                        </p>
-                        <TextField
-                            fullWidth
-                            sx={styles.input}
-                            value={url}
-                            onChange={onChangeUrl}
-                            placeholder="URL"
-                            error={!!url && !isUrlValid}
-                            helperText={
-                                url && !isUrlValid && translate('invalid_url')
-                            }
-                            disabled={!!files.length}
-                            label={translate('use_url')}
-                            variant="standard"
-                        />
-                    </>
-                ) : null}
-
-                {/* Display the content of the third tab */}
-                {tab === 2 ? (
-                    <>
-                        <p style={styles.formDesc}>
-                            {translate('upload_via_text')}
-                        </p>
-                        <SourceCodeField
-                            style={styles.textInput}
-                            enableModeSelector
-                            mode="json"
-                            input={{
-                                value: textContent,
-                                onChange: onChangeTextContent,
-                            }}
-                        />
-                    </>
-                ) : null}
-            </Box>
+                {/* Show error */}
+                {error ? (
+                    <Alert>
+                        <p>Error uploading given file: </p>
+                        <p>{error}</p>
+                    </Alert>
+                ) : (
+                    <span />
+                )}
+            </DatasetSourceInput>
 
             <LoaderSelect
                 loaders={loaders}

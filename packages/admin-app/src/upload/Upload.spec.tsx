@@ -65,4 +65,45 @@ describe('<Upload />', () => {
             ),
         ).toBe(true);
     });
+
+    describe('onOpenWizard', () => {
+        const baseProps: UploadComponentProps = {
+            error: false,
+            onFileLoad() {},
+            loaders: [],
+            history: {
+                location: { pathname: '/data/existing' },
+                push: () => {},
+            },
+            isFirstFile: true,
+            isUploading: false,
+            url: '',
+            textContent: '',
+            loaderName: '',
+            isUrlValid: false,
+            onChangeUrl() {},
+            onChangeTextContent() {},
+            onChangeLoaderName() {},
+            onUrlUpload() {},
+            onTextUpload() {},
+        };
+
+        it('should not render the wizard button without onOpenWizard', () => {
+            const wrapper = shallow(<Upload {...baseProps} />);
+
+            expect(wrapper.find('.btn-open-site-wizard')).toHaveLength(0);
+        });
+
+        it('should render the wizard button calling onOpenWizard', () => {
+            const onOpenWizard = jest.fn();
+            const wrapper = shallow(
+                <Upload {...baseProps} onOpenWizard={onOpenWizard} />,
+            );
+
+            const button = wrapper.find('.btn-open-site-wizard');
+            expect(button).toHaveLength(1);
+            button.simulate('click');
+            expect(onOpenWizard).toHaveBeenCalledTimes(1);
+        });
+    });
 });
