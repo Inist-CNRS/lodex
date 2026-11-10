@@ -98,7 +98,7 @@
 "listen_up"	"Warning! This action is destructive! You will lose all contributions and modifications."	"Attention ! Cette action effacera les données publiées en “front”"
 "listen_up_dataset"	"Warning, this action cannot be undone!"	"Attention, action irréversible !"
 "listen_up_dataset_details"	"The site and all its data (dataset and model) will be permanently deleted. Export what you want to keep before confirming."	"Le site et toutes ses données (jeu de données et modèle) seront définitivement supprimés. Exportez ce que vous souhaitez conserver avant de confirmer."
-"listen_up_model""Warning! This is a potentially destructive action: you're going to lose all created fields"	"Attention ! Cette action est destructive ! Vous perdrez tous les champs créés."
+"listen_up_model"	"Warning! This is a potentially destructive action: you're going to lose all created fields"	"Attention ! Cette action est destructive ! Vous perdrez tous les champs créés."
 "enter_name"	"Please type in the name of the Lodex site"	"Entrer ci-dessous le nom de l'instance Lodex"
 "edit"	"Edit"	"Éditer"
 "edit_field"	"Edit %{field}"	"Éditer %{field}"
