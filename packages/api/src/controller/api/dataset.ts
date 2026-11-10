@@ -23,7 +23,6 @@ export const clearDataset = async (ctx: any) => {
                     ctx.db.dropCollection(collection.name),
                 ),
             );
-            invalidateRepositories(ctx.tenant);
         }
         ctx.body = { status: 'success' };
     } catch (error) {
@@ -32,6 +31,9 @@ export const clearDataset = async (ctx: any) => {
             error,
         });
         ctx.body = { status: 'error', error };
+    } finally {
+        // even after a partial drop: the dropped collections need their indexes back
+        invalidateRepositories(ctx.tenant);
     }
 };
 

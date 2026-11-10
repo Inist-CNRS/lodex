@@ -563,7 +563,6 @@ export const dropFieldCollection = async (ctx: any) => {
         if (collectionNames.map((c: any) => c.name).includes('subresource')) {
             await ctx.subresource.drop();
         }
-        invalidateRepositories(ctx.tenant);
         ctx.status = 200;
         ctx.body = { message: 'model_cleared' };
     } catch (error) {
@@ -572,6 +571,9 @@ export const dropFieldCollection = async (ctx: any) => {
             // @ts-expect-error TS(2571): Object is of type 'unknown'.
             error: error.message,
         };
+    } finally {
+        // even after a partial drop: the dropped collections need their indexes back
+        invalidateRepositories(ctx.tenant);
     }
 };
 
