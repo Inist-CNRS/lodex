@@ -168,6 +168,24 @@ describe('SiteWizard', () => {
         expect(cancelImport).toHaveBeenCalledTimes(1);
     });
 
+    it('disables the cancel button while cancelling', async () => {
+        const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        (useGenerateSite as jest.Mock).mockReturnValue({
+            clearError,
+            generate,
+            isGenerating: true,
+            isWaitingForImport: true,
+            uploadProgress: null,
+            canCancel: true,
+            isCancelling: true,
+            cancelImport,
+            error: null,
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        expect(button('site_wizard_cancelling')).toBeDisabled();
+    });
+
     it('shows the upload progress of a file and offers to cancel it', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();

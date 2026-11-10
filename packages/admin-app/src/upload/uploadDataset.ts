@@ -5,6 +5,7 @@ import {
     type LoadFileOptions,
 } from '@lodex/frontend-common/utils/loadFile';
 import {
+    getClearUploadRequest,
     getUploadTextRequest,
     getUploadUrlRequest,
 } from '@lodex/frontend-common/user/reducer';
@@ -44,6 +45,17 @@ export const uploadDataset = async (
                   { text: source.text, loaderName },
               );
     const { error } = await fetch(request);
+    if (error) {
+        throw error;
+    }
+};
+
+/**
+ * Drops the dataset, keeping the model.
+ */
+export const clearDataset = async (): Promise<void> => {
+    const { token } = getUserSessionStorageInfo();
+    const { error } = await fetch(getClearUploadRequest({ token }));
     if (error) {
         throw error;
     }

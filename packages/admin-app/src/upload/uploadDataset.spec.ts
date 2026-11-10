@@ -1,6 +1,6 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
-import { uploadDataset } from './uploadDataset';
+import { clearDataset, uploadDataset } from './uploadDataset';
 
 jest.mock('@lodex/frontend-common/fetch/fetch', () => ({
     __esModule: true,
@@ -47,6 +47,13 @@ describe('uploadDataset', () => {
             null,
             options,
         );
+    });
+
+    it('clears the dataset, keeping the model', async () => {
+        await clearDataset();
+        const request = (fetch as jest.Mock).mock.calls[0][0];
+        expect(request.url).toBe('/api/upload/clear');
+        expect(request.method).toBe('DELETE');
     });
 
     it('uploads an url', async () => {

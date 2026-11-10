@@ -10,7 +10,11 @@ import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
 import { loadPublication } from '../publication';
 import { loadSubresources } from '../subresource';
-import { uploadDataset, type DatasetSource } from '../upload/uploadDataset';
+import {
+    clearDataset,
+    uploadDataset,
+    type DatasetSource,
+} from '../upload/uploadDataset';
 import { allowUnload, preventUnload } from '../upload/sagas/unload';
 import { useImportJobEnd } from './useImportJobEnd';
 
@@ -20,6 +24,22 @@ const getErrorDetail = (error: unknown): string =>
         : typeof error === 'object' && error && 'message' in error
           ? String(error.message)
           : String(error);
+
+type ImportedData = { source: DatasetSource; loader: string };
+
+const isSameData = (a: ImportedData, b: ImportedData) => {
+    if (a.loader !== b.loader || a.source.type !== b.source.type) {
+        return false;
+    }
+    switch (a.source.type) {
+        case 'file':
+            return b.source.type === 'file' && a.source.file === b.source.file;
+        case 'url':
+            return b.source.type === 'url' && a.source.url === b.source.url;
+        case 'text':
+            return b.source.type === 'text' && a.source.text === b.source.text;
+    }
+};
 
 const IMPORT_JOB_TYPE = 'import';
 // the error of an import cancelled by the user, as sent by the server
@@ -39,6 +59,8 @@ export const useGenerateSite = () => {
     } = useImportJobEnd();
     const [isGenerating, setIsGenerating] = useState(false);
     const [isWaitingForImport, setIsWaitingForImport] = useState(false);
+    // between a click on cancel and the end of the generation
+    const [isCancelling, setIsCancelling] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const isMountedRef = useRef(true);
     const isGeneratingRef = useRef(false);
@@ -47,8 +69,8 @@ export const useGenerateSite = () => {
     // percentage of the file being uploaded, null when no file is uploading
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
     const uploadAbortRef = useRef<AbortController | null>(null);
-    // the data of this wizard was imported, its model may still be missing
-    const isDataImportedRef = useRef(false);
+    // the data imported by this wizard, whose model may still be missing
+    const importedDataRef = useRef<ImportedData | null>(null);
 
     useEffect(() => {
         isMountedRef.current = true;
@@ -136,6 +158,10 @@ export const useGenerateSite = () => {
             // a too late cancel may still end with the data imported: the
             // generation then goes on, the data being there
             await ended;
+            // the model import that follows cannot be cancelled
+            if (isMountedRef.current) {
+                setIsWaitingForImport(false);
+            }
         },
         [waitForImportEnd, cancelRunningImport],
     );
@@ -144,6 +170,7 @@ export const useGenerateSite = () => {
         async (model: CatalogModel, source: DatasetSource) => {
             setError(null);
             isCancellingRef.current = false;
+            setIsCancelling(false);
             setIsGenerating(true);
             isGeneratingRef.current = true;
             preventUnload();
@@ -151,10 +178,17 @@ export const useGenerateSite = () => {
                 // the data first: a failed data import leaves the instance
                 // as it was (no model replaced), so that the generation can
                 // simply be retried. A retry after a failed model import
-                // keeps the data already imported.
-                if (!isDataImportedRef.current) {
+                // keeps the data already imported, unless the user gave
+                // other data, which replaces it.
+                const data = { source, loader: model.loader };
+                const imported = importedDataRef.current;
+                if (!imported || !isSameData(imported, data)) {
+                    if (imported) {
+                        importedDataRef.current = null;
+                        await clearDataset();
+                    }
                     await importData(model, source);
-                    isDataImportedRef.current = true;
+                    importedDataRef.current = data;
                 }
                 const { themeNotFound } = await importCatalogModel(model.id);
                 if (themeNotFound) {
@@ -191,6 +225,7 @@ export const useGenerateSite = () => {
                 if (isMountedRef.current) {
                     setIsGenerating(false);
                     setIsWaitingForImport(false);
+                    setIsCancelling(false);
                     setUploadProgress(null);
                 }
             }
@@ -208,6 +243,7 @@ export const useGenerateSite = () => {
 
     const cancelImport = useCallback(async () => {
         isCancellingRef.current = true;
+        setIsCancelling(true);
         // a file still uploading: stop it, loadFile tells the server to drop
         // it, and importData handles a cancel coming too late
         if (uploadAbortRef.current) {
@@ -224,6 +260,7 @@ export const useGenerateSite = () => {
         uploadProgress,
         // during the file upload, then while the import job runs
         canCancel: isWaitingForImport || uploadProgress !== null,
+        isCancelling,
         cancelImport,
         error,
         clearError,

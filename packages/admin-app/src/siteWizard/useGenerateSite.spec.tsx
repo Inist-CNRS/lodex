@@ -10,12 +10,15 @@ import { LOAD_ENRICHMENTS } from '../enrichment';
 import { LOAD_PRECOMPUTED } from '../precomputed';
 import { LOAD_PUBLICATION } from '../publication';
 import { LOAD_SUBRESOURCES } from '../subresource';
-import { uploadDataset } from '../upload/uploadDataset';
+import { clearDataset, uploadDataset } from '../upload/uploadDataset';
 import { useImportJobEnd } from './useImportJobEnd';
 import { useGenerateSite } from './useGenerateSite';
 
 jest.mock('../api/field', () => ({ importCatalogModel: jest.fn() }));
-jest.mock('../upload/uploadDataset', () => ({ uploadDataset: jest.fn() }));
+jest.mock('../upload/uploadDataset', () => ({
+    uploadDataset: jest.fn(),
+    clearDataset: jest.fn(),
+}));
 jest.mock('./useImportJobEnd', () => ({ useImportJobEnd: jest.fn() }));
 jest.mock('../api/job', () => ({
     __esModule: true,
@@ -252,6 +255,60 @@ describe('useGenerateSite', () => {
         expect(uploadDataset).toHaveBeenCalledTimes(1);
         expect(importCatalogModel).toHaveBeenCalledTimes(2);
         expect(result.current.error).toBeNull();
+    });
+
+    it('replaces the imported data when a retry gives other data', async () => {
+        (importCatalogModel as jest.Mock).mockRejectedValueOnce(
+            new Error('boom'),
+        );
+        const { result } = renderGenerateSite();
+        await act(async () => {
+            await result.current.generate(model, source).catch(() => {});
+        });
+        expect(clearDataset).not.toHaveBeenCalled();
+        const otherSource = { type: 'url' as const, url: 'https://other' };
+        await act(() => result.current.generate(model, otherSource));
+        expect(clearDataset).toHaveBeenCalledTimes(1);
+        expect(uploadDataset).toHaveBeenCalledTimes(2);
+        expect(uploadDataset).toHaveBeenLastCalledWith(otherSource, 'la');
+    });
+
+    it('cannot cancel during the model import, once the data is imported', async () => {
+        let finishModel: () => void = () => {};
+        (importCatalogModel as jest.Mock).mockImplementation(
+            () => new Promise((resolve) => (finishModel = () => resolve({}))),
+        );
+        const { result } = renderGenerateSite();
+        let promise: Promise<void> = Promise.resolve();
+        await act(async () => {
+            promise = result.current.generate(model, source);
+        });
+        expect(result.current.isGenerating).toBe(true);
+        expect(result.current.canCancel).toBe(false);
+        await act(async () => {
+            finishModel();
+            await promise;
+        });
+    });
+
+    it('is cancelling from the click on cancel to the end of the generation', async () => {
+        let failImport: (error: Error) => void = () => {};
+        waitForImportEnd.mockImplementation(
+            () => new Promise<void>((_, reject) => (failImport = reject)),
+        );
+        const { result } = renderGenerateSite();
+        let promise: Promise<void> = Promise.resolve();
+        await act(async () => {
+            promise = result.current.generate(model, source);
+        });
+        expect(result.current.isCancelling).toBe(false);
+        await act(() => result.current.cancelImport());
+        expect(result.current.isCancelling).toBe(true);
+        await act(async () => {
+            failImport(new Error('cancelled_import'));
+            await promise.catch(() => {});
+        });
+        expect(result.current.isCancelling).toBe(false);
     });
 
     it('does not import the model when the data import fails', async () => {

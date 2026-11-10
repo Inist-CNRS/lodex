@@ -124,6 +124,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         isGenerating,
         uploadProgress,
         canCancel,
+        isCancelling,
         cancelImport,
         error,
         clearError,
@@ -267,8 +268,17 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                             </Box>
                         )}
                         {canCancel && (
-                            <Button color="primary" onClick={cancelImport}>
-                                {translate('site_wizard_cancel_import')}
+                            <Button
+                                color="primary"
+                                onClick={cancelImport}
+                                // the cancel waits for the server (5 s at most)
+                                disabled={isCancelling}
+                            >
+                                {translate(
+                                    isCancelling
+                                        ? 'site_wizard_cancelling'
+                                        : 'site_wizard_cancel_import',
+                                )}
                             </Button>
                         )}
                     </Box>
