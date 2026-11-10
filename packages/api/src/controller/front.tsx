@@ -226,7 +226,7 @@ const handleRender = async (ctx: Koa.Context, next: any) => {
             ? recaptchaClientKeyConfig
             : null;
 
-    renderPublic(ctx.configTenant.theme, {
+    await renderPublic(ctx.configTenant.theme, {
         preload: JSON.stringify(preloadedState),
         tenant: ctx.tenant,
         jsHost: publicJsHost,
@@ -248,7 +248,7 @@ const handleRender = async (ctx: Koa.Context, next: any) => {
 };
 
 const renderAdminIndexHtml = (ctx: any) => {
-    renderAdmin({
+    return renderAdmin({
         tenant: ctx.tenant,
         dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: adminJsHost,
@@ -259,7 +259,7 @@ const renderAdminIndexHtml = (ctx: any) => {
 };
 
 const renderRootAdminIndexHtml = (ctx: any) => {
-    renderRootAdmin({
+    return renderRootAdmin({
         tenant: ctx.tenant,
         dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: rootAdminJsHost,
@@ -328,7 +328,7 @@ app.use(async (ctx, next) => {
 
 app.use(
     route.get('/instances(.*)', async (ctx) => {
-        renderRootAdminIndexHtml(ctx);
+        await renderRootAdminIndexHtml(ctx);
     }),
 );
 
@@ -336,7 +336,7 @@ app.use(handleRender);
 
 app.use(
     route.get('/instance/:slug/admin', async (ctx) => {
-        renderAdminIndexHtml(ctx);
+        await renderAdminIndexHtml(ctx);
     }),
 );
 
