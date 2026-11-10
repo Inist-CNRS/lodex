@@ -1,4 +1,5 @@
 import type Koa from 'koa';
+import type { Db } from 'mongodb';
 import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import annotation from '../models/annotation';
 import configTenant from '../models/configTenant';
@@ -30,22 +31,77 @@ export type AppContext<
     ResponseBody
 >;
 
+const createRepositories = async (db: Db) => {
+    const [
+        annotationRepository,
+        datasetRepository,
+        fieldRepository,
+        subresourceRepository,
+        enrichmentRepository,
+        precomputedRepository,
+        publishedCharacteristicRepository,
+        publishedDatasetRepository,
+        publishedFacetRepository,
+        configTenantCollection,
+        hiddenResourceRepository,
+    ] = await Promise.all([
+        annotation(db),
+        dataset(db),
+        field(db),
+        subresource(db),
+        enrichment(db),
+        precomputed(db),
+        publishedCharacteristic(db),
+        publishedDataset(db),
+        publishedFacet(db),
+        configTenant(db),
+        hiddenResource(db),
+    ]);
+
+    return {
+        annotation: annotationRepository,
+        dataset: datasetRepository,
+        field: fieldRepository,
+        subresource: subresourceRepository,
+        enrichment: enrichmentRepository,
+        precomputed: precomputedRepository,
+        publishedCharacteristic: publishedCharacteristicRepository,
+        publishedDataset: publishedDatasetRepository,
+        publishedFacet: publishedFacetRepository,
+        configTenantCollection,
+        hiddenResource: hiddenResourceRepository,
+        dataSource: dataSource(datasetRepository, precomputedRepository),
+    };
+};
+
+// Building the repositories checks/creates every collection and index (~20 Mongo calls),
+// so it is done once per tenant instead of on every request.
+// Any code dropping a collection or a database MUST call invalidateRepositories(tenant),
+// otherwise the dropped indexes are not recreated until the next restart.
+// ponytail: in-memory per process, fine with a single API process; needs a shared signal if PM2 runs several instances.
+const repositoriesByTenant = new Map<
+    string,
+    ReturnType<typeof createRepositories>
+>();
+
+export const invalidateRepositories = (tenant: string) => {
+    repositoriesByTenant.delete(tenant);
+};
+
 export const mongoClientFactory =
     (mongoClientImpl: MongoClientFactory) =>
     async (ctx: Koa.Context, next: (ctx?: Koa.Context) => Promise<void>) => {
         ctx.db = await mongoClientImpl(ctx.tenant);
-        ctx.annotation = await annotation(ctx.db);
-        ctx.dataset = await dataset(ctx.db);
-        ctx.field = await field(ctx.db);
-        ctx.subresource = await subresource(ctx.db);
-        ctx.enrichment = await enrichment(ctx.db);
-        ctx.precomputed = await precomputed(ctx.db);
-        ctx.publishedCharacteristic = await publishedCharacteristic(ctx.db);
-        ctx.publishedDataset = await publishedDataset(ctx.db);
-        ctx.publishedFacet = await publishedFacet(ctx.db);
-        ctx.configTenantCollection = await configTenant(ctx.db);
-        ctx.hiddenResource = await hiddenResource(ctx.db);
-        ctx.dataSource = dataSource(ctx.dataset, ctx.precomputed);
+        if (!repositoriesByTenant.has(ctx.tenant)) {
+            repositoriesByTenant.set(
+                ctx.tenant,
+                createRepositories(ctx.db).catch((error) => {
+                    repositoriesByTenant.delete(ctx.tenant);
+                    throw error;
+                }),
+            );
+        }
+        Object.assign(ctx, await repositoriesByTenant.get(ctx.tenant));
 
         await next();
     };

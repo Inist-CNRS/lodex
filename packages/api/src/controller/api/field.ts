@@ -1,3 +1,4 @@
+import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
@@ -562,6 +563,7 @@ export const dropFieldCollection = async (ctx: any) => {
         if (collectionNames.map((c: any) => c.name).includes('subresource')) {
             await ctx.subresource.drop();
         }
+        invalidateRepositories(ctx.tenant);
         ctx.status = 200;
         ctx.body = { message: 'model_cleared' };
     } catch (error) {

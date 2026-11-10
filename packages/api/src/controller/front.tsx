@@ -9,11 +9,8 @@ import { createMemoryHistory } from 'history';
 import jsonwebtoken from 'jsonwebtoken';
 import Koa from 'koa';
 import jwt from 'koa-jwt';
-import mount from 'koa-mount';
 import route from 'koa-route';
-import serve from 'koa-static';
 import pick from 'lodash/pick';
-import path from 'path';
 import { END } from 'redux-saga';
 
 import configureStoreServer from './configureStoreServer';
@@ -343,18 +340,6 @@ app.use(
     }),
 );
 
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../../src/app/build'))),
-);
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../root-admin-app/build'))),
-);
-app.use(mount('/', serve(path.resolve(__dirname, '../../../admin-app/build'))));
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../public-app/build'))),
-);
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../../src/app/custom'))),
-);
+// Static files are served upstream, see ./static.ts
 
 export default app;

@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import ejs from 'ejs';
 import { assign, escape } from 'lodash';
+import fs from 'fs';
 import path from 'path';
 import { version } from '../../../../package.json';
 import rootTheme from '../../../../src/app/custom/themes/rootTheme';
@@ -56,6 +57,30 @@ export const createMuiTheme = (lodexTheme) => {
     return assign(lodexTheme, theme);
 };
 
+// Themes are loaded once at boot: their css variables never change at runtime
+const cssVariables = new WeakMap<object, string>();
+const getCssVariable = (muiTheme: object): string => {
+    if (!cssVariables.has(muiTheme)) {
+        cssVariables.set(
+            muiTheme,
+            buildCssVariable(createMuiTheme(muiTheme).palette),
+        );
+    }
+    return cssVariables.get(muiTheme) as string;
+};
+
+// Compiled templates are cached, and recompiled when the file changes on disk
+// (themes can be edited at runtime). Included partials are not watched.
+const templateMtimes = new Map<string, number>();
+const invalidateChangedTemplate = (file: string) => {
+    // a missing file is reported by ejs.renderFile below
+    const mtimeMs = fs.statSync(file, { throwIfNoEntry: false })?.mtimeMs;
+    if (templateMtimes.get(file) !== mtimeMs) {
+        ejs.clearCache();
+        templateMtimes.set(file, mtimeMs ?? 0);
+    }
+};
+
 /**
  * @param {string} file
  * @param {any} data
@@ -64,9 +89,10 @@ export const createMuiTheme = (lodexTheme) => {
 // @ts-expect-error: TS7006
 const renderTemplate = (file, data) => {
     return new Promise((resolve) => {
+        invalidateChangedTemplate(file);
         ejs.renderFile(file, data, {
             async: true,
-            beautify: true,
+            cache: true,
             root: path.dirname(file),
         })
             .then(resolve)
@@ -145,8 +171,7 @@ export const renderPublic = (themeId, data) => {
             ),
         );
     }
-    const theme = createMuiTheme(lodexTheme.muiTheme);
-    const cssVariable = buildCssVariable(theme.palette);
+    const cssVariable = getCssVariable(lodexTheme.muiTheme);
     let themeFolder = themeId ?? 'default';
     if (!lodexTheme.hasIndex) {
         themeFolder = 'default';
@@ -205,8 +230,7 @@ export const renderPublic = (themeId, data) => {
 // @ts-expect-error: TS7006
 export const renderAdmin = (data) => {
     const lodexTheme = getTheme('default');
-    const theme = createMuiTheme(lodexTheme.muiTheme);
-    const cssVariable = buildCssVariable(theme.palette);
+    const cssVariable = getCssVariable(lodexTheme.muiTheme);
 
     const extendedData = {
         isDev: process.env.NODE_ENV === 'development',
@@ -239,8 +263,7 @@ export const renderAdmin = (data) => {
  */
 // @ts-expect-error: TS7006
 export const renderRootAdmin = (data) => {
-    const theme = createMuiTheme(rootTheme);
-    const cssVariable = buildCssVariable(theme.palette);
+    const cssVariable = getCssVariable(rootTheme);
 
     const extendedData = {
         isDev: process.env.NODE_ENV === 'development',

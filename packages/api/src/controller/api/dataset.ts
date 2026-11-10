@@ -1,3 +1,4 @@
+import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
@@ -22,6 +23,7 @@ export const clearDataset = async (ctx: any) => {
                     ctx.db.dropCollection(collection.name),
                 ),
             );
+            invalidateRepositories(ctx.tenant);
         }
         ctx.body = { status: 'success' };
     } catch (error) {

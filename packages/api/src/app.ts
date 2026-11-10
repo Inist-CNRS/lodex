@@ -3,6 +3,7 @@ import config from 'config';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
+import compress from 'koa-compress';
 import koaQs from 'koa-qs';
 import moment from 'moment';
 import { KoaAdapter } from '@bull-board/koa';
@@ -23,8 +24,8 @@ import Basics from '@ezs/basics';
 import Analytics from '@ezs/analytics';
 import Transformers from '@ezs/transformers';
 import controller from './controller';
+import staticController from './controller/static';
 import testController from './controller/testController';
-import indexSearchableFields from './services/indexSearchableFields';
 import progress from './services/progress';
 import { getOrCreateWorkerQueue } from './workers';
 // @ts-expect-error TS(2792): Cannot find module '@uswitch/koa-prometheus'. Did ... Remove this comment to see the full error message
@@ -122,6 +123,13 @@ if (config.get('activateLagCheck')) {
 }
 app.use(cors({ credentials: true }));
 
+// Compresses dynamic responses (HTML, JSON). Front builds are precompressed,
+// koa-compress skips responses that already have a Content-Encoding.
+app.use(compress());
+
+// Static assets first: no tenant, Mongo or Redis lookup for JS/CSS/images
+app.use(mount('/', staticController));
+
 function extractTenantFromUrl(url: any) {
     const match = url.match(/\/instance\/([^/]+)/);
     return match ? match[1].toLowerCase() : null;
@@ -191,6 +199,10 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
 
 // worker job
 app.use(async (ctx: any, next: any) => {
+    // ctx.job is only read by mutation routes (publishFacets): skip the Redis call for reads
+    if (ctx.method === 'GET' || ctx.method === 'HEAD') {
+        return await next();
+    }
     try {
         const activeJobs =
             (await getOrCreateWorkerQueue(ctx.tenant, 1).getActive()) || null;
@@ -244,13 +256,6 @@ app.use(function* (this: any, next: any) {
 });
 
 app.use(mount('/', controller));
-
-app.use(async (ctx: any, next: any) => {
-    if (!module.parent) {
-        indexSearchableFields(ctx);
-    }
-    await next();
-});
 
 app.on('uncaughtException', (error: any) => {
     const logger = getLogger();

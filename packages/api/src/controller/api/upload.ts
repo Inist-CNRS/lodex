@@ -1,3 +1,4 @@
+import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import asyncBusboy from '@recuperateur/async-busboy';
 import config from 'config';
 import Koa from 'koa';
@@ -27,6 +28,7 @@ export const requestToStream = (asyncBusboyImpl: any) => async (req: any) => {
 
 export const clearUpload = async (ctx: any) => {
     await ctx.dataset.drop({});
+    invalidateRepositories(ctx.tenant);
     ctx.body = true;
 };
 

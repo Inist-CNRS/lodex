@@ -6,7 +6,7 @@
     "main": "./src/index.ts",
     "scripts": {
         "dev": "NODE_CONFIG_DIR=../../config vite",
-        "build": "NODE_CONFIG_DIR=../../config vite build"
+        "build": "NODE_CONFIG_DIR=../../config vite build && node ../../bin/compress-build.mjs build"
     },
     "dependencies": {
         "@lodex/frontend-common": "file:../frontend-common",
