@@ -735,6 +735,16 @@ export const getUploadTextRequest = (
         },
     });
 
+export const getImportCatalogModelRequest = (
+    state: UserState,
+    { id }: { id: string },
+) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/field/import-catalog-model',
+        body: { id },
+    });
+
 export const getUrlRequest = (
     state: UserState,
     {
@@ -1023,6 +1033,7 @@ export const selectors = {
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUploadTextRequest,
+    getImportCatalogModelRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
     getSparqlRequest,

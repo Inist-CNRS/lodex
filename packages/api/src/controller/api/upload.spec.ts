@@ -3,7 +3,14 @@ import config from 'config';
 import progress from '../../services/progress';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { IMPORT } from '../../workers/import';
-import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
+import { ProgressStatus } from '@lodex/common';
+import {
+    cancelUpload,
+    parseRequest,
+    uploadChunkMiddleware,
+    uploadText,
+    uploadUrl,
+} from './upload';
 
 jest.mock('../../workers');
 jest.mock('uuid', () => ({ v1: () => 'uuid' }));
@@ -55,6 +62,7 @@ describe('upload', () => {
             expect(ctx.resumable).toEqual({
                 stream: 'stream',
                 filename: `../../${config.get('uploadDir')}/lodex_test_identifier`,
+                chunkNumber: 10,
                 chunkname: `../../${config.get('uploadDir')}/lodex_test_identifier.10`,
                 totalChunks: 100,
                 totalSize: 500,
@@ -69,6 +77,8 @@ describe('upload', () => {
         describe('when chunk already exists but not all chunk are present', () => {
             const ctx = {
                 tenant: 'lodex_test',
+                isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -124,6 +134,8 @@ describe('upload', () => {
         describe('when chunk already exists and all chunk are present', () => {
             const ctx = {
                 tenant: 'lodex_test',
+                isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -163,6 +175,10 @@ describe('upload', () => {
                 );
             });
 
+            it('should mark the upload as queued', () => {
+                expect(ctx.markUploadQueued).toHaveBeenCalledWith('filename');
+            });
+
             it('should add job to the queue', () => {
                 expect(workerQueue?.add).toHaveBeenCalledWith(
                     IMPORT,
@@ -183,6 +199,8 @@ describe('upload', () => {
         describe('when chunk do not already exists and all chunk become present', () => {
             const ctx = {
                 tenant: 'lodex_test',
+                isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -225,6 +243,10 @@ describe('upload', () => {
                 );
             });
 
+            it('should mark the upload as queued', () => {
+                expect(ctx.markUploadQueued).toHaveBeenCalledWith('filename');
+            });
+
             it('should add job to the queue', () => {
                 expect(workerQueue?.add).toHaveBeenCalledWith(
                     IMPORT,
@@ -245,6 +267,8 @@ describe('upload', () => {
         describe('when chunk do not already exists and all chunk are not present', () => {
             const ctx = {
                 tenant: 'lodex_test',
+                isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => false),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -299,6 +323,117 @@ describe('upload', () => {
                 expect(workerQueue?.add).toHaveBeenCalledTimes(0);
             });
         });
+    });
+
+    describe('uploadChunkMiddleware of a cancelled upload', () => {
+        const makeCtx = (isCancelled: jest.Mock) => ({
+            tenant: 'lodex_test',
+            isUploadCancelled: isCancelled,
+            markUploadQueued: jest.fn(),
+            removeUploadChunks: jest.fn(),
+            getUploadedFileSize: jest.fn(() => 10),
+            checkFileExists: jest.fn(() => false),
+            saveStreamInFile: jest.fn(),
+            resumable: {
+                extension: 'extension',
+                chunkname: 'chunkname',
+                filename: 'filename',
+                totalChunks: 1,
+                totalSize: 10,
+                currentChunkSize: 10,
+                stream: 'stream',
+            },
+        });
+
+        it('cleans up the old uploads when a new one starts', async () => {
+            const ctx: any = {
+                ...makeCtx(jest.fn(async () => false)),
+                removeStaleUploadFiles: jest.fn(),
+            };
+            ctx.resumable.chunkNumber = 1;
+            ctx.resumable.filename = '/uploads/lodex_test_id';
+            await uploadChunkMiddleware(ctx, 'type');
+            expect(ctx.removeStaleUploadFiles).toHaveBeenCalledWith(
+                '/uploads',
+                'lodex_test',
+            );
+        });
+
+        it('refuses a chunk of an upload already cancelled', async () => {
+            const ctx: any = makeCtx(jest.fn(async () => true));
+            await uploadChunkMiddleware(ctx, 'type');
+            expect(ctx.status).toBe(409);
+            expect(ctx.saveStreamInFile).not.toHaveBeenCalled();
+            expect(workerQueue?.add).not.toHaveBeenCalled();
+        });
+
+        it('drops the chunks and never queues the import when cancelled meanwhile', async () => {
+            // not cancelled when the chunk arrives, cancelled once it is saved
+            const ctx: any = makeCtx(
+                jest
+                    .fn()
+                    .mockResolvedValueOnce(false)
+                    .mockResolvedValueOnce(true),
+            );
+            await uploadChunkMiddleware(ctx, 'type');
+            expect(ctx.saveStreamInFile).toHaveBeenCalled();
+            expect(ctx.removeUploadChunks).toHaveBeenCalledWith('filename');
+            expect(workerQueue?.add).not.toHaveBeenCalled();
+            expect(ctx.status).toBe(409);
+            // the progress started by this chunk is not left on uploading
+            expect(progress.getStatus('lodex_test')).not.toBe(
+                ProgressStatus.UPLOADING_DATASET,
+            );
+        });
+    });
+
+    describe('cancelUpload', () => {
+        const makeCtx = (identifier: unknown) => ({
+            tenant: 'lodex_test',
+            request: { body: { identifier } },
+            markUploadCancelled: jest.fn(),
+            isUploadQueued: jest.fn(async () => false),
+            removeUploadChunks: jest.fn(),
+        });
+
+        it('marks the upload as cancelled, drops its chunks and its progress', async () => {
+            progress.start('lodex_test', {
+                status: ProgressStatus.UPLOADING_DATASET,
+                target: 100,
+                symbol: '%',
+                type: IMPORT,
+            });
+            const ctx: any = makeCtx('10-datacsv-123');
+            await cancelUpload(ctx);
+            const filename = expect.stringMatching(
+                /lodex_test_10-datacsv-123$/,
+            );
+            expect(ctx.markUploadCancelled).toHaveBeenCalledWith(filename);
+            expect(ctx.removeUploadChunks).toHaveBeenCalledWith(filename);
+            expect(progress.getStatus('lodex_test')).toBe(
+                ProgressStatus.PENDING,
+            );
+            expect(ctx.body).toEqual({ status: 'cancelled' });
+        });
+
+        it('keeps the chunks of an upload whose import was queued', async () => {
+            const ctx: any = makeCtx('10-datacsv-123');
+            ctx.isUploadQueued.mockResolvedValue(true);
+            await cancelUpload(ctx);
+            expect(ctx.markUploadCancelled).toHaveBeenCalled();
+            expect(ctx.removeUploadChunks).not.toHaveBeenCalled();
+            expect(ctx.body).toEqual({ status: 'import_started' });
+        });
+
+        it.each([[undefined], ['../../etc/passwd'], ['a/b'], [42]])(
+            'refuses the identifier %p',
+            async (identifier) => {
+                const ctx: any = makeCtx(identifier);
+                await cancelUpload(ctx);
+                expect(ctx.status).toBe(400);
+                expect(ctx.markUploadCancelled).not.toHaveBeenCalled();
+            },
+        );
     });
 
     describe('uploadUrl', () => {
@@ -360,6 +495,41 @@ describe('upload', () => {
                 },
                 { jobId: 'uuid' },
             );
+        });
+    });
+
+    describe('uploadText', () => {
+        const ctx: Record<string, unknown> = {
+            tenant: 'lodex_test',
+            request: {
+                body: {
+                    text: 'authorships.institutions.lineage:i4210144781',
+                    loaderName: 'query-openalex-for-model',
+                },
+            },
+        };
+
+        beforeEach(async () => {
+            await uploadText(ctx);
+        });
+
+        it('should add job to the queue', () => {
+            expect(workerQueue?.add).toHaveBeenCalledWith(
+                IMPORT,
+                {
+                    text: 'authorships.institutions.lineage:i4210144781',
+                    jobType: IMPORT,
+                    loaderName: 'query-openalex-for-model',
+                    customLoader: undefined,
+                    tenant: 'lodex_test',
+                },
+                { jobId: 'uuid' },
+            );
+        });
+
+        // without a body, Koa answers 404 although the job is queued
+        it('should answer that the import is pending', () => {
+            expect(ctx.body).toStrictEqual({ status: 'pending' });
         });
     });
 });

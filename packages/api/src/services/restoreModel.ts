@@ -77,6 +77,9 @@ async function extractModelFromArchive(
             resolve({ collections: extractedData, configTenant }),
         );
 
+        // pipe() does not forward source errors: without this, a source
+        // failing mid-body would leave the promise pending forever
+        fileStream.on('error', reject);
         fileStream.pipe(extract);
     });
 }

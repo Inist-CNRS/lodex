@@ -1,4 +1,5 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
+import { isHttpUrl } from './isHttpUrl';
 
 export const UPLOAD_FILE = 'UPLOAD_FILE';
 export const UPLOAD_URL = 'UPLOAD_URL';
@@ -27,9 +28,6 @@ export const changeLoaderName = createAction<string>(CHANGE_LOADER_NAME);
 
 export const upsertCustomLoader = createAction<string>(UPSERT_CUSTOM_LOADER);
 export const deleteCustomLoader = createAction<void>(DELETE_CUSTOM_LOADER);
-
-const validateUrl = (url: string): boolean =>
-    !!(url && (url.startsWith('http://') || url.startsWith('https://')));
 
 type UploadState = {
     error: boolean | string;
@@ -97,7 +95,7 @@ export default handleActions<UploadState, any>(
         ): UploadState => ({
             ...state,
             url,
-            isUrlValid: validateUrl(url),
+            isUrlValid: isHttpUrl(url),
         }),
         CHANGE_UPLOAD_TEXT: (
             state,

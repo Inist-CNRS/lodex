@@ -17,8 +17,10 @@ import { default as publishedDatasetModelFactory } from '../../models/publishedD
 import indexSearchableFields from '../../services/indexSearchableFields';
 import {
     applyConfigTenant,
+    applyRecommendedTheme,
     exportFields,
     getAllField,
+    importCatalogModel,
     importFields,
     patchField,
     patchOverview,
@@ -31,10 +33,18 @@ import {
     setup,
 } from './field';
 import publishFacets from './publishFacets';
+import config from 'config';
+import {
+    catalogModels,
+    downloadModelArchive,
+} from '../../services/catalogModel';
 
 jest.mock('../../services/indexSearchableFields');
 jest.mock('../../models/themes', () => ({
-    getTheme: (name: string) => (name === 'istex' ? {} : undefined),
+    getTheme: (name: string) =>
+        name === 'istex'
+            ? { customTemplateVariables: { color: 'istex-green' } }
+            : undefined,
 }));
 
 const readTarEntries = (stream: any): Promise<Record<string, string>> =>
@@ -161,6 +171,10 @@ describe('field routes', () => {
                 publishFacets,
                 validateField,
                 restoreFields,
+                catalogModels,
+                availableLoaders: config.get('scripts.loaders'),
+                downloadModelArchive,
+                applyRecommendedTheme,
             });
         });
 
@@ -178,6 +192,10 @@ describe('field routes', () => {
                 body: { error: 'Boom' },
                 status: 500,
                 restoreFields,
+                catalogModels,
+                availableLoaders: config.get('scripts.loaders'),
+                downloadModelArchive,
+                applyRecommendedTheme,
             });
         });
     });
@@ -376,6 +394,183 @@ describe('field routes', () => {
             expect(ctx.status).toBe(500);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toBe('Error!');
+        });
+    });
+
+    describe('applyRecommendedTheme', () => {
+        let ctx: any;
+
+        beforeEach(async () => {
+            await db.collection('configTenant').deleteMany({});
+            const configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'default',
+                front: { multilingual: true, theme: { color: 'blue' } },
+                userAuth: { username: 'user', active: true },
+            });
+            ctx = { configTenantCollection };
+        });
+
+        it('should set the theme and its variables and keep the rest of front', async () => {
+            const result = await applyRecommendedTheme(ctx, 'istex');
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'istex',
+                front: {
+                    multilingual: true,
+                    theme: { color: 'istex-green' },
+                },
+                userAuth: { username: 'user', active: true },
+            });
+        });
+
+        it("should keep the archive's variables when it already uses the theme", async () => {
+            // as restored from an archive customizing the istex theme
+            const current = await ctx.configTenantCollection.findLast();
+            await ctx.configTenantCollection.update(current._id, {
+                ...current,
+                theme: 'istex',
+                front: { ...current.front, theme: { color: 'custom' } },
+            });
+
+            const result = await applyRecommendedTheme(ctx, 'istex');
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'istex',
+                front: { multilingual: true, theme: { color: 'custom' } },
+            });
+        });
+
+        it('should do nothing without a configuration', async () => {
+            await db.collection('configTenant').deleteMany({});
+
+            const result = await applyRecommendedTheme(ctx, 'istex');
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toBeNull();
+        });
+
+        it('should not touch the config and report an unknown theme', async () => {
+            const result = await applyRecommendedTheme(ctx, 'unknown');
+
+            expect(result).toEqual({ themeNotFound: 'unknown' });
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: { multilingual: true, theme: { color: 'blue' } },
+            });
+        });
+    });
+
+    describe('importCatalogModel', () => {
+        const tarModel = {
+            id: 'm',
+            url: 'https://x/m.tar',
+            loader: 'csv',
+        };
+        const stream = { filename: 'm.tar' };
+        let ctx: any;
+
+        beforeEach(() => {
+            ctx = {
+                request: { body: { id: 'm' } },
+                catalogModels: [
+                    tarModel,
+                    { id: 'zip', url: 'https://x/m.zip', loader: 'csv' },
+                    { ...tarModel, id: 'themed', theme: 'hal-cnrs' },
+                ],
+                availableLoaders: ['csv'],
+                downloadModelArchive: jest.fn().mockResolvedValue(stream),
+                restoreFields: jest.fn().mockResolvedValue({}),
+                applyRecommendedTheme: jest.fn().mockResolvedValue({}),
+                enrichment: enrichmentModel,
+                precomputed: precomputedModel,
+            };
+        });
+
+        it('should return 404 for an unknown model', async () => {
+            ctx.request.body = { id: 'nope' };
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toEqual({ error: 'model_not_found' });
+            expect(ctx.downloadModelArchive).not.toHaveBeenCalled();
+        });
+
+        it('should return 400 when the archive is not a tar', async () => {
+            ctx.request.body = { id: 'zip' };
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body).toEqual({ error: 'model_archive_not_tar' });
+            expect(ctx.downloadModelArchive).not.toHaveBeenCalled();
+        });
+
+        it('should restore the downloaded archive without applying a theme', async () => {
+            await importCatalogModel(ctx);
+
+            expect(ctx.downloadModelArchive).toHaveBeenCalledWith(
+                'https://x/m.tar',
+            );
+            expect(ctx.restoreFields).toHaveBeenCalledWith(stream, ctx);
+            expect(ctx.applyRecommendedTheme).not.toHaveBeenCalled();
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toEqual({
+                message: 'Model imported successfully',
+                themeNotFound: undefined,
+            });
+        });
+
+        it('should apply the recommended theme after restoring', async () => {
+            ctx.request.body = { id: 'themed' };
+            ctx.applyRecommendedTheme.mockResolvedValue({
+                themeNotFound: 'hal-cnrs',
+            });
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
+                ctx,
+                'hal-cnrs',
+            );
+            expect(ctx.restoreFields.mock.invocationCallOrder[0]).toBeLessThan(
+                ctx.applyRecommendedTheme.mock.invocationCallOrder[0],
+            );
+            expect(ctx.status).toBe(200);
+            expect(ctx.body.themeNotFound).toBe('hal-cnrs');
+        });
+
+        it('should return the theme of the archive that could not be applied', async () => {
+            ctx.restoreFields.mockResolvedValue({ themeNotFound: 'x' });
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.body.themeNotFound).toBe('x');
+        });
+
+        it('should let the catalog theme result replace the archive themeNotFound', async () => {
+            ctx.request.body = { id: 'themed' };
+            ctx.restoreFields.mockResolvedValue({ themeNotFound: 'x' });
+            ctx.applyRecommendedTheme.mockResolvedValue({});
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.body.themeNotFound).toBeUndefined();
+        });
+
+        it('should return 502 when the download fails', async () => {
+            ctx.downloadModelArchive.mockRejectedValue(
+                new Error('404 Not Found'),
+            );
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.status).toBe(502);
+            expect(ctx.body).toEqual({ error: '404 Not Found' });
+            expect(ctx.restoreFields).not.toHaveBeenCalled();
         });
     });
 

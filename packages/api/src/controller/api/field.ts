@@ -1,3 +1,4 @@
+import config from 'config';
 import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
@@ -10,6 +11,11 @@ import { v1 as uuid } from 'uuid';
 
 import { validateField } from '../../models/field';
 import { getTheme } from '../../models/themes';
+import {
+    catalogModels,
+    downloadModelArchive,
+    findCatalogModel,
+} from '../../services/catalogModel';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import { mongoConnectionString } from '../../services/mongoClient';
 import publishFacets from './publishFacets';
@@ -88,6 +94,9 @@ export const applyConfigTenant = async (ctx: any, imported: any) => {
     }
 
     const current = await ctx.configTenantCollection.findLast();
+    if (!current) {
+        return {};
+    }
     const themeFound = !imported.theme || getTheme(imported.theme);
 
     // front.theme holds the theme's template variables: keep the current
@@ -104,6 +113,32 @@ export const applyConfigTenant = async (ctx: any, imported: any) => {
     });
 
     return themeFound ? {} : { themeNotFound: imported.theme };
+};
+
+// Same as the admin settings form: switching theme also resets front.theme
+// to the variables of the new theme. When the restored archive already uses
+// that theme, its customized variables are kept.
+export const applyRecommendedTheme = async (
+    ctx: any,
+    theme: string,
+): Promise<{ themeNotFound?: string }> => {
+    const themeEntry = getTheme(theme);
+    if (!themeEntry) {
+        return { themeNotFound: theme };
+    }
+
+    const current = await ctx.configTenantCollection.findLast();
+    // no configuration to apply the theme to, or already the right theme
+    if (!current || current.theme === theme) {
+        return {};
+    }
+    await ctx.configTenantCollection.update(current._id, {
+        ...current,
+        theme,
+        front: { ...current.front, theme: themeEntry.customTemplateVariables },
+    });
+
+    return {};
 };
 
 export const translateOldField = (ctx: any, oldField: any, index: any) => {
@@ -204,6 +239,10 @@ export const setup = async (ctx: any, next: any) => {
     ctx.validateField = validateField;
     ctx.publishFacets = publishFacets;
     ctx.restoreFields = restoreFields;
+    ctx.catalogModels = catalogModels;
+    ctx.availableLoaders = config.get('scripts.loaders');
+    ctx.downloadModelArchive = downloadModelArchive;
+    ctx.applyRecommendedTheme = applyRecommendedTheme;
 
     try {
         await next();
@@ -430,6 +469,52 @@ export const exportFields = async (ctx: any) => {
     }
 };
 
+export const importCatalogModel = async (ctx: any) => {
+    const { id } = ctx.request.body ?? {};
+    const model = findCatalogModel(ctx.catalogModels, id, ctx.availableLoaders);
+
+    if (!model) {
+        ctx.status = 404;
+        ctx.body = { error: 'model_not_found' };
+        return;
+    }
+
+    if (!new URL(model.url).pathname.endsWith('.tar')) {
+        ctx.status = 400;
+        ctx.body = { error: 'model_archive_not_tar' };
+        return;
+    }
+
+    let fileStream;
+    try {
+        fileStream = await ctx.downloadModelArchive(model.url);
+    } catch (e) {
+        ctx.status = 502;
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
+        ctx.body = { error: e.message };
+        return;
+    }
+
+    try {
+        const restored = (await ctx.restoreFields(fileStream, ctx)) ?? {};
+        let themeNotFound = restored.themeNotFound;
+        if (model.theme) {
+            // The catalog theme overrides the archive's one: its result fully
+            // replaces the archive's themeNotFound, which would be misleading
+            const applied = await ctx.applyRecommendedTheme(ctx, model.theme);
+            themeNotFound = applied.themeNotFound;
+        }
+
+        // the wizard reloads the admin data itself
+        ctx.body = { message: 'Model imported successfully', themeNotFound };
+        ctx.status = 200;
+    } catch (e) {
+        ctx.status = 500;
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
+        ctx.body = { error: e.message };
+    }
+};
+
 export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
     const { files } = await asyncBusboyImpl(ctx.req);
     const fileStream = files[0];
@@ -585,6 +670,7 @@ app.use(route.get('/export', exportFields));
 app.use(route.post('/import', importFields(asyncBusboy)));
 app.use(route.delete('/', dropFieldCollection));
 app.use(koaBodyParser());
+app.use(route.post('/import-catalog-model', importCatalogModel));
 app.use(route.post('/', postField));
 app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));
