@@ -107,9 +107,12 @@ const dataStep: WizardStep = {
 
 const STEPS: WizardStep[] = [modelStep, dataStep];
 
+export type SiteWizardCloseReason = 'generated' | 'dismissed';
+
 type SiteWizardProps = {
     open: boolean;
-    onClose: () => void;
+    // dismissed: the user chose to configure the site manually
+    onClose: (reason: SiteWizardCloseReason) => void;
 };
 
 export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
@@ -138,13 +141,13 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         setState((current) => ({ ...current, ...patch }));
     };
 
-    const close = () => {
+    const close = (reason: SiteWizardCloseReason) => {
         setIndex(0);
         setState(INITIAL_STATE);
         setIsCancelConfirmOpen(false);
         // the dialog stays open while an error is displayed
         clearError();
-        onClose();
+        onClose(reason);
     };
 
     const handleGenerate = async () => {
@@ -156,7 +159,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         isSubmittingRef.current = true;
         try {
             await generate(model, source);
-            close();
+            close('generated');
         } catch {
             // the error is displayed from useGenerateSite
         } finally {
@@ -309,7 +312,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 cancelLabel={translate('cancel')}
                 confirmLabel={translate('confirm')}
                 onCancel={() => setIsCancelConfirmOpen(false)}
-                onConfirm={close}
+                onConfirm={() => close('dismissed')}
             />
         </Dialog>
     );

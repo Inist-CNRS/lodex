@@ -178,7 +178,7 @@ describe('SiteWizard', () => {
             screen.getByText('site_wizard_cancel_title'),
         ).toBeInTheDocument();
         await userEvent.click(button('confirm'));
-        expect(onClose).toHaveBeenCalled();
+        expect(onClose).toHaveBeenCalledWith('dismissed');
     });
 
     it('labels the cancel button as a plain cancel on the data step', async () => {
@@ -197,7 +197,7 @@ describe('SiteWizard', () => {
         await goToDataStep();
         await typeUrl('https://x');
         await userEvent.click(button('site_wizard_generate'));
-        await waitFor(() => expect(onClose).toHaveBeenCalled());
+        await waitFor(() => expect(onClose).toHaveBeenCalledWith('generated'));
     });
 
     it('asks for a confirmation before cancelling', async () => {

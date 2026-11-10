@@ -3,8 +3,12 @@ import { useSelector } from 'react-redux';
 import { URI_FIELD_NAME } from '@lodex/common';
 import { fromLoaders, fromParsing, fromPublication } from '../selectors';
 import type { State } from '../reducers';
-import { SiteWizard } from './SiteWizard';
+import { SiteWizard, type SiteWizardCloseReason } from './SiteWizard';
 import { SiteWizardContext } from './SiteWizardContext';
+import {
+    isSiteWizardDismissed,
+    rememberSiteWizardDismissed,
+} from './wizardDismissal';
 
 const hasNoData = (state: State) =>
     fromParsing.isInitialized(state) &&
@@ -52,7 +56,9 @@ type SiteWizardHostProps = {
  */
 export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
     const opensByItself = useSelector(shouldOpenByItself);
-    const [request, setRequest] = useState<WizardRequest>('auto');
+    const [request, setRequest] = useState<WizardRequest>(() =>
+        isSiteWizardDismissed() ? 'closed' : 'auto',
+    );
     const [wizardKey, setWizardKey] = useState(0);
 
     if (request === 'auto' && active && opensByItself) {
@@ -64,6 +70,13 @@ export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
         setWizardKey((key) => key + 1);
         setRequest('open');
     }, []);
+    const handleClose = (reason: SiteWizardCloseReason) => {
+        if (reason === 'dismissed') {
+            rememberSiteWizardDismissed();
+        }
+        setRequest('closed');
+    };
+
     const contextValue = useMemo(() => ({ openWizard }), [openWizard]);
 
     return (
@@ -72,7 +85,7 @@ export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
             <SiteWizard
                 key={wizardKey}
                 open={active && request === 'open'}
-                onClose={() => setRequest('closed')}
+                onClose={handleClose}
             />
         </SiteWizardContext.Provider>
     );

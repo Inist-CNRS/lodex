@@ -10,14 +10,23 @@ import { SiteWizardHost } from './SiteWizardHost';
 const mockMounts = jest.fn();
 
 jest.mock('./SiteWizard', () => ({
-    SiteWizard: ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+    SiteWizard: ({
+        open,
+        onClose,
+    }: {
+        open: boolean;
+        onClose: (reason: string) => void;
+    }) => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         require('react').useEffect(() => {
             mockMounts();
         }, []);
         return (
             <div data-testid="wizard" data-open={String(open)}>
-                <button onClick={onClose}>close wizard</button>
+                <button onClick={() => onClose('dismissed')}>
+                    close wizard
+                </button>
+                <button onClick={() => onClose('generated')}>generated</button>
             </div>
         );
     },
@@ -67,7 +76,11 @@ const renderHost = (
 const wizard = () => screen.getByTestId('wizard');
 
 describe('SiteWizardHost', () => {
-    beforeEach(() => mockMounts.mockClear());
+    beforeEach(() => {
+        mockMounts.mockClear();
+        localStorage.clear();
+        sessionStorage.clear();
+    });
 
     it('opens the wizard on an empty instance', () => {
         renderHost();
@@ -142,6 +155,36 @@ describe('SiteWizardHost', () => {
                 list: ['uri', 'new'],
             },
         });
+        expect(wizard()).toHaveAttribute('data-open', 'true');
+    });
+
+    it('remembers that the user chose to configure the site manually', async () => {
+        renderHost();
+        await userEvent.click(screen.getByText('close wizard'));
+        expect(
+            localStorage.getItem('lodex-site-wizard-dismissed-default'),
+        ).toBe('true');
+    });
+
+    it('does not remember a generated site', async () => {
+        renderHost();
+        await userEvent.click(screen.getByText('generated'));
+        expect(
+            localStorage.getItem('lodex-site-wizard-dismissed-default'),
+        ).toBeNull();
+    });
+
+    it('does not open the wizard by itself once dismissed, but on demand', async () => {
+        localStorage.setItem('lodex-site-wizard-dismissed-default', 'true');
+        renderHost();
+        expect(wizard()).toHaveAttribute('data-open', 'false');
+        await userEvent.click(screen.getByText('open wizard'));
+        expect(wizard()).toHaveAttribute('data-open', 'true');
+    });
+
+    it('remembers the dismissal per instance', () => {
+        localStorage.setItem('lodex-site-wizard-dismissed-other', 'true');
+        renderHost();
         expect(wizard()).toHaveAttribute('data-open', 'true');
     });
 
