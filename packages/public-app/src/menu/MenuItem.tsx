@@ -69,9 +69,9 @@ const MenuFontAwesomeIcon = lazyComponent(async () => {
         default: ({ name }: { name: string }) => {
             const faIcon = get(icons, name);
             return faIcon ? (
-                // @ts-expect-error TS2339
                 <FontAwesomeIcon
                     icon={faIcon}
+                    // @ts-expect-error TS2339
                     className={styles.menuItemIcon}
                 />
             ) : null;
