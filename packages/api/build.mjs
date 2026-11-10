@@ -2,51 +2,11 @@
 // into dist/index.js, so production runs plain node instead of transpiling with tsx on startup.
 import { build } from 'esbuild';
 import { existsSync, readFileSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
 import { isBuiltin } from 'node:module';
 import path from 'node:path';
 
 const outdir = path.resolve(import.meta.dirname, 'dist');
 const relativeToOutdir = (dir) => path.relative(outdir, dir);
-
-// Templates, themes and front builds are resolved from __dirname:
-// it must keep pointing to the directory of the source file, not to dist/.
-const keepSourceDirname = {
-    name: 'keep-source-dirname',
-    setup(builder) {
-        builder.onLoad(
-            { filter: /\.[cm]?[jt]sx?$/, namespace: 'file' },
-            async (args) => {
-                if (args.path.includes(`${path.sep}node_modules${path.sep}`)) {
-                    return undefined;
-                }
-                const contents = await readFile(args.path, 'utf8');
-                if (!contents.includes('__dirname')) {
-                    return undefined;
-                }
-                if (/\b(const|let|var)\s+__dirname\b/.test(contents)) {
-                    throw new Error(
-                        `${args.path} declares __dirname: build.mjs can not rewrite it`,
-                    );
-                }
-                const sourceDir = JSON.stringify(
-                    relativeToOutdir(path.dirname(args.path)),
-                );
-                return {
-                    // identifier uses only, not properties like `foo.__dirname`
-                    contents: contents.replaceAll(
-                        /(?<![\w$.])__dirname(?![\w$])/g,
-                        `require('node:path').resolve(__dirname, ${sourceDir})`,
-                    ),
-                    loader: path
-                        .extname(args.path)
-                        .slice(1)
-                        .replace(/^[cm]/, ''),
-                };
-            },
-        );
-    },
-};
 
 const isLoadedAsEsm = (file) => {
     if (file.endsWith('.mjs')) {
@@ -172,5 +132,5 @@ await build({
     // styles and images are irrelevant server side
     loader: { '.css': 'empty', '.svg': 'dataurl' },
     logLevel: 'warning',
-    plugins: [keepSourceDirname, requireFromImporter],
+    plugins: [requireFromImporter],
 });

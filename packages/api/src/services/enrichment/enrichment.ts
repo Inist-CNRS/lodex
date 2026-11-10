@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
+import { REPO_ROOT } from '../../paths';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import type Koa from 'koa';
@@ -193,7 +194,15 @@ export const getEnrichmentRuleModel = (
             : './subPathSingleValue.txt';
     }
 
-    rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+    rule = fs
+        .readFileSync(
+            path.resolve(
+                REPO_ROOT,
+                'packages/api/src/services/enrichment',
+                file,
+            ),
+        )
+        .toString();
     rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
     rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
     rule = rule.replace(/\[\[BATCH SIZE\]\]/g, String(BATCH_SIZE));

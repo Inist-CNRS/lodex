@@ -177,4 +177,19 @@ export default defineConfig([
             'cypress/no-unnecessary-waiting': 'warn',
         },
     },
+    {
+        // the api is bundled into packages/api/dist (see packages/api/build.mjs)
+        files: ['packages/api/src/**/*.{ts,tsx}'],
+        ignores: ['packages/api/src/paths.ts', '**/*.spec.{ts,tsx}'],
+        rules: {
+            'no-restricted-globals': [
+                'error',
+                {
+                    name: '__dirname',
+                    message:
+                        'It points to packages/api/dist once bundled: build paths from REPO_ROOT (packages/api/src/paths.ts).',
+                },
+            ],
+        },
+    },
 ]);

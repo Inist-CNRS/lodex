@@ -6,6 +6,7 @@ import path from 'path';
 import { version } from '../../../../package.json';
 import rootTheme from '../../../../src/app/custom/themes/rootTheme';
 import { getTheme } from './themes';
+import { REPO_ROOT } from '../paths';
 
 const buildCss = ([key, value]: [string, unknown]): unknown[] => {
     if (typeof value === 'object') {
@@ -252,7 +253,7 @@ export const renderAdmin = (data) => {
     };
 
     return renderTemplate(
-        path.resolve(__dirname, '../admin.ejs'),
+        path.join(REPO_ROOT, 'packages/api/src/admin.ejs'),
         extendedData,
     );
 };
@@ -285,7 +286,7 @@ export const renderRootAdmin = (data) => {
     };
 
     return renderTemplate(
-        path.resolve(__dirname, '../../../root-admin-app/index.ejs'),
+        path.join(REPO_ROOT, 'packages/root-admin-app/index.ejs'),
         extendedData,
     );
 };

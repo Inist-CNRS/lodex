@@ -1,5 +1,6 @@
 import Path from 'path';
 import fs from 'fs';
+import { REPO_ROOT } from '../paths';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import config from 'config';
@@ -10,9 +11,9 @@ export default class Script {
     declared: any;
     local: any;
     constructor(source: any) {
-        const routineLocalDirectory = Path.resolve(
-            __dirname,
-            '../../../workers/src',
+        const routineLocalDirectory = Path.join(
+            REPO_ROOT,
+            'packages/workers/src',
             `${source}/`,
         );
 
