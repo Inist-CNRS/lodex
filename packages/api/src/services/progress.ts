@@ -143,6 +143,14 @@ export class Progress {
         this.listeners.push(listener);
     };
 
+    removeProgressListener = (listener: any) => {
+        // @ts-expect-error TS(2339): Property 'indexOf' does not exist on type '{}'.
+        const index = this.listeners.indexOf(listener);
+        if (index !== -1) {
+            this.listeners.splice(index, 1);
+        }
+    };
+
     notifyListeners = (tenant: any) => {
         this.listeners.forEach((listener: any) =>
             listener({

@@ -90,6 +90,13 @@ const prepareContext = async (ctx: any) => {
 
 export const addImportListener = (listener: any) => listeners.push(listener);
 
+export const removeImportListener = (listener: any) => {
+    const index = listeners.indexOf(listener);
+    if (index !== -1) {
+        listeners.splice(index, 1);
+    }
+};
+
 export const notifyListeners = (room: any, payload: any) => {
     listeners.forEach((listener: any) => listener({ room, data: payload }));
 };

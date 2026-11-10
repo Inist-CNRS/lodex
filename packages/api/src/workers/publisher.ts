@@ -64,6 +64,13 @@ const prepareContext = async (ctx: any) => {
 };
 
 export const addPublisherListener = (listener: any) => listeners.push(listener);
+
+export const removePublisherListener = (listener: any) => {
+    const index = listeners.indexOf(listener);
+    if (index !== -1) {
+        listeners.splice(index, 1);
+    }
+};
 const notifyListeners = (room: any, payload: any) => {
     listeners.forEach((listener: any) => listener({ room, data: payload }));
 };

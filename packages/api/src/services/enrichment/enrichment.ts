@@ -550,6 +550,13 @@ export const addEnrichmentJobListener = (listener: any) => {
     LISTENERS.push(listener);
 };
 
+export const removeEnrichmentJobListener = (listener: any) => {
+    const index = LISTENERS.indexOf(listener);
+    if (index !== -1) {
+        LISTENERS.splice(index, 1);
+    }
+};
+
 export const notifyListeners = (room: any, payload: any) => {
     LISTENERS.forEach((listener: any) => listener({ room, data: payload }));
 };

@@ -6,10 +6,19 @@ debug.enable(String(process.env.DEBUG));
 import app from './app';
 import { Server } from 'socket.io';
 import progress from './services/progress';
-import { addPublisherListener } from './workers/publisher';
-import { addEnrichmentJobListener } from './services/enrichment/enrichment';
-import { addPrecomputedJobListener } from './services/precomputed/precomputed';
-import { addImportListener } from './workers/import';
+import {
+    addPublisherListener,
+    removePublisherListener,
+} from './workers/publisher';
+import {
+    addEnrichmentJobListener,
+    removeEnrichmentJobListener,
+} from './services/enrichment/enrichment';
+import {
+    addPrecomputedJobListener,
+    removePrecomputedJobListener,
+} from './services/precomputed/precomputed';
+import { addImportListener, removeImportListener } from './workers/import';
 import getLogger from './services/logger';
 import {
     mongoDatabasePrefix,
@@ -77,5 +86,14 @@ if (!module.parent) {
         addEnrichmentJobListener(emitPayload);
         addPrecomputedJobListener(emitPayload);
         addImportListener(emitPayload);
+
+        // without this, every closed socket keeps receiving the notifications
+        socket.on('disconnect', () => {
+            progress.removeProgressListener(emitPayload);
+            removePublisherListener(emitPayload);
+            removeEnrichmentJobListener(emitPayload);
+            removePrecomputedJobListener(emitPayload);
+            removeImportListener(emitPayload);
+        });
     });
 }
