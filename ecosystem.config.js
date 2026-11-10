@@ -2,9 +2,10 @@ module.exports = {
     apps: [
         {
             name: 'lodex',
-            script: './src',
+            // compiled by `npm run build` (packages/api/build.mjs)
+            script: './dist/index.js',
             interpreter: 'node',
-            interpreter_args: '--import tsx --max-http-header-size=32768',
+            interpreter_args: '--max-http-header-size=32768',
             exec_mode: 'cluster',
             cwd: './packages/api',
             wait_ready: true,
@@ -17,10 +18,9 @@ module.exports = {
         },
         {
             name: 'worker',
-            script: './src',
+            script: './src/index.ts',
             cwd: './packages/workers',
             interpreter: 'node',
-            interpreter_args: '--import tsx',
             exec_mode: 'fork',
             instances: 1,
             env: {

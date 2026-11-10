@@ -43,6 +43,7 @@ config/production.js
 config/staging.js
 config/test.js
 build
+packages/api/dist
 typings
 /upload/*
 !/upload/.gitkeep

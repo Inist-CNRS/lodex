@@ -116,8 +116,11 @@ const init = async () => {
             /**
              * @type {ThemeConfig}
              */
-            const themeConfig = await import(
-                getThemeFile(theme, 'lodex-theme.json')
+            const themeConfig = JSON.parse(
+                await fs.readFile(
+                    getThemeFile(theme, 'lodex-theme.json'),
+                    'utf8',
+                ),
             );
 
             if (themeConfig.version !== THEMES_VERSION) {

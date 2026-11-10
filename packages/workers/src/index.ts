@@ -29,4 +29,4 @@ ezs.use(Conditor);
 ezs.use(Istex);
 ezs.use(Storage);
 
-ezs.createCluster(31976, __dirname);
+ezs.createCluster(31976, import.meta.dirname);
