@@ -5,6 +5,8 @@ import {
     isUploadCancelled,
     markUploadCancelled,
     removeStaleUploadFiles,
+    isUploadQueued,
+    markUploadQueued,
     removeUploadChunks,
 } from './uploadCancellation';
 
@@ -35,6 +37,13 @@ describe('uploadCancellation', () => {
         expect(await isUploadCancelled(path.join(dir, 'other'))).toBe(false);
     });
 
+    it('marks an upload as queued', async () => {
+        const filename = path.join(dir, 'lodex_test_id');
+        expect(await isUploadQueued(filename)).toBe(false);
+        await markUploadQueued(filename);
+        expect(await isUploadQueued(filename)).toBe(true);
+    });
+
     it('removes only the chunks of the upload', async () => {
         [
             'lodex_test_id.1',
@@ -50,16 +59,21 @@ describe('uploadCancellation', () => {
     });
 
     it("removes the tenant's chunks and markers older than a day", async () => {
-        write('lodex_test_old.1', DAY_MS + 60_000);
-        write('lodex_test_old.cancelled', DAY_MS + 60_000);
-        write('lodex_test_recent.1');
-        write('other_old.1', DAY_MS + 60_000);
-        write('lodex_test_old.csv', DAY_MS + 60_000);
+        const old = DAY_MS + 60_000;
+        write('lodex_test_12-old.1', old);
+        write('lodex_test_12-old.cancelled', old);
+        write('lodex_test_12-old.queued', old);
+        write('lodex_test_12-recent.1');
+        write('other_12-old.1', old);
+        // another tenant whose name starts with this one
+        write('lodex_test_demo_12-old.1', old);
+        write('lodex_test_12-old.csv', old);
         await removeStaleUploadFiles(dir, 'lodex_test');
         expect((await fs.promises.readdir(dir)).sort()).toEqual([
-            'lodex_test_old.csv',
-            'lodex_test_recent.1',
-            'other_old.1',
+            'lodex_test_12-old.csv',
+            'lodex_test_12-recent.1',
+            'lodex_test_demo_12-old.1',
+            'other_12-old.1',
         ]);
     });
 });

@@ -11,8 +11,11 @@ export type LoadFileOptions = {
     cancelUrl?: string;
 };
 
-// unique per upload: a later upload of the same file never reuses the
-// chunks of a cancelled or interrupted one
+// how long a cancel waits for the server to tell whether it was in time
+const CANCEL_REQUEST_TIMEOUT_MS = 5000;
+
+// unique per cancellable upload: a later upload of the same file never
+// reuses the chunks of a cancelled one
 // @ts-expect-error TS7006
 const generateUploadIdentifier = (file) =>
     [
@@ -47,9 +50,14 @@ export const loadFile = (
             target: url,
             headers,
             multipart: true,
-            generateUniqueIdentifier: generateUploadIdentifier,
-            // a unique identifier is never resumed: no chunk to look for
-            testChunks: false,
+            // the other uploads keep resuming from the chunks already sent
+            ...(signal
+                ? {
+                      generateUniqueIdentifier: generateUploadIdentifier,
+                      // a unique identifier is never resumed
+                      testChunks: false,
+                  }
+                : {}),
         };
 
         if (customLoader) {
@@ -63,21 +71,38 @@ export const loadFile = (
         let identifier: string | null = null;
         let isAborted = false;
 
-        const onAbort = () => {
+        const onAbort = async () => {
             isAborted = true;
             resumable.cancel();
+            let outcome = 'upload_cancelled';
             if (cancelUrl && identifier) {
-                // not awaited: the upload is stopped on this side anyway
-                fetch(cancelUrl, {
-                    method: 'POST',
-                    headers: {
-                        ...headers,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ identifier }),
-                }).catch(() => {});
+                const timeout = new AbortController();
+                const timer = setTimeout(
+                    () => timeout.abort(),
+                    CANCEL_REQUEST_TIMEOUT_MS,
+                );
+                try {
+                    const response = await fetch(cancelUrl, {
+                        method: 'POST',
+                        headers: {
+                            ...headers,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ identifier }),
+                        signal: timeout.signal,
+                    });
+                    const { status } = await response.json();
+                    // the last chunk had already queued the import
+                    if (status === 'import_started') {
+                        outcome = 'upload_import_started';
+                    }
+                } catch {
+                    // the upload is stopped on this side anyway
+                } finally {
+                    clearTimeout(timer);
+                }
             }
-            reject(new Error('upload_cancelled'));
+            reject(new Error(outcome));
         };
         const stopListening = () =>
             signal?.removeEventListener('abort', onAbort);

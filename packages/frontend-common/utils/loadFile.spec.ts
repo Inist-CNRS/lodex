@@ -59,7 +59,9 @@ describe('loadFile', () => {
     });
 
     it('tells the server about a cancelled dataset upload', async () => {
-        const fetchMock = jest.fn(async () => new Response('{}'));
+        const fetchMock = jest.fn(async () => ({
+            json: async () => ({ status: 'cancelled' }),
+        }));
         global.fetch = fetchMock as unknown as typeof fetch;
         const controller = new AbortController();
         const promise = loadDatasetFile(file, 'token', 'csv', null, {
@@ -74,7 +76,20 @@ describe('loadFile', () => {
                 'Content-Type': 'application/json',
             }),
             body: JSON.stringify({ identifier: 'upload-id' }),
+            signal: expect.any(AbortSignal),
         });
+    });
+
+    it('tells when the cancel came after the import was queued', async () => {
+        global.fetch = jest.fn(async () => ({
+            json: async () => ({ status: 'import_started' }),
+        })) as unknown as typeof fetch;
+        const controller = new AbortController();
+        const promise = loadDatasetFile(file, 'token', 'csv', null, {
+            signal: controller.signal,
+        });
+        controller.abort();
+        await expect(promise).rejects.toThrow('upload_import_started');
     });
 
     it('ignores the progress reset by the cancel', () => {
@@ -102,8 +117,17 @@ describe('loadFile', () => {
         expect(remove).toHaveBeenCalledWith('abort', expect.any(Function));
     });
 
-    it('gives each upload a unique identifier', () => {
+    it('keeps the default resumable identifier without a signal', () => {
         loadFile('/api/upload/csv', file, 'token');
+        const options = (Resumable as unknown as jest.Mock).mock.calls[0][0];
+        expect(options.generateUniqueIdentifier).toBeUndefined();
+        expect(options.testChunks).toBeUndefined();
+    });
+
+    it('gives each cancellable upload a unique identifier', () => {
+        loadFile('/api/upload/csv', file, 'token', null, {
+            signal: new AbortController().signal,
+        });
         const { generateUniqueIdentifier, testChunks } = (
             Resumable as unknown as jest.Mock
         ).mock.calls[0][0];

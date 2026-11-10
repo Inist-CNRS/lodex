@@ -78,6 +78,7 @@ describe('upload', () => {
             const ctx = {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -134,6 +135,7 @@ describe('upload', () => {
             const ctx = {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -173,6 +175,10 @@ describe('upload', () => {
                 );
             });
 
+            it('should mark the upload as queued', () => {
+                expect(ctx.markUploadQueued).toHaveBeenCalledWith('filename');
+            });
+
             it('should add job to the queue', () => {
                 expect(workerQueue?.add).toHaveBeenCalledWith(
                     IMPORT,
@@ -194,6 +200,7 @@ describe('upload', () => {
             const ctx = {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -236,6 +243,10 @@ describe('upload', () => {
                 );
             });
 
+            it('should mark the upload as queued', () => {
+                expect(ctx.markUploadQueued).toHaveBeenCalledWith('filename');
+            });
+
             it('should add job to the queue', () => {
                 expect(workerQueue?.add).toHaveBeenCalledWith(
                     IMPORT,
@@ -257,6 +268,7 @@ describe('upload', () => {
             const ctx = {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
                 getUploadedFileSize: jest.fn(() => false),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -317,6 +329,7 @@ describe('upload', () => {
         const makeCtx = (isCancelled: jest.Mock) => ({
             tenant: 'lodex_test',
             isUploadCancelled: isCancelled,
+            markUploadQueued: jest.fn(),
             removeUploadChunks: jest.fn(),
             getUploadedFileSize: jest.fn(() => 10),
             checkFileExists: jest.fn(() => false),
@@ -379,6 +392,7 @@ describe('upload', () => {
             tenant: 'lodex_test',
             request: { body: { identifier } },
             markUploadCancelled: jest.fn(),
+            isUploadQueued: jest.fn(async () => false),
             removeUploadChunks: jest.fn(),
         });
 
@@ -400,6 +414,15 @@ describe('upload', () => {
                 ProgressStatus.PENDING,
             );
             expect(ctx.body).toEqual({ status: 'cancelled' });
+        });
+
+        it('keeps the chunks of an upload whose import was queued', async () => {
+            const ctx: any = makeCtx('10-datacsv-123');
+            ctx.isUploadQueued.mockResolvedValue(true);
+            await cancelUpload(ctx);
+            expect(ctx.markUploadCancelled).toHaveBeenCalled();
+            expect(ctx.removeUploadChunks).not.toHaveBeenCalled();
+            expect(ctx.body).toEqual({ status: 'import_started' });
         });
 
         it.each([[undefined], ['../../etc/passwd'], ['a/b'], [42]])(

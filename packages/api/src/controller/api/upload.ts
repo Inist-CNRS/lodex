@@ -15,7 +15,9 @@ import progress from '../../services/progress';
 import {
     getUploadDir,
     isUploadCancelled,
+    isUploadQueued,
     markUploadCancelled,
+    markUploadQueued,
     removeStaleUploadFiles,
     removeUploadChunks,
 } from '../../services/uploadCancellation';
@@ -50,6 +52,8 @@ export const prepareUpload = async (ctx: any, next: any) => {
     ctx.getUploadedFileSize = getUploadedFileSize;
     ctx.isUploadCancelled = isUploadCancelled;
     ctx.markUploadCancelled = markUploadCancelled;
+    ctx.markUploadQueued = markUploadQueued;
+    ctx.isUploadQueued = isUploadQueued;
     ctx.removeUploadChunks = removeUploadChunks;
     ctx.removeStaleUploadFiles = removeStaleUploadFiles;
 
@@ -153,6 +157,8 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
     }
 
     if (uploadedFileSize >= totalSize) {
+        // a cancel coming from now on is too late: the import runs
+        await ctx.markUploadQueued(filename);
         await getOrCreateWorkerQueue(ctx.tenant, 1).add(
             IMPORT, // Name of the job
             {
@@ -224,6 +230,13 @@ export const cancelUpload = async (ctx: any) => {
     }
     const filename = `${getUploadDir()}/${ctx.tenant}_${identifier}`;
     await ctx.markUploadCancelled(filename);
+    // the import was queued just before: if it has not started yet, it ends
+    // as cancelled on its own (see startImport); either way it needs the
+    // chunks, and the client cancels it as a running import
+    if (await ctx.isUploadQueued(filename)) {
+        ctx.body = { status: 'import_started' };
+        return;
+    }
     await ctx.removeUploadChunks(filename);
     finishUploadProgress(ctx.tenant);
     ctx.body = { status: 'cancelled' };
