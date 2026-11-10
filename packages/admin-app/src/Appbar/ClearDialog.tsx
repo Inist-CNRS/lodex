@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import DownloadIcon from '@mui/icons-material/Download';
 import {
+    Button,
     Dialog,
     TextField,
     DialogContent,
@@ -23,6 +25,7 @@ import { loadPublication } from '../publication';
 import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { loadSubresources } from '../subresource';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { exportFields as exportFieldsAction } from '@lodex/frontend-common/export-fields';
 
 const TRANSLATION_KEY = new Map([
     ['dataset', 'clear_dataset'],
@@ -43,6 +46,7 @@ interface ClearDialogComponentProps {
     loadPublication(...args: unknown[]): unknown;
     hasPublishedDataset: boolean;
     loadSubResources(...args: unknown[]): unknown;
+    exportFields(): unknown;
 }
 
 const ClearDialogComponent = (props: ClearDialogComponentProps) => {
@@ -57,6 +61,7 @@ const ClearDialogComponent = (props: ClearDialogComponentProps) => {
         loadField,
         loadSubResources,
         hasPublishedDataset,
+        exportFields,
     } = props;
 
     const instanceName = extractTenantFromUrl(window.location.href);
@@ -158,11 +163,25 @@ const ClearDialogComponent = (props: ClearDialogComponentProps) => {
                     : ''}
             </DialogTitle>
             <DialogContent>
-                <b>
-                    {type === 'model'
-                        ? translate('listen_up_model')
-                        : translate('listen_up')}
-                </b>
+                {type === 'dataset' ? (
+                    <>
+                        <b>{translate('listen_up_dataset')}</b>
+                        <p>{translate('listen_up_dataset_details')}</p>
+                        <Button
+                            variant="outlined"
+                            startIcon={<DownloadIcon />}
+                            onClick={() => exportFields()}
+                        >
+                            {translate('export_fields')}
+                        </Button>
+                    </>
+                ) : (
+                    <b>
+                        {type === 'model'
+                            ? translate('listen_up_model')
+                            : translate('listen_up')}
+                    </b>
+                )}
                 <br />
                 <br />
                 <div>
@@ -198,6 +217,7 @@ const mapDispatchToProps = {
     loadField: loadField,
     loadPublication: loadPublication,
     loadSubResources: loadSubresources,
+    exportFields: exportFieldsAction,
 };
 
 export default connect(
