@@ -6,6 +6,7 @@ import {
     getPatchOverviewRequest,
     getPatchSortFieldRequest,
     getPatchSortOrderRequest,
+    getImportCatalogModelRequest,
 } from '@lodex/frontend-common/user/reducer';
 
 import { store } from '../adminIndex';
@@ -105,6 +106,18 @@ const patchSearchableFields = async (fields) => {
         store.dispatch(saveFieldSuccess());
         return response;
     });
+};
+
+export const importCatalogModel = async (
+    id: string,
+): Promise<{ themeNotFound?: string }> => {
+    const { token } = getUserSessionStorageInfo();
+    const request = getImportCatalogModelRequest({ token }, { id });
+    const { response, error } = await fetch(request);
+    if (error) {
+        throw error;
+    }
+    return response;
 };
 
 export default {
