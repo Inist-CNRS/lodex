@@ -42,11 +42,15 @@ export const useGenerateSite = () => {
     const isGeneratingRef = useRef(false);
     // a cancelled import may end as a plain failure, without cancelled_import
     const isCancellingRef = useRef(false);
+    // percentage of the file being uploaded, null when no file is uploading
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+    const uploadAbortRef = useRef<AbortController | null>(null);
 
     useEffect(() => {
         isMountedRef.current = true;
         return () => {
             isMountedRef.current = false;
+            // a file still uploading goes on, as the import after it
             // a pending wait never settles once unmounted: release the page
             if (isGeneratingRef.current) {
                 allowUnload();
@@ -90,7 +94,28 @@ export const useGenerateSite = () => {
                 // if the upload fails, nobody awaits ended (see finally)
                 ended.catch(() => {});
                 await connected;
-                await uploadDataset(source, model.loader);
+                if (source.type === 'file') {
+                    // the only source long to upload: show its progress and
+                    // let it be cancelled
+                    const uploadAbort = new AbortController();
+                    uploadAbortRef.current = uploadAbort;
+                    setUploadProgress(0);
+                    await uploadDataset(source, model.loader, {
+                        signal: uploadAbort.signal,
+                        onProgress: (progress) => {
+                            if (isMountedRef.current) {
+                                setUploadProgress(Math.round(progress * 100));
+                            }
+                        },
+                    });
+                    // from now on, cancelling cancels the import job
+                    uploadAbortRef.current = null;
+                    if (isMountedRef.current) {
+                        setUploadProgress(null);
+                    }
+                } else {
+                    await uploadDataset(source, model.loader);
+                }
                 // the import job is queued: it can now be cancelled
                 if (isMountedRef.current) {
                     setIsWaitingForImport(true);
@@ -111,6 +136,7 @@ export const useGenerateSite = () => {
                 }
                 throw e;
             } finally {
+                uploadAbortRef.current = null;
                 stopWaitingForImportEnd();
                 // even on a failure: the server may have replaced the model,
                 // or deleted it before failing
@@ -120,6 +146,7 @@ export const useGenerateSite = () => {
                 if (isMountedRef.current) {
                     setIsGenerating(false);
                     setIsWaitingForImport(false);
+                    setUploadProgress(null);
                 }
             }
         },
@@ -136,10 +163,19 @@ export const useGenerateSite = () => {
 
     const cancelImport = useCallback(async () => {
         isCancellingRef.current = true;
+        // a file still uploading: stop it, loadFile tells the server to drop
+        // it, so that its import never starts
+        const uploadAbort = uploadAbortRef.current;
+        uploadAbort?.abort();
         try {
+            // also stops an import queued by a last chunk racing the cancel
             await jobsApi.cancelJob(IMPORT_JOB_TYPE, undefined);
         } catch {
             // the fallback below still frees the wizard
+        }
+        if (uploadAbort) {
+            // the generation already ended with the stopped upload
+            return;
         }
         // the server answers before stopping the job, then drops its data and
         // sends cancelled_import: wait for it, but give up if it never comes
@@ -154,6 +190,9 @@ export const useGenerateSite = () => {
         generate,
         isGenerating,
         isWaitingForImport,
+        uploadProgress,
+        // during the file upload, then while the import job runs
+        canCancel: isWaitingForImport || uploadProgress !== null,
         cancelImport,
         error,
         clearError,

@@ -122,7 +122,8 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     const {
         generate,
         isGenerating,
-        isWaitingForImport,
+        uploadProgress,
+        canCancel,
         cancelImport,
         error,
         clearError,
@@ -245,7 +246,31 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                         <Typography>
                             {translate('site_wizard_generating')}
                         </Typography>
-                        {isWaitingForImport && (
+                        {uploadProgress !== null && (
+                            <Box width="60%">
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={uploadProgress}
+                                    aria-label={translate(
+                                        'site_wizard_uploading',
+                                        {
+                                            progress: uploadProgress,
+                                        },
+                                    )}
+                                />
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    textAlign="center"
+                                    mt={1}
+                                >
+                                    {translate('site_wizard_uploading', {
+                                        progress: uploadProgress,
+                                    })}
+                                </Typography>
+                            </Box>
+                        )}
+                        {canCancel && (
                             <Button color="primary" onClick={cancelImport}>
                                 {translate('site_wizard_cancel_import')}
                             </Button>

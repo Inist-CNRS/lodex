@@ -1568,6 +1568,7 @@
 "site_wizard_cancel"	"Cancel"	"Annuler"
 "site_wizard_manual"	"Configure the site manually"	"Configurer manuellement le site"
 "site_wizard_cancel_import"	"Cancel the import"	"Annuler l'import"
+"site_wizard_uploading"	"Sending the data: %{progress}%"	"Envoi des données : %{progress} %"
 "model_not_found"	"The model was not found in the catalog."	"Le modèle est introuvable dans le catalogue."
 "model_archive_not_tar"	"The model archive is not a .tar file."	"L'archive du modèle n'est pas un fichier .tar."
 "model_archive_too_large"	"The model archive is too large."	"L'archive du modèle est trop volumineuse."

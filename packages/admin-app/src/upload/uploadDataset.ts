@@ -1,6 +1,9 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
-import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
+import {
+    loadDatasetFile,
+    type LoadFileOptions,
+} from '@lodex/frontend-common/utils/loadFile';
 import {
     getUploadTextRequest,
     getUploadUrlRequest,
@@ -13,15 +16,23 @@ export type DatasetSource =
 
 /**
  * Resolves once the import job is queued (not when it is finished).
+ * The options apply to a file, the only source long to upload.
  */
 export const uploadDataset = async (
     source: DatasetSource,
     loaderName: string,
+    fileOptions?: LoadFileOptions,
 ): Promise<void> => {
     const { token } = getUserSessionStorageInfo();
 
     if (source.type === 'file') {
-        await loadDatasetFile(source.file, token, loaderName, null);
+        await loadDatasetFile(
+            source.file,
+            token,
+            loaderName,
+            null,
+            fileOptions,
+        );
         return;
     }
 

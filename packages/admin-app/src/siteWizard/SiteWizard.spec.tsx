@@ -158,10 +158,38 @@ describe('SiteWizard', () => {
             generate,
             isGenerating: true,
             isWaitingForImport: true,
+            uploadProgress: null,
+            canCancel: true,
             cancelImport,
             error: null,
         });
         rerender(<SiteWizard open onClose={jest.fn()} />);
+        await userEvent.click(button('site_wizard_cancel_import'));
+        expect(cancelImport).toHaveBeenCalledTimes(1);
+    });
+
+    it('shows the upload progress of a file and offers to cancel it', async () => {
+        const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        (useGenerateSite as jest.Mock).mockReturnValue({
+            clearError,
+            generate,
+            isGenerating: true,
+            isWaitingForImport: false,
+            uploadProgress: 42,
+            canCancel: true,
+            cancelImport,
+            error: null,
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        expect(
+            screen.getByText('site_wizard_uploading+{"progress":42}'),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('progressbar', {
+                name: 'site_wizard_uploading+{"progress":42}',
+            }),
+        ).toHaveAttribute('aria-valuenow', '42');
         await userEvent.click(button('site_wizard_cancel_import'));
         expect(cancelImport).toHaveBeenCalledTimes(1);
     });

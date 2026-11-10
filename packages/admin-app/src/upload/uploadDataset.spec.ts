@@ -23,8 +23,30 @@ describe('uploadDataset', () => {
     it('uploads a file with loadDatasetFile', async () => {
         const file = new File(['a'], 'a.csv');
         await uploadDataset({ type: 'file', file }, 'csv');
-        expect(loadDatasetFile).toHaveBeenCalledWith(file, 'tok', 'csv', null);
+        expect(loadDatasetFile).toHaveBeenCalledWith(
+            file,
+            'tok',
+            'csv',
+            null,
+            undefined,
+        );
         expect(fetch).not.toHaveBeenCalled();
+    });
+
+    it('passes the progress and cancel options to the file upload', async () => {
+        const file = new File(['a'], 'a.csv');
+        const options = {
+            onProgress: jest.fn(),
+            signal: new AbortController().signal,
+        };
+        await uploadDataset({ type: 'file', file }, 'csv', options);
+        expect(loadDatasetFile).toHaveBeenCalledWith(
+            file,
+            'tok',
+            'csv',
+            null,
+            options,
+        );
     });
 
     it('uploads an url', async () => {

@@ -392,6 +392,83 @@ describe('useGenerateSite', () => {
         );
     });
 
+    describe('with a file', () => {
+        const fileSource = {
+            type: 'file' as const,
+            file: new File(['a'], 'a.csv'),
+        };
+
+        it('keeps uploading when unmounted', async () => {
+            let signal: AbortSignal | undefined;
+            (uploadDataset as jest.Mock).mockImplementation(
+                (_source, _loader, options) => {
+                    signal = options.signal;
+                    return new Promise(() => {});
+                },
+            );
+            const { result, unmount } = renderGenerateSite();
+            await act(async () => {
+                result.current.generate(model, fileSource).catch(() => {});
+            });
+            unmount();
+            // leaving the data screens must not drop the dataset silently
+            expect(signal?.aborted).toBe(false);
+        });
+
+        it('reports the upload progress until the file is uploaded', async () => {
+            let report: (progress: number) => void = () => {};
+            let finishUpload: () => void = () => {};
+            (uploadDataset as jest.Mock).mockImplementation(
+                (_source, _loader, { onProgress }) => {
+                    report = onProgress;
+                    return new Promise<void>(
+                        (resolve) => (finishUpload = resolve),
+                    );
+                },
+            );
+            waitForImportEnd.mockImplementation(() => new Promise(() => {}));
+            const { result } = renderGenerateSite();
+            await act(async () => {
+                result.current.generate(model, fileSource);
+            });
+            expect(result.current.uploadProgress).toBe(0);
+            expect(result.current.canCancel).toBe(true);
+            act(() => report(0.424));
+            expect(result.current.uploadProgress).toBe(42);
+            await act(async () => finishUpload());
+            expect(result.current.uploadProgress).toBeNull();
+            // the import job now runs: it can still be cancelled
+            expect(result.current.canCancel).toBe(true);
+        });
+
+        it('stops the upload on cancel, without error nor waiting fallback', async () => {
+            (uploadDataset as jest.Mock).mockImplementation(
+                (_source, _loader, { signal }) =>
+                    new Promise<void>((_, reject) =>
+                        signal.addEventListener('abort', () =>
+                            reject(new Error('upload_cancelled')),
+                        ),
+                    ),
+            );
+            const { result } = renderGenerateSite();
+            let promise: Promise<void> = Promise.resolve();
+            await act(async () => {
+                promise = result.current.generate(model, fileSource);
+            });
+            await act(async () => {
+                await result.current.cancelImport();
+                await promise.catch(() => {});
+            });
+            // loadFile tells the server to drop the upload; an import queued
+            // by a last chunk racing the cancel is cancelled too
+            expect(jobsApi.cancelJob).toHaveBeenCalledWith('import', undefined);
+            expect(giveUpWaitingForImportEnd).not.toHaveBeenCalled();
+            expect(result.current.error).toBeNull();
+            expect(result.current.isGenerating).toBe(false);
+            expect(result.current.uploadProgress).toBeNull();
+        });
+    });
+
     it('still gives up waiting when the cancel request fails', async () => {
         (jobsApi.cancelJob as jest.Mock).mockRejectedValueOnce(
             new Error('network'),
