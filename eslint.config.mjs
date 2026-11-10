@@ -24,6 +24,7 @@ export default defineConfig([
         'packages/transformers',
         'packages/@recuperateur',
         'packages/ezsLodex/lib',
+        'packages/api/dist',
     ]),
     {
         name: 'eslint-js-recommended-rules',

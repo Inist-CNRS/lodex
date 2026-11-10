@@ -172,9 +172,11 @@ const init = async () => {
                         muiTheme,
                         (await import(unVerifiedMuiTheme)).default,
                     );
-                } catch (_) {
+                } catch (error) {
+                    // palette files are loaded by node: relative imports need their .js extension
                     logger.warn(
-                        `The declared palette file from ${theme} do not exists`,
+                        `Unable to load the declared palette file from ${theme}, the default palette is used`,
+                        error,
                     );
                 }
             }

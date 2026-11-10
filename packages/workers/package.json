@@ -7,7 +7,7 @@
     "main": "./src/index.ts",
     "scripts": {
         "dev": "NODE_CONFIG_DIR=../../config tsx watch src",
-        "start": "NODE_CONFIG_DIR=../../config node src/index.ts"
+        "start": "NODE_CONFIG_DIR=../../config node --conditions=ezs-compiled src/index.ts"
     },
     "devDependencies": {
         "tsx": "^4.22.4",

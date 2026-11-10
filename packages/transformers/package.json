@@ -20,8 +20,8 @@
     "main": "./src/index.js",
     "exports": {
         ".": {
-            "import": "./src/index.js",
-            "require": "./lib/index.js"
+            "ezs-compiled": "./lib/index.js",
+            "default": "./src/index.js"
         }
     },
     "peerDependencies": {
