@@ -14,31 +14,37 @@ const relativeToOutdir = (dir) => path.relative(outdir, dir);
 const keepSourceDirname = {
     name: 'keep-source-dirname',
     setup(builder) {
-        builder.onLoad({ filter: /\.[cm]?[jt]sx?$/ }, async (args) => {
-            if (args.path.includes(`${path.sep}node_modules${path.sep}`)) {
-                return undefined;
-            }
-            const contents = await readFile(args.path, 'utf8');
-            if (!contents.includes('__dirname')) {
-                return undefined;
-            }
-            if (/\b(const|let|var)\s+__dirname\b/.test(contents)) {
-                throw new Error(
-                    `${args.path} declares __dirname: build.mjs can not rewrite it`,
+        builder.onLoad(
+            { filter: /\.[cm]?[jt]sx?$/, namespace: 'file' },
+            async (args) => {
+                if (args.path.includes(`${path.sep}node_modules${path.sep}`)) {
+                    return undefined;
+                }
+                const contents = await readFile(args.path, 'utf8');
+                if (!contents.includes('__dirname')) {
+                    return undefined;
+                }
+                if (/\b(const|let|var)\s+__dirname\b/.test(contents)) {
+                    throw new Error(
+                        `${args.path} declares __dirname: build.mjs can not rewrite it`,
+                    );
+                }
+                const sourceDir = JSON.stringify(
+                    relativeToOutdir(path.dirname(args.path)),
                 );
-            }
-            const sourceDir = JSON.stringify(
-                relativeToOutdir(path.dirname(args.path)),
-            );
-            return {
-                // identifier uses only, not properties like `foo.__dirname`
-                contents: contents.replaceAll(
-                    /(?<![\w$.])__dirname(?![\w$])/g,
-                    `require('node:path').resolve(__dirname, ${sourceDir})`,
-                ),
-                loader: path.extname(args.path).slice(1).replace(/^[cm]/, ''),
-            };
-        });
+                return {
+                    // identifier uses only, not properties like `foo.__dirname`
+                    contents: contents.replaceAll(
+                        /(?<![\w$.])__dirname(?![\w$])/g,
+                        `require('node:path').resolve(__dirname, ${sourceDir})`,
+                    ),
+                    loader: path
+                        .extname(args.path)
+                        .slice(1)
+                        .replace(/^[cm]/, ''),
+                };
+            },
+        );
     },
 };
 
