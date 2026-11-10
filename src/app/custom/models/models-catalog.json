@@ -1,7 +1,7 @@
 [
     {
         "id": "theses-fr",
-        "url": "https://www.lodex.fr/wp-content/uploads/modeleThesesPourLodex.tar",
+        "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/custom/models/archives/theses-fr.tar",
         "loader": "query-theses-fr-for-model",
         "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-theses-fr/",
         "demo": "https://catalogue-modeles.lodex.inist.fr/instance/theses-fr",
@@ -26,7 +26,7 @@
     },
     {
         "id": "hal2lodex",
-        "url": "https://www.lodex.fr/wp-content/uploads/modele_HAL2LODEX_pourLodex.tar",
+        "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/custom/models/archives/hal2lodex.tar",
         "loader": "csv-hal2lodex",
         "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-hal2lodex/",
         "demo": "https://catalogue-modeles.lodex.inist.fr/instance/hal2lodex",
@@ -40,7 +40,7 @@
     },
     {
         "id": "openalex",
-        "url": "https://www.lodex.fr/wp-content/uploads/modeleOpenAlexPourLodex02-10-26.tar",
+        "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/master/src/app/custom/models/archives/openalex.tar",
         "loader": "query-openalex-for-model",
         "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-openalex/",
         "demo": "https://catalogue-modeles.lodex.inist.fr/instance/open-alex",

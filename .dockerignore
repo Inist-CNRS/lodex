@@ -23,3 +23,6 @@
 **/node_modules
 # Rebuilt in the image by the transformers prepublish script
 packages/transformers/lib
+
+# Model archives are downloaded from GitHub by their catalog url, not read from the image
+src/app/custom/models/archives
