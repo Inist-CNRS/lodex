@@ -15,12 +15,13 @@ export type LoadFileOptions = {
 const CANCEL_REQUEST_TIMEOUT_MS = 5000;
 
 // unique per cancellable upload: a later upload of the same file never
-// reuses the chunks of a cancelled one
+// reuses the chunks of a cancelled one. No underscore: the server tells the
+// files of a tenant from another's by it (see removeStaleUploadFiles)
 // @ts-expect-error TS7006
 const generateUploadIdentifier = (file) =>
     [
         file.size,
-        file.name.replace(/[^0-9a-zA-Z_-]/g, ''),
+        file.name.replace(/[^0-9a-zA-Z-]/g, ''),
         Date.now(),
         Math.random().toString(36).slice(2),
     ].join('-');

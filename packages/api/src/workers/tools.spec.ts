@@ -1,5 +1,6 @@
 import { ProgressStatus } from '@lodex/common';
 import progress from '../services/progress';
+import { disableFusible } from '@ezs/core/fusible';
 import { cancelJob } from './tools';
 
 const mockActiveJobs: unknown[] = [];
@@ -36,6 +37,19 @@ describe('cancelJob', () => {
         expect(progress.getProgress(ctx.tenant).status).toBe(
             ProgressStatus.STARTING,
         );
+    });
+
+    it('does not stop the stream of another type of job', async () => {
+        const moveToFailed = jest.fn();
+        mockActiveJobs.push({
+            data: { jobType: 'enricher', fusible: 'fusible' },
+            moveToFailed,
+        });
+
+        await cancelJob(ctx, 'import');
+
+        expect(disableFusible).not.toHaveBeenCalled();
+        expect(moveToFailed).not.toHaveBeenCalled();
     });
 
     it('cancels the active import job', async () => {

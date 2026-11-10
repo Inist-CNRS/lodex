@@ -87,6 +87,28 @@ describe('catalogModel', () => {
             }
         });
 
+        it('should drop a body arriving after the deadline', async () => {
+            const cancel = jest.fn();
+            const body = new ReadableStream({ cancel });
+            // node-fetch 1 ignores the signal: the response comes anyway
+            const fetchMock = jest.fn(
+                () =>
+                    new Promise<Response>((resolve) =>
+                        setTimeout(() => resolve(new Response(body)), 50),
+                    ),
+            );
+            await expect(
+                downloadModelArchive(
+                    'https://x/m.tar',
+                    fetchMock as unknown as typeof fetch,
+                    undefined,
+                    10,
+                ),
+            ).rejects.toThrow('model_archive_download_timeout');
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            expect(cancel).toHaveBeenCalled();
+        });
+
         it('should pass the timeout as a signal and as a node-fetch option', async () => {
             const fetchMock = jest.fn().mockResolvedValue(new Response('data'));
 

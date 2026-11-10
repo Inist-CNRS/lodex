@@ -1,13 +1,19 @@
 import { startImport } from './import';
 import progress from './progress';
-import { isUploadCancelled, removeUploadChunks } from './uploadCancellation';
+import {
+    isUploadCancelled,
+    removeUploadChunks,
+    removeUploadQueuedMarker,
+} from './uploadCancellation';
 jest.mock('./uploadCancellation', () => ({
     isUploadCancelled: jest.fn(async () => false),
     removeUploadChunks: jest.fn(),
+    removeUploadQueuedMarker: jest.fn(),
 }));
 jest.mock('./progress', () => ({
     start: jest.fn(),
     finish: jest.fn(),
+    getStatus: jest.fn(() => 'UPLOADING_DATASET'),
     status: 'PENDING',
 }));
 describe('startImport of a cancelled upload', () => {
@@ -24,8 +30,13 @@ describe('startImport of a cancelled upload', () => {
         };
         await expect(startImport(ctx)).rejects.toThrow('cancelled_import');
         expect(removeUploadChunks).toHaveBeenCalledWith('upload/lodex_id');
+        expect(removeUploadQueuedMarker).toHaveBeenCalledWith(
+            'upload/lodex_id',
+        );
         expect(ctx.mergeChunks).not.toHaveBeenCalled();
         expect(ctx.saveParsedStream).not.toHaveBeenCalled();
+        // the progress no longer shows the end of the upload
+        expect(progress.finish).toHaveBeenCalledWith('lodex');
     });
 });
 

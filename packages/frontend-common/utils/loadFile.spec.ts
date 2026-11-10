@@ -134,7 +134,7 @@ describe('loadFile', () => {
         // a unique identifier is never resumed
         expect(testChunks).toBe(false);
         const first = generateUniqueIdentifier(file);
-        expect(first).toMatch(/^[0-9a-zA-Z_-]+$/);
+        expect(first).toMatch(/^[0-9a-zA-Z-]+$/);
         expect(generateUniqueIdentifier(file)).not.toBe(first);
     });
 

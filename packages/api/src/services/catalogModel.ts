@@ -103,6 +103,11 @@ export const downloadModelArchive = async (
         timeoutMs,
         (readBody) => {
             body = readBody;
+            // the headers came after the deadline: drop the body right away
+            if (controller.signal.aborted) {
+                readBody.destroy?.();
+                readBody.cancel?.().catch(() => {});
+            }
         },
     );
     // the losing promise must not end as an unhandled rejection

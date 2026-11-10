@@ -36,6 +36,10 @@ export const isUploadQueued = (filename: string) =>
 export const markUploadQueued = (filename: string) =>
     fs.promises.writeFile(getQueuedMarker(filename), '');
 
+// once its import ended, a later cancel of the upload has nothing to stop
+export const removeUploadQueuedMarker = (filename: string) =>
+    fs.promises.unlink(getQueuedMarker(filename)).catch(() => {});
+
 const isChunkOf = (prefix: string, entry: string) =>
     entry.startsWith(prefix) && /^\d+$/.test(entry.slice(prefix.length));
 
@@ -53,12 +57,12 @@ export const removeUploadChunks = async (filename: string) => {
     );
 };
 
-// removes the chunks and markers of a tenant's old uploads; the identifier
-// starts with the file size, so another tenant named `${tenant}_…` never
-// matches
+// removes the chunks and markers of a tenant's old cancellable uploads. Their
+// identifier (see loadFile) has no underscore: another tenant whose name
+// starts with `${tenant}_` leaves one after the prefix, and never matches.
 export const removeStaleUploadFiles = async (dir: string, tenant: string) => {
     const pattern = new RegExp(
-        `^${escapeRegExp(tenant)}_\\d+-[0-9a-zA-Z_-]*\\.(cancelled|queued|\\d+)$`,
+        `^${escapeRegExp(tenant)}_\\d+-[0-9a-zA-Z-]*\\.(cancelled|queued|\\d+)$`,
     );
     const entries = await fs.promises.readdir(dir).catch(() => []);
     await Promise.all(

@@ -7,6 +7,7 @@ import {
     removeStaleUploadFiles,
     isUploadQueued,
     markUploadQueued,
+    removeUploadQueuedMarker,
     removeUploadChunks,
 } from './uploadCancellation';
 
@@ -37,11 +38,25 @@ describe('uploadCancellation', () => {
         expect(await isUploadCancelled(path.join(dir, 'other'))).toBe(false);
     });
 
-    it('marks an upload as queued', async () => {
+    it('marks an upload as queued, until its import ends', async () => {
         const filename = path.join(dir, 'lodex_test_id');
         expect(await isUploadQueued(filename)).toBe(false);
         await markUploadQueued(filename);
         expect(await isUploadQueued(filename)).toBe(true);
+        await removeUploadQueuedMarker(filename);
+        expect(await isUploadQueued(filename)).toBe(false);
+    });
+
+    it("never removes the files of a tenant whose name extends this one's", async () => {
+        const old = DAY_MS + 60_000;
+        // the files of a tenant named "a_1-b", which tenant "a" would match
+        // if the identifiers had underscores
+        write('a_1-b_12-datacsv-1700000000000-x.1', old);
+        write('a_12-datacsv-1700000000000-x.1', old);
+        await removeStaleUploadFiles(dir, 'a');
+        expect(await fs.promises.readdir(dir)).toEqual([
+            'a_1-b_12-datacsv-1700000000000-x.1',
+        ]);
     });
 
     it('removes only the chunks of the upload', async () => {

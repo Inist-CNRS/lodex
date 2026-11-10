@@ -12,7 +12,11 @@ import { ProgressStatus } from '@lodex/common';
 import { Readable } from 'stream';
 import config from 'config';
 import getLogger from './logger';
-import { isUploadCancelled, removeUploadChunks } from './uploadCancellation';
+import {
+    isUploadCancelled,
+    removeUploadChunks,
+    removeUploadQueuedMarker,
+} from './uploadCancellation';
 
 export const getLoader =
     (loaderName: any, loaderEnvironment: any, loaderHeader: any) =>
@@ -62,6 +66,13 @@ export const startImport = async (ctx: any) => {
     // cancel, without touching the dataset
     if (filename && totalChunks && (await isUploadCancelled(filename))) {
         await removeUploadChunks(filename);
+        await removeUploadQueuedMarker(filename);
+        // the progress still shows the end of the upload
+        if (
+            progress.getStatus(ctx.tenant) === ProgressStatus.UPLOADING_DATASET
+        ) {
+            progress.finish(ctx.tenant);
+        }
         throw new Error('cancelled_import');
     }
     const fusible = await createFusible();
@@ -132,6 +143,7 @@ export const startImport = async (ctx: any) => {
         progress.finish(ctx.tenant);
         if (filename && totalChunks) {
             await ctx.clearChunks(filename, totalChunks);
+            await removeUploadQueuedMarker(filename);
         }
     }
 };

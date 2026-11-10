@@ -71,7 +71,8 @@ export const cancelJob = async (
     subLabel: string | undefined | null = null,
 ) => {
     const activeJob = await getActiveJob(ctx.tenant);
-    if (activeJob?.data?.fusible) {
+    // only stop the stream of a job of the requested type
+    if (activeJob?.data?.fusible && activeJob.data.jobType === jobType) {
         await disableFusible(activeJob.data.fusible);
     }
     if (activeJob?.data?.jobType === jobType) {
