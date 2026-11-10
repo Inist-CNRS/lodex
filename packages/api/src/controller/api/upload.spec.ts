@@ -3,7 +3,12 @@ import config from 'config';
 import progress from '../../services/progress';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { IMPORT } from '../../workers/import';
-import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
+import {
+    parseRequest,
+    uploadChunkMiddleware,
+    uploadText,
+    uploadUrl,
+} from './upload';
 
 jest.mock('../../workers');
 jest.mock('uuid', () => ({ v1: () => 'uuid' }));
@@ -360,6 +365,41 @@ describe('upload', () => {
                 },
                 { jobId: 'uuid' },
             );
+        });
+    });
+
+    describe('uploadText', () => {
+        const ctx: Record<string, unknown> = {
+            tenant: 'lodex_test',
+            request: {
+                body: {
+                    text: 'authorships.institutions.lineage:i4210144781',
+                    loaderName: 'query-openalex-for-model',
+                },
+            },
+        };
+
+        beforeEach(async () => {
+            await uploadText(ctx);
+        });
+
+        it('should add job to the queue', () => {
+            expect(workerQueue?.add).toHaveBeenCalledWith(
+                IMPORT,
+                {
+                    text: 'authorships.institutions.lineage:i4210144781',
+                    jobType: IMPORT,
+                    loaderName: 'query-openalex-for-model',
+                    customLoader: undefined,
+                    tenant: 'lodex_test',
+                },
+                { jobId: 'uuid' },
+            );
+        });
+
+        // without a body, Koa answers 404 although the job is queued
+        it('should answer that the import is pending', () => {
+            expect(ctx.body).toStrictEqual({ status: 'pending' });
         });
     });
 });

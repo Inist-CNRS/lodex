@@ -174,6 +174,9 @@ export const uploadText = async (ctx: any) => {
         },
         { jobId: uuid() },
     );
+    ctx.body = {
+        status: 'pending',
+    };
 };
 
 export const checkChunkMiddleware = async (ctx: any, loaderName: any) => {
