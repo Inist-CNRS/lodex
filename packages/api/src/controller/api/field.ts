@@ -93,6 +93,9 @@ export const applyConfigTenant = async (ctx: any, imported: any) => {
     }
 
     const current = await ctx.configTenantCollection.findLast();
+    if (!current) {
+        return {};
+    }
     const themeFound = !imported.theme || getTheme(imported.theme);
 
     // front.theme holds the theme's template variables: keep the current
@@ -124,7 +127,8 @@ export const applyRecommendedTheme = async (
     }
 
     const current = await ctx.configTenantCollection.findLast();
-    if (current.theme === theme) {
+    // no configuration to apply the theme to, or already the right theme
+    if (!current || current.theme === theme) {
         return {};
     }
     await ctx.configTenantCollection.update(current._id, {

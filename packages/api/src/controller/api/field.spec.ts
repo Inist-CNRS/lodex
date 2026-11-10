@@ -443,6 +443,15 @@ describe('field routes', () => {
             });
         });
 
+        it('should do nothing without a configuration', async () => {
+            await db.collection('configTenant').deleteMany({});
+
+            const result = await applyRecommendedTheme(ctx, 'istex');
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toBeNull();
+        });
+
         it('should not touch the config and report an unknown theme', async () => {
             const result = await applyRecommendedTheme(ctx, 'unknown');
 

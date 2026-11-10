@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 // @ts-expect-error TS(2792): no type declarations for fetch-with-proxy
 import fetchWithProxy from 'fetch-with-proxy';
-import { catalogModelSchema, type CatalogModel } from '@lodex/common';
+import { getDisplayableModels, type CatalogModel } from '@lodex/common';
 import models from '../../../../src/app/custom/models/models-catalog.json';
 
 export const catalogModels: unknown = models;
@@ -9,25 +9,18 @@ export const catalogModels: unknown = models;
 const MAX_ARCHIVE_SIZE = 100 * 1024 * 1024;
 const DOWNLOAD_TIMEOUT_MS = 60_000;
 
-// Same rule as getDisplayableModels: only the first entry of a given id counts
+// The rule of the admin wizard (getDisplayableModels), except that the
+// translations are a display concern: the server accepts an untranslated
+// model.
 export const findCatalogModel = (
     models: unknown,
     id: string,
     availableLoaders: string[],
-): CatalogModel | null => {
-    if (!Array.isArray(models)) {
-        return null;
-    }
-    const entry = models.find((model) => model?.id === id);
-    if (!entry) {
-        return null;
-    }
-    const parsed = catalogModelSchema.safeParse(entry);
-    if (!parsed.success || !availableLoaders.includes(parsed.data.loader)) {
-        return null;
-    }
-    return parsed.data;
-};
+): CatalogModel | null =>
+    getDisplayableModels(models, {
+        availableLoaders,
+        hasTranslation: () => true,
+    }).find((model) => model.id === id) ?? null;
 
 type ArchiveBody = AsyncIterable<Uint8Array> & {
     // node stream (fetch-with-proxy)
