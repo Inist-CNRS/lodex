@@ -2,10 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { catalogModelSchema } from './modelCatalog';
 
-const CATALOG_PATH = path.resolve(
-    __dirname,
-    '../../../../src/app/custom/models/models-catalog.json',
-);
+const MODELS_DIR = path.resolve(__dirname, '../../../../src/app/custom/models');
+const CATALOG_PATH = path.join(MODELS_DIR, 'models-catalog.json');
+const REPO_MODELS_URL =
+    'https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/';
 
 describe('models catalog', () => {
     const catalog = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf8'));
@@ -20,5 +20,17 @@ describe('models catalog', () => {
         catalog.forEach((model: unknown) => {
             expect(catalogModelSchema.safeParse(model).success).toBe(true);
         });
+    });
+
+    // A url pointing to this repository must match an archive committed here
+    it('should find every repository-hosted archive in the models folder', () => {
+        catalog
+            .filter(({ url }: { url: string }) =>
+                url.startsWith(REPO_MODELS_URL),
+            )
+            .forEach(({ url }: { url: string }) => {
+                const file = url.slice(REPO_MODELS_URL.length);
+                expect(fs.existsSync(path.join(MODELS_DIR, file))).toBe(true);
+            });
     });
 });

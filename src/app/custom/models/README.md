@@ -6,6 +6,20 @@ the user picks a model, imports a dataset, and LODEX builds the site from the mo
 
 This file only describes the models. The model itself (its fields, enrichments, precomputations…) lives in the archive pointed by `url`.
 
+## Model archives
+
+The model archives are versioned in this repository, in [`archives/`](archives/), one file per model named after its `id` (e.g. `archives/hal2lodex.tar`).
+The `url` of a model points to its raw file on GitHub, on the `marmelab` branch:
+
+```
+https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/<id>.tar
+```
+
+This link downloads the archive directly, so it can also be shared with users who want the model file.
+The archive is only reachable once it is merged on `marmelab`.
+
+> **When `marmelab` is merged into `master`**: replace `lodex/marmelab/` with `lodex/master/` in every `url` of `models-catalog.json`, in this file, and in `REPO_MODELS_URL` of `packages/common/src/models/modelsCatalog.spec.ts`.
+
 ## Model fields
 
 Each model is a JSON object in the `models-catalog.json` array.
@@ -75,13 +89,14 @@ Forbidden (`EnrichissementA` and `EnrichissementB` are both at position 1):
 
 **Add a model**
 
-1. Add a new object at the end of the array in `models-catalog.json`, with at least `id`, `url` and `loader`.
-2. Add the `mc_<id>_title` and `mc_<id>_description` lines in `src/app/custom/translations.tsv`.
-3. If the model needs a new loader, add its `.ini` file in `packages/workers/src/loaders/` and its name in `scripts.loaders` of `config/default.js`.
+1. Add the model archive in `archives/<id>.tar`.
+2. Add a new object at the end of the array in `models-catalog.json`, with at least `id`, `url` (see [Model archives](#model-archives)) and `loader`.
+3. Add the `mc_<id>_title` and `mc_<id>_description` lines in `src/app/custom/translations.tsv`.
+4. If the model needs a new loader, add its `.ini` file in `packages/workers/src/loaders/` and its name in `scripts.loaders` of `config/default.js`.
 
-**Update a model**: edit its object in `models-catalog.json`, and its translations in `translations.tsv` for the name or the description. Do not change its `id` unless you also rename its translation keys.
+**Update a model**: replace its archive in `archives/` to change the model itself; edit its object in `models-catalog.json`, and its translations in `translations.tsv` for the name or the description. Do not change its `id` unless you also rename its translation keys.
 
-**Remove a model**: remove its object from `models-catalog.json` **and** its two lines from `translations.tsv`.
+**Remove a model**: remove its object from `models-catalog.json`, its archive from `archives/` **and** its two lines from `translations.tsv`.
 
 The order of the models in the file is the order in which they are offered.
 
@@ -96,14 +111,14 @@ A model is offered to the user only if:
 5. no previous model in the file uses the same `id`.
 
 A model that does not follow these rules is accepted in the file and breaks nothing: it is simply not offered.
-However, the test `packages/common/src/models/modelsCatalog.spec.ts` fails when the file is not valid JSON, or when one of its models does not follow the format above (this test does not check that the loader is enabled, that the translations exist, nor duplicate ids). This catches typos in the models shipped with LODEX.
+However, the test `packages/common/src/models/modelsCatalog.spec.ts` fails when the file is not valid JSON, or when one of its models does not follow the format above (this test does not check that the loader is enabled, that the translations exist, nor duplicate ids). It also fails when a `url` points to `archives/` and the file is missing. This catches typos in the models shipped with LODEX.
 
 ## Full example
 
 ```json
 {
     "id": "hal2lodex",
-    "url": "https://www.lodex.fr/wp-content/uploads/modele_HAL2LODEX_pourLodex.tar",
+    "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/hal2lodex.tar",
     "loader": "csv-hal2lodex",
     "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-hal2lodex/",
     "demo": "https://catalogue-modeles.lodex.inist.fr/instance/hal2lodex",
