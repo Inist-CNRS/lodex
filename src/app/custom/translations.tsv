@@ -1572,6 +1572,7 @@
 "model_archive_not_tar"	"The model archive is not a .tar file."	"L'archive du modèle n'est pas un fichier .tar."
 "model_archive_too_large"	"The model archive is too large."	"L'archive du modèle est trop volumineuse."
 "model_archive_empty"	"The model archive is empty."	"L'archive du modèle est vide."
+"model_archive_download_timeout"	"The model download took too long."	"Le téléchargement du modèle a pris trop de temps."
 "import_failed"	"The data import failed."	"L'import des données a échoué."
 "site_wizard_generate"	"Generate the site"	"Générer le site"
 "site_wizard_generating"	"Generating the site…"	"Génération du site en cours…"

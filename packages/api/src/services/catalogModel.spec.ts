@@ -1,3 +1,5 @@
+import http from 'http';
+import type { AddressInfo } from 'net';
 import { downloadModelArchive, findCatalogModel } from './catalogModel';
 
 describe('catalogModel', () => {
@@ -38,6 +40,64 @@ describe('catalogModel', () => {
     });
 
     describe('downloadModelArchive', () => {
+        it('should time out with the default fetch when the host stalls', async () => {
+            // accepts the connection, then never answers
+            const server = http.createServer(() => {});
+            await new Promise<void>((resolve) =>
+                server.listen(0, '127.0.0.1', resolve),
+            );
+            const { port } = server.address() as AddressInfo;
+            try {
+                await expect(
+                    downloadModelArchive(
+                        `http://127.0.0.1:${port}/m.tar`,
+                        undefined,
+                        undefined,
+                        200,
+                    ),
+                ).rejects.toThrow(/timeout/);
+            } finally {
+                server.closeAllConnections();
+                server.close();
+            }
+        });
+
+        it('should time out with the default fetch when the body stalls', async () => {
+            // sends the headers and a first chunk, then never ends the body
+            const server = http.createServer((_, res) => {
+                res.writeHead(200, { 'Content-Type': 'application/x-tar' });
+                res.write('partial');
+            });
+            await new Promise<void>((resolve) =>
+                server.listen(0, '127.0.0.1', resolve),
+            );
+            const { port } = server.address() as AddressInfo;
+            try {
+                await expect(
+                    downloadModelArchive(
+                        `http://127.0.0.1:${port}/m.tar`,
+                        undefined,
+                        undefined,
+                        300,
+                    ),
+                ).rejects.toThrow('model_archive_download_timeout');
+            } finally {
+                server.closeAllConnections();
+                server.close();
+            }
+        });
+
+        it('should pass the timeout as a signal and as a node-fetch option', async () => {
+            const fetchMock = jest.fn().mockResolvedValue(new Response('data'));
+
+            await downloadModelArchive('https://x/m.tar', fetchMock);
+
+            expect(fetchMock).toHaveBeenCalledWith('https://x/m.tar', {
+                signal: expect.any(AbortSignal),
+                timeout: 60_000,
+            });
+        });
+
         it('should return a stream named after the last segment of the url', async () => {
             const fetchMock = jest.fn().mockResolvedValue(new Response('data'));
 

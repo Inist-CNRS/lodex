@@ -29,15 +29,28 @@ export const findCatalogModel = (
     return parsed.data;
 };
 
-export const downloadModelArchive = async (
+type ArchiveBody = AsyncIterable<Uint8Array> & {
+    // node stream (fetch-with-proxy)
+    destroy?: () => void;
+    // web stream (native fetch)
+    cancel?: () => Promise<void>;
+};
+
+const readArchive = async (
     url: string,
-    // same fetch as the url imports: honors the proxy environment variables
-    fetchImpl: typeof fetch = fetchWithProxy,
-    maxBytes: number = MAX_ARCHIVE_SIZE,
-): Promise<Readable & { filename: string }> => {
+    fetchImpl: typeof fetch,
+    maxBytes: number,
+    signal: AbortSignal,
+    timeoutMs: number,
+    onBody: (body: ArchiveBody) => void,
+): Promise<Buffer[]> => {
     const response = await fetchImpl(url, {
-        signal: AbortSignal.timeout(DOWNLOAD_TIMEOUT_MS),
-    });
+        // native fetch
+        signal,
+        // fetch-with-proxy runs on node-fetch 1, which ignores signal; its own
+        // timeout only covers the wait for the response headers
+        timeout: timeoutMs,
+    } as RequestInit);
     if (!response.ok) {
         throw new Error(`${response.status} ${response.statusText}`);
     }
@@ -48,14 +61,12 @@ export const downloadModelArchive = async (
     if (!response.body) {
         throw new Error('model_archive_empty');
     }
-    // Read the whole archive before returning, so that any download failure
-    // (timeout, reset, oversized chunked body) rejects here, before the
-    // current model gets wiped by restoreFields.
+    const body = response.body as unknown as ArchiveBody;
+    onBody(body);
     // content-length may be absent (chunked): enforce the limit while reading
-    // the body is a web stream (native fetch) or a node stream (fetch-with-proxy)
     const chunks: Buffer[] = [];
     let received = 0;
-    for await (const chunk of response.body as unknown as AsyncIterable<Uint8Array>) {
+    for await (const chunk of body) {
         received += chunk.byteLength;
         if (received > maxBytes) {
             throw new Error('model_archive_too_large');
@@ -64,6 +75,50 @@ export const downloadModelArchive = async (
         chunks.push(
             Buffer.from(chunk.buffer, chunk.byteOffset, chunk.byteLength),
         );
+    }
+    return chunks;
+};
+
+export const downloadModelArchive = async (
+    url: string,
+    // same fetch as the url imports: honors the proxy environment variables
+    fetchImpl: typeof fetch = fetchWithProxy,
+    maxBytes: number = MAX_ARCHIVE_SIZE,
+    timeoutMs: number = DOWNLOAD_TIMEOUT_MS,
+): Promise<Readable & { filename: string }> => {
+    // Read the whole archive before returning, so that any download failure
+    // (timeout, reset, oversized chunked body) rejects here, before the
+    // current model gets wiped by restoreFields.
+    // A single deadline covers the whole download, the body included: no
+    // fetch timeout stops a host that sends the headers then stalls.
+    const controller = new AbortController();
+    let body: ArchiveBody | null = null;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const deadline = new Promise<never>((_, reject) => {
+        timer = setTimeout(() => {
+            controller.abort();
+            body?.destroy?.();
+            body?.cancel?.().catch(() => {});
+            reject(new Error('model_archive_download_timeout'));
+        }, timeoutMs);
+    });
+    const download = readArchive(
+        url,
+        fetchImpl,
+        maxBytes,
+        controller.signal,
+        timeoutMs,
+        (readBody) => {
+            body = readBody;
+        },
+    );
+    // the losing promise must not end as an unhandled rejection
+    download.catch(() => {});
+    let chunks: Buffer[];
+    try {
+        chunks = await Promise.race([download, deadline]);
+    } finally {
+        clearTimeout(timer);
     }
     const stream = Readable.from(chunks) as Readable & {
         filename: string;
