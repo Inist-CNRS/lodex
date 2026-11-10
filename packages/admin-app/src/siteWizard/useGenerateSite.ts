@@ -25,6 +25,8 @@ const IMPORT_JOB_TYPE = 'import';
 // the error of an import cancelled by the user, as sent by the server
 const CANCELLED_IMPORT = 'cancelled_import';
 const CANCEL_FALLBACK_DELAY = 15_000;
+// a file upload cancelled after its last chunk queued the import
+const UPLOAD_IMPORT_STARTED = 'upload_import_started';
 
 export const useGenerateSite = () => {
     const { translate } = useTranslate();
@@ -45,6 +47,8 @@ export const useGenerateSite = () => {
     // percentage of the file being uploaded, null when no file is uploading
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
     const uploadAbortRef = useRef<AbortController | null>(null);
+    // the data of this wizard was imported, its model may still be missing
+    const isDataImportedRef = useRef(false);
 
     useEffect(() => {
         isMountedRef.current = true;
@@ -69,6 +73,73 @@ export const useGenerateSite = () => {
         queryClient.invalidateQueries({ queryKey: ['fetchPrecomputations'] });
     }, [dispatch, queryClient]);
 
+    // the server answers before stopping the job, then drops its data and
+    // sends cancelled_import: wait for it, but give up if it never comes (job
+    // already over, event missed)
+    const cancelRunningImport = useCallback(async () => {
+        try {
+            await jobsApi.cancelJob(IMPORT_JOB_TYPE, undefined);
+        } catch {
+            // the fallback below still frees the wizard
+        }
+        giveUpWaitingForImportEnd(
+            CANCEL_FALLBACK_DELAY,
+            new Error(CANCELLED_IMPORT),
+        );
+    }, [giveUpWaitingForImportEnd]);
+
+    // uploads the dataset and waits for the end of its import
+    const importData = useCallback(
+        async (model: CatalogModel, source: DatasetSource) => {
+            // listen before uploading: a small import can end before the
+            // upload request resolves, and the server only notifies
+            // connected sockets
+            const { connected, ended } = waitForImportEnd();
+            // if the upload fails, nobody awaits ended (see finally)
+            ended.catch(() => {});
+            await connected;
+            if (source.type === 'file') {
+                // the only source long to upload: show its progress and
+                // let it be cancelled
+                const uploadAbort = new AbortController();
+                uploadAbortRef.current = uploadAbort;
+                setUploadProgress(0);
+                try {
+                    await uploadDataset(source, model.loader, {
+                        signal: uploadAbort.signal,
+                        onProgress: (progress) => {
+                            if (isMountedRef.current) {
+                                setUploadProgress(Math.round(progress * 100));
+                            }
+                        },
+                    });
+                } catch (uploadError) {
+                    if (getErrorDetail(uploadError) !== UPLOAD_IMPORT_STARTED) {
+                        throw uploadError;
+                    }
+                    // the cancel came after the last chunk queued the import:
+                    // cancel it as a running import
+                    await cancelRunningImport();
+                }
+                // from now on, cancelling cancels the import job
+                uploadAbortRef.current = null;
+                if (isMountedRef.current) {
+                    setUploadProgress(null);
+                }
+            } else {
+                await uploadDataset(source, model.loader);
+            }
+            // the import job is queued: it can now be cancelled
+            if (isMountedRef.current) {
+                setIsWaitingForImport(true);
+            }
+            // a too late cancel may still end with the data imported: the
+            // generation then goes on, the data being there
+            await ended;
+        },
+        [waitForImportEnd, cancelRunningImport],
+    );
+
     const generate = useCallback(
         async (model: CatalogModel, source: DatasetSource) => {
             setError(null);
@@ -77,6 +148,14 @@ export const useGenerateSite = () => {
             isGeneratingRef.current = true;
             preventUnload();
             try {
+                // the data first: a failed data import leaves the instance
+                // as it was (no model replaced), so that the generation can
+                // simply be retried. A retry after a failed model import
+                // keeps the data already imported.
+                if (!isDataImportedRef.current) {
+                    await importData(model, source);
+                    isDataImportedRef.current = true;
+                }
                 const { themeNotFound } = await importCatalogModel(model.id);
                 if (themeNotFound) {
                     toast(
@@ -87,40 +166,6 @@ export const useGenerateSite = () => {
                     );
                 }
                 queryClient.resetQueries({ queryKey: ['get-config-tenant'] });
-                // listen before uploading: a small import can end before the
-                // upload request resolves, and the server only notifies
-                // connected sockets
-                const { connected, ended } = waitForImportEnd();
-                // if the upload fails, nobody awaits ended (see finally)
-                ended.catch(() => {});
-                await connected;
-                if (source.type === 'file') {
-                    // the only source long to upload: show its progress and
-                    // let it be cancelled
-                    const uploadAbort = new AbortController();
-                    uploadAbortRef.current = uploadAbort;
-                    setUploadProgress(0);
-                    await uploadDataset(source, model.loader, {
-                        signal: uploadAbort.signal,
-                        onProgress: (progress) => {
-                            if (isMountedRef.current) {
-                                setUploadProgress(Math.round(progress * 100));
-                            }
-                        },
-                    });
-                    // from now on, cancelling cancels the import job
-                    uploadAbortRef.current = null;
-                    if (isMountedRef.current) {
-                        setUploadProgress(null);
-                    }
-                } else {
-                    await uploadDataset(source, model.loader);
-                }
-                // the import job is queued: it can now be cancelled
-                if (isMountedRef.current) {
-                    setIsWaitingForImport(true);
-                }
-                await ended;
             } catch (e) {
                 const detail = getErrorDetail(e);
                 // a cancel asked by the user is not a failure: JobProgress
@@ -153,7 +198,7 @@ export const useGenerateSite = () => {
         [
             translate,
             queryClient,
-            waitForImportEnd,
+            importData,
             stopWaitingForImportEnd,
             reloadAdminData,
         ],
@@ -164,27 +209,13 @@ export const useGenerateSite = () => {
     const cancelImport = useCallback(async () => {
         isCancellingRef.current = true;
         // a file still uploading: stop it, loadFile tells the server to drop
-        // it, so that its import never starts
-        const uploadAbort = uploadAbortRef.current;
-        uploadAbort?.abort();
-        try {
-            // also stops an import queued by a last chunk racing the cancel
-            await jobsApi.cancelJob(IMPORT_JOB_TYPE, undefined);
-        } catch {
-            // the fallback below still frees the wizard
-        }
-        if (uploadAbort) {
-            // the generation already ended with the stopped upload
+        // it, and importData handles a cancel coming too late
+        if (uploadAbortRef.current) {
+            uploadAbortRef.current.abort();
             return;
         }
-        // the server answers before stopping the job, then drops its data and
-        // sends cancelled_import: wait for it, but give up if it never comes
-        // (job already over, event missed)
-        giveUpWaitingForImportEnd(
-            CANCEL_FALLBACK_DELAY,
-            new Error(CANCELLED_IMPORT),
-        );
-    }, [giveUpWaitingForImportEnd]);
+        await cancelRunningImport();
+    }, [cancelRunningImport]);
 
     return {
         generate,

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { URI_FIELD_NAME } from '@lodex/common';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { fromLoaders, fromParsing, fromPublication } from '../selectors';
 import type { State } from '../reducers';
 import { SiteWizard, type SiteWizardCloseReason } from './SiteWizard';
@@ -15,9 +16,6 @@ const hasNoData = (state: State) =>
     !fromParsing.isParsingLoading(state) &&
     fromParsing.canUpload(state);
 
-const getFieldNames = (state: State): string[] =>
-    (state as { fields?: { list?: string[] } }).fields?.list ?? [];
-
 // generating a site replaces the model: do not offer it once one was set up
 // (an empty instance may still hold the default uri field, and 'new' is the
 // field being added). A failed load says nothing about the model.
@@ -25,9 +23,9 @@ const hasNoModel = (state: State) =>
     fromPublication.isInitialized(state) &&
     !fromPublication.isPublicationLoading(state) &&
     !fromPublication.hasLoadError(state) &&
-    !getFieldNames(state).some(
-        (name) => name !== URI_FIELD_NAME && name !== 'new',
-    );
+    !fromFields
+        .getFieldNames(state)
+        .some((name) => name !== URI_FIELD_NAME && name !== 'new');
 
 // the displayable models depend on the loaders: without them, the wizard
 // would briefly say that no model is available

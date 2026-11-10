@@ -183,12 +183,8 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
             open={open}
             fullWidth
             maxWidth="md"
+            // only the cancel buttons close it, after a confirmation
             disableEscapeKeyDown
-            onClose={(_, reason) => {
-                if (reason !== 'backdropClick' && !isGenerating) {
-                    setIsCancelConfirmOpen(true);
-                }
-            }}
         >
             <DialogTitle
                 component="div"

@@ -64,6 +64,8 @@ const getByName = ({ byName }) => byName;
 // @ts-expect-error TS7031
 const getNbFields = ({ list }) => list.length;
 
+const getFieldNames = ({ list = [] }: { list?: string[] }): string[] => list;
+
 // @ts-expect-error TS7006
 const getParams = (_, params) => params;
 
@@ -504,6 +506,7 @@ export default {
     getFieldsExceptField,
     getInvalidFields,
     getNbFields,
+    getFieldNames,
     hasPublicationFields,
     getTransformers,
     getFromFilterFields,
