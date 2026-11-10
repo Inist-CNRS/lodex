@@ -1,3 +1,4 @@
+import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
@@ -570,6 +571,9 @@ export const dropFieldCollection = async (ctx: any) => {
             // @ts-expect-error TS(2571): Object is of type 'unknown'.
             error: error.message,
         };
+    } finally {
+        // even after a partial drop: the dropped collections need their indexes back
+        invalidateRepositories(ctx.tenant);
     }
 };
 

@@ -18,6 +18,7 @@
 !typings.json
 !docker-entrypoint.sh
 !vite.config.ts
+!bin/compress-build.mjs
 
 # Dependencies are installed inside the image, never copy the host ones
 **/node_modules

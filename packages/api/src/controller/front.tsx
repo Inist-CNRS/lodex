@@ -9,11 +9,8 @@ import { createMemoryHistory } from 'history';
 import jsonwebtoken from 'jsonwebtoken';
 import Koa from 'koa';
 import jwt from 'koa-jwt';
-import mount from 'koa-mount';
 import route from 'koa-route';
-import serve from 'koa-static';
 import pick from 'lodash/pick';
-import path from 'path';
 import { END } from 'redux-saga';
 
 import configureStoreServer from './configureStoreServer';
@@ -229,7 +226,7 @@ const handleRender = async (ctx: Koa.Context, next: any) => {
             ? recaptchaClientKeyConfig
             : null;
 
-    renderPublic(ctx.configTenant.theme, {
+    await renderPublic(ctx.configTenant.theme, {
         preload: JSON.stringify(preloadedState),
         tenant: ctx.tenant,
         jsHost: publicJsHost,
@@ -251,7 +248,7 @@ const handleRender = async (ctx: Koa.Context, next: any) => {
 };
 
 const renderAdminIndexHtml = (ctx: any) => {
-    renderAdmin({
+    return renderAdmin({
         tenant: ctx.tenant,
         dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: adminJsHost,
@@ -262,7 +259,7 @@ const renderAdminIndexHtml = (ctx: any) => {
 };
 
 const renderRootAdminIndexHtml = (ctx: any) => {
-    renderRootAdmin({
+    return renderRootAdmin({
         tenant: ctx.tenant,
         dbName: mongoDatabasePrefix(ctx.tenant),
         jsHost: rootAdminJsHost,
@@ -331,7 +328,7 @@ app.use(async (ctx, next) => {
 
 app.use(
     route.get('/instances(.*)', async (ctx) => {
-        renderRootAdminIndexHtml(ctx);
+        await renderRootAdminIndexHtml(ctx);
     }),
 );
 
@@ -339,22 +336,10 @@ app.use(handleRender);
 
 app.use(
     route.get('/instance/:slug/admin', async (ctx) => {
-        renderAdminIndexHtml(ctx);
+        await renderAdminIndexHtml(ctx);
     }),
 );
 
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../../src/app/build'))),
-);
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../root-admin-app/build'))),
-);
-app.use(mount('/', serve(path.resolve(__dirname, '../../../admin-app/build'))));
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../public-app/build'))),
-);
-app.use(
-    mount('/', serve(path.resolve(__dirname, '../../../../src/app/custom'))),
-);
+// Static files are served upstream, see ./static.ts
 
 export default app;
