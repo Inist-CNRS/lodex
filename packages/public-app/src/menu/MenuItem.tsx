@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash/get';
+import { lazyComponent } from '@lodex/frontend-common/utils/lazyComponent';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -60,14 +60,30 @@ const styles = stylesToClassname(
     'menu-item',
 );
 
+// The whole icon set is needed since icons are configured by name: keep it out of the main bundle.
+// index.js (and not the package root, resolved to index.es.js) so that the named imports
+// used elsewhere stay tree-shaken in the main bundle while the full set gets its own chunk.
+const MenuFontAwesomeIcon = lazyComponent(async () => {
+    const icons = await import('@fortawesome/free-solid-svg-icons/index.js');
+    return {
+        default: ({ name }: { name: string }) => {
+            const faIcon = get(icons, name);
+            return faIcon ? (
+                // @ts-expect-error TS2339
+                <FontAwesomeIcon
+                    icon={faIcon}
+                    className={styles.menuItemIcon}
+                />
+            ) : null;
+        },
+    };
+});
+
 // @ts-expect-error TS7006
 const getIcon = (icon) => {
-    const faIcon = get(icons, icon);
-    if (faIcon) {
-        return (
-            // @ts-expect-error TS2339
-            <FontAwesomeIcon icon={faIcon} className={styles.menuItemIcon} />
-        );
+    // Font Awesome icon names (faHome), otherwise an image url
+    if (/^fa[A-Z0-9]\w*$/.test(icon)) {
+        return <MenuFontAwesomeIcon name={icon} />;
     }
     return (
         <img

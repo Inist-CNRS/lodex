@@ -10,6 +10,8 @@ describe('static controller', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lodex-static-'));
     fs.writeFileSync(path.join(dir, 'asset.js'), 'console.log("asset");');
     fs.writeFileSync(path.join(dir, 'index.html'), '<h1>static</h1>');
+    fs.mkdirSync(path.join(dir, 'chunks'));
+    fs.writeFileSync(path.join(dir, 'chunks', 'front-a1b2.js'), 'chunk');
 
     const downstream = jest.fn((ctx: Koa.Context) => {
         ctx.body = 'downstream';
@@ -33,6 +35,15 @@ describe('static controller', () => {
         const response = await get('/asset.js');
         expect(await response.text()).toBe('console.log("asset");');
         expect(downstream).not.toHaveBeenCalled();
+    });
+
+    it('should cache hashed chunks forever, and revalidate other files', async () => {
+        const chunk = await get('/chunks/front-a1b2.js');
+        expect(chunk.headers.get('cache-control')).toBe(
+            'public, max-age=31536000, immutable',
+        );
+        const entry = await get('/asset.js');
+        expect(entry.headers.get('cache-control')).toBe('max-age=0');
     });
 
     it('should fall through for unknown files', async () => {
