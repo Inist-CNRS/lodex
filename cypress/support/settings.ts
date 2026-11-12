@@ -7,8 +7,9 @@ export function enableMultilingual() {
     );
 
     cy.wait(250);
+    cy.intercept('PUT', '/api/config-tenant/*').as('saveConfig');
     cy.get('.container > .MuiButton-contained').click();
-    cy.wait(1000);
+    cy.wait('@saveConfig');
 }
 
 export function disableMultilingual() {
@@ -20,6 +21,7 @@ export function disableMultilingual() {
     );
 
     cy.wait(250);
+    cy.intercept('PUT', '/api/config-tenant/*').as('saveConfig');
     cy.get('.container > .MuiButton-contained').click();
-    cy.wait(1000);
+    cy.wait('@saveConfig');
 }

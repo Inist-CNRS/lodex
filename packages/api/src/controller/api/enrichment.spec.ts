@@ -359,13 +359,40 @@ describe('Enrichment controller', () => {
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
                 1,
                 'PENDING',
-                { jobId: 'job-id' },
+                { jobId: expect.any(String) },
             );
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
                 2,
                 'PENDING',
-                { jobId: 'job-id' },
+                { jobId: expect.any(String) },
             );
+        });
+        it('should set the status to pending before queuing the job, with the same job id', async () => {
+            const ctx = {
+                enrichment: {
+                    findAll: jest.fn(() => [{ _id: 1, status: 'FINISHED' }]),
+                    updateStatus: jest.fn(async () => {}),
+                },
+                dataSource: {
+                    getDataSources: jest.fn().mockResolvedValue([]),
+                    removeAttribute: jest.fn(async () => {}),
+                },
+                tenant: 'test',
+                body: null,
+            } as unknown as Koa.Context;
+
+            await launchAllEnrichment(ctx);
+
+            const updateStatus = jest.mocked(ctx.enrichment.updateStatus);
+            const add = jest.mocked(workerQueue!.add);
+            // the worker can set IN_PROGRESS as soon as the job is queued
+            expect(updateStatus.mock.invocationCallOrder[0]).toBeLessThan(
+                add.mock.invocationCallOrder[0],
+            );
+            const { jobId } = updateStatus.mock.calls[0][2] as {
+                jobId: string;
+            };
+            expect(add.mock.calls[0][2]).toEqual({ jobId, lifo: false });
         });
         it('should remove enrichmentAttribute from dataset when its status is FINISHED', async () => {
             const ctx = {
@@ -404,12 +431,12 @@ describe('Enrichment controller', () => {
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
                 1,
                 'PENDING',
-                { jobId: 'job-id' },
+                { jobId: expect.any(String) },
             );
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
                 2,
                 'PENDING',
-                { jobId: 'job-id' },
+                { jobId: expect.any(String) },
             );
         });
     });
@@ -434,7 +461,7 @@ describe('Enrichment controller', () => {
             expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
                 1,
                 'PENDING',
-                { jobId: 'job-id' },
+                { jobId: expect.any(String) },
             );
             expect(workerQueue?.add).toHaveBeenCalledTimes(1);
             expect(workerQueue?.add).toHaveBeenCalledWith(
