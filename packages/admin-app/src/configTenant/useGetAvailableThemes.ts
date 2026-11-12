@@ -14,11 +14,15 @@ export type AvailableTheme = {
 export const getThemeLabel = (theme: AvailableTheme, locale: 'en' | 'fr') =>
     `${theme.name[locale]} - ${theme.description[locale]}`;
 
-export function useGetAvailableThemes({ enabled = true } = {}) {
+export function useGetAvailableThemes({
+    enabled = true,
+    retry,
+}: { enabled?: boolean; retry?: boolean } = {}) {
     const history = useHistory();
     return useQuery({
         queryKey: ['get-available-themes'],
         enabled,
+        retry,
         queryFn: async (): Promise<AvailableTheme[] | undefined> => {
             const { response, error } = await getConfigTenantAvailableTheme();
             if (error?.code === 401) {

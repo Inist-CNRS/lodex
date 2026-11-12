@@ -78,8 +78,13 @@ const ModelStepContent = ({ state, onChange, models }: StepProps) => (
     <ModelStep
         models={models}
         selectedId={state.modelId}
-        // forgets the theme picked for the previous model
-        onSelect={(modelId) => onChange({ modelId, theme: '' })}
+        onSelect={(modelId) => {
+            // the catalog dialog also selects the model already selected
+            if (modelId !== state.modelId) {
+                // forgets the theme picked for the previous model
+                onChange({ modelId, theme: '' });
+            }
+        }}
     />
 );
 
@@ -185,7 +190,11 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     } = useGenerateSite();
     // fetched once opened, before the theme step that needs it: the host
     // keeps the wizard mounted while closed
-    const themesQuery = useGetAvailableThemes({ enabled: open });
+    const themesQuery = useGetAvailableThemes({
+        enabled: open,
+        // the step falls back to a theme without the list: no need to wait
+        retry: false,
+    });
     const [index, setIndex] = useState(0);
     const [userState, setState] = useState<WizardState>(INITIAL_STATE);
     const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);

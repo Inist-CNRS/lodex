@@ -15,21 +15,25 @@ import {
     type AvailableTheme,
 } from '../configTenant/useGetAvailableThemes';
 
-// the theme of the instance when none is configured
+// the theme of a new instance, always installed
 const DEFAULT_THEME = 'default';
 
 // only a theme of this instance can be recommended
 const getRecommendedTheme = (
     model: CatalogModel | undefined,
-    themes: AvailableTheme[] = [],
+    themes: AvailableTheme[],
 ) => themes.find(({ value }) => value === model?.theme)?.value;
 
 // the theme applied by the generation until the user picks another one,
-// whatever the theme of the model's archive
+// whatever the theme of the model's archive or of the instance. Without the
+// list of themes, the recommended theme is sent as is: the server warns when
+// it is not installed.
 export const getPreselectedTheme = (
     model: CatalogModel | undefined,
     themes: AvailableTheme[] | undefined,
-) => getRecommendedTheme(model, themes) ?? DEFAULT_THEME;
+) =>
+    (themes ? getRecommendedTheme(model, themes) : model?.theme) ??
+    DEFAULT_THEME;
 
 type ThemeStepProps = {
     model?: CatalogModel;

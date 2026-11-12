@@ -109,13 +109,20 @@ describe('SiteWizard', () => {
         const { rerender } = render(
             <SiteWizard open={false} onClose={jest.fn()} />,
         );
-        expect(useGetAvailableThemes).toHaveBeenLastCalledWith({
-            enabled: false,
-        });
+        expect(useGetAvailableThemes).toHaveBeenLastCalledWith(
+            expect.objectContaining({ enabled: false }),
+        );
         rerender(<SiteWizard open onClose={jest.fn()} />);
-        expect(useGetAvailableThemes).toHaveBeenLastCalledWith({
-            enabled: true,
-        });
+        expect(useGetAvailableThemes).toHaveBeenLastCalledWith(
+            expect.objectContaining({ enabled: true }),
+        );
+    });
+
+    it('does not retry the themes: the step falls back without waiting', () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        expect(useGetAvailableThemes).toHaveBeenLastCalledWith(
+            expect.objectContaining({ retry: false }),
+        );
     });
 
     it('displays the title and the progress on the first step', () => {
@@ -263,7 +270,7 @@ describe('SiteWizard', () => {
         expect(button('site_wizard_generate')).toBeDisabled();
     });
 
-    it('generates with the default theme when the themes cannot be loaded', async () => {
+    it('generates with the recommended theme when the themes cannot be loaded', async () => {
         (useGetAvailableThemes as jest.Mock).mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -278,6 +285,22 @@ describe('SiteWizard', () => {
         expect(generate).toHaveBeenCalledWith(
             models[2],
             { type: 'url', url: 'https://x' },
+            { siteName: '', siteDescription: '', theme: 'nougat' },
+        );
+    });
+
+    it('generates with the default theme when the themes cannot be loaded for a model without theme', async () => {
+        (useGetAvailableThemes as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            error: new Error('boom'),
+        });
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(button('site_wizard_generate'));
+        expect(generate).toHaveBeenCalledWith(
+            models[0],
+            { type: 'url', url: 'https://x' },
             { siteName: '', siteDescription: '', theme: 'default' },
         );
     });
@@ -290,6 +313,33 @@ describe('SiteWizard', () => {
             within(screen.getByRole('listbox')).getByText(/Nougat/),
         );
         await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_next'));
+        expect(themeSelect()).toHaveTextContent('Nougat - Nougat theme');
+    });
+
+    it('keeps the chosen theme when the same model is chosen again from the catalog', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(themeSelect());
+        await userEvent.click(
+            within(screen.getByRole('listbox')).getByText(/Nougat/),
+        );
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_choose_model'));
+        await userEvent.click(
+            within(
+                screen.getByRole('navigation', { name: 'model list' }),
+            ).getAllByText('mc_a_title')[0],
+        );
+        await waitFor(() =>
+            expect(
+                screen.queryByRole('navigation', { name: 'model list' }),
+            ).not.toBeInTheDocument(),
+        );
+        await userEvent.click(button('site_wizard_next'));
+        await userEvent.click(button('site_wizard_next'));
         await userEvent.click(button('site_wizard_next'));
         expect(themeSelect()).toHaveTextContent('Nougat - Nougat theme');
     });

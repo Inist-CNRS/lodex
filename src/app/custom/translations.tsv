@@ -1585,7 +1585,7 @@
 "site_wizard_theme_title"	"Theme"	"Thème"
 "site_wizard_theme_hint"	"In Lodex, the theme applies the visual identity of an organization, a project... through colors, fonts, icons and a logo."	"Dans Lodex, le thème met en oeuvre une charte graphique garante de l'identité graphique d'un organisme, un projet,... au moyen de couleurs, polices de caractères, icônes, logo."
 "site_wizard_theme_recommended"	"Recommended"	"Recommandé"
-"site_wizard_themes_error"	"The themes could not be loaded: the default theme will be applied"	"Les thèmes n'ont pas pu être chargés : le thème par défaut sera appliqué"
+"site_wizard_themes_error"	"The themes could not be loaded: the theme recommended by the model, else the default theme, will be applied"	"Les thèmes n'ont pas pu être chargés : le thème recommandé par le modèle, sinon le thème par défaut, sera appliqué"
 "site_wizard_generating"	"Generating the site…"	"Génération du site en cours…"
 "site_wizard_cancel_title"	"Leave the automatic generation?"	"Quitter la génération automatique ?"
 "site_wizard_cancel_description"	"The information already configured will be lost."	"Les informations déjà configurées seront perdues."
