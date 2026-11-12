@@ -26,6 +26,8 @@ async function insertDocuments(this: any, data: any, feed: any) {
         const orderedData = moveUriToFirstPosition([].concat(data));
         await collection.insertMany(orderedData, {
             forceServerObjectId: true,
+            // a duplicate must not stop the rest of the batch from being inserted
+            ordered: false,
             w: 1,
         });
         feed.send(orderedData);
