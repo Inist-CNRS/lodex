@@ -17,8 +17,15 @@ const models: CatalogModel[] = [
         loader: 'la',
         doc: 'http://a.doc',
         demo: 'http://a.demo',
+        importTypes: ['file', 'url', 'text'],
     },
-    { id: 'b', url: 'http://b.tar', loader: 'lb' },
+    {
+        id: 'b',
+        url: 'http://b.tar',
+        loader: 'lb',
+        importTypes: ['text'],
+        importHelp: { fr: 'Collez votre requête', en: 'Paste your query' },
+    },
 ];
 
 jest.mock('./useDisplayableModels', () => ({
@@ -100,6 +107,27 @@ describe('SiteWizard', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep('mc_b_title');
         expect(screen.queryByRole('link')).not.toBeInTheDocument();
+    });
+
+    it('hides the tabs and opens the import type of a single-type model', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep('mc_b_title');
+        expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+        expect(screen.queryByText('import_file_text')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('use_url')).not.toBeInTheDocument();
+    });
+
+    it('displays the import help of the model in the current language', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep('mc_b_title');
+        expect(screen.getByText('Paste your query')).toBeInTheDocument();
+    });
+
+    it('displays no import help for a model without one', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        expect(screen.getAllByRole('tab')).toHaveLength(3);
+        expect(screen.queryByText('Paste your query')).not.toBeInTheDocument();
     });
 
     it('goes back to the first step with the model still selected', async () => {

@@ -62,7 +62,15 @@ const ModelStepContent = ({ state, onChange, models }: StepProps) => (
     <ModelStep
         models={models}
         selectedId={state.modelId}
-        onSelect={(modelId) => onChange({ modelId })}
+        onSelect={(modelId) =>
+            onChange({
+                modelId,
+                // open the first import type allowed by the model
+                tab:
+                    findModel(models, modelId)?.importTypes[0] ??
+                    INITIAL_STATE.tab,
+            })
+        }
     />
 );
 
@@ -86,8 +94,9 @@ const DataStepHeaderContent = ({ state, models }: StepProps) => {
     return model ? <DataStepHeader model={model} /> : null;
 };
 
-const DataStepContent = ({ state, onChange }: StepProps) => (
+const DataStepContent = ({ state, onChange, models }: StepProps) => (
     <DataStep
+        tabs={findModel(models, state.modelId)?.importTypes}
         tab={state.tab}
         onTabChange={(tab) => onChange({ tab })}
         files={state.files}

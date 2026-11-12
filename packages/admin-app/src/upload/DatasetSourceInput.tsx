@@ -98,6 +98,8 @@ export type DatasetSourceInputProps = {
     // hides the per-tab descriptions, which tell the user to choose a loader;
     // the file size limit is then shown in the dropzone
     hideDescriptions?: boolean;
+    // the tabs offered, in this order (all by default)
+    tabs?: DatasetSourceTab[];
     // rendered between the tabs and the form, e.g. an error message
     children?: ReactNode;
 };
@@ -130,6 +132,12 @@ export const getDatasetSource = ({
 
 const TABS: DatasetSourceTab[] = ['file', 'url', 'text'];
 
+const TAB_ICONS = {
+    file: <UploadFileIcon />,
+    url: <LinkIcon />,
+    text: <EditNoteIcon />,
+};
+
 export const DatasetSourceInput = ({
     tab,
     onTabChange,
@@ -140,6 +148,7 @@ export const DatasetSourceInput = ({
     text,
     onTextChange,
     hideDescriptions = false,
+    tabs = TABS,
     children,
 }: DatasetSourceInputProps) => {
     const { translate } = useTranslate();
@@ -158,32 +167,28 @@ export const DatasetSourceInput = ({
 
     return (
         <>
-            {/* Tabs selector use to select the import type */}
-            <Box sx={styles.tabs}>
-                <Tabs
-                    value={TABS.indexOf(tab)}
-                    onChange={(_: unknown, index: number) =>
-                        onTabChange(TABS[index])
-                    }
-                    variant="fullWidth"
-                >
-                    <Tab
-                        icon={<UploadFileIcon />}
-                        iconPosition="start"
-                        label={translate('upload_by_file')}
-                    />
-                    <Tab
-                        icon={<LinkIcon />}
-                        iconPosition="start"
-                        label={translate('upload_by_url')}
-                    />
-                    <Tab
-                        icon={<EditNoteIcon />}
-                        iconPosition="start"
-                        label={translate('upload_by_text')}
-                    />
-                </Tabs>
-            </Box>
+            {/* Tabs selector use to select the import type, useless for a single one */}
+            {tabs.length > 1 && (
+                <Box sx={styles.tabs}>
+                    <Tabs
+                        value={tab}
+                        onChange={(_: unknown, value: DatasetSourceTab) =>
+                            onTabChange(value)
+                        }
+                        variant="fullWidth"
+                    >
+                        {tabs.map((value) => (
+                            <Tab
+                                key={value}
+                                value={value}
+                                icon={TAB_ICONS[value]}
+                                iconPosition="start"
+                                label={translate(`upload_by_${value}`)}
+                            />
+                        ))}
+                    </Tabs>
+                </Box>
+            )}
 
             {children}
 
@@ -191,6 +196,8 @@ export const DatasetSourceInput = ({
             <Box
                 sx={{
                     ...styles.form,
+                    // without the tabs, leave room for the outlined label of the first field
+                    ...(tabs.length > 1 ? {} : { paddingTop: 1 }),
                     '& .dropzone': styles.dropzone,
                     '& .disabledDropzone': styles.disabledDropzone,
                     '& .dropzonePreview': styles.dropzonePreview,

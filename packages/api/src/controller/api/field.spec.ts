@@ -468,6 +468,7 @@ describe('field routes', () => {
             id: 'm',
             url: 'https://x/m.tar',
             loader: 'csv',
+            importTypes: ['file'],
         };
         const stream = { filename: 'm.tar' };
         let ctx: any;
@@ -477,7 +478,7 @@ describe('field routes', () => {
                 request: { body: { id: 'm' } },
                 catalogModels: [
                     tarModel,
-                    { id: 'zip', url: 'https://x/m.zip', loader: 'csv' },
+                    { ...tarModel, id: 'zip', url: 'https://x/m.zip' },
                     { ...tarModel, id: 'themed', theme: 'hal-cnrs' },
                 ],
                 availableLoaders: ['csv'],

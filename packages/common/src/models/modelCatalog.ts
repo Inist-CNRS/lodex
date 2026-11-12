@@ -44,8 +44,12 @@ export const catalogModelSchema = z
         demo: emptyAsMissing(httpLinkSchema),
         /** Recommended theme: a folder name of src/app/custom/themes/ */
         theme: emptyAsMissing(z.string()),
-        /** Missing or empty: every import type is allowed */
-        importTypes: emptyAsMissing(z.array(z.enum(MODEL_IMPORT_TYPES))),
+        /** Import types offered in the wizard, in this order */
+        importTypes: z.array(z.enum(MODEL_IMPORT_TYPES)).min(1),
+        /** Help shown above the data input of the wizard, in both languages */
+        importHelp: emptyAsMissing(
+            z.object({ fr: z.string().min(1), en: z.string().min(1) }),
+        ),
         launchOrder: emptyAsMissing(
             z.array(launchStepSchema).refine(hasUniqueEnrichmentPositions),
         ),

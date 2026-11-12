@@ -32,7 +32,8 @@ Each model is a JSON object in the `models-catalog.json` array.
 | `doc`         | no       | Link to the model documentation, starting with `http://` or `https://`. Missing or `""`: no link.                                                                                         |
 | `demo`        | no       | Link to the demonstration instance, starting with `http://` or `https://`. Missing or `""`: no link.                                                                                      |
 | `theme`       | no       | Recommended theme: one theme folder name from `src/app/custom/themes/` (e.g. `"hal-cnrs"`). Missing or `""`: no recommended theme.                                                        |
-| `importTypes` | no       | Allowed ways to import the dataset, among `"file"`, `"url"` and `"text"` (free input). Missing or `[]`: every import type is allowed.                                                     |
+| `importTypes` | yes      | Ways to import the dataset offered in the wizard, among `"file"`, `"url"` and `"text"` (free input), at least one. The first one is opened by default.                                    |
+| `importHelp`  | no       | Help shown above the dataset input of the wizard, in both languages: `{ "fr": "…", "en": "…" }`. Missing or `""`: no help.                                                                |
 | `launchOrder` | no       | Order in which enrichments and precomputations are launched once the model is applied. See [Launch order](#launch-order).                                                                 |
 
 ## Name and description
@@ -90,7 +91,7 @@ Forbidden (`EnrichissementA` and `EnrichissementB` are both at position 1):
 **Add a model**
 
 1. Add the model archive in `archives/<id>.tar`.
-2. Add a new object at the end of the array in `models-catalog.json`, with at least `id`, `url` (see [Model archives](#model-archives)) and `loader`.
+2. Add a new object at the end of the array in `models-catalog.json`, with at least `id`, `url` (see [Model archives](#model-archives)), `loader` and `importTypes`.
 3. Add the `mc_<id>_title` and `mc_<id>_description` lines in `src/app/custom/translations.tsv`.
 4. If the model needs a new loader, add its `.ini` file in `packages/workers/src/loaders/` and its name in `scripts.loaders` of `config/default.js`.
 
@@ -104,10 +105,10 @@ The order of the models in the file is the order in which they are offered.
 
 A model is offered to the user only if:
 
-1. `id`, `url` and `loader` are filled, and the loader is enabled on the instance;
+1. `id`, `url`, `loader` and `importTypes` are filled, and the loader is enabled on the instance;
 2. its name and description are translated in English and in French;
 3. its launch order, if any, follows the rules above;
-4. its other optional fields, if filled, have the expected type (`doc` and `demo` are `http(s)` links, `theme` is a text, `importTypes` is a list of allowed values). An empty text `""` or an empty list `[]` is the same as a missing field;
+4. its other optional fields, if filled, have the expected type (`doc` and `demo` are `http(s)` links, `theme` is a text, `importHelp` has a non-empty `fr` and `en` text). An empty text `""` or an empty list `[]` is the same as a missing field;
 5. no previous model in the file uses the same `id`.
 
 A model that does not follow these rules is accepted in the file and breaks nothing: it is simply not offered.

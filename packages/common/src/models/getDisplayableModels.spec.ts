@@ -1,7 +1,12 @@
 import { getDisplayableModels } from './getDisplayableModels';
 
 describe('getDisplayableModels', () => {
-    const valid = { id: 'm', url: 'https://x/m.tar', loader: 'csv' };
+    const valid = {
+        id: 'm',
+        url: 'https://x/m.tar',
+        loader: 'csv',
+        importTypes: ['file'],
+    };
     const options = {
         availableLoaders: ['csv'],
         hasTranslation: () => true,
@@ -24,12 +29,12 @@ describe('getDisplayableModels', () => {
         ).toStrictEqual([valid]);
     });
 
-    it.each(['id', 'url', 'loader'])(
+    it.each(['id', 'url', 'loader', 'importTypes'])(
         'should filter out a model with a missing or empty %s',
         (field) => {
             const { [field]: _removed, ...withoutField } = valid as Record<
                 string,
-                string
+                unknown
             >;
             expect(getDisplayableModels([withoutField], options)).toStrictEqual(
                 [],
@@ -39,6 +44,12 @@ describe('getDisplayableModels', () => {
             ).toStrictEqual([]);
         },
     );
+
+    it('should filter out a model with an empty importTypes list', () => {
+        expect(
+            getDisplayableModels([{ ...valid, importTypes: [] }], options),
+        ).toStrictEqual([]);
+    });
 
     it('should filter out a model whose loader is not available on the instance', () => {
         expect(
@@ -88,6 +99,7 @@ describe('getDisplayableModels', () => {
         ],
         ['a recommended theme', { theme: 'inist' }],
         ['known import types', { importTypes: ['file', 'url'] }],
+        ['an import help', { importHelp: { fr: 'Collez', en: 'Paste' } }],
     ])('should accept %s', (_label, overrides) => {
         const model = { ...valid, ...overrides };
         expect(getDisplayableModels([model], options)).toStrictEqual([model]);
@@ -112,10 +124,10 @@ describe('getDisplayableModels', () => {
         ).toStrictEqual([valid]);
     });
 
-    it('should treat empty doc, demo, theme and import types as missing', () => {
+    it('should treat empty doc, demo, theme and import help as missing', () => {
         expect(
             getDisplayableModels(
-                [{ ...valid, doc: '', demo: '', theme: '', importTypes: [] }],
+                [{ ...valid, doc: '', demo: '', theme: '', importHelp: '' }],
                 options,
             ),
         ).toStrictEqual([valid]);
@@ -152,6 +164,9 @@ describe('getDisplayableModels', () => {
         ['demo', {}],
         ['theme', ['inist']],
         ['theme', 42],
+        ['importHelp', 'Collez'],
+        ['importHelp', { fr: 'Collez' }],
+        ['importHelp', { fr: 'Collez', en: '' }],
     ])('should reject a malformed optional field (%s: %p)', (field, value) => {
         expect(
             getDisplayableModels([{ ...valid, [field]: value }], options),

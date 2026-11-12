@@ -26,6 +26,11 @@ export const DataStepHeader = ({ model }: { model: CatalogModel }) => {
                 })}
             </Typography>
             <ModelLinks model={model} />
+            {model.importHelp && (
+                <Typography sx={{ mt: 2 }}>
+                    {model.importHelp[locale]}
+                </Typography>
+            )}
         </>
     );
 };
@@ -39,6 +44,7 @@ type DataStepProps = {
     onUrlChange: (url: string) => void;
     text: string;
     onTextChange: (text: string) => void;
+    tabs?: DatasetSourceTab[];
 };
 
 export const DataStep = (inputProps: DataStepProps) => (

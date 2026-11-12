@@ -6,6 +6,10 @@
         "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-theses-fr/",
         "demo": "https://catalogue-modeles.lodex.inist.fr/instance/theses-fr",
         "importTypes": ["text"],
+        "importHelp": {
+            "fr": "Copiez-collez l'URL de votre requête theses.fr dans la zone de saisie ci-dessous.",
+            "en": "Paste the URL of your theses.fr query in the input below."
+        },
         "launchOrder": [
             { "name": "clusterRameau", "type": "precomputed", "position": 1 },
             { "name": "xml", "type": "enrichment", "position": 2 },
@@ -45,6 +49,10 @@
         "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-openalex/",
         "demo": "https://catalogue-modeles.lodex.inist.fr/instance/open-alex",
         "theme": "inist",
-        "importTypes": ["text"]
+        "importTypes": ["text"],
+        "importHelp": {
+            "fr": "Copiez-collez votre requête OpenAlex dans la zone de saisie ci-dessous, puis ajoutez &api_key= à la fin de l'URL, suivi de votre clé API OpenAlex. Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_CLE_API",
+            "en": "Paste your OpenAlex query in the input below, then append &api_key= to the end of the URL, followed by your OpenAlex API key. E.g.: https://api.openalex.org/works?filter=publication_year:2025&api_key=YOUR_API_KEY"
+        }
     }
 ]
