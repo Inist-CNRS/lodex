@@ -314,6 +314,14 @@ const processEnrichmentPipeline = (
             filter,
         };
         let errorCount = 0;
+        let rowCount = 0;
+        const logMemory = (step: string) => {
+            const { rss, heapUsed } = process.memoryUsage();
+            getLogger(ctx.tenant).info(
+                `[memory] enrichment "${enrichment.name}" ${step} rows=${rowCount} rss=${Math.round(rss / 1048576)}MB heapUsed=${Math.round(heapUsed / 1048576)}MB`,
+            );
+        };
+        logMemory('start');
         const script = `
 [use]
 plugin = lodex
@@ -370,6 +378,9 @@ fusible = ${fusible}
                     );
                 }
                 progress.incrementProgress(ctx.tenant, 1);
+                if (++rowCount % 1000 === 0) {
+                    logMemory('progress');
+                }
                 const { id, value, error } = data;
 
                 let logData;
@@ -395,8 +406,12 @@ fusible = ${fusible}
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
             })
-            .on('end', () => resolve(errorCount))
+            .on('end', () => {
+                logMemory('end');
+                resolve(errorCount);
+            })
             .on('error', (error: any) => {
+                logMemory('error');
                 error.errorCount = errorCount;
                 reject(error);
             });
