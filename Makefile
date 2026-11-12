@@ -40,6 +40,8 @@ ifeq "$(CI)" "true"
 else
 	docker compose -f docker-compose.dev.yml run --no-deps --rm api npm install --legacy-peer-deps
 endif
+	# workers imports @ezs/lodex/lib, which must exist before the containers start
+	docker compose -f docker-compose.dev.yml run --no-deps --rm api npm --prefix packages/ezsLodex run build
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the node, admin, and frontend apps
 
