@@ -5,10 +5,10 @@ import { v1 as uuid } from 'uuid';
 
 import _ from 'lodash';
 import { DATASET_ID } from '../../models/dataSource';
+import { TaskStatus } from '@lodex/common';
 import {
     createEnrichmentRule,
     getEnrichmentDataPreview,
-    setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
 import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
 import { getOrCreateWorkerQueue } from '../../workers';
@@ -115,6 +115,23 @@ export const deleteEnrichment = async (ctx: any, id: any) => {
     }
 };
 
+// Write PENDING before queuing the job: the worker can pick it up and set
+// IN_PROGRESS before add() resolves, and PENDING would then overwrite it.
+const queueEnrichmentJob = async (
+    ctx: any,
+    id: any,
+    jobType: string,
+    options: Record<string, unknown> = {},
+) => {
+    const jobId = uuid();
+    await ctx.enrichment.updateStatus(id, TaskStatus.PENDING, { jobId });
+    return getOrCreateWorkerQueue(ctx.tenant, 1).add(
+        jobType,
+        { id, jobType, tenant: ctx.tenant },
+        { jobId, ...options },
+    );
+};
+
 export const getEnrichment = async (ctx: any, id: any) => {
     ctx.body = await ctx.enrichment.findOneById(id);
 };
@@ -129,19 +146,7 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
     }
 
     if (action === 'launch') {
-        await getOrCreateWorkerQueue(ctx.tenant, 1)
-            .add(
-                ENRICHER, // Name of the job
-                {
-                    id,
-                    jobType: ENRICHER,
-                    tenant: ctx.tenant,
-                },
-                { jobId: uuid() },
-            )
-            .then((job: any) => {
-                setEnrichmentJobId(ctx, id, job);
-            });
+        await queueEnrichmentJob(ctx, id, ENRICHER);
         ctx.body = {
             status: 'pending',
         };
@@ -154,19 +159,7 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
             enrichment.name,
         );
 
-        await getOrCreateWorkerQueue(ctx.tenant, 1)
-            .add(
-                ENRICHER, // Name of the job
-                {
-                    id,
-                    jobType: ENRICHER,
-                    tenant: ctx.tenant,
-                },
-                { jobId: uuid() },
-            )
-            .then((job: any) => {
-                setEnrichmentJobId(ctx, id, job);
-            });
+        await queueEnrichmentJob(ctx, id, ENRICHER);
         ctx.body = {
             status: 'pending',
         };
@@ -233,17 +226,9 @@ export const launchAllEnrichment = async (ctx: Koa.Context) => {
         );
 
         for (const enrichment of orderedEnrichments) {
-            await getOrCreateWorkerQueue(ctx.tenant, 1)
-                .add(
-                    ENRICHER, // Name of the job
-                    {
-                        id: enrichment._id,
-                        jobType: ENRICHER,
-                        tenant: ctx.tenant,
-                    },
-                    { jobId: uuid(), lifo: false },
-                )
-                .then((job) => setEnrichmentJobId(ctx, enrichment._id, job));
+            await queueEnrichmentJob(ctx, enrichment._id, ENRICHER, {
+                lifo: false,
+            });
         }
 
         ctx.body = {
@@ -262,19 +247,7 @@ export const launchAllEnrichment = async (ctx: Koa.Context) => {
 };
 
 export const retryEnrichmentOnFailedRow = async (ctx: any, id: any) => {
-    await getOrCreateWorkerQueue(ctx.tenant, 1)
-        .add(
-            RETRY_ENRICHER, // Name of the job
-            {
-                id,
-                jobType: RETRY_ENRICHER,
-                tenant: ctx.tenant,
-            },
-            { jobId: uuid() },
-        )
-        .then((job: any) => {
-            setEnrichmentJobId(ctx, id, job);
-        });
+    await queueEnrichmentJob(ctx, id, RETRY_ENRICHER);
     ctx.body = {
         status: 'pending',
     };

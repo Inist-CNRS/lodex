@@ -401,6 +401,11 @@ export const processEnrichment = async (
 ) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
     await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.IN_PROGRESS);
+    // Only now: the admin reloads the enrichments when it gets this message
+    notifyListeners(`${ctx.tenant}-enricher`, {
+        isEnriching: true,
+        success: false,
+    });
     if (enrichment.dataSource && enrichment.dataSource !== DATASET_COLLECTION) {
         await ctx.precomputed.removeResultColumn(
             enrichment.dataSource,
@@ -440,16 +445,6 @@ export const processEnrichment = async (
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-};
-
-export const setEnrichmentJobId = async (
-    ctx: any,
-    enrichmentID: any,
-    job: any,
-) => {
-    await ctx.enrichment.updateStatus(enrichmentID, TaskStatus.PENDING, {
-        jobId: job.id,
-    });
 };
 
 export const startEnrichment = async (ctx: any) => {
