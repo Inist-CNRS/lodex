@@ -1,5 +1,5 @@
-import transformer from './operations/TRIM';
-import dollar from './dollar';
+import transformer from './operations/TRIM.js';
+import dollar from './dollar.js';
 
 /**
  *  enlève les espaces au début et à la fin d'une chaîne de caractères

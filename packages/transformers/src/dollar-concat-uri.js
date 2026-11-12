@@ -1,5 +1,5 @@
-import transformer from './operations/CONCAT_URI';
-import dollar from './dollar';
+import transformer from './operations/CONCAT_URI.js';
+import dollar from './dollar.js';
 
 /**
  * composer un identifiant avec plusieurs champs

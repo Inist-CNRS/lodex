@@ -1,5 +1,5 @@
-import transformer from './operations/FORMAT';
-import dollar from './dollar';
+import transformer from './operations/FORMAT.js';
+import dollar from './dollar.js';
 
 /**
  * appliquer un patron (template)

@@ -1,5 +1,5 @@
-import transformer from './operations/TRUNCATE';
-import dollar from './dollar';
+import transformer from './operations/TRUNCATE.js';
+import dollar from './dollar.js';
 
 /**
  * tronque, prend les premières valeurs d'un tableau, d'une chaîne

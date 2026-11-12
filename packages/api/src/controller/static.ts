@@ -2,15 +2,16 @@ import type { ServerResponse } from 'http';
 import Koa from 'koa';
 import serve from 'koa-static';
 import path from 'path';
+import { REPO_ROOT } from '../paths';
 
 // Order matters: the first directory containing the requested file wins.
 export const STATIC_DIRS = [
-    '../../../../src/app/build',
-    '../../../root-admin-app/build',
-    '../../../admin-app/build',
-    '../../../public-app/build',
-    '../../../../src/app/custom',
-].map((dir) => path.resolve(__dirname, dir));
+    'src/app/build',
+    'packages/root-admin-app/build',
+    'packages/admin-app/build',
+    'packages/public-app/build',
+    'src/app/custom',
+].map((dir) => path.join(REPO_ROOT, dir));
 
 // Files under chunks/ have a content hash in their name (see the vite configs):
 // they never change, so browsers can keep them forever.

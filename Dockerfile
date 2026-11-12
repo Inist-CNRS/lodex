@@ -13,8 +13,7 @@ COPY ./packages/ezsLodex/package*.json /app/packages/ezsLodex/
 COPY ./packages/frontend-common/package*.json /app/packages/frontend-common/
 COPY ./packages/public-app/package*.json /app/packages/public-app/
 COPY ./packages/root-admin-app/package*.json /app/packages/root-admin-app/
-# transformers builds itself on install (prepublish), it needs its sources
-COPY ./packages/transformers /app/packages/transformers/
+COPY ./packages/transformers/package*.json /app/packages/transformers/
 COPY ./packages/workers/package*.json /app/packages/workers/
 
 RUN npm install --legacy-peer-deps

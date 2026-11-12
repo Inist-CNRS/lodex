@@ -1,5 +1,5 @@
-import transformer from './operations/URLENCODE';
-import dollar from './dollar';
+import transformer from './operations/URLENCODE.js';
+import dollar from './dollar.js';
 
 /**
  * encode une chaine comme dans une URL

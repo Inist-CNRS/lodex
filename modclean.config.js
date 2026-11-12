@@ -154,6 +154,11 @@ module.exports = {
             'wercker.yml',
             '.flowconfig',
         ],
-        ignore: ['validate-npm-package-license', 'spdx-license-ids'],
+        ignore: [
+            'validate-npm-package-license',
+            'spdx-license-ids',
+            // source map of the api bundle (packages/api/build.mjs)
+            'api/dist/**',
+        ],
     },
 };

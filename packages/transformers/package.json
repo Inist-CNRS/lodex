@@ -1,5 +1,6 @@
 {
     "name": "transformers",
+    "type": "module",
     "description": "LODEX transformers statements for EZS",
     "version": "1.4.4",
     "author": "Nicolas Thouvenin <nthouvenin@gmail.com>",
@@ -26,10 +27,7 @@
     },
     "repository": "Inist-CNRS/ezs.git",
     "scripts": {
-        "build": "babel --root-mode upward src --out-dir lib",
         "lint": "eslint --ext=.js ./test/*.js ./src/*.js",
-        "prepublish": "npm run build",
-        "pretest": "npm run build",
         "preversion": "npm run doc"
     }
 }

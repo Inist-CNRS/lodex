@@ -1,5 +1,5 @@
-import transformer from './operations/CONCAT';
-import dollar from './dollar';
+import transformer from './operations/CONCAT.js';
+import dollar from './dollar.js';
 
 /**
  * concaténer deux valeurs

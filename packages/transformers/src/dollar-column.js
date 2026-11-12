@@ -1,5 +1,5 @@
-import transformer from './operations/COLUMN';
-import dollar from './dollar';
+import transformer from './operations/COLUMN.js';
+import dollar from './dollar.js';
 
 /**
  * prendre une donnée dans un champ (colonne d'un fichier tabulé)

@@ -4,6 +4,7 @@ import mount from 'koa-mount';
 import route from 'koa-route';
 import merge from 'lodash/merge';
 import path from 'path';
+import { REPO_ROOT } from '../paths';
 import api from './api';
 import customPage from './customPage';
 import embedded from './embedded';
@@ -44,7 +45,7 @@ app.use(mount('/rootAdmin', rootAdmin));
 
 const render404IndexHtml = (ctx: any) => {
     ctx.body = fs
-        .readFileSync(path.resolve(__dirname, '../../404.html'))
+        .readFileSync(path.join(REPO_ROOT, 'packages/api/404.html'))
         .toString();
 };
 

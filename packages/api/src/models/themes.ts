@@ -1,6 +1,7 @@
 import config from 'config';
 import path from 'path';
 import getLogger from '../services/logger';
+import { REPO_ROOT } from '../paths';
 import defaultMuiTheme from '../../../../src/app/custom/themes/default/defaultTheme';
 import { cloneDeep, merge } from 'lodash';
 
@@ -8,7 +9,7 @@ import fs from 'fs/promises';
 
 // --- Global variable for the Theme system
 export const THEMES_VERSION = '7';
-export const THEMES_FOLDER = '../../../../src/app/custom/themes';
+export const THEMES_FOLDER = path.join(REPO_ROOT, 'src/app/custom/themes');
 
 // --- Global function for the Theme system
 const logger = getLogger();
@@ -99,7 +100,7 @@ export const getAvailableThemes = () => {
 };
 
 export const getThemeFile = (theme: any, file: any) => {
-    return path.resolve(__dirname, `${THEMES_FOLDER}/${theme}/${file}`);
+    return path.resolve(THEMES_FOLDER, theme, file);
 };
 
 // --- Theme initialisation
@@ -116,8 +117,11 @@ const init = async () => {
             /**
              * @type {ThemeConfig}
              */
-            const themeConfig = await import(
-                getThemeFile(theme, 'lodex-theme.json')
+            const themeConfig = JSON.parse(
+                await fs.readFile(
+                    getThemeFile(theme, 'lodex-theme.json'),
+                    'utf8',
+                ),
             );
 
             if (themeConfig.version !== THEMES_VERSION) {
@@ -169,9 +173,11 @@ const init = async () => {
                         muiTheme,
                         (await import(unVerifiedMuiTheme)).default,
                     );
-                } catch (_) {
+                } catch (error) {
+                    // palette files are loaded by node: relative imports need their .js extension
                     logger.warn(
-                        `The declared palette file from ${theme} do not exists`,
+                        `Unable to load the declared palette file from ${theme}, the default palette is used`,
+                        error,
                     );
                 }
             }

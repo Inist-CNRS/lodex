@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import CSV from 'csv-string';
 import moment from 'moment';
 import getLogger from './logger';
+import { REPO_ROOT } from '../paths';
 
 const getFileUpdatedDate = (path: any) => {
     const stats = fs.statSync(path);
@@ -39,9 +40,8 @@ let lastCacheTimestamp: any = null;
 let cachedTranslations = {};
 
 const getTranslations = (
-    filePath = '../../../../src/app/custom/translations.tsv',
+    path = resolve(REPO_ROOT, 'src/app/custom/translations.tsv'),
 ) => {
-    const path = resolve(__dirname, filePath);
     if (!fs.existsSync(path)) {
         const logger = getLogger();
         logger.error('The translation file is missing.');

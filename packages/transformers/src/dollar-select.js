@@ -1,5 +1,5 @@
-import transformer from './operations/SELECT';
-import dollar from './dollar';
+import transformer from './operations/SELECT.js';
+import dollar from './dollar.js';
 
 /**
  * Prendre une valeur dans un objet à partir de son chemin (dot path)

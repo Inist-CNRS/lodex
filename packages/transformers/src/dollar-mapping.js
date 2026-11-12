@@ -1,5 +1,5 @@
-import transformer from './operations/MAPPING';
-import dollar from './dollar';
+import transformer from './operations/MAPPING.js';
+import dollar from './dollar.js';
 
 /**
  * Opération permettant le remplacement à partir d'une table
