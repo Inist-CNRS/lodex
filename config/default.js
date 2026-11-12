@@ -74,8 +74,10 @@ module.exports = {
         enabled: true,
         threshold: 50,
     },
+    // Diagnostic only: restarting the V8 profiler every 5s blocks the event loop
+    // for ~250ms (it walks all the compiled code), so enable it on purpose.
     cpuLagProfiler: {
-        enabled: true,
+        enabled: false,
         threshold: 100,
     },
     tdmservices: {
