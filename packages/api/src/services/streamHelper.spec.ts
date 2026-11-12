@@ -18,12 +18,12 @@ const createApp = (chunks: string[]) => {
     return app;
 };
 
-const get = async (chunks: string[]) => {
+const get = async (chunks: string[], acceptEncoding = 'gzip') => {
     const server = createApp(chunks).listen(0);
     try {
         const response = await fetch(
             `http://localhost:${(server.address() as AddressInfo).port}/`,
-            { headers: { 'Accept-Encoding': 'gzip' } },
+            { headers: { 'Accept-Encoding': acceptEncoding } },
         );
         return {
             encoding: response.headers.get('content-encoding'),
@@ -35,11 +35,21 @@ const get = async (chunks: string[]) => {
 };
 
 describe('withEmptyFallback', () => {
-    it('does not append the empty fallback to a compressed response with data', async () => {
-        const { encoding, body } = await get(['{"total":2,', '"data":[1,2]}']);
-        expect(encoding).toBe('gzip');
-        expect(body).toBe('{"total":2,"data":[1,2]}');
-    });
+    it.each([
+        ['gzip', 'gzip'],
+        // What browsers send: koa-compress picks brotli
+        ['gzip, deflate, br, zstd', 'br'],
+    ])(
+        'does not append the empty fallback to a response with data (Accept-Encoding: %s)',
+        async (acceptEncoding, expectedEncoding) => {
+            const { encoding, body } = await get(
+                ['{"total":2,', '"data":[1,2]}'],
+                acceptEncoding,
+            );
+            expect(encoding).toBe(expectedEncoding);
+            expect(body).toBe('{"total":2,"data":[1,2]}');
+        },
+    );
 
     it('writes the empty fallback when the stream sends nothing', async () => {
         const { body } = await get([]);
