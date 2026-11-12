@@ -111,9 +111,21 @@ export const getPrecomputedCollectionForWebHook = async (tenant: any) => {
     return await precomputed(db);
 };
 
+// The tenant collection is never dropped: build it (listCollections) once, not per request
+let tenantCollectionPromise: ReturnType<typeof tenant> | undefined;
+const getTenantCollection = (rootAdminDb: Db) => {
+    if (!tenantCollectionPromise) {
+        tenantCollectionPromise = tenant(rootAdminDb).catch((error) => {
+            tenantCollectionPromise = undefined;
+            throw error;
+        });
+    }
+    return tenantCollectionPromise;
+};
+
 export const mongoRootAdminClient = async (ctx: any, next: any) => {
     ctx.rootAdminDb = await mongoClient('admin');
-    ctx.tenantCollection = await tenant(ctx.rootAdminDb);
+    ctx.tenantCollection = await getTenantCollection(ctx.rootAdminDb);
     await next();
 };
 

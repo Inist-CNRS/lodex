@@ -6,8 +6,6 @@ import route from 'koa-route';
 import get from 'lodash/get';
 
 import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
-import tenant from '../../models/tenant';
-import mongoClient from '../../services/mongoClient';
 import annotation from './annotation';
 import breadcrumbs from './breadcrumb';
 import characteristic from './characteristic';
@@ -45,10 +43,11 @@ const app = new Koa();
 
 app.use(async (ctx: any, next: any) => {
     if (ctx.tenant !== 'admin') {
-        // check if tenant exists
-        const adminDb = await mongoClient('admin');
-        const tenantCollection = await tenant(adminDb);
-        const tenantInDb = await tenantCollection.findOne({ name: ctx.tenant });
+        // check if tenant exists (already looked up for /instance/ urls)
+        const tenantInDb =
+            ctx.tenantInfo?.name === ctx.tenant
+                ? ctx.tenantInfo
+                : await ctx.tenantCollection.findOne({ name: ctx.tenant });
 
         if (!tenantInDb) {
             ctx.status = 404;
