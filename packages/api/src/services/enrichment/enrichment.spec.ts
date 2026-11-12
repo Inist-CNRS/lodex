@@ -6,6 +6,7 @@ import {
     getEnrichmentDataPreview,
     getEnrichmentRuleModel,
     getSourceError,
+    truncateOutput,
     processEnrichment,
 } from './enrichment';
 import { disableFusible } from '@ezs/core/fusible';
@@ -697,5 +698,17 @@ describe('getSourceError', () => {
             message: 'Source error',
         });
         expect(deepestSourceError.sourceChunk).toBe('This chunk');
+    });
+});
+
+describe('truncateOutput', () => {
+    it('should keep a short output as is', () => {
+        expect(truncateOutput({ a: 1 })).toBe('{"a":1}');
+        expect(truncateOutput(undefined)).toBe('undefined');
+    });
+
+    it('should truncate a long output and give its length', () => {
+        const output = truncateOutput('x'.repeat(500));
+        expect(output).toBe(`"${'x'.repeat(199)}… (502 characters)`);
     });
 });

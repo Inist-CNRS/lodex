@@ -296,6 +296,18 @@ const processEzsEnrichment = (
     });
 };
 
+const JOB_ACTIVE_CHECK_INTERVAL = 100;
+
+// Every row is logged into the job (Redis): a large web service output would
+// make these logs grow with the dataset
+const MAX_LOGGED_OUTPUT_LENGTH = 200;
+export const truncateOutput = (value: unknown) => {
+    const output = String(JSON.stringify(value));
+    return output.length > MAX_LOGGED_OUTPUT_LENGTH
+        ? `${output.slice(0, MAX_LOGGED_OUTPUT_LENGTH)}… (${output.length} characters)`
+        : output;
+};
+
 const processEnrichmentPipeline = (
     room: any,
     fusible: any,
@@ -372,13 +384,19 @@ fusible = ${fusible}
                 ),
             )
             .on('data', async (data: any) => {
-                if (!(await ctx.job?.isActive())) {
+                rowCount += 1;
+                // One Redis call per row floods Redis on big datasets, and the
+                // fusible already stops the pipeline when the job is canceled
+                if (
+                    rowCount % JOB_ACTIVE_CHECK_INTERVAL === 0 &&
+                    !(await ctx.job?.isActive())
+                ) {
                     return reject(
                         new CancelWorkerError('Job has been canceled'),
                     );
                 }
                 progress.incrementProgress(ctx.tenant, 1);
-                if (++rowCount % 1000 === 0) {
+                if (rowCount % 1000 === 0) {
                     logMemory('progress');
                 }
                 const { id, value, error } = data;
@@ -389,7 +407,7 @@ fusible = ${fusible}
                         level: error ? 'error' : 'info',
                         message: error
                             ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
-                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${JSON.stringify(value)})`,
+                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${truncateOutput(value)})`,
                         timestamp: new Date(),
                         status: TaskStatus.IN_PROGRESS,
                     });
