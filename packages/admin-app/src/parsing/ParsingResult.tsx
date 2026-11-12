@@ -239,11 +239,8 @@ export const ParsingResultComponent = ({
                                     <Chip sx={styles.errorChip} label="Error" />
                                 );
                             }
-                            return (
-                                <div title={JSON.stringify(params.value)}>
-                                    {JSON.stringify(params.value)}
-                                </div>
-                            );
+                            const value = JSON.stringify(params.value);
+                            return <div title={value}>{value}</div>;
                         },
                     };
                 });
