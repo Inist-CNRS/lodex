@@ -57,6 +57,12 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
         'publishedFacet',
     )) as PublishedFacetCollection;
 
+    // facet values are listed per field, sorted by count or by value (findLimitFromSkip)
+    await Promise.all([
+        collection.createIndex({ field: 1, count: 1, _id: 1 }),
+        collection.createIndex({ field: 1, value: 1, _id: 1 }),
+    ]);
+
     /**
      * Table de correspondance lettres → regex accent-insensible
      */
@@ -169,7 +175,8 @@ export default async (db: Db): Promise<PublishedFacetCollection> => {
             .sort({
                 [validatedParams.sortBy]:
                     validatedParams.sortDir === 'ASC' ? 1 : -1,
-                _id: 1,
+                // same direction as the main key, so that the indexes serve both directions
+                _id: validatedParams.sortDir === 'ASC' ? 1 : -1,
             })
             .toArray();
     };

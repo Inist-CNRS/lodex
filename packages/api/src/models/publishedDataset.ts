@@ -77,6 +77,8 @@ export default async (db: any) => {
     collection.createIndexesAfterInsert = async () => {
         await collection.dropIndex('avoidDuplicates');
         await collection.createIndex({ removedAt: 1, subresourceId: 1 });
+        // default list sort ({ uri, _id }, see findPage): the hashed uri index cannot sort
+        await collection.createIndex({ uri: 1, _id: 1 });
     };
     // Avant dépublication
     collection.deleteIndexes = () => Promise.all([collection.dropIndexes()]);
@@ -112,17 +114,22 @@ export default async (db: any) => {
         filter,
         meta,
         sort,
+        projection,
     }: any) => {
         const cursor = collection.getFindCursor({
             filter,
             meta,
             sort,
         });
+        if (projection) {
+            cursor.project(projection);
+        }
 
-        return {
-            total: await cursor.count(),
-            data: await cursor.skip(skip).limit(limit).toArray(),
-        };
+        const [total, data] = await Promise.all([
+            collection.countDocuments(filter),
+            cursor.skip(skip).limit(limit).toArray(),
+        ]);
+        return { total, data };
     };
 
     collection.findPage = async ({
@@ -137,6 +144,7 @@ export default async (db: any) => {
         facetFieldNames,
         filters,
         excludeSubresources = false,
+        projection,
     }: any) => {
         const filter = getPublishedDatasetFilter({
             match,
@@ -152,9 +160,16 @@ export default async (db: any) => {
 
         const sort = getSort(sortBy, sortDir, match, searchableFieldNames);
 
-        // add _id to sort to avoid random results
+        // add _id to sort to avoid random results, in the same direction as the
+        // main sort key so that the { uri: 1, _id: 1 } index serves the default sort
+        const [mainSortDirection] = Object.values(sort);
         // @ts-expect-error TS(2339): Property '_id' does not exist on type '{ [x: numbe... Remove this comment to see the full error message
-        sort._id = sortDir === 'ASC' ? 1 : -1;
+        sort._id =
+            typeof mainSortDirection === 'number'
+                ? mainSortDirection
+                : sortDir === 'ASC'
+                  ? 1
+                  : -1;
 
         const results = await collection.findLimitFromSkip({
             limit: perPage,
@@ -162,9 +177,11 @@ export default async (db: any) => {
             filter,
             meta,
             sort,
+            projection,
         });
 
-        if (results.data.length > 0) {
+        // without a search text, the regex fallback would run the same query again
+        if (results.data.length > 0 || !match) {
             return results;
         }
 
@@ -173,6 +190,7 @@ export default async (db: any) => {
             searchableFieldNames,
             facets,
             facetFieldNames,
+            invertedFacets,
             filters,
             regexSearch: true,
             excludeSubresources,
@@ -184,6 +202,7 @@ export default async (db: any) => {
             filter: regexFilters,
             // @ts-expect-error TS(2554): Expected 4 arguments, but got 2.
             sort: getSort(sortBy, sortDir),
+            projection,
         });
     };
 

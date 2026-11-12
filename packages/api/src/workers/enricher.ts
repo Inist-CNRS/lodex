@@ -31,10 +31,6 @@ export const processEnrichment = (
 };
 
 const startJobEnrichment = async (job: any, retryFailedOnly: any) => {
-    notifyListeners(`${job.data.tenant}-enricher`, {
-        isEnriching: true,
-        success: false,
-    });
     const ctx = await prepareContext({ job, retryFailedOnly });
     await startEnrichment(ctx);
 };

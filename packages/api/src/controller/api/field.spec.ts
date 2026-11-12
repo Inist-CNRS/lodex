@@ -843,19 +843,30 @@ describe('field routes', () => {
             });
         });
 
-        it('update the published facets', async () => {
+        it('update the published facets when the field becomes a facet', async () => {
             await publishedDatasetModel.create({});
-            await patchField(ctx, insertedFields[0]._id);
+            const facetCtx = {
+                ...ctx,
+                request: { body: { label, isFacet: true } },
+            };
+            await patchField(facetCtx, insertedFields[0]._id);
             expect(ctx.publishFacets).toHaveBeenCalledWith(
-                ctx,
+                facetCtx,
                 expect.objectContaining([
                     {
                         ...insertedFields[0],
                         label,
+                        isFacet: true,
                     },
                 ]),
                 false,
             );
+        });
+
+        it('should not update the published facets when isFacet does not change', async () => {
+            await publishedDatasetModel.create({});
+            await patchField(ctx, insertedFields[0]._id);
+            expect(ctx.publishFacets).toHaveBeenCalledTimes(0);
         });
 
         it('should not update the published facets if dataset is not published (publishedDataset = 0)', async () => {

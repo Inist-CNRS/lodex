@@ -1,9 +1,12 @@
 export const getPublication = async (ctx: any) => {
-    const publishedDatasetCount = await ctx.publishedDataset.count();
-    const characteristics = await ctx.publishedCharacteristic.findAllVersions(
-        {},
-    );
-    const fields = await ctx.field.findAll();
+    const [publishedDocument, lastCharacteristics, fields] = await Promise.all([
+        // only whether something is published: no need to count the documents
+        ctx.publishedDataset.findOne({}, { projection: { _id: 1 } }),
+        // clients only read the last version, the history grows on each save
+        ctx.publishedCharacteristic.findLastVersion(),
+        ctx.field.findAll(),
+    ]);
+    const characteristics = lastCharacteristics ? [lastCharacteristics] : [];
 
     const fieldsWithCountPromises = fields.map(async (field: any) => ({
         ...field,
@@ -22,7 +25,7 @@ export const getPublication = async (ctx: any) => {
     return {
         characteristics,
         fields: fieldsWithCount,
-        published: publishedDatasetCount > 0,
+        published: !!publishedDocument,
     };
 };
 

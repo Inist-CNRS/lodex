@@ -21,9 +21,10 @@ const SourceValueRoutine = ({
 }) => {
     const { translate } = useTranslate();
     const fields = useSelector((state: any) =>
-        fromFields
-            .getFields(state)
-            .sort((a, b) => a.label.localeCompare(b.label)),
+        // copy: getFields is memoized and shared, never sort it in place
+        [...fromFields.getFields(state)].sort((a, b) =>
+            a.label.localeCompare(b.label),
+        ),
     );
     const [openRoutineCatalog, setOpenRoutineCatalog] = useState(false);
     const [routine, setRoutine] = useState('');
