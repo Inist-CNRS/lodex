@@ -10,7 +10,10 @@ import Script from '../../services/script';
 import { cleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import getLogger from '../../services/logger';
-import { withEmptyFallback } from '../../services/streamHelper';
+import {
+    closeIfHeadersSent,
+    withEmptyFallback,
+} from '../../services/streamHelper';
 
 const baseURL: string = config.has('baseURL')
     ? config.get('baseURL')
@@ -67,6 +70,7 @@ const middlewareScript = async (
         const errorHandle = (err: any) => {
             ctx.status = 503;
             ctx.body.destroy();
+            closeIfHeadersSent(ctx);
             input.destroy();
             logger.error('Error with ', ctx.path, ' and', ctx.query, err);
         };

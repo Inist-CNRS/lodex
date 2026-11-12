@@ -36,3 +36,17 @@ export const withEmptyFallback = (onEmpty: () => string | void) => {
         },
     });
 };
+
+/**
+ * Once the headers are sent, Koa can no longer answer with an error status
+ * and leaves the response open, so the client waits until it times out.
+ * Close the connection instead, so the client sees the failure.
+ */
+export const closeIfHeadersSent = (ctx: {
+    headerSent: boolean;
+    res: { destroy: () => void };
+}) => {
+    if (ctx.headerSent) {
+        ctx.res.destroy();
+    }
+};
