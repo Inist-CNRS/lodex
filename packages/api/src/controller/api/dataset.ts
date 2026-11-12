@@ -53,14 +53,16 @@ export const getDataset = async (ctx: any) => {
         filterValue,
     } = ctx.query;
     const query = buildQuery(filterBy, filterOperator, filterValue);
-    const count = await ctx.dataset.find(query).count();
-    const datas = await ctx.dataset.findLimitFromSkip(
-        limit ? parseInt(limit, 10) : 10,
-        skip ? parseInt(skip) : 0,
-        query,
-        sortBy,
-        sortDir?.toUpperCase(),
-    );
+    const [count, datas] = await Promise.all([
+        ctx.dataset.countDocuments(query),
+        ctx.dataset.findLimitFromSkip(
+            limit ? parseInt(limit, 10) : 10,
+            skip ? parseInt(skip) : 0,
+            query,
+            sortBy,
+            sortDir?.toUpperCase(),
+        ),
+    ]);
     ctx.body = { count, datas };
 };
 
