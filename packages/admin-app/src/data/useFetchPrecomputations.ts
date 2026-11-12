@@ -22,7 +22,9 @@ export const useFetchPrecomputations = () => {
 
     return {
         precomputations,
-        isPrecomputationsLoading,
+        // a reload keeps the current list usable, as react-query did
+        isPrecomputationsLoading:
+            isPrecomputationsLoading && precomputations.length === 0,
         precomputationsError,
     };
 };

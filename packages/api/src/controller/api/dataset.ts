@@ -54,7 +54,10 @@ export const getDataset = async (ctx: any) => {
     } = ctx.query;
     const query = buildQuery(filterBy, filterOperator, filterValue);
     const [count, datas] = await Promise.all([
-        ctx.dataset.countDocuments(query),
+        // without a filter, the collection metadata answers without reading documents
+        Object.keys(query).length === 0
+            ? ctx.dataset.estimatedDocumentCount()
+            : ctx.dataset.countDocuments(query),
         ctx.dataset.findLimitFromSkip(
             limit ? parseInt(limit, 10) : 10,
             skip ? parseInt(skip) : 0,

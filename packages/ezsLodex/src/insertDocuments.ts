@@ -32,8 +32,12 @@ async function insertDocuments(this: any, data: any, feed: any) {
         });
         feed.send(orderedData);
     } catch (e) {
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
-        feed.send({ error: e.message });
+        // one item per document, so that the publication progress still
+        // counts every document of a failed batch
+        feed.send(
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
+            [].concat(data).map(() => ({ error: e.message })),
+        );
     }
 }
 
