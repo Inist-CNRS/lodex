@@ -21,7 +21,7 @@ describe('Site wizard', () => {
 
     it('opens on an empty instance and leads to the manual configuration', () => {
         wizardTitle().should('be.visible');
-        cy.contains('1/3').should('be.visible');
+        cy.contains('1/4').should('be.visible');
 
         cy.contains('button', 'Configure the site manually').click();
         cy.get('[role="dialog"]')

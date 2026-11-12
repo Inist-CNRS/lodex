@@ -744,6 +744,42 @@ describe('field routes', () => {
             expect(ctx.body.themeNotFound).toBeUndefined();
         });
 
+        it('should apply the chosen theme instead of the recommended one', async () => {
+            ctx.request.body = { id: 'themed', theme: 'nougat' };
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.applyRecommendedTheme).toHaveBeenCalledTimes(1);
+            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
+                ctx,
+                'nougat',
+            );
+            expect(ctx.status).toBe(200);
+        });
+
+        it('should apply the chosen theme over the archive one for a model without theme', async () => {
+            ctx.request.body = { id: 'm', theme: 'default' };
+            ctx.restoreFields.mockResolvedValue({ themeNotFound: 'x' });
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
+                ctx,
+                'default',
+            );
+            expect(ctx.body.themeNotFound).toBeUndefined();
+        });
+
+        it('should apply the site name and description after the chosen theme', async () => {
+            ctx.request.body = { id: 'm', theme: 'nougat', siteName: 'S' };
+
+            await importCatalogModel(ctx);
+
+            expect(
+                ctx.applyRecommendedTheme.mock.invocationCallOrder[0],
+            ).toBeLessThan(ctx.applySiteInfo.mock.invocationCallOrder[0]);
+        });
+
         it('should return 502 when the download fails', async () => {
             ctx.downloadModelArchive.mockRejectedValue(
                 new Error('404 Not Found'),
