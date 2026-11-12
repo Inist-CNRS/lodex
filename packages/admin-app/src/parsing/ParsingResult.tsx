@@ -4,7 +4,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
     DataGrid,
     getGridBooleanOperators,
-    getGridNumericColumnOperators,
+    getGridNumericOperators,
     getGridStringOperators,
     GridToolbarColumnsButton,
     GridToolbarContainer,
@@ -96,8 +96,7 @@ const styles = {
 const getFiltersOperatorsForType = (type) => {
     switch (type) {
         case 'number':
-            return getGridNumericColumnOperators().filter(
-                // @ts-expect-error TS7006
+            return getGridNumericOperators().filter(
                 (operator) =>
                     operator.value === '=' ||
                     operator.value === '<' ||
@@ -210,7 +209,7 @@ export const ParsingResultComponent = ({
                         filterable: type !== 'object',
                         sortable: type !== 'object',
                         filterOperators: getFiltersOperatorsForType(type),
-                        type,
+                        type: type === 'object' ? undefined : type, // "object" is not a DataGrid column type
                         // @ts-expect-error TS7006
                         renderCell: (params) => {
                             if (
