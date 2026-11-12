@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { ADMIN_ROLE } from '@lodex/common';
+import { ADMIN_ROLE, type SiteInfo } from '@lodex/common';
 import getQueryString from '../utils/getQueryString';
 
 export const LOGIN = 'LOGIN';
@@ -737,12 +737,12 @@ export const getUploadTextRequest = (
 
 export const getImportCatalogModelRequest = (
     state: UserState,
-    { id }: { id: string },
+    body: { id: string } & SiteInfo,
 ) =>
     getRequest(state, {
         method: 'POST',
         url: '/api/field/import-catalog-model',
-        body: { id },
+        body,
     });
 
 export const getUrlRequest = (

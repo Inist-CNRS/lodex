@@ -1,34 +1,22 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import type { FileObject } from 'mui-file-dropzone';
-import { getModelTitleKey, type CatalogModel } from '@lodex/common';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { type CatalogModel } from '@lodex/common';
 import {
     DatasetSourceInput,
     type DatasetSourceTab,
 } from '../upload/DatasetSourceInput';
 import { ModelLinks } from './ModelLinks';
+import { ModelSubtitle } from './ModelSubtitle';
 
-// In French, "Modèle OpenAlex" reads "le modèle OpenAlex" inside a sentence.
-// English titles start with the model's name ("OpenAlex model"): keep them.
-export const getModelNameInSentence = (title: string, locale: 'fr' | 'en') =>
-    locale === 'fr' ? title.slice(0, 1).toLowerCase() + title.slice(1) : title;
-
-export const DataStepHeader = ({ model }: { model: CatalogModel }) => {
-    const { translate, locale } = useTranslate();
-    return (
-        <>
-            <Typography color="text.secondary">
-                {translate('site_wizard_data_subtitle', {
-                    name: getModelNameInSentence(
-                        translate(getModelTitleKey(model.id)),
-                        locale,
-                    ),
-                })}
-            </Typography>
-            <ModelLinks model={model} />
-        </>
-    );
-};
+export const DataStepHeader = ({ model }: { model: CatalogModel }) => (
+    <>
+        <ModelSubtitle
+            model={model}
+            translationKey="site_wizard_data_subtitle"
+        />
+        <ModelLinks model={model} />
+    </>
+);
 
 type DataStepProps = {
     tab: DatasetSourceTab;
