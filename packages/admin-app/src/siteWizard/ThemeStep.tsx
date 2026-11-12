@@ -11,7 +11,6 @@ import { type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     getThemeLabel,
-    useGetAvailableThemes,
     type AvailableTheme,
 } from '../configTenant/useGetAvailableThemes';
 
@@ -37,13 +36,22 @@ export const getPreselectedTheme = (
 
 type ThemeStepProps = {
     model?: CatalogModel;
+    themes?: AvailableTheme[];
+    isLoading: boolean;
+    hasError: boolean;
     theme: string;
     onThemeChange: (theme: string) => void;
 };
 
-export const ThemeStep = ({ model, theme, onThemeChange }: ThemeStepProps) => {
+export const ThemeStep = ({
+    model,
+    themes = [],
+    isLoading,
+    hasError,
+    theme,
+    onThemeChange,
+}: ThemeStepProps) => {
     const { translate, locale } = useTranslate();
-    const { data: themes = [], isLoading, error } = useGetAvailableThemes();
     const recommended = getRecommendedTheme(model, themes);
     const findTheme = (value: string) =>
         themes.find((available) => available.value === value);
@@ -63,7 +71,7 @@ export const ThemeStep = ({ model, theme, onThemeChange }: ThemeStepProps) => {
             </Typography>
             {isLoading ? (
                 <CircularProgress size={24} sx={{ mt: 3 }} />
-            ) : error ? (
+            ) : hasError ? (
                 <Alert severity="warning" sx={{ mt: 3 }}>
                     {translate('site_wizard_themes_error')}
                 </Alert>

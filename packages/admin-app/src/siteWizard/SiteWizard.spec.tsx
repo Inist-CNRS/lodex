@@ -118,11 +118,14 @@ describe('SiteWizard', () => {
         );
     });
 
-    it('does not retry the themes: the step falls back without waiting', () => {
+    it('does not retry the themes, even from the theme step: the step falls back without waiting', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
-        expect(useGetAvailableThemes).toHaveBeenLastCalledWith(
-            expect.objectContaining({ retry: false }),
-        );
+        await goToThemeStep();
+        // a new observer would refetch a failed query with its own options
+        for (const [options] of (useGetAvailableThemes as jest.Mock).mock
+            .calls) {
+            expect(options).toEqual(expect.objectContaining({ retry: false }));
+        }
     });
 
     it('displays the title and the progress on the first step', () => {

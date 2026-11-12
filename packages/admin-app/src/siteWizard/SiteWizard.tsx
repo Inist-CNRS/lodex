@@ -47,6 +47,9 @@ type StepProps = {
     models: CatalogModel[];
     // the chosen model, once there is one
     model?: CatalogModel;
+    // the only observer of the themes: another one would refetch a failed
+    // query with its own options
+    themesQuery: ReturnType<typeof useGetAvailableThemes>;
 };
 
 type WizardStep = {
@@ -146,9 +149,17 @@ const siteInfoStep: WizardStep = {
     canContinue: () => true,
 };
 
-const ThemeStepContent = ({ state, onChange, model }: StepProps) => (
+const ThemeStepContent = ({
+    state,
+    onChange,
+    model,
+    themesQuery,
+}: StepProps) => (
     <ThemeStep
         model={model}
+        themes={themesQuery.data}
+        isLoading={themesQuery.isLoading}
+        hasError={!!themesQuery.error}
         theme={state.theme}
         onThemeChange={(theme) => onChange({ theme })}
     />
@@ -293,6 +304,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                             onChange={handleChange}
                             models={models}
                             model={model}
+                            themesQuery={themesQuery}
                         />
                     )}
                 </Box>
@@ -378,6 +390,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                             onChange={handleChange}
                             models={models}
                             model={model}
+                            themesQuery={themesQuery}
                         />
                     </>
                 )}
