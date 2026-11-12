@@ -24,11 +24,17 @@ export const FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE = 'multiple';
 export const FIELD_ANNOTATION_FORMAT_TEXT = 'text';
 export const FIELD_ANNOTATION_FORMAT_LIST = 'list';
 
-// @ts-expect-error TS7031
-export const getFields = ({ byName, list = [] }) =>
-    list
-        .map((name) => byName[name])
-        .sort((f1, f2) => f1.position - f2.position);
+// Memoized: every selector below derives from it, so a new array on each call
+// re-rendered every field consumer on each Redux action (e.g. job progress).
+type FieldsState = { byName: Record<string, any>; list?: string[] };
+export const getFields = createSelector(
+    (state: FieldsState) => state.byName,
+    (state: FieldsState) => state.list,
+    (byName, list = []): any[] =>
+        list
+            .map((name) => byName[name])
+            .sort((f1, f2) => f1.position - f2.position),
+);
 
 // @ts-expect-error TS7006
 const getOntologyFieldsFilter = (type, keepUriField = false) =>

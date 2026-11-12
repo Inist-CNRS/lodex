@@ -71,6 +71,8 @@ app.use(async (ctx: any, next: any) => {
     const tenantInfo = await ctx.tenantCollection.findOneByName(
         tenantSlug.toLowerCase(),
     );
+    // reused by the /api tenant check, to avoid looking the tenant up twice
+    ctx.tenantInfo = tenantInfo;
     if (!tenantInfo && tenantSlug !== DEFAULT_TENANT) {
         ctx.redirect('/404');
         return;

@@ -277,10 +277,17 @@ export const postField = async (ctx: any) => {
 
 export const patchField = async (ctx: any, id: any) => {
     const newField = transformField(ctx.request.body);
+    // a width or label change must not rebuild the search index nor the facets
+    const previousField = await ctx.field.findOneById(id);
+    const hasChanged = (key: 'searchable' | 'isFacet') =>
+        !previousField ||
+        previousField[key] !== (newField as Record<string, unknown>)[key];
 
     try {
         ctx.body = await ctx.field.updateOneById(id, newField);
-        await indexSearchableFields(ctx);
+        if (hasChanged('searchable')) {
+            await indexSearchableFields(ctx);
+        }
     } catch (error) {
         ctx.status = 403;
         // @ts-expect-error TS(2571): Object is of type 'unknown'.
@@ -288,7 +295,7 @@ export const patchField = async (ctx: any, id: any) => {
         return;
     }
 
-    if ((await ctx.publishedDataset.countAll()) > 0) {
+    if (hasChanged('isFacet') && (await ctx.publishedDataset.countAll()) > 0) {
         await ctx.publishFacets(ctx, [ctx.body], false);
     }
 };

@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import { loadField } from '@lodex/frontend-common/fields/reducer';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 
 const styles = {
@@ -23,18 +21,13 @@ const styles = {
 };
 
 interface PublicationPreviewComponentProps {
-    loadField(...args: unknown[]): unknown;
     fields: unknown[];
 }
 
+// fields come from the publication loaded by DisplayRoute (withInitialData)
 const PublicationPreviewComponent = ({
     fields,
-    loadField,
 }: PublicationPreviewComponentProps) => {
-    useEffect(() => {
-        loadField();
-    }, []);
-
     return (
         // @ts-expect-error TS2322
         <div style={styles.container} className="publication-preview">
@@ -50,11 +43,7 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 
-const mapDispatchToProps = {
-    loadField,
-};
-
-export default compose(connect(mapStateToProps, mapDispatchToProps))(
+export default compose(connect(mapStateToProps))(
     // @ts-expect-error TS2345
     PublicationPreviewComponent,
 );

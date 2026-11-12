@@ -92,8 +92,7 @@ export const useGenerateSite = () => {
         dispatch(loadSubresources());
         dispatch(loadEnrichments());
         dispatch(loadPrecomputed());
-        queryClient.invalidateQueries({ queryKey: ['fetchPrecomputations'] });
-    }, [dispatch, queryClient]);
+    }, [dispatch]);
 
     // the server answers before stopping the job, then drops its data and
     // sends cancelled_import: wait for it, but give up if it never comes (job
