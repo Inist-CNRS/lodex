@@ -114,12 +114,16 @@ export default async (db: any) => {
         filter,
         meta,
         sort,
+        projection,
     }: any) => {
         const cursor = collection.getFindCursor({
             filter,
             meta,
             sort,
         });
+        if (projection) {
+            cursor.project(projection);
+        }
 
         const [total, data] = await Promise.all([
             collection.countDocuments(filter),
@@ -140,6 +144,7 @@ export default async (db: any) => {
         facetFieldNames,
         filters,
         excludeSubresources = false,
+        projection,
     }: any) => {
         const filter = getPublishedDatasetFilter({
             match,
@@ -172,6 +177,7 @@ export default async (db: any) => {
             filter,
             meta,
             sort,
+            projection,
         });
 
         // without a search text, the regex fallback would run the same query again
@@ -196,6 +202,7 @@ export default async (db: any) => {
             filter: regexFilters,
             // @ts-expect-error TS(2554): Expected 4 arguments, but got 2.
             sort: getSort(sortBy, sortDir),
+            projection,
         });
     };
 

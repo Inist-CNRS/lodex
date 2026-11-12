@@ -64,6 +64,9 @@ export const completeFilters = async (filters = {}, ctx: any) => {
     return undefined;
 };
 
+// lists only show the last version of each resource, not its whole history
+const LAST_VERSION_PROJECTION = { uri: 1, versions: { $slice: -1 } };
+
 export const getPage = async (ctx: any) => {
     const {
         page = 0,
@@ -134,6 +137,8 @@ export const getPage = async (ctx: any) => {
             searchableFieldNames,
             facetFieldNames,
             excludeSubresources: true,
+            // the list only shows the last version
+            projection: LAST_VERSION_PROJECTION,
         }),
         ctx.publishedDataset.countAll({ excludeSubresources: true }),
     ]);
@@ -215,6 +220,7 @@ export const searchByField = async (ctx: Koa.Context) => {
     const [data, total] = await Promise.all([
         ctx.publishedDataset
             .find(searchFilter)
+            .project(LAST_VERSION_PROJECTION)
             .limit(perPage)
             .skip(page * perPage)
             .sort({
