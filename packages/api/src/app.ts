@@ -59,6 +59,11 @@ const meters = Meter([], { loadStandards: true, loadDefaults: true });
 if (config.get('blocked.enabled')) {
     blocked(
         (time, stack) => {
+            // Restarting the CPU profiler (every rotation) blocks ~200ms by itself:
+            // not an incident, and it must not trigger a profile dump.
+            if (stack.some((frame) => frame.includes('cpuLagProfiler'))) {
+                return;
+            }
             const logger = getLogger();
             logger.error(
                 `Blocked for ${time}ms, operation started here:`,
