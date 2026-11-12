@@ -9,6 +9,7 @@ import {
     getImportCatalogModelRequest,
 } from '@lodex/frontend-common/user/reducer';
 
+import type { SiteInfo } from '@lodex/common';
 import { store } from '../adminIndex';
 import { saveFieldSuccess } from '@lodex/frontend-common/fields/reducer';
 import fetch from '@lodex/frontend-common/fetch/fetch';
@@ -110,9 +111,13 @@ const patchSearchableFields = async (fields) => {
 
 export const importCatalogModel = async (
     id: string,
+    siteInfo: SiteInfo,
 ): Promise<{ themeNotFound?: string }> => {
     const { token } = getUserSessionStorageInfo();
-    const request = getImportCatalogModelRequest({ token }, { id });
+    const request = getImportCatalogModelRequest(
+        { token },
+        { id, ...siteInfo },
+    );
     const { response, error } = await fetch(request);
     if (error) {
         throw error;

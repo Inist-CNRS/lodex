@@ -10,6 +10,7 @@ import tar from 'tar-stream';
 import { v1 as uuid } from 'uuid';
 
 import { validateField } from '../../models/field';
+import { getSiteTitleKey } from '../../models/siteTitleKey';
 import { getTheme } from '../../models/themes';
 import {
     catalogModels,
@@ -26,6 +27,7 @@ import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
+    type SiteInfo,
 } from '@lodex/common';
 import { ObjectId } from 'mongodb';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
@@ -141,6 +143,45 @@ export const applyRecommendedTheme = async (
     return {};
 };
 
+const trimmedOrUndefined = (value: unknown) =>
+    (typeof value === 'string' && value.trim()) || undefined;
+
+/**
+ * Write the site name and description into the theme variables, where the
+ * theme settings edit them. An empty value, or a theme without the variable,
+ * leaves the configuration as it is.
+ */
+export const applySiteInfo = async (ctx: any, siteInfo: SiteInfo) => {
+    const siteName = trimmedOrUndefined(siteInfo.siteName);
+    const siteDescription = trimmedOrUndefined(siteInfo.siteDescription);
+    if (!siteName && !siteDescription) {
+        return;
+    }
+    const current = await ctx.configTenantCollection.findLast();
+    const themeVariables =
+        current && getTheme(current.theme)?.customTemplateVariables;
+    if (!themeVariables) {
+        return;
+    }
+    const nameKey = getSiteTitleKey(themeVariables);
+    const values = {
+        ...(siteName && nameKey in themeVariables && { [nameKey]: siteName }),
+        ...(siteDescription &&
+            'summary' in themeVariables && { summary: siteDescription }),
+    };
+    if (Object.keys(values).length === 0) {
+        return;
+    }
+    await ctx.configTenantCollection.update(current._id, {
+        ...current,
+        front: {
+            ...current.front,
+            // the theme settings editor shows the stored variables only
+            theme: { ...themeVariables, ...current.front?.theme, ...values },
+        },
+    });
+};
+
 export const translateOldField = (ctx: any, oldField: any, index: any) => {
     const {
         display_in_home,
@@ -243,6 +284,7 @@ export const setup = async (ctx: any, next: any) => {
     ctx.availableLoaders = config.get('scripts.loaders');
     ctx.downloadModelArchive = downloadModelArchive;
     ctx.applyRecommendedTheme = applyRecommendedTheme;
+    ctx.applySiteInfo = applySiteInfo;
 
     try {
         await next();
@@ -470,7 +512,7 @@ export const exportFields = async (ctx: any) => {
 };
 
 export const importCatalogModel = async (ctx: any) => {
-    const { id } = ctx.request.body ?? {};
+    const { id, siteName, siteDescription } = ctx.request.body ?? {};
     const model = findCatalogModel(ctx.catalogModels, id, ctx.availableLoaders);
 
     if (!model) {
@@ -504,6 +546,8 @@ export const importCatalogModel = async (ctx: any) => {
             const applied = await ctx.applyRecommendedTheme(ctx, model.theme);
             themeNotFound = applied.themeNotFound;
         }
+        // after the theme: applying it resets the theme variables
+        await ctx.applySiteInfo(ctx, { siteName, siteDescription });
 
         // the wizard reloads the admin data itself
         ctx.body = { message: 'Model imported successfully', themeNotFound };

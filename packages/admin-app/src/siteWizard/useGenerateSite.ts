@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
-import { toast, type CatalogModel } from '@lodex/common';
+import { toast, type CatalogModel, type SiteInfo } from '@lodex/common';
 import { loadField } from '@lodex/frontend-common/fields/reducer';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { importCatalogModel } from '../api/field';
@@ -167,7 +167,11 @@ export const useGenerateSite = () => {
     );
 
     const generate = useCallback(
-        async (model: CatalogModel, source: DatasetSource) => {
+        async (
+            model: CatalogModel,
+            source: DatasetSource,
+            siteInfo: SiteInfo = {},
+        ) => {
             setError(null);
             isCancellingRef.current = false;
             setIsCancelling(false);
@@ -192,7 +196,10 @@ export const useGenerateSite = () => {
                     await importData(model, source);
                     importedDataRef.current = data;
                 }
-                const { themeNotFound } = await importCatalogModel(model.id);
+                const { themeNotFound } = await importCatalogModel(
+                    model.id,
+                    siteInfo,
+                );
                 if (themeNotFound) {
                     toast(
                         translate('site_wizard_theme_not_found', {

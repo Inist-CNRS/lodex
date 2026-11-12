@@ -23,6 +23,7 @@ import {
 } from '../upload/DatasetSourceInput';
 import { DataStep, DataStepHeader } from './DataStep';
 import { ModelStep } from './ModelStep';
+import { SiteInfoStep, SiteInfoStepHeader } from './SiteInfoStep';
 import { useDisplayableModels } from './useDisplayableModels';
 import { useGenerateSite } from './useGenerateSite';
 
@@ -32,12 +33,16 @@ type WizardState = {
     files: FileObject[];
     url: string;
     text: string;
+    siteName: string;
+    siteDescription: string;
 };
 
 type StepProps = {
     state: WizardState;
     onChange: (patch: Partial<WizardState>) => void;
     models: CatalogModel[];
+    // the chosen model, once there is one
+    model?: CatalogModel;
 };
 
 type WizardStep = {
@@ -47,16 +52,17 @@ type WizardStep = {
     canContinue: (state: WizardState) => boolean;
 };
 
+const SITE_INFO_KEYS = ['siteName', 'siteDescription'];
+
 const INITIAL_STATE: WizardState = {
     modelId: '',
     tab: 'file',
     files: [],
     url: '',
     text: '',
+    siteName: '',
+    siteDescription: '',
 };
-
-const findModel = (models: CatalogModel[], id: string) =>
-    models.find((model) => model.id === id);
 
 const ModelStepContent = ({ state, onChange, models }: StepProps) => (
     <ModelStep
@@ -81,10 +87,8 @@ const modelStep: WizardStep = {
     canContinue: (state) => !!state.modelId,
 };
 
-const DataStepHeaderContent = ({ state, models }: StepProps) => {
-    const model = findModel(models, state.modelId);
-    return model ? <DataStepHeader model={model} /> : null;
-};
+const DataStepHeaderContent = ({ model }: StepProps) =>
+    model ? <DataStepHeader model={model} /> : null;
 
 const DataStepContent = ({ state, onChange }: StepProps) => (
     <DataStep
@@ -105,7 +109,30 @@ const dataStep: WizardStep = {
     canContinue: (state) => getDatasetSource(state) !== null,
 };
 
-const STEPS: WizardStep[] = [modelStep, dataStep];
+const SiteInfoStepHeaderContent = ({ model }: StepProps) =>
+    model ? <SiteInfoStepHeader model={model} /> : null;
+
+const SiteInfoStepContent = ({ state, onChange }: StepProps) => (
+    <SiteInfoStep
+        siteName={state.siteName}
+        onSiteNameChange={(siteName) => onChange({ siteName })}
+        siteDescription={state.siteDescription}
+        onSiteDescriptionChange={(siteDescription) =>
+            onChange({ siteDescription })
+        }
+    />
+);
+
+const siteInfoStep: WizardStep = {
+    Header: SiteInfoStepHeaderContent,
+    Component: SiteInfoStepContent,
+    // both fields are optional
+    canContinue: () => true,
+};
+
+const STEPS: WizardStep[] = [modelStep, dataStep, siteInfoStep];
+// a generation error is mostly about the data: show it from the data step on
+const FIRST_STEP_WITH_ERROR = STEPS.indexOf(dataStep);
 
 // dismissed: the user chose to configure the site manually (first step);
 // cancelled: the user left a later step
@@ -137,10 +164,14 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     const step = STEPS[index];
     const isLastStep = index === STEPS.length - 1;
     const { Header, Component } = step;
+    const model = models.find(({ id }) => id === state.modelId);
 
     const handleChange = (patch: Partial<WizardState>) => {
-        // the displayed error is about the previous inputs
-        clearError();
+        // the displayed error is about the previous model or data: the site
+        // name and description cannot fix it
+        if (Object.keys(patch).some((key) => !SITE_INFO_KEYS.includes(key))) {
+            clearError();
+        }
         setState((current) => ({ ...current, ...patch }));
     };
 
@@ -154,14 +185,16 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     };
 
     const handleGenerate = async () => {
-        const model = findModel(models, state.modelId);
         const source = getDatasetSource(state);
         if (isSubmittingRef.current || !model || !source) {
             return;
         }
         isSubmittingRef.current = true;
         try {
-            await generate(model, source);
+            await generate(model, source, {
+                siteName: state.siteName,
+                siteDescription: state.siteDescription,
+            });
             close('generated');
         } catch {
             // the error is displayed from useGenerateSite
@@ -209,6 +242,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                             state={state}
                             onChange={handleChange}
                             models={models}
+                            model={model}
                         />
                     )}
                 </Box>
@@ -284,7 +318,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                     </Box>
                 ) : (
                     <>
-                        {error && isLastStep && (
+                        {error && index >= FIRST_STEP_WITH_ERROR && (
                             <Alert severity="error" sx={{ mb: 2 }}>
                                 {error}
                             </Alert>
@@ -293,6 +327,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                             state={state}
                             onChange={handleChange}
                             models={models}
+                            model={model}
                         />
                     </>
                 )}
