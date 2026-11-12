@@ -1,44 +1,28 @@
-import type { Precomputed, TaskStatusType } from '@lodex/common';
-import { useApiClient } from '@lodex/frontend-common/api/useApiClient';
-import { useQuery } from '@tanstack/react-query';
+import type { TaskStatusType } from '@lodex/common';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { fromPrecomputed } from '../selectors';
 
+// The precomputed list is already loaded in the store by withInitialData:
+// read it there instead of requesting /api/precomputed a second time.
 export const useFetchPrecomputations = () => {
-    const { fetch } = useApiClient();
-    const { data, error, isLoading } = useQuery(
-        ['fetchPrecomputations'],
-        async () => {
-            const response = await fetch<
-                {
-                    _id: string;
-                    name: string;
-                    status: Precomputed['status'];
-                }[]
-            >({
-                url: `/api/precomputed`,
-            });
+    const precomputed = useSelector(fromPrecomputed.precomputed);
+    const isPrecomputationsLoading = useSelector(fromPrecomputed.isLoading);
+    const precomputationsError = useSelector(fromPrecomputed.getError);
 
-            // Fetch precomputations from API
-            return response.map(
-                ({
-                    name,
-                    _id,
-                    status,
-                }: {
-                    name: string;
-                    _id: string;
-                    status: TaskStatusType | undefined | '';
-                }) => ({
-                    name,
-                    id: _id,
-                    status,
-                }),
-            );
-        },
+    const precomputations = useMemo(
+        () =>
+            precomputed.map(({ name, _id, status }) => ({
+                name,
+                id: _id,
+                status: status as TaskStatusType | '',
+            })),
+        [precomputed],
     );
 
     return {
-        precomputations: data,
-        isPrecomputationsLoading: isLoading,
-        precomputationsError: error,
+        precomputations,
+        isPrecomputationsLoading,
+        precomputationsError,
     };
 };

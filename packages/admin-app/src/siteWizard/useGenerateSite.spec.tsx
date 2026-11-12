@@ -382,9 +382,6 @@ describe('useGenerateSite', () => {
         const { result } = renderGenerateSite();
         await act(() => result.current.generate(model, source));
         expect(dispatched).toEqual(RELOAD_ACTIONS);
-        expect(client.invalidateQueries).toHaveBeenCalledWith({
-            queryKey: ['fetchPrecomputations'],
-        });
     });
 
     it.each([
@@ -414,9 +411,6 @@ describe('useGenerateSite', () => {
                 await result.current.generate(model, source).catch(() => {});
             });
             expect(dispatched).toEqual(RELOAD_ACTIONS);
-            expect(client.invalidateQueries).toHaveBeenCalledWith({
-                queryKey: ['fetchPrecomputations'],
-            });
         },
     );
 
