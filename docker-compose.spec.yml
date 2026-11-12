@@ -73,7 +73,8 @@ services:
             EZS_CACHE: 'false'
         ports:
             - '31976:31976'
-        command: npm run production:workers
+        # @ezs/lodex is loaded from its compiled lib/, missing on a fresh checkout (see docker-compose.dev.yml)
+        command: sh -c "(cd packages/ezsLodex && npm run build); npm run production:workers"
         links:
             - mongo
         depends_on:
