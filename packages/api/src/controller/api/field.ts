@@ -551,7 +551,8 @@ export const importCatalogModel = async (ctx: any) => {
         // The theme chosen in the wizard, else the catalog one, overrides the
         // archive's one: its result fully replaces the archive's
         // themeNotFound, which would be misleading
-        const themeToApply = theme || model.theme;
+        const themeToApply =
+            (typeof theme === 'string' && theme) || model.theme;
         if (themeToApply) {
             const applied = await ctx.applyRecommendedTheme(ctx, themeToApply);
             themeNotFound = applied.themeNotFound;

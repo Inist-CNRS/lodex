@@ -770,6 +770,17 @@ describe('field routes', () => {
             expect(ctx.body.themeNotFound).toBeUndefined();
         });
 
+        it('should ignore a chosen theme that is not a theme name', async () => {
+            ctx.request.body = { id: 'themed', theme: { $ne: null } };
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
+                ctx,
+                'hal-cnrs',
+            );
+        });
+
         it('should apply the site name and description after the chosen theme', async () => {
             ctx.request.body = { id: 'm', theme: 'nougat', siteName: 'S' };
 

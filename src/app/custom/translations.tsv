@@ -1590,6 +1590,6 @@
 "site_wizard_cancel_title"	"Leave the automatic generation?"	"Quitter la génération automatique ?"
 "site_wizard_cancel_description"	"The information already configured will be lost."	"Les informations déjà configurées seront perdues."
 "site_wizard_generation_error"	"The site generation failed: %{error}"	"La génération du site a échoué : %{error}"
-"site_wizard_theme_not_found"	"The recommended theme %{theme} is not available: the current theme is kept."	"Le thème recommandé %{theme} n'est pas disponible : le thème actuel est conservé."
+"site_wizard_theme_not_found"	"The theme %{theme} is not available: the current theme is kept."	"Le thème %{theme} n'est pas disponible : le thème actuel est conservé."
 "site_wizard_open"	"Generate the site from a model"	"Générer le site à partir d'un modèle"
 "upload_size_limit"	"(maximum size: %{limit} GB)"	"(taille maximum : %{limit} Go)"

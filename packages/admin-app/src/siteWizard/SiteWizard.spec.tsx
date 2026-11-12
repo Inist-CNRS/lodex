@@ -105,6 +105,19 @@ describe('SiteWizard', () => {
         });
     });
 
+    it('fetches the themes only once opened', () => {
+        const { rerender } = render(
+            <SiteWizard open={false} onClose={jest.fn()} />,
+        );
+        expect(useGetAvailableThemes).toHaveBeenLastCalledWith({
+            enabled: false,
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        expect(useGetAvailableThemes).toHaveBeenLastCalledWith({
+            enabled: true,
+        });
+    });
+
     it('displays the title and the progress on the first step', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         expect(screen.getByText('site_wizard_title')).toBeInTheDocument();

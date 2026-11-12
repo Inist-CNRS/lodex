@@ -183,8 +183,9 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         error,
         clearError,
     } = useGenerateSite();
-    // fetched from the start: the theme step needs it to preselect a theme
-    const themesQuery = useGetAvailableThemes();
+    // fetched once opened, before the theme step that needs it: the host
+    // keeps the wizard mounted while closed
+    const themesQuery = useGetAvailableThemes({ enabled: open });
     const [index, setIndex] = useState(0);
     const [userState, setState] = useState<WizardState>(INITIAL_STATE);
     const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
