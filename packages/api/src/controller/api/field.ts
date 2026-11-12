@@ -40,6 +40,7 @@ import { dropJobs } from '../../workers/tools';
 import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
+import getLogger from '../../services/logger';
 
 const sortByFieldUri = (a: any, b: any) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -547,7 +548,15 @@ export const importCatalogModel = async (ctx: any) => {
             themeNotFound = applied.themeNotFound;
         }
         // after the theme: applying it resets the theme variables
-        await ctx.applySiteInfo(ctx, { siteName, siteDescription });
+        try {
+            await ctx.applySiteInfo(ctx, { siteName, siteDescription });
+        } catch (e) {
+            // optional: the model is imported, the admin can still set them
+            // in the theme settings
+            getLogger(ctx.tenant).error('Site info write error', {
+                error: (e as Error).message,
+            });
+        }
 
         // the wizard reloads the admin data itself
         ctx.body = { message: 'Model imported successfully', themeNotFound };

@@ -41,6 +41,11 @@ import {
 } from '../../services/catalogModel';
 
 jest.mock('../../services/indexSearchableFields');
+jest.mock('../../services/logger', () => {
+    const logger = { error: jest.fn(), info: jest.fn(), warn: jest.fn() };
+    return () => logger;
+});
+const mockLogger = jest.requireMock('../../services/logger')();
 jest.mock('../../models/themes', () => {
     const themes: Record<string, object> = {
         default: { siteTitle: '', summary: '' },
@@ -702,6 +707,23 @@ describe('field routes', () => {
             expect(ctx.restoreFields.mock.invocationCallOrder[0]).toBeLessThan(
                 ctx.applySiteInfo.mock.invocationCallOrder[0],
             );
+        });
+
+        it('should log a failed site info write and still import the model', async () => {
+            ctx.request.body = { id: 'm', siteName: 'My site' };
+            ctx.applySiteInfo.mockRejectedValue(new Error('write failed'));
+
+            await importCatalogModel(ctx);
+
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                'Site info write error',
+                expect.objectContaining({ error: 'write failed' }),
+            );
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toEqual({
+                message: 'Model imported successfully',
+                themeNotFound: undefined,
+            });
         });
 
         it('should return the theme of the archive that could not be applied', async () => {

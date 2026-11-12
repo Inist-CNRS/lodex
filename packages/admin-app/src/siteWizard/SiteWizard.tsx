@@ -52,7 +52,7 @@ type WizardStep = {
     canContinue: (state: WizardState) => boolean;
 };
 
-const SITE_INFO_KEYS = ['siteName', 'siteDescription'];
+const SITE_INFO_KEYS: (keyof WizardState)[] = ['siteName', 'siteDescription'];
 
 const INITIAL_STATE: WizardState = {
     modelId: '',
@@ -169,7 +169,11 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     const handleChange = (patch: Partial<WizardState>) => {
         // the displayed error is about the previous model or data: the site
         // name and description cannot fix it
-        if (Object.keys(patch).some((key) => !SITE_INFO_KEYS.includes(key))) {
+        if (
+            (Object.keys(patch) as (keyof WizardState)[]).some(
+                (key) => !SITE_INFO_KEYS.includes(key),
+            )
+        ) {
             clearError();
         }
         setState((current) => ({ ...current, ...patch }));
