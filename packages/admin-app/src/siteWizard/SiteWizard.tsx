@@ -69,6 +69,10 @@ const ModelStepContent = ({ state, onChange, models }: StepProps) => (
                 tab:
                     findModel(models, modelId)?.importTypes[0] ??
                     INITIAL_STATE.tab,
+                // the inputs of the previous model may not be offered anymore
+                files: INITIAL_STATE.files,
+                url: INITIAL_STATE.url,
+                text: INITIAL_STATE.text,
             })
         }
     />

@@ -51,6 +51,15 @@ describe('getDisplayableModels', () => {
         ).toStrictEqual([]);
     });
 
+    it('should filter out a model with duplicate importTypes', () => {
+        expect(
+            getDisplayableModels(
+                [{ ...valid, importTypes: ['text', 'text'] }],
+                options,
+            ),
+        ).toStrictEqual([]);
+    });
+
     it('should filter out a model whose loader is not available on the instance', () => {
         expect(
             getDisplayableModels([{ ...valid, loader: 'other' }], options),

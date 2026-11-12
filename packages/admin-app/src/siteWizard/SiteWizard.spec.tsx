@@ -139,6 +139,19 @@ describe('SiteWizard', () => {
         expect(button('site_wizard_next')).toBeEnabled();
     });
 
+    it('resets the inputs when another model is chosen', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        await typeUrl('https://x');
+        await userEvent.click(button('site_wizard_previous'));
+        await selectModel('mc_b_title');
+        await goToDataStep('mc_a_title');
+        await userEvent.click(
+            screen.getByRole('tab', { name: 'upload_by_url' }),
+        );
+        expect(screen.getByLabelText('use_url')).toHaveValue('');
+    });
+
     it('generates the site with the chosen model and data, only once', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();
