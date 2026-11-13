@@ -1473,10 +1473,10 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 fullTotal: 0,
                 errors: [
                     {
-                        code: 'invalid_enum_value',
+                        code: 'invalid_value',
                         message: 'annotation_query_filter_by_invalid_key',
                         path: ['filterBy'],
-                        options: [
+                        values: [
                             'resource.title',
                             'kind',
                             'authorName',
@@ -1495,7 +1495,6 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                             'field.internalName',
                             'field.internalScopes',
                         ],
-                        received: 'test',
                     },
                 ],
                 data: [],
@@ -1986,12 +1985,17 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 body: {
                     errors: [
                         {
-                            code: 'invalid_type',
-                            expected:
-                                "'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking'",
-                            message: 'Required',
+                            code: 'invalid_value',
+                            message:
+                                'Invalid option: expected one of "to_review"|"ongoing"|"validated"|"rejected"|"parking"',
+                            values: [
+                                'to_review',
+                                'ongoing',
+                                'validated',
+                                'rejected',
+                                'parking',
+                            ],
                             path: ['status'],
-                            received: 'undefined',
                         },
                     ],
                 },
@@ -2044,12 +2048,11 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 [
                     {
                         code: 'too_small',
-                        exact: false,
                         inclusive: true,
-                        message: 'Array must contain at least 1 element(s)',
+                        message: 'Too small: expected array to have >=1 items',
                         minimum: 1,
                         path: [],
-                        type: 'array',
+                        origin: 'array',
                     },
                 ],
             ],
@@ -2059,9 +2062,9 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                     {
                         code: 'invalid_type',
                         expected: 'string',
-                        message: 'Expected string, received number',
+                        message:
+                            'Invalid input: expected string, received number',
                         path: [0],
-                        received: 'number',
                     },
                 ],
             ],

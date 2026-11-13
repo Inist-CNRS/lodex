@@ -28,12 +28,7 @@ import { useGetConfigTenant } from './useGetConfigTenant';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
 
 const configTenantSchema = z.object({
-    config: z.object(
-        {},
-        {
-            message: 'error_invalid_json',
-        },
-    ),
+    config: z.looseObject({}, { error: 'error_invalid_json' }),
     enableAutoPublication: z.boolean(),
     userAuth: z.object({
         active: z.boolean(),
@@ -59,13 +54,13 @@ const configTenantSchema = z.object({
         z.object({
             active: z.literal(true),
             recaptchaClientKey: z
-                .string({ invalid_type_error: 'error_required' })
+                .string({ error: 'error_required' })
                 .trim()
                 .min(1, {
                     message: 'error_required',
                 }),
             recaptchaSecretKey: z
-                .string({ invalid_type_error: 'error_required' })
+                .string({ error: 'error_required' })
                 .trim()
                 .min(1, {
                     message: 'error_required',
@@ -80,7 +75,7 @@ const configTenantSchema = z.object({
     theme: z.string().min(1, {
         message: 'error_required',
     }),
-    enrichmentBatchSize: z.coerce.number(),
+    enrichmentBatchSize: z.coerce.number<number>(),
     notificationEmail: z
         .string()
         .email({
@@ -387,7 +382,8 @@ export const ConfigTenantFormView = ({
                             );
 
                             const configToUpdate =
-                                currentConfig === 'invalid_json'
+                                // ConfigField stores 'invalid_json' when the JSON cannot be parsed
+                                (currentConfig as unknown) === 'invalid_json'
                                     ? config
                                     : currentConfig;
 

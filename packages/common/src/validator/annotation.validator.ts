@@ -45,20 +45,12 @@ export const annotationCreationSchema = z
             })
             .optional(),
         comment: z
-            .string({
-                invalid_type_error: 'error_required',
-            })
+            .string({ error: 'error_required' })
             .nullish()
             .transform((value) => value?.trim() ?? ''),
-        authorName: z
-            .string({
-                required_error: 'error_required',
-                invalid_type_error: 'error_required',
-            })
-            .trim()
-            .min(1, {
-                message: 'error_required',
-            }),
+        authorName: z.string({ error: 'error_required' }).trim().min(1, {
+            message: 'error_required',
+        }),
         authorEmail: z
             .union([
                 z.literal(''),
@@ -160,14 +152,9 @@ const unrefinedAnnotationUpdateSchema = z.object({
     administrator: z
         .union([
             z.literal(''),
-            z
-                .string({
-                    required_error: 'error_required',
-                })
-                .trim()
-                .min(1, {
-                    message: 'error_required',
-                }),
+            z.string({ error: 'error_required' }).trim().min(1, {
+                message: 'error_required',
+            }),
         ])
         .nullish()
         .default(null)

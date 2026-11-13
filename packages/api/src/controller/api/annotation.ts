@@ -101,7 +101,7 @@ export async function createAnnotation(ctx: any) {
         ctx.response.status = 400;
         ctx.body = {
             total: 0,
-            errors: validation.error.errors,
+            errors: validation.error.issues,
         };
         return;
     }
@@ -185,7 +185,7 @@ export function importAnnotations(asyncBusboyImpl: any) {
                                 return {
                                     success: false,
                                     annotation,
-                                    errors: error.errors,
+                                    errors: error.issues,
                                 };
                             }
 
@@ -406,7 +406,7 @@ export async function getAnnotations(ctx: any) {
         ctx.body = {
             total: 0,
             fullTotal: 0,
-            errors: validation.error.errors,
+            errors: validation.error.issues,
             data: [],
         };
         return;
@@ -580,7 +580,7 @@ export async function updateAnnotation(ctx: any, id: any) {
     if (!validation.success) {
         ctx.response.status = 400;
         ctx.response.body = {
-            errors: validation.error.errors,
+            errors: validation.error.issues,
         };
         return;
     }
@@ -621,7 +621,7 @@ export async function deleteManyAnnotationById(ctx: any) {
         ctx.response.status = 400;
         ctx.response.body = {
             deletedCount: 0,
-            errors: validation.error.errors,
+            errors: validation.error.issues,
         };
         return;
     }
