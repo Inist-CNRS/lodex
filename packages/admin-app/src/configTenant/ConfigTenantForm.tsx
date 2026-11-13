@@ -32,22 +32,14 @@ const configTenantSchema = z.object({
     enableAutoPublication: z.boolean(),
     userAuth: z.object({
         active: z.boolean(),
-        password: z.string().min(1, {
-            message: 'error_required',
-        }),
-        username: z.string().min(1, {
-            message: 'error_required',
-        }),
+        password: z.string().min(1, { error: 'error_required' }),
+        username: z.string().min(1, { error: 'error_required' }),
     }),
     contributorAuth: z
         .object({
             active: z.boolean(),
-            password: z.string().min(1, {
-                message: 'error_required',
-            }),
-            username: z.string().min(1, {
-                message: 'error_required',
-            }),
+            password: z.string().min(1, { error: 'error_required' }),
+            username: z.string().min(1, { error: 'error_required' }),
         })
         .optional(),
     antispamFilter: z.discriminatedUnion('active', [
@@ -56,15 +48,11 @@ const configTenantSchema = z.object({
             recaptchaClientKey: z
                 .string({ error: 'error_required' })
                 .trim()
-                .min(1, {
-                    message: 'error_required',
-                }),
+                .min(1, { error: 'error_required' }),
             recaptchaSecretKey: z
                 .string({ error: 'error_required' })
                 .trim()
-                .min(1, {
-                    message: 'error_required',
-                }),
+                .min(1, { error: 'error_required' }),
         }),
         z.object({
             active: z.literal(false),
@@ -72,16 +60,9 @@ const configTenantSchema = z.object({
             recaptchaSecretKey: z.string().trim().min(0).nullish(),
         }),
     ]),
-    theme: z.string().min(1, {
-        message: 'error_required',
-    }),
+    theme: z.string().min(1, { error: 'error_required' }),
     enrichmentBatchSize: z.coerce.number<number>(),
-    notificationEmail: z
-        .string()
-        .email({
-            message: 'error_invalid_email',
-        })
-        .nullish(),
+    notificationEmail: z.email({ error: 'error_invalid_email' }).nullish(),
 });
 type Config = z.infer<typeof configTenantSchema>;
 

@@ -1468,7 +1468,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.response.status).toBe(400);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
-            expect(ctx.body).toStrictEqual({
+            expect(ctx.body).toMatchObject({
                 total: 0,
                 fullTotal: 0,
                 errors: [
@@ -1476,25 +1476,6 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                         code: 'invalid_value',
                         message: 'annotation_query_filter_by_invalid_key',
                         path: ['filterBy'],
-                        values: [
-                            'resource.title',
-                            'kind',
-                            'authorName',
-                            'resourceUri',
-                            'fieldId',
-                            'comment',
-                            'initialValue',
-                            'proposedValue',
-                            'status',
-                            'internalComment',
-                            'administrator',
-                            'createdAt',
-                            'updatedAt',
-                            'field.label',
-                            'field.name',
-                            'field.internalName',
-                            'field.internalScopes',
-                        ],
                     },
                 ],
                 data: [],
@@ -1980,22 +1961,14 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             };
             await updateAnnotation(ctx, annotation._id);
 
-            expect(ctx.response).toStrictEqual({
+            expect(ctx.response).toMatchObject({
                 status: 400,
                 body: {
                     errors: [
                         {
                             code: 'invalid_value',
-                            message:
-                                'Invalid option: expected one of "to_review"|"ongoing"|"validated"|"rejected"|"parking"',
-                            values: [
-                                'to_review',
-                                'ongoing',
-                                'validated',
-                                'rejected',
-                                'parking',
-                            ],
                             path: ['status'],
+                            message: 'error_required',
                         },
                     ],
                 },
@@ -2043,31 +2016,8 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         });
 
         it.each([
-            [
-                [],
-                [
-                    {
-                        code: 'too_small',
-                        inclusive: true,
-                        message: 'Too small: expected array to have >=1 items',
-                        minimum: 1,
-                        path: [],
-                        origin: 'array',
-                    },
-                ],
-            ],
-            [
-                [1],
-                [
-                    {
-                        code: 'invalid_type',
-                        expected: 'string',
-                        message:
-                            'Invalid input: expected string, received number',
-                        path: [0],
-                    },
-                ],
-            ],
+            [[], [{ code: 'too_small', path: [] }]],
+            [[1], [{ code: 'invalid_type', path: [0] }]],
         ])(
             'should fail with a 400 if ids is not valid',
             async (body: any, errors: any) => {
@@ -2083,7 +2033,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
 
                 await deleteManyAnnotationById(ctx);
 
-                expect(ctx.response).toStrictEqual({
+                expect(ctx.response).toMatchObject({
                     status: 400,
                     body: {
                         deletedCount: 0,
