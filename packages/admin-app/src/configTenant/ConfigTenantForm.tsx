@@ -23,7 +23,11 @@ import Loading from '@lodex/frontend-common/components/Loading';
 import { SaveButton } from '@lodex/frontend-common/components/SaveButton';
 import { TextField } from '@lodex/frontend-common/components/TextField';
 import { ConfigField } from './fields/ConfigField';
-import { useGetAvailableThemes } from './useGetAvailableThemes';
+import {
+    getThemeLabel,
+    useGetAvailableThemes,
+    type AvailableTheme,
+} from './useGetAvailableThemes';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
 
@@ -68,17 +72,7 @@ type Config = z.infer<typeof configTenantSchema>;
 
 interface ConfigTenantFormViewProps {
     initialConfig: Config & { _id: string };
-    availableThemes: {
-        defaultVariables: Record<string, string>;
-        description: {
-            [key: string]: string;
-        };
-        name: {
-            en: string;
-            fr: string;
-        };
-        value: string;
-    }[];
+    availableThemes: AvailableTheme[];
     handleCancel(...args: unknown[]): unknown;
     handleSave(...args: unknown[]): unknown;
     isSubmitting?: boolean;
@@ -382,7 +376,7 @@ export const ConfigTenantFormView = ({
                     >
                         {availableThemes.map((t) => (
                             <MenuItem key={t.value} value={t.value}>
-                                {t.name[locale]} - {t.description[locale]}
+                                {getThemeLabel(t, locale)}
                             </MenuItem>
                         ))}
                     </Select>
@@ -545,7 +539,7 @@ export const ConfigTenantForm = ({
     return (
         <ConfigTenantFormView
             initialConfig={data}
-            availableThemes={availableThemesResponse.data}
+            availableThemes={availableThemesResponse.data ?? []}
             handleSave={(data) => {
                 handleUpdateConfigTenant(data);
                 // update configTenant in redux store

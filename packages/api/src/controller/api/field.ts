@@ -520,7 +520,7 @@ export const exportFields = async (ctx: any) => {
 };
 
 export const importCatalogModel = async (ctx: any) => {
-    const { id, siteName, siteDescription } = ctx.request.body ?? {};
+    const { id, siteName, siteDescription, theme } = ctx.request.body ?? {};
     const model = findCatalogModel(ctx.catalogModels, id, ctx.availableLoaders);
 
     if (!model) {
@@ -548,10 +548,13 @@ export const importCatalogModel = async (ctx: any) => {
     try {
         const restored = (await ctx.restoreFields(fileStream, ctx)) ?? {};
         let themeNotFound = restored.themeNotFound;
-        if (model.theme) {
-            // The catalog theme overrides the archive's one: its result fully
-            // replaces the archive's themeNotFound, which would be misleading
-            const applied = await ctx.applyRecommendedTheme(ctx, model.theme);
+        // The theme chosen in the wizard, else the catalog one, overrides the
+        // archive's one: its result fully replaces the archive's
+        // themeNotFound, which would be misleading
+        const themeToApply =
+            (typeof theme === 'string' && theme) || model.theme;
+        if (themeToApply) {
+            const applied = await ctx.applyRecommendedTheme(ctx, themeToApply);
             themeNotFound = applied.themeNotFound;
         }
         // after the theme: applying it resets the theme variables

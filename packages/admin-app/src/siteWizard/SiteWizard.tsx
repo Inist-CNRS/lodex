@@ -24,6 +24,8 @@ import {
 import { DataStep, DataStepHeader } from './DataStep';
 import { ModelStep } from './ModelStep';
 import { SiteInfoStep, SiteInfoStepHeader } from './SiteInfoStep';
+import { getPreselectedTheme, ThemeStep } from './ThemeStep';
+import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
 import { useDisplayableModels } from './useDisplayableModels';
 import { useGenerateSite } from './useGenerateSite';
 
@@ -35,6 +37,8 @@ type WizardState = {
     text: string;
     siteName: string;
     siteDescription: string;
+    // the theme picked by the user, empty until then
+    theme: string;
 };
 
 type StepProps = {
@@ -43,6 +47,9 @@ type StepProps = {
     models: CatalogModel[];
     // the chosen model, once there is one
     model?: CatalogModel;
+    // the only observer of the themes: another one would refetch a failed
+    // query with its own options
+    themesQuery: ReturnType<typeof useGetAvailableThemes>;
 };
 
 type WizardStep = {
@@ -52,7 +59,12 @@ type WizardStep = {
     canContinue: (state: WizardState) => boolean;
 };
 
-const SITE_INFO_KEYS: (keyof WizardState)[] = ['siteName', 'siteDescription'];
+// the displayed error is about the model or the data: these cannot fix it
+const KEYS_KEEPING_ERROR: (keyof WizardState)[] = [
+    'siteName',
+    'siteDescription',
+    'theme',
+];
 
 const INITIAL_STATE: WizardState = {
     modelId: '',
@@ -62,6 +74,7 @@ const INITIAL_STATE: WizardState = {
     text: '',
     siteName: '',
     siteDescription: '',
+    theme: '',
 };
 
 const ModelStepContent = ({ state, onChange, models }: StepProps) => (
@@ -69,17 +82,26 @@ const ModelStepContent = ({ state, onChange, models }: StepProps) => (
         models={models}
         selectedId={state.modelId}
         onSelect={(modelId) =>
-            onChange({
-                modelId,
-                // open the first import type allowed by the model
-                tab:
-                    models.find((model) => model.id === modelId)
-                        ?.importTypes[0] ?? INITIAL_STATE.tab,
-                // the inputs of the previous model may not be offered anymore
-                files: INITIAL_STATE.files,
-                url: INITIAL_STATE.url,
-                text: INITIAL_STATE.text,
-            })
+            onChange(
+                // the catalog dialog also selects the model already selected:
+                // its inputs and theme are kept
+                modelId === state.modelId
+                    ? { modelId }
+                    : {
+                          modelId,
+                          // open the first import type allowed by the model
+                          tab:
+                              models.find((model) => model.id === modelId)
+                                  ?.importTypes[0] ?? INITIAL_STATE.tab,
+                          // the inputs of the previous model may not be
+                          // offered anymore
+                          files: INITIAL_STATE.files,
+                          url: INITIAL_STATE.url,
+                          text: INITIAL_STATE.text,
+                          // forgets the theme picked for the previous model
+                          theme: INITIAL_STATE.theme,
+                      },
+            )
         }
     />
 );
@@ -143,7 +165,32 @@ const siteInfoStep: WizardStep = {
     canContinue: () => true,
 };
 
-const STEPS: WizardStep[] = [modelStep, dataStep, siteInfoStep];
+const ThemeStepContent = ({
+    state,
+    onChange,
+    model,
+    themesQuery,
+}: StepProps) => (
+    <ThemeStep
+        model={model}
+        themes={themesQuery.data}
+        isLoading={themesQuery.isLoading}
+        // a failed refetch keeps the list loaded before
+        hasError={!!themesQuery.error && !themesQuery.data}
+        theme={state.theme}
+        onThemeChange={(theme) => onChange({ theme })}
+    />
+);
+
+const themeStep: WizardStep = {
+    // same subtitle as the site name and description
+    Header: SiteInfoStepHeaderContent,
+    Component: ThemeStepContent,
+    // once the themes are loaded, or failed to
+    canContinue: (state) => !!state.theme,
+};
+
+const STEPS: WizardStep[] = [modelStep, dataStep, siteInfoStep, themeStep];
 // a generation error is mostly about the data: show it from the data step on
 const FIRST_STEP_WITH_ERROR = STEPS.indexOf(dataStep);
 
@@ -169,22 +216,35 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         error,
         clearError,
     } = useGenerateSite();
+    // fetched once opened, before the theme step that needs it: the host
+    // keeps the wizard mounted while closed
+    const themesQuery = useGetAvailableThemes({
+        enabled: open,
+        // the step falls back to a theme without the list: no need to wait
+        retry: false,
+    });
     const [index, setIndex] = useState(0);
-    const [state, setState] = useState<WizardState>(INITIAL_STATE);
+    const [userState, setState] = useState<WizardState>(INITIAL_STATE);
     const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
     const isSubmittingRef = useRef(false);
 
     const step = STEPS[index];
     const isLastStep = index === STEPS.length - 1;
     const { Header, Component } = step;
-    const model = models.find(({ id }) => id === state.modelId);
+    const model = models.find(({ id }) => id === userState.modelId);
+    const state = {
+        ...userState,
+        theme:
+            userState.theme ||
+            (themesQuery.isLoading
+                ? ''
+                : getPreselectedTheme(model, themesQuery.data)),
+    };
 
     const handleChange = (patch: Partial<WizardState>) => {
-        // the displayed error is about the previous model or data: the site
-        // name and description cannot fix it
         if (
             (Object.keys(patch) as (keyof WizardState)[]).some(
-                (key) => !SITE_INFO_KEYS.includes(key),
+                (key) => !KEYS_KEEPING_ERROR.includes(key),
             )
         ) {
             clearError();
@@ -211,6 +271,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
             await generate(model, source, {
                 siteName: state.siteName,
                 siteDescription: state.siteDescription,
+                theme: state.theme,
             });
             close('generated');
         } catch {
@@ -260,6 +321,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                             onChange={handleChange}
                             models={models}
                             model={model}
+                            themesQuery={themesQuery}
                         />
                     )}
                 </Box>
@@ -345,6 +407,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                             onChange={handleChange}
                             models={models}
                             model={model}
+                            themesQuery={themesQuery}
                         />
                     </>
                 )}

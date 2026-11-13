@@ -67,8 +67,13 @@ export const catalogModelSchema = z
 export type ModelLaunchStep = z.infer<typeof launchStepSchema>;
 export type CatalogModel = z.infer<typeof catalogModelSchema>;
 
-// given in the site wizard, written into the theme settings with the model
-export type SiteInfo = { siteName?: string; siteDescription?: string };
+// given in the site wizard, written into the theme settings with the model;
+// the theme replaces the one of the catalog and of the archive
+export type SiteInfo = {
+    siteName?: string;
+    siteDescription?: string;
+    theme?: string;
+};
 
 export const getModelTitleKey = (id: string) => `mc_${id}_title`;
 export const getModelDescriptionKey = (id: string) => `mc_${id}_description`;

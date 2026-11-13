@@ -3,6 +3,7 @@ import { screen, waitFor, within } from '@testing-library/react';
 import type { CatalogModel } from '@lodex/common';
 import { useGenerateSite } from './useGenerateSite';
 import { SiteWizard } from './SiteWizard';
+import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
 
 // injected by vite at build time
 // @ts-expect-error TS7017
@@ -27,12 +28,43 @@ const models: CatalogModel[] = [
         loader: 'lb',
         importTypes: ['text'],
     },
+    {
+        id: 'c',
+        url: 'http://c.tar',
+        loader: 'lc',
+        theme: 'nougat',
+        importTypes: ['file', 'url', 'text'],
+    },
+    {
+        id: 'd',
+        url: 'http://d.tar',
+        loader: 'ld',
+        theme: 'missing',
+        importTypes: ['file', 'url', 'text'],
+    },
+];
+
+const themes = [
+    {
+        value: 'default',
+        name: { en: 'System', fr: 'Système' },
+        description: { en: 'System theme', fr: 'Thème système' },
+    },
+    {
+        value: 'nougat',
+        name: { en: 'Nougat', fr: 'Nougat' },
+        description: { en: 'Nougat theme', fr: 'Thème Nougat' },
+    },
 ];
 
 jest.mock('./useDisplayableModels', () => ({
     useDisplayableModels: () => models,
 }));
 jest.mock('./useGenerateSite', () => ({ useGenerateSite: jest.fn() }));
+jest.mock('../configTenant/useGetAvailableThemes', () => ({
+    ...jest.requireActual('../configTenant/useGetAvailableThemes'),
+    useGetAvailableThemes: jest.fn(),
+}));
 
 const button = (name: string) => screen.getByRole('button', { name });
 
@@ -55,11 +87,19 @@ const typeSiteName = async (name: string) => {
     await userEvent.type(screen.getByLabelText('name'), name);
 };
 
-const goToSiteInfoStep = async () => {
-    await goToDataStep();
+const goToSiteInfoStep = async (title = 'mc_a_title') => {
+    await goToDataStep(title);
     await typeUrl('https://x');
     await userEvent.click(button('site_wizard_next'));
 };
+
+const goToThemeStep = async (title = 'mc_a_title') => {
+    await goToSiteInfoStep(title);
+    await userEvent.click(button('site_wizard_next'));
+};
+
+const themeSelect = () =>
+    screen.getByRole('combobox', { name: 'site_wizard_theme_title' });
 
 describe('SiteWizard', () => {
     let generate: jest.Mock;
@@ -78,15 +118,43 @@ describe('SiteWizard', () => {
             cancelImport,
             error: null,
         });
+        (useGetAvailableThemes as jest.Mock).mockReturnValue({
+            data: themes,
+            isLoading: false,
+            error: null,
+        });
+    });
+
+    it('fetches the themes only once opened', () => {
+        const { rerender } = render(
+            <SiteWizard open={false} onClose={jest.fn()} />,
+        );
+        expect(useGetAvailableThemes).toHaveBeenLastCalledWith(
+            expect.objectContaining({ enabled: false }),
+        );
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        expect(useGetAvailableThemes).toHaveBeenLastCalledWith(
+            expect.objectContaining({ enabled: true }),
+        );
+    });
+
+    it('does not retry the themes, even from the theme step: the step falls back without waiting', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        // a new observer would refetch a failed query with its own options
+        for (const [options] of (useGetAvailableThemes as jest.Mock).mock
+            .calls) {
+            expect(options).toEqual(expect.objectContaining({ retry: false }));
+        }
     });
 
     it('displays the title and the progress on the first step', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         expect(screen.getByText('site_wizard_title')).toBeInTheDocument();
-        expect(screen.getByText('1/3')).toBeInTheDocument();
+        expect(screen.getByText('1/4')).toBeInTheDocument();
         expect(screen.getByRole('progressbar')).toHaveAttribute(
             'aria-valuenow',
-            '33',
+            '25',
         );
         expect(
             screen.queryByRole('button', { name: 'site_wizard_previous' }),
@@ -99,7 +167,7 @@ describe('SiteWizard', () => {
         await selectModel('mc_a_title');
         expect(button('site_wizard_next')).toBeEnabled();
         await userEvent.click(button('site_wizard_next'));
-        expect(screen.getByText('2/3')).toBeInTheDocument();
+        expect(screen.getByText('2/4')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_title')).toBeInTheDocument();
         expect(
             screen.getByText('site_wizard_data_subtitle+{"name":"mc_a_title"}'),
@@ -145,7 +213,7 @@ describe('SiteWizard', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByText('1/3')).toBeInTheDocument();
+        expect(screen.getByText('1/4')).toBeInTheDocument();
         expect(screen.getByRole('combobox')).toHaveTextContent('mc_a_title');
         expect(button('site_wizard_next')).toBeEnabled();
     });
@@ -163,6 +231,26 @@ describe('SiteWizard', () => {
         expect(screen.getByLabelText('use_url')).toHaveValue('');
     });
 
+    it('keeps the inputs when the same model is chosen again from the catalog', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        await typeUrl('https://x');
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_choose_model'));
+        await userEvent.click(
+            within(
+                screen.getByRole('navigation', { name: 'model list' }),
+            ).getAllByText('mc_a_title')[0],
+        );
+        await waitFor(() =>
+            expect(
+                screen.queryByRole('navigation', { name: 'model list' }),
+            ).not.toBeInTheDocument(),
+        );
+        await userEvent.click(button('site_wizard_next'));
+        expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
+    });
+
     it('goes to the site name and description once the data is given', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();
@@ -170,7 +258,7 @@ describe('SiteWizard', () => {
         await typeUrl('https://x');
         expect(button('site_wizard_next')).toBeEnabled();
         await userEvent.click(button('site_wizard_next'));
-        expect(screen.getByText('3/3')).toBeInTheDocument();
+        expect(screen.getByText('3/4')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'site_wizard_site_info_subtitle+{"name":"mc_a_title"}',
@@ -185,10 +273,192 @@ describe('SiteWizard', () => {
         expect(screen.getByLabelText('name')).toHaveValue('');
         expect(screen.getByLabelText('description')).toHaveValue('');
         // both fields are optional
+        expect(button('site_wizard_next')).toBeEnabled();
+    });
+
+    it('goes to the theme step after the site name and description', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        expect(screen.getByText('4/4')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'site_wizard_site_info_subtitle+{"name":"mc_a_title"}',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('site_wizard_theme_title')).toBeInTheDocument();
+        expect(screen.getByText('site_wizard_theme_hint')).toBeInTheDocument();
         expect(button('site_wizard_generate')).toBeEnabled();
         expect(
             screen.queryByRole('button', { name: 'site_wizard_next' }),
         ).not.toBeInTheDocument();
+    });
+
+    it('lists every theme and preselects the default one for a model without theme', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        expect(themeSelect()).toHaveTextContent('System - System theme');
+        await userEvent.click(themeSelect());
+        const options = within(screen.getByRole('listbox')).getAllByRole(
+            'option',
+        );
+        expect(options.map((o) => o.textContent)).toEqual([
+            'System - System theme',
+            'Nougat - Nougat theme',
+        ]);
+        expect(
+            screen.queryByText('site_wizard_theme_recommended'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('preselects the theme recommended by the model and tags it', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep('mc_c_title');
+        expect(themeSelect()).toHaveTextContent('Nougat - Nougat theme');
+        // the tag is for the list only
+        expect(themeSelect()).not.toHaveTextContent(
+            'site_wizard_theme_recommended',
+        );
+        await userEvent.click(themeSelect());
+        const recommended = within(screen.getByRole('listbox')).getByRole(
+            'option',
+            { name: /Nougat/ },
+        );
+        expect(recommended).toHaveTextContent('site_wizard_theme_recommended');
+    });
+
+    it('preselects the default theme when the recommended one is not available', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep('mc_d_title');
+        expect(themeSelect()).toHaveTextContent('System - System theme');
+        await userEvent.click(themeSelect());
+        expect(
+            screen.queryByText('site_wizard_theme_recommended'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('waits for the themes before generating', async () => {
+        (useGetAvailableThemes as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            error: null,
+        });
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        expect(button('site_wizard_generate')).toBeDisabled();
+    });
+
+    it('generates with the recommended theme when the themes cannot be loaded', async () => {
+        (useGetAvailableThemes as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            error: new Error('boom'),
+        });
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep('mc_c_title');
+        expect(
+            screen.getByText('site_wizard_themes_error'),
+        ).toBeInTheDocument();
+        await userEvent.click(button('site_wizard_generate'));
+        expect(generate).toHaveBeenCalledWith(
+            models[2],
+            { type: 'url', url: 'https://x' },
+            { siteName: '', siteDescription: '', theme: 'nougat' },
+        );
+    });
+
+    it('keeps the list of themes when a refetch fails after it was loaded', async () => {
+        (useGetAvailableThemes as jest.Mock).mockReturnValue({
+            data: themes,
+            isLoading: false,
+            error: new Error('boom'),
+        });
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        expect(themeSelect()).toHaveTextContent('System - System theme');
+        expect(
+            screen.queryByText('site_wizard_themes_error'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('generates with the default theme when the themes cannot be loaded for a model without theme', async () => {
+        (useGetAvailableThemes as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            error: new Error('boom'),
+        });
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(button('site_wizard_generate'));
+        expect(generate).toHaveBeenCalledWith(
+            models[0],
+            { type: 'url', url: 'https://x' },
+            { siteName: '', siteDescription: '', theme: 'default' },
+        );
+    });
+
+    it('keeps the chosen theme when going back and forth', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(themeSelect());
+        await userEvent.click(
+            within(screen.getByRole('listbox')).getByText(/Nougat/),
+        );
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_next'));
+        expect(themeSelect()).toHaveTextContent('Nougat - Nougat theme');
+    });
+
+    it('keeps the chosen theme when the same model is chosen again from the catalog', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(themeSelect());
+        await userEvent.click(
+            within(screen.getByRole('listbox')).getByText(/Nougat/),
+        );
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_choose_model'));
+        await userEvent.click(
+            within(
+                screen.getByRole('navigation', { name: 'model list' }),
+            ).getAllByText('mc_a_title')[0],
+        );
+        await waitFor(() =>
+            expect(
+                screen.queryByRole('navigation', { name: 'model list' }),
+            ).not.toBeInTheDocument(),
+        );
+        await userEvent.click(button('site_wizard_next'));
+        await userEvent.click(button('site_wizard_next'));
+        await userEvent.click(button('site_wizard_next'));
+        expect(themeSelect()).toHaveTextContent('Nougat - Nougat theme');
+    });
+
+    it('preselects the theme of the new model when the model changes', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        await selectModel('mc_c_title');
+        await userEvent.click(button('site_wizard_next'));
+        // the inputs of the previous model are reset
+        await typeUrl('https://x');
+        await userEvent.click(button('site_wizard_next'));
+        await userEvent.click(button('site_wizard_next'));
+        expect(themeSelect()).toHaveTextContent('Nougat - Nougat theme');
+    });
+
+    it('keeps the error while choosing the theme', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        clearError.mockClear();
+        await userEvent.click(themeSelect());
+        await userEvent.click(
+            within(screen.getByRole('listbox')).getByText(/Nougat/),
+        );
+        expect(clearError).not.toHaveBeenCalled();
     });
 
     it('keeps the data and the site name when going back and forth', async () => {
@@ -196,13 +466,13 @@ describe('SiteWizard', () => {
         await goToSiteInfoStep();
         await typeSiteName('My site');
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByText('2/3')).toBeInTheDocument();
+        expect(screen.getByText('2/4')).toBeInTheDocument();
         expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
         await userEvent.click(button('site_wizard_next'));
         expect(screen.getByLabelText('name')).toHaveValue('My site');
     });
 
-    it('generates the site with the chosen model, data, name and description, only once', async () => {
+    it('generates the site with the chosen model, data, name, description and theme, only once', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToSiteInfoStep();
         await typeSiteName('My site');
@@ -210,11 +480,20 @@ describe('SiteWizard', () => {
             screen.getByLabelText('description'),
             'About my site',
         );
+        await userEvent.click(button('site_wizard_next'));
+        await userEvent.click(themeSelect());
+        await userEvent.click(
+            within(screen.getByRole('listbox')).getByText(/Nougat/),
+        );
         await userEvent.click(button('site_wizard_generate'));
         expect(generate).toHaveBeenCalledWith(
             models[0],
             { type: 'url', url: 'https://x' },
-            { siteName: 'My site', siteDescription: 'About my site' },
+            {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+                theme: 'nougat',
+            },
         );
         await userEvent.click(button('site_wizard_generate'), {
             pointerEventsCheck: 0,
@@ -224,7 +503,7 @@ describe('SiteWizard', () => {
 
     it('displays a loader and disables the navigation while generating', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
-        await goToSiteInfoStep();
+        await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
@@ -246,7 +525,7 @@ describe('SiteWizard', () => {
 
     it('offers to cancel the import while waiting for it', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
-        await goToSiteInfoStep();
+        await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
@@ -264,7 +543,7 @@ describe('SiteWizard', () => {
 
     it('disables the cancel button while cancelling', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
-        await goToSiteInfoStep();
+        await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
@@ -282,7 +561,7 @@ describe('SiteWizard', () => {
 
     it('shows the upload progress of a file and offers to cancel it', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
-        await goToSiteInfoStep();
+        await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
@@ -334,7 +613,7 @@ describe('SiteWizard', () => {
         generate.mockResolvedValue(undefined);
         const onClose = jest.fn();
         render(<SiteWizard open onClose={onClose} />);
-        await goToSiteInfoStep();
+        await goToThemeStep();
         await userEvent.click(button('site_wizard_generate'));
         await waitFor(() => expect(onClose).toHaveBeenCalledWith('generated'));
     });
@@ -357,7 +636,7 @@ describe('SiteWizard', () => {
             ).not.toBeInTheDocument(),
         );
         expect(onClose).not.toHaveBeenCalled();
-        expect(screen.getByText('2/3')).toBeInTheDocument();
+        expect(screen.getByText('2/4')).toBeInTheDocument();
 
         await userEvent.click(button('site_wizard_cancel'));
         await userEvent.click(button('confirm'));
@@ -370,6 +649,19 @@ describe('SiteWizard', () => {
         await goToDataStep();
         clearError.mockClear();
         await typeUrl('https://x');
+        expect(clearError).toHaveBeenCalled();
+    });
+
+    it('clears the error when the same model is chosen again from the catalog', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await selectModel('mc_a_title');
+        clearError.mockClear();
+        await userEvent.click(button('site_wizard_choose_model'));
+        await userEvent.click(
+            within(
+                screen.getByRole('navigation', { name: 'model list' }),
+            ).getAllByText('mc_a_title')[0],
+        );
         expect(clearError).toHaveBeenCalled();
     });
 
@@ -405,6 +697,7 @@ describe('SiteWizard', () => {
         const { rerender } = render(<SiteWizard open onClose={onClose} />);
         await goToSiteInfoStep();
         await typeSiteName('My site');
+        await userEvent.click(button('site_wizard_next'));
         await userEvent.click(button('site_wizard_generate'));
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
@@ -416,16 +709,17 @@ describe('SiteWizard', () => {
         expect(await screen.findByRole('alert')).toHaveTextContent(
             'site_wizard_generation_error+{"error":"boom"}',
         );
-        expect(screen.getByLabelText('name')).toHaveValue('My site');
         expect(onClose).not.toHaveBeenCalled();
         await waitFor(() =>
             expect(button('site_wizard_generate')).toBeEnabled(),
         );
+        await userEvent.click(button('site_wizard_previous'));
+        expect(screen.getByLabelText('name')).toHaveValue('My site');
     });
 
     it('keeps the error displayed on the data step, where a failed import is fixed', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
-        await goToSiteInfoStep();
+        await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
@@ -434,7 +728,8 @@ describe('SiteWizard', () => {
         });
         rerender(<SiteWizard open onClose={jest.fn()} />);
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByText('2/3')).toBeInTheDocument();
+        await userEvent.click(button('site_wizard_previous'));
+        expect(screen.getByText('2/4')).toBeInTheDocument();
         expect(screen.getByRole('alert')).toHaveTextContent('boom');
         await userEvent.click(button('site_wizard_previous'));
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();
