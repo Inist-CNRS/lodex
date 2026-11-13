@@ -183,7 +183,7 @@ describe('Precomputation', () => {
         cy.contains('1–25 of 26').should('be.visible');
     });
 
-    it.skip('should allow to export precomputed results to a file', () => {
+    it('should allow to export precomputed results to a file', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
