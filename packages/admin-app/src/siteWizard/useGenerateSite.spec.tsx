@@ -37,7 +37,12 @@ const RELOAD_ACTIONS = [
     LOAD_PRECOMPUTED,
 ];
 
-const model: CatalogModel = { id: 'a', url: 'http://a.tar', loader: 'la' };
+const model: CatalogModel = {
+    id: 'a',
+    url: 'http://a.tar',
+    loader: 'la',
+    importTypes: ['file'],
+};
 const source = { type: 'url' as const, url: 'https://x' };
 
 describe('useGenerateSite', () => {

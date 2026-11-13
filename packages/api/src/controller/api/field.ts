@@ -7,7 +7,7 @@ import route from 'koa-route';
 import moment from 'moment';
 import streamToString from 'stream-to-string';
 import tar from 'tar-stream';
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 
 import { validateField } from '../../models/field';
 import { getSiteTitleKey } from '../../models/siteTitleKey';
@@ -688,7 +688,7 @@ export const duplicateField = async (ctx: any) => {
         await workerQueue.add(
             PUBLISHER, // Name of the job
             { jobType: PUBLISHER, tenant: ctx.tenant },
-            { jobId: uuid() },
+            { jobId: randomUUID() },
         );
         ctx.status = 200;
         ctx.body = newField;

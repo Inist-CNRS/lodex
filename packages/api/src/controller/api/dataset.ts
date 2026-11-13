@@ -2,7 +2,7 @@ import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import getLogger from '../../services/logger';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
@@ -107,7 +107,7 @@ export const deleteManyDatasetRowByIds = async (ctx: any) => {
             await getOrCreateWorkerQueue(ctx.tenant, 1).add(
                 PUBLISHER, // Name of the job
                 { jobType: PUBLISHER, tenant: ctx.tenant },
-                { jobId: uuid() },
+                { jobId: randomUUID() },
             );
         }
 
@@ -143,7 +143,7 @@ export const deleteManyDatasetRowByFilter = async (ctx: any) => {
             await getOrCreateWorkerQueue(ctx.tenant, 1).add(
                 PUBLISHER, // Name of the job
                 { jobType: PUBLISHER, tenant: ctx.tenant },
-                { jobId: uuid() },
+                { jobId: randomUUID() },
             );
         }
 

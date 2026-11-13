@@ -9,7 +9,9 @@ import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
 // @ts-expect-error TS7017
 global.UPLOAD_LIMIT = 1;
 
-jest.mock('./hasTranslation', () => ({ hasTranslation: () => true }));
+jest.mock('./hasTranslation', () => ({
+    hasTranslation: (key: string) => key !== 'mc_a_import_help',
+}));
 
 const models: CatalogModel[] = [
     {
@@ -18,10 +20,28 @@ const models: CatalogModel[] = [
         loader: 'la',
         doc: 'http://a.doc',
         demo: 'http://a.demo',
+        importTypes: ['file', 'url', 'text'],
     },
-    { id: 'b', url: 'http://b.tar', loader: 'lb' },
-    { id: 'c', url: 'http://c.tar', loader: 'lc', theme: 'nougat' },
-    { id: 'd', url: 'http://d.tar', loader: 'ld', theme: 'missing' },
+    {
+        id: 'b',
+        url: 'http://b.tar',
+        loader: 'lb',
+        importTypes: ['text'],
+    },
+    {
+        id: 'c',
+        url: 'http://c.tar',
+        loader: 'lc',
+        theme: 'nougat',
+        importTypes: ['file', 'url', 'text'],
+    },
+    {
+        id: 'd',
+        url: 'http://d.tar',
+        loader: 'ld',
+        theme: 'missing',
+        importTypes: ['file', 'url', 'text'],
+    },
 ];
 
 const themes = [
@@ -168,6 +188,27 @@ describe('SiteWizard', () => {
         expect(screen.queryByRole('link')).not.toBeInTheDocument();
     });
 
+    it('hides the tabs and opens the import type of a single-type model', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep('mc_b_title');
+        expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+        expect(screen.queryByText('import_file_text')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('use_url')).not.toBeInTheDocument();
+    });
+
+    it('displays the translated import help of the model', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep('mc_b_title');
+        expect(screen.getByText('mc_b_import_help')).toBeInTheDocument();
+    });
+
+    it('displays no import help for a model without one', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        expect(screen.getAllByRole('tab')).toHaveLength(3);
+        expect(screen.queryByText('mc_b_import_help')).not.toBeInTheDocument();
+    });
+
     it('goes back to the first step with the model still selected', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();
@@ -175,6 +216,39 @@ describe('SiteWizard', () => {
         expect(screen.getByText('1/4')).toBeInTheDocument();
         expect(screen.getByRole('combobox')).toHaveTextContent('mc_a_title');
         expect(button('site_wizard_next')).toBeEnabled();
+    });
+
+    it('resets the inputs when another model is chosen', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        await typeUrl('https://x');
+        await userEvent.click(button('site_wizard_previous'));
+        await selectModel('mc_b_title');
+        await goToDataStep('mc_a_title');
+        await userEvent.click(
+            screen.getByRole('tab', { name: 'upload_by_url' }),
+        );
+        expect(screen.getByLabelText('use_url')).toHaveValue('');
+    });
+
+    it('keeps the inputs when the same model is chosen again from the catalog', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToDataStep();
+        await typeUrl('https://x');
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_choose_model'));
+        await userEvent.click(
+            within(
+                screen.getByRole('navigation', { name: 'model list' }),
+            ).getAllByText('mc_a_title')[0],
+        );
+        await waitFor(() =>
+            expect(
+                screen.queryByRole('navigation', { name: 'model list' }),
+            ).not.toBeInTheDocument(),
+        );
+        await userEvent.click(button('site_wizard_next'));
+        expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
     });
 
     it('goes to the site name and description once the data is given', async () => {
@@ -369,6 +443,8 @@ describe('SiteWizard', () => {
         await userEvent.click(button('site_wizard_previous'));
         await selectModel('mc_c_title');
         await userEvent.click(button('site_wizard_next'));
+        // the inputs of the previous model are reset
+        await typeUrl('https://x');
         await userEvent.click(button('site_wizard_next'));
         await userEvent.click(button('site_wizard_next'));
         expect(themeSelect()).toHaveTextContent('Nougat - Nougat theme');

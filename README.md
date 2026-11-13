@@ -30,7 +30,8 @@ docker-compose up
 
 ## Development
 
-- In development, the API and the workers run with `tsx` (`npm run development:*`): sources are used as is, nothing to build.
+- In development, sources are used as is, nothing to build: the API runs with `tsx` (`npm run development:backend`), the workers with Node's type stripping (`npm run production:workers`, no watch: restart the container to pick up changes).
+  - Exception: `@ezs/lodex` (`packages/ezsLodex`) is loaded from its compiled `lib/` (git-ignored). The `workers` service builds it before starting (in `docker-compose.dev.yml` and `docker-compose.spec.yml`), so a fresh checkout works. In `docker-compose.dev.yml`, the `api` service also rebuilds it on change (`tsc --watch`): the API picks up the changes, the workers only after a restart.
 - In production, they run with plain `node`:
   - the API from a bundle built by `npm run build` (`packages/api/build.mjs`, output in `packages/api/dist`), so `npm start` needs a build first;
   - the workers with Node's type stripping (`node src/index.ts`).

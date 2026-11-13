@@ -96,4 +96,12 @@ if (!module.parent) {
             removeImportListener(emitPayload);
         });
     });
+
+    const toMB = (bytes: number) => Math.round(bytes / 1024 / 1024);
+    setInterval(() => {
+        const { rss, heapUsed, heapTotal, external } = process.memoryUsage();
+        getLogger().info(
+            `[memory] rss=${toMB(rss)}MB heapUsed=${toMB(heapUsed)}MB heapTotal=${toMB(heapTotal)}MB external=${toMB(external)}MB sockets=${io.engine.clientsCount}`,
+        );
+    }, 60_000).unref();
 }
