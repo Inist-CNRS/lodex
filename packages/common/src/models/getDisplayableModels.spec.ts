@@ -45,6 +45,23 @@ describe('getDisplayableModels', () => {
         },
     );
 
+    it.each([['Disabled'], ['disabled'], ['other', 'Disabled']])(
+        'should filter out a model tagged %p',
+        (...tags) => {
+            expect(
+                getDisplayableModels([{ ...valid, tags }], options),
+            ).toStrictEqual([]);
+        },
+    );
+
+    it.each([[undefined], [[]], [['other']]])(
+        'should keep a model whose tags are %p',
+        (tags) => {
+            const model = { ...valid, tags };
+            expect(getDisplayableModels([model], options)).toHaveLength(1);
+        },
+    );
+
     it('should filter out a model with an empty importTypes list', () => {
         expect(
             getDisplayableModels([{ ...valid, importTypes: [] }], options),
