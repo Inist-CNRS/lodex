@@ -18,6 +18,7 @@ import indexSearchableFields from '../../services/indexSearchableFields';
 import {
     applyConfigTenant,
     applyRecommendedTheme,
+    applySiteInfo,
     exportFields,
     getAllField,
     importCatalogModel,
@@ -40,12 +41,29 @@ import {
 } from '../../services/catalogModel';
 
 jest.mock('../../services/indexSearchableFields');
-jest.mock('../../models/themes', () => ({
-    getTheme: (name: string) =>
-        name === 'istex'
-            ? { customTemplateVariables: { color: 'istex-green' } }
-            : undefined,
-}));
+jest.mock('../../services/logger', () => {
+    const logger = { error: jest.fn(), info: jest.fn(), warn: jest.fn() };
+    return () => logger;
+});
+const mockLogger = jest.requireMock('../../services/logger')();
+jest.mock('../../models/themes', () => {
+    const themes: Record<string, object> = {
+        default: { siteTitle: '', summary: '' },
+        istex: {
+            color: 'istex-green',
+            title: 'exemple : Services',
+            summary: 'exemple : summary',
+        },
+        // an older theme, without the site name and description
+        legacy: { color: 'grey' },
+    };
+    return {
+        getTheme: (name: string) =>
+            themes[name]
+                ? { customTemplateVariables: themes[name] }
+                : undefined,
+    };
+});
 
 const readTarEntries = (stream: any): Promise<Record<string, string>> =>
     new Promise((resolve, reject) => {
@@ -175,6 +193,7 @@ describe('field routes', () => {
                 availableLoaders: config.get('scripts.loaders'),
                 downloadModelArchive,
                 applyRecommendedTheme,
+                applySiteInfo,
             });
         });
 
@@ -196,6 +215,7 @@ describe('field routes', () => {
                 availableLoaders: config.get('scripts.loaders'),
                 downloadModelArchive,
                 applyRecommendedTheme,
+                applySiteInfo,
             });
         });
     });
@@ -463,6 +483,118 @@ describe('field routes', () => {
         });
     });
 
+    describe('applySiteInfo', () => {
+        let ctx: any;
+
+        const createConfig = (theme: string, variables: object) =>
+            ctx.configTenantCollection.create({
+                theme,
+                front: { multilingual: true, theme: variables },
+                userAuth: { username: 'user', active: true },
+            });
+
+        beforeEach(async () => {
+            await db.collection('configTenant').deleteMany({});
+            ctx = { configTenantCollection: await configTenantFactory(db) };
+        });
+
+        it('should write the name and description into the theme variables', async () => {
+            await createConfig('default', { siteTitle: '', color: 'blue' });
+
+            await applySiteInfo(ctx, {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            });
+
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: {
+                    multilingual: true,
+                    theme: {
+                        siteTitle: 'My site',
+                        summary: 'About my site',
+                        color: 'blue',
+                    },
+                },
+                userAuth: { username: 'user', active: true },
+            });
+        });
+
+        it('should write the name into title for a theme using that key', async () => {
+            await createConfig('istex', { title: 'exemple : Services' });
+
+            await applySiteInfo(ctx, { siteName: 'My site' });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme.title).toBe('My site');
+            expect(front.theme).not.toHaveProperty('siteTitle');
+        });
+
+        it('should trim the values and leave the empty ones untouched', async () => {
+            await createConfig('default', {
+                siteTitle: 'Archive title',
+                summary: 'Archive summary',
+            });
+
+            await applySiteInfo(ctx, {
+                siteName: '  ',
+                siteDescription: ' About my site ',
+            });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme).toEqual({
+                siteTitle: 'Archive title',
+                summary: 'About my site',
+            });
+        });
+
+        it("should add the values over the theme's defaults when the configuration has no theme variables yet", async () => {
+            await ctx.configTenantCollection.create({
+                theme: 'default',
+                front: { multilingual: true },
+            });
+
+            await applySiteInfo(ctx, { siteName: 'My site' });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            // the theme settings editor shows every variable of the theme
+            expect(front).toEqual({
+                multilingual: true,
+                theme: { siteTitle: 'My site', summary: '' },
+            });
+        });
+
+        it('should skip the values a theme has no variable for', async () => {
+            await createConfig('legacy', { color: 'grey' });
+
+            await applySiteInfo(ctx, {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme).toEqual({ color: 'grey' });
+        });
+
+        it('should skip a theme unknown to the server', async () => {
+            await createConfig('unknown', { color: 'blue' });
+
+            await applySiteInfo(ctx, {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme).toEqual({ color: 'blue' });
+        });
+
+        it('should do nothing without a configuration', async () => {
+            await applySiteInfo(ctx, { siteName: 'My site' });
+
+            expect(await ctx.configTenantCollection.findLast()).toBeNull();
+        });
+    });
+
     describe('importCatalogModel', () => {
         const tarModel = {
             id: 'm',
@@ -485,6 +617,7 @@ describe('field routes', () => {
                 downloadModelArchive: jest.fn().mockResolvedValue(stream),
                 restoreFields: jest.fn().mockResolvedValue({}),
                 applyRecommendedTheme: jest.fn().mockResolvedValue({}),
+                applySiteInfo: jest.fn().mockResolvedValue(undefined),
                 enrichment: enrichmentModel,
                 precomputed: precomputedModel,
             };
@@ -542,6 +675,56 @@ describe('field routes', () => {
             );
             expect(ctx.status).toBe(200);
             expect(ctx.body.themeNotFound).toBe('hal-cnrs');
+        });
+
+        it('should apply the site name and description after the recommended theme', async () => {
+            ctx.request.body = {
+                id: 'themed',
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            };
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.applySiteInfo).toHaveBeenCalledWith(ctx, {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            });
+            expect(
+                ctx.applyRecommendedTheme.mock.invocationCallOrder[0],
+            ).toBeLessThan(ctx.applySiteInfo.mock.invocationCallOrder[0]);
+            expect(ctx.status).toBe(200);
+        });
+
+        it('should apply the site name and description after restoring a model without theme', async () => {
+            ctx.request.body = { id: 'm', siteName: 'My site' };
+
+            await importCatalogModel(ctx);
+
+            expect(ctx.applySiteInfo).toHaveBeenCalledWith(ctx, {
+                siteName: 'My site',
+                siteDescription: undefined,
+            });
+            expect(ctx.restoreFields.mock.invocationCallOrder[0]).toBeLessThan(
+                ctx.applySiteInfo.mock.invocationCallOrder[0],
+            );
+        });
+
+        it('should log a failed site info write and still import the model', async () => {
+            ctx.request.body = { id: 'm', siteName: 'My site' };
+            ctx.applySiteInfo.mockRejectedValue(new Error('write failed'));
+
+            await importCatalogModel(ctx);
+
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                'Site info write error',
+                expect.objectContaining({ error: 'write failed' }),
+            );
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toEqual({
+                message: 'Model imported successfully',
+                themeNotFound: undefined,
+            });
         });
 
         it('should return the theme of the archive that could not be applied', async () => {

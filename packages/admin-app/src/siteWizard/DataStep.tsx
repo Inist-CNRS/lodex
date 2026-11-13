@@ -1,10 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import type { FileObject } from 'mui-file-dropzone';
-import {
-    getModelImportHelpKey,
-    getModelTitleKey,
-    type CatalogModel,
-} from '@lodex/common';
+import { getModelImportHelpKey, type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     DatasetSourceInput,
@@ -12,25 +8,17 @@ import {
 } from '../upload/DatasetSourceInput';
 import { hasTranslation } from './hasTranslation';
 import { ModelLinks } from './ModelLinks';
-
-// In French, "Modèle OpenAlex" reads "le modèle OpenAlex" inside a sentence.
-// English titles start with the model's name ("OpenAlex model"): keep them.
-export const getModelNameInSentence = (title: string, locale: 'fr' | 'en') =>
-    locale === 'fr' ? title.slice(0, 1).toLowerCase() + title.slice(1) : title;
+import { ModelSubtitle } from './ModelSubtitle';
 
 export const DataStepHeader = ({ model }: { model: CatalogModel }) => {
-    const { translate, locale } = useTranslate();
+    const { translate } = useTranslate();
     const importHelpKey = getModelImportHelpKey(model.id);
     return (
         <>
-            <Typography color="text.secondary">
-                {translate('site_wizard_data_subtitle', {
-                    name: getModelNameInSentence(
-                        translate(getModelTitleKey(model.id)),
-                        locale,
-                    ),
-                })}
-            </Typography>
+            <ModelSubtitle
+                model={model}
+                translationKey="site_wizard_data_subtitle"
+            />
             <ModelLinks model={model} />
             {hasTranslation(importHelpKey) && (
                 <Typography sx={{ mt: 2 }}>

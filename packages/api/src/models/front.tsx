@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { version } from '../../../../package.json';
 import rootTheme from '../../../../src/app/custom/themes/rootTheme';
+import { getSiteTitleKey } from './siteTitleKey';
 import { getTheme } from './themes';
 import { REPO_ROOT } from '../paths';
 
@@ -132,7 +133,7 @@ export const getSiteTitle = (
     themeVariables: Record<string, unknown> = {},
     tenantVariables: Record<string, unknown> = {},
 ): string | null => {
-    const key = 'title' in themeVariables ? 'title' : 'siteTitle';
+    const key = getSiteTitleKey(themeVariables);
     const value = tenantVariables[key];
     if (typeof value !== 'string' || value === themeVariables[key]) {
         return null;

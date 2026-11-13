@@ -122,7 +122,7 @@ describe('useGenerateSite', () => {
             'importCatalogModel',
             'resetQueries',
         ]);
-        expect(importCatalogModel).toHaveBeenCalledWith('a');
+        expect(importCatalogModel).toHaveBeenCalledWith('a', {});
         expect(client.resetQueries).toHaveBeenCalledWith({
             queryKey: ['get-config-tenant'],
         });
@@ -130,6 +130,13 @@ describe('useGenerateSite', () => {
         expect(result.current.isGenerating).toBe(false);
         expect(result.current.error).toBeNull();
         expect(toast).not.toHaveBeenCalled();
+    });
+
+    it('imports the model with the site name and description', async () => {
+        const siteInfo = { siteName: 'My site', siteDescription: 'About' };
+        const { result } = renderGenerateSite();
+        await act(() => result.current.generate(model, source, siteInfo));
+        expect(importCatalogModel).toHaveBeenCalledWith('a', siteInfo);
     });
 
     it('uploads the data only once the import socket is connected', async () => {
