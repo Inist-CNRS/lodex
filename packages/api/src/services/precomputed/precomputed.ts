@@ -335,74 +335,78 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    const dataSetSize = await ctx.dataset.count();
-    const databaseOutput = await ctx.dataset.find().stream();
-    const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
 
-    const streamDatabaseExport = databaseOutput
-        .on('error', (e: any) => databaseOutputBis.emit('error', e))
-        .pipe(databaseOutputBis)
-        .pipe(
-            ezs((entry: any, feed: any, self: any) => {
-                if (self.isLast()) {
-                    return feed.close();
-                }
-                const colums: any = [];
-                const columsNames: any = [];
-                precomputed.sourceColumns.map((column: any) => {
-                    colums.push(entry[column]);
-                });
-                precomputed.sourceColumns.map((column: any) => {
-                    columsNames.push(column);
-                });
-                feed.send({
-                    id: entry.uri,
-                    value: tryParseJsonString(
-                        colums.length > 1 ? colums : colums[0],
-                    ),
-                    name: columsNames, // special case, see vectors.ini
-                });
-            }),
-        )
-        .pipe(
-            ezs((entry: any, feed: any, self: any) => {
-                if (self.isLast()) {
-                    return feed.close();
-                }
-                // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
-                const progressValue = Math.floor(
-                    (self.getIndex() / dataSetSize) * 35 + 10,
-                );
-                progress.setProgress(ctx.tenant, progressValue);
-                feed.send(entry);
-            }),
-        )
-        .pipe(ezs('TARDump', { compress: true }))
-        .pipe(
-            ezs('FILESave', {
-                identifier: precomputedId,
-                location: tmpDirectory,
-                compress: false,
-            }),
-        )
-        .pipe(
-            ezs((entry: any, feed: any, self: any) => {
-                if (self.isLast()) {
-                    return feed.close();
-                }
-                logData = JSON.stringify({
-                    level: 'ok',
-                    message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending file (${path.basename(entry.filename)}) to webservice`,
-                    timestamp: new Date(),
-                    status: TaskStatus.IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-                notifyListeners(room, logData);
-                feed.send(entry);
-            }),
-        );
+    let dataSetSize: number = 0;
     let fileDescription;
+
     try {
+        dataSetSize = await ctx.dataset.count();
+        const databaseOutput = await ctx.dataset.find().stream();
+        const databaseOutputBis = ezs('transit'); // trick: mongo stream does not propagate error in the pipeline
+
+        const streamDatabaseExport = databaseOutput
+            .on('error', (e: any) => databaseOutputBis.emit('error', e))
+            .pipe(databaseOutputBis)
+            .pipe(
+                ezs((entry: any, feed: any, self: any) => {
+                    if (self.isLast()) {
+                        return feed.close();
+                    }
+                    const colums: any = [];
+                    const columsNames: any = [];
+                    precomputed.sourceColumns.map((column: any) => {
+                        colums.push(entry[column]);
+                    });
+                    precomputed.sourceColumns.map((column: any) => {
+                        columsNames.push(column);
+                    });
+                    feed.send({
+                        id: entry.uri,
+                        value: tryParseJsonString(
+                            colums.length > 1 ? colums : colums[0],
+                        ),
+                        name: columsNames, // special case, see vectors.ini
+                    });
+                }),
+            )
+            .pipe(
+                ezs((entry: any, feed: any, self: any) => {
+                    if (self.isLast()) {
+                        return feed.close();
+                    }
+                    // Set 0 as 10. 100 as 45. Increment from indexDataset to dataSetSize
+                    const progressValue = Math.floor(
+                        (self.getIndex() / dataSetSize) * 35 + 10,
+                    );
+                    progress.setProgress(ctx.tenant, progressValue);
+                    feed.send(entry);
+                }),
+            )
+            .pipe(ezs('TARDump', { compress: true }))
+            .pipe(
+                ezs('FILESave', {
+                    identifier: precomputedId,
+                    location: tmpDirectory,
+                    compress: false,
+                }),
+            )
+            .pipe(
+                ezs((entry: any, feed: any, self: any) => {
+                    if (self.isLast()) {
+                        return feed.close();
+                    }
+                    logData = JSON.stringify({
+                        level: 'ok',
+                        message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending file (${path.basename(entry.filename)}) to webservice`,
+                        timestamp: new Date(),
+                        status: TaskStatus.IN_PROGRESS,
+                    });
+                    jobLogger.info(ctx.job, logData);
+                    notifyListeners(room, logData);
+                    feed.send(entry);
+                }),
+            );
+
         const [file] = await streamToPromise(streamDatabaseExport);
         fileDescription = file;
     } catch (err) {
@@ -426,6 +430,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
         });
         throw new Error(msg);
     }
+
     // @ts-expect-error TS(2339): Property filename does not exist on type Number
     const { size: fileSize, filename: fileToUpload } = fileDescription;
     const parameters = {
