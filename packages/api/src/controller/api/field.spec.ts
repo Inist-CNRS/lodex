@@ -147,6 +147,7 @@ describe('field routes', () => {
                     sortOrder: 'asc',
                 },
                 '5Hvs',
+                false, // created concurrently: shifting positions would race
             ),
             fieldModel.create(
                 {
@@ -170,6 +171,7 @@ describe('field routes', () => {
                     name: 'uri',
                 },
                 'GaV6',
+                false,
             ),
         ]).then((fields: any) =>
             fields.toSorted((a: any, b: any) => {
