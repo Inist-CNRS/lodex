@@ -13,7 +13,10 @@ import {
 } from './upload';
 
 jest.mock('../../workers');
-jest.mock('uuid', () => ({ v1: () => 'uuid' }));
+jest.mock('node:crypto', () => ({
+    ...jest.requireActual('node:crypto'),
+    randomUUID: () => 'uuid',
+}));
 
 describe('upload', () => {
     beforeAll(async () => {

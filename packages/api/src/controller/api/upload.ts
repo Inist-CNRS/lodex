@@ -23,7 +23,7 @@ import {
     removeUploadChunks,
 } from '../../services/uploadCancellation';
 
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { IMPORT } from '../../workers/import';
 
@@ -172,7 +172,7 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
                 tenant: ctx.tenant,
                 jobType: IMPORT,
             },
-            { jobId: uuid() },
+            { jobId: randomUUID() },
         );
         ctx.body = {
             status: 'pending',
@@ -195,7 +195,7 @@ export const uploadUrl = async (ctx: any) => {
             tenant: ctx.tenant,
             jobType: IMPORT,
         },
-        { jobId: uuid() },
+        { jobId: randomUUID() },
     );
     ctx.body = {
         status: 'pending',
@@ -213,7 +213,7 @@ export const uploadText = async (ctx: any) => {
             tenant: ctx.tenant,
             jobType: IMPORT,
         },
-        { jobId: uuid() },
+        { jobId: randomUUID() },
     );
     ctx.body = {
         status: 'pending',
@@ -272,7 +272,7 @@ export const checkChunkMiddleware = async (ctx: any, loaderName: any) => {
                 tenant: ctx.tenant,
                 jobType: IMPORT,
             },
-            { jobId: uuid() },
+            { jobId: randomUUID() },
         );
     }
     ctx.status = exists ? 200 : 204;
