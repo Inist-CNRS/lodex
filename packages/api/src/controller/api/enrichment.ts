@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 
 import _ from 'lodash';
 import { DATASET_ID } from '../../models/dataSource';
@@ -123,7 +123,7 @@ const queueEnrichmentJob = async (
     jobType: string,
     options: Record<string, unknown> = {},
 ) => {
-    const jobId = uuid();
+    const jobId = randomUUID();
     await ctx.enrichment.updateStatus(id, TaskStatus.PENDING, { jobId });
     return getOrCreateWorkerQueue(ctx.tenant, 1).add(
         jobType,

@@ -3,7 +3,7 @@ import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import config from 'config';
 import mount from 'koa-mount';
 
@@ -152,7 +152,7 @@ export const precomputedAction = async (
                     tenant: ctx.tenant,
                     subLabel: precomputed.name,
                 },
-                { jobId: uuid() },
+                { jobId: randomUUID() },
             )
             .then((job: any) => {
                 setPrecomputedJobId(ctx, id, job);
@@ -174,7 +174,7 @@ export const precomputedAction = async (
                     tenant: ctx.tenant,
                     subLabel: precomputed.name,
                 },
-                { jobId: uuid() },
+                { jobId: randomUUID() },
             )
             .then((job: any) => {
                 setPrecomputedJobId(ctx, id, job);
