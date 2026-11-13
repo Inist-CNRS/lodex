@@ -1,7 +1,7 @@
 import { ProgressStatus } from '@lodex/common';
 import progress from '../services/progress';
 import { disableFusible } from '@ezs/core/fusible';
-import { cancelJob } from './tools';
+import { cancelJob, clearJobs } from './tools';
 
 const mockActiveJobs: unknown[] = [];
 
@@ -9,6 +9,7 @@ jest.mock('./index', () => ({
     getOrCreateWorkerQueue: () => ({
         getActive: async () => mockActiveJobs,
         getCompleted: async () => [],
+        getWaiting: async () => [],
     }),
     cleanWaitingJobsOfType: jest.fn(),
     CancelWorkerError: class extends Error {},
@@ -70,6 +71,33 @@ describe('cancelJob', () => {
 
         await cancelJob(ctx, 'import');
 
+        expect(moveToFailed).toHaveBeenCalled();
+    });
+});
+
+describe('clearJobs', () => {
+    const ctx = {
+        tenant: 'tools-spec',
+        precomputed: { cancelByIds: jest.fn() },
+        enrichment: { cancelByIds: jest.fn() },
+    } as any;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockActiveJobs.length = 0;
+    });
+
+    it('stops the stream of the active enrichment, as cancelJob does', async () => {
+        const moveToFailed = jest.fn();
+        mockActiveJobs.push({
+            name: 'enricher',
+            data: { jobType: 'enricher', id: 'e1', fusible: 'fusible' },
+            moveToFailed,
+        });
+
+        await clearJobs(ctx);
+
+        expect(disableFusible).toHaveBeenCalledWith('fusible');
         expect(moveToFailed).toHaveBeenCalled();
     });
 });
