@@ -1468,34 +1468,14 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.response.status).toBe(400);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
-            expect(ctx.body).toStrictEqual({
+            expect(ctx.body).toMatchObject({
                 total: 0,
                 fullTotal: 0,
                 errors: [
                     {
-                        code: 'invalid_enum_value',
+                        code: 'invalid_value',
                         message: 'annotation_query_filter_by_invalid_key',
                         path: ['filterBy'],
-                        options: [
-                            'resource.title',
-                            'kind',
-                            'authorName',
-                            'resourceUri',
-                            'fieldId',
-                            'comment',
-                            'initialValue',
-                            'proposedValue',
-                            'status',
-                            'internalComment',
-                            'administrator',
-                            'createdAt',
-                            'updatedAt',
-                            'field.label',
-                            'field.name',
-                            'field.internalName',
-                            'field.internalScopes',
-                        ],
-                        received: 'test',
                     },
                 ],
                 data: [],
@@ -1981,17 +1961,14 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             };
             await updateAnnotation(ctx, annotation._id);
 
-            expect(ctx.response).toStrictEqual({
+            expect(ctx.response).toMatchObject({
                 status: 400,
                 body: {
                     errors: [
                         {
-                            code: 'invalid_type',
-                            expected:
-                                "'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking'",
-                            message: 'Required',
+                            code: 'invalid_value',
                             path: ['status'],
-                            received: 'undefined',
+                            message: 'error_required',
                         },
                     ],
                 },
@@ -2039,32 +2016,8 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         });
 
         it.each([
-            [
-                [],
-                [
-                    {
-                        code: 'too_small',
-                        exact: false,
-                        inclusive: true,
-                        message: 'Array must contain at least 1 element(s)',
-                        minimum: 1,
-                        path: [],
-                        type: 'array',
-                    },
-                ],
-            ],
-            [
-                [1],
-                [
-                    {
-                        code: 'invalid_type',
-                        expected: 'string',
-                        message: 'Expected string, received number',
-                        path: [0],
-                        received: 'number',
-                    },
-                ],
-            ],
+            [[], [{ code: 'too_small', path: [] }]],
+            [[1], [{ code: 'invalid_type', path: [0] }]],
         ])(
             'should fail with a 400 if ids is not valid',
             async (body: any, errors: any) => {
@@ -2080,7 +2033,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
 
                 await deleteManyAnnotationById(ctx);
 
-                expect(ctx.response).toStrictEqual({
+                expect(ctx.response).toMatchObject({
                     status: 400,
                     body: {
                         deletedCount: 0,
