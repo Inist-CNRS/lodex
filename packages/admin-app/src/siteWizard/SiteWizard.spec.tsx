@@ -292,6 +292,20 @@ describe('SiteWizard', () => {
         );
     });
 
+    it('keeps the list of themes when a refetch fails after it was loaded', async () => {
+        (useGetAvailableThemes as jest.Mock).mockReturnValue({
+            data: themes,
+            isLoading: false,
+            error: new Error('boom'),
+        });
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        expect(themeSelect()).toHaveTextContent('System - System theme');
+        expect(
+            screen.queryByText('site_wizard_themes_error'),
+        ).not.toBeInTheDocument();
+    });
+
     it('generates with the default theme when the themes cannot be loaded for a model without theme', async () => {
         (useGetAvailableThemes as jest.Mock).mockReturnValue({
             data: undefined,
@@ -559,6 +573,19 @@ describe('SiteWizard', () => {
         await goToDataStep();
         clearError.mockClear();
         await typeUrl('https://x');
+        expect(clearError).toHaveBeenCalled();
+    });
+
+    it('clears the error when the same model is chosen again from the catalog', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await selectModel('mc_a_title');
+        clearError.mockClear();
+        await userEvent.click(button('site_wizard_choose_model'));
+        await userEvent.click(
+            within(
+                screen.getByRole('navigation', { name: 'model list' }),
+            ).getAllByText('mc_a_title')[0],
+        );
         expect(clearError).toHaveBeenCalled();
     });
 

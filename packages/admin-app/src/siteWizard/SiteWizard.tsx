@@ -81,13 +81,15 @@ const ModelStepContent = ({ state, onChange, models }: StepProps) => (
     <ModelStep
         models={models}
         selectedId={state.modelId}
-        onSelect={(modelId) => {
-            // the catalog dialog also selects the model already selected
-            if (modelId !== state.modelId) {
-                // forgets the theme picked for the previous model
-                onChange({ modelId, theme: '' });
-            }
-        }}
+        onSelect={(modelId) =>
+            onChange(
+                // the catalog dialog also selects the model already selected:
+                // forgets the theme picked for a previous model only
+                modelId === state.modelId
+                    ? { modelId }
+                    : { modelId, theme: '' },
+            )
+        }
     />
 );
 
@@ -159,7 +161,8 @@ const ThemeStepContent = ({
         model={model}
         themes={themesQuery.data}
         isLoading={themesQuery.isLoading}
-        hasError={!!themesQuery.error}
+        // a failed refetch keeps the list loaded before
+        hasError={!!themesQuery.error && !themesQuery.data}
         theme={state.theme}
         onThemeChange={(theme) => onChange({ theme })}
     />
