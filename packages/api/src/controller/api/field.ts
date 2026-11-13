@@ -1,4 +1,3 @@
-import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
@@ -9,6 +8,7 @@ import { v1 as uuid } from 'uuid';
 
 import { validateField } from '../../models/field';
 import indexSearchableFields from '../../services/indexSearchableFields';
+import { parseMultipart } from '../../services/multipartParser';
 import { mongoConnectionString } from '../../services/mongoClient';
 import publishFacets from './publishFacets';
 
@@ -395,7 +395,25 @@ export const exportFields = async (ctx: any) => {
 };
 
 export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
-    const { files } = await asyncBusboyImpl(ctx.req);
+    let files: any;
+    try {
+        ({ files } = await asyncBusboyImpl(ctx.req));
+    } catch (error: any) {
+        // The multipart parser refuses a request past its own limits and sets
+        // the HTTP status on the error; answer with it instead of letting Koa
+        // turn it into a 500. A response whose headers are already sent cannot
+        // carry a status, so end it rather than throw ERR_HTTP_HEADERS_SENT.
+        if (ctx.headerSent) {
+            ctx.res.end();
+            return;
+        }
+        ctx.status =
+            Number.isInteger(error?.status) && error.status >= 400
+                ? error.status
+                : 400;
+        ctx.body = { error: error?.message || 'Invalid multipart request' };
+        return;
+    }
     const fileStream = files[0];
 
     try {
@@ -541,7 +559,7 @@ const app = new Koa();
 app.use(setup);
 
 app.use(route.get('/export', exportFields));
-app.use(route.post('/import', importFields(asyncBusboy)));
+app.use(route.post('/import', importFields(parseMultipart)));
 app.use(route.delete('/', dropFieldCollection));
 app.use(koaBodyParser());
 app.use(route.post('/', postField));

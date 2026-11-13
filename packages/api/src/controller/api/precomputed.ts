@@ -8,13 +8,13 @@ import config from 'config';
 import mount from 'koa-mount';
 
 import { getLocale, TaskStatus } from '@lodex/common';
-import asyncBusboy from '@recuperateur/async-busboy';
 import type { PreComputation } from '../../models/precomputed';
 import {
     getPrecomputedDataPreview,
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
+import { parseMultipart } from '../../services/multipartParser';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { cancelJob } from '../../workers/tools';
@@ -301,7 +301,7 @@ export const previewDataPrecomputed = async (ctx: AppContext, id: string) => {
 };
 
 export const requestToStream = async (req: any) => {
-    const { files, fields } = await asyncBusboy(req);
+    const { files, fields } = await parseMultipart(req);
     files[0].once('close', async () => {
         await unlinkFile(files[0].path);
     });
