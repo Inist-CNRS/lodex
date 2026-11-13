@@ -5,9 +5,11 @@ module.exports = {
             // compiled by `npm run build` (packages/api/build.mjs)
             script: './dist/index.js',
             interpreter: 'node',
-            // Before an OOM crash: heap snapshot + diagnostic report in /tmp (same place as the CPU lag profiles)
-            interpreter_args:
-                '--enable-source-maps --max-http-header-size=32768 --heapsnapshot-near-heap-limit=1 --report-on-fatalerror --diagnostic-dir=/tmp',
+            // On a fatal error (OOM included), a small diagnostic report goes to the same
+            // folder as the CPU lag profiles. To also get a heap snapshot before an OOM
+            // (as big as the heap, never cleaned up), set temporarily
+            // NODE_OPTIONS=--heapsnapshot-near-heap-limit=1 on the container.
+            interpreter_args: `--enable-source-maps --max-http-header-size=32768 --report-on-fatalerror --diagnostic-dir=${require('os').tmpdir()}`,
             exec_mode: 'cluster',
             cwd: './packages/api',
             wait_ready: true,
