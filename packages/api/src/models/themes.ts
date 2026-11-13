@@ -89,6 +89,9 @@ export const getTheme = (theme = 'default') => {
 export const getAvailableThemes = () => {
     const toReturn: any = [];
     loadedThemes.forEach((theme: any, value: any) => {
+        if (value === 'istex-legacy') {
+            return;
+        }
         toReturn.push({
             value,
             name: theme.name,
