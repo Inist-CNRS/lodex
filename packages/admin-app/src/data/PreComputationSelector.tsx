@@ -50,10 +50,9 @@ export const PreComputationSelector = ({
     return (
         <Select
             disabled={disabled || isLoading}
-            defaultValue={defaultValue}
             error={!!error}
             fullWidth
-            value={value}
+            value={value ?? ''}
             onChange={(e) => onChange(e.target.value as string)}
             aria-label={translate('select_precomputed_data')}
         >

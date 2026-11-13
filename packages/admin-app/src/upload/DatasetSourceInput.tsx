@@ -219,7 +219,11 @@ export const DatasetSourceInput = ({
                                 // @ts-expect-error TS2322 --- mui component type only accept string
                                 dropzoneText={
                                     <>
-                                        <Typography variant="h6">
+                                        <Typography
+                                            variant="h6"
+                                            component="span"
+                                            display="block"
+                                        >
                                             {translate('import_file_text')}
                                         </Typography>
                                         {hideDescriptions && (

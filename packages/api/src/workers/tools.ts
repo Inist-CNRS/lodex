@@ -133,6 +133,10 @@ export const clearJobs = async (ctx: AppContext) => {
     const activeJobIds = activeJobs.map((job) => job.data.id) || [];
 
     for (const activeJob of activeJobs) {
+        // stops the ezs pipeline (breakers), as cancelJob does
+        if (activeJob.data?.fusible) {
+            await disableFusible(activeJob.data.fusible);
+        }
         if (activeJob.name === 'enricher') {
             await handleEnrichmentError(activeJob, CancelWorkerError);
         }
