@@ -68,7 +68,19 @@ const ModelStepContent = ({ state, onChange, models }: StepProps) => (
     <ModelStep
         models={models}
         selectedId={state.modelId}
-        onSelect={(modelId) => onChange({ modelId })}
+        onSelect={(modelId) =>
+            onChange({
+                modelId,
+                // open the first import type allowed by the model
+                tab:
+                    models.find((model) => model.id === modelId)
+                        ?.importTypes[0] ?? INITIAL_STATE.tab,
+                // the inputs of the previous model may not be offered anymore
+                files: INITIAL_STATE.files,
+                url: INITIAL_STATE.url,
+                text: INITIAL_STATE.text,
+            })
+        }
     />
 );
 
@@ -90,8 +102,9 @@ const modelStep: WizardStep = {
 const DataStepHeaderContent = ({ model }: StepProps) =>
     model ? <DataStepHeader model={model} /> : null;
 
-const DataStepContent = ({ state, onChange }: StepProps) => (
+const DataStepContent = ({ state, onChange, model }: StepProps) => (
     <DataStep
+        tabs={model?.importTypes}
         tab={state.tab}
         onTabChange={(tab) => onChange({ tab })}
         files={state.files}
