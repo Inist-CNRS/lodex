@@ -298,11 +298,11 @@ const processEzsEnrichment = (
 
 const JOB_ACTIVE_CHECK_INTERVAL = 100;
 
-// Every row is logged into the job (Redis): a large web service output would
-// make these logs grow with the dataset
+// Every row is logged into the job (Redis): a large web service output or error
+// (an HTML error page...) would make these logs grow with the dataset
 const MAX_LOGGED_OUTPUT_LENGTH = 200;
-export const truncateOutput = (value: unknown) => {
-    const output = String(JSON.stringify(value));
+export const truncateLog = (text: unknown) => {
+    const output = String(text);
     return output.length > MAX_LOGGED_OUTPUT_LENGTH
         ? `${output.slice(0, MAX_LOGGED_OUTPUT_LENGTH)}… (${output.length} characters)`
         : output;
@@ -406,8 +406,8 @@ fusible = ${fusible}
                     logData = JSON.stringify({
                         level: error ? 'error' : 'info',
                         message: error
-                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
-                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${truncateOutput(value)})`,
+                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${truncateLog(value)}`
+                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${truncateLog(JSON.stringify(value))})`,
                         timestamp: new Date(),
                         status: TaskStatus.IN_PROGRESS,
                     });
@@ -416,7 +416,7 @@ fusible = ${fusible}
                     errorCount += 1;
                     logData = JSON.stringify({
                         level: 'error',
-                        message: `[Instance: ${ctx.tenant}] ${error ?? 'ID missing for enrichment row'}`,
+                        message: `[Instance: ${ctx.tenant}] ${truncateLog(error ?? 'ID missing for enrichment row')}`,
                         timestamp: new Date(),
                         status: TaskStatus.IN_PROGRESS,
                     });
