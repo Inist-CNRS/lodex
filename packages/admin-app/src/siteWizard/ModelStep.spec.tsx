@@ -6,8 +6,8 @@ import { ModelStep } from './ModelStep';
 jest.mock('./hasTranslation', () => ({ hasTranslation: () => true }));
 
 const models: CatalogModel[] = [
-    { id: 'a', url: 'http://a.tar', loader: 'la' },
-    { id: 'b', url: 'http://b.tar', loader: 'lb' },
+    { id: 'a', url: 'http://a.tar', loader: 'la', importTypes: ['file'] },
+    { id: 'b', url: 'http://b.tar', loader: 'lb', importTypes: ['file'] },
 ];
 
 describe('ModelStep', () => {

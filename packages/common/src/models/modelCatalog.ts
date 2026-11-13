@@ -44,8 +44,11 @@ export const catalogModelSchema = z
         demo: emptyAsMissing(httpLinkSchema),
         /** Recommended theme: a folder name of src/app/custom/themes/ */
         theme: emptyAsMissing(z.string()),
-        /** Missing or empty: every import type is allowed */
-        importTypes: emptyAsMissing(z.array(z.enum(MODEL_IMPORT_TYPES))),
+        /** Import types offered in the wizard, in this order */
+        importTypes: z
+            .array(z.enum(MODEL_IMPORT_TYPES))
+            .min(1)
+            .refine((types) => new Set(types).size === types.length),
         launchOrder: emptyAsMissing(
             z.array(launchStepSchema).refine(hasUniqueEnrichmentPositions),
         ),
@@ -71,3 +74,4 @@ export type SiteInfo = { siteName?: string; siteDescription?: string };
 
 export const getModelTitleKey = (id: string) => `mc_${id}_title`;
 export const getModelDescriptionKey = (id: string) => `mc_${id}_description`;
+export const getModelImportHelpKey = (id: string) => `mc_${id}_import_help`;

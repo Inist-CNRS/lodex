@@ -1,7 +1,12 @@
 import { getDisplayableModels } from './getDisplayableModels';
 
 describe('getDisplayableModels', () => {
-    const valid = { id: 'm', url: 'https://x/m.tar', loader: 'csv' };
+    const valid = {
+        id: 'm',
+        url: 'https://x/m.tar',
+        loader: 'csv',
+        importTypes: ['file'],
+    };
     const options = {
         availableLoaders: ['csv'],
         hasTranslation: () => true,
@@ -24,12 +29,12 @@ describe('getDisplayableModels', () => {
         ).toStrictEqual([valid]);
     });
 
-    it.each(['id', 'url', 'loader'])(
+    it.each(['id', 'url', 'loader', 'importTypes'])(
         'should filter out a model with a missing or empty %s',
         (field) => {
             const { [field]: _removed, ...withoutField } = valid as Record<
                 string,
-                string
+                unknown
             >;
             expect(getDisplayableModels([withoutField], options)).toStrictEqual(
                 [],
@@ -56,6 +61,21 @@ describe('getDisplayableModels', () => {
             expect(getDisplayableModels([model], options)).toHaveLength(1);
         },
     );
+
+    it('should filter out a model with an empty importTypes list', () => {
+        expect(
+            getDisplayableModels([{ ...valid, importTypes: [] }], options),
+        ).toStrictEqual([]);
+    });
+
+    it('should filter out a model with duplicate importTypes', () => {
+        expect(
+            getDisplayableModels(
+                [{ ...valid, importTypes: ['text', 'text'] }],
+                options,
+            ),
+        ).toStrictEqual([]);
+    });
 
     it('should filter out a model whose loader is not available on the instance', () => {
         expect(
@@ -129,10 +149,10 @@ describe('getDisplayableModels', () => {
         ).toStrictEqual([valid]);
     });
 
-    it('should treat empty doc, demo, theme and import types as missing', () => {
+    it('should treat empty doc, demo and theme as missing', () => {
         expect(
             getDisplayableModels(
-                [{ ...valid, doc: '', demo: '', theme: '', importTypes: [] }],
+                [{ ...valid, doc: '', demo: '', theme: '' }],
                 options,
             ),
         ).toStrictEqual([valid]);

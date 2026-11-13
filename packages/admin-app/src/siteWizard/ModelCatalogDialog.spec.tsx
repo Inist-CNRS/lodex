@@ -6,8 +6,14 @@ import { ModelCatalogDialog } from './ModelCatalogDialog';
 jest.mock('./hasTranslation', () => ({ hasTranslation: () => true }));
 
 const models: CatalogModel[] = [
-    { id: 'a', url: 'http://a.tar', loader: 'la', doc: 'http://doc-a' },
-    { id: 'b', url: 'http://b.tar', loader: 'lb' },
+    {
+        id: 'a',
+        url: 'http://a.tar',
+        loader: 'la',
+        importTypes: ['file'],
+        doc: 'http://doc-a',
+    },
+    { id: 'b', url: 'http://b.tar', loader: 'lb', importTypes: ['file'] },
 ];
 
 const setup = () => {

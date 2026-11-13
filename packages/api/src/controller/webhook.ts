@@ -2,7 +2,7 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 
 import { getOrCreateWorkerQueue } from '../workers';
 import { PRECOMPUTER } from '../workers/precomputer';
@@ -33,7 +33,7 @@ export const getComputedWebserviceData = async (ctx: any) => {
     await getOrCreateWorkerQueue(tenant, 1).add(
         PRECOMPUTER, // Name of the job
         data,
-        { jobId: uuid() },
+        { jobId: randomUUID() },
     );
     ctx.body = 'webhook ok';
     ctx.status = 200;

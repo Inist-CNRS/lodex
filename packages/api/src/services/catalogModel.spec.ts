@@ -4,7 +4,12 @@ import { downloadModelArchive, findCatalogModel } from './catalogModel';
 
 describe('catalogModel', () => {
     describe('findCatalogModel', () => {
-        const model = { id: 'a', url: 'https://x/a.tar', loader: 'csv' };
+        const model = {
+            id: 'a',
+            url: 'https://x/a.tar',
+            loader: 'csv',
+            importTypes: ['file'],
+        };
 
         it('should return the model with the given id', () => {
             expect(findCatalogModel([model], 'a', ['csv'])).toEqual(model);
