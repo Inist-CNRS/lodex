@@ -46,5 +46,14 @@
         "demo": "https://catalogue-modeles.lodex.inist.fr/instance/open-alex",
         "theme": "inist",
         "importTypes": ["text"]
+    },
+    {
+    "id": "istexsearch",
+    "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/istexsearch.tar",
+    "loader": "zip",
+    "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-istex-search/",
+    "demo": "https://catalogue-modeles.lodex.inist.fr/instance/open-alex",
+    "theme": "istex",
+    "importTypes": ["file"]
     }
 ]
