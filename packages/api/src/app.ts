@@ -13,6 +13,7 @@ import {
     startCpuLagProfiler,
     stopCpuLagProfiler,
     onBlockedEvent,
+    isProfilerBusy,
 } from './cpuLagProfiler';
 
 // @ts-expect-error TS(2792): Cannot find module
@@ -61,7 +62,7 @@ if (config.get('blocked.enabled')) {
         (time, stack) => {
             // Restarting the CPU profiler (every rotation) blocks ~200ms by itself:
             // not an incident, and it must not trigger a profile dump.
-            if (stack.some((frame) => frame.includes('cpuLagProfiler'))) {
+            if (isProfilerBusy()) {
                 return;
             }
             const logger = getLogger();
