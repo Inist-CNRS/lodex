@@ -108,7 +108,6 @@ describe('getDisplayableModels', () => {
         ],
         ['a recommended theme', { theme: 'inist' }],
         ['known import types', { importTypes: ['file', 'url'] }],
-        ['an import help', { importHelp: { fr: 'Collez', en: 'Paste' } }],
     ])('should accept %s', (_label, overrides) => {
         const model = { ...valid, ...overrides };
         expect(getDisplayableModels([model], options)).toStrictEqual([model]);
@@ -133,10 +132,10 @@ describe('getDisplayableModels', () => {
         ).toStrictEqual([valid]);
     });
 
-    it('should treat empty doc, demo, theme and import help as missing', () => {
+    it('should treat empty doc, demo and theme as missing', () => {
         expect(
             getDisplayableModels(
-                [{ ...valid, doc: '', demo: '', theme: '', importHelp: '' }],
+                [{ ...valid, doc: '', demo: '', theme: '' }],
                 options,
             ),
         ).toStrictEqual([valid]);
@@ -173,9 +172,6 @@ describe('getDisplayableModels', () => {
         ['demo', {}],
         ['theme', ['inist']],
         ['theme', 42],
-        ['importHelp', 'Collez'],
-        ['importHelp', { fr: 'Collez' }],
-        ['importHelp', { fr: 'Collez', en: '' }],
     ])('should reject a malformed optional field (%s: %p)', (field, value) => {
         expect(
             getDisplayableModels([{ ...valid, [field]: value }], options),

@@ -33,7 +33,6 @@ Each model is a JSON object in the `models-catalog.json` array.
 | `demo`        | no       | Link to the demonstration instance, starting with `http://` or `https://`. Missing or `""`: no link.                                                                                      |
 | `theme`       | no       | Recommended theme: one theme folder name from `src/app/custom/themes/` (e.g. `"hal-cnrs"`). Missing or `""`: no recommended theme.                                                        |
 | `importTypes` | yes      | Ways to import the dataset offered in the wizard, among `"file"`, `"url"` and `"text"` (free input), at least one. The first one is opened by default.                                    |
-| `importHelp`  | no       | Help shown above the dataset input of the wizard, in both languages: `{ "fr": "…", "en": "…" }`. Missing or `""`: no help.                                                                |
 | `launchOrder` | no       | Order in which enrichments and precomputations are launched once the model is applied. See [Launch order](#launch-order).                                                                 |
 
 ## Name and description
@@ -43,6 +42,7 @@ Like precomputers, they are translated in [`src/app/custom/translations.tsv`](..
 
 -   `mc_<id>_title`: the model name
 -   `mc_<id>_description`: the model description
+-   `mc_<id>_import_help` (optional): help shown above the dataset input of the wizard. Missing in one language: no help.
 
 Each line has three columns separated by tabulations: the key, the English text and the French text, each between double quotes.
 
@@ -108,7 +108,7 @@ A model is offered to the user only if:
 1. `id`, `url`, `loader` and `importTypes` are filled, and the loader is enabled on the instance;
 2. its name and description are translated in English and in French;
 3. its launch order, if any, follows the rules above;
-4. its other optional fields, if filled, have the expected type (`doc` and `demo` are `http(s)` links, `theme` is a text, `importHelp` has a non-empty `fr` and `en` text). An empty text `""` or an empty list `[]` is the same as a missing field;
+4. its other optional fields, if filled, have the expected type (`doc` and `demo` are `http(s)` links, `theme` is a text). An empty text `""` or an empty list `[]` is the same as a missing field;
 5. no previous model in the file uses the same `id`.
 
 A model that does not follow these rules is accepted in the file and breaks nothing: it is simply not offered.

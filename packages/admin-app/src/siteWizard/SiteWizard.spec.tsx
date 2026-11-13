@@ -8,7 +8,9 @@ import { SiteWizard } from './SiteWizard';
 // @ts-expect-error TS7017
 global.UPLOAD_LIMIT = 1;
 
-jest.mock('./hasTranslation', () => ({ hasTranslation: () => true }));
+jest.mock('./hasTranslation', () => ({
+    hasTranslation: (key: string) => key !== 'mc_a_import_help',
+}));
 
 const models: CatalogModel[] = [
     {
@@ -24,7 +26,6 @@ const models: CatalogModel[] = [
         url: 'http://b.tar',
         loader: 'lb',
         importTypes: ['text'],
-        importHelp: { fr: 'Collez votre requête', en: 'Paste your query' },
     },
 ];
 
@@ -117,17 +118,17 @@ describe('SiteWizard', () => {
         expect(screen.queryByLabelText('use_url')).not.toBeInTheDocument();
     });
 
-    it('displays the import help of the model in the current language', async () => {
+    it('displays the translated import help of the model', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep('mc_b_title');
-        expect(screen.getByText('Paste your query')).toBeInTheDocument();
+        expect(screen.getByText('mc_b_import_help')).toBeInTheDocument();
     });
 
     it('displays no import help for a model without one', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();
         expect(screen.getAllByRole('tab')).toHaveLength(3);
-        expect(screen.queryByText('Paste your query')).not.toBeInTheDocument();
+        expect(screen.queryByText('mc_b_import_help')).not.toBeInTheDocument();
     });
 
     it('goes back to the first step with the model still selected', async () => {

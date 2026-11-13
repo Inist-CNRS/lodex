@@ -49,10 +49,6 @@ export const catalogModelSchema = z
             .array(z.enum(MODEL_IMPORT_TYPES))
             .min(1)
             .refine((types) => new Set(types).size === types.length),
-        /** Help shown above the data input of the wizard, in both languages */
-        importHelp: emptyAsMissing(
-            z.object({ fr: z.string().min(1), en: z.string().min(1) }),
-        ),
         launchOrder: emptyAsMissing(
             z.array(launchStepSchema).refine(hasUniqueEnrichmentPositions),
         ),
@@ -73,3 +69,4 @@ export type CatalogModel = z.infer<typeof catalogModelSchema>;
 
 export const getModelTitleKey = (id: string) => `mc_${id}_title`;
 export const getModelDescriptionKey = (id: string) => `mc_${id}_description`;
+export const getModelImportHelpKey = (id: string) => `mc_${id}_import_help`;
