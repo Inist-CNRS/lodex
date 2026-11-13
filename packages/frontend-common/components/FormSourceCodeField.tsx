@@ -4,7 +4,6 @@ import SourceCodeField from './SourceCodeField';
 type SourceCodeFieldProps = {
     name: string;
     label: string;
-    enableModeSelector?: boolean;
     mode?: 'ini' | 'json';
     width?: string;
     height?: string;
@@ -13,7 +12,6 @@ type SourceCodeFieldProps = {
 export const FormSourceCodeField = ({
     name,
     label,
-    enableModeSelector = false,
     mode = 'ini',
     width,
     height,
@@ -28,7 +26,6 @@ export const FormSourceCodeField = ({
                 onChange: field.onChange,
                 value: field.value,
             }}
-            enableModeSelector={enableModeSelector}
             label={label}
             mode={mode}
             width={width}

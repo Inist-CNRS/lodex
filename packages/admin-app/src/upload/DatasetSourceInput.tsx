@@ -311,7 +311,6 @@ export const DatasetSourceInput = ({
                         )}
                         <SourceCodeField
                             style={styles.textInput}
-                            enableModeSelector
                             mode="json"
                             input={{
                                 value: text,
