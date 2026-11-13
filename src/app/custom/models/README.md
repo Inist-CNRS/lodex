@@ -34,6 +34,7 @@ Each model is a JSON object in the `models-catalog.json` array.
 | `theme`       | no       | Recommended theme: one theme folder name from `src/app/custom/themes/` (e.g. `"hal-cnrs"`). Missing or `""`: no recommended theme.                                                        |
 | `importTypes` | no       | Allowed ways to import the dataset, among `"file"`, `"url"` and `"text"` (free input). Missing or `[]`: every import type is allowed.                                                     |
 | `launchOrder` | no       | Order in which enrichments and precomputations are launched once the model is applied. See [Launch order](#launch-order).                                                                 |
+| `tags`        | no       | List of tags. `"Disabled"` hides the model from the admin without removing it from the file (e.g. `"tags": ["Disabled"]`). Missing or `[]`: the model is shown.                          |
 
 ## Name and description
 
@@ -108,7 +109,8 @@ A model is offered to the user only if:
 2. its name and description are translated in English and in French;
 3. its launch order, if any, follows the rules above;
 4. its other optional fields, if filled, have the expected type (`doc` and `demo` are `http(s)` links, `theme` is a text, `importTypes` is a list of allowed values). An empty text `""` or an empty list `[]` is the same as a missing field;
-5. no previous model in the file uses the same `id`.
+5. no previous model in the file uses the same `id`;
+6. it is not tagged `"Disabled"`.
 
 A model that does not follow these rules is accepted in the file and breaks nothing: it is simply not offered.
 However, the test `packages/common/src/models/modelsCatalog.spec.ts` fails when the file is not valid JSON, or when one of its models does not follow the format above (this test does not check that the loader is enabled, that the translations exist, nor duplicate ids). It also fails when a `url` points to `archives/` and the file is missing. This catches typos in the models shipped with LODEX.

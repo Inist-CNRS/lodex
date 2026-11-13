@@ -11,6 +11,10 @@ export type GetDisplayableModelsOptions = {
     hasTranslation: (key: string) => boolean;
 };
 
+// case-insensitive: "disabled" in the catalog must not silently show the model
+const isDisabled = (model: CatalogModel) =>
+    !!model.tags?.some((tag) => tag.toLowerCase() === 'disabled');
+
 const parseDisplayableModel = (
     entry: unknown,
     { availableLoaders, hasTranslation }: GetDisplayableModelsOptions,
@@ -21,6 +25,7 @@ const parseDisplayableModel = (
     }
     const model = result.data;
     const isDisplayable =
+        !isDisabled(model) &&
         availableLoaders.includes(model.loader) &&
         hasTranslation(getModelTitleKey(model.id)) &&
         hasTranslation(getModelDescriptionKey(model.id));

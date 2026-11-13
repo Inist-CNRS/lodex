@@ -49,6 +49,8 @@ export const catalogModelSchema = z
         launchOrder: emptyAsMissing(
             z.array(launchStepSchema).refine(hasUniqueEnrichmentPositions),
         ),
+        /** A "Disabled" tag hides the model from the admin */
+        tags: emptyAsMissing(z.array(z.string())),
     })
     // Drop keys left to undefined by emptyAsMissing, so that spreading a model
     // over defaults never overrides them with undefined
