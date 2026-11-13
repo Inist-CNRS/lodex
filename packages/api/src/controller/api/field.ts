@@ -8,6 +8,7 @@ import moment from 'moment';
 import streamToString from 'stream-to-string';
 import tar from 'tar-stream';
 import { randomUUID } from 'node:crypto';
+import { version } from '../../../../../package.json';
 
 import { validateField } from '../../models/field';
 import { getSiteTitleKey } from '../../models/siteTitleKey';
@@ -470,7 +471,7 @@ export const removeField = async (ctx: any, id: any) => {
 };
 
 export const exportFields = async (ctx: any) => {
-    const filename = `${ctx.tenant}_model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
+    const filename = `${ctx.tenant}_model_v${version}_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
     ctx.set('Content-disposition', `attachment; filename=${filename}`);
     ctx.set('Content-type', 'application/x-tar');
     try {

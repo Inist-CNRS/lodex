@@ -39,6 +39,7 @@ import {
     catalogModels,
     downloadModelArchive,
 } from '../../services/catalogModel';
+import { version } from '../../../../../package.json';
 
 jest.mock('../../services/indexSearchableFields');
 jest.mock('../../services/logger', () => {
@@ -250,7 +251,7 @@ describe('field routes', () => {
             expect(ctx.set.mock.calls[0][0]).toBe('Content-disposition');
             expect(
                 ctx.set.mock.calls[0][1].startsWith(
-                    'attachment; filename=instance-name_model_',
+                    `attachment; filename=instance-name_model_v${version}_`,
                 ) && ctx.set.mock.calls[0][1].endsWith('.tar'),
             ).toBeTruthy();
 
