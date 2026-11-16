@@ -130,7 +130,7 @@ export const getPrecomputedCollectionForWebHook = async (tenant: string) => {
 
 // The tenant collection is never dropped: build it (listCollections) once, not per request
 let tenantCollectionPromise: ReturnType<typeof tenant> | undefined;
-const getTenantCollection = (rootAdminDb: Db) => {
+export const getTenantCollection = (rootAdminDb: Db) => {
     if (!tenantCollectionPromise) {
         tenantCollectionPromise = tenant(rootAdminDb).catch((error) => {
             tenantCollectionPromise = undefined;
