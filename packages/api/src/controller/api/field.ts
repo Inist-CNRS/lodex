@@ -42,6 +42,11 @@ import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
 import getLogger from '../../services/logger';
+import { buildLaunchSteps } from '../../services/siteGeneration/buildLaunchSteps';
+import {
+    advanceSiteGeneration,
+    stopSiteGeneration,
+} from '../../services/siteGeneration/siteGeneration';
 
 const sortByFieldUri = (a: any, b: any) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -165,9 +170,14 @@ export const applySiteInfo = async (ctx: any, siteInfo: SiteInfo) => {
     if (!themeVariables) {
         return;
     }
-    const nameKey = getSiteTitleKey(themeVariables);
+    const nameKey = getSiteTitleKey(current.front?.theme ?? {});
+    // a legacy ISTEX configuration keeps its `title`: adding the default
+    // `siteTitle` next to it would show two title variables in the editor
+    const { siteTitle: _, ...legacyDefaults } = themeVariables;
+    const defaults = nameKey === 'title' ? legacyDefaults : themeVariables;
     const values = {
-        ...(siteName && nameKey in themeVariables && { [nameKey]: siteName }),
+        ...(siteName &&
+            'siteTitle' in themeVariables && { [nameKey]: siteName }),
         ...(siteDescription &&
             'summary' in themeVariables && { summary: siteDescription }),
     };
@@ -179,7 +189,7 @@ export const applySiteInfo = async (ctx: any, siteInfo: SiteInfo) => {
         front: {
             ...current.front,
             // the theme settings editor shows the stored variables only
-            theme: { ...themeVariables, ...current.front?.theme, ...values },
+            theme: { ...defaults, ...current.front?.theme, ...values },
         },
     });
 };
@@ -520,6 +530,51 @@ export const exportFields = async (ctx: any) => {
     }
 };
 
+const startSiteGeneration = async (
+    ctx: any,
+    launchOrder: any,
+): Promise<void> => {
+    // optional: the model is imported, the admin can launch the tasks by hand
+    try {
+        // The generation of an earlier model must not stay on screen, even
+        // when this model launches nothing or its generation cannot start
+        await ctx.siteGeneration.deleteMany({});
+        const [enrichments, precomputeds, dataSources] = await Promise.all([
+            ctx.enrichment.findAll(),
+            ctx.precomputed.findAll(),
+            ctx.dataSource.getDataSources(),
+        ]);
+        const columnsByDataSource: Record<string, string[]> = {};
+        for (const dataSource of dataSources) {
+            columnsByDataSource[dataSource.id] = dataSource.columns.map(
+                ({ name }: { name: string }) => name,
+            );
+        }
+        const steps = buildLaunchSteps(
+            { launchOrder, enrichments, precomputeds, columnsByDataSource },
+            getLogger(ctx.tenant),
+        );
+        if (!steps.length) {
+            return;
+        }
+        await ctx.siteGeneration.start(steps);
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation start error', {
+            error: (e as Error).message,
+        });
+        return;
+    }
+    // Launch the first position now rather than at the next periodic pass.
+    // Best effort: that pass launches it anyway (it is concurrency safe).
+    try {
+        await advanceSiteGeneration(ctx);
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation advance error', {
+            error: (e as Error).message,
+        });
+    }
+};
+
 export const importCatalogModel = async (ctx: any) => {
     const { id, siteName, siteDescription, theme } = ctx.request.body ?? {};
     const model = findCatalogModel(ctx.catalogModels, id, ctx.availableLoaders);
@@ -547,6 +602,16 @@ export const importCatalogModel = async (ctx: any) => {
     }
 
     try {
+        // Cancel the jobs of a generation still running before the model
+        // replaces its enrichments and precomputations: afterwards, its steps
+        // point to deleted targets and nothing would cancel them
+        try {
+            await stopSiteGeneration(ctx);
+        } catch (e) {
+            getLogger(ctx.tenant).error('Site generation stop error', {
+                error: (e as Error).message,
+            });
+        }
         const restored = (await ctx.restoreFields(fileStream, ctx)) ?? {};
         let themeNotFound = restored.themeNotFound;
         // The theme chosen in the wizard, else the catalog one, overrides the
@@ -569,8 +634,13 @@ export const importCatalogModel = async (ctx: any) => {
             });
         }
 
+        await startSiteGeneration(ctx, model.launchOrder);
+
         // the wizard reloads the admin data itself
-        ctx.body = { message: 'Model imported successfully', themeNotFound };
+        ctx.body = {
+            message: 'Model imported successfully',
+            themeNotFound,
+        };
         ctx.status = 200;
     } catch (e) {
         ctx.status = 500;

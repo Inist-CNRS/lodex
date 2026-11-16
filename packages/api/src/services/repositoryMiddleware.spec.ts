@@ -1,6 +1,7 @@
 import type Koa from 'koa';
 import mongoClient, { closeDb } from './mongoClient';
 import {
+    getPrecomputedCollectionForWebHook,
     invalidateRepositories,
     mongoClientFactory,
 } from './repositoryMiddleware';
@@ -36,6 +37,7 @@ describe('mongoClient middleware', () => {
             'publishedFacet',
             'configTenantCollection',
             'hiddenResource',
+            'siteGeneration',
             'dataSource',
         ]);
     });
@@ -77,5 +79,26 @@ describe('repositoryMiddleware cache', () => {
         );
         const indexes = await db.collection('field').indexes();
         expect(indexes.map(({ name }) => name)).toContain('name_1');
+    });
+});
+
+describe('getPrecomputedCollectionForWebHook', () => {
+    const webhookTenant = 'webhook_unknown';
+
+    afterAll(async () => {
+        await closeDb(webhookTenant);
+    });
+
+    it('should not create any collection for the public webhook', async () => {
+        const db = await mongoClient(webhookTenant);
+        const createCollection = jest.spyOn(db, 'createCollection');
+        const listCollections = jest.spyOn(db, 'listCollections');
+
+        const collection =
+            await getPrecomputedCollectionForWebHook(webhookTenant);
+        await collection.markAnswered('0123456789abcdef01234567', 'run-1');
+
+        expect(createCollection).not.toHaveBeenCalled();
+        expect(listCollections).not.toHaveBeenCalled();
     });
 });

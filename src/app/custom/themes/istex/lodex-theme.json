@@ -18,7 +18,7 @@
             "readme du theme": "https://github.com/Inist-CNRS/lodex/tree/master/src/app/custom/themes/istex#readme",
             "documentation du theme": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/le-theme/theme-et-modele-composition-de-page-class-interne/",
             "host": "/",
-            "title": "exemple : Services",
+            "siteTitle": "exemple : Services",
             "summary": "exemple : Les technologies et les outils ISTEX pour les projets de recherche.",
             "matomoID": "",
             "matomoHost": "https://piwik2.inist.fr/",

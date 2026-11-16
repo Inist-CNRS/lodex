@@ -31,6 +31,8 @@ module.exports = {
     },
     uploadDir: 'upload',
     uploadLimit: 5, // en giga
+    precomputedResponseTimeout: 2 * 60 * 60 * 1000, // délai (ms) après lequel un précalcul sans réponse du web service passe en erreur
+    siteGenerationSweepInterval: 30_000, // intervalle (ms) du passage périodique qui fait avancer les générations de site
     istexApiUrl: 'https://api.istex.fr',
     jsHost: '',
     jsHosts: {

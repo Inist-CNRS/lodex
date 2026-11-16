@@ -3,6 +3,7 @@ import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { getModelTitleKey, type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { StepTitle } from './StepTitle';
 import { ModelCatalogDialog } from './ModelCatalogDialog';
 
 type ModelStepProps = {
@@ -17,16 +18,9 @@ export const ModelStep = ({ models, selectedId, onSelect }: ModelStepProps) => {
 
     return (
         <Box>
-            <Typography
-                variant="h2"
-                fontSize={20}
-                color="text.primary"
-                sx={{ mt: 2 }}
-            >
-                {translate('site_wizard_catalog_intro')}
-            </Typography>
+            <StepTitle>{translate('site_wizard_catalog_intro')}</StepTitle>
             {models.length === 0 ? (
-                <Typography sx={{ mt: 2 }}>
+                <Typography color="text.secondary" sx={{ mt: 2 }}>
                     {translate('site_wizard_no_model')}
                 </Typography>
             ) : (
@@ -65,7 +59,7 @@ export const ModelStep = ({ models, selectedId, onSelect }: ModelStepProps) => {
                             </Button>
                         </Box>
                     </Box>
-                    <Typography sx={{ mt: 2 }}>
+                    <Typography color="text.secondary" sx={{ mt: 2 }}>
                         {translate('site_wizard_manual_hint')}
                     </Typography>
                 </>

@@ -8,7 +8,7 @@ export type AvailableTheme = {
     value: string;
     name: { en: string; fr: string };
     description: { en: string; fr: string };
-    defaultVariables: Record<string, string>;
+    defaultVariables: Record<string, unknown>;
 };
 
 export const getThemeLabel = (theme: AvailableTheme, locale: 'en' | 'fr') =>

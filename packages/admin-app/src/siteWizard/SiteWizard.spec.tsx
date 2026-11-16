@@ -169,17 +169,25 @@ describe('SiteWizard', () => {
         await userEvent.click(button('site_wizard_next'));
         expect(screen.getByText('2/4')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_title')).toBeInTheDocument();
+        // the same header on every step
+        expect(screen.getByText('site_wizard_subtitle')).toBeInTheDocument();
         expect(
-            screen.getByText('site_wizard_data_subtitle+{"name":"mc_a_title"}'),
+            screen.getByRole('heading', {
+                level: 2,
+                name: 'site_wizard_data_title+{"name":"mc_a_title"}',
+            }),
         ).toBeInTheDocument();
         expect(
-            screen.getByRole('link', {
-                name: 'site_wizard_documentation_link',
+            screen.getByText('site_wizard_model_links+{"name":"mc_a_title"}', {
+                exact: false,
             }),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('link', { name: 'site_wizard_model_links_doc' }),
         ).toHaveAttribute('href', 'http://a.doc');
         expect(
-            screen.getByRole('link', { name: 'site_wizard_demo_link' }),
-        ).toBeInTheDocument();
+            screen.getByRole('link', { name: 'site_wizard_model_links_demo' }),
+        ).toHaveAttribute('href', 'http://a.demo');
     });
 
     it('displays no link for a model without doc nor demo', async () => {
@@ -259,11 +267,9 @@ describe('SiteWizard', () => {
         expect(button('site_wizard_next')).toBeEnabled();
         await userEvent.click(button('site_wizard_next'));
         expect(screen.getByText('3/4')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'site_wizard_site_info_subtitle+{"name":"mc_a_title"}',
-            ),
-        ).toBeInTheDocument();
+        // the chosen model stays visible next to the title
+        expect(screen.getByText('mc_a_title')).toBeInTheDocument();
+        expect(screen.getByText('site_wizard_subtitle')).toBeInTheDocument();
         expect(
             screen.getByText('site_wizard_site_info_title'),
         ).toBeInTheDocument();
@@ -280,11 +286,7 @@ describe('SiteWizard', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
         expect(screen.getByText('4/4')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'site_wizard_site_info_subtitle+{"name":"mc_a_title"}',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText('site_wizard_subtitle')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_theme_title')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_theme_hint')).toBeInTheDocument();
         expect(button('site_wizard_generate')).toBeEnabled();

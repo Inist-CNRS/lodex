@@ -10,7 +10,7 @@ import config from 'config';
 import { mongoConnectionString } from '../mongoClient';
 import progress from '../progress';
 
-import { ProgressStatus, TaskStatus } from '@lodex/common';
+import { ProgressStatus, TaskStatus, type TaskStatusType } from '@lodex/common';
 import from from 'from';
 import { jobLogger } from '../../workers/tools';
 
@@ -436,13 +436,33 @@ fusible = ${fusible}
         input.end(primer);
     });
 
+// The jobId the enrichment carries while this job is its current run (see
+// queueEnrichmentJob, which gives the Bull job the same id)
+const getRunJobId = (job: any): string | undefined => {
+    const jobId = job?.opts?.jobId ?? job?.id;
+    return jobId === undefined || jobId === null ? undefined : String(jobId);
+};
+
+const updateStatusOfRun = async (
+    ctx: any,
+    id: string,
+    status: TaskStatusType,
+    data?: Record<string, unknown>,
+) => {
+    const jobId = getRunJobId(ctx.job);
+    if (jobId === undefined) {
+        return ctx.enrichment.updateStatus(id, status, data);
+    }
+    return ctx.enrichment.updateStatusOfJob(id, jobId, status, data);
+};
+
 export const processEnrichment = async (
     enrichment: any,
     filter: any,
     ctx: any,
 ) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
-    await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.IN_PROGRESS);
+    await updateStatusOfRun(ctx, enrichment._id, TaskStatus.IN_PROGRESS);
     // Only now: the admin reloads the enrichments when it gets this message
     notifyListeners(`${ctx.tenant}-enricher`, {
         isEnriching: true,
@@ -475,7 +495,7 @@ export const processEnrichment = async (
         throw error;
     }
 
-    await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.FINISHED, {
+    await updateStatusOfRun(ctx, enrichment._id, TaskStatus.FINISHED, {
         errorCount,
     });
     progress.finish(ctx.tenant);
@@ -525,7 +545,8 @@ export const startEnrichment = async (ctx: any) => {
 
 export const setEnrichmentError = async (ctx: any, err: any) => {
     const id = ctx.job?.data?.id;
-    await ctx.enrichment.updateStatus(
+    await updateStatusOfRun(
+        ctx,
         id,
         err instanceof CancelWorkerError
             ? TaskStatus.CANCELED

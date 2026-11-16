@@ -7,10 +7,39 @@ import {
     type Filter,
     type UpdateResult,
 } from 'mongodb';
-import { castIdsFactory, getCreatedCollection } from './utils';
+import {
+    castIdsFactory,
+    findTaskStatesByIds,
+    getCreatedCollection,
+    jobIdMatches,
+    type TaskState,
+} from './utils';
 import getLogger from '../services/logger';
 
 const logger = getLogger();
+
+export const PRECOMPUTED_NO_RESPONSE = 'precomputed_no_response';
+
+// Only the answer of the current run counts: the late answer of an expired
+// run must not turn off the timeout of its relaunch. A precomputation without
+// a jobId (written before the jobId existed) takes any answer. A plain update:
+// it creates nothing, even for an unknown tenant (the webhook is public).
+export const markPrecomputedAnswered = async (
+    collection: Collection<PreComputation>,
+    id: ObjectId | string,
+    jobId?: string,
+): Promise<void> => {
+    await collection.updateOne(
+        {
+            $and: [
+                // @ts-expect-error TS2345
+                { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
+                jobIdMatches(jobId),
+            ],
+        },
+        { $set: { answeredAt: new Date() } },
+    );
+};
 
 const checkMissingFields = (data: Partial<PreComputation>) =>
     !data.name ||
@@ -35,14 +64,20 @@ export type PreComputation = {
     sourceColumns: string[];
     status: PreComputationStatus;
     createdAt: Date;
-    startedAt?: Date;
+    startedAt?: Date | null;
     finishedAt?: Date;
     data?: unknown[];
     hasData?: boolean;
+    jobId?: string;
+    sentAt?: Date | null;
+    answeredAt?: Date | null;
+    // Error message of the last run
+    message?: string;
 };
 
 export type PrecomputedCollection = Collection<PreComputation> & {
     findOneById: (id: string | ObjectId) => Promise<PreComputation | null>;
+    findStatesByIds: (ids: string[]) => Promise<TaskState[]>;
     findAll: () => Promise<PreComputation[]>;
     create: (data: Omit<PreComputation, '_id'>) => Promise<PreComputation>;
     delete: (id: ObjectId | string) => Promise<{ deletedCount?: number }>;
@@ -55,7 +90,16 @@ export type PrecomputedCollection = Collection<PreComputation> & {
         status: PreComputationStatus,
         data?: Partial<PreComputation>,
     ) => Promise<void>;
+    // false when the precomputation belongs to another run (see below)
+    updateStatusOfJob: (
+        id: ObjectId | string,
+        jobId: string,
+        status: PreComputationStatus,
+        data?: Partial<PreComputation>,
+    ) => Promise<boolean>;
     updateStartedAt: (id: ObjectId | string, startedAt: Date) => Promise<void>;
+    markAnswered: (id: ObjectId | string, jobId?: string) => Promise<void>;
+    expireUnanswered: (before: Date, message: string) => Promise<number>;
     castIds: () => Promise<void>;
     getSample: (id: ObjectId | string) => Promise<Record<string, unknown>[]>;
     getStreamOfResult: (id: ObjectId | string) => NodeJS.ReadableStream;
@@ -170,13 +214,37 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         data: Partial<PreComputation> = {},
     ) => {
         const newData = { status, ...data };
-        collection.updateOne(
+        await collection.updateOne(
             {
                 // @ts-expect-error TS2345
                 $or: [{ _id: new ObjectId(id) }, { _id: id }],
             },
             { $set: newData },
         );
+    };
+
+    // A job writes the status of its precomputation only while the
+    // precomputation still carries its jobId: the stalled rerun of a
+    // superseded job must not overwrite the status of the current run. A
+    // precomputation without a jobId (written before the jobId existed)
+    // keeps the unconditional write.
+    const updateStatusOfJob = async (
+        id: ObjectId | string,
+        jobId: string,
+        status: PreComputationStatus,
+        data: Partial<PreComputation> = {},
+    ): Promise<boolean> => {
+        const { matchedCount } = await collection.updateOne(
+            {
+                $and: [
+                    // @ts-expect-error TS2345
+                    { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
+                    jobIdMatches(jobId),
+                ],
+            },
+            { $set: { status, ...data } },
+        );
+        return matchedCount > 0;
     };
 
     const updateStartedAt = async (
@@ -190,6 +258,27 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             },
             { $set: { startedAt } },
         );
+    };
+
+    const markAnswered = (id: ObjectId | string, jobId?: string) =>
+        markPrecomputedAnswered(collection, id, jobId);
+
+    const expireUnanswered = async (
+        before: Date,
+        message: string,
+    ): Promise<number> => {
+        const { modifiedCount } = await collection.updateMany(
+            {
+                status: 'ON_HOLD',
+                answeredAt: null,
+                $or: [
+                    { sentAt: { $lt: before } },
+                    { sentAt: null, startedAt: { $lt: before } },
+                ],
+            },
+            { $set: { status: 'ERROR', message, startedAt: null } },
+        );
+        return modifiedCount;
     };
 
     const castIds = castIdsFactory(collection);
@@ -528,12 +617,17 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
 
     return Object.assign(collection, {
         findOneById,
+        findStatesByIds: (ids: string[]) =>
+            findTaskStatesByIds(collection, ids),
         findAll,
         create,
         delete: deleteMethod,
         update,
         updateStatus,
+        updateStatusOfJob,
         updateStartedAt,
+        markAnswered,
+        expireUnanswered,
         castIds,
         getSample,
         getStreamOfResult,

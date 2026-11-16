@@ -16,6 +16,8 @@ describe('paginateQuery', () => {
     beforeAll(async () => {
         connection = await MongoClient.connect(connectionStringURI);
         db = connection.db();
+        // the test database is shared: another suite may have left documents
+        await db.collection('dataset').deleteMany({});
         // more than two batches (BATCH_SIZE = 100), plus a removed document
         await db
             .collection('dataset')

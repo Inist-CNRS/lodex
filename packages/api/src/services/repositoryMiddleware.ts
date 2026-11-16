@@ -8,10 +8,17 @@ import dataSource from '../models/dataSource';
 import enrichment, { type EnrichmentCollection } from '../models/enrichment';
 import field from '../models/field';
 import hiddenResource from '../models/hiddenResource';
-import precomputed, { type PrecomputedCollection } from '../models/precomputed';
+import precomputed, {
+    markPrecomputedAnswered,
+    type PreComputation,
+    type PrecomputedCollection,
+} from '../models/precomputed';
 import publishedCharacteristic from '../models/publishedCharacteristic';
 import publishedDataset from '../models/publishedDataset';
 import publishedFacet from '../models/publishedFacet';
+import siteGeneration, {
+    type SiteGenerationCollection,
+} from '../models/siteGeneration';
 import subresource from '../models/subresource';
 import tenant from '../models/tenant';
 import mongoClient, { type MongoClientFactory } from './mongoClient';
@@ -19,6 +26,7 @@ import mongoClient, { type MongoClientFactory } from './mongoClient';
 interface CustomContext extends DefaultContext {
     precomputed: PrecomputedCollection;
     enrichment: EnrichmentCollection;
+    siteGeneration: SiteGenerationCollection;
     // Add other custom context properties here
 }
 
@@ -44,6 +52,7 @@ const createRepositories = async (db: Db) => {
         publishedFacetRepository,
         configTenantCollection,
         hiddenResourceRepository,
+        siteGenerationRepository,
     ] = await Promise.all([
         annotation(db),
         dataset(db),
@@ -56,6 +65,7 @@ const createRepositories = async (db: Db) => {
         publishedFacet(db),
         configTenant(db),
         hiddenResource(db),
+        siteGeneration(db),
     ]);
 
     return {
@@ -70,6 +80,7 @@ const createRepositories = async (db: Db) => {
         publishedFacet: publishedFacetRepository,
         configTenantCollection,
         hiddenResource: hiddenResourceRepository,
+        siteGeneration: siteGenerationRepository,
         dataSource: dataSource(datasetRepository, precomputedRepository),
     };
 };
@@ -106,14 +117,20 @@ export const mongoClientFactory =
         await next();
     };
 
-export const getPrecomputedCollectionForWebHook = async (tenant: any) => {
-    const db = await mongoClient(tenant);
-    return await precomputed(db);
+// The webhook is public: it must not create the database or the collection
+// of an unknown tenant, as the precomputed repository does (with its indexes)
+export const getPrecomputedCollectionForWebHook = async (tenant: string) => {
+    const db: Db = await mongoClient(tenant);
+    const collection = db.collection<PreComputation>('precomputed');
+    return {
+        markAnswered: (id: string, jobId?: string) =>
+            markPrecomputedAnswered(collection, id, jobId),
+    };
 };
 
 // The tenant collection is never dropped: build it (listCollections) once, not per request
 let tenantCollectionPromise: ReturnType<typeof tenant> | undefined;
-const getTenantCollection = (rootAdminDb: Db) => {
+export const getTenantCollection = (rootAdminDb: Db) => {
     if (!tenantCollectionPromise) {
         tenantCollectionPromise = tenant(rootAdminDb).catch((error) => {
             tenantCollectionPromise = undefined;

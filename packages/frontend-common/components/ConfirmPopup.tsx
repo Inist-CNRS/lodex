@@ -7,6 +7,7 @@ import {
     DialogTitle,
 } from '@mui/material';
 
+import type { ReactNode } from 'react';
 import CancelButton from '../components/CancelButton';
 
 const styles = {
@@ -17,7 +18,7 @@ const styles = {
 
 interface ConfirmPopupProps {
     title: string;
-    description?: string;
+    description?: ReactNode;
     cancelLabel: string;
     confirmLabel: string;
     onConfirm(...args: unknown[]): unknown;

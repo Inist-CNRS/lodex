@@ -2,6 +2,7 @@ import { useRef, useState, type ComponentType } from 'react';
 import {
     Box,
     Button,
+    Chip,
     CircularProgress,
     Dialog,
     DialogActions,
@@ -13,17 +14,17 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { FileObject } from 'mui-file-dropzone';
-import type { CatalogModel } from '@lodex/common';
+import { getModelTitleKey, type CatalogModel } from '@lodex/common';
 import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     getDatasetSource,
     type DatasetSourceTab,
 } from '../upload/DatasetSourceInput';
-import { DataStep, DataStepHeader } from './DataStep';
+import { DataStep } from './DataStep';
 import { GenerationError } from './GenerationError';
 import { ModelStep } from './ModelStep';
-import { SiteInfoStep, SiteInfoStepHeader } from './SiteInfoStep';
+import { SiteInfoStep } from './SiteInfoStep';
 import { getPreselectedTheme, ThemeStep } from './ThemeStep';
 import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
 import { useDisplayableModels } from './useDisplayableModels';
@@ -53,8 +54,6 @@ type StepProps = {
 };
 
 type WizardStep = {
-    // shown under the wizard title
-    Header: ComponentType<StepProps>;
     Component: ComponentType<StepProps>;
     canContinue: (state: WizardState) => boolean;
 };
@@ -106,26 +105,14 @@ const ModelStepContent = ({ state, onChange, models }: StepProps) => (
     />
 );
 
-const ModelStepHeader = () => {
-    const { translate } = useTranslate();
-    return (
-        <Typography color="text.secondary">
-            {translate('site_wizard_subtitle')}
-        </Typography>
-    );
-};
-
 const modelStep: WizardStep = {
-    Header: ModelStepHeader,
     Component: ModelStepContent,
     canContinue: (state) => !!state.modelId,
 };
 
-const DataStepHeaderContent = ({ model }: StepProps) =>
-    model ? <DataStepHeader model={model} /> : null;
-
 const DataStepContent = ({ state, onChange, model }: StepProps) => (
     <DataStep
+        model={model}
         tabs={model?.importTypes}
         tab={state.tab}
         onTabChange={(tab) => onChange({ tab })}
@@ -139,13 +126,9 @@ const DataStepContent = ({ state, onChange, model }: StepProps) => (
 );
 
 const dataStep: WizardStep = {
-    Header: DataStepHeaderContent,
     Component: DataStepContent,
     canContinue: (state) => getDatasetSource(state) !== null,
 };
-
-const SiteInfoStepHeaderContent = ({ model }: StepProps) =>
-    model ? <SiteInfoStepHeader model={model} /> : null;
 
 const SiteInfoStepContent = ({ state, onChange }: StepProps) => (
     <SiteInfoStep
@@ -159,7 +142,6 @@ const SiteInfoStepContent = ({ state, onChange }: StepProps) => (
 );
 
 const siteInfoStep: WizardStep = {
-    Header: SiteInfoStepHeaderContent,
     Component: SiteInfoStepContent,
     // both fields are optional
     canContinue: () => true,
@@ -183,8 +165,6 @@ const ThemeStepContent = ({
 );
 
 const themeStep: WizardStep = {
-    // same subtitle as the site name and description
-    Header: SiteInfoStepHeaderContent,
     Component: ThemeStepContent,
     // once the themes are loaded, or failed to
     canContinue: (state) => !!state.theme,
@@ -231,7 +211,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
 
     const step = STEPS[index];
     const isLastStep = index === STEPS.length - 1;
-    const { Header, Component } = step;
+    const { Component } = step;
     const model = models.find(({ id }) => id === userState.modelId);
     const state = {
         ...userState,
@@ -298,6 +278,9 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
             maxWidth="md"
             // only the cancel buttons close it, after a confirmation
             disableEscapeKeyDown
+            // a fixed height: the dialog does not jump between steps, a long
+            // step scrolls
+            PaperProps={{ sx: { height: 'min(720px, 90vh)', p: 4 } }}
         >
             <DialogTitle
                 component="div"
@@ -305,7 +288,9 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 justifyContent="space-between"
                 alignItems="flex-start"
                 gap={4}
+                sx={{ p: 0, mb: 2 }}
             >
+                {/* the same header on every step */}
                 <Box>
                     {/* same heading style as AnnotationHeader */}
                     <Typography
@@ -316,15 +301,25 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                     >
                         {translate('site_wizard_title')}
                     </Typography>
-                    {!isGenerating && (
-                        <Header
-                            state={state}
-                            onChange={handleChange}
-                            models={models}
-                            model={model}
-                            themesQuery={themesQuery}
-                        />
-                    )}
+                    <Box
+                        display="flex"
+                        flexWrap="wrap"
+                        alignItems="center"
+                        columnGap={1.5}
+                    >
+                        <Typography color="text.secondary">
+                            {translate('site_wizard_subtitle')}
+                        </Typography>
+                        {/* the chosen model, once past its step */}
+                        {model && index > 0 && (
+                            <Chip
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                                label={translate(getModelTitleKey(model.id))}
+                            />
+                        )}
+                    </Box>
                 </Box>
                 <Box
                     display="flex"
@@ -344,7 +339,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                     </Typography>
                 </Box>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent sx={{ px: 0 }}>
                 {isGenerating ? (
                     <Box
                         display="flex"
@@ -414,7 +409,9 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                     </>
                 )}
             </DialogContent>
-            <DialogActions sx={{ justifyContent: 'space-between' }}>
+            <DialogActions
+                sx={{ justifyContent: 'space-between', px: 0, pb: 0 }}
+            >
                 <Box>
                     {index > 0 && (
                         <Button

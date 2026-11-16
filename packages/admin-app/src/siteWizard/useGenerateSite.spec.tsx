@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 import { toast, type CatalogModel } from '@lodex/common';
 import { LOAD_FIELD } from '@lodex/frontend-common/fields/reducer';
@@ -130,6 +130,38 @@ describe('useGenerateSite', () => {
         expect(result.current.isGenerating).toBe(false);
         expect(result.current.error).toBeNull();
         expect(toast).not.toHaveBeenCalled();
+    });
+
+    it('invalidates the site generation after the model import', async () => {
+        const { result } = renderGenerateSite();
+        await act(() => result.current.generate(model, source));
+        expect(client.invalidateQueries).toHaveBeenCalledWith({
+            queryKey: ['site-generation'],
+        });
+    });
+
+    it('waits for the site generation before ending the generation', async () => {
+        let refetched: () => void = () => {};
+        jest.mocked(client.invalidateQueries).mockImplementation(
+            () => new Promise<void>((resolve) => (refetched = resolve)),
+        );
+        const { result } = renderGenerateSite();
+        let ended = false;
+        await act(async () => {
+            result.current.generate(model, source).then(() => (ended = true));
+        });
+        await waitFor(() =>
+            expect(client.invalidateQueries).toHaveBeenCalledWith({
+                queryKey: ['site-generation'],
+            }),
+        );
+        expect(ended).toBe(false);
+        expect(result.current.isGenerating).toBe(true);
+
+        await act(async () => refetched());
+
+        expect(ended).toBe(true);
+        expect(result.current.isGenerating).toBe(false);
     });
 
     it('imports the model with the site name and description', async () => {

@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import AppBar from './Appbar/AppBar';
 import getTitle from '@lodex/frontend-common/utils/getTitle';
 import { Progress } from './progress/Progress';
+import { SiteGenerationDialog } from './siteGeneration/SiteGenerationDialog';
 import { SidebarContext } from './Sidebar/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';
 import { ToastContainer } from 'react-toastify';
@@ -86,6 +87,7 @@ export const AppComponent = ({ children, tenant }: AppComponentProps) => {
                 </div>
             </div>
             <Progress />
+            <SiteGenerationDialog />
         </SidebarContext.Provider>
     );
 };

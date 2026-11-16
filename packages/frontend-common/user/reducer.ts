@@ -745,6 +745,23 @@ export const getImportCatalogModelRequest = (
         body,
     });
 
+export const getSiteGenerationRequest = (state: UserState) =>
+    getRequest(state, {
+        url: '/api/site-generation',
+    });
+
+export const getRelaunchSiteGenerationRequest = (state: UserState) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/site-generation/relaunch',
+    });
+
+export const getStopSiteGenerationRequest = (state: UserState) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/site-generation/stop',
+    });
+
 export const getUrlRequest = (
     state: UserState,
     {
@@ -1034,6 +1051,9 @@ export const selectors = {
     getUploadUrlRequest,
     getUploadTextRequest,
     getImportCatalogModelRequest,
+    getSiteGenerationRequest,
+    getRelaunchSiteGenerationRequest,
+    getStopSiteGenerationRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
     getSparqlRequest,
