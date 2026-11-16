@@ -17,7 +17,13 @@ import {
     clearPublished as clearPublishedAction,
 } from '../clear';
 
-import { fromClear, fromPublication } from '../selectors';
+import {
+    fromClear,
+    fromEnrichments,
+    fromPrecomputed,
+    fromPublication,
+    fromSubresources,
+} from '../selectors';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import fieldApi from '../api/field';
 import { toast, extractTenantFromUrl } from '@lodex/common';
@@ -230,8 +236,12 @@ const mapStateToProps = (state) => ({
     hasFailed: fromClear.hasClearFailed(state),
     isLoading: fromClear.getIsLoading(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    // a new model only holds the uri field
-    hasModel: fromFields.getFields(state).some((f) => f.name !== 'uri'),
+    // what the model export saves; a new model only holds the uri field
+    hasModel:
+        fromFields.getFields(state).some((f) => f.name !== 'uri') ||
+        fromEnrichments.enrichments(state).length > 0 ||
+        fromPrecomputed.precomputed(state).length > 0 ||
+        fromSubresources.getSubresources(state).length > 0,
 });
 
 const mapDispatchToProps = {

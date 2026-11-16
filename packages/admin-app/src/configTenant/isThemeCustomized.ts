@@ -1,3 +1,5 @@
+import isEqual from 'lodash/isEqual';
+
 import type { AvailableTheme } from './useGetAvailableThemes';
 
 // written by the site wizard (applySiteInfo), not a theme customization
@@ -19,6 +21,6 @@ export const isThemeCustomized = (
     return Object.entries(config.front?.theme ?? {}).some(
         ([key, value]) =>
             !SITE_INFO_VARIABLES.includes(key) &&
-            value !== defaultVariables[key],
+            !isEqual(value, defaultVariables[key]),
     );
 };

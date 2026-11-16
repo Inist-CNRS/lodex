@@ -9,7 +9,7 @@ const theme = (value: string, defaultVariables = {}) => ({
 
 const themes = [
     theme('default', { siteTitle: '', summary: '' }),
-    theme('istex', { title: '', color: 'blue' }),
+    theme('istex', { title: '', color: 'blue', headerMenu: { links: [] } }),
 ];
 
 describe('isThemeCustomized', () => {
@@ -26,6 +26,27 @@ describe('isThemeCustomized', () => {
                 themes,
             ),
         ).toBe(false);
+    });
+
+    it('compares object variables by value', () => {
+        expect(
+            isThemeCustomized(
+                {
+                    theme: 'istex',
+                    front: { theme: { headerMenu: { links: [] } } },
+                },
+                themes,
+            ),
+        ).toBe(false);
+        expect(
+            isThemeCustomized(
+                {
+                    theme: 'istex',
+                    front: { theme: { headerMenu: { links: ['/a'] } } },
+                },
+                themes,
+            ),
+        ).toBe(true);
     });
 
     it('ignores the site name and description set by the site wizard', () => {
