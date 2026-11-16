@@ -1,39 +1,37 @@
-import { Box, Link } from '@mui/material';
-import type { CatalogModel } from '@lodex/common';
+import { Link, Typography } from '@mui/material';
+import { getModelTitleKey, type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
+const ExternalLink = ({ href, label }: { href: string; label: string }) => (
+    <Link href={href} target="_blank" rel="noopener noreferrer">
+        {label}
+    </Link>
+);
+
+// "OpenAlex model: access the documentation and the demo site"
 export const ModelLinks = ({ model }: { model: CatalogModel }) => {
     const { translate } = useTranslate();
     if (!model.doc && !model.demo) {
         return null;
     }
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            mt={0.5}
-        >
+        <Typography color="text.secondary" sx={{ mt: 1 }}>
+            {translate('site_wizard_model_links', {
+                name: translate(getModelTitleKey(model.id)),
+            })}{' '}
             {model.doc && (
-                <Link
-                    variant="body1"
+                <ExternalLink
                     href={model.doc}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {translate('site_wizard_documentation_link')}
-                </Link>
+                    label={translate('site_wizard_model_links_doc')}
+                />
             )}
+            {model.doc && model.demo && ` ${translate('site_wizard_and')} `}
             {model.demo && (
-                <Link
-                    variant="body1"
+                <ExternalLink
                     href={model.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {translate('site_wizard_demo_link')}
-                </Link>
+                    label={translate('site_wizard_model_links_demo')}
+                />
             )}
-        </Box>
+        </Typography>
     );
 };

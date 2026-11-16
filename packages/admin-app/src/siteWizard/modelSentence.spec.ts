@@ -1,4 +1,4 @@
-import { getModelNameInSentence } from './ModelSubtitle';
+import { getModelNameInSentence } from './modelSentence';
 
 describe('getModelNameInSentence', () => {
     it('lowercases the leading "Modèle" in French', () => {

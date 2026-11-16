@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { StepTitle } from './StepTitle';
 import {
     getThemeLabel,
     type AvailableTheme,
@@ -58,14 +59,7 @@ export const ThemeStep = ({
 
     return (
         <Box>
-            <Typography
-                variant="h2"
-                fontSize={20}
-                color="text.primary"
-                sx={{ mt: 2 }}
-            >
-                {translate('site_wizard_theme_title')}
-            </Typography>
+            <StepTitle>{translate('site_wizard_theme_title')}</StepTitle>
             <Typography color="text.secondary" sx={{ mt: 2 }}>
                 {translate('site_wizard_theme_hint')}
             </Typography>
