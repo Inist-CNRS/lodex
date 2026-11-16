@@ -13,20 +13,26 @@ const DataComponent = () => {
     return (
         <SiteWizardHost active={isExistingDataScreen}>
             <Switch>
-                <Route path={`${path}/existing`} render={() => <DataRoute />} />
-                <Route path={`${path}/add`} render={() => <DataAddRoute />} />
+                <Route
+                    path={`${path}/existing`}
+                    component={() => <DataRoute />}
+                />
+                <Route
+                    path={`${path}/add`}
+                    component={() => <DataAddRoute />}
+                />
                 <Route
                     path={`${path}/removed`}
                     exact
-                    render={() => <RemovedResourcePage />}
+                    component={() => <RemovedResourcePage />}
                 />
                 <Route
                     path={`${path}/enrichment`}
-                    render={() => <EnrichmentRoute />}
+                    component={() => <EnrichmentRoute />}
                 />
                 <Route
                     path={`${path}/precomputed`}
-                    render={() => <PrecomputedRoute />}
+                    component={() => <PrecomputedRoute />}
                 />
                 <Route
                     path={path}
