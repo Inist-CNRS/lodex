@@ -40,13 +40,38 @@ export const getCustomLoader = (script: any, loaderEnvironment: any) => {
         stream.pipe(ezs('delegate', { script }, loaderEnvironment));
 };
 
+// enough to explain an error, without waiting for or keeping a whole page
+const MAX_ERROR_ANSWER_LENGTH = 10_000;
+const ERROR_ANSWER_TIMEOUT = 5_000;
+
+// the start of the answer of a failed url: a stalled or cut off answer must
+// not hide the status
+const readErrorAnswer = async (body: NodeJS.ReadableStream & any) => {
+    let answer = '';
+    const timeout = setTimeout(() => body.destroy(), ERROR_ANSWER_TIMEOUT);
+    try {
+        for await (const chunk of body) {
+            answer += chunk;
+            if (answer.length >= MAX_ERROR_ANSWER_LENGTH) {
+                break;
+            }
+        }
+    } catch {
+        // cut off or stalled: keep what came
+    } finally {
+        clearTimeout(timeout);
+        body.destroy();
+    }
+    return answer.slice(0, MAX_ERROR_ANSWER_LENGTH);
+};
+
 export const getStreamFromUrl = async (url: any) => {
     const response = await fetch(url);
     if (!response.ok) {
         // the status and the answer explain the error to the user
         throw Object.assign(new Error(response.statusText), {
             status: response.status,
-            responseText: await response.text(),
+            responseText: await readErrorAnswer(response.body),
         });
     }
     return response.body;

@@ -158,7 +158,8 @@ export const UploadComponent = ({
                 {error ? (
                     <Alert>
                         <p>Error uploading given file: </p>
-                        <p>{error}</p>
+                        {/* a failed import sends a translation key */}
+                        <p>{translate(String(error))}</p>
                     </Alert>
                 ) : (
                     <span />

@@ -20,6 +20,8 @@ type ErrorLike = {
     stack?: string;
     status?: number;
     responseText?: string;
+    // a system error: ECONNREFUSED, ETIMEDOUT…
+    code?: string;
     cause?: unknown;
     sourceError?: unknown;
 };
@@ -63,7 +65,12 @@ const getSourceError = (error: ErrorLike): ErrorLike => {
     return serialized ? getSourceError(serialized) : error;
 };
 
-const getCode = ({ status, message, stack }: ErrorLike): ImportErrorCode => {
+const getCode = ({
+    status,
+    message,
+    code,
+    stack,
+}: ErrorLike): ImportErrorCode => {
     if (status === 400) {
         return 'import_error_invalid_query';
     }
@@ -73,7 +80,9 @@ const getCode = ({ status, message, stack }: ErrorLike): ImportErrorCode => {
     if (status && status >= 500) {
         return 'import_error_source_unavailable';
     }
-    const text = `${message} ${stack}`;
+    // the first line of the stack names the error (SyntaxError); the rest is
+    // frames, where a timer reads like a timeout
+    const text = `${message} ${code ?? ''} ${stack?.split('\n')[0] ?? ''}`;
     if (/timeout|ETIMEDOUT/i.test(text)) {
         return 'import_error_source_timeout';
     }
@@ -117,11 +126,12 @@ const decodeEntities = (text: string) =>
         if (code[0] !== '#') {
             return NAMED_ENTITIES[code.toLowerCase()] ?? entity;
         }
-        return String.fromCodePoint(
+        const codePoint =
             code[1].toLowerCase() === 'x'
                 ? parseInt(code.slice(2), 16)
-                : parseInt(code.slice(1), 10),
-        );
+                : parseInt(code.slice(1), 10);
+        // fromCodePoint throws out of the unicode range
+        return codePoint <= 0x10ffff ? String.fromCodePoint(codePoint) : entity;
     });
 
 // a maintenance or error page: its text only

@@ -7,6 +7,11 @@ global.UPLOAD_LIMIT = 1;
 
 import { UploadComponent as Upload, type UploadComponentProps } from './Upload';
 
+jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
+    ...jest.requireActual('@lodex/frontend-common/i18n/I18NContext'),
+    useTranslate: () => ({ translate: (key: string) => `translated:${key}` }),
+}));
+
 describe('<Upload />', () => {
     it('should render the Upload button with no error', () => {
         const props: UploadComponentProps = {
@@ -48,7 +53,8 @@ describe('<Upload />', () => {
         const props = {
             // @ts-expect-error TS7006
             p: { t: (key) => key },
-            error: 'Boom',
+            // the error of a failed import is a translation key
+            error: 'import_error_source_unavailable',
             onFileLoad() {},
             loaders: [],
             history: { location: { pathname: '/data/existing' } },
@@ -60,7 +66,7 @@ describe('<Upload />', () => {
             wrapper.contains(
                 <Alert>
                     <p>Error uploading given file: </p>
-                    <p>{props.error}</p>
+                    <p>translated:import_error_source_unavailable</p>
                 </Alert>,
             ),
         ).toBe(true);

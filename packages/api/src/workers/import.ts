@@ -57,10 +57,7 @@ const handleImportError = async (job: any, err: any) => {
     // very useful for identifying the origin of production errors.
     const logger = getLogger(ctx.tenant);
     logger.warn('handleImportError', err);
-    if (
-        err instanceof CancelWorkerError ||
-        err.message === CANCELLED_IMPORT
-    ) {
+    if (err instanceof CancelWorkerError || err.message === CANCELLED_IMPORT) {
         notifyListeners(`${job.data.tenant}-import`, {
             isImporting: false,
             success: false,

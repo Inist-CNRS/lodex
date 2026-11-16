@@ -157,4 +157,27 @@ describe('getImportError', () => {
             'Thèses.fr est en maintenance Retour prévu à 14h & quelques…',
         );
     });
+    it('should keep an HTML entity out of the unicode range as is', () => {
+        const { apiMessage } = getImportError(
+            loaderServerError({
+                message: 'Service Unavailable',
+                status: 503,
+                responseText: '<p>Broken &#x110000; &#99999999999; page</p>',
+            }),
+        );
+        expect(apiMessage).toBe('Broken &#x110000; &#99999999999; page');
+    });
+
+    it('should not take an error thrown from a timer for a timeout', () => {
+        expect(
+            getImportError(
+                loaderServerError({
+                    message: 'Cannot read properties of undefined',
+                    stack: `TypeError: Cannot read properties of undefined
+    at Timeout._onTimeout (/app/loader.js:12:3)
+    at listOnTimeout (node:internal/timers:581:17)`,
+                }),
+            ).code,
+        ).toBe('import_error_unknown');
+    });
 });
