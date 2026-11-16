@@ -330,10 +330,10 @@ export const ParsingResultComponent = ({
         handleFilterModelChange({ items: [] });
     }, [handleFilterModelChange]);
 
-    // Follow the main dataset while it is being imported. Columns only need
-    // a reload once, when the first lines arrive.
+    // Follow the main dataset while it is being imported. Columns come from
+    // the first documents, so they are reloaded too: lines saved after the
+    // first reload may bring new keys.
     const loadedLines = precomputedId ? undefined : totalLoadedLines;
-    const hasLoadedLines = !!loadedLines;
 
     useEffect(() => {
         const fetchDataColumns = async () => {
@@ -347,7 +347,7 @@ export const ParsingResultComponent = ({
         handleFilterModelChange,
         initialFilterModel,
         precomputedId,
-        hasLoadedLines,
+        loadedLines,
     ]);
 
     useEffect(() => {
