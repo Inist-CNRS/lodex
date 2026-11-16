@@ -1,17 +1,19 @@
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { randomUUID } from 'node:crypto';
 
 import _ from 'lodash';
 import { DATASET_ID } from '../../models/dataSource';
-import { TaskStatus } from '@lodex/common';
 import {
     createEnrichmentRule,
     getEnrichmentDataPreview,
 } from '../../services/enrichment/enrichment';
 import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
-import { getOrCreateWorkerQueue } from '../../workers';
+import {
+    queueEnrichment,
+    queueEnrichmentJob,
+    type LaunchContext,
+} from '../../services/launchTasks';
 import { ENRICHER, RETRY_ENRICHER } from '../../workers/enricher';
 import { cancelJob, getActiveJob } from '../../workers/tools';
 
@@ -115,23 +117,6 @@ export const deleteEnrichment = async (ctx: any, id: any) => {
     }
 };
 
-// Write PENDING before queuing the job: the worker can pick it up and set
-// IN_PROGRESS before add() resolves, and PENDING would then overwrite it.
-const queueEnrichmentJob = async (
-    ctx: any,
-    id: any,
-    jobType: string,
-    options: Record<string, unknown> = {},
-) => {
-    const jobId = randomUUID();
-    await ctx.enrichment.updateStatus(id, TaskStatus.PENDING, { jobId });
-    return getOrCreateWorkerQueue(ctx.tenant, 1).add(
-        jobType,
-        { id, jobType, tenant: ctx.tenant },
-        { jobId, ...options },
-    );
-};
-
 export const getEnrichment = async (ctx: any, id: any) => {
     ctx.body = await ctx.enrichment.findOneById(id);
 };
@@ -146,20 +131,14 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
     }
 
     if (action === 'launch') {
-        await queueEnrichmentJob(ctx, id, ENRICHER);
+        await queueEnrichment(ctx, id);
         ctx.body = {
             status: 'pending',
         };
     }
 
     if (action === 'relaunch') {
-        const enrichment = await ctx.enrichment.findOneById(id);
-        await ctx.dataSource.removeAttribute(
-            enrichment.dataSource,
-            enrichment.name,
-        );
-
-        await queueEnrichmentJob(ctx, id, ENRICHER);
+        await queueEnrichment(ctx, id, { relaunch: true });
         ctx.body = {
             status: 'pending',
         };
@@ -226,9 +205,13 @@ export const launchAllEnrichment = async (ctx: Koa.Context) => {
         );
 
         for (const enrichment of orderedEnrichments) {
-            await queueEnrichmentJob(ctx, enrichment._id, ENRICHER, {
-                lifo: false,
-            });
+            await queueEnrichment(
+                ctx as unknown as LaunchContext,
+                enrichment._id,
+                {
+                    lifo: false,
+                },
+            );
         }
 
         ctx.body = {

@@ -39,6 +39,7 @@ export type PreComputation = {
     finishedAt?: Date;
     data?: unknown[];
     hasData?: boolean;
+    jobId?: string;
 };
 
 export type PrecomputedCollection = Collection<PreComputation> & {
@@ -170,7 +171,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         data: Partial<PreComputation> = {},
     ) => {
         const newData = { status, ...data };
-        collection.updateOne(
+        await collection.updateOne(
             {
                 // @ts-expect-error TS2345
                 $or: [{ _id: new ObjectId(id) }, { _id: id }],

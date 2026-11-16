@@ -20,7 +20,7 @@ export type Enrichment = {
     createdAt: Date;
     startedAt?: Date;
     finishedAt?: Date;
-    jobId: ObjectId;
+    jobId?: ObjectId | string;
     parameters: Record<string, unknown>;
     result?: Record<string, unknown>;
 };
