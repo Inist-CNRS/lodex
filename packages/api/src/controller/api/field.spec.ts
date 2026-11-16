@@ -44,10 +44,12 @@ import { version } from '../../../../../package.json';
 jest.mock('../../services/indexSearchableFields');
 jest.mock('../../services/siteGeneration/siteGeneration', () => ({
     advanceSiteGeneration: jest.fn().mockResolvedValue(undefined),
+    stopSiteGeneration: jest.fn().mockResolvedValue(false),
 }));
-const { advanceSiteGeneration: mockAdvanceSiteGeneration } = jest.requireMock(
-    '../../services/siteGeneration/siteGeneration',
-);
+const {
+    advanceSiteGeneration: mockAdvanceSiteGeneration,
+    stopSiteGeneration: mockStopSiteGeneration,
+} = jest.requireMock('../../services/siteGeneration/siteGeneration');
 jest.mock('../../services/logger', () => {
     const logger = { error: jest.fn(), info: jest.fn(), warn: jest.fn() };
     return () => logger;
@@ -616,6 +618,7 @@ describe('field routes', () => {
 
         beforeEach(() => {
             mockAdvanceSiteGeneration.mockClear();
+            mockStopSiteGeneration.mockClear();
             ctx = {
                 request: { body: { id: 'm' } },
                 catalogModels: [
@@ -704,6 +707,35 @@ describe('field routes', () => {
             expect(mockAdvanceSiteGeneration).not.toHaveBeenCalled();
             // the generation of an earlier model is not shown anymore
             expect(ctx.siteGeneration.deleteMany).toHaveBeenCalledWith({});
+        });
+
+        it('should stop the running generation before restoring the model', async () => {
+            ctx.request.body = { id: 'ordered' };
+            ctx.enrichment = { findAll: jest.fn().mockResolvedValue([]) };
+            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
+
+            await importCatalogModel(ctx);
+
+            expect(mockStopSiteGeneration).toHaveBeenCalledWith(ctx);
+            expect(
+                mockStopSiteGeneration.mock.invocationCallOrder[0],
+            ).toBeLessThan(ctx.restoreFields.mock.invocationCallOrder[0]);
+        });
+
+        it('should log a failed stop and still import the model', async () => {
+            ctx.request.body = { id: 'ordered' };
+            ctx.enrichment = { findAll: jest.fn().mockResolvedValue([]) };
+            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
+            mockStopSiteGeneration.mockRejectedValueOnce(new Error('boom'));
+
+            await importCatalogModel(ctx);
+
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                'Site generation stop error',
+                expect.objectContaining({ error: 'boom' }),
+            );
+            expect(ctx.restoreFields).toHaveBeenCalled();
+            expect(ctx.status).toBe(200);
         });
 
         it('should not start a generation when the restoration fails', async () => {

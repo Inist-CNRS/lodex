@@ -43,7 +43,10 @@ import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
 import getLogger from '../../services/logger';
 import { buildLaunchSteps } from '../../services/siteGeneration/buildLaunchSteps';
-import { advanceSiteGeneration } from '../../services/siteGeneration/siteGeneration';
+import {
+    advanceSiteGeneration,
+    stopSiteGeneration,
+} from '../../services/siteGeneration/siteGeneration';
 
 const sortByFieldUri = (a: any, b: any) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -594,6 +597,16 @@ export const importCatalogModel = async (ctx: any) => {
     }
 
     try {
+        // Cancel the jobs of a generation still running before the model
+        // replaces its enrichments and precomputations: afterwards, its steps
+        // point to deleted targets and nothing would cancel them
+        try {
+            await stopSiteGeneration(ctx);
+        } catch (e) {
+            getLogger(ctx.tenant).error('Site generation stop error', {
+                error: (e as Error).message,
+            });
+        }
         const restored = (await ctx.restoreFields(fileStream, ctx)) ?? {};
         let themeNotFound = restored.themeNotFound;
         // The theme chosen in the wizard, else the catalog one, overrides the
