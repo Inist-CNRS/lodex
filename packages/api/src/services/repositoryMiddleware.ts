@@ -16,6 +16,9 @@ import precomputed, {
 import publishedCharacteristic from '../models/publishedCharacteristic';
 import publishedDataset from '../models/publishedDataset';
 import publishedFacet from '../models/publishedFacet';
+import siteGeneration, {
+    type SiteGenerationCollection,
+} from '../models/siteGeneration';
 import subresource from '../models/subresource';
 import tenant from '../models/tenant';
 import mongoClient, { type MongoClientFactory } from './mongoClient';
@@ -23,6 +26,7 @@ import mongoClient, { type MongoClientFactory } from './mongoClient';
 interface CustomContext extends DefaultContext {
     precomputed: PrecomputedCollection;
     enrichment: EnrichmentCollection;
+    siteGeneration: SiteGenerationCollection;
     // Add other custom context properties here
 }
 
@@ -48,6 +52,7 @@ const createRepositories = async (db: Db) => {
         publishedFacetRepository,
         configTenantCollection,
         hiddenResourceRepository,
+        siteGenerationRepository,
     ] = await Promise.all([
         annotation(db),
         dataset(db),
@@ -60,6 +65,7 @@ const createRepositories = async (db: Db) => {
         publishedFacet(db),
         configTenant(db),
         hiddenResource(db),
+        siteGeneration(db),
     ]);
 
     return {
@@ -74,6 +80,7 @@ const createRepositories = async (db: Db) => {
         publishedFacet: publishedFacetRepository,
         configTenantCollection,
         hiddenResource: hiddenResourceRepository,
+        siteGeneration: siteGenerationRepository,
         dataSource: dataSource(datasetRepository, precomputedRepository),
     };
 };
