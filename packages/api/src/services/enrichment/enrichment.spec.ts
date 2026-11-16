@@ -8,7 +8,9 @@ import {
     getSourceError,
     truncateLog,
     processEnrichment,
+    setEnrichmentError,
 } from './enrichment';
+import createEnrichmentModel from '../../models/enrichment';
 import { disableFusible } from '@ezs/core/fusible';
 import { CancelWorkerError } from '../../workers';
 
@@ -487,6 +489,7 @@ describe('enrichment', () => {
                 enrichment: {
                     updateOne: jest.fn(),
                     updateStatus: jest.fn(),
+                    updateStatusOfJob: jest.fn(),
                 },
                 ...mockDb([
                     {
@@ -511,7 +514,73 @@ describe('enrichment', () => {
 
             // THEN
             expect(catchedError).toBeInstanceOf(CancelWorkerError);
+            // the status is written for this job's run only
+            expect(ctx.enrichment.updateStatusOfJob).toHaveBeenCalledWith(
+                undefined,
+                '1',
+                'IN_PROGRESS',
+                undefined,
+            );
+            expect(ctx.enrichment.updateStatus).not.toHaveBeenCalled();
         }, 60000);
+
+        describe('setEnrichmentError', () => {
+            const setup = async () => {
+                const enrichmentModel = await createEnrichmentModel(db);
+                const enrichment = await enrichmentModel.create({
+                    name: 'test',
+                    dataSource: 'dataset',
+                    status: 'PENDING',
+                    parameters: {},
+                    createdAt: new Date(),
+                    // the relaunch queued after the superseded job
+                    jobId: 'current',
+                });
+                const id = enrichment!._id.toString();
+                const runJob = (jobId: string) =>
+                    setEnrichmentError(
+                        {
+                            tenant: dbName,
+                            enrichment: enrichmentModel,
+                            job: {
+                                id: jobId,
+                                opts: { jobId },
+                                log: jest.fn(),
+                                data: { id, tenant: dbName },
+                            },
+                        },
+                        new Error('boom'),
+                    );
+                return { enrichmentModel, id, runJob };
+            };
+
+            it('should not overwrite the status of the current run from a superseded job', async () => {
+                const { enrichmentModel, id, runJob } = await setup();
+
+                await runJob('superseded');
+
+                await expect(
+                    enrichmentModel.findOneById(id),
+                ).resolves.toMatchObject({
+                    status: 'PENDING',
+                    jobId: 'current',
+                });
+            });
+
+            it('should write the error of the current job', async () => {
+                const { enrichmentModel, id, runJob } = await setup();
+
+                await runJob('current');
+
+                await expect(
+                    enrichmentModel.findOneById(id),
+                ).resolves.toMatchObject({
+                    status: 'ERROR',
+                    message: 'boom',
+                    jobId: 'current',
+                });
+            });
+        });
 
         it.skip('should log error when ws is out', async () => {
             // ezs cannot be mock in the same way, one day this test will have to be rewritten differently

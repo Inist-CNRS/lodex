@@ -8,7 +8,7 @@ import {
     type UpdateResult,
     type WithId,
 } from 'mongodb';
-import { castIdsFactory, getCreatedCollection } from './utils';
+import { castIdsFactory, getCreatedCollection, jobIdMatches } from './utils';
 
 export type Enrichment = {
     _id?: ObjectId;
@@ -23,6 +23,8 @@ export type Enrichment = {
     jobId?: ObjectId | string;
     parameters: Record<string, unknown>;
     result?: Record<string, unknown>;
+    // Error message of the last run
+    message?: string;
 };
 
 export type EnrichmentCollection = {
@@ -33,6 +35,12 @@ export type EnrichmentCollection = {
     update: (id: string, data: Enrichment) => Promise<Enrichment>;
     updateStatus: (
         id: string,
+        status: TaskStatusType,
+        data?: Partial<Enrichment>,
+    ) => Promise<void>;
+    updateStatusOfJob: (
+        id: string,
+        jobId: string,
         status: TaskStatusType,
         data?: Partial<Enrichment>,
     ) => Promise<void>;
@@ -94,6 +102,29 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
         );
     };
 
+    // A job writes the status of its enrichment only while the enrichment
+    // still carries its jobId: the stalled rerun of a superseded job (Bull
+    // runs a job again when its lock expires) must not overwrite the status
+    // of the current run. An enrichment without a jobId (written before the
+    // jobId existed) keeps the unconditional write.
+    const updateStatusOfJob = async (
+        id: string,
+        jobId: string,
+        status: TaskStatusType,
+        data: Partial<Enrichment> = {},
+    ) => {
+        await collection.updateOne(
+            {
+                $and: [
+                    // @ts-expect-error TS2345
+                    { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
+                    jobIdMatches(jobId),
+                ],
+            },
+            { $set: { status, ...data } },
+        );
+    };
+
     const cancelByIds = async (ids: string[]) => {
         if (ids.length === 0) {
             return;
@@ -120,6 +151,7 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
         delete: deleteMethod,
         update,
         updateStatus,
+        updateStatusOfJob,
         castIds,
         cancelByIds,
     });

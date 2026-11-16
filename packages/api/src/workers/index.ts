@@ -1,6 +1,7 @@
 import Queue from 'bull';
 import config from 'config';
 import bullBoard from '../bullBoard';
+import getLogger from '../services/logger';
 import { ENRICHER, processEnrichment, RETRY_ENRICHER } from './enricher';
 import { IMPORT, processImport } from './import';
 import { PRECOMPUTER, processPrecomputed } from './precomputer';
@@ -51,6 +52,18 @@ export const getOrCreateWorkerQueue = (
         if (job.data.jobType === PRECOMPUTER) {
             processPrecomputed(job, done);
         }
+    });
+
+    // Bull is silent otherwise: a job whose lock expired ("Missing lock") or
+    // that is run again after stalling must leave a trace
+    const logger = getLogger(queueName);
+    workerQueue.on('error', (error: Error) => {
+        logger.error(`Worker queue error: ${error?.message}`, error);
+    });
+    workerQueue.on('stalled', (job: Queue.Job) => {
+        logger.warn(
+            `Worker job stalled and will run again: ${job?.id} (${job?.data?.jobType})`,
+        );
     });
 
     workerQueues[queueName] = workerQueue;

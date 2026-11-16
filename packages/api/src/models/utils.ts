@@ -45,3 +45,13 @@ export const getCreatedCollection = async <Resource extends Document = any>(
     }
     return db.collection<Resource>(collectionName);
 };
+
+// Matches a task that carries the given jobId, or no jobId at all (written
+// before the jobId existed). Without a jobId, matches the latter only.
+export const jobIdMatches = (jobId?: string) => {
+    const legacy = [
+        { jobId: { $exists: false } },
+        { jobId: { $type: 'null' as const } },
+    ];
+    return { $or: jobId ? [{ jobId }, ...legacy] : legacy };
+};
