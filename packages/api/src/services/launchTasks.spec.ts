@@ -112,6 +112,28 @@ describe('launchTasks', () => {
             ]);
         });
 
+        it('skips the launch no longer wanted once the data is removed', async () => {
+            const isStillWanted = jest.fn().mockImplementation(async () => {
+                calls.push('isStillWanted');
+                return false;
+            });
+
+            await queueEnrichment(ctx, 'e1', { relaunch: true, isStillWanted });
+
+            expect(calls).toEqual([
+                'dataSource.removeAttribute',
+                'isStillWanted',
+            ]);
+        });
+
+        it('launches when still wanted', async () => {
+            await queueEnrichment(ctx, 'e1', {
+                isStillWanted: jest.fn().mockResolvedValue(true),
+            });
+
+            expect(calls).toEqual(['enrichment.updateStatus', 'add']);
+        });
+
         it('does not remove data when not relaunching', async () => {
             await queueEnrichment(ctx, 'e1');
 
@@ -176,6 +198,20 @@ describe('launchTasks', () => {
                 'precomputed.updateStatus',
                 'add',
             ]);
+        });
+
+        it('skips the launch no longer wanted once the data is removed', async () => {
+            const isStillWanted = jest.fn().mockImplementation(async () => {
+                calls.push('isStillWanted');
+                return false;
+            });
+
+            await queuePrecomputed(ctx, 'p1', {
+                relaunch: true,
+                isStillWanted,
+            });
+
+            expect(calls).toEqual(['dataset.removeAttribute', 'isStillWanted']);
         });
 
         it('does not remove data when not relaunching', async () => {

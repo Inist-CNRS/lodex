@@ -40,6 +40,10 @@ export const queueEnrichmentJob = async (
     );
 };
 
+// Checked right before queuing, after the (possibly long) removal of the
+// previous results: false skips the launch
+type IsStillWanted = () => Promise<boolean>;
+
 export const queueEnrichment = async (
     ctx: LaunchContext,
     id: string,
@@ -47,7 +51,13 @@ export const queueEnrichment = async (
         relaunch = false,
         lifo,
         jobId,
-    }: { relaunch?: boolean; lifo?: boolean; jobId?: string } = {},
+        isStillWanted,
+    }: {
+        relaunch?: boolean;
+        lifo?: boolean;
+        jobId?: string;
+        isStillWanted?: IsStillWanted;
+    } = {},
 ): Promise<void> => {
     if (relaunch) {
         const enrichment = await ctx.enrichment.findOneById(id);
@@ -58,6 +68,9 @@ export const queueEnrichment = async (
             enrichment.dataSource,
             enrichment.name,
         );
+    }
+    if (isStillWanted && !(await isStillWanted())) {
+        return;
     }
     // Only pass lifo when given: an undefined lifo would override the
     // queue's default (lifo: true)
@@ -73,7 +86,12 @@ export const queuePrecomputed = async (
     {
         relaunch = false,
         jobId = randomUUID(),
-    }: { relaunch?: boolean; jobId?: string } = {},
+        isStillWanted,
+    }: {
+        relaunch?: boolean;
+        jobId?: string;
+        isStillWanted?: IsStillWanted;
+    } = {},
 ): Promise<void> => {
     const precomputed = await ctx.precomputed.findOneById(id);
     if (!precomputed) {
@@ -81,6 +99,9 @@ export const queuePrecomputed = async (
     }
     if (relaunch) {
         await ctx.dataset.removeAttribute(precomputed.name);
+    }
+    if (isStillWanted && !(await isStillWanted())) {
+        return;
     }
 
     // Write PENDING before queuing the job, for the same reason as for the

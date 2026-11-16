@@ -131,25 +131,45 @@ const markQueueFailure = async (
     }
 };
 
+// "Arrêter" (or a relaunch) can win while the steps are being queued, a
+// relaunch first removing the previous results, which can be long: a step is
+// queued only while its generation still runs it with the same jobId
+const isStillQueuedBy =
+    (ctx: SiteGenerationContext, runId: string, step: SiteGenerationStep) =>
+    async () => {
+        const latest = await ctx.siteGeneration.findCurrent();
+        return (
+            latest?.status === 'running' &&
+            latest.runId === runId &&
+            latest.steps.some(
+                (other) => sameStep(other, step) && other.jobId === step.jobId,
+            )
+        );
+    };
+
 // Called only by the process that won the transition. A failure is logged and
 // written on the target (see markQueueFailure), it never stops the pass.
 const queueSteps = async (
     ctx: SiteGenerationContext,
+    runId: string,
     steps: SiteGenerationStep[],
     { relaunch }: { relaunch: boolean },
 ) => {
     for (const step of precomputedFirst(steps)) {
+        const isStillWanted = isStillQueuedBy(ctx, runId, step);
         try {
             if (step.type === 'precomputed') {
                 await queuePrecomputed(ctx, step.targetId, {
                     jobId: step.jobId,
                     relaunch,
+                    isStillWanted,
                 });
             } else {
                 await queueEnrichment(ctx, step.targetId, {
                     jobId: step.jobId,
                     lifo: false,
                     relaunch,
+                    isStillWanted,
                 });
             }
         } catch (error) {
@@ -195,7 +215,9 @@ export const advanceSiteGeneration = async (
         const existing = current
             .filter(({ target }) => target)
             .map(({ step }) => step);
-        await queueSteps(ctx, pickSteps(steps, existing), { relaunch: false });
+        await queueSteps(ctx, generation.runId, pickSteps(steps, existing), {
+            relaunch: false,
+        });
         return;
     }
 
@@ -216,7 +238,9 @@ export const advanceSiteGeneration = async (
             steps,
         });
         if (counted) {
-            await queueSteps(ctx, pickSteps(steps, errors), { relaunch: true });
+            await queueSteps(ctx, generation.runId, pickSteps(steps, errors), {
+                relaunch: true,
+            });
         }
         return;
     }
@@ -256,7 +280,9 @@ export const relaunchSiteGeneration = async (
     if (!relaunched) {
         return false;
     }
-    await queueSteps(ctx, pickSteps(steps, errors), { relaunch: true });
+    await queueSteps(ctx, generation.runId, pickSteps(steps, errors), {
+        relaunch: true,
+    });
     return true;
 };
 

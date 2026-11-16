@@ -107,7 +107,7 @@ describe('siteGeneration service', () => {
     // The jobId is checked on its own (see "stores the jobId")
     const withoutJobId = ([, id, options]: [unknown, string, object?]) => ({
         id,
-        options: omit(options, 'jobId'),
+        options: omit(options, ['jobId', 'isStillWanted']),
     });
     const queued = () => [
         ...jest.mocked(queuePrecomputed).mock.calls.map(withoutJobId),
@@ -385,6 +385,33 @@ describe('siteGeneration service', () => {
             expect(queued()).toHaveLength(STEPS.length);
         });
 
+        it('wants a queued step only while its generation runs it', async () => {
+            await siteGeneration.start(STEPS);
+            await advanceSiteGeneration(ctx);
+            const isStillWanted = jest.mocked(queuePrecomputed).mock.calls[0][2]
+                ?.isStillWanted as () => Promise<boolean>;
+
+            expect(await isStillWanted()).toBe(true);
+
+            await stopSiteGeneration(ctx);
+            expect(await isStillWanted()).toBe(false);
+        });
+
+        it('no longer wants a step relaunched with another jobId', async () => {
+            await siteGeneration.start(STEPS);
+            await advanceSiteGeneration(ctx);
+            const isStillWanted = jest.mocked(queuePrecomputed).mock.calls[0][2]
+                ?.isStillWanted as () => Promise<boolean>;
+            setStatus('clusterRameau', TaskStatus.ERROR, {
+                jobId: (await siteGeneration.findCurrent())?.steps[0].jobId,
+            });
+
+            await advanceSiteGeneration(ctx);
+
+            expect(jest.mocked(queuePrecomputed)).toHaveBeenCalledTimes(2);
+            expect(await isStillWanted()).toBe(false);
+        });
+
         it('stores the jobId given to each queued step', async () => {
             await siteGeneration.start(STEPS);
 
@@ -395,6 +422,7 @@ describe('siteGeneration service', () => {
             expect(jest.mocked(queuePrecomputed).mock.calls[0][2]).toEqual({
                 jobId,
                 relaunch: false,
+                isStillWanted: expect.any(Function),
             });
             expect(precomputed.targets.get('clusterRameau-id')?.jobId).toBe(
                 jobId,
