@@ -8,28 +8,30 @@ import {
 } from '../upload/DatasetSourceInput';
 import { hasTranslation } from './hasTranslation';
 import { ModelLinks } from './ModelLinks';
-import { ModelSubtitle } from './ModelSubtitle';
+import { useModelSentence } from './modelSentence';
+import { StepTitle } from './StepTitle';
 
-export const DataStepHeader = ({ model }: { model: CatalogModel }) => {
+// the step title, the model links, then how to import the model's data
+const DataStepIntro = ({ model }: { model: CatalogModel }) => {
     const { translate } = useTranslate();
     const importHelpKey = getModelImportHelpKey(model.id);
     return (
-        <>
-            <ModelSubtitle
-                model={model}
-                translationKey="site_wizard_data_subtitle"
-            />
+        <Box mb={3}>
+            <StepTitle>
+                {useModelSentence(model, 'site_wizard_data_title')}
+            </StepTitle>
             <ModelLinks model={model} />
             {hasTranslation(importHelpKey) && (
-                <Typography sx={{ mt: 2 }}>
+                <Typography color="text.secondary" sx={{ mt: 2 }}>
                     {translate(importHelpKey)}
                 </Typography>
             )}
-        </>
+        </Box>
     );
 };
 
 type DataStepProps = {
+    model?: CatalogModel;
     tab: DatasetSourceTab;
     onTabChange: (tab: DatasetSourceTab) => void;
     files: FileObject[];
@@ -41,8 +43,9 @@ type DataStepProps = {
     tabs?: DatasetSourceTab[];
 };
 
-export const DataStep = (inputProps: DataStepProps) => (
+export const DataStep = ({ model, ...inputProps }: DataStepProps) => (
     <Box>
+        {model && <DataStepIntro model={model} />}
         {/* The loader comes from the model: hide the "choose the loader" descriptions */}
         <DatasetSourceInput {...inputProps} hideDescriptions />
     </Box>

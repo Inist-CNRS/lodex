@@ -1,14 +1,6 @@
 import { Box, TextField, Typography } from '@mui/material';
-import { type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { ModelSubtitle } from './ModelSubtitle';
-
-export const SiteInfoStepHeader = ({ model }: { model: CatalogModel }) => (
-    <ModelSubtitle
-        model={model}
-        translationKey="site_wizard_site_info_subtitle"
-    />
-);
+import { StepTitle } from './StepTitle';
 
 type SiteInfoStepProps = {
     siteName: string;
@@ -26,14 +18,7 @@ export const SiteInfoStep = ({
     const { translate } = useTranslate();
     return (
         <Box>
-            <Typography
-                variant="h2"
-                fontSize={20}
-                color="text.primary"
-                sx={{ mt: 2 }}
-            >
-                {translate('site_wizard_site_info_title')}
-            </Typography>
+            <StepTitle>{translate('site_wizard_site_info_title')}</StepTitle>
             <Typography color="text.secondary" sx={{ mt: 2 }}>
                 {translate('site_wizard_site_info_hint')}
             </Typography>
