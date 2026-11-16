@@ -87,7 +87,7 @@
                 <a href="<%= custom.host %>">
                     <img src="<%= theme.current.href %>/img/header/istex.svg" alt="Istex">
                     <h1 class="siteTitle">
-                        <%# `title` first: legacy configs still get the default `siteTitle` merged in %><%= custom.title || custom.siteTitle %>
+                        <%# configurations saved before the rename store `title` %><%= 'title' in custom ? custom.title : custom.siteTitle %>
                     </h1>
                     <div class="subTitle">
                         <%= custom.summary %>

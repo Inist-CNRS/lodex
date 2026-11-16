@@ -52,7 +52,7 @@ jest.mock('../../models/themes', () => {
         default: { siteTitle: '', summary: '' },
         istex: {
             color: 'istex-green',
-            title: 'exemple : Services',
+            siteTitle: 'exemple : Services',
             summary: 'exemple : summary',
         },
         // an older theme, without the site name and description
@@ -523,7 +523,7 @@ describe('field routes', () => {
             });
         });
 
-        it('should write the name into title for a theme using that key', async () => {
+        it('should write the name into title for a configuration saved before the ISTEX rename', async () => {
             await createConfig('istex', { title: 'exemple : Services' });
 
             await applySiteInfo(ctx, { siteName: 'My site' });
