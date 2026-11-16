@@ -24,6 +24,7 @@ import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { ErrorWithDetail } from '@lodex/frontend-common/components/ErrorWithDetail';
 
 const styles = {
     progress: {
@@ -155,9 +156,17 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                 handleRepublish();
             }
             if (data.message && data.message !== 'cancelled_import') {
-                toast(`${translate('error')} : ${data.message}`, {
-                    type: 'error',
-                });
+                // the message explains the error, the detail is on demand
+                toast(
+                    <ErrorWithDetail
+                        message={`${translate('error')} : ${translate(data.message)}`}
+                        detail={[data.apiMessage, data.detail]
+                            .filter(Boolean)
+                            .join('\n\n')}
+                        toggle="link"
+                    />,
+                    { type: 'error' },
+                );
             }
             if (data.message === 'cancelled_import') {
                 loadParsingResult();

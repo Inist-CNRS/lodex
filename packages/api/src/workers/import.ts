@@ -14,20 +14,12 @@ import publishDocuments from '../services/publishDocuments';
 import publishFacets from '../controller/api/publishFacets';
 import saveStream from '../services/saveStream';
 import getLogger from '../services/logger';
+import { getImportError } from '../services/importError';
 import { CancelWorkerError, cleanWaitingJobsOfType } from './index';
 
 export const IMPORT = 'import';
+const CANCELLED_IMPORT = 'cancelled_import';
 const listeners: any = [];
-
-function getEzsMessageError(string: any) {
-    if (string.includes('Line')) {
-        return string.substring(0, string.indexOf('Line'));
-    } else if (string.includes('<SyntaxError')) {
-        return string.substring(0, string.indexOf('<SyntaxError'));
-    } else {
-        return string;
-    }
-}
 
 export const processImport = (job: any, done: any) => {
     cleanWaitingJobsOfType(job.data.tenant, IMPORT);
@@ -65,13 +57,22 @@ const handleImportError = async (job: any, err: any) => {
     // very useful for identifying the origin of production errors.
     const logger = getLogger(ctx.tenant);
     logger.warn('handleImportError', err);
+    if (err instanceof CancelWorkerError || err.message === CANCELLED_IMPORT) {
+        notifyListeners(`${job.data.tenant}-import`, {
+            isImporting: false,
+            success: false,
+            message: CANCELLED_IMPORT,
+        });
+        return;
+    }
+    // message: what went wrong, for the user
+    const { code, detail, apiMessage } = getImportError(err);
     notifyListeners(`${job.data.tenant}-import`, {
         isImporting: false,
         success: false,
-        message:
-            err instanceof CancelWorkerError
-                ? 'cancelled_import'
-                : getEzsMessageError(err.message), // Ezs return all stack trace, we only want the message part. So we split on 'Line'
+        message: code,
+        detail,
+        apiMessage,
     });
 };
 

@@ -1,6 +1,5 @@
 import { useRef, useState, type ComponentType } from 'react';
 import {
-    Alert,
     Box,
     Button,
     Chip,
@@ -23,6 +22,7 @@ import {
     type DatasetSourceTab,
 } from '../upload/DatasetSourceInput';
 import { DataStep } from './DataStep';
+import { GenerationError } from './GenerationError';
 import { ModelStep } from './ModelStep';
 import { SiteInfoStep } from './SiteInfoStep';
 import { getPreselectedTheme, ThemeStep } from './ThemeStep';
@@ -194,6 +194,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         isCancelling,
         cancelImport,
         error,
+        errorDetail,
         clearError,
     } = useGenerateSite();
     // fetched once opened, before the theme step that needs it: the host
@@ -393,9 +394,10 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 ) : (
                     <>
                         {error && index >= FIRST_STEP_WITH_ERROR && (
-                            <Alert severity="error" sx={{ mb: 2 }}>
-                                {error}
-                            </Alert>
+                            <GenerationError
+                                error={error}
+                                detail={errorDetail}
+                            />
                         )}
                         <Component
                             state={state}

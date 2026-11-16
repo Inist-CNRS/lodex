@@ -63,6 +63,8 @@ export const useGenerateSite = () => {
     // between a click on cancel and the end of the generation
     const [isCancelling, setIsCancelling] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    // the technical detail of the error, shown on demand
+    const [errorDetail, setErrorDetail] = useState<string | null>(null);
     const isMountedRef = useRef(true);
     const isGeneratingRef = useRef(false);
     // a cancelled import may end as a plain failure, without cancelled_import
@@ -173,6 +175,7 @@ export const useGenerateSite = () => {
             siteInfo: SiteInfo = {},
         ) => {
             setError(null);
+            setErrorDetail(null);
             isCancellingRef.current = false;
             setIsCancelling(false);
             setIsGenerating(true);
@@ -228,6 +231,9 @@ export const useGenerateSite = () => {
                             error: translate(detail),
                         }),
                     );
+                    setErrorDetail(
+                        (e as { detail?: string } | null)?.detail || null,
+                    );
                 }
                 throw e;
             } finally {
@@ -255,7 +261,10 @@ export const useGenerateSite = () => {
         ],
     );
 
-    const clearError = useCallback(() => setError(null), []);
+    const clearError = useCallback(() => {
+        setError(null);
+        setErrorDetail(null);
+    }, []);
 
     const cancelImport = useCallback(async () => {
         isCancellingRef.current = true;
@@ -279,6 +288,7 @@ export const useGenerateSite = () => {
         isCancelling,
         cancelImport,
         error,
+        errorDetail,
         clearError,
     };
 };

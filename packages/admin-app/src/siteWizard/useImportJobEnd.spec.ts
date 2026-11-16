@@ -102,6 +102,22 @@ describe('useImportJobEnd', () => {
         await expect(promise).rejects.toThrow('cancelled_import');
     });
 
+    it('rejects with the answer of the source and the technical error', async () => {
+        const { result } = renderHook(() => useImportJobEnd());
+        const promise = startWaiting(result).ended;
+        emit({
+            isImporting: false,
+            success: false,
+            message: 'import_error_source_unavailable',
+            detail: 'Error during import: Error: Bad Request',
+            apiMessage: 'Maintenance en cours',
+        });
+        await expect(promise).rejects.toMatchObject({
+            message: 'import_error_source_unavailable',
+            detail: 'Maintenance en cours\n\nError during import: Error: Bad Request',
+        });
+    });
+
     it('rejects with import_failed when no message', async () => {
         const { result } = renderHook(() => useImportJobEnd());
         const promise = startWaiting(result).ended;

@@ -719,6 +719,29 @@ describe('SiteWizard', () => {
         expect(screen.getByLabelText('name')).toHaveValue('My site');
     });
 
+    it('hides the technical detail of the error behind an arrow', async () => {
+        generate.mockRejectedValue(new Error('boom'));
+        const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
+        await goToSiteInfoStep();
+        await typeSiteName('My site');
+        await userEvent.click(button('site_wizard_next'));
+        await userEvent.click(button('site_wizard_generate'));
+        (useGenerateSite as jest.Mock).mockReturnValue({
+            clearError,
+            generate,
+            isGenerating: false,
+            error: 'site_wizard_generation_error+{"error":"import_error_source_unavailable"}',
+            errorDetail: 'Maintenance en cours',
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        expect(await screen.findByRole('alert')).toHaveTextContent(
+            'import_error_source_unavailable',
+        );
+        expect(screen.getByText('Maintenance en cours')).not.toBeVisible();
+        await userEvent.click(button('error_detail'));
+        expect(screen.getByText('Maintenance en cours')).toBeVisible();
+    });
+
     it('keeps the error displayed on the data step, where a failed import is fixed', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();

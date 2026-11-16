@@ -6,6 +6,9 @@ type ImportEvent = {
     isImporting: boolean;
     success: boolean;
     message?: string;
+    // on a failure: the technical error, and the answer of the source
+    detail?: string;
+    apiMessage?: string;
 };
 
 export type ImportEndWait = {
@@ -79,7 +82,16 @@ export const useImportJobEnd = () => {
                 if (data.success) {
                     resolve();
                 } else {
-                    reject(new Error(data.message ?? 'import_failed'));
+                    reject(
+                        Object.assign(
+                            new Error(data.message ?? 'import_failed'),
+                            {
+                                detail: [data.apiMessage, data.detail]
+                                    .filter(Boolean)
+                                    .join('\n\n'),
+                            },
+                        ),
+                    );
                 }
             });
         });
