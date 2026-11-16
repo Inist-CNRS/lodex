@@ -555,6 +555,42 @@ describe('PrecomputedModel', () => {
         });
     });
 
+    describe('updateStatusOfJob', () => {
+        afterEach(async () => {
+            await db.collection('precomputed').deleteMany({});
+        });
+
+        it.each([
+            ['the current run', 'current', true, 'ERROR'],
+            ['a superseded run', 'expired', false, 'ON_HOLD'],
+            ['a precomputation without jobId', undefined, true, 'ERROR'],
+        ])(
+            'writes the status of %s',
+            async (_name, storedJobId, expected, status) => {
+                const { insertedId } = await db
+                    .collection('precomputed')
+                    .insertOne({
+                        name: 'x',
+                        status: 'ON_HOLD',
+                        ...(storedJobId ? { jobId: 'current' } : {}),
+                    });
+
+                const written = await precomputedCollection.updateStatusOfJob(
+                    insertedId.toString(),
+                    storedJobId ?? 'any',
+                    'ERROR',
+                    { message: 'm' },
+                );
+
+                expect(written).toBe(expected);
+                const doc = await db
+                    .collection('precomputed')
+                    .findOne({ _id: insertedId });
+                expect(doc.status).toBe(status);
+            },
+        );
+    });
+
     describe('markAnswered', () => {
         afterEach(async () => {
             await db.collection('precomputed').deleteMany({});

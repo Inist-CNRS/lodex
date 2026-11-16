@@ -90,6 +90,13 @@ export type PrecomputedCollection = Collection<PreComputation> & {
         status: PreComputationStatus,
         data?: Partial<PreComputation>,
     ) => Promise<void>;
+    // false when the precomputation belongs to another run (see below)
+    updateStatusOfJob: (
+        id: ObjectId | string,
+        jobId: string,
+        status: PreComputationStatus,
+        data?: Partial<PreComputation>,
+    ) => Promise<boolean>;
     updateStartedAt: (id: ObjectId | string, startedAt: Date) => Promise<void>;
     markAnswered: (id: ObjectId | string, jobId?: string) => Promise<void>;
     expireUnanswered: (before: Date, message: string) => Promise<number>;
@@ -214,6 +221,30 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             },
             { $set: newData },
         );
+    };
+
+    // A job writes the status of its precomputation only while the
+    // precomputation still carries its jobId: the stalled rerun of a
+    // superseded job must not overwrite the status of the current run. A
+    // precomputation without a jobId (written before the jobId existed)
+    // keeps the unconditional write.
+    const updateStatusOfJob = async (
+        id: ObjectId | string,
+        jobId: string,
+        status: PreComputationStatus,
+        data: Partial<PreComputation> = {},
+    ): Promise<boolean> => {
+        const { matchedCount } = await collection.updateOne(
+            {
+                $and: [
+                    // @ts-expect-error TS2345
+                    { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
+                    jobIdMatches(jobId),
+                ],
+            },
+            { $set: { status, ...data } },
+        );
+        return matchedCount > 0;
     };
 
     const updateStartedAt = async (
@@ -593,6 +624,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         delete: deleteMethod,
         update,
         updateStatus,
+        updateStatusOfJob,
         updateStartedAt,
         markAnswered,
         expireUnanswered,
