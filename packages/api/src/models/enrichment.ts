@@ -8,7 +8,13 @@ import {
     type UpdateResult,
     type WithId,
 } from 'mongodb';
-import { castIdsFactory, getCreatedCollection, jobIdMatches } from './utils';
+import {
+    castIdsFactory,
+    findTaskStatesByIds,
+    getCreatedCollection,
+    jobIdMatches,
+    type TaskState,
+} from './utils';
 
 export type Enrichment = {
     _id?: ObjectId;
@@ -29,6 +35,7 @@ export type Enrichment = {
 
 export type EnrichmentCollection = {
     findOneById: (id: string) => Promise<Enrichment | null>;
+    findStatesByIds: (ids: string[]) => Promise<TaskState[]>;
     findAll: () => Promise<Enrichment[]>;
     create: (data: Enrichment) => Promise<WithId<Enrichment> | null>;
     delete: (id: string) => Promise<DeleteResult>;
@@ -146,6 +153,8 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
 
     return Object.assign(collection, {
         findOneById,
+        findStatesByIds: (ids: string[]) =>
+            findTaskStatesByIds(collection, ids),
         findAll,
         create,
         delete: deleteMethod,

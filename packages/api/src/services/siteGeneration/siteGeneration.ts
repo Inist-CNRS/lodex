@@ -32,27 +32,32 @@ const repositoryOf = (
     type: SiteGenerationStep['type'],
 ) => (type === 'precomputed' ? ctx.precomputed : ctx.enrichment);
 
-const readTarget = async (
-    ctx: SiteGenerationContext,
-    step: SiteGenerationStep,
-): Promise<Target | null> =>
-    ((await repositoryOf(ctx, step.type).findOneById(
-        step.targetId,
-    )) as Target | null) ?? null;
-
 // A step is launched once a job has been queued for it (it then has a jobId)
 const isLaunched = (step: SiteGenerationStep) => step.jobId != null;
 
-const readTargets = (
+// One query per type of target, not one per step: the view is polled
+const readTargets = async (
     ctx: SiteGenerationContext,
     steps: SiteGenerationStep[],
-): Promise<StepWithTarget[]> =>
-    Promise.all(
-        steps.map(async (step) => ({
-            step,
-            target: await readTarget(ctx, step),
-        })),
+): Promise<StepWithTarget[]> => {
+    const targetsByType = await Promise.all(
+        (['precomputed', 'enrichment'] as const).map(async (type) => {
+            const ids = steps
+                .filter((step) => step.type === type)
+                .map((step) => step.targetId);
+            const targets = await repositoryOf(ctx, type).findStatesByIds(ids);
+            return [
+                type,
+                new Map(targets.map((target) => [String(target._id), target])),
+            ] as const;
+        }),
     );
+    const byType = new Map(targetsByType);
+    return steps.map((step) => ({
+        step,
+        target: byType.get(step.type)?.get(step.targetId) ?? null,
+    }));
+};
 
 // The status of a target belongs to the step only once the job queued for
 // it has written its jobId (with PENDING). Until then, the target can still

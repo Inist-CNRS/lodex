@@ -17,6 +17,34 @@ export const castIdsFactory = (collection: any) => async () => {
     );
 };
 
+export type TaskState = {
+    _id: unknown;
+    status?: string;
+    message?: string;
+    jobId?: string;
+};
+
+// The status fields of the tasks (enrichments, precomputations) with the
+// given ids, in one query. Their ids are ObjectIds, or strings in documents
+// written before castIds.
+export const findTaskStatesByIds = async (
+    collection: Collection<any>,
+    ids: string[],
+): Promise<TaskState[]> => {
+    if (!ids.length) {
+        return [];
+    }
+    const candidates = ids.flatMap((id) =>
+        ObjectId.isValid(id) ? [new ObjectId(id), id] : [id],
+    );
+    return collection
+        .find<TaskState>(
+            { _id: { $in: candidates } },
+            { projection: { status: 1, message: 1, jobId: 1 } },
+        )
+        .toArray();
+};
+
 const checkIfCollectionExists = async (db: Db, collectionName: string) => {
     const found = await db
         .listCollections({ name: collectionName }, { nameOnly: true })

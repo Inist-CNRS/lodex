@@ -406,6 +406,48 @@ describe('PrecomputedModel', () => {
         });
     });
 
+    describe('findStatesByIds', () => {
+        it('returns the status fields of the given precomputations only', async () => {
+            const objectId = new ObjectId();
+            const stringId = new ObjectId().toString();
+            await db.collection('precomputed').insertMany([
+                {
+                    _id: objectId,
+                    name: `states-${objectId}`,
+                    status: 'FINISHED',
+                    jobId: 'job-1',
+                    data: [1, 2, 3],
+                },
+                {
+                    _id: stringId,
+                    name: `states-${stringId}`,
+                    status: 'ERROR',
+                    message: 'oops',
+                },
+                { name: `states-other-${stringId}`, status: 'FINISHED' },
+            ]);
+
+            const states = await precomputedCollection.findStatesByIds([
+                objectId.toString(),
+                stringId,
+                new ObjectId().toString(),
+            ]);
+
+            expect(
+                states.sort((a, b) =>
+                    String(a.status).localeCompare(String(b.status)),
+                ),
+            ).toEqual([
+                { _id: stringId, status: 'ERROR', message: 'oops' },
+                { _id: objectId, status: 'FINISHED', jobId: 'job-1' },
+            ]);
+        });
+
+        it('makes no query without ids', async () => {
+            expect(await precomputedCollection.findStatesByIds([])).toEqual([]);
+        });
+    });
+
     describe('expireUnanswered', () => {
         const HOUR = 60 * 60 * 1000;
         const ago = (ms: number) => new Date(Date.now() - ms);

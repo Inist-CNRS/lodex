@@ -7,7 +7,13 @@ import {
     type Filter,
     type UpdateResult,
 } from 'mongodb';
-import { castIdsFactory, getCreatedCollection, jobIdMatches } from './utils';
+import {
+    castIdsFactory,
+    findTaskStatesByIds,
+    getCreatedCollection,
+    jobIdMatches,
+    type TaskState,
+} from './utils';
 import getLogger from '../services/logger';
 
 const logger = getLogger();
@@ -71,6 +77,7 @@ export type PreComputation = {
 
 export type PrecomputedCollection = Collection<PreComputation> & {
     findOneById: (id: string | ObjectId) => Promise<PreComputation | null>;
+    findStatesByIds: (ids: string[]) => Promise<TaskState[]>;
     findAll: () => Promise<PreComputation[]>;
     create: (data: Omit<PreComputation, '_id'>) => Promise<PreComputation>;
     delete: (id: ObjectId | string) => Promise<{ deletedCount?: number }>;
@@ -579,6 +586,8 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
 
     return Object.assign(collection, {
         findOneById,
+        findStatesByIds: (ids: string[]) =>
+            findTaskStatesByIds(collection, ids),
         findAll,
         create,
         delete: deleteMethod,

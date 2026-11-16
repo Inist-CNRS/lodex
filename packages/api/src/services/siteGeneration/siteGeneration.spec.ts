@@ -34,6 +34,12 @@ const createTargetRepository = () => {
             const target = targets.get(String(id));
             return target ? { ...target } : null;
         }),
+        findStatesByIds: jest.fn(async (ids: string[]) =>
+            ids.flatMap((id) => {
+                const target = targets.get(String(id));
+                return target ? [{ ...target }] : [];
+            }),
+        ),
         updateStatus: jest.fn(
             async (id: string, status: string, data: object = {}) => {
                 const target = targets.get(String(id));
@@ -671,6 +677,25 @@ describe('siteGeneration service', () => {
                     },
                 ],
             });
+        });
+
+        it('reads the targets in one query per type', async () => {
+            await siteGeneration.start(STEPS);
+
+            await getSiteGenerationView(ctx);
+
+            expect(precomputed.findStatesByIds).toHaveBeenCalledTimes(1);
+            expect(precomputed.findStatesByIds).toHaveBeenCalledWith([
+                'clusterRameau-id',
+                'resumeFr-id',
+            ]);
+            expect(enrichment.findStatesByIds).toHaveBeenCalledTimes(1);
+            expect(enrichment.findStatesByIds).toHaveBeenCalledWith([
+                'xml-id',
+                'resume-id',
+            ]);
+            expect(precomputed.findOneById).not.toHaveBeenCalled();
+            expect(enrichment.findOneById).not.toHaveBeenCalled();
         });
     });
 });
