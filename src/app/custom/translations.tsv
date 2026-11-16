@@ -1613,3 +1613,4 @@
 "site_generation_stopping"	"Stopping, this can take a moment…"	"Arrêt en cours, cela peut prendre un moment…"
 "site_generation_action_error"	"The action failed: %{error}"	"L'action a échoué : %{error}"
 "no_site_generation"	"the generation has changed in the meantime (relaunched, stopped or finished)"	"la génération a changé entre-temps (relancée, arrêtée ou terminée)"
+"site_generation_in_progress"	"A site generation is in progress: stop it before launching a task by hand"	"Une génération du site est en cours : arrêtez-la avant de lancer une tâche à la main"

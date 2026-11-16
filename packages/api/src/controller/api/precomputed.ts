@@ -13,6 +13,7 @@ import {
     queuePrecomputed,
     type LaunchContext,
 } from '../../services/launchTasks';
+import { refusedDuringSiteGeneration } from '../../services/siteGeneration/siteGeneration';
 import { getPrecomputedDataPreview } from '../../services/precomputed/precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
 import { PRECOMPUTER } from '../../workers/precomputer';
@@ -464,8 +465,9 @@ app.use(route.post('/', postPrecomputed));
 app.use(route.put('/:id', putPrecomputed));
 // @ts-expect-error TS2345
 app.use(route.delete('/:id', deletePrecomputed));
-// @ts-expect-error TS2345
-app.use(route.post('/:action/:id', precomputedAction));
+app.use(
+    route.post('/:action/:id', refusedDuringSiteGeneration(precomputedAction)),
+);
 // @ts-expect-error TS2345
 app.use(route.post('/preview', precomputedDataPreview));
 

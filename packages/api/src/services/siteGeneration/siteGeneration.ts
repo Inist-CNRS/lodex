@@ -286,7 +286,31 @@ export const relaunchSiteGeneration = async (
     return true;
 };
 
+// A generation in error still waits for "Relancer" or "Arrêter"
 const STOPPABLE_STATUSES = ['running', 'error'];
+
+// A task launched by hand gets a jobId of its own: the generation would then
+// never see its step finish nor fail, and stay running until "Arrêter"
+export const isSiteGenerationActive = async (
+    ctx: Pick<SiteGenerationContext, 'siteGeneration'>,
+) => {
+    const generation = await ctx.siteGeneration.findCurrent();
+    return !!generation && STOPPABLE_STATUSES.includes(generation.status);
+};
+
+// Wraps a koa-route handler that launches tasks by hand
+export const refusedDuringSiteGeneration =
+    <Args extends unknown[]>(
+        handler: (ctx: any, ...args: Args) => Promise<void>,
+    ) =>
+    async (ctx: any, ...args: Args) => {
+        if (await isSiteGenerationActive(ctx)) {
+            ctx.status = 409;
+            ctx.body = { error: 'site_generation_in_progress' };
+            return;
+        }
+        await handler(ctx, ...args);
+    };
 // The periodic pass can win the transition first: try again on fresh data
 const STOP_TRIES = 5;
 

@@ -10,6 +10,7 @@ import { queueEnrichment, queuePrecomputed } from '../launchTasks';
 import {
     advanceSiteGeneration,
     getSiteGenerationView,
+    refusedDuringSiteGeneration,
     relaunchSiteGeneration,
     SITE_GENERATION_MAX_RELAUNCHES,
     stopSiteGeneration,
@@ -637,6 +638,50 @@ describe('siteGeneration service', () => {
             expect(await relaunchSiteGeneration(ctx)).toBe(false);
             expect(queued()).toEqual([]);
         });
+    });
+
+    describe('refusedDuringSiteGeneration', () => {
+        const handler = jest.fn(async (handlerCtx: any, id: string) => {
+            handlerCtx.status = 200;
+            handlerCtx.body = { id };
+        });
+
+        it.each(['running', 'error'] as const)(
+            'refuses a launch by hand while the generation is %s',
+            async (status) => {
+                const generation = await siteGeneration.start(STEPS);
+                await siteGeneration.transition(generation, { status });
+                const handlerCtx: any = { siteGeneration };
+
+                await refusedDuringSiteGeneration(handler)(handlerCtx, 'e1');
+
+                expect(handler).not.toHaveBeenCalled();
+                expect(handlerCtx.status).toBe(409);
+                expect(handlerCtx.body).toEqual({
+                    error: 'site_generation_in_progress',
+                });
+            },
+        );
+
+        it.each([
+            ['without a generation', undefined],
+            ['once the generation is done', 'done'],
+            ['once the generation is stopped', 'stopped'],
+        ] as const)(
+            'lets a launch by hand through %s',
+            async (_name, status) => {
+                if (status) {
+                    const generation = await siteGeneration.start(STEPS);
+                    await siteGeneration.transition(generation, { status });
+                }
+                const handlerCtx: any = { siteGeneration };
+
+                await refusedDuringSiteGeneration(handler)(handlerCtx, 'e1');
+
+                expect(handler).toHaveBeenCalledWith(handlerCtx, 'e1');
+                expect(handlerCtx.body).toEqual({ id: 'e1' });
+            },
+        );
     });
 
     describe('getSiteGenerationView', () => {

@@ -14,6 +14,7 @@ import {
     queueEnrichmentJob,
     type LaunchContext,
 } from '../../services/launchTasks';
+import { refusedDuringSiteGeneration } from '../../services/siteGeneration/siteGeneration';
 import { ENRICHER, RETRY_ENRICHER } from '../../workers/enricher';
 import { cancelJob, getActiveJob } from '../../workers/tools';
 
@@ -243,12 +244,21 @@ app.use(setup);
 app.use(route.get('/', getAllEnrichments));
 app.use(route.get('/:id', getEnrichment));
 app.use(koaBodyParser());
-app.use(route.post('/launchAll', launchAllEnrichment));
+app.use(
+    route.post('/launchAll', refusedDuringSiteGeneration(launchAllEnrichment)),
+);
 app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));
-app.use(route.post('/retry/:id', retryEnrichmentOnFailedRow));
-app.use(route.post('/:action/:id', enrichmentAction));
+app.use(
+    route.post(
+        '/retry/:id',
+        refusedDuringSiteGeneration(retryEnrichmentOnFailedRow),
+    ),
+);
+app.use(
+    route.post('/:action/:id', refusedDuringSiteGeneration(enrichmentAction)),
+);
 app.use(route.post('/preview', enrichmentDataPreview));
 
 export default app;
