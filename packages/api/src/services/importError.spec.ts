@@ -1,23 +1,25 @@
 import { getImportError } from './importError';
 
 // ezs wraps the error of a statement, and keeps it as sourceError
-const wrapped = (statement: string, sourceError: Record<string, unknown>) => ({
+const wrapped = <T extends { message?: unknown }>(
+    statement: string,
+    sourceError: T,
+) => ({
     message: `item #1 [${statement}] <Error: ${sourceError.message}>`,
     stack: `Error: item #1 [${statement}] <Error: ${sourceError.message}>`,
     sourceError,
 });
 
 // the error of a loader statement, as the loader server serializes it
-const serialized = (properties: Record<string, unknown>) =>
-    JSON.stringify(
-        wrapped(
-            'delegate',
-            wrapped('URLFetch', {
-                stack: `Error: ${properties.message}`,
-                ...properties,
-            }),
-        ),
+const serialized = (properties: Record<string, unknown>) => {
+    const sourceError: Record<string, unknown> = {
+        stack: `Error: ${properties.message}`,
+        ...properties,
+    };
+    return JSON.stringify(
+        wrapped('delegate', wrapped('URLFetch', sourceError)),
     );
+};
 
 // the error of URLConnect when the loader server fails (400)
 const loaderServerError = (sourceError: Record<string, unknown>) =>
