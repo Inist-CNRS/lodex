@@ -37,6 +37,12 @@ export const sweepTenants = async (
     }
 };
 
+// In pm2 cluster mode, every process would sweep (and connect to) every
+// tenant: only the first one does. NODE_APP_INSTANCE is unset outside of pm2.
+export const isSweepingProcess = (
+    instance: string | undefined = process.env.NODE_APP_INSTANCE,
+) => instance === undefined || instance === '0';
+
 export const startSiteGenerationSweep = (): (() => void) => {
     let running = false;
     const run = async () => {

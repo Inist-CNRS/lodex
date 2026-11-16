@@ -37,7 +37,10 @@ import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 import access, { eventAccess } from '@uswitch/koa-access';
 import getLogger, { getHttpLogger } from './services/logger';
 import tenant from './models/tenant';
-import { startSiteGenerationSweep } from './services/siteGeneration/sweep';
+import {
+    isSweepingProcess,
+    startSiteGenerationSweep,
+} from './services/siteGeneration/sweep';
 import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '@lodex/common';
@@ -191,7 +194,7 @@ const initQueueAndBullDashboard = async () => {
 
 initQueueAndBullDashboard();
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && isSweepingProcess()) {
     startSiteGenerationSweep();
 }
 

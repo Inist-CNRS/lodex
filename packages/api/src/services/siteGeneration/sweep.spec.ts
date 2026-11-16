@@ -1,5 +1,5 @@
 import config from 'config';
-import { sweepTenants } from './sweep';
+import { isSweepingProcess, sweepTenants } from './sweep';
 import { PRECOMPUTED_NO_RESPONSE } from '../../models/precomputed';
 
 jest.mock('./siteGeneration', () => ({ advanceSiteGeneration: jest.fn() }));
@@ -55,5 +55,15 @@ describe('sweepTenants', () => {
         expect(
             (advanceSiteGeneration as jest.Mock).mock.calls[1][0].tenant,
         ).toBe('b');
+    });
+});
+
+describe('isSweepingProcess', () => {
+    it.each([
+        ['outside of pm2', undefined, true],
+        ['in the first pm2 process', '0', true],
+        ['in another pm2 process', '1', false],
+    ])('%s', (_name, instance, expected) => {
+        expect(isSweepingProcess(instance)).toBe(expected);
     });
 });
