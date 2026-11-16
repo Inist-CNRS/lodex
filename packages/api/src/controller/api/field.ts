@@ -42,6 +42,8 @@ import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
 import getLogger from '../../services/logger';
+import { buildLaunchSteps } from '../../services/siteGeneration/buildLaunchSteps';
+import { advanceSiteGeneration } from '../../services/siteGeneration/siteGeneration';
 
 const sortByFieldUri = (a: any, b: any) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -520,6 +522,51 @@ export const exportFields = async (ctx: any) => {
     }
 };
 
+const startSiteGeneration = async (
+    ctx: any,
+    launchOrder: any,
+): Promise<void> => {
+    // optional: the model is imported, the admin can launch the tasks by hand
+    try {
+        // The generation of an earlier model must not stay on screen, even
+        // when this model launches nothing or its generation cannot start
+        await ctx.siteGeneration.deleteMany({});
+        const [enrichments, precomputeds, dataSources] = await Promise.all([
+            ctx.enrichment.findAll(),
+            ctx.precomputed.findAll(),
+            ctx.dataSource.getDataSources(),
+        ]);
+        const columnsByDataSource: Record<string, string[]> = {};
+        for (const dataSource of dataSources) {
+            columnsByDataSource[dataSource.id] = dataSource.columns.map(
+                ({ name }: { name: string }) => name,
+            );
+        }
+        const steps = buildLaunchSteps(
+            { launchOrder, enrichments, precomputeds, columnsByDataSource },
+            getLogger(ctx.tenant),
+        );
+        if (!steps.length) {
+            return;
+        }
+        await ctx.siteGeneration.start(steps);
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation start error', {
+            error: (e as Error).message,
+        });
+        return;
+    }
+    // Launch the first position now rather than at the next periodic pass.
+    // Best effort: that pass launches it anyway (it is concurrency safe).
+    try {
+        await advanceSiteGeneration(ctx);
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation advance error', {
+            error: (e as Error).message,
+        });
+    }
+};
+
 export const importCatalogModel = async (ctx: any) => {
     const { id, siteName, siteDescription, theme } = ctx.request.body ?? {};
     const model = findCatalogModel(ctx.catalogModels, id, ctx.availableLoaders);
@@ -569,8 +616,13 @@ export const importCatalogModel = async (ctx: any) => {
             });
         }
 
+        await startSiteGeneration(ctx, model.launchOrder);
+
         // the wizard reloads the admin data itself
-        ctx.body = { message: 'Model imported successfully', themeNotFound };
+        ctx.body = {
+            message: 'Model imported successfully',
+            themeNotFound,
+        };
         ctx.status = 200;
     } catch (e) {
         ctx.status = 500;
