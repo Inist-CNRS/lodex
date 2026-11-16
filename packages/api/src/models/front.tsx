@@ -127,15 +127,14 @@ const renderTemplate = (file, data) => {
 /**
  * Site title set by the admin in the theme configuration.
  * The theme's own default is ignored: it is a placeholder ("Titre a modifier...").
- * The ISTEX themes name this variable `title`, the others `siteTitle`.
+ * Legacy ISTEX configurations store it as `title`.
  */
 export const getSiteTitle = (
     themeVariables: Record<string, unknown> = {},
     tenantVariables: Record<string, unknown> = {},
 ): string | null => {
-    const key = getSiteTitleKey(themeVariables);
-    const value = tenantVariables[key];
-    if (typeof value !== 'string' || value === themeVariables[key]) {
+    const value = tenantVariables[getSiteTitleKey(tenantVariables)];
+    if (typeof value !== 'string' || value === themeVariables.siteTitle) {
         return null;
     }
     return value.trim() || null;
