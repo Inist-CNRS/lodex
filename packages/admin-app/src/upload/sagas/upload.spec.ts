@@ -1,8 +1,13 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, select, take } from 'redux-saga/effects';
 
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';
 import { uploadSuccess, uploadError } from '../index';
+import {
+    loadParsingResult,
+    LOAD_PARSING_RESULT_ERROR,
+    LOAD_PARSING_RESULT_SUCCESS,
+} from '../../parsing';
 import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
 import { handleFinishUpload, handleUploadFile } from './uploadFile';
 import { handleUploadUrl } from './uploadUrl';
@@ -222,6 +227,14 @@ describe('upload', () => {
             saga = handleFinishUpload();
         });
 
+        // @ts-expect-error TS7006
+        const runUntilUploadSuccess = (saga) => {
+            saga.next();
+            saga.next(true);
+            saga.next();
+            return saga.next();
+        };
+
         it('should select isUploadPending', () => {
             // @ts-expect-error TS7005
             const { value } = saga.next();
@@ -236,19 +249,22 @@ describe('upload', () => {
             expect(saga.next(false).done).toBe(true);
         });
 
-        it('should put uploadSuccess', () => {
+        it('should reload the parsing result and wait for it before marking the upload as done', () => {
             // @ts-expect-error TS7005
             saga.next();
             // @ts-expect-error TS7005
-            const { value } = saga.next(true);
-            expect(value).toEqual(put(uploadSuccess()));
+            expect(saga.next(true).value).toEqual(put(loadParsingResult()));
+            // @ts-expect-error TS7005
+            expect(saga.next().value).toEqual(
+                take([LOAD_PARSING_RESULT_SUCCESS, LOAD_PARSING_RESULT_ERROR]),
+            );
+            // @ts-expect-error TS7005
+            expect(saga.next().value).toEqual(put(uploadSuccess()));
         });
 
         it('should select hasPublishedDataset', () => {
             // @ts-expect-error TS7005
-            saga.next();
-            // @ts-expect-error TS7005
-            saga.next(true);
+            runUntilUploadSuccess(saga);
             // @ts-expect-error TS7005
             const { value } = saga.next();
             expect(value).toEqual(select(fromPublication.hasPublishedDataset));
@@ -256,9 +272,7 @@ describe('upload', () => {
 
         it('should put clearPublished if hasPublishedDataset is true', () => {
             // @ts-expect-error TS7005
-            saga.next();
-            // @ts-expect-error TS7005
-            saga.next(true);
+            runUntilUploadSuccess(saga);
             // @ts-expect-error TS7005
             saga.next();
             // @ts-expect-error TS7005
@@ -268,9 +282,7 @@ describe('upload', () => {
 
         it('should put publishAction if hasPublishedDataset is true', () => {
             // @ts-expect-error TS7005
-            saga.next();
-            // @ts-expect-error TS7005
-            saga.next(true);
+            runUntilUploadSuccess(saga);
             // @ts-expect-error TS7005
             saga.next();
             // @ts-expect-error TS7005

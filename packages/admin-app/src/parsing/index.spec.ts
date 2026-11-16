@@ -36,6 +36,14 @@ describe('parsing reducer', () => {
         });
     });
 
+    it('should not change allowUpload on LOAD_PARSING_RESULT to avoid switching screens while reloading', () => {
+        const state = reducer(
+            { ...defaultState, allowUpload: true },
+            loadParsingResult(),
+        );
+        expect(state.allowUpload).toBe(true);
+    });
+
     it('should handle the LOAD_PARSING_RESULT_ERROR action', () => {
         const state = reducer(
             { ...defaultState, loading: true },

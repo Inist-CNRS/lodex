@@ -42,7 +42,6 @@ export default handleActions(
     {
         LOAD_PARSING_RESULT: (state) => ({
             ...state,
-            allowUpload: false,
             loading: true,
             initialized: true,
         }),
