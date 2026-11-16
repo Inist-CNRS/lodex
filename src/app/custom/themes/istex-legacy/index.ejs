@@ -95,7 +95,7 @@
             </a>
             <div id="pageText" class="pageHead-texte">
                 <div id="pageTitle">
-                        <%= custom.title %>
+                        <%# `title` first: legacy configs still get the default `siteTitle` merged in %><%= custom.title || custom.siteTitle %>
                 </div>
                 <p id="pageSubTitle" class="text-center">
                     <%= custom.summary %>

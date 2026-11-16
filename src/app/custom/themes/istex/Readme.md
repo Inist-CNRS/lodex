@@ -17,7 +17,7 @@ Les paramètres du thème s'insèrent dans
 -   `host`:  
      "/" : renvoie sur l'instance default de lodex qui porte l'url  
      "/instance/nom-de-l'instance" : pour les autres instances du lodex
--   `title`:  
+-   `siteTitle` (anciennement `title`, toujours supporté):  
     selon l'url de l'instance default "Services", "Data",...
 -   `summary`:  
     description du service rendu par l'instance
