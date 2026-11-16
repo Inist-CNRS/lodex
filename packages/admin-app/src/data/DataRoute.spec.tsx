@@ -29,11 +29,12 @@ jest.mock('./useFetchPrecomputations', () => ({
 
 const openWizard = jest.fn();
 
-const renderRoute = (canUploadFile: boolean) =>
+const renderRoute = (canUploadFile: boolean, isUploading = false) =>
     render(
         <SiteWizardContext.Provider value={{ openWizard }}>
             <DataRouteComponent
                 canUploadFile={canUploadFile}
+                isUploading={isUploading}
                 hasPublishedDataset={false}
             />
         </SiteWizardContext.Provider>,
@@ -55,5 +56,12 @@ describe('DataRouteComponent', () => {
 
         expect(screen.queryByTestId('upload')).not.toBeInTheDocument();
         expect(screen.queryByText('site_wizard_open')).not.toBeInTheDocument();
+    });
+
+    it('should show the import placeholder instead of the upload screen while importing', () => {
+        renderRoute(true, true);
+
+        expect(screen.queryByTestId('upload')).not.toBeInTheDocument();
+        expect(screen.getByRole('status')).toBeInTheDocument();
     });
 });

@@ -32,7 +32,6 @@ import {
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import Loading from '@lodex/frontend-common/components/Loading';
 import datasetApi from '../api/dataset';
 import { fromEnrichments, fromParsing } from '../selectors';
 import { DeleteFilteredButton } from './DeleteFilteredButton';
@@ -116,6 +115,7 @@ const getFiltersOperatorsForType = (type) => {
 interface ParsingResultComponentProps {
     precomputedId?: string;
     loadingParsingResult: boolean;
+    totalLoadedLines?: number;
     enrichments?: object[];
 }
 
@@ -123,6 +123,7 @@ export const ParsingResultComponent = ({
     precomputedId,
     enrichments,
     loadingParsingResult,
+    totalLoadedLines,
 }: ParsingResultComponentProps) => {
     const { translate } = useTranslate();
 
@@ -329,6 +330,11 @@ export const ParsingResultComponent = ({
         handleFilterModelChange({ items: [] });
     }, [handleFilterModelChange]);
 
+    // Follow the main dataset while it is being imported. Columns only need
+    // a reload once, when the first lines arrive.
+    const loadedLines = precomputedId ? undefined : totalLoadedLines;
+    const hasLoadedLines = !!loadedLines;
+
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDataColumns(precomputedId);
@@ -337,11 +343,16 @@ export const ParsingResultComponent = ({
             handleFilterModelChange(initialFilterModel);
         };
         fetchDataColumns();
-    }, [handleFilterModelChange, initialFilterModel, precomputedId]);
+    }, [
+        handleFilterModelChange,
+        initialFilterModel,
+        precomputedId,
+        hasLoadedLines,
+    ]);
 
     useEffect(() => {
         fetchDataset();
-    }, [skip, limit, filterModel, sort, fetchDataset]);
+    }, [skip, limit, filterModel, sort, fetchDataset, loadedLines]);
 
     // @ts-expect-error TS7006
     const handleSortModelChange = (sortModel) => {
@@ -359,15 +370,6 @@ export const ParsingResultComponent = ({
         setSelectedCell(params);
         setToggleDrawer(true);
     };
-
-    if (loadingParsingResult) {
-        return (
-            // @ts-expect-error TS2322
-            <Loading className="admin">
-                {translate('loading_parsing_results')}
-            </Loading>
-        );
-    }
 
     const CustomFooter = () => {
         return (
@@ -511,6 +513,7 @@ export const ParsingResultComponent = ({
                 rows={rows}
                 getRowId={(row) => row._id}
                 rowCount={rowCount}
+                loading={loadingParsingResult}
                 pageSize={limit}
                 checkboxSelection
                 paginationMode="server"
@@ -562,6 +565,7 @@ export const ParsingResultComponent = ({
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     loadingParsingResult: fromParsing.isParsingLoading(state),
+    totalLoadedLines: fromParsing.getTotalLoadedLines(state),
     enrichments: fromEnrichments.enrichments(state),
 });
 

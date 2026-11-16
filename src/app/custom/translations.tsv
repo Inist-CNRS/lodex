@@ -1273,6 +1273,8 @@
 "import"	"Import"	"Importer"
 "import_successful"	"Import completed successfully"	"Import réalisé avec succès"
 "import_error"	"Error during import"	"Erreur lors de l'import"
+"import_in_progress"	"Import in progress"	"Import en cours"
+"import_in_progress_description"	"Your dataset is being saved. The table will appear automatically as soon as the first rows are ready."	"Votre jeu de données est en cours d'enregistrement. Le tableau s'affichera automatiquement dès que les premières lignes seront prêtes."
 "aspect_ratio"	"Aspect ratio (caution: if used incorrectly, this may cause page layout problems)"	"Format d'image (attention : si mal utilisé cela peut causer des problèmes de mise en page)"
 "aspect_ratio_none"	"No aspect ratio"	"Aucun format d'image"
 "fullscreen"	"View in full screen"	"Mettre en plein écran"
