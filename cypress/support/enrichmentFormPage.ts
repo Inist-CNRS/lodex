@@ -57,7 +57,9 @@ export const runEnrichment = () => {
     cy.contains('Run').click({
         force: true,
     });
-    cy.get('.progress-container').should('be.visible');
+    // the run of a small dataset can end before its progress shows: wait for
+    // its end instead
+    cy.contains('Done').should('be.visible');
     cy.waitForNetworkIdle(500);
 };
 
