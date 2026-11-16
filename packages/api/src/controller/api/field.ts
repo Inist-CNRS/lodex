@@ -165,9 +165,14 @@ export const applySiteInfo = async (ctx: any, siteInfo: SiteInfo) => {
     if (!themeVariables) {
         return;
     }
-    const nameKey = getSiteTitleKey(themeVariables);
+    const nameKey = getSiteTitleKey(current.front?.theme ?? {});
+    // a legacy ISTEX configuration keeps its `title`: adding the default
+    // `siteTitle` next to it would show two title variables in the editor
+    const { siteTitle: _, ...legacyDefaults } = themeVariables;
+    const defaults = nameKey === 'title' ? legacyDefaults : themeVariables;
     const values = {
-        ...(siteName && nameKey in themeVariables && { [nameKey]: siteName }),
+        ...(siteName &&
+            'siteTitle' in themeVariables && { [nameKey]: siteName }),
         ...(siteDescription &&
             'summary' in themeVariables && { summary: siteDescription }),
     };
@@ -179,7 +184,7 @@ export const applySiteInfo = async (ctx: any, siteInfo: SiteInfo) => {
         front: {
             ...current.front,
             // the theme settings editor shows the stored variables only
-            theme: { ...themeVariables, ...current.front?.theme, ...values },
+            theme: { ...defaults, ...current.front?.theme, ...values },
         },
     });
 };

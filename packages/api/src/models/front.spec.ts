@@ -1,6 +1,7 @@
 import path from 'path';
 import { getSiteTitle, injectSiteTitle, renderPublic } from './front';
 import { getTheme } from './themes';
+import istexTheme from '../../../../src/app/custom/themes/istex/lodex-theme.json';
 
 jest.mock('./themes', () => ({ getTheme: jest.fn() }));
 
@@ -22,13 +23,14 @@ describe('getSiteTitle', () => {
         expect(getSiteTitle(undefined, undefined)).toBeNull();
     });
 
-    it('should read `title` for themes that declare it (ISTEX)', () => {
+    it('should read `title` from ISTEX configurations saved before the rename', () => {
+        const istexVariables = { siteTitle: 'exemple : Services' };
+        expect(getSiteTitle(istexVariables, { title: 'Mon corpus' })).toBe(
+            'Mon corpus',
+        );
         expect(
-            getSiteTitle(
-                { title: 'exemple : Services' },
-                { title: 'Mon corpus', siteTitle: 'Other theme title' },
-            ),
-        ).toBe('Mon corpus');
+            getSiteTitle(istexVariables, { title: 'exemple : Services' }),
+        ).toBeNull();
     });
 });
 
@@ -84,5 +86,46 @@ describe('renderPublic', () => {
         expect(html).toContain('<title>Lodex</title>');
         expect(html).not.toContain('__SITE_TITLE__');
         expect(html).not.toContain('site-header');
+    });
+
+    describe('with the ISTEX theme', () => {
+        const istexDir = path.resolve(
+            __dirname,
+            '../../../../src/app/custom/themes/istex',
+        );
+        const siteTitleHeader = (html: string) =>
+            html.match(/<h1 class="siteTitle">([\s\S]*?)<\/h1>/)![1].trim();
+
+        beforeEach(() => {
+            (getTheme as jest.Mock).mockReturnValue({
+                index: `${istexDir}/index.ejs`,
+                muiTheme: {},
+                customTemplateVariables: istexTheme.configuration.variables,
+                hasIndex: true,
+            });
+        });
+
+        it('should show the siteTitle', async () => {
+            const html = await renderPublic('istex', {
+                customTemplateVariables: { siteTitle: 'Mon corpus' },
+            });
+            expect(siteTitleHeader(html)).toBe('Mon corpus');
+            expect(html).toContain('<title>Mon corpus</title>');
+        });
+
+        it('should show the title of a configuration saved before the rename', async () => {
+            const html = await renderPublic('istex', {
+                customTemplateVariables: { title: 'Mon corpus' },
+            });
+            expect(siteTitleHeader(html)).toBe('Mon corpus');
+            expect(html).toContain('<title>Mon corpus</title>');
+        });
+
+        it('should keep an empty legacy title empty', async () => {
+            const html = await renderPublic('istex', {
+                customTemplateVariables: { title: '' },
+            });
+            expect(siteTitleHeader(html)).toBe('');
+        });
     });
 });
