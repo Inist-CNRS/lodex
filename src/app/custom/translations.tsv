@@ -1599,3 +1599,4 @@
 "site_wizard_theme_not_found"	"The theme %{theme} is not available: the current theme is kept."	"Le thème %{theme} n'est pas disponible : le thème actuel est conservé."
 "site_wizard_open"	"Generate the site from a model"	"Générer le site à partir d'un modèle"
 "upload_size_limit"	"(maximum size: %{limit} GB)"	"(taille maximum : %{limit} Go)"
+"precomputed_no_response"	"No response from the web service within the allowed time"	"Pas de réponse du web service dans le délai imparti"

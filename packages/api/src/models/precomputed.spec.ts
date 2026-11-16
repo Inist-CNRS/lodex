@@ -1,5 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import createPrecomputedModel, {
+    PRECOMPUTED_NO_RESPONSE,
     type PrecomputedCollection,
 } from './precomputed';
 
@@ -402,6 +403,159 @@ describe('PrecomputedModel', () => {
             await expect(
                 precomputedCollection.deleteManyResults({ precomputedId }),
             ).resolves.not.toThrow();
+        });
+    });
+
+    describe('expireUnanswered', () => {
+        const HOUR = 60 * 60 * 1000;
+        const ago = (ms: number) => new Date(Date.now() - ms);
+        const insert = async (data: Record<string, unknown>) => {
+            const { insertedId } = await db
+                .collection('precomputed')
+                .insertOne({
+                    name: new ObjectId().toString(),
+                    webServiceUrl: 'http://ws',
+                    sourceColumns: ['a'],
+                    ...data,
+                });
+            return insertedId;
+        };
+        const fetch = (id: ObjectId) =>
+            db.collection('precomputed').findOne({ _id: id });
+
+        afterEach(async () => {
+            await db.collection('precomputed').deleteMany({});
+        });
+
+        it('should fail an ON_HOLD precomputation sent before the limit', async () => {
+            const id = await insert({
+                status: 'ON_HOLD',
+                sentAt: ago(2 * HOUR + 60000),
+            });
+            const count = await precomputedCollection.expireUnanswered(
+                ago(2 * HOUR),
+                PRECOMPUTED_NO_RESPONSE,
+            );
+            const doc = await fetch(id);
+            expect(count).toBe(1);
+            expect(doc.status).toBe('ERROR');
+            expect(doc.message).toBe('precomputed_no_response');
+        });
+
+        it('should leave a recently sent precomputation', async () => {
+            const id = await insert({
+                status: 'ON_HOLD',
+                sentAt: ago(HOUR + 59 * 60000),
+            });
+            const count = await precomputedCollection.expireUnanswered(
+                ago(2 * HOUR),
+                PRECOMPUTED_NO_RESPONSE,
+            );
+            expect(count).toBe(0);
+            expect((await fetch(id)).status).toBe('ON_HOLD');
+        });
+
+        it('should leave an answered precomputation', async () => {
+            const id = await insert({
+                status: 'ON_HOLD',
+                sentAt: ago(5 * HOUR),
+                answeredAt: ago(4 * HOUR),
+            });
+            await precomputedCollection.expireUnanswered(
+                ago(2 * HOUR),
+                PRECOMPUTED_NO_RESPONSE,
+            );
+            expect((await fetch(id)).status).toBe('ON_HOLD');
+        });
+
+        it('should leave an answered precomputation without sentAt', async () => {
+            const id = await insert({
+                status: 'ON_HOLD',
+                startedAt: ago(5 * HOUR),
+                answeredAt: ago(4 * HOUR),
+            });
+            await precomputedCollection.expireUnanswered(
+                ago(2 * HOUR),
+                PRECOMPUTED_NO_RESPONSE,
+            );
+            expect((await fetch(id)).status).toBe('ON_HOLD');
+        });
+
+        it('should fall back on startedAt when sentAt is missing', async () => {
+            const id = await insert({
+                status: 'ON_HOLD',
+                startedAt: ago(3 * HOUR),
+            });
+            await precomputedCollection.expireUnanswered(
+                ago(2 * HOUR),
+                PRECOMPUTED_NO_RESPONSE,
+            );
+            expect((await fetch(id)).status).toBe('ERROR');
+        });
+
+        it('should leave other statuses', async () => {
+            const a = await insert({
+                status: 'IN_PROGRESS',
+                sentAt: ago(5 * HOUR),
+                startedAt: ago(5 * HOUR),
+            });
+            const b = await insert({
+                status: 'FINISHED',
+                sentAt: ago(5 * HOUR),
+                startedAt: ago(5 * HOUR),
+            });
+            await precomputedCollection.expireUnanswered(
+                ago(2 * HOUR),
+                PRECOMPUTED_NO_RESPONSE,
+            );
+            expect((await fetch(a)).status).toBe('IN_PROGRESS');
+            expect((await fetch(b)).status).toBe('FINISHED');
+        });
+    });
+
+    describe('markAnswered', () => {
+        afterEach(async () => {
+            await db.collection('precomputed').deleteMany({});
+        });
+
+        it('should set answeredAt', async () => {
+            const { insertedId } = await db
+                .collection('precomputed')
+                .insertOne({ name: 'x', status: 'ON_HOLD' });
+            await precomputedCollection.markAnswered(insertedId.toString());
+            const doc = await db
+                .collection('precomputed')
+                .findOne({ _id: insertedId });
+            expect(doc.answeredAt).toBeInstanceOf(Date);
+        });
+
+        it('should set answeredAt for the answer of the current run', async () => {
+            const { insertedId } = await db
+                .collection('precomputed')
+                .insertOne({ name: 'x', status: 'ON_HOLD', jobId: 'current' });
+            await precomputedCollection.markAnswered(
+                insertedId.toString(),
+                'current',
+            );
+            const doc = await db
+                .collection('precomputed')
+                .findOne({ _id: insertedId });
+            expect(doc.answeredAt).toBeInstanceOf(Date);
+        });
+
+        it('should ignore the late answer of a superseded run', async () => {
+            const { insertedId } = await db
+                .collection('precomputed')
+                .insertOne({ name: 'x', status: 'ON_HOLD', jobId: 'current' });
+            await precomputedCollection.markAnswered(
+                insertedId.toString(),
+                'expired',
+            );
+            await precomputedCollection.markAnswered(insertedId.toString());
+            const doc = await db
+                .collection('precomputed')
+                .findOne({ _id: insertedId });
+            expect(doc.answeredAt).toBeUndefined();
         });
     });
 });

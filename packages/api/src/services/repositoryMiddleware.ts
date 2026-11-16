@@ -8,7 +8,11 @@ import dataSource from '../models/dataSource';
 import enrichment, { type EnrichmentCollection } from '../models/enrichment';
 import field from '../models/field';
 import hiddenResource from '../models/hiddenResource';
-import precomputed, { type PrecomputedCollection } from '../models/precomputed';
+import precomputed, {
+    markPrecomputedAnswered,
+    type PreComputation,
+    type PrecomputedCollection,
+} from '../models/precomputed';
 import publishedCharacteristic from '../models/publishedCharacteristic';
 import publishedDataset from '../models/publishedDataset';
 import publishedFacet from '../models/publishedFacet';
@@ -106,9 +110,15 @@ export const mongoClientFactory =
         await next();
     };
 
-export const getPrecomputedCollectionForWebHook = async (tenant: any) => {
-    const db = await mongoClient(tenant);
-    return await precomputed(db);
+// The webhook is public: it must not create the database or the collection
+// of an unknown tenant, as the precomputed repository does (with its indexes)
+export const getPrecomputedCollectionForWebHook = async (tenant: string) => {
+    const db: Db = await mongoClient(tenant);
+    const collection = db.collection<PreComputation>('precomputed');
+    return {
+        markAnswered: (id: string, jobId?: string) =>
+            markPrecomputedAnswered(collection, id, jobId),
+    };
 };
 
 // The tenant collection is never dropped: build it (listCollections) once, not per request

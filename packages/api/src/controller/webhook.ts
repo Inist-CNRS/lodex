@@ -4,8 +4,11 @@ import route from 'koa-route';
 
 import { randomUUID } from 'node:crypto';
 
+import getLogger from '../services/logger';
 import { getOrCreateWorkerQueue } from '../workers';
 import { PRECOMPUTER } from '../workers/precomputer';
+import { getPrecomputedCollectionForWebHook } from '../services/repositoryMiddleware';
+import { getAskForPrecomputedJobId } from '../services/precomputed/precomputed';
 
 export const getComputedWebserviceData = async (ctx: any) => {
     const { precomputedId, tenant, jobId, failure } = ctx.request.query;
@@ -28,6 +31,20 @@ export const getComputedWebserviceData = async (ctx: any) => {
         const { type, message } = ctx.request.body.error;
         // @ts-expect-error TS(2339): Property 'error' does not exist on type '{ id: any... Remove this comment to see the full error message
         data.error = { type, message };
+    }
+
+    try {
+        const precomputedCollection =
+            await getPrecomputedCollectionForWebHook(tenant);
+        await precomputedCollection.markAnswered(
+            precomputedId,
+            getAskForPrecomputedJobId(tenant, jobId),
+        );
+    } catch (error) {
+        getLogger(tenant).error(
+            `Failed to mark precomputation ${precomputedId} as answered`,
+            error,
+        );
     }
 
     await getOrCreateWorkerQueue(tenant, 1).add(

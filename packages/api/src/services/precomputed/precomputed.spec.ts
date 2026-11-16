@@ -1,4 +1,10 @@
-import { getPrecomputedDataPreview } from './precomputed';
+import { TaskStatus } from '@lodex/common';
+import {
+    getComputedFromWebservice,
+    getFailureFromWebservice,
+    getPrecomputedDataPreview,
+    isSupersededAnswer,
+} from './precomputed';
 
 describe('precomputed', () => {
     describe('getPrecomputedDataPreview', () => {
@@ -99,6 +105,71 @@ describe('precomputed', () => {
                     { lol: 'c', simpleValue: 'ploup' },
                 ]),
             );
+        });
+    });
+
+    describe('isSupersededAnswer', () => {
+        const room = 'lodex-precomputed-job-run-1';
+
+        it('is false for the answer of the current run', () => {
+            expect(isSupersededAnswer('lodex', { jobId: 'run-1' }, room)).toBe(
+                false,
+            );
+        });
+
+        it('is true for the answer of a run relaunched since', () => {
+            expect(isSupersededAnswer('lodex', { jobId: 'run-2' }, room)).toBe(
+                true,
+            );
+        });
+
+        it.each([
+            ['a precomputation without jobId', {}, room],
+            ['a precomputation with a null jobId', { jobId: null }, room],
+            ['a room without jobId', { jobId: 'run-2' }, undefined],
+        ])('is false for %s', (_name, precomputed, answerRoom) => {
+            expect(isSupersededAnswer('lodex', precomputed, answerRoom)).toBe(
+                false,
+            );
+        });
+    });
+
+    describe('answers of a superseded run', () => {
+        const createCtx = (data: object) => ({
+            tenant: 'lodex',
+            job: {
+                data: {
+                    id: 'pid',
+                    callId: 'call',
+                    askForPrecomputedJobId: 'lodex-precomputed-job-run-1',
+                    ...data,
+                },
+            },
+            precomputed: {
+                findOneById: jest.fn().mockResolvedValue({
+                    _id: 'pid',
+                    status: TaskStatus.PENDING,
+                    jobId: 'run-2',
+                }),
+                updateStatus: jest.fn(),
+                updateStartedAt: jest.fn(),
+            },
+        });
+
+        it('ignores the data of a superseded run', async () => {
+            const ctx = createCtx({});
+
+            await getComputedFromWebservice(ctx);
+
+            expect(ctx.precomputed.updateStatus).not.toHaveBeenCalled();
+        });
+
+        it('ignores the failure of a superseded run', async () => {
+            const ctx = createCtx({ error: { type: 't', message: 'm' } });
+
+            await getFailureFromWebservice(ctx);
+
+            expect(ctx.precomputed.updateStatus).not.toHaveBeenCalled();
         });
     });
 });
