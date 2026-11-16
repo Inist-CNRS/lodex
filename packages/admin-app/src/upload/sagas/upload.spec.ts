@@ -2,9 +2,8 @@ import { call, put, select, take } from 'redux-saga/effects';
 
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';
-import { uploadSuccess, uploadError } from '../index';
+import { importFinished, uploadSuccess, uploadError } from '../index';
 import {
-    loadParsingResult,
     LOAD_PARSING_RESULT_ERROR,
     LOAD_PARSING_RESULT_SUCCESS,
 } from '../../parsing';
@@ -220,18 +219,18 @@ describe('upload', () => {
     });
 
     describe('handleFinishUpload saga', () => {
+        const success = importFinished({ success: true });
         // @ts-expect-error TS7034
         let saga;
 
         beforeEach(() => {
-            saga = handleFinishUpload();
+            saga = handleFinishUpload(success);
         });
 
         // @ts-expect-error TS7006
         const runUntilUploadSuccess = (saga) => {
             saga.next();
             saga.next(true);
-            saga.next();
             return saga.next();
         };
 
@@ -249,17 +248,29 @@ describe('upload', () => {
             expect(saga.next(false).done).toBe(true);
         });
 
-        it('should reload the parsing result and wait for it before marking the upload as done', () => {
+        it('should wait for the parsing result before marking the upload as done', () => {
             // @ts-expect-error TS7005
             saga.next();
             // @ts-expect-error TS7005
-            expect(saga.next(true).value).toEqual(put(loadParsingResult()));
-            // @ts-expect-error TS7005
-            expect(saga.next().value).toEqual(
+            expect(saga.next(true).value).toEqual(
                 take([LOAD_PARSING_RESULT_SUCCESS, LOAD_PARSING_RESULT_ERROR]),
             );
             // @ts-expect-error TS7005
             expect(saga.next().value).toEqual(put(uploadSuccess()));
+        });
+
+        it('should put uploadError and not republish when the import failed or was cancelled', () => {
+            const failed = handleFinishUpload(
+                importFinished({
+                    success: false,
+                    message: 'cancelled_import',
+                }),
+            );
+            failed.next();
+            expect(failed.next(true).value).toEqual(
+                put(uploadError(new Error('cancelled_import'))),
+            );
+            expect(failed.next().done).toBe(true);
         });
 
         it('should select hasPublishedDataset', () => {

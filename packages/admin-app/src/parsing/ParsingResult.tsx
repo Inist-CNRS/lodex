@@ -330,6 +330,11 @@ export const ParsingResultComponent = ({
         handleFilterModelChange({ items: [] });
     }, [handleFilterModelChange]);
 
+    // Follow the main dataset while it is being imported. Columns only need
+    // a reload once, when the first lines arrive.
+    const loadedLines = precomputedId ? undefined : totalLoadedLines;
+    const hasLoadedLines = !!loadedLines;
+
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDataColumns(precomputedId);
@@ -342,12 +347,12 @@ export const ParsingResultComponent = ({
         handleFilterModelChange,
         initialFilterModel,
         precomputedId,
-        totalLoadedLines,
+        hasLoadedLines,
     ]);
 
     useEffect(() => {
         fetchDataset();
-    }, [skip, limit, filterModel, sort, fetchDataset, totalLoadedLines]);
+    }, [skip, limit, filterModel, sort, fetchDataset, loadedLines]);
 
     // @ts-expect-error TS7006
     const handleSortModelChange = (sortModel) => {

@@ -42,6 +42,9 @@ export default handleActions(
     {
         LOAD_PARSING_RESULT: (state) => ({
             ...state,
+            // Unknown until the first load: hide the upload form meanwhile.
+            // Reloads keep it as is, to avoid switching screens.
+            allowUpload: state.initialized && state.allowUpload,
             loading: true,
             initialized: true,
         }),

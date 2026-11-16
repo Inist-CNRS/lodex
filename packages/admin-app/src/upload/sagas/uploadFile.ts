@@ -3,13 +3,17 @@ import { call, put, select, take, takeEvery } from 'redux-saga/effects';
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';
 import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
-import { UPLOAD_FILE, uploadError, uploadSuccess } from '../index';
+import {
+    IMPORT_FINISHED,
+    UPLOAD_FILE,
+    importFinished,
+    uploadError,
+    uploadSuccess,
+} from '../index';
 import { preventUnload, allowUnload } from './unload';
-import { FINISH_PROGRESS } from '../../progress/reducer';
 import { publish as publishAction } from '../../publish';
 import { clearPublished } from '../../clear';
 import {
-    loadParsingResult,
     LOAD_PARSING_RESULT_ERROR,
     LOAD_PARSING_RESULT_SUCCESS,
 } from '../../parsing';
@@ -43,17 +47,24 @@ export function* handleUploadFile(action) {
     }
 }
 
-export function* handleFinishUpload() {
+export function* handleFinishUpload({
+    payload,
+}: ReturnType<typeof importFinished>) {
     // @ts-expect-error TS7057
     const isUploadPending = yield select(fromUpload.isUploadPending);
     if (!isUploadPending) {
         return;
     }
 
+    if (!payload.success) {
+        // JobProgress already notifies the error or the cancellation
+        yield put(uploadError(new Error(payload.message || 'import_error')));
+        return;
+    }
+
     try {
-        // Keep the upload pending until the imported lines are loaded,
-        // otherwise the empty upload form is displayed again in between.
-        yield put(loadParsingResult());
+        // JobProgress reloads the parsing result: keep the upload pending until
+        // it is loaded, otherwise the empty upload form shows again in between.
         yield take([LOAD_PARSING_RESULT_SUCCESS, LOAD_PARSING_RESULT_ERROR]);
         yield put(uploadSuccess());
 
@@ -73,5 +84,5 @@ export function* handleFinishUpload() {
 
 export default function* uploadFileSaga() {
     yield takeEvery(UPLOAD_FILE, handleUploadFile);
-    yield takeEvery(FINISH_PROGRESS, handleFinishUpload);
+    yield takeEvery(IMPORT_FINISHED, handleFinishUpload);
 }

@@ -36,9 +36,14 @@ describe('parsing reducer', () => {
         });
     });
 
-    it('should not change allowUpload on LOAD_PARSING_RESULT to avoid switching screens while reloading', () => {
+    it('should hide the upload form on the first LOAD_PARSING_RESULT, until the data is known', () => {
+        const state = reducer(defaultState, loadParsingResult());
+        expect(state.allowUpload).toBe(false);
+    });
+
+    it('should not change allowUpload when reloading to avoid switching screens', () => {
         const state = reducer(
-            { ...defaultState, allowUpload: true },
+            { ...defaultState, initialized: true, allowUpload: true },
             loadParsingResult(),
         );
         expect(state.allowUpload).toBe(true);
