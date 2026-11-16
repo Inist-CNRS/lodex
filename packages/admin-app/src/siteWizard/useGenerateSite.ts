@@ -16,6 +16,7 @@ import {
     type DatasetSource,
 } from '../upload/uploadDataset';
 import { allowUnload, preventUnload } from '../upload/sagas/unload';
+import { SITE_GENERATION_QUERY_KEY } from '../siteGeneration/useSiteGeneration';
 import { useImportJobEnd } from './useImportJobEnd';
 
 const getErrorDetail = (error: unknown): string =>
@@ -208,6 +209,13 @@ export const useGenerateSite = () => {
                     );
                 }
                 queryClient.resetQueries({ queryKey: ['get-config-tenant'] });
+                // the server may have started the enrichments and
+                // precomputations of the model: wait for their progress
+                // dialog before closing the wizard, so that nothing is left
+                // on screen in between (a failed fetch does not throw)
+                await queryClient.invalidateQueries({
+                    queryKey: SITE_GENERATION_QUERY_KEY,
+                });
             } catch (e) {
                 const detail = getErrorDetail(e);
                 // a cancel asked by the user is not a failure: JobProgress

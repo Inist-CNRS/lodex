@@ -66,7 +66,10 @@ export const getWaitingJobs = async (tenant: string): Promise<Bull.Job[]> => {
 };
 
 export const cancelJob = async (
-    ctx: AppContext,
+    // Also called outside of a Koa request (site generation)
+    ctx:
+        | AppContext
+        | { tenant: string; precomputed: AppContext['precomputed'] },
     jobType: string,
     subLabel: string | undefined | null = null,
 ) => {
