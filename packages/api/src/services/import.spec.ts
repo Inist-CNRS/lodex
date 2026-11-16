@@ -1,5 +1,13 @@
-import { startImport } from './import';
+// @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'.
+import fetch from 'fetch-with-proxy';
+import { getStreamFromUrl, startImport } from './import';
 import progress from './progress';
+jest.mock('fetch-with-proxy', () => jest.fn());
+jest.mock('@ezs/core/fusible', () => ({
+    createFusible: jest.fn(async () => 'fusible'),
+    enableFusible: jest.fn(),
+    disableFusible: jest.fn(),
+}));
 import {
     isUploadCancelled,
     removeUploadChunks,
@@ -37,6 +45,45 @@ describe('startImport of a cancelled upload', () => {
         expect(ctx.saveParsedStream).not.toHaveBeenCalled();
         // the progress no longer shows the end of the upload
         expect(progress.finish).toHaveBeenCalledWith('lodex');
+    });
+});
+
+describe('startImport of a failing import', () => {
+    it('keeps the error of the import, to explain it', async () => {
+        const error = Object.assign(new Error('Bad Request'), {
+            status: 400,
+        });
+        const ctx = {
+            tenant: 'lodex',
+            job: { data: { text: 'query' }, update: jest.fn() },
+            getLoader: jest.fn(() => (stream: any) => stream),
+            getStreamFromText: jest.fn(() => ({
+                pipe: () => ({ pipe: () => ({ pipe: () => ({}) }) }),
+            })),
+            saveParsedStream: jest.fn().mockRejectedValue(error),
+        };
+        await expect(startImport(ctx)).rejects.toMatchObject({
+            message: 'Error during import: Error: Bad Request',
+            cause: error,
+        });
+    });
+});
+
+describe('getStreamFromUrl', () => {
+    it('fails with the status and the answer of the url', async () => {
+        (fetch as jest.Mock).mockResolvedValueOnce({
+            ok: false,
+            status: 503,
+            statusText: 'Service Unavailable',
+            text: async () => 'Maintenance en cours',
+        });
+        await expect(
+            getStreamFromUrl('http://example.org'),
+        ).rejects.toMatchObject({
+            message: 'Service Unavailable',
+            status: 503,
+            responseText: 'Maintenance en cours',
+        });
     });
 });
 

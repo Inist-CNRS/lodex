@@ -354,6 +354,24 @@ describe('useGenerateSite', () => {
         expect(result.current.error).not.toBeNull();
     });
 
+    it('explains a failed data import, with its technical detail apart', async () => {
+        waitForImportEnd.mockRejectedValue(
+            Object.assign(new Error('import_error_source_unavailable'), {
+                detail: 'Maintenance en cours',
+            }),
+        );
+        const { result } = renderGenerateSite();
+        await act(async () => {
+            await result.current.generate(model, source).catch(() => {});
+        });
+        expect(result.current.error).toBe(
+            'site_wizard_generation_error+{"error":"import_error_source_unavailable"}',
+        );
+        expect(result.current.errorDetail).toBe('Maintenance en cours');
+        act(() => result.current.clearError());
+        expect(result.current.errorDetail).toBeNull();
+    });
+
     it('sets no error when the user cancels the import', async () => {
         waitForImportEnd.mockRejectedValue(new Error('cancelled_import'));
         const { result } = renderGenerateSite();

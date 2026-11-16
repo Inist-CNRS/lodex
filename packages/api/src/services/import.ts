@@ -43,7 +43,11 @@ export const getCustomLoader = (script: any, loaderEnvironment: any) => {
 export const getStreamFromUrl = async (url: any) => {
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(response.statusText);
+        // the status and the answer explain the error to the user
+        throw Object.assign(new Error(response.statusText), {
+            status: response.status,
+            responseText: await response.text(),
+        });
     }
     return response.body;
 };
@@ -137,7 +141,8 @@ export const startImport = async (ctx: any) => {
     } catch (error) {
         const logger = getLogger(ctx.tenant);
         logger.error('Error during import', error);
-        throw new Error(`Error during import: ${error}`);
+        // the cause tells the user what went wrong (see importError)
+        throw new Error(`Error during import: ${error}`, { cause: error });
     } finally {
         await disableFusible(fusible);
         progress.finish(ctx.tenant);

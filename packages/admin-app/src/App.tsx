@@ -76,6 +76,12 @@ export const AppComponent = ({ children, tenant }: AppComponentProps) => {
                         draggable
                         pauseOnHover
                         theme="colored"
+                        // wider than the default 320px: errors are long
+                        style={
+                            {
+                                '--toastify-toast-width': '420px',
+                            } as React.CSSProperties
+                        }
                     />
                 </div>
             </div>
