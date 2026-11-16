@@ -7,11 +7,32 @@ import { randomUUID } from 'node:crypto';
 import getLogger from '../services/logger';
 import { getOrCreateWorkerQueue } from '../workers';
 import { PRECOMPUTER } from '../workers/precomputer';
-import { getPrecomputedCollectionForWebHook } from '../services/repositoryMiddleware';
+import {
+    getPrecomputedCollectionForWebHook,
+    getTenantCollection,
+} from '../services/repositoryMiddleware';
+import mongoClient from '../services/mongoClient';
 import { getAskForPrecomputedJobId } from '../services/precomputed/precomputed';
+
+// The webhook is public: an unknown tenant must not open a Mongo client nor
+// create a Bull queue, both kept for the life of the process
+const isKnownTenant = async (tenant: unknown) => {
+    if (typeof tenant !== 'string' || !tenant) {
+        return false;
+    }
+    const tenantCollection = await getTenantCollection(
+        await mongoClient('admin'),
+    );
+    return !!(await tenantCollection.findOneByName(tenant));
+};
 
 export const getComputedWebserviceData = async (ctx: any) => {
     const { precomputedId, tenant, jobId, failure } = ctx.request.query;
+    if (!(await isKnownTenant(tenant))) {
+        ctx.status = 404;
+        ctx.body = 'unknown tenant';
+        return;
+    }
     const { identifier, generator, state } = ctx.request.body;
     const callId = JSON.stringify([{ id: generator, value: identifier }]);
 

@@ -1,10 +1,18 @@
 import { getComputedWebserviceData } from './webhook';
 import { getAskForPrecomputedJobId } from '../services/precomputed/precomputed';
-import { getPrecomputedCollectionForWebHook } from '../services/repositoryMiddleware';
+import {
+    getPrecomputedCollectionForWebHook,
+    getTenantCollection,
+} from '../services/repositoryMiddleware';
 import { getOrCreateWorkerQueue } from '../workers';
 
 jest.mock('../services/repositoryMiddleware', () => ({
     getPrecomputedCollectionForWebHook: jest.fn(),
+    getTenantCollection: jest.fn(),
+}));
+jest.mock('../services/mongoClient', () => ({
+    __esModule: true,
+    default: jest.fn().mockResolvedValue('adminDb'),
 }));
 jest.mock('../workers', () => ({
     getOrCreateWorkerQueue: jest.fn(),
@@ -21,6 +29,7 @@ describe('webhook controller', () => {
     describe('getComputedWebserviceData', () => {
         const markAnswered = jest.fn();
         const add = jest.fn();
+        const findOneByName = jest.fn();
         const callOrder: string[] = [];
 
         beforeEach(() => {
@@ -36,6 +45,35 @@ describe('webhook controller', () => {
                 { markAnswered },
             );
             (getOrCreateWorkerQueue as jest.Mock).mockReturnValue({ add });
+            findOneByName.mockImplementation(async (name: string) =>
+                name === 'lodex' ? { name } : null,
+            );
+            (getTenantCollection as jest.Mock).mockResolvedValue({
+                findOneByName,
+            });
+        });
+
+        it.each([
+            ['an unknown tenant', 'nope'],
+            ['no tenant', undefined],
+            ['a list of tenants', ['lodex']],
+        ])('should ignore %s', async (_name, tenant) => {
+            const ctx: any = {
+                request: {
+                    query: {
+                        precomputedId: 'pid',
+                        tenant,
+                        jobId: 'lodex-precomputed-job-run-1',
+                    },
+                    body: { identifier: 'i', generator: 'g', state: 's' },
+                },
+            };
+
+            await getComputedWebserviceData(ctx);
+
+            expect(ctx.status).toBe(404);
+            expect(getPrecomputedCollectionForWebHook).not.toHaveBeenCalled();
+            expect(getOrCreateWorkerQueue).not.toHaveBeenCalled();
         });
 
         it('should mark the precomputation as answered then queue the job', async () => {
