@@ -339,9 +339,13 @@ export const ParsingResultComponent = ({
         fetchDataColumns();
     }, [handleFilterModelChange, initialFilterModel, precomputedId]);
 
+    // The parsing result is reloaded when an import ends while the grid stays
+    // mounted: refetch then, so the row count is not the one from mid-import.
     useEffect(() => {
-        fetchDataset();
-    }, [skip, limit, filterModel, sort, fetchDataset]);
+        if (!loadingParsingResult) {
+            fetchDataset();
+        }
+    }, [fetchDataset, loadingParsingResult]);
 
     // @ts-expect-error TS7006
     const handleSortModelChange = (sortModel) => {
