@@ -1561,7 +1561,9 @@
 "mc_hal2lodex_description"	"This model builds a ready-to-use LODEX site for exploring and visualizing bibliographic data from HAL. It can be used and adapted to various HAL data corpora to produce indicators and visualizations, and to monitor or manage the HAL collection."	"Ce modèle permet de construire un site LODEX prêt à l’emploi pour l’exploration et la visualisation de données bibliographiques provenant de HAL. Il peut être utilisé et adapté à différents corpus de données issus de HAL afin de produire et générer des indicateurs, des visualisations et permettre le suivi ou la gestion de la collection HAL."
 "mc_openalex_title"	"OpenAlex model"	"Modèle OpenAlex"
 "mc_openalex_description"	"This model builds a LODEX site for exploring bibliographic data from OpenAlex. It can be reused and adapted to explore different OpenAlex datasets or to meet specific bibliometric analysis needs."	"Ce modèle permet de construire un site LODEX d’exploration de données bibliographiques à partir d’OpenAlex. Il peut être réutilisé et adapté pour explorer différents jeux de données OpenAlex ou répondre à des besoins spécifiques d’analyse bibliométrique."
-"mc_openalex_import_help"	"Paste your OpenAlex query in the input below, then append &api_key= to the end of the URL, followed by your OpenAlex API key. E.g.: https://api.openalex.org/works?filter=publication_year:2025&api_key=YOUR_API_KEY"	"Copiez-collez votre requête OpenAlex dans la zone de saisie ci-dessous, puis ajoutez &api_key= à la fin de l'URL, suivi de votre clé API OpenAlex. Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_CLE_API"
+"mc_openalex_import_help"	"Paste your OpenAlex query in the input below, then append &api_key= to the end of the URL, followed by your OpenAlex API key.
+E.g.: https://api.openalex.org/works?filter=publication_year:2025&api_key=YOUR_API_KEY"	"Copiez-collez votre requête OpenAlex dans la zone de saisie ci-dessous, puis ajoutez &api_key= à la fin de l'URL, suivi de votre clé API OpenAlex.
+Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_CLE_API"
 "mc_istexsearch_title"	"ISTEX Search model (under construction)"	"Modèle Istex Search (en construction)"
 "mc_istexsearch_description"	"Test model for importing an archive exported from ISTEX Search."	"Modèle de test pour importer une archive exportée depuis Istex Search."
 "site_wizard_title"	"Welcome to Lodex"	"Bienvenue sur Lodex"
@@ -1576,7 +1578,7 @@
 "site_wizard_model_links_doc"	"the documentation"	"à la documentation"
 "site_wizard_model_links_demo"	"the demo site"	"au site de démonstration"
 "site_wizard_and"	"and"	"et"
-"site_wizard_data_title"	"Dataset for the %{name}"	"Jeu de données pour le %{name}"
+"site_wizard_data_title"	"Dataset import"	"Import du jeu de données"
 "site_wizard_next"	"Next"	"Suivant"
 "site_wizard_previous"	"Previous"	"Précédent"
 "site_wizard_cancel"	"Cancel"	"Annuler"

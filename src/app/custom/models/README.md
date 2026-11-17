@@ -34,7 +34,7 @@ Each model is a JSON object in the `models-catalog.json` array.
 | `theme`       | no       | Recommended theme: one theme folder name from `src/app/custom/themes/` (e.g. `"hal-cnrs"`). Missing or `""`: no recommended theme.                                                        |
 | `importTypes` | yes      | Ways to import the dataset offered in the wizard, among `"file"`, `"url"` and `"text"` (free input), at least one. The first one is opened by default.                                    |
 | `launchOrder` | no       | Order in which enrichments and precomputations are launched once the model is applied. See [Launch order](#launch-order).                                                                 |
-| `tags`        | no       | List of tags. `"Disabled"` hides the model from the admin without removing it from the file (e.g. `"tags": ["Disabled"]`). Missing or `[]`: the model is shown.                          |
+| `tags`        | no       | List of tags. `"Disabled"` hides the model from the admin without removing it from the file (e.g. `"tags": ["Disabled"]`). Missing or `[]`: the model is shown.                           |
 
 ## Name and description
 
@@ -45,7 +45,7 @@ Like precomputers, they are translated in [`src/app/custom/translations.tsv`](..
 -   `mc_<id>_description`: the model description
 -   `mc_<id>_import_help` (optional): help shown above the dataset input of the wizard. Missing in one language: no help.
 
-Each line has three columns separated by tabulations: the key, the English text and the French text, each between double quotes.
+Each line has three columns separated by tabulations: the key, the English text and the French text, each between double quotes. To break a description or an import help into several lines, press Enter inside the double quotes.
 
 ```tsv
 "mc_hal2lodex_title"	"HAL2LODEX model"	"Modèle HAL2LODEX"

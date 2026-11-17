@@ -1,5 +1,5 @@
 import React from 'react';
-import AceEditor from 'react-ace';
+import AceEditor, { type IAceOptions } from 'react-ace';
 import 'ace-builds/src-noconflict/mode-ini';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/mode-ejs';
@@ -16,6 +16,7 @@ type SourceCodeFieldProps = {
     style?: React.CSSProperties;
     width?: string;
     height?: string;
+    setOptions?: IAceOptions;
 };
 
 export const SourceCodeField = ({

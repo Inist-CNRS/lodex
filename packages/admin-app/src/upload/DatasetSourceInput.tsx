@@ -312,6 +312,8 @@ export const DatasetSourceInput = ({
                         <SourceCodeField
                             style={styles.textInput}
                             mode="json"
+                            // the free input is not always JSON (e.g. a query URL): no syntax error cross
+                            setOptions={{ useWorker: false }}
                             input={{
                                 value: text,
                                 onChange: onTextChange,

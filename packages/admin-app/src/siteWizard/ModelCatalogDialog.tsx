@@ -82,7 +82,9 @@ export const ModelCatalogDialog = ({
                                 }
                                 secondary={
                                     <>
-                                        <Typography>
+                                        <Typography
+                                            sx={{ whiteSpace: 'pre-line' }}
+                                        >
                                             {translate(
                                                 getModelDescriptionKey(
                                                     model.id,
