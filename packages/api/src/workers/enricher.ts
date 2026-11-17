@@ -39,7 +39,10 @@ export const handleEnrichmentError = async (job: any, err: any) => {
     const ctx = await prepareContext({ job });
     if (err instanceof CancelWorkerError) {
         const enrichment = await ctx.enrichment.findOneById(ctx.job.data.id);
-        ctx.dataset.removeAttribute(enrichment.name);
+        // the enrichment can be deleted while its canceled run ends
+        if (enrichment) {
+            ctx.dataset.removeAttribute(enrichment.name);
+        }
     }
     await setEnrichmentError(ctx, err);
 };

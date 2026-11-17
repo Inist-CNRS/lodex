@@ -524,6 +524,52 @@ describe('enrichment', () => {
             expect(ctx.enrichment.updateStatus).not.toHaveBeenCalled();
         }, 60000);
 
+        it('should not wait for a slow statement to end when the job is canceled', async () => {
+            await db.collection('dataset').insertMany([
+                { uri: '1', name: 'a' },
+                { uri: '2', name: 'b' },
+            ]);
+            progress.initialize(dbName);
+            let jobFusible: any;
+            // 10 s per row: the breakers alone would wait 20 s
+            const enrichment = {
+                name: 'test',
+                rule: '[use]\nplugin = basics\n[throttle]\nbySecond = 0.1\n',
+            };
+            const ctx = {
+                configTenant: {},
+                tenant: dbName,
+                job: {
+                    id: 1,
+                    log: jest.fn(),
+                    isActive: jest.fn().mockReturnValue(true),
+                    data: { tenant: dbName },
+                    update: jest.fn().mockImplementation(({ fusible }: any) => {
+                        jobFusible = fusible;
+                        return Promise.resolve();
+                    }),
+                },
+                enrichment: {
+                    updateOne: jest.fn(),
+                    updateStatus: jest.fn(),
+                    updateStatusOfJob: jest.fn(),
+                },
+                ...mockDb([]),
+            };
+
+            let catchedError: any;
+            processEnrichment(enrichment, false, ctx).catch(
+                (error) => (catchedError = error),
+            );
+            await waitFor(() => !!jobFusible);
+            // let the rows pass the first breaker and reach the slow statement
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await disableFusible(jobFusible);
+
+            await waitFor(() => !!catchedError, { timeout: 3000 });
+            expect(catchedError).toBeInstanceOf(CancelWorkerError);
+        }, 10000);
+
         describe('setEnrichmentError', () => {
             const setup = async () => {
                 const enrichmentModel = await createEnrichmentModel(db);

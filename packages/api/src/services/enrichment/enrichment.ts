@@ -297,6 +297,7 @@ const processEzsEnrichment = (
 };
 
 const JOB_ACTIVE_CHECK_INTERVAL = 100;
+const FUSIBLE_CHECK_INTERVAL = 1000;
 
 // Every row is logged into the job (Redis): a large web service output or error
 // (an HTML error page...) would make these logs grow with the dataset
@@ -374,6 +375,18 @@ fusible = ${fusible}
 
 [ungroup]
     `;
+        // A breaker stops the pipeline only between two statements: a slow one
+        // (a web service call for a whole batch) would keep the job, and so the
+        // queue, busy until it ends. Stop waiting as soon as the job is
+        // canceled; the breakers still keep its rows out of the database
+        const fusibleCheck = setInterval(async () => {
+            if (!(await checkFusible(fusible))) {
+                clearInterval(fusibleCheck);
+                const error = new CancelWorkerError('Job has been canceled');
+                error.errorCount = errorCount;
+                reject(error);
+            }
+        }, FUSIBLE_CHECK_INTERVAL);
         const input = new PassThrough({ objectMode: true });
         input
             .pipe(
@@ -425,10 +438,12 @@ fusible = ${fusible}
                 notifyListeners(room, logData);
             })
             .on('end', () => {
+                clearInterval(fusibleCheck);
                 logMemory('end');
                 resolve(errorCount);
             })
             .on('error', (error: any) => {
+                clearInterval(fusibleCheck);
                 logMemory('error');
                 error.errorCount = errorCount;
                 reject(error);
