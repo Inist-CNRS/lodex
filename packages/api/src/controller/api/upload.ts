@@ -94,8 +94,8 @@ const queueWizardImport = async (
         }
         siteGenerationRunId = result.runId;
     }
-    await beforeQueue?.();
     try {
+        await beforeQueue?.();
         await getOrCreateWorkerQueue(ctx.tenant, 1).add(
             IMPORT, // Name of the job
             {

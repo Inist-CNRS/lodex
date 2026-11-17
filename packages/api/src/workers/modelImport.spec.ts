@@ -20,7 +20,7 @@ jest.mock('../services/catalogModel', () => ({
     catalogModels: [{ id: 'model' }],
     downloadModelArchive: jest.fn(),
 }));
-const mockLogger = { error: jest.fn(), warn: jest.fn() };
+const mockLogger = { error: jest.fn(), warn: jest.fn(), info: jest.fn() };
 jest.mock('../services/logger', () => () => mockLogger);
 
 import config from 'config';

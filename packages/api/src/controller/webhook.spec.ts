@@ -19,7 +19,7 @@ jest.mock('../workers', () => ({
 }));
 jest.mock('../services/logger', () => ({
     __esModule: true,
-    default: () => ({ error: jest.fn() }),
+    default: () => ({ error: jest.fn(), warn: jest.fn(), info: jest.fn() }),
 }));
 jest.mock('../workers/precomputer', () => ({
     PRECOMPUTER: 'precomputer',

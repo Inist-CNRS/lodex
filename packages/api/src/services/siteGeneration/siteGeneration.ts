@@ -55,10 +55,8 @@ type Target = { status?: string; message?: string; jobId?: unknown };
 
 type StepWithTarget = { step: SiteGenerationStep; target: Target | null };
 
-const repositoryOf = (
-    ctx: ReadContext,
-    type: SiteGenerationStep['type'],
-) => (type === 'precomputed' ? ctx.precomputed : ctx.enrichment);
+const repositoryOf = (ctx: ReadContext, type: SiteGenerationStep['type']) =>
+    type === 'precomputed' ? ctx.precomputed : ctx.enrichment;
 
 // A step is launched once a job has been queued for it (it then has a jobId)
 const isLaunched = (step: SiteGenerationStep) => step.jobId != null;
