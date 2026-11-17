@@ -21,6 +21,7 @@ import siteGeneration, {
 } from '../models/siteGeneration';
 import subresource from '../models/subresource';
 import tenant from '../models/tenant';
+import { pushSiteGeneration } from './siteGeneration/push';
 import mongoClient, { type MongoClientFactory } from './mongoClient';
 
 interface CustomContext extends DefaultContext {
@@ -39,7 +40,7 @@ export type AppContext<
     ResponseBody
 >;
 
-const createRepositories = async (db: Db) => {
+const createRepositories = async (db: Db, tenantName: string) => {
     const [
         annotationRepository,
         datasetRepository,
@@ -68,7 +69,7 @@ const createRepositories = async (db: Db) => {
         siteGeneration(db),
     ]);
 
-    return {
+    const repositories = {
         annotation: annotationRepository,
         dataset: datasetRepository,
         field: fieldRepository,
@@ -83,6 +84,10 @@ const createRepositories = async (db: Db) => {
         siteGeneration: siteGenerationRepository,
         dataSource: dataSource(datasetRepository, precomputedRepository),
     };
+    // the admins see every change of the generation at once
+    siteGenerationRepository.onChange = () =>
+        pushSiteGeneration(tenantName, repositories);
+    return repositories;
 };
 
 // Building the repositories checks/creates every collection and index (~20 Mongo calls),
@@ -106,7 +111,7 @@ export const mongoClientFactory =
         if (!repositoriesByTenant.has(ctx.tenant)) {
             repositoriesByTenant.set(
                 ctx.tenant,
-                createRepositories(ctx.db).catch((error) => {
+                createRepositories(ctx.db, ctx.tenant).catch((error) => {
                     repositoriesByTenant.delete(ctx.tenant);
                     throw error;
                 }),

@@ -41,6 +41,15 @@ jest.mock('../api/siteGeneration', () => ({
     relaunchSiteGeneration: jest.fn(),
     stopSiteGeneration: jest.fn(),
 }));
+// the handlers of the events pushed by the server, by event name
+const mockSocketHandlers = new Map<string, (data: unknown) => void>();
+const mockSocket = {
+    on: jest.fn((event: string, handler: (data: unknown) => void) =>
+        mockSocketHandlers.set(event, handler),
+    ),
+    disconnect: jest.fn(),
+};
+jest.mock('socket.io-client', () => ({ io: jest.fn(() => mockSocket) }));
 jest.mock('../siteWizard/hasTranslation', () => ({
     hasTranslation: jest.fn(() => false),
 }));
@@ -199,6 +208,7 @@ describe('SiteGenerationDialog', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        mockSocketHandlers.clear();
         (hasTranslation as jest.Mock).mockReturnValue(false);
         // the store persists the logged-in user in the local storage
         window.localStorage.clear();
@@ -542,6 +552,34 @@ describe('SiteGenerationDialog', () => {
                 expect.anything(),
             ),
         );
+    });
+
+    it('shows a generation pushed by the server without waiting for the poll', async () => {
+        sessionStorage.setItem('lodex-tenant', 'my-tenant');
+        sessionStorage.setItem('lodex-dbName', 'lodex');
+        renderDialog(buildGeneration({ phase: 'model' }));
+        expect(await screen.findByText('2/4')).toBeInTheDocument();
+        // the next poll would answer late: a task blocks the server
+        (getSiteGeneration as jest.Mock).mockReturnValue(new Promise(() => {}));
+        const handler = mockSocketHandlers.get(
+            'lodex_my-tenant-site-generation',
+        );
+        expect(handler).toBeDefined();
+
+        act(() =>
+            handler!({ generation: buildGeneration({ phase: 'launch' }) }),
+        );
+
+        expect(await screen.findByText('4/4')).toBeInTheDocument();
+    });
+
+    it('listens to the pushes only once an admin is logged in', async () => {
+        const { login, unmount } = renderDialog(null, { isLoggedIn: false });
+        expect(mockSocket.on).not.toHaveBeenCalled();
+        login();
+        await waitFor(() => expect(mockSocket.on).toHaveBeenCalled());
+        unmount();
+        expect(mockSocket.disconnect).toHaveBeenCalled();
     });
 
     describe('publication at the end', () => {

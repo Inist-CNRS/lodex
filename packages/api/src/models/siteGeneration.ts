@@ -63,6 +63,8 @@ export type SiteGenerationCollection = Collection<SiteGeneration> & {
         update: SiteGenerationUpdate,
         options?: { unset?: (keyof SiteGenerationUpdate)[] },
     ) => Promise<SiteGeneration | null>;
+    // called after every write of the generation (see pushSiteGeneration)
+    onChange?: () => void;
 };
 
 // A generation stored before the wizard phases had none: it was launching
@@ -104,12 +106,13 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
             upsert: true,
             returnDocument: 'after',
         });
+        repository.onChange?.();
         return stored as SiteGeneration;
     };
 
     // `unset` removes fields (an undefined value would be stored as null)
-    repository.transition = async (current, update, { unset = [] } = {}) =>
-        withDefaults(
+    repository.transition = async (current, update, { unset = [] } = {}) => {
+        const updated = withDefaults(
             await collection.findOneAndUpdate(
                 {
                     _id: current._id,
@@ -128,6 +131,11 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
                 { returnDocument: 'after' },
             ),
         );
+        if (updated) {
+            repository.onChange?.();
+        }
+        return updated;
+    };
 
     return repository;
 };

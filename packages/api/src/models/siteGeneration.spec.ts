@@ -41,6 +41,20 @@ describe('siteGeneration model', () => {
         expect((await siteGeneration.findCurrent())?.version).toBe(1);
     });
 
+    it('tells of every write, not of a lost transition', async () => {
+        const onChange = jest.fn();
+        siteGeneration.onChange = onChange;
+        const started = await siteGeneration.startWizard({});
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        await siteGeneration.transition(started, { status: 'error' });
+        expect(onChange).toHaveBeenCalledTimes(2);
+
+        // stale snapshot: nothing written
+        await siteGeneration.transition(started, { status: 'stopped' });
+        expect(onChange).toHaveBeenCalledTimes(2);
+    });
+
     it('lets exactly one of two concurrent transitions succeed', async () => {
         const current = await siteGeneration.startWizard({});
         const results = await Promise.all([

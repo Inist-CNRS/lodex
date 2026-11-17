@@ -23,7 +23,7 @@ import { getErrorDetail } from '../commons/getErrorDetail';
 import { getDisplayedSteps } from './displayedSteps';
 import { SiteGenerationHeader } from './SiteGenerationHeader';
 import { SiteGenerationSteps } from './SiteGenerationSteps';
-import { useSiteGeneration } from './useSiteGeneration';
+import { useSiteGeneration, useSiteGenerationPush } from './useSiteGeneration';
 import { WIZARD_DIALOG_PAPER_PROPS } from '../siteWizard/wizardDialogPaper';
 
 const SUPPORT_EMAIL = 'support-lodex@listes.istex.fr';
@@ -47,6 +47,7 @@ export const SiteGenerationDialog = () => {
     const queryClient = useQueryClient();
     const { generation, relaunch, stop, isActing, isStopping } =
         useSiteGeneration();
+    useSiteGenerationPush();
     const [isStopConfirmOpen, setIsStopConfirmOpen] = useState(false);
     const previousStatus = useRef(generation?.status);
 

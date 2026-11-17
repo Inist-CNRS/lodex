@@ -45,12 +45,18 @@ export type SiteGenerationContext = LaunchContext & {
 // told, an earlier publication may still be online. "Relancer" publishes again.
 export const PUBLICATION_LOST = 'site_generation_publication_lost';
 
+// What reading the generation and its targets needs
+type ReadContext = Pick<
+    SiteGenerationContext,
+    'siteGeneration' | 'enrichment' | 'precomputed'
+>;
+
 type Target = { status?: string; message?: string; jobId?: unknown };
 
 type StepWithTarget = { step: SiteGenerationStep; target: Target | null };
 
 const repositoryOf = (
-    ctx: SiteGenerationContext,
+    ctx: ReadContext,
     type: SiteGenerationStep['type'],
 ) => (type === 'precomputed' ? ctx.precomputed : ctx.enrichment);
 
@@ -59,7 +65,7 @@ const isLaunched = (step: SiteGenerationStep) => step.jobId != null;
 
 // One query per type of target, not one per step: the view is polled
 const readTargets = async (
-    ctx: SiteGenerationContext,
+    ctx: ReadContext,
     steps: SiteGenerationStep[],
 ): Promise<StepWithTarget[]> => {
     const targetsByType = await Promise.all(
@@ -772,7 +778,7 @@ const launchCounters = (
 };
 
 export const getSiteGenerationView = async (
-    ctx: SiteGenerationContext,
+    ctx: ReadContext,
 ): Promise<SiteGenerationView | null> => {
     const generation = await ctx.siteGeneration.findCurrent();
     if (!generation) {
