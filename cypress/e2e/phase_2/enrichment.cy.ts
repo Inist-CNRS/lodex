@@ -1,3 +1,4 @@
+import * as adminMenu from '../../support/adminMenu';
 import * as adminNavigation from '../../support/adminNavigation';
 import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
@@ -58,6 +59,34 @@ describe('Enrichment', () => {
         // the end state only: running or pending can be over before checked
         cy.findAllByText('Not started').should('have.length', 0);
         cy.findAllByText('Done').should('have.length', 3);
+    });
+
+    it('should cancel the running enrichments with Clear jobs', () => {
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
+        cy.waitForNetworkIdle(500);
+
+        datasetImportPage.importDataset('dataset/simple.csv');
+        // 20 s per row: still running when the jobs are cleared
+        enrichmentFormPage.createEnrichment('Enrichment 1', 0.05);
+        enrichmentFormPage.createEnrichment('Enrichment 2', 0.05);
+        enrichmentFormPage.openEnrichment();
+        cy.contains('Run All').click();
+        cy.findByRole('dialog').within(() => {
+            cy.contains('Run All').click();
+        });
+        cy.findAllByText('Running').should('have.length', 1);
+
+        adminMenu.clearWorkers();
+        cy.contains('All jobs have been cleared').should('exist');
+        cy.findAllByText('Canceled').should('have.length', 2);
+
+        // the queue does not wait for the canceled run to end
+        enrichmentFormPage.createEnrichment('Enrichment 3');
+        cy.reload();
+        cy.contains('Enrichment 3').click();
+        cy.findByRole('button', { name: 'Run' }).click();
+        cy.findByText('Done', { timeout: 15000 }).should('exist');
     });
 
     it('should support enriching dataset', () => {
