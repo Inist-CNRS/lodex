@@ -24,10 +24,11 @@ export const processEnrichment = (
             });
             done();
         })
-        .catch((err: any) => {
-            handleEnrichmentError(job, err);
-            done(err);
-        });
+        // the error is on the enrichment before the job fails: the site
+        // generation advanced on failure must see it
+        .catch((err: any) =>
+            handleEnrichmentError(job, err).finally(() => done(err)),
+        );
 };
 
 const startJobEnrichment = async (job: any, retryFailedOnly: any) => {

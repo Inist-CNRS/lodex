@@ -19,10 +19,11 @@ export const processPrecomputed = (job: any, done: any) => {
             });
             done();
         })
-        .catch((err: any) => {
-            handlePrecomputedError(job, err);
-            done(err);
-        });
+        // the error is on the precomputed before the job fails: the site
+        // generation advanced on failure must see it
+        .catch((err: any) =>
+            handlePrecomputedError(job, err).finally(() => done(err)),
+        );
 };
 
 const startJobPrecomputed = async (job: any) => {

@@ -272,16 +272,13 @@ describe('siteGeneration service', () => {
             ]);
         });
 
-        it('moves to the next position once all steps are finished, then queues it', async () => {
+        it('moves to the next position once all steps are finished and queues it in the same pass', async () => {
             await start(STEPS);
             await advanceSiteGeneration(ctx);
             finishPosition(1);
 
             await advanceSiteGeneration(ctx);
             expect((await siteGeneration.findCurrent())?.position).toBe(2);
-            expect(queued()).toHaveLength(1);
-
-            await advanceSiteGeneration(ctx);
             expect(queued()).toEqual([
                 { id: 'clusterRameau-id', options: { relaunch: false } },
                 { id: 'xml-id', options: { lifo: false, relaunch: false } },
