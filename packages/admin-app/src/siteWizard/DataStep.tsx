@@ -8,7 +8,6 @@ import {
 } from '../upload/DatasetSourceInput';
 import { hasTranslation } from './hasTranslation';
 import { ModelLinks } from './ModelLinks';
-import { useModelSentence } from './modelSentence';
 import { StepTitle } from './StepTitle';
 
 // the step title, the model links, then how to import the model's data
@@ -17,12 +16,13 @@ const DataStepIntro = ({ model }: { model: CatalogModel }) => {
     const importHelpKey = getModelImportHelpKey(model.id);
     return (
         <Box mb={3}>
-            <StepTitle>
-                {useModelSentence(model, 'site_wizard_data_title')}
-            </StepTitle>
+            <StepTitle>{translate('site_wizard_data_title')}</StepTitle>
             <ModelLinks model={model} />
             {hasTranslation(importHelpKey) && (
-                <Typography color="text.secondary" sx={{ mt: 2 }}>
+                <Typography
+                    color="text.secondary"
+                    sx={{ mt: 2, whiteSpace: 'pre-line' }}
+                >
                     {translate(importHelpKey)}
                 </Typography>
             )}

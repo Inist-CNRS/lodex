@@ -174,7 +174,7 @@ describe('SiteWizard', () => {
         expect(
             screen.getByRole('heading', {
                 level: 2,
-                name: 'site_wizard_data_title+{"name":"mc_a_title"}',
+                name: 'site_wizard_data_title',
             }),
         ).toBeInTheDocument();
         expect(
