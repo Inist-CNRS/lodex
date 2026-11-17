@@ -317,7 +317,10 @@ export const advanceSiteGeneration = async (
     if (current.every(isFinished)) {
         const position = nextPosition(generation);
         if (position !== null) {
-            await ctx.siteGeneration.transition(generation, { position });
+            // launch the next steps now rather than on the next pass
+            if (await ctx.siteGeneration.transition(generation, { position })) {
+                await advanceSiteGeneration(ctx);
+            }
         } else if (generation.autoPublish) {
             await startPublication(ctx, generation);
         } else {

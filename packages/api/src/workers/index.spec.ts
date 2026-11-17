@@ -8,6 +8,9 @@ jest.mock('bull', () =>
     })),
 );
 jest.mock('../bullBoard', () => ({ addDashboardQueue: jest.fn() }));
+jest.mock('../services/siteGeneration/sweep', () => ({
+    sweepTenants: jest.fn(),
+}));
 // other modules use the logger as soon as they are loaded
 jest.mock('../services/logger', () => {
     const logger = {
@@ -20,6 +23,7 @@ jest.mock('../services/logger', () => {
 });
 
 import getLogger from '../services/logger';
+import { sweepTenants } from '../services/siteGeneration/sweep';
 import { deleteWorkerQueue, getOrCreateWorkerQueue } from './index';
 
 const mockLogger = getLogger('tenant');
@@ -53,5 +57,26 @@ describe('getOrCreateWorkerQueue', () => {
         expect(mockLogger.warn).toHaveBeenCalledWith(
             'Worker job stalled and will run again: job-1 (enricher)',
         );
+    });
+
+    it.each(['completed', 'failed'])(
+        'should advance the site generation of the tenant once a step job is %s',
+        (event) => {
+            getOrCreateWorkerQueue('tenant', 1);
+
+            getListener(event)({ data: { jobType: 'enricher', tenant: 'demo' } });
+
+            expect(sweepTenants).toHaveBeenCalledWith(['demo']);
+        },
+    );
+
+    it('should not advance the site generation once another job ends', () => {
+        getOrCreateWorkerQueue('tenant', 1);
+
+        getListener('completed')({
+            data: { jobType: 'publisher', tenant: 'demo' },
+        });
+
+        expect(sweepTenants).not.toHaveBeenCalled();
     });
 });

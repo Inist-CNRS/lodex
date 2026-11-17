@@ -6,8 +6,11 @@ import { ENRICHER, processEnrichment, RETRY_ENRICHER } from './enricher';
 import { IMPORT, processImport } from './import';
 import { PRECOMPUTER, processPrecomputed } from './precomputer';
 import { processPublication, PUBLISHER } from './publisher';
+import { sweepTenants } from '../services/siteGeneration/sweep';
 
 export const QUEUE_NAME = 'worker';
+
+const STEP_JOB_TYPES = [ENRICHER, RETRY_ENRICHER, PRECOMPUTER];
 
 export class CancelWorkerError extends Error {
     name: any;
@@ -65,6 +68,17 @@ export const getOrCreateWorkerQueue = (
             `Worker job stalled and will run again: ${job?.id} (${job?.data?.jobType})`,
         );
     });
+
+    // An enrichment or precomputation ended (by hand or as a step of a site
+    // generation): advance the tenant's generation now rather than on the
+    // next periodic sweep
+    const advanceSiteGeneration = (job: Queue.Job) => {
+        if (STEP_JOB_TYPES.includes(job?.data?.jobType)) {
+            sweepTenants([job.data.tenant]);
+        }
+    };
+    workerQueue.on('completed', advanceSiteGeneration);
+    workerQueue.on('failed', advanceSiteGeneration);
 
     workerQueues[queueName] = workerQueue;
 
