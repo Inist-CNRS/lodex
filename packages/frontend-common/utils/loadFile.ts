@@ -9,6 +9,8 @@ export type LoadFileOptions = {
     signal?: AbortSignal;
     // told about an aborted upload, so that the server drops it
     cancelUrl?: string;
+    // sent with every chunk, along with the custom loader
+    query?: Record<string, string>;
 };
 
 // how long a cancel waits for the server to tell whether it was in time
@@ -26,6 +28,22 @@ const generateUploadIdentifier = (file) =>
         Math.random().toString(36).slice(2),
     ].join('-');
 
+// the API refuses with a JSON { error }, a proxy with a plain text
+const getRefusalMessage = (message: unknown): string => {
+    if (typeof message !== 'string') {
+        return String(message);
+    }
+    try {
+        const { error } = JSON.parse(message);
+        if (typeof error === 'string') {
+            return error;
+        }
+    } catch {
+        // not JSON
+    }
+    return message;
+};
+
 export const loadFile = (
     // @ts-expect-error TS7006
     url,
@@ -33,8 +51,8 @@ export const loadFile = (
     file,
     // @ts-expect-error TS7006
     token,
-    customLoader = null,
-    { onProgress, signal, cancelUrl }: LoadFileOptions = {},
+    customLoader: string | null = null,
+    { onProgress, signal, cancelUrl, query }: LoadFileOptions = {},
 ) =>
     new Promise((resolve, reject) => {
         if (signal?.aborted) {
@@ -61,10 +79,11 @@ export const loadFile = (
                 : {}),
         };
 
-        if (customLoader) {
+        if (customLoader || query) {
             // @ts-expect-error TS2339
             options.query = {
-                customLoader,
+                ...(customLoader ? { customLoader } : {}),
+                ...query,
             };
         }
 
@@ -113,10 +132,10 @@ export const loadFile = (
             stopListening();
             resolve(message);
         });
-        // @ts-expect-error TS7006
-        resumable.on('error', (_, error) => {
+        // resumable gives the text of the refusal, then the file
+        resumable.on('error', (message: unknown) => {
             stopListening();
-            reject(error);
+            reject(new Error(getRefusalMessage(message)));
         });
 
         // @ts-expect-error TS7006

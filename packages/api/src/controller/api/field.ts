@@ -1,25 +1,15 @@
-import config from 'config';
 import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 import moment from 'moment';
-import streamToString from 'stream-to-string';
 import tar from 'tar-stream';
 import { randomUUID } from 'node:crypto';
 import { version } from '../../../../../package.json';
 
 import { validateField } from '../../models/field';
-import { getSiteTitleKey } from '../../models/siteTitleKey';
-import { getTheme } from '../../models/themes';
-import {
-    catalogModels,
-    downloadModelArchive,
-    findCatalogModel,
-} from '../../services/catalogModel';
 import indexSearchableFields from '../../services/indexSearchableFields';
-import { mongoConnectionString } from '../../services/mongoClient';
 import publishFacets from './publishFacets';
 
 import {
@@ -28,275 +18,19 @@ import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-    type SiteInfo,
 } from '@lodex/common';
 import { ObjectId } from 'mongodb';
-import { restoreEnrichments } from '../../services/enrichment/enrichment';
 import generateUid from '../../services/generateUid';
-import { restorePrecomputed } from '../../services/precomputed/precomputed';
-import { CONFIG_TENANT_ENTRY, restoreModel } from '../../services/restoreModel';
-import { ENRICHER } from '../../workers/enricher';
-import { PRECOMPUTER } from '../../workers/precomputer';
-import { dropJobs, queuePublisher } from '../../workers/tools';
+import { CONFIG_TENANT_ENTRY } from '../../services/restoreModel';
+import { restoreFields } from '../../services/modelRestore';
 import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
-import getLogger from '../../services/logger';
-import { buildLaunchSteps } from '../../services/siteGeneration/buildLaunchSteps';
-import {
-    advanceSiteGeneration,
-    stopSiteGeneration,
-} from '../../services/siteGeneration/siteGeneration';
-
-const sortByFieldUri = (a: any, b: any) =>
-    (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
-
-export const restoreFields = (fileStream: any, ctx: any) => {
-    if (!fileStream.filename.endsWith('.tar')) {
-        return streamToString(fileStream)
-            .then((fieldsString: any) => JSON.parse(fieldsString))
-            .then((fields: any) => {
-                ctx.field
-                    .deleteMany({})
-                    .then(() =>
-                        Promise.all(
-                            fields
-                                .sort(sortByFieldUri)
-                                .map((field: any, index: any) =>
-                                    translateOldField(ctx, field, index),
-                                ),
-                        ),
-                    );
-            });
-    }
-
-    const restoreTask = () => {
-        dropJobs(ctx.tenant, ENRICHER);
-        dropJobs(ctx.tenant, PRECOMPUTER);
-
-        return restoreModel(mongoConnectionString(ctx.tenant), fileStream, [
-            'field',
-            'subresource',
-            'enrichment',
-            'precomputed',
-        ]);
-    };
-
-    return ctx.field
-        .deleteMany({})
-        .then(restoreTask)
-        .then(async ({ configTenant }: any) => {
-            await Promise.all([
-                ctx.field.castIds(),
-                ctx.subresource.castIds(),
-                restoreEnrichments(ctx),
-                restorePrecomputed(ctx),
-            ]);
-            return applyConfigTenant(ctx, configTenant);
-        });
-};
-
-// Only theme and front are exported with the model (see exportFields)
-export const applyConfigTenant = async (ctx: any, imported: any) => {
-    if (!imported) {
-        return {};
-    }
-
-    const current = await ctx.configTenantCollection.findLast();
-    if (!current) {
-        return {};
-    }
-    const themeFound = !imported.theme || getTheme(imported.theme);
-
-    // front.theme holds the theme's template variables: keep the current
-    // ones when the imported theme cannot be applied
-    const front =
-        imported.front && !themeFound
-            ? { ...imported.front, theme: current.front?.theme }
-            : imported.front ?? current.front;
-
-    await ctx.configTenantCollection.update(current._id, {
-        ...current,
-        front,
-        theme: themeFound && imported.theme ? imported.theme : current.theme,
-    });
-
-    return themeFound ? {} : { themeNotFound: imported.theme };
-};
-
-// Same as the admin settings form: switching theme also resets front.theme
-// to the variables of the new theme. When the restored archive already uses
-// that theme, its customized variables are kept.
-export const applyRecommendedTheme = async (
-    ctx: any,
-    theme: string,
-): Promise<{ themeNotFound?: string }> => {
-    const themeEntry = getTheme(theme);
-    if (!themeEntry) {
-        return { themeNotFound: theme };
-    }
-
-    const current = await ctx.configTenantCollection.findLast();
-    // no configuration to apply the theme to, or already the right theme
-    if (!current || current.theme === theme) {
-        return {};
-    }
-    await ctx.configTenantCollection.update(current._id, {
-        ...current,
-        theme,
-        front: { ...current.front, theme: themeEntry.customTemplateVariables },
-    });
-
-    return {};
-};
-
-const trimmedOrUndefined = (value: unknown) =>
-    (typeof value === 'string' && value.trim()) || undefined;
-
-/**
- * Write the site name and description into the theme variables, where the
- * theme settings edit them. An empty value, or a theme without the variable,
- * leaves the configuration as it is.
- */
-export const applySiteInfo = async (ctx: any, siteInfo: SiteInfo) => {
-    const siteName = trimmedOrUndefined(siteInfo.siteName);
-    const siteDescription = trimmedOrUndefined(siteInfo.siteDescription);
-    if (!siteName && !siteDescription) {
-        return;
-    }
-    const current = await ctx.configTenantCollection.findLast();
-    const themeVariables =
-        current && getTheme(current.theme)?.customTemplateVariables;
-    if (!themeVariables) {
-        return;
-    }
-    const nameKey = getSiteTitleKey(current.front?.theme ?? {});
-    // a legacy ISTEX configuration keeps its `title`: adding the default
-    // `siteTitle` next to it would show two title variables in the editor
-    const { siteTitle: _, ...legacyDefaults } = themeVariables;
-    const defaults = nameKey === 'title' ? legacyDefaults : themeVariables;
-    const values = {
-        ...(siteName &&
-            'siteTitle' in themeVariables && { [nameKey]: siteName }),
-        ...(siteDescription &&
-            'summary' in themeVariables && { summary: siteDescription }),
-    };
-    if (Object.keys(values).length === 0) {
-        return;
-    }
-    await ctx.configTenantCollection.update(current._id, {
-        ...current,
-        front: {
-            ...current.front,
-            // the theme settings editor shows the stored variables only
-            theme: { ...defaults, ...current.front?.theme, ...values },
-        },
-    });
-};
-
-export const translateOldField = (ctx: any, oldField: any, index: any) => {
-    const {
-        display_in_home,
-        display_in_resource,
-        display_in_graph,
-        display_in_list,
-        cover,
-        name,
-        ...newField
-    } = oldField;
-    const scope = display_in_graph && !display_in_home ? SCOPE_GRAPHIC : cover;
-    const display =
-        display_in_home || display_in_resource || display_in_graph
-            ? true
-            : false;
-
-    if (display_in_graph && display_in_home) {
-        ctx.field.create(
-            {
-                scope: SCOPE_GRAPHIC,
-                display,
-                ...newField,
-                position: index,
-            },
-            name,
-            false,
-        );
-
-        return ctx.field.create(
-            {
-                scope,
-                display,
-                ...newField,
-                label: newField.label,
-                transformers: [
-                    {
-                        operation: 'VALUE',
-                        args: [
-                            {
-                                name: 'value',
-                                type: 'string',
-                                value: newField.label,
-                            },
-                        ],
-                    },
-                ],
-                format: { name: 'fieldClone', args: { value: name } },
-                position: index + 1,
-            },
-            '',
-            false,
-        );
-    }
-    const uriField = oldField.transformers.find(
-        (transformer: any): any =>
-            transformer && transformer.operation === 'AUTOGENERATE_URI',
-    );
-    if (uriField) {
-        return ctx.field.create(
-            {
-                scope,
-                display,
-                ...newField,
-                position: index,
-                transformers: [
-                    {
-                        operation: 'COLUMN',
-                        args: [
-                            {
-                                name: 'column',
-                                type: 'column',
-                                value: 'uri',
-                            },
-                        ],
-                    },
-                ],
-            },
-            name,
-            false,
-        );
-    }
-
-    return ctx.field.create(
-        {
-            scope,
-            display,
-            ...newField,
-            position: index,
-        },
-        name,
-        false,
-    );
-};
 
 export const setup = async (ctx: any, next: any) => {
     ctx.validateField = validateField;
     ctx.publishFacets = publishFacets;
     ctx.restoreFields = restoreFields;
-    ctx.catalogModels = catalogModels;
-    ctx.availableLoaders = config.get('scripts.loaders');
-    ctx.downloadModelArchive = downloadModelArchive;
-    ctx.applyRecommendedTheme = applyRecommendedTheme;
-    ctx.applySiteInfo = applySiteInfo;
 
     try {
         await next();
@@ -530,131 +264,6 @@ export const exportFields = async (ctx: any) => {
     }
 };
 
-const startSiteGeneration = async (
-    ctx: any,
-    launchOrder: any,
-    autoPublish: boolean,
-): Promise<void> => {
-    // optional: the model is imported, the admin can launch the tasks by hand
-    try {
-        // The generation of an earlier model must not stay on screen, even
-        // when this model launches nothing or its generation cannot start
-        await ctx.siteGeneration.deleteMany({});
-        const [enrichments, precomputeds, dataSources] = await Promise.all([
-            ctx.enrichment.findAll(),
-            ctx.precomputed.findAll(),
-            ctx.dataSource.getDataSources(),
-        ]);
-        const columnsByDataSource: Record<string, string[]> = {};
-        for (const dataSource of dataSources) {
-            columnsByDataSource[dataSource.id] = dataSource.columns.map(
-                ({ name }: { name: string }) => name,
-            );
-        }
-        const steps = buildLaunchSteps(
-            { launchOrder, enrichments, precomputeds, columnsByDataSource },
-            getLogger(ctx.tenant),
-        );
-        if (!steps.length) {
-            // nothing to wait for
-            if (autoPublish) {
-                await queuePublisher(ctx.tenant, randomUUID());
-            }
-            return;
-        }
-        await ctx.siteGeneration.start(steps, { autoPublish });
-    } catch (e) {
-        getLogger(ctx.tenant).error('Site generation start error', {
-            error: (e as Error).message,
-        });
-        return;
-    }
-    // Launch the first position now rather than at the next periodic pass.
-    // Best effort: that pass launches it anyway (it is concurrency safe).
-    try {
-        await advanceSiteGeneration(ctx);
-    } catch (e) {
-        getLogger(ctx.tenant).error('Site generation advance error', {
-            error: (e as Error).message,
-        });
-    }
-};
-
-export const importCatalogModel = async (ctx: any) => {
-    const { id, siteName, siteDescription, theme, autoPublish } =
-        ctx.request.body ?? {};
-    const model = findCatalogModel(ctx.catalogModels, id, ctx.availableLoaders);
-
-    if (!model) {
-        ctx.status = 404;
-        ctx.body = { error: 'model_not_found' };
-        return;
-    }
-
-    if (!new URL(model.url).pathname.endsWith('.tar')) {
-        ctx.status = 400;
-        ctx.body = { error: 'model_archive_not_tar' };
-        return;
-    }
-
-    let fileStream;
-    try {
-        fileStream = await ctx.downloadModelArchive(model.url);
-    } catch (e) {
-        ctx.status = 502;
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
-        ctx.body = { error: e.message };
-        return;
-    }
-
-    try {
-        // Cancel the jobs of a generation still running before the model
-        // replaces its enrichments and precomputations: afterwards, its steps
-        // point to deleted targets and nothing would cancel them
-        try {
-            await stopSiteGeneration(ctx);
-        } catch (e) {
-            getLogger(ctx.tenant).error('Site generation stop error', {
-                error: (e as Error).message,
-            });
-        }
-        const restored = (await ctx.restoreFields(fileStream, ctx)) ?? {};
-        let themeNotFound = restored.themeNotFound;
-        // The theme chosen in the wizard, else the catalog one, overrides the
-        // archive's one: its result fully replaces the archive's
-        // themeNotFound, which would be misleading
-        const themeToApply =
-            (typeof theme === 'string' && theme) || model.theme;
-        if (themeToApply) {
-            const applied = await ctx.applyRecommendedTheme(ctx, themeToApply);
-            themeNotFound = applied.themeNotFound;
-        }
-        // after the theme: applying it resets the theme variables
-        try {
-            await ctx.applySiteInfo(ctx, { siteName, siteDescription });
-        } catch (e) {
-            // optional: the model is imported, the admin can still set them
-            // in the theme settings
-            getLogger(ctx.tenant).error('Site info write error', {
-                error: (e as Error).message,
-            });
-        }
-
-        await startSiteGeneration(ctx, model.launchOrder, autoPublish === true);
-
-        // the wizard reloads the admin data itself
-        ctx.body = {
-            message: 'Model imported successfully',
-            themeNotFound,
-        };
-        ctx.status = 200;
-    } catch (e) {
-        ctx.status = 500;
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
-        ctx.body = { error: e.message };
-    }
-};
-
 export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
     const { files } = await asyncBusboyImpl(ctx.req);
     const fileStream = files[0];
@@ -810,7 +419,6 @@ app.use(route.get('/export', exportFields));
 app.use(route.post('/import', importFields(asyncBusboy)));
 app.use(route.delete('/', dropFieldCollection));
 app.use(koaBodyParser());
-app.use(route.post('/import-catalog-model', importCatalogModel));
 app.use(route.post('/', postField));
 app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));

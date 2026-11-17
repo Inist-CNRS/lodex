@@ -2,8 +2,16 @@ import config from 'config';
 import { isSweepingProcess, sweepTenants } from './sweep';
 import { PRECOMPUTED_NO_RESPONSE } from '../../models/precomputed';
 
-jest.mock('./siteGeneration', () => ({ advanceSiteGeneration: jest.fn() }));
-import { advanceSiteGeneration } from './siteGeneration';
+jest.mock('./siteGeneration', () => ({
+    advanceSiteGeneration: jest.fn(),
+    failLostSiteGenerationJob: jest.fn(),
+    settleStoppingSiteGeneration: jest.fn(),
+}));
+import {
+    advanceSiteGeneration,
+    failLostSiteGenerationJob,
+    settleStoppingSiteGeneration,
+} from './siteGeneration';
 
 describe('sweepTenants', () => {
     const calls: string[] = [];
@@ -12,6 +20,41 @@ describe('sweepTenants', () => {
     beforeEach(() => {
         calls.length = 0;
         (advanceSiteGeneration as jest.Mock).mockReset();
+        (settleStoppingSiteGeneration as jest.Mock).mockReset();
+        (failLostSiteGenerationJob as jest.Mock).mockReset();
+    });
+
+    it('fails a generation whose job is lost, per tenant', async () => {
+        const expire = jest.fn(async () => 0);
+        await sweepTenants(
+            ['a', 'b'],
+            now,
+            (tenant) =>
+                ({ tenant, precomputed: { expireUnanswered: expire } }) as any,
+        );
+        expect(
+            (failLostSiteGenerationJob as jest.Mock).mock.calls.map(
+                ([ctx, date]) => [ctx.tenant, date],
+            ),
+        ).toEqual([
+            ['a', now],
+            ['b', now],
+        ]);
+    });
+
+    it('settles a stopping generation, per tenant', async () => {
+        const expire = jest.fn(async () => 0);
+        await sweepTenants(
+            ['a', 'b'],
+            now,
+            (tenant) =>
+                ({ tenant, precomputed: { expireUnanswered: expire } }) as any,
+        );
+        expect(
+            (settleStoppingSiteGeneration as jest.Mock).mock.calls.map(
+                ([ctx]) => ctx.tenant,
+            ),
+        ).toEqual(['a', 'b']);
     });
 
     it('expires unanswered precomputations then advances, per tenant', async () => {

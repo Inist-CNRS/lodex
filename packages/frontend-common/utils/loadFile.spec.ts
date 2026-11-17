@@ -40,6 +40,50 @@ describe('loadFile', () => {
         await expect(promise).resolves.toBe('done');
     });
 
+    it.each([
+        ['an unknown model', 404, 'model_not_found'],
+        ['a model archive that is not a tar', 400, 'model_archive_not_tar'],
+        ['a server failure', 500, 'Disk full'],
+    ])(
+        'rejects with the error the server gave for %s',
+        async (_name, _status, error) => {
+            const promise = loadFile('/api/upload/csv', file, 'token');
+            // resumable gives the response text, then the file
+            mockResumable.handlers.error(JSON.stringify({ error }), file);
+            await expect(promise).rejects.toThrow(new Error(error));
+        },
+    );
+
+    it('rejects with the raw message of a refusal that is not JSON', async () => {
+        const promise = loadFile('/api/upload/csv', file, 'token');
+        mockResumable.handlers.error('Bad Gateway', file);
+        await expect(promise).rejects.toThrow(new Error('Bad Gateway'));
+    });
+
+    it('sends the query with every chunk, merged with the custom loader', () => {
+        loadFile('/api/upload/csv', file, 'token', 'script', {
+            query: { modelId: 'a', siteName: 'My site' },
+        });
+        expect(Resumable).toHaveBeenCalledWith(
+            expect.objectContaining({
+                query: {
+                    customLoader: 'script',
+                    modelId: 'a',
+                    siteName: 'My site',
+                },
+            }),
+        );
+    });
+
+    it('sends the query without custom loader', () => {
+        loadFile('/api/upload/csv', file, 'token', null, {
+            query: { modelId: 'a' },
+        });
+        expect(Resumable).toHaveBeenCalledWith(
+            expect.objectContaining({ query: { modelId: 'a' } }),
+        );
+    });
+
     it('reports the uploaded fraction', () => {
         const onProgress = jest.fn();
         loadFile('/api/upload/csv', file, 'token', null, { onProgress });

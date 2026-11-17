@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
 import configureStore from '@lodex/frontend-common/configureStore';
 import { I18N } from '@lodex/frontend-common/i18n/I18NContext';
+import { installClientErrorReporter } from '@lodex/frontend-common/utils/reportClientError';
 import LodexThemeProvider from './LodexThemeProvider';
 import reducers from './reducers';
 import Routes from './Routes';
@@ -28,6 +29,7 @@ const browserHistory = createBrowserHistory({
 });
 
 sessionStorage.setItem('lodex-tenant', tenant);
+installClientErrorReporter();
 
 const { store, history } = configureStore(
     reducers,

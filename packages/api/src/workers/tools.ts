@@ -7,7 +7,7 @@ import { disableFusible } from '@ezs/core/fusible';
 
 import { ProgressStatus } from '@lodex/common';
 import type Bull from 'bull';
-import getLogger from '../services/logger';
+import getLogger, { parseJobMessage } from '../services/logger';
 import progress from '../services/progress';
 import type { AppContext } from '../services/repositoryMiddleware';
 import { handleEnrichmentError } from './enricher';
@@ -19,8 +19,12 @@ export const jobLogger = {
         if (!job) {
             return;
         }
-        const logger = getLogger(job.data.tenant);
-        logger.debug(message);
+        const { level, text } = parseJobMessage(message);
+        // row errors (e.g. "Error enriching #id") must stay visible in production
+        getLogger(job.data.tenant).log(
+            level === 'error' ? 'error' : 'debug',
+            text,
+        );
         job.log(message);
     },
     error: (job: any, message: any) => {
@@ -28,7 +32,7 @@ export const jobLogger = {
             return;
         }
         const logger = getLogger(job.data.tenant);
-        logger.error(message);
+        logger.error(parseJobMessage(message).text);
         job.log(message);
     },
 };
