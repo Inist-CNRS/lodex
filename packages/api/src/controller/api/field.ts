@@ -37,7 +37,7 @@ import { restorePrecomputed } from '../../services/precomputed/precomputed';
 import { CONFIG_TENANT_ENTRY, restoreModel } from '../../services/restoreModel';
 import { ENRICHER } from '../../workers/enricher';
 import { PRECOMPUTER } from '../../workers/precomputer';
-import { dropJobs } from '../../workers/tools';
+import { dropJobs, queuePublisher } from '../../workers/tools';
 import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
@@ -533,6 +533,7 @@ export const exportFields = async (ctx: any) => {
 const startSiteGeneration = async (
     ctx: any,
     launchOrder: any,
+    autoPublish: boolean,
 ): Promise<void> => {
     // optional: the model is imported, the admin can launch the tasks by hand
     try {
@@ -555,9 +556,13 @@ const startSiteGeneration = async (
             getLogger(ctx.tenant),
         );
         if (!steps.length) {
+            // nothing to wait for
+            if (autoPublish) {
+                await queuePublisher(ctx.tenant, randomUUID());
+            }
             return;
         }
-        await ctx.siteGeneration.start(steps);
+        await ctx.siteGeneration.start(steps, { autoPublish });
     } catch (e) {
         getLogger(ctx.tenant).error('Site generation start error', {
             error: (e as Error).message,
@@ -576,7 +581,8 @@ const startSiteGeneration = async (
 };
 
 export const importCatalogModel = async (ctx: any) => {
-    const { id, siteName, siteDescription, theme } = ctx.request.body ?? {};
+    const { id, siteName, siteDescription, theme, autoPublish } =
+        ctx.request.body ?? {};
     const model = findCatalogModel(ctx.catalogModels, id, ctx.availableLoaders);
 
     if (!model) {
@@ -634,7 +640,7 @@ export const importCatalogModel = async (ctx: any) => {
             });
         }
 
-        await startSiteGeneration(ctx, model.launchOrder);
+        await startSiteGeneration(ctx, model.launchOrder, autoPublish === true);
 
         // the wizard reloads the admin data itself
         ctx.body = {

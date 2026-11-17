@@ -50,6 +50,13 @@ const {
     advanceSiteGeneration: mockAdvanceSiteGeneration,
     stopSiteGeneration: mockStopSiteGeneration,
 } = jest.requireMock('../../services/siteGeneration/siteGeneration');
+jest.mock('../../workers/tools', () => ({
+    ...jest.requireActual('../../workers/tools'),
+    queuePublisher: jest.fn().mockResolvedValue(undefined),
+}));
+const { queuePublisher: mockQueuePublisher } = jest.requireMock(
+    '../../workers/tools',
+);
 jest.mock('../../services/logger', () => {
     const logger = { error: jest.fn(), info: jest.fn(), warn: jest.fn() };
     return () => logger;
@@ -619,6 +626,7 @@ describe('field routes', () => {
         beforeEach(() => {
             mockAdvanceSiteGeneration.mockClear();
             mockStopSiteGeneration.mockClear();
+            mockQueuePublisher.mockClear();
             ctx = {
                 request: { body: { id: 'm' } },
                 catalogModels: [
@@ -660,13 +668,16 @@ describe('field routes', () => {
             await importCatalogModel(ctx);
 
             expect(ctx.siteGeneration.start).toHaveBeenCalledTimes(1);
-            expect(ctx.siteGeneration.start).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    type: 'enrichment',
-                    name: 'e1',
-                    targetId: 'id1',
-                }),
-            ]);
+            expect(ctx.siteGeneration.start).toHaveBeenCalledWith(
+                [
+                    expect.objectContaining({
+                        type: 'enrichment',
+                        name: 'e1',
+                        targetId: 'id1',
+                    }),
+                ],
+                { autoPublish: false },
+            );
             expect(ctx.status).toBe(200);
             // the first position starts without waiting for the periodic pass
             expect(mockAdvanceSiteGeneration).toHaveBeenCalledWith(ctx);
@@ -676,6 +687,45 @@ describe('field routes', () => {
                 mockAdvanceSiteGeneration.mock.invocationCallOrder[0],
             );
         });
+
+        it.each([true, false])(
+            'should start the generation with autoPublish %s',
+            async (autoPublish) => {
+                ctx.request.body = { id: 'ordered', autoPublish };
+                ctx.enrichment = {
+                    findAll: jest
+                        .fn()
+                        .mockResolvedValue([{ _id: 'id1', name: 'e1' }]),
+                };
+                ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
+
+                await importCatalogModel(ctx);
+
+                expect(ctx.siteGeneration.start).toHaveBeenCalledWith(
+                    expect.any(Array),
+                    { autoPublish },
+                );
+                // the generation publishes at its end
+                expect(mockQueuePublisher).not.toHaveBeenCalled();
+            },
+        );
+
+        it.each([
+            [true, 1],
+            [false, 0],
+        ])(
+            'should publish right away without steps when autoPublish is %s',
+            async (autoPublish, calls) => {
+                ctx.request.body = { id: 'ordered', autoPublish };
+                ctx.enrichment = { findAll: jest.fn().mockResolvedValue([]) };
+                ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
+
+                await importCatalogModel(ctx);
+
+                expect(mockQueuePublisher).toHaveBeenCalledTimes(calls);
+                expect(ctx.status).toBe(200);
+            },
+        );
 
         it('should log a failed first pass and still start the generation', async () => {
             ctx.request.body = { id: 'ordered' };

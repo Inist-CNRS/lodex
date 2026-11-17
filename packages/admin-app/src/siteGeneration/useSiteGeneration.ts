@@ -29,7 +29,7 @@ export const getRefetchInterval = (
         return REFETCH_INTERVAL;
     }
     const status = data.generation?.status;
-    return status === 'running' || status === 'error'
+    return status === 'running' || status === 'publishing' || status === 'error'
         ? REFETCH_INTERVAL
         : false;
 };

@@ -6,7 +6,14 @@ import type {
     SiteGenerationCollection,
     SiteGenerationStep,
 } from '../../models/siteGeneration';
-import { cancelJob, getActiveJob, getWaitingJobs } from '../../workers/tools';
+import {
+    cancelJob,
+    cancelPublisherJob,
+    getActiveJob,
+    getJobState,
+    getWaitingJobs,
+    queuePublisher,
+} from '../../workers/tools';
 import {
     queueEnrichment,
     queuePrecomputed,
@@ -22,6 +29,11 @@ export const SITE_GENERATION_MAX_RELAUNCHES = 3;
 export type SiteGenerationContext = LaunchContext & {
     siteGeneration: SiteGenerationCollection;
 };
+
+// The publisher job is gone (Bull keeps the last finished jobs only, a
+// publication by hand drops the waiting ones): whether it published cannot be
+// told, an earlier publication may still be online. "Relancer" publishes again.
+export const PUBLICATION_LOST = 'site_generation_publication_lost';
 
 type Target = { status?: string; message?: string; jobId?: unknown };
 
@@ -182,6 +194,59 @@ const queueSteps = async (
     }
 };
 
+// Queued before the transition: a pass reading the publishing generation must
+// find its job. The job of a lost transition (stop, other pass) is cancelled,
+// even if the worker already runs it.
+const startPublication = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+): Promise<boolean> => {
+    const publishJobId = randomUUID();
+    await queuePublisher(ctx.tenant, publishJobId);
+    const publishing = await ctx.siteGeneration.transition(generation, {
+        status: 'publishing',
+        // an earlier publishError is replaced once this one ends
+        publishJobId,
+    });
+    if (publishing) {
+        return true;
+    }
+    try {
+        await cancelPublisherJob(ctx, publishJobId);
+    } catch (error) {
+        getLogger(ctx.tenant).error(
+            `Site generation: unable to cancel an unwanted publication: ${(error as Error).message}`,
+        );
+    }
+    return false;
+};
+
+const advancePublication = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+) => {
+    const job = await getJobState(ctx.tenant, generation.publishJobId!);
+    if (job?.state === 'completed') {
+        await ctx.siteGeneration.transition(generation, { status: 'done' });
+        return;
+    }
+    if (job?.state === 'failed') {
+        await ctx.siteGeneration.transition(generation, {
+            status: 'error',
+            publishError: job.failedReason,
+        });
+        return;
+    }
+    if (job) {
+        // waiting or active ("Arrêter" gets out of a job that never ends)
+        return;
+    }
+    await ctx.siteGeneration.transition(generation, {
+        status: 'error',
+        publishError: PUBLICATION_LOST,
+    });
+};
+
 const nextPosition = (generation: SiteGeneration) => {
     const positions = generation.steps
         .map((step) => step.position)
@@ -193,6 +258,10 @@ export const advanceSiteGeneration = async (
     ctx: SiteGenerationContext,
 ): Promise<void> => {
     const generation = await ctx.siteGeneration.findCurrent();
+    if (generation?.status === 'publishing') {
+        await advancePublication(ctx, generation);
+        return;
+    }
     if (!generation || generation.status !== 'running') {
         return;
     }
@@ -247,10 +316,15 @@ export const advanceSiteGeneration = async (
 
     if (current.every(isFinished)) {
         const position = nextPosition(generation);
-        await ctx.siteGeneration.transition(
-            generation,
-            position === null ? { status: 'done' } : { position },
-        );
+        if (position !== null) {
+            await ctx.siteGeneration.transition(generation, { position });
+        } else if (generation.autoPublish) {
+            await startPublication(ctx, generation);
+        } else {
+            await ctx.siteGeneration.transition(generation, {
+                status: 'done',
+            });
+        }
     }
 };
 
@@ -260,6 +334,10 @@ export const relaunchSiteGeneration = async (
     const generation = await ctx.siteGeneration.findCurrent();
     if (!generation || generation.status !== 'error') {
         return false;
+    }
+    // every step was done: only the publication failed
+    if (generation.publishJobId) {
+        return startPublication(ctx, generation);
     }
 
     const current = await readTargets(
@@ -287,7 +365,7 @@ export const relaunchSiteGeneration = async (
 };
 
 // A generation in error still waits for "Relancer" or "Arrêter"
-const STOPPABLE_STATUSES = ['running', 'error'];
+const STOPPABLE_STATUSES = ['running', 'publishing', 'error'];
 
 // A task launched by hand gets a jobId of its own: the generation would then
 // never see its step finish nor fail, and stay running until "Arrêter"
@@ -338,6 +416,11 @@ export const stopSiteGeneration = async (
     const stopped = await transitionToStopped(ctx);
     if (!stopped) {
         return false;
+    }
+
+    // a failed publication has nothing left to cancel
+    if (stopped.publishJobId) {
+        await cancelPublisherJob(ctx, stopped.publishJobId);
     }
 
     const launched = await readTargets(ctx, stopped.steps.filter(isLaunched));
@@ -399,6 +482,23 @@ const toState = (
     return { state: 'running' };
 };
 
+const toPublicationState = (
+    generation: SiteGeneration,
+): NonNullable<SiteGenerationView['publication']> => {
+    if (generation.status === 'publishing') {
+        return { state: 'running' };
+    }
+    if (generation.status === 'done') {
+        return { state: 'done' };
+    }
+    if (generation.status === 'error' && generation.publishJobId) {
+        return generation.publishError
+            ? { state: 'error', message: generation.publishError }
+            : { state: 'error' };
+    }
+    return { state: 'waiting' };
+};
+
 export const getSiteGenerationView = async (
     ctx: SiteGenerationContext,
 ): Promise<SiteGenerationView | null> => {
@@ -415,5 +515,8 @@ export const getSiteGenerationView = async (
             position: step.position,
             ...toState(step, target),
         })),
+        ...(generation.autoPublish && {
+            publication: toPublicationState(generation),
+        }),
     };
 };

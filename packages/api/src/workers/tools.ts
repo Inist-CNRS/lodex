@@ -12,6 +12,7 @@ import progress from '../services/progress';
 import type { AppContext } from '../services/repositoryMiddleware';
 import { handleEnrichmentError } from './enricher';
 import { notifyListeners } from './import';
+import { PUBLISHER } from './publisher';
 
 export const jobLogger = {
     info: (job: any, message: any) => {
@@ -150,4 +151,40 @@ export const clearJobs = async (ctx: AppContext) => {
     await ctx.enrichment.cancelByIds([...waitingJobIds, ...activeJobIds]);
 
     progress.finish(ctx.tenant);
+};
+
+export const queuePublisher = (tenant: string, jobId: string) =>
+    getOrCreateWorkerQueue(tenant, 1).add(
+        PUBLISHER,
+        { jobType: PUBLISHER, tenant },
+        { jobId },
+    );
+
+// null once the job is gone: Bull only keeps the last finished jobs
+export const getJobState = async (tenant: string, jobId: string) => {
+    const job = await getOrCreateWorkerQueue(tenant, 1).getJob(jobId);
+    if (!job) {
+        return null;
+    }
+    return { state: await job.getState(), failedReason: job.failedReason };
+};
+
+// Removes a publisher job still waiting, cancels it once running. A finished
+// job is left alone.
+export const cancelPublisherJob = async (
+    ctx: Parameters<typeof cancelJob>[0],
+    jobId: string,
+) => {
+    const job = await getOrCreateWorkerQueue(ctx.tenant, 1).getJob(jobId);
+    if (!job) {
+        return;
+    }
+    if (await job.isActive()) {
+        // concurrency 1: the active publisher job is this one
+        await cancelJob(ctx, PUBLISHER);
+        return;
+    }
+    if ((await job.isWaiting()) || (await job.isDelayed())) {
+        await job.remove();
+    }
 };

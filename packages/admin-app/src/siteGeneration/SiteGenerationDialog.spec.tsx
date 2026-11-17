@@ -17,6 +17,7 @@ import {
 import { LOAD_ENRICHMENTS } from '../enrichment';
 import { LOAD_PRECOMPUTED } from '../precomputed';
 import { LOAD_PARSING_RESULT } from '../parsing';
+import { LOAD_PUBLICATION } from '../publication';
 import { SiteGenerationDialog } from './SiteGenerationDialog';
 import {
     getRefetchInterval,
@@ -253,6 +254,96 @@ describe('SiteGenerationDialog', () => {
                 LOAD_PARSING_RESULT,
             ]),
         );
+    });
+
+    describe('publication at the end', () => {
+        const withPublication = (
+            generation: SiteGenerationView,
+            publication: SiteGenerationView['publication'],
+        ) => ({ ...generation, publication });
+
+        it('shows the publication after the steps, outside of the count', async () => {
+            renderDialog(
+                withPublication(buildGeneration('running', ['running']), {
+                    state: 'waiting',
+                }),
+            );
+            expect(
+                await screen.findByText('site_generation_publication'),
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'site_generation_progress+{"done":0,"total":1}',
+                ),
+            ).toBeInTheDocument();
+        });
+
+        it('stays open while publishing and can stop the publication', async () => {
+            renderDialog(
+                withPublication(buildGeneration('publishing', ['done']), {
+                    state: 'running',
+                }),
+            );
+            expect(
+                await screen.findByText('site_generation_publication'),
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText('site_generation_running'),
+            ).toBeInTheDocument();
+            expect(
+                getRefetchInterval(
+                    { generation: buildGeneration('publishing', ['done']) },
+                    { state: { status: 'success', error: null } },
+                ),
+            ).toBe(5_000);
+            await userEvent.click(screen.getByText('site_generation_stop'));
+            expect(
+                await screen.findByText(
+                    'site_generation_stop_publication_description',
+                ),
+            ).toBeInTheDocument();
+            await userEvent.click(screen.getByText('confirm'));
+            await waitFor(() => expect(stopSiteGeneration).toHaveBeenCalled());
+        });
+
+        it('shows a failed publication and relaunches it', async () => {
+            renderDialog(
+                withPublication(buildGeneration('error', ['done']), {
+                    state: 'error',
+                    message: 'site_generation_publication_lost',
+                }),
+            );
+            expect(
+                await screen.findByText('site_generation_publication_lost'),
+            ).toBeInTheDocument();
+            await userEvent.click(screen.getByText('site_generation_relaunch'));
+            await waitFor(() =>
+                expect(relaunchSiteGeneration).toHaveBeenCalled(),
+            );
+        });
+
+        it('reloads the publication once published', async () => {
+            renderDialog(
+                withPublication(buildGeneration('publishing', ['done']), {
+                    state: 'running',
+                }),
+            );
+            await screen.findByText('site_generation_title');
+            (getSiteGeneration as jest.Mock).mockResolvedValue({
+                generation: withPublication(buildGeneration('done', ['done']), {
+                    state: 'done',
+                }),
+            });
+            await client.invalidateQueries({
+                queryKey: SITE_GENERATION_QUERY_KEY,
+            });
+            await waitFor(() =>
+                expect(screen.queryByText('site_generation_title')).toBeNull(),
+            );
+            expect(dispatched).toEqual(
+                expect.arrayContaining([LOAD_PUBLICATION, LOAD_ENRICHMENTS]),
+            );
+        });
     });
 
     it('shows a toast when relaunching fails', async () => {

@@ -24,6 +24,7 @@ import {
 import { DataStep } from './DataStep';
 import { GenerationError } from './GenerationError';
 import { ModelStep } from './ModelStep';
+import { PublishStep } from './PublishStep';
 import { SiteInfoStep } from './SiteInfoStep';
 import { getPreselectedTheme, ThemeStep } from './ThemeStep';
 import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
@@ -40,6 +41,7 @@ type WizardState = {
     siteDescription: string;
     // the theme picked by the user, empty until then
     theme: string;
+    autoPublish: boolean;
 };
 
 type StepProps = {
@@ -63,6 +65,7 @@ const KEYS_KEEPING_ERROR: (keyof WizardState)[] = [
     'siteName',
     'siteDescription',
     'theme',
+    'autoPublish',
 ];
 
 const INITIAL_STATE: WizardState = {
@@ -74,6 +77,7 @@ const INITIAL_STATE: WizardState = {
     siteName: '',
     siteDescription: '',
     theme: '',
+    autoPublish: false,
 };
 
 const ModelStepContent = ({ state, onChange, models }: StepProps) => (
@@ -170,7 +174,25 @@ const themeStep: WizardStep = {
     canContinue: (state) => !!state.theme,
 };
 
-const STEPS: WizardStep[] = [modelStep, dataStep, siteInfoStep, themeStep];
+const PublishStepContent = ({ state, onChange }: StepProps) => (
+    <PublishStep
+        autoPublish={state.autoPublish}
+        onAutoPublishChange={(autoPublish) => onChange({ autoPublish })}
+    />
+);
+
+const publishStep: WizardStep = {
+    Component: PublishStepContent,
+    canContinue: () => true,
+};
+
+const STEPS: WizardStep[] = [
+    modelStep,
+    dataStep,
+    siteInfoStep,
+    themeStep,
+    publishStep,
+];
 // a generation error is mostly about the data: show it from the data step on
 const FIRST_STEP_WITH_ERROR = STEPS.indexOf(dataStep);
 
@@ -253,6 +275,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 siteName: state.siteName,
                 siteDescription: state.siteDescription,
                 theme: state.theme,
+                autoPublish: state.autoPublish,
             });
             close('generated');
         } catch {

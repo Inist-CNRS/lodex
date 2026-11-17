@@ -20,6 +20,12 @@ export type SiteGeneration = {
     status: SiteGenerationStatus;
     position: number;
     steps: SiteGenerationStep[];
+    // publish the site once every step is done
+    autoPublish: boolean;
+    // the publisher job queued at the end, if any
+    publishJobId?: string;
+    // why that publication failed
+    publishError?: string;
     version: number;
     createdAt: Date;
     updatedAt: Date;
@@ -27,10 +33,22 @@ export type SiteGeneration = {
 
 export type SiteGenerationCollection = Collection<SiteGeneration> & {
     findCurrent: () => Promise<SiteGeneration | null>;
-    start: (steps: SiteGenerationStep[]) => Promise<SiteGeneration>;
+    start: (
+        steps: SiteGenerationStep[],
+        options?: { autoPublish?: boolean },
+    ) => Promise<SiteGeneration>;
     transition: (
         current: SiteGeneration,
-        update: Partial<Pick<SiteGeneration, 'status' | 'position' | 'steps'>>,
+        update: Partial<
+            Pick<
+                SiteGeneration,
+                | 'status'
+                | 'position'
+                | 'steps'
+                | 'publishJobId'
+                | 'publishError'
+            >
+        >,
     ) => Promise<SiteGeneration | null>;
 };
 
@@ -44,7 +62,7 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
 
     repository.findCurrent = async () => collection.findOne({});
 
-    repository.start = async (steps) => {
+    repository.start = async (steps, { autoPublish = false } = {}) => {
         const now = new Date();
         const generation: Omit<SiteGeneration, '_id'> = {
             runId: new ObjectId().toHexString(),
@@ -53,6 +71,7 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
                 ? Math.min(...steps.map((step) => step.position))
                 : 0,
             steps,
+            autoPublish,
             version: 0,
             createdAt: now,
             updatedAt: now,

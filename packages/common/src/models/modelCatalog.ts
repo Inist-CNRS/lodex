@@ -75,6 +75,8 @@ export type SiteInfo = {
     siteName?: string;
     siteDescription?: string;
     theme?: string;
+    // publish the site once its generation is over
+    autoPublish?: boolean;
 };
 
 export const getModelTitleKey = (id: string) => `mc_${id}_title`;
