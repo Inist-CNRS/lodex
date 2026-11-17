@@ -209,6 +209,7 @@ module.exports = {
             'query-conditor-for-halcnrs',
             'query-openalex-for-model',
             'query-theses-fr-for-model',
+            'question-crossbase',
             'rss',
             'atom',
             'mods',
