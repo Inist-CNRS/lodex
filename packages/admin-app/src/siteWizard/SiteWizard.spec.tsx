@@ -98,6 +98,12 @@ const goToThemeStep = async (title = 'mc_a_title') => {
     await userEvent.click(button('site_wizard_next'));
 };
 
+// from the theme step
+const generateSite = async () => {
+    await userEvent.click(button('site_wizard_next'));
+    await userEvent.click(button('site_wizard_generate'));
+};
+
 const themeSelect = () =>
     screen.getByRole('combobox', { name: 'site_wizard_theme_title' });
 
@@ -151,10 +157,10 @@ describe('SiteWizard', () => {
     it('displays the title and the progress on the first step', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         expect(screen.getByText('site_wizard_title')).toBeInTheDocument();
-        expect(screen.getByText('1/4')).toBeInTheDocument();
+        expect(screen.getByText('1/5')).toBeInTheDocument();
         expect(screen.getByRole('progressbar')).toHaveAttribute(
             'aria-valuenow',
-            '25',
+            '20',
         );
         expect(
             screen.queryByRole('button', { name: 'site_wizard_previous' }),
@@ -167,7 +173,7 @@ describe('SiteWizard', () => {
         await selectModel('mc_a_title');
         expect(button('site_wizard_next')).toBeEnabled();
         await userEvent.click(button('site_wizard_next'));
-        expect(screen.getByText('2/4')).toBeInTheDocument();
+        expect(screen.getByText('2/5')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_title')).toBeInTheDocument();
         // the same header on every step
         expect(screen.getByText('site_wizard_subtitle')).toBeInTheDocument();
@@ -221,7 +227,7 @@ describe('SiteWizard', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByText('1/4')).toBeInTheDocument();
+        expect(screen.getByText('1/5')).toBeInTheDocument();
         expect(screen.getByRole('combobox')).toHaveTextContent('mc_a_title');
         expect(button('site_wizard_next')).toBeEnabled();
     });
@@ -266,7 +272,7 @@ describe('SiteWizard', () => {
         await typeUrl('https://x');
         expect(button('site_wizard_next')).toBeEnabled();
         await userEvent.click(button('site_wizard_next'));
-        expect(screen.getByText('3/4')).toBeInTheDocument();
+        expect(screen.getByText('3/5')).toBeInTheDocument();
         // the chosen model stays visible next to the title
         expect(screen.getByText('mc_a_title')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_subtitle')).toBeInTheDocument();
@@ -285,14 +291,43 @@ describe('SiteWizard', () => {
     it('goes to the theme step after the site name and description', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
-        expect(screen.getByText('4/4')).toBeInTheDocument();
+        expect(screen.getByText('4/5')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_subtitle')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_theme_title')).toBeInTheDocument();
         expect(screen.getByText('site_wizard_theme_hint')).toBeInTheDocument();
+        expect(button('site_wizard_next')).toBeEnabled();
+    });
+
+    it('ends with the publication step, the automatic publication being off', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(button('site_wizard_next'));
+        expect(screen.getByText('5/5')).toBeInTheDocument();
+        expect(
+            screen.getByText('site_wizard_publish_title'),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('checkbox', { name: 'site_wizard_auto_publish' }),
+        ).not.toBeChecked();
         expect(button('site_wizard_generate')).toBeEnabled();
         expect(
             screen.queryByRole('button', { name: 'site_wizard_next' }),
         ).not.toBeInTheDocument();
+    });
+
+    it('generates the site to publish automatically once asked to', async () => {
+        render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        await userEvent.click(button('site_wizard_next'));
+        await userEvent.click(
+            screen.getByRole('checkbox', { name: 'site_wizard_auto_publish' }),
+        );
+        await userEvent.click(button('site_wizard_generate'));
+        expect(generate).toHaveBeenCalledWith(
+            models[0],
+            { type: 'url', url: 'https://x' },
+            expect.objectContaining({ autoPublish: true }),
+        );
     });
 
     it('lists every theme and preselects the default one for a model without theme', async () => {
@@ -346,7 +381,7 @@ describe('SiteWizard', () => {
         });
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
-        expect(button('site_wizard_generate')).toBeDisabled();
+        expect(button('site_wizard_next')).toBeDisabled();
     });
 
     it('generates with the recommended theme when the themes cannot be loaded', async () => {
@@ -360,11 +395,16 @@ describe('SiteWizard', () => {
         expect(
             screen.getByText('site_wizard_themes_error'),
         ).toBeInTheDocument();
-        await userEvent.click(button('site_wizard_generate'));
+        await generateSite();
         expect(generate).toHaveBeenCalledWith(
             models[2],
             { type: 'url', url: 'https://x' },
-            { siteName: '', siteDescription: '', theme: 'nougat' },
+            {
+                siteName: '',
+                siteDescription: '',
+                theme: 'nougat',
+                autoPublish: false,
+            },
         );
     });
 
@@ -390,11 +430,16 @@ describe('SiteWizard', () => {
         });
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
-        await userEvent.click(button('site_wizard_generate'));
+        await generateSite();
         expect(generate).toHaveBeenCalledWith(
             models[0],
             { type: 'url', url: 'https://x' },
-            { siteName: '', siteDescription: '', theme: 'default' },
+            {
+                siteName: '',
+                siteDescription: '',
+                theme: 'default',
+                autoPublish: false,
+            },
         );
     });
 
@@ -468,7 +513,7 @@ describe('SiteWizard', () => {
         await goToSiteInfoStep();
         await typeSiteName('My site');
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByText('2/4')).toBeInTheDocument();
+        expect(screen.getByText('2/5')).toBeInTheDocument();
         expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
         await userEvent.click(button('site_wizard_next'));
         expect(screen.getByLabelText('name')).toHaveValue('My site');
@@ -487,7 +532,7 @@ describe('SiteWizard', () => {
         await userEvent.click(
             within(screen.getByRole('listbox')).getByText(/Nougat/),
         );
-        await userEvent.click(button('site_wizard_generate'));
+        await generateSite();
         expect(generate).toHaveBeenCalledWith(
             models[0],
             { type: 'url', url: 'https://x' },
@@ -495,6 +540,7 @@ describe('SiteWizard', () => {
                 siteName: 'My site',
                 siteDescription: 'About my site',
                 theme: 'nougat',
+                autoPublish: false,
             },
         );
         await userEvent.click(button('site_wizard_generate'), {
@@ -519,7 +565,7 @@ describe('SiteWizard', () => {
         ).not.toBeInTheDocument();
         expect(button('site_wizard_cancel')).toBeDisabled();
         expect(button('site_wizard_previous')).toBeDisabled();
-        expect(button('site_wizard_generate')).toBeDisabled();
+        expect(button('site_wizard_next')).toBeDisabled();
         expect(
             screen.queryByRole('button', { name: 'site_wizard_cancel_import' }),
         ).not.toBeInTheDocument();
@@ -616,7 +662,7 @@ describe('SiteWizard', () => {
         const onClose = jest.fn();
         render(<SiteWizard open onClose={onClose} />);
         await goToThemeStep();
-        await userEvent.click(button('site_wizard_generate'));
+        await generateSite();
         await waitFor(() => expect(onClose).toHaveBeenCalledWith('generated'));
     });
 
@@ -638,7 +684,7 @@ describe('SiteWizard', () => {
             ).not.toBeInTheDocument(),
         );
         expect(onClose).not.toHaveBeenCalled();
-        expect(screen.getByText('2/4')).toBeInTheDocument();
+        expect(screen.getByText('2/5')).toBeInTheDocument();
 
         await userEvent.click(button('site_wizard_cancel'));
         await userEvent.click(button('confirm'));
@@ -700,7 +746,7 @@ describe('SiteWizard', () => {
         await goToSiteInfoStep();
         await typeSiteName('My site');
         await userEvent.click(button('site_wizard_next'));
-        await userEvent.click(button('site_wizard_generate'));
+        await generateSite();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
@@ -716,6 +762,7 @@ describe('SiteWizard', () => {
             expect(button('site_wizard_generate')).toBeEnabled(),
         );
         await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
         expect(screen.getByLabelText('name')).toHaveValue('My site');
     });
 
@@ -725,7 +772,7 @@ describe('SiteWizard', () => {
         await goToSiteInfoStep();
         await typeSiteName('My site');
         await userEvent.click(button('site_wizard_next'));
-        await userEvent.click(button('site_wizard_generate'));
+        await generateSite();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
@@ -754,7 +801,7 @@ describe('SiteWizard', () => {
         rerender(<SiteWizard open onClose={jest.fn()} />);
         await userEvent.click(button('site_wizard_previous'));
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByText('2/4')).toBeInTheDocument();
+        expect(screen.getByText('2/5')).toBeInTheDocument();
         expect(screen.getByRole('alert')).toHaveTextContent('boom');
         await userEvent.click(button('site_wizard_previous'));
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();

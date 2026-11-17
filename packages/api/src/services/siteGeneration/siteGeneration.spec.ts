@@ -5,11 +5,19 @@ import createSiteGenerationModel, {
     type SiteGenerationCollection,
     type SiteGenerationStep,
 } from '../../models/siteGeneration';
-import { cancelJob, getActiveJob, getWaitingJobs } from '../../workers/tools';
+import {
+    cancelJob,
+    cancelPublisherJob,
+    getActiveJob,
+    getJobState,
+    getWaitingJobs,
+    queuePublisher,
+} from '../../workers/tools';
 import { queueEnrichment, queuePrecomputed } from '../launchTasks';
 import {
     advanceSiteGeneration,
     getSiteGenerationView,
+    PUBLICATION_LOST,
     refusedDuringSiteGeneration,
     relaunchSiteGeneration,
     SITE_GENERATION_MAX_RELAUNCHES,
@@ -769,6 +777,165 @@ describe('siteGeneration service', () => {
             ]);
             expect(precomputed.findOneById).not.toHaveBeenCalled();
             expect(enrichment.findOneById).not.toHaveBeenCalled();
+        });
+    });
+    describe('publication at the end', () => {
+        const ONE_STEP = [step('clusterRameau', 'precomputed', 1)];
+
+        beforeEach(() => {
+            jest.mocked(queuePublisher).mockResolvedValue({} as never);
+        });
+
+        const runToTheEnd = async () => {
+            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+            await advanceSiteGeneration(ctx);
+            finishPosition(1);
+            await advanceSiteGeneration(ctx);
+        };
+
+        const mockJob = (state: string, failedReason?: string) =>
+            jest
+                .mocked(getJobState)
+                .mockResolvedValue({ state, failedReason } as never);
+
+        it('publishes once every step is done', async () => {
+            await runToTheEnd();
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('publishing');
+            expect(queuePublisher).toHaveBeenCalledWith(
+                'lodex_test',
+                current?.publishJobId,
+            );
+        });
+
+        it('does not publish without autoPublish', async () => {
+            await siteGeneration.start(ONE_STEP);
+            await advanceSiteGeneration(ctx);
+            finishPosition(1);
+            await advanceSiteGeneration(ctx);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe('done');
+            expect(queuePublisher).not.toHaveBeenCalled();
+        });
+
+        it('waits for the publisher job, then ends as done', async () => {
+            await runToTheEnd();
+            mockJob('active');
+            await advanceSiteGeneration(ctx);
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'publishing',
+            );
+
+            mockJob('completed');
+            await advanceSiteGeneration(ctx);
+            expect((await siteGeneration.findCurrent())?.status).toBe('done');
+        });
+
+        it('goes to error with the reason of a failed publication', async () => {
+            await runToTheEnd();
+            mockJob('failed', 'boom');
+
+            await advanceSiteGeneration(ctx);
+
+            expect(await getSiteGenerationView(ctx)).toEqual(
+                expect.objectContaining({
+                    status: 'error',
+                    publication: { state: 'error', message: 'boom' },
+                }),
+            );
+        });
+
+        it('puts a vanished publisher job in error, to publish again', async () => {
+            await runToTheEnd();
+            jest.mocked(getJobState).mockResolvedValue(null);
+
+            await advanceSiteGeneration(ctx);
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('error');
+            expect(current?.publishError).toBe(PUBLICATION_LOST);
+        });
+
+        it('relaunches only the publication when it failed', async () => {
+            await runToTheEnd();
+            const failedJobId = (await siteGeneration.findCurrent())
+                ?.publishJobId;
+            mockJob('failed', 'boom');
+            await advanceSiteGeneration(ctx);
+            jest.mocked(queuePrecomputed).mockClear();
+
+            expect(await relaunchSiteGeneration(ctx)).toBe(true);
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('publishing');
+            expect(current?.publishJobId).not.toBe(failedJobId);
+            expect(queuePublisher).toHaveBeenCalledTimes(2);
+            expect(queuePrecomputed).not.toHaveBeenCalled();
+        });
+
+        it('cancels the publisher job of a lost transition', async () => {
+            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+            await advanceSiteGeneration(ctx);
+            finishPosition(1);
+            jest.spyOn(siteGeneration, 'transition').mockResolvedValueOnce(
+                null,
+            );
+
+            await advanceSiteGeneration(ctx);
+
+            expect(cancelPublisherJob).toHaveBeenCalledWith(
+                ctx,
+                jest.mocked(queuePublisher).mock.calls[0][1],
+            );
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'running',
+            );
+        });
+
+        it('stops a publication and cancels its job', async () => {
+            await runToTheEnd();
+            const { publishJobId } = (await siteGeneration.findCurrent())!;
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+            expect(cancelPublisherJob).toHaveBeenCalledWith(ctx, publishJobId);
+        });
+
+        it('still stops when the publisher job cannot be cancelled', async () => {
+            await runToTheEnd();
+            (cancelPublisherJob as jest.Mock).mockRejectedValueOnce(
+                new Error('redis down'),
+            );
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it('does not cancel any publisher job when stopping a running generation', async () => {
+            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+
+            await stopSiteGeneration(ctx);
+
+            expect(cancelPublisherJob).not.toHaveBeenCalled();
+        });
+
+        it('shows the publication only with autoPublish', async () => {
+            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+            expect((await getSiteGenerationView(ctx))?.publication).toEqual({
+                state: 'waiting',
+            });
+
+            await siteGeneration.start(ONE_STEP);
+            expect(
+                (await getSiteGenerationView(ctx))?.publication,
+            ).toBeUndefined();
         });
     });
 });
