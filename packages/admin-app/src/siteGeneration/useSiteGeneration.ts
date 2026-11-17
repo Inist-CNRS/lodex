@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import type { SiteGenerationView } from '@lodex/common';
+import { isSiteGenerationActive, type SiteGenerationView } from '@lodex/common';
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import {
     getSiteGeneration,
@@ -28,8 +28,8 @@ export const getRefetchInterval = (
     if (!data || query.state.status === 'error') {
         return REFETCH_INTERVAL;
     }
-    const status = data.generation?.status;
-    return status === 'running' || status === 'publishing' || status === 'error'
+    // a stopping generation ends once its job is done
+    return isSiteGenerationActive(data.generation?.status)
         ? REFETCH_INTERVAL
         : false;
 };

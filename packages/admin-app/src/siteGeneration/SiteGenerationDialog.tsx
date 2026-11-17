@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
+import { useHistory } from 'react-router-dom';
 import {
     Box,
     Button,
@@ -7,42 +9,24 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
 } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ErrorIcon from '@mui/icons-material/Error';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import SyncIcon from '@mui/icons-material/Sync';
-import { toast, type SiteGenerationStepState } from '@lodex/common';
+import { isSiteGenerationActive, toast } from '@lodex/common';
 import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
+import { loadField } from '@lodex/frontend-common/fields/reducer';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { loadEnrichments } from '../enrichment';
 import { loadParsingResult } from '../parsing';
 import { loadPrecomputed } from '../precomputed';
 import { loadPublication } from '../publication';
+import { loadSubresources } from '../subresource';
+import { getErrorDetail } from '../commons/getErrorDetail';
+import { getDisplayedSteps } from './displayedSteps';
+import { SiteGenerationHeader } from './SiteGenerationHeader';
+import { SiteGenerationSteps } from './SiteGenerationSteps';
 import { useSiteGeneration } from './useSiteGeneration';
+import { WIZARD_DIALOG_PAPER_PROPS } from '../siteWizard/wizardDialogPaper';
 
 const SUPPORT_EMAIL = 'support-lodex@listes.istex.fr';
-// the statuses shown in the dialog
-const ACTIVE_STATUSES = ['running', 'publishing', 'error'];
-
-const StateIcon = ({ state }: { state: SiteGenerationStepState }) => {
-    switch (state) {
-        case 'done':
-            return <CheckCircleIcon color="success" />;
-        case 'running':
-            return <SyncIcon color="primary" />;
-        case 'error':
-            return <ErrorIcon color="error" />;
-        default:
-            return <HourglassEmptyIcon color="disabled" />;
-    }
-};
 
 // turns the support email of a translated text into a mailto link
 const WithEmailLink = ({ text }: { text: string }) => {
@@ -59,13 +43,15 @@ const WithEmailLink = ({ text }: { text: string }) => {
 export const SiteGenerationDialog = () => {
     const { translate } = useTranslate();
     const dispatch = useDispatch();
+    const history = useHistory();
+    const queryClient = useQueryClient();
     const { generation, relaunch, stop, isActing, isStopping } =
         useSiteGeneration();
     const [isStopConfirmOpen, setIsStopConfirmOpen] = useState(false);
     const previousStatus = useRef(generation?.status);
 
     const status = generation?.status;
-    const isOpen = !!status && ACTIVE_STATUSES.includes(status);
+    const isOpen = isSiteGenerationActive(status);
     useEffect(() => {
         if (!isOpen) {
             setIsStopConfirmOpen(false);
@@ -73,53 +59,70 @@ export const SiteGenerationDialog = () => {
     }, [isOpen]);
     useEffect(() => {
         const previous = previousStatus.current;
-        // a stopped generation keeps the columns of its finished steps
-        const isEnded =
-            status === 'done'
-                ? previous === 'running' || previous === 'publishing'
-                : status === 'stopped';
-        if (isEnded && previous && ACTIVE_STATUSES.includes(previous)) {
-            dispatch(loadEnrichments());
-            dispatch(loadPrecomputed());
-            dispatch(loadParsingResult());
-            // the site may have been published at the end
-            dispatch(loadPublication());
-        }
         previousStatus.current = status;
-    }, [status, dispatch]);
+        const hasEnded = status === 'done' || status === 'stopped';
+        if (!hasEnded || !isSiteGenerationActive(previous)) {
+            return;
+        }
+        // the generation changed the whole instance (a stopped one keeps
+        // what its finished steps did)
+        dispatch(loadField());
+        dispatch(loadPublication());
+        dispatch(loadSubresources());
+        dispatch(loadEnrichments());
+        dispatch(loadPrecomputed());
+        dispatch(loadParsingResult());
+        // the model import changes the site name, description and theme
+        queryClient.resetQueries({ queryKey: ['get-config-tenant'] });
+        if (status === 'done' && generation?.themeNotFound) {
+            toast(
+                translate('site_wizard_theme_not_found', {
+                    theme: generation.themeNotFound,
+                }),
+                { type: 'warning' },
+            );
+        }
+    }, [status, generation?.themeNotFound, dispatch, translate, queryClient]);
 
     if (!generation || !isOpen) {
         return null;
     }
 
-    const total = generation.steps.length;
-    const done = generation.steps.filter(
-        (step) => step.state === 'done',
-    ).length;
-    const hasStepError = generation.steps.some(
-        (step) => step.state === 'error',
-    );
+    const steps = getDisplayedSteps(generation);
+    const isGenerationStopping = status === 'stopping';
+    // only the publication failed: nothing for the support
+    const hasPublicationError = generation.publication?.state === 'error';
+    const hasStepError = status === 'error' && !hasPublicationError;
     const stopDescription =
         status === 'publishing'
             ? 'site_generation_stop_publication_description'
-            : generation.publication?.state === 'error' && !hasStepError
+            : hasPublicationError
               ? 'site_generation_stop_failed_publication_description'
               : 'site_generation_stop_description';
-    const steps = [...generation.steps].sort((a, b) => a.position - b.position);
 
     const run = async (action: () => Promise<void>) => {
         try {
             await action();
+            return true;
         } catch (error) {
             toast(
                 translate('site_generation_action_error', {
                     // the API answers with a translation key (e.g. a 409)
-                    error: translate(
-                        error instanceof Error ? error.message : String(error),
-                    ),
+                    error: translate(getErrorDetail(error)),
                 }),
                 { type: 'error' },
             );
+            return false;
+        }
+    };
+
+    const handleRetry = async () => {
+        // a failed data import leaves the instance empty: the wizard opens
+        // again, on the data screen, to send the data anew
+        const isDataRetry = generation.phase === 'data';
+        const isRelaunched = await run(relaunch);
+        if (isRelaunched && isDataRetry) {
+            history.push('/data/existing', { reopenSiteWizard: true });
         }
     };
 
@@ -129,84 +132,42 @@ export const SiteGenerationDialog = () => {
     };
 
     return (
-        <Dialog open fullWidth maxWidth="sm" disableEscapeKeyDown>
-            <DialogTitle>{translate('site_generation_title')}</DialogTitle>
-            <DialogContent>
-                <Typography>
-                    {translate('site_generation_progress', { done, total })}
-                </Typography>
-                <List dense>
-                    {steps.map((step) => (
-                        <ListItem key={`${step.type}-${step.name}`}>
-                            <ListItemIcon>
-                                <StateIcon state={step.state} />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={step.name}
-                                secondary={
-                                    <>
-                                        {translate(
-                                            `site_generation_type_${step.type}`,
-                                        )}
-                                        {step.state === 'running' &&
-                                            ` (${translate('site_generation_running')})`}
-                                        {step.state === 'error' &&
-                                            step.message && (
-                                                <Box component="span">
-                                                    {' — '}
-                                                    {translate(step.message)}
-                                                </Box>
-                                            )}
-                                    </>
-                                }
-                            />
-                        </ListItem>
-                    ))}
-                    {generation.publication && (
-                        <ListItem>
-                            <ListItemIcon>
-                                <StateIcon
-                                    state={generation.publication.state}
-                                />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={translate(
-                                    'site_generation_publication',
-                                )}
-                                secondary={
-                                    <>
-                                        {generation.publication.state ===
-                                            'running' &&
-                                            translate(
-                                                'site_generation_running',
-                                            )}
-                                        {generation.publication.state ===
-                                            'error' &&
-                                            generation.publication.message &&
-                                            translate(
-                                                generation.publication.message,
-                                            )}
-                                    </>
-                                }
-                            />
-                        </ListItem>
-                    )}
-                </List>
-            </DialogContent>
-            <DialogActions>
-                {status === 'error' && (
-                    <Button
-                        variant="contained"
-                        onClick={() => run(relaunch)}
-                        disabled={isActing}
+        <Dialog
+            open
+            fullWidth
+            maxWidth="md"
+            disableEscapeKeyDown
+            aria-labelledby="site-generation-title"
+            PaperProps={WIZARD_DIALOG_PAPER_PROPS}
+        >
+            <DialogContent sx={{ px: 0 }}>
+                <SiteGenerationHeader steps={steps} />
+                <SiteGenerationSteps
+                    steps={steps}
+                    view={generation}
+                    onRetry={handleRetry}
+                    retryDisabled={isActing || isGenerationStopping}
+                />
+                {isGenerationStopping && (
+                    <Box
+                        role="status"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            mt: 3,
+                        }}
                     >
-                        {translate('site_generation_relaunch')}
-                    </Button>
+                        <CircularProgress size={20} />
+                        {translate('site_generation_stopping')}
+                    </Box>
                 )}
+            </DialogContent>
+            <DialogActions sx={{ px: 0, pb: 0 }}>
                 <Button
-                    color="warning"
+                    color="inherit"
                     onClick={() => setIsStopConfirmOpen(true)}
-                    disabled={isActing}
+                    disabled={isActing || isGenerationStopping}
                 >
                     {translate('site_generation_stop')}
                 </Button>

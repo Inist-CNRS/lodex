@@ -3,7 +3,6 @@ import {
     Box,
     Button,
     Chip,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -30,6 +29,11 @@ import { getPreselectedTheme, ThemeStep } from './ThemeStep';
 import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
 import { useDisplayableModels } from './useDisplayableModels';
 import { useGenerateSite } from './useGenerateSite';
+import { getUploadView } from './uploadSteps';
+import { WIZARD_DIALOG_PAPER_PROPS } from './wizardDialogPaper';
+import { getDisplayedSteps } from '../siteGeneration/displayedSteps';
+import { SiteGenerationHeader } from '../siteGeneration/SiteGenerationHeader';
+import { SiteGenerationSteps } from '../siteGeneration/SiteGenerationSteps';
 
 type WizardState = {
     modelId: string;
@@ -197,8 +201,10 @@ const STEPS: WizardStep[] = [
 const FIRST_STEP_WITH_ERROR = STEPS.indexOf(dataStep);
 
 // dismissed: the user chose to configure the site manually (first step);
-// cancelled: the user left a later step
-export type SiteWizardCloseReason = 'generated' | 'dismissed' | 'cancelled';
+// cancelled: the user left a later step;
+// handedOver: the upload is queued, the progress dialog follows the
+// generation. The wizard keeps its choices, for a retry of the data import.
+export type SiteWizardCloseReason = 'handedOver' | 'dismissed' | 'cancelled';
 
 type SiteWizardProps = {
     open: boolean;
@@ -228,6 +234,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     const [index, setIndex] = useState(0);
     const [userState, setState] = useState<WizardState>(INITIAL_STATE);
     const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
+    const [isStopConfirmOpen, setIsStopConfirmOpen] = useState(false);
     const isSubmittingRef = useRef(false);
 
     const step = STEPS[index];
@@ -243,6 +250,18 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 : getPreselectedTheme(model, themesQuery.data)),
     };
 
+    const uploadView = model ? getUploadView(model, state) : undefined;
+    const uploadSteps = uploadView ? getDisplayedSteps(uploadView) : [];
+    // the upload is shown as the progress dialog that follows it
+    const isUploadShown = isGenerating && !!model;
+    // the upload ended (queued, failed or cancelled): nothing to stop
+    const isStopConfirmShown = isStopConfirmOpen && canCancel;
+
+    const handleStop = () => {
+        setIsStopConfirmOpen(false);
+        cancelImport();
+    };
+
     const handleChange = (patch: Partial<WizardState>) => {
         if (
             (Object.keys(patch) as (keyof WizardState)[]).some(
@@ -255,8 +274,10 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     };
 
     const close = (reason: SiteWizardCloseReason) => {
-        setIndex(0);
-        setState(INITIAL_STATE);
+        if (reason !== 'handedOver') {
+            setIndex(0);
+            setState(INITIAL_STATE);
+        }
         setIsCancelConfirmOpen(false);
         // the dialog stays open while an error is displayed
         clearError();
@@ -269,6 +290,9 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
             return;
         }
         isSubmittingRef.current = true;
+        // a confirmation left open by the previous upload must not show
+        // again over this one
+        setIsStopConfirmOpen(false);
         try {
             await generate(model, source, {
                 siteName: state.siteName,
@@ -276,7 +300,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 theme: state.theme,
                 autoPublish: state.autoPublish,
             });
-            close('generated');
+            close('handedOver');
         } catch {
             // the error is displayed from useGenerateSite
         } finally {
@@ -300,119 +324,78 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
             maxWidth="md"
             // only the cancel buttons close it, after a confirmation
             disableEscapeKeyDown
-            // a fixed height: the dialog does not jump between steps, a long
-            // step scrolls
-            PaperProps={{ sx: { height: 'min(720px, 90vh)', p: 4 } }}
+            PaperProps={WIZARD_DIALOG_PAPER_PROPS}
         >
-            <DialogTitle
-                component="div"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="flex-start"
-                gap={4}
-                sx={{ p: 0, mb: 2 }}
-            >
-                {/* the same header on every step */}
-                <Box>
-                    {/* same heading style as AnnotationHeader */}
-                    <Typography
-                        variant="h1"
-                        fontSize={24}
-                        fontWeight={700}
-                        color="text.primary"
-                    >
-                        {translate('site_wizard_title')}
-                    </Typography>
-                    <Box
-                        display="flex"
-                        flexWrap="wrap"
-                        alignItems="center"
-                        columnGap={1.5}
-                    >
-                        <Typography color="text.secondary">
-                            {translate('site_wizard_subtitle')}
-                        </Typography>
-                        {/* the chosen model, once past its step */}
-                        {model && index > 0 && (
-                            <Chip
-                                size="small"
-                                color="primary"
-                                variant="outlined"
-                                label={translate(getModelTitleKey(model.id))}
-                            />
-                        )}
-                    </Box>
-                </Box>
-                <Box
+            {isUploadShown ? (
+                <SiteGenerationHeader steps={uploadSteps} />
+            ) : (
+                <DialogTitle
+                    component="div"
                     display="flex"
-                    flexDirection="column"
-                    alignItems="flex-end"
-                    gap={1}
-                    pt={1}
-                    flexShrink={0}
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                    gap={4}
+                    sx={{ p: 0, mb: 2 }}
                 >
-                    <LinearProgress
-                        variant="determinate"
-                        value={((index + 1) / STEPS.length) * 100}
-                        sx={{ width: 240, height: 8, borderRadius: 4 }}
-                    />
-                    <Typography variant="body1">
-                        {`${index + 1}/${STEPS.length}`}
-                    </Typography>
-                </Box>
-            </DialogTitle>
-            <DialogContent sx={{ px: 0 }}>
-                {isGenerating ? (
+                    {/* the same header on every step */}
+                    <Box>
+                        {/* same heading style as AnnotationHeader */}
+                        <Typography
+                            variant="h1"
+                            fontSize={24}
+                            fontWeight={700}
+                            color="text.primary"
+                        >
+                            {translate('site_wizard_title')}
+                        </Typography>
+                        <Box
+                            display="flex"
+                            flexWrap="wrap"
+                            alignItems="center"
+                            columnGap={1.5}
+                        >
+                            <Typography color="text.secondary">
+                                {translate('site_wizard_subtitle')}
+                            </Typography>
+                            {/* the chosen model, once past its step */}
+                            {model && index > 0 && (
+                                <Chip
+                                    size="small"
+                                    color="primary"
+                                    variant="outlined"
+                                    label={translate(
+                                        getModelTitleKey(model.id),
+                                    )}
+                                />
+                            )}
+                        </Box>
+                    </Box>
                     <Box
                         display="flex"
                         flexDirection="column"
-                        alignItems="center"
-                        gap={2}
-                        py={6}
+                        alignItems="flex-end"
+                        gap={1}
+                        pt={1}
+                        flexShrink={0}
                     >
-                        <CircularProgress />
-                        <Typography>
-                            {translate('site_wizard_generating')}
+                        <LinearProgress
+                            variant="determinate"
+                            value={((index + 1) / STEPS.length) * 100}
+                            sx={{ width: 240, height: 8, borderRadius: 4 }}
+                        />
+                        <Typography variant="body1">
+                            {`${index + 1}/${STEPS.length}`}
                         </Typography>
-                        {uploadProgress !== null && (
-                            <Box width="60%">
-                                <LinearProgress
-                                    variant="determinate"
-                                    value={uploadProgress}
-                                    aria-label={translate(
-                                        'site_wizard_uploading',
-                                        {
-                                            progress: uploadProgress,
-                                        },
-                                    )}
-                                />
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                    textAlign="center"
-                                    mt={1}
-                                >
-                                    {translate('site_wizard_uploading', {
-                                        progress: uploadProgress,
-                                    })}
-                                </Typography>
-                            </Box>
-                        )}
-                        {canCancel && (
-                            <Button
-                                color="primary"
-                                onClick={cancelImport}
-                                // the cancel waits for the server (5 s at most)
-                                disabled={isCancelling}
-                            >
-                                {translate(
-                                    isCancelling
-                                        ? 'site_wizard_cancelling'
-                                        : 'site_wizard_cancel_import',
-                                )}
-                            </Button>
-                        )}
                     </Box>
+                </DialogTitle>
+            )}
+            <DialogContent sx={{ px: 0 }}>
+                {isUploadShown ? (
+                    <SiteGenerationSteps
+                        steps={uploadSteps}
+                        view={uploadView}
+                        uploadProgress={uploadProgress}
+                    />
                 ) : (
                     <>
                         {error && index >= FIRST_STEP_WITH_ERROR && (
@@ -428,48 +411,78 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                     </>
                 )}
             </DialogContent>
-            <DialogActions
-                sx={{ justifyContent: 'space-between', px: 0, pb: 0 }}
-            >
-                <Box>
-                    {index > 0 && (
+            {isUploadShown ? (
+                <DialogActions sx={{ px: 0, pb: 0 }}>
+                    {canCancel && (
                         <Button
                             color="inherit"
-                            startIcon={<ArrowBackIcon />}
-                            onClick={() => setIndex(index - 1)}
-                            disabled={isGenerating}
+                            onClick={() => setIsStopConfirmOpen(true)}
+                            // the cancel waits for the server (5 s at most)
+                            disabled={isCancelling}
                         >
-                            {translate('site_wizard_previous')}
+                            {translate(
+                                isCancelling
+                                    ? 'site_wizard_cancelling'
+                                    : 'site_generation_stop',
+                            )}
                         </Button>
                     )}
-                </Box>
-                <Box display="flex" gap={1}>
-                    <Button
-                        color="inherit"
-                        onClick={() => setIsCancelConfirmOpen(true)}
-                        disabled={isGenerating}
-                    >
-                        {translate(
-                            index === 0
-                                ? 'site_wizard_manual'
-                                : 'site_wizard_cancel',
+                </DialogActions>
+            ) : (
+                <DialogActions
+                    sx={{ justifyContent: 'space-between', px: 0, pb: 0 }}
+                >
+                    <Box>
+                        {index > 0 && (
+                            <Button
+                                color="inherit"
+                                startIcon={<ArrowBackIcon />}
+                                onClick={() => setIndex(index - 1)}
+                                disabled={isGenerating}
+                            >
+                                {translate('site_wizard_previous')}
+                            </Button>
                         )}
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={isLastStep ? undefined : <ArrowForwardIcon />}
-                        onClick={handleNext}
-                        disabled={!step.canContinue(state) || isGenerating}
-                    >
-                        {translate(
-                            isLastStep
-                                ? 'site_wizard_generate'
-                                : 'site_wizard_next',
-                        )}
-                    </Button>
-                </Box>
-            </DialogActions>
+                    </Box>
+                    <Box display="flex" gap={1}>
+                        <Button
+                            color="inherit"
+                            onClick={() => setIsCancelConfirmOpen(true)}
+                            disabled={isGenerating}
+                        >
+                            {translate(
+                                index === 0
+                                    ? 'site_wizard_manual'
+                                    : 'site_wizard_cancel',
+                            )}
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            endIcon={
+                                isLastStep ? undefined : <ArrowForwardIcon />
+                            }
+                            onClick={handleNext}
+                            disabled={!step.canContinue(state) || isGenerating}
+                        >
+                            {translate(
+                                isLastStep
+                                    ? 'site_wizard_generate'
+                                    : 'site_wizard_next',
+                            )}
+                        </Button>
+                    </Box>
+                </DialogActions>
+            )}
+            <ConfirmPopup
+                isOpen={isStopConfirmShown}
+                title={translate('site_generation_stop_title')}
+                description={translate('site_generation_stop_description')}
+                cancelLabel={translate('cancel')}
+                confirmLabel={translate('confirm')}
+                onCancel={() => setIsStopConfirmOpen(false)}
+                onConfirm={handleStop}
+            />
             <ConfirmPopup
                 isOpen={isCancelConfirmOpen}
                 title={translate('site_wizard_cancel_title')}

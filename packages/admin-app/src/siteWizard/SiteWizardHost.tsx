@@ -1,9 +1,18 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    type ReactNode,
+} from 'react';
 import { useSelector } from 'react-redux';
-import { URI_FIELD_NAME } from '@lodex/common';
+import { useHistory, useLocation } from 'react-router-dom';
+import { isSiteGenerationActive, URI_FIELD_NAME } from '@lodex/common';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { fromLoaders, fromParsing, fromPublication } from '../selectors';
 import type { State } from '../reducers';
+import { useSiteGeneration } from '../siteGeneration/useSiteGeneration';
 import { SiteWizard, type SiteWizardCloseReason } from './SiteWizard';
 import { SiteWizardContext } from './SiteWizardContext';
 import {
@@ -34,6 +43,9 @@ const shouldOpenByItself = (state: State) =>
     hasNoModel(state) &&
     fromLoaders.areLoadersLoaded(state);
 
+// set by the progress dialog when a failed data import is retried
+export type SiteWizardLocationState = { reopenSiteWizard?: boolean };
+
 // opened by the instance itself or from the data screen, until closed
 type WizardRequest = 'auto' | 'open' | 'closed';
 
@@ -49,15 +61,35 @@ type SiteWizardHostProps = {
  * generated site imports its data.
  *
  * Once open, the wizard stays open until the user closes it or the
- * generation succeeds, whatever the generation changes in the instance
+ * upload is handed over to the progress dialog, whatever the generation changes in the instance
  * (model imported, data partially saved...).
  */
 export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
-    const opensByItself = useSelector(shouldOpenByItself);
+    const instanceIsEmpty = useSelector(shouldOpenByItself);
+    const { generation } = useSiteGeneration();
     const [request, setRequest] = useState<WizardRequest>(() =>
         isSiteWizardDismissed() ? 'closed' : 'auto',
     );
     const [wizardKey, setWizardKey] = useState(0);
+    const hasSeenActiveGeneration = useRef(false);
+    const history = useHistory();
+    const location = useLocation<SiteWizardLocationState | undefined>();
+    const isReopenRequested = !!location.state?.reopenSiteWizard;
+
+    // the progress dialog shows an active generation: the wizard must not
+    // hide it (undefined: the generation is not known yet)
+    const isGenerationActive = isSiteGenerationActive(generation?.status);
+    if (isGenerationActive) {
+        hasSeenActiveGeneration.current = true;
+    }
+    // a reload during the data import shows an empty instance: the wizard
+    // waits for the end of the generation. A site generated meanwhile looks
+    // empty until the instance is reloaded: it does not open the wizard.
+    const opensByItself =
+        instanceIsEmpty &&
+        generation !== undefined &&
+        !isGenerationActive &&
+        !(hasSeenActiveGeneration.current && generation?.status === 'done');
 
     if (request === 'auto' && active && opensByItself) {
         setRequest('open');
@@ -68,6 +100,22 @@ export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
         setWizardKey((key) => key + 1);
         setRequest('open');
     }, []);
+    // a failed data import asks to send the data anew: the wizard reopens as
+    // it was left (same key). The request is then removed from the history
+    // entry, so that a reload or a back does not reopen the wizard.
+    useEffect(() => {
+        if (!isReopenRequested) {
+            return;
+        }
+        setRequest('open');
+        const { reopenSiteWizard: _, ...state } = location.state ?? {};
+        history.replace({
+            pathname: location.pathname,
+            search: location.search,
+            hash: location.hash,
+            state,
+        });
+    }, [isReopenRequested, location, history]);
     const handleClose = (reason: SiteWizardCloseReason) => {
         if (reason === 'dismissed') {
             rememberSiteWizardDismissed();
