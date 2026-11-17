@@ -64,7 +64,9 @@ describe('getOrCreateWorkerQueue', () => {
         (event) => {
             getOrCreateWorkerQueue('tenant', 1);
 
-            getListener(event)({ data: { jobType: 'enricher', tenant: 'demo' } });
+            getListener(event)({
+                data: { jobType: 'enricher', tenant: 'demo' },
+            });
 
             expect(sweepTenants).toHaveBeenCalledWith(['demo']);
         },
