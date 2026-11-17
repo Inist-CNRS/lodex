@@ -45,7 +45,8 @@ const getLogger = (tenant = '_lodex_') => {
         level: config.get('logger.level'),
         transports: [
             new winston.transports.Console({
-                handleExceptions: true,
+                // one uncaughtException listener for the whole process, not one per tenant
+                handleExceptions: tenant === '_lodex_',
             }),
         ],
         format: format.combine(
