@@ -44,10 +44,7 @@ const getLogger = (tenant = '_lodex_') => {
     const logger = createLogger({
         level: config.get('logger.level'),
         transports: [
-            new winston.transports.Console({
-                // one uncaughtException listener for the whole process, not one per tenant
-                handleExceptions: tenant === '_lodex_',
-            }),
+            new winston.transports.Console(),
         ],
         format: format.combine(
             format.timestamp(),
