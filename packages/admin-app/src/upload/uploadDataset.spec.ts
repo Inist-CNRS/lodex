@@ -1,6 +1,6 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
-import { clearDataset, uploadDataset } from './uploadDataset';
+import { uploadDataset } from './uploadDataset';
 
 jest.mock('@lodex/frontend-common/fetch/fetch', () => ({
     __esModule: true,
@@ -28,7 +28,7 @@ describe('uploadDataset', () => {
             'tok',
             'csv',
             null,
-            undefined,
+            expect.not.objectContaining({ query: expect.anything() }),
         );
         expect(fetch).not.toHaveBeenCalled();
     });
@@ -49,11 +49,50 @@ describe('uploadDataset', () => {
         );
     });
 
-    it('clears the dataset, keeping the model', async () => {
-        await clearDataset();
+    it('sends the choice as query fields with a file', async () => {
+        const file = new File(['a'], 'a.csv');
+        await uploadDataset({ type: 'file', file }, 'csv', {
+            choice: {
+                modelId: 'a',
+                siteName: 'Site',
+                siteDescription: 'Desc',
+                theme: 'dark',
+            },
+        });
+        expect(loadDatasetFile).toHaveBeenCalledWith(
+            file,
+            'tok',
+            'csv',
+            null,
+            expect.objectContaining({
+                query: {
+                    modelId: 'a',
+                    siteName: 'Site',
+                    siteDescription: 'Desc',
+                    theme: 'dark',
+                },
+            }),
+        );
+    });
+
+    it('leaves out the choice fields not given with a file', async () => {
+        const file = new File(['a'], 'a.csv');
+        await uploadDataset({ type: 'file', file }, 'csv', {
+            choice: { modelId: 'a', siteName: undefined },
+        });
+        expect((loadDatasetFile as jest.Mock).mock.calls[0][4].query).toEqual({
+            modelId: 'a',
+        });
+    });
+
+    it.each([
+        ['url', { type: 'url' as const, url: 'http://x/a.csv' }],
+        ['text', { type: 'text' as const, text: 'a,b' }],
+    ])('sends the choice with a %s', async (_, source) => {
+        const choice = { modelId: 'a', siteName: 'Site', theme: 'dark' };
+        await uploadDataset(source, 'csv', { choice });
         const request = (fetch as jest.Mock).mock.calls[0][0];
-        expect(request.url).toBe('/api/upload/clear');
-        expect(request.method).toBe('DELETE');
+        expect(JSON.parse(request.body).siteGeneration).toEqual(choice);
     });
 
     it('uploads an url', async () => {

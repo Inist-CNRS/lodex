@@ -216,7 +216,6 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         isCancelling,
         cancelImport,
         error,
-        errorDetail,
         clearError,
     } = useGenerateSite();
     // fetched once opened, before the theme step that needs it: the host
@@ -417,10 +416,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 ) : (
                     <>
                         {error && index >= FIRST_STEP_WITH_ERROR && (
-                            <GenerationError
-                                error={error}
-                                detail={errorDetail}
-                            />
+                            <GenerationError error={error} />
                         )}
                         <Component
                             state={state}

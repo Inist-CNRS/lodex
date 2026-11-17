@@ -1,41 +1,14 @@
 import { type ReactNode } from 'react';
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
-import { toast, type CatalogModel } from '@lodex/common';
-import { LOAD_FIELD } from '@lodex/frontend-common/fields/reducer';
+import { type CatalogModel } from '@lodex/common';
 import { Wrapper, getStore } from '../test-utils';
-import { importCatalogModel } from '../api/field';
-import jobsApi from '../api/job';
-import { LOAD_ENRICHMENTS } from '../enrichment';
-import { LOAD_PRECOMPUTED } from '../precomputed';
-import { LOAD_PUBLICATION } from '../publication';
-import { LOAD_SUBRESOURCES } from '../subresource';
-import { clearDataset, uploadDataset } from '../upload/uploadDataset';
-import { useImportJobEnd } from './useImportJobEnd';
+import { uploadDataset } from '../upload/uploadDataset';
+import { stopSiteGeneration } from '../api/siteGeneration';
 import { useGenerateSite } from './useGenerateSite';
 
-jest.mock('../api/field', () => ({ importCatalogModel: jest.fn() }));
-jest.mock('../upload/uploadDataset', () => ({
-    uploadDataset: jest.fn(),
-    clearDataset: jest.fn(),
-}));
-jest.mock('./useImportJobEnd', () => ({ useImportJobEnd: jest.fn() }));
-jest.mock('../api/job', () => ({
-    __esModule: true,
-    default: { cancelJob: jest.fn() },
-}));
-jest.mock('@lodex/common', () => ({
-    ...jest.requireActual('@lodex/common'),
-    toast: jest.fn(),
-}));
-
-const RELOAD_ACTIONS = [
-    LOAD_FIELD,
-    LOAD_PUBLICATION,
-    LOAD_SUBRESOURCES,
-    LOAD_ENRICHMENTS,
-    LOAD_PRECOMPUTED,
-];
+jest.mock('../upload/uploadDataset', () => ({ uploadDataset: jest.fn() }));
+jest.mock('../api/siteGeneration', () => ({ stopSiteGeneration: jest.fn() }));
 
 const model: CatalogModel = {
     id: 'a',
@@ -44,65 +17,29 @@ const model: CatalogModel = {
     importTypes: ['file'],
 };
 const source = { type: 'url' as const, url: 'https://x' };
+const fileSource = {
+    type: 'file' as const,
+    file: new File(['a'], 'a.csv'),
+};
 
 describe('useGenerateSite', () => {
-    let calls: string[];
-    let waitForImportEnd: jest.Mock;
-    let connect: jest.Mock;
-    const stopWaitingForImportEnd = jest.fn();
-    const giveUpWaitingForImportEnd = jest.fn();
     let client: QueryClient;
-    let dispatched: string[];
 
-    const renderGenerateSite = () => {
-        const store = getStore();
-        // record the actions without running their sagas
-        jest.spyOn(store, 'dispatch').mockImplementation((action) => {
-            dispatched.push(action.type);
-            return action;
-        });
-        return renderHook(() => useGenerateSite(), {
+    const renderGenerateSite = () =>
+        renderHook(() => useGenerateSite(), {
             wrapper: ({ children }: { children: ReactNode }) => (
-                <Wrapper store={store} client={client}>
+                <Wrapper store={getStore()} client={client}>
                     {children}
                 </Wrapper>
             ),
         });
-    };
 
     beforeEach(() => {
-        stopWaitingForImportEnd.mockClear();
-        giveUpWaitingForImportEnd.mockClear();
         jest.clearAllMocks();
-        calls = [];
-        dispatched = [];
         client = new QueryClient();
         jest.spyOn(client, 'invalidateQueries').mockResolvedValue();
-        jest.spyOn(client, 'resetQueries').mockImplementation(async () => {
-            calls.push('resetQueries');
-        });
-        (importCatalogModel as jest.Mock).mockImplementation(async () => {
-            calls.push('importCatalogModel');
-            return {};
-        });
-        (uploadDataset as jest.Mock).mockImplementation(async () => {
-            calls.push('uploadDataset');
-        });
-        waitForImportEnd = jest.fn(async () => {
-            calls.push('waitForImportEnd');
-        });
-        connect = jest.fn(async () => {
-            calls.push('connected');
-        });
-        // the mocked waitForImportEnd gives the import end promise
-        (useImportJobEnd as jest.Mock).mockReturnValue({
-            waitForImportEnd: () => ({
-                ended: waitForImportEnd(),
-                connected: connect(),
-            }),
-            stopWaitingForImportEnd,
-            giveUpWaitingForImportEnd,
-        });
+        (uploadDataset as jest.Mock).mockResolvedValue(undefined);
+        (stopSiteGeneration as jest.Mock).mockResolvedValue(undefined);
     });
 
     afterEach(() => {
@@ -110,37 +47,42 @@ describe('useGenerateSite', () => {
         window.onbeforeunload = undefined;
     });
 
-    it('imports the data with the model loader, then the model', async () => {
+    it('sends the data with the choice, the model loader and the site info', async () => {
         const { result } = renderGenerateSite();
-        await act(() => result.current.generate(model, source));
-        // listens to the job end before uploading, then imports the model
-        // once the data is there
-        expect(calls).toEqual([
-            'waitForImportEnd',
-            'connected',
-            'uploadDataset',
-            'importCatalogModel',
-            'resetQueries',
-        ]);
-        expect(importCatalogModel).toHaveBeenCalledWith('a', {});
-        expect(client.resetQueries).toHaveBeenCalledWith({
-            queryKey: ['get-config-tenant'],
-        });
-        expect(uploadDataset).toHaveBeenCalledWith(source, 'la');
+        await act(() =>
+            result.current.generate(model, source, {
+                siteName: 'Site',
+                siteDescription: 'Desc',
+                theme: 'dark',
+            }),
+        );
+        expect(uploadDataset).toHaveBeenCalledWith(
+            source,
+            'la',
+            expect.objectContaining({
+                choice: {
+                    modelId: 'a',
+                    siteName: 'Site',
+                    siteDescription: 'Desc',
+                    theme: 'dark',
+                },
+            }),
+        );
         expect(result.current.isGenerating).toBe(false);
         expect(result.current.error).toBeNull();
-        expect(toast).not.toHaveBeenCalled();
     });
 
-    it('invalidates the site generation after the model import', async () => {
+    it('sends only the model id without site info', async () => {
         const { result } = renderGenerateSite();
         await act(() => result.current.generate(model, source));
-        expect(client.invalidateQueries).toHaveBeenCalledWith({
-            queryKey: ['site-generation'],
-        });
+        expect(uploadDataset).toHaveBeenCalledWith(
+            source,
+            'la',
+            expect.objectContaining({ choice: { modelId: 'a' } }),
+        );
     });
 
-    it('waits for the site generation before ending the generation', async () => {
+    it('ends once the site generation query is invalidated', async () => {
         let refetched: () => void = () => {};
         jest.mocked(client.invalidateQueries).mockImplementation(
             () => new Promise<void>((resolve) => (refetched = resolve)),
@@ -148,416 +90,256 @@ describe('useGenerateSite', () => {
         const { result } = renderGenerateSite();
         let ended = false;
         await act(async () => {
-            result.current.generate(model, source).then(() => (ended = true));
+            result.current.generate(model, source).then(() => {
+                ended = true;
+            });
         });
-        await waitFor(() =>
-            expect(client.invalidateQueries).toHaveBeenCalledWith({
-                queryKey: ['site-generation'],
-            }),
-        );
+        expect(client.invalidateQueries).toHaveBeenCalledWith({
+            queryKey: ['site-generation'],
+        });
         expect(ended).toBe(false);
         expect(result.current.isGenerating).toBe(true);
-
         await act(async () => refetched());
-
         expect(ended).toBe(true);
         expect(result.current.isGenerating).toBe(false);
     });
 
-    it('imports the model with the site name and description', async () => {
-        const siteInfo = { siteName: 'My site', siteDescription: 'About' };
-        const { result } = renderGenerateSite();
-        await act(() => result.current.generate(model, source, siteInfo));
-        expect(importCatalogModel).toHaveBeenCalledWith('a', siteInfo);
-    });
-
-    it('uploads the data only once the import socket is connected', async () => {
-        let connected: () => void = () => {};
-        connect.mockImplementation(
-            () => new Promise<void>((resolve) => (connected = resolve)),
-        );
-        const { result } = renderGenerateSite();
-        let promise: Promise<void> = Promise.resolve();
-        await act(async () => {
-            promise = result.current.generate(model, source);
-        });
-        expect(uploadDataset).not.toHaveBeenCalled();
-        await act(async () => {
-            connected();
-            await promise;
-        });
-        expect(uploadDataset).toHaveBeenCalled();
-    });
-
-    it('completes when the import ends before the upload request resolves', async () => {
-        // emulates useImportJobEnd: an end event is dropped when no wait is pending
-        let pending: (() => void) | null = null;
-        waitForImportEnd.mockImplementation(
-            () =>
-                new Promise<void>((resolve) => {
-                    pending = resolve;
-                }),
-        );
-        (uploadDataset as jest.Mock).mockImplementation(async () => {
-            const end = pending;
-            pending = null;
-            end?.();
-        });
-        const { result } = renderGenerateSite();
-        let done = false;
-        await act(async () => {
-            result.current.generate(model, source).then(() => {
-                done = true;
-            });
-        });
-        expect(done).toBe(true);
-        expect(result.current.isGenerating).toBe(false);
-        expect(result.current.error).toBeNull();
-    });
-
-    it('sets the error when the upload fails, without unhandled rejection from the pending wait', async () => {
-        let rejectWait: (error: Error) => void = () => {};
-        waitForImportEnd.mockImplementation(
-            () =>
-                new Promise<void>((_, reject) => {
-                    rejectWait = reject;
-                }),
-        );
-        (uploadDataset as jest.Mock).mockRejectedValue(new Error('upload'));
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await expect(
-                result.current.generate(model, source),
-            ).rejects.toThrow('upload');
-        });
-        expect(result.current.error).toBe(
-            'site_wizard_generation_error+{"error":"upload"}',
-        );
-        expect(result.current.isGenerating).toBe(false);
-        expect(window.onbeforeunload).toBeFalsy();
-        // nobody awaits the import end anymore: stop listening
-        expect(stopWaitingForImportEnd).toHaveBeenCalled();
-        // a later end event settling the abandoned wait must be harmless
-        rejectWait(new Error('import_failed'));
-        await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-
-    it('prevents unloading the page during the generation only', async () => {
-        let unloadDuringImport: unknown;
-        waitForImportEnd.mockImplementation(async () => {
-            unloadDuringImport = window.onbeforeunload;
-        });
-        const { result } = renderGenerateSite();
-        await act(() => result.current.generate(model, source));
-        expect(unloadDuringImport).toBeInstanceOf(Function);
-        expect(window.onbeforeunload).toBeFalsy();
-    });
-
-    it('warns when the recommended theme is not found and goes on', async () => {
-        (importCatalogModel as jest.Mock).mockResolvedValue({
-            hasEnrichments: false,
-            hasPrecomputed: false,
-            themeNotFound: 'istex',
-        });
-        const { result } = renderGenerateSite();
-        await act(() => result.current.generate(model, source));
-        expect(toast).toHaveBeenCalledWith(
-            'site_wizard_theme_not_found+{"theme":"istex"}',
-            { type: 'warning' },
-        );
-        expect(uploadDataset).toHaveBeenCalled();
-        expect(waitForImportEnd).toHaveBeenCalled();
-        expect(result.current.error).toBeNull();
-    });
-
-    it('sets the error when the model import fails after the data', async () => {
-        (importCatalogModel as jest.Mock).mockRejectedValue(new Error('boom'));
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await expect(
-                result.current.generate(model, source),
-            ).rejects.toThrow('boom');
-        });
-        expect(uploadDataset).toHaveBeenCalled();
-        expect(result.current.error).toBe(
-            'site_wizard_generation_error+{"error":"boom"}',
-        );
-        expect(result.current.isGenerating).toBe(false);
-        expect(window.onbeforeunload).toBeFalsy();
-    });
-
-    it('only imports the model again on a retry after a failed model import', async () => {
-        (importCatalogModel as jest.Mock).mockRejectedValueOnce(
-            new Error('boom'),
-        );
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await result.current.generate(model, source).catch(() => {});
-        });
-        await act(() => result.current.generate(model, source));
-        // the data is not uploaded twice
-        expect(uploadDataset).toHaveBeenCalledTimes(1);
-        expect(importCatalogModel).toHaveBeenCalledTimes(2);
-        expect(result.current.error).toBeNull();
-    });
-
-    it('replaces the imported data when a retry gives other data', async () => {
-        (importCatalogModel as jest.Mock).mockRejectedValueOnce(
-            new Error('boom'),
-        );
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await result.current.generate(model, source).catch(() => {});
-        });
-        expect(clearDataset).not.toHaveBeenCalled();
-        const otherSource = { type: 'url' as const, url: 'https://other' };
-        await act(() => result.current.generate(model, otherSource));
-        expect(clearDataset).toHaveBeenCalledTimes(1);
-        expect(uploadDataset).toHaveBeenCalledTimes(2);
-        expect(uploadDataset).toHaveBeenLastCalledWith(otherSource, 'la');
-    });
-
-    it('clears the previous data again on the next retry when the clear failed', async () => {
-        (importCatalogModel as jest.Mock).mockRejectedValueOnce(
-            new Error('boom'),
-        );
-        (clearDataset as jest.Mock).mockRejectedValueOnce(new Error('clear'));
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await result.current.generate(model, source).catch(() => {});
-        });
-        const otherSource = { type: 'url' as const, url: 'https://other' };
-        await act(async () => {
-            await result.current.generate(model, otherSource).catch(() => {});
-        });
-        expect(uploadDataset).toHaveBeenCalledTimes(1);
-        await act(() => result.current.generate(model, otherSource));
-        // the old rows are not kept under the new import
-        expect(clearDataset).toHaveBeenCalledTimes(2);
-        expect(uploadDataset).toHaveBeenCalledTimes(2);
-    });
-
-    it('cannot cancel during the model import, once the data is imported', async () => {
-        let finishModel: () => void = () => {};
-        (importCatalogModel as jest.Mock).mockImplementation(
-            () => new Promise((resolve) => (finishModel = () => resolve({}))),
-        );
-        const { result } = renderGenerateSite();
-        let promise: Promise<void> = Promise.resolve();
-        await act(async () => {
-            promise = result.current.generate(model, source);
-        });
-        expect(result.current.isGenerating).toBe(true);
-        expect(result.current.canCancel).toBe(false);
-        await act(async () => {
-            finishModel();
-            await promise;
-        });
-    });
-
-    it('is cancelling from the click on cancel to the end of the generation', async () => {
-        let failImport: (error: Error) => void = () => {};
-        waitForImportEnd.mockImplementation(
-            () => new Promise<void>((_, reject) => (failImport = reject)),
-        );
-        const { result } = renderGenerateSite();
-        let promise: Promise<void> = Promise.resolve();
-        await act(async () => {
-            promise = result.current.generate(model, source);
-        });
-        expect(result.current.isCancelling).toBe(false);
-        await act(() => result.current.cancelImport());
-        expect(result.current.isCancelling).toBe(true);
-        await act(async () => {
-            failImport(new Error('cancelled_import'));
-            await promise.catch(() => {});
-        });
-        expect(result.current.isCancelling).toBe(false);
-    });
-
-    it('does not import the model when the data import fails', async () => {
-        waitForImportEnd.mockRejectedValue(new Error('import_failed'));
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await result.current.generate(model, source).catch(() => {});
-        });
-        // the instance is left as it was: the generation can be retried
-        expect(importCatalogModel).not.toHaveBeenCalled();
-        expect(result.current.error).not.toBeNull();
-    });
-
-    it('explains a failed data import, with its technical detail apart', async () => {
-        waitForImportEnd.mockRejectedValue(
-            Object.assign(new Error('import_error_source_unavailable'), {
-                detail: 'Maintenance en cours',
-            }),
-        );
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await result.current.generate(model, source).catch(() => {});
-        });
-        expect(result.current.error).toBe(
-            'site_wizard_generation_error+{"error":"import_error_source_unavailable"}',
-        );
-        expect(result.current.errorDetail).toBe('Maintenance en cours');
-        act(() => result.current.clearError());
-        expect(result.current.errorDetail).toBeNull();
-    });
-
-    it('sets no error when the user cancels the import', async () => {
-        waitForImportEnd.mockRejectedValue(new Error('cancelled_import'));
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await expect(
-                result.current.generate(model, source),
-            ).rejects.toThrow('cancelled_import');
-        });
-        expect(result.current.error).toBeNull();
-        expect(result.current.isGenerating).toBe(false);
-    });
-
-    it('is generating while the job runs and clears the previous error', async () => {
-        waitForImportEnd.mockRejectedValueOnce(new Error('import_failed'));
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await result.current.generate(model, source).catch(() => {});
-        });
-        expect(result.current.error).not.toBeNull();
-        let end: () => void = () => {};
-        waitForImportEnd.mockImplementation(
-            () => new Promise<void>((resolve) => (end = resolve)),
-        );
-        let promise: Promise<void> = Promise.resolve();
-        await act(async () => {
-            promise = result.current.generate(model, source);
-        });
-        expect(result.current.isGenerating).toBe(true);
-        expect(result.current.error).toBeNull();
-        await act(async () => {
-            end();
-            await promise;
-        });
-        expect(result.current.isGenerating).toBe(false);
-    });
-
-    it('reloads the admin data once the generation succeeds', async () => {
-        const { result } = renderGenerateSite();
-        await act(() => result.current.generate(model, source));
-        expect(dispatched).toEqual(RELOAD_ACTIONS);
-    });
-
-    it.each([
-        [
-            'the model import',
-            () =>
-                (importCatalogModel as jest.Mock).mockRejectedValue(
-                    new Error('x'),
-                ),
-        ],
-        [
-            'the upload',
-            () =>
-                (uploadDataset as jest.Mock).mockRejectedValue(new Error('x')),
-        ],
-        [
-            'the import job',
-            () => waitForImportEnd.mockRejectedValue(new Error('x')),
-        ],
-    ])(
-        // the server may have replaced the model, or deleted it before failing
-        'reloads the admin data when %s fails',
-        async (_, fail) => {
-            fail();
-            const { result } = renderGenerateSite();
-            await act(async () => {
-                await result.current.generate(model, source).catch(() => {});
-            });
-            expect(dispatched).toEqual(RELOAD_ACTIONS);
-        },
-    );
-
-    it('clears the error on demand', async () => {
+    it('does not invalidate the site generation when the upload fails', async () => {
         (uploadDataset as jest.Mock).mockRejectedValue(new Error('x'));
         const { result } = renderGenerateSite();
         await act(async () => {
             await result.current.generate(model, source).catch(() => {});
         });
-        expect(result.current.error).not.toBeNull();
-        act(() => result.current.clearError());
-        expect(result.current.error).toBeNull();
+        expect(client.invalidateQueries).not.toHaveBeenCalled();
     });
 
-    it('is waiting for the import only once the data is uploaded', async () => {
-        let end: () => void = () => {};
-        let finishUpload: () => void = () => {};
-        (uploadDataset as jest.Mock).mockImplementation(
-            () => new Promise<void>((resolve) => (finishUpload = resolve)),
-        );
-        waitForImportEnd.mockImplementation(
-            () => new Promise<void>((resolve) => (end = resolve)),
+    it('sets the error when the server refuses the model', async () => {
+        (uploadDataset as jest.Mock).mockRejectedValue(
+            new Error('model_not_found'),
         );
         const { result } = renderGenerateSite();
-        let promise: Promise<void> = Promise.resolve();
         await act(async () => {
-            promise = result.current.generate(model, source);
+            await expect(
+                result.current.generate(model, source),
+            ).rejects.toThrow('model_not_found');
         });
-        expect(result.current.isGenerating).toBe(true);
-        expect(result.current.isWaitingForImport).toBe(false);
-        await act(async () => finishUpload());
-        expect(result.current.isWaitingForImport).toBe(true);
-        await act(async () => {
-            end();
-            await promise;
-        });
-        expect(result.current.isWaitingForImport).toBe(false);
+        expect(result.current.error).toBe(
+            'site_wizard_generation_error+{"error":"model_not_found"}',
+        );
+        expect(result.current.isGenerating).toBe(false);
     });
 
-    it('sets no error when a cancelled import ends as a plain failure', async () => {
-        let fail: (error: Error) => void = () => {};
-        waitForImportEnd.mockImplementation(
-            () => new Promise<void>((_, reject) => (fail = reject)),
+    it('translates the error codes', async () => {
+        (uploadDataset as jest.Mock).mockRejectedValue(
+            new Error('model_archive_not_tar'),
         );
         const { result } = renderGenerateSite();
-        let promise: Promise<void> = Promise.resolve();
         await act(async () => {
-            promise = result.current.generate(model, source);
+            await result.current.generate(model, source).catch(() => {});
         });
-        await act(() => result.current.cancelImport());
-        await act(async () => {
-            // the server stops the stream, then reports a failure without message
-            fail(new Error('import_failed'));
-            await promise.catch(() => {});
-        });
-        expect(result.current.error).toBeNull();
+        expect(result.current.error).toBe(
+            'site_wizard_generation_error+{"error":"model_archive_not_tar"}',
+        );
     });
 
-    it('reports a failure of the next generation after a cancel', async () => {
+    it('clears the previous error on a new generation and on demand', async () => {
+        (uploadDataset as jest.Mock).mockRejectedValueOnce(new Error('x'));
         const { result } = renderGenerateSite();
-        await act(() => result.current.cancelImport());
-        waitForImportEnd.mockRejectedValue(new Error('import_failed'));
         await act(async () => {
             await result.current.generate(model, source).catch(() => {});
         });
         expect(result.current.error).not.toBeNull();
+        act(() => result.current.clearError());
+        expect(result.current.error).toBeNull();
+        (uploadDataset as jest.Mock).mockRejectedValueOnce(new Error('y'));
+        await act(async () => {
+            await result.current.generate(model, source).catch(() => {});
+        });
+        expect(result.current.error).not.toBeNull();
+        await act(() => result.current.generate(model, source));
+        expect(result.current.error).toBeNull();
     });
 
-    it('cancels the import job, then gives up waiting if its end never comes', async () => {
-        const { result } = renderGenerateSite();
-        await act(() => result.current.cancelImport());
-        expect(jobsApi.cancelJob).toHaveBeenCalledWith('import', undefined);
-        // the server answers before stopping the job: its end is still awaited
-        expect(stopWaitingForImportEnd).not.toHaveBeenCalled();
-        expect(giveUpWaitingForImportEnd).toHaveBeenCalledWith(
-            15_000,
-            new Error('cancelled_import'),
+    it('prevents unloading the page during a file upload only', async () => {
+        let finishUpload: () => void = () => {};
+        (uploadDataset as jest.Mock).mockImplementation(
+            () => new Promise<void>((resolve) => (finishUpload = resolve)),
         );
+        const { result } = renderGenerateSite();
+        let promise: Promise<void> = Promise.resolve();
+        await act(async () => {
+            promise = result.current.generate(model, fileSource);
+        });
+        expect(window.onbeforeunload).toBeTruthy();
+        await act(async () => {
+            finishUpload();
+            await promise;
+        });
+        expect(window.onbeforeunload).toBeFalsy();
+    });
+
+    it('does not prevent unloading the page for an url', async () => {
+        let finishUpload: () => void = () => {};
+        (uploadDataset as jest.Mock).mockImplementation(
+            () => new Promise<void>((resolve) => (finishUpload = resolve)),
+        );
+        const { result } = renderGenerateSite();
+        let promise: Promise<void> = Promise.resolve();
+        await act(async () => {
+            promise = result.current.generate(model, source);
+        });
+        expect(window.onbeforeunload).toBeFalsy();
+        expect(result.current.canCancel).toBe(false);
+        await act(async () => {
+            finishUpload();
+            await promise;
+        });
     });
 
     describe('with a file', () => {
-        const fileSource = {
-            type: 'file' as const,
-            file: new File(['a'], 'a.csv'),
+        it('reports the upload progress, which can be cancelled until it ends', async () => {
+            let report: (progress: number) => void = () => {};
+            let finishUpload: () => void = () => {};
+            (uploadDataset as jest.Mock).mockImplementation(
+                (_source, _loader, { onProgress }) => {
+                    report = onProgress;
+                    return new Promise<void>(
+                        (resolve) => (finishUpload = resolve),
+                    );
+                },
+            );
+            const { result } = renderGenerateSite();
+            let promise: Promise<void> = Promise.resolve();
+            await act(async () => {
+                promise = result.current.generate(model, fileSource);
+            });
+            expect(result.current.uploadProgress).toBe(0);
+            expect(result.current.canCancel).toBe(true);
+            act(() => report(0.424));
+            expect(result.current.uploadProgress).toBe(42);
+            await act(async () => {
+                finishUpload();
+                await promise;
+            });
+            expect(result.current.uploadProgress).toBeNull();
+            expect(result.current.canCancel).toBe(false);
+        });
+
+        it('stops the upload on cancel, without error', async () => {
+            let signal: AbortSignal | undefined;
+            (uploadDataset as jest.Mock).mockImplementation(
+                (_source, _loader, options) => {
+                    signal = options.signal;
+                    return new Promise<void>((_, reject) =>
+                        options.signal.addEventListener('abort', () =>
+                            reject(new Error('upload_cancelled')),
+                        ),
+                    );
+                },
+            );
+            const { result } = renderGenerateSite();
+            let promise: Promise<void> = Promise.resolve();
+            await act(async () => {
+                promise = result.current
+                    .generate(model, fileSource)
+                    .catch(() => {});
+            });
+            await act(async () => {
+                await result.current.cancelImport();
+            });
+            expect(signal?.aborted).toBe(true);
+            await act(async () => {
+                await promise;
+            });
+            expect(result.current.error).toBeNull();
+            expect(result.current.isGenerating).toBe(false);
+            expect(result.current.isCancelling).toBe(false);
+            expect(result.current.uploadProgress).toBeNull();
+            expect(client.invalidateQueries).not.toHaveBeenCalled();
+        });
+
+        // the server answers so when the cancel came after the last chunk
+        // queued the import, which started the generation
+        const importStartedOnCancel = () => {
+            (uploadDataset as jest.Mock).mockImplementation(
+                (_source, _loader, options) =>
+                    new Promise<void>((_, reject) =>
+                        options.signal.addEventListener('abort', () =>
+                            reject(new Error('upload_import_started')),
+                        ),
+                    ),
+            );
         };
+
+        const cancelDuringUpload = async (
+            result: ReturnType<typeof renderGenerateSite>['result'],
+        ) => {
+            let outcome: 'handedOver' | 'cancelled' | undefined;
+            let promise: Promise<void> = Promise.resolve();
+            await act(async () => {
+                promise = result.current.generate(model, fileSource).then(
+                    () => {
+                        outcome = 'handedOver';
+                    },
+                    () => {
+                        outcome = 'cancelled';
+                    },
+                );
+            });
+            await act(async () => {
+                await result.current.cancelImport();
+                await promise;
+            });
+            return outcome;
+        };
+
+        it('stops the generation when the cancel came after the last chunk queued the import', async () => {
+            importStartedOnCancel();
+            const { result } = renderGenerateSite();
+
+            const outcome = await cancelDuringUpload(result);
+
+            expect(stopSiteGeneration).toHaveBeenCalledTimes(1);
+            // ends as a cancel: no error, the wizard is not handed over
+            expect(outcome).toBe('cancelled');
+            expect(result.current.error).toBeNull();
+            expect(result.current.isGenerating).toBe(false);
+            expect(result.current.isCancelling).toBe(false);
+            expect(client.invalidateQueries).toHaveBeenCalledWith({
+                queryKey: ['site-generation'],
+            });
+        });
+
+        it('ends as a cancel when the generation is already over', async () => {
+            importStartedOnCancel();
+            const conflict = Object.assign(new Error('conflict'), {
+                code: 409,
+            });
+            (stopSiteGeneration as jest.Mock).mockRejectedValue(conflict);
+            const { result } = renderGenerateSite();
+
+            const outcome = await cancelDuringUpload(result);
+
+            expect(outcome).toBe('cancelled');
+            expect(result.current.error).toBeNull();
+        });
+
+        it('hands the generation over when it cannot be stopped', async () => {
+            importStartedOnCancel();
+            (stopSiteGeneration as jest.Mock).mockRejectedValue(
+                new Error('boom'),
+            );
+            const { result } = renderGenerateSite();
+
+            const outcome = await cancelDuringUpload(result);
+
+            // the progress dialog still lets it be stopped
+            expect(outcome).toBe('handedOver');
+            expect(result.current.error).toBeNull();
+            expect(client.invalidateQueries).toHaveBeenCalledWith({
+                queryKey: ['site-generation'],
+            });
+        });
 
         it('keeps uploading when unmounted', async () => {
             let signal: AbortSignal | undefined;
@@ -572,118 +354,8 @@ describe('useGenerateSite', () => {
                 result.current.generate(model, fileSource).catch(() => {});
             });
             unmount();
-            // leaving the data screens must not drop the dataset silently
             expect(signal?.aborted).toBe(false);
+            expect(window.onbeforeunload).toBeFalsy();
         });
-
-        it('reports the upload progress until the file is uploaded', async () => {
-            let report: (progress: number) => void = () => {};
-            let finishUpload: () => void = () => {};
-            (uploadDataset as jest.Mock).mockImplementation(
-                (_source, _loader, { onProgress }) => {
-                    report = onProgress;
-                    return new Promise<void>(
-                        (resolve) => (finishUpload = resolve),
-                    );
-                },
-            );
-            waitForImportEnd.mockImplementation(() => new Promise(() => {}));
-            const { result } = renderGenerateSite();
-            await act(async () => {
-                result.current.generate(model, fileSource);
-            });
-            expect(result.current.uploadProgress).toBe(0);
-            expect(result.current.canCancel).toBe(true);
-            act(() => report(0.424));
-            expect(result.current.uploadProgress).toBe(42);
-            await act(async () => finishUpload());
-            expect(result.current.uploadProgress).toBeNull();
-            // the import job now runs: it can still be cancelled
-            expect(result.current.canCancel).toBe(true);
-        });
-
-        it('stops the upload on cancel, without error nor waiting fallback', async () => {
-            (uploadDataset as jest.Mock).mockImplementation(
-                (_source, _loader, { signal }) =>
-                    new Promise<void>((_, reject) =>
-                        signal.addEventListener('abort', () =>
-                            reject(new Error('upload_cancelled')),
-                        ),
-                    ),
-            );
-            const { result } = renderGenerateSite();
-            let promise: Promise<void> = Promise.resolve();
-            await act(async () => {
-                promise = result.current.generate(model, fileSource);
-            });
-            await act(async () => {
-                await result.current.cancelImport();
-                await promise.catch(() => {});
-            });
-            // loadFile tells the server to drop the upload: no job to cancel
-            expect(jobsApi.cancelJob).not.toHaveBeenCalled();
-            expect(giveUpWaitingForImportEnd).not.toHaveBeenCalled();
-            expect(importCatalogModel).not.toHaveBeenCalled();
-            expect(result.current.error).toBeNull();
-            expect(result.current.isGenerating).toBe(false);
-            expect(result.current.uploadProgress).toBeNull();
-        });
-    });
-
-    it('cancels the import queued by the last chunk when the cancel comes too late', async () => {
-        const fileSource = {
-            type: 'file' as const,
-            file: new File(['a'], 'a.csv'),
-        };
-        let failImport: (error: Error) => void = () => {};
-        waitForImportEnd.mockImplementation(
-            () => new Promise<void>((_, reject) => (failImport = reject)),
-        );
-        (uploadDataset as jest.Mock).mockImplementation(
-            (_source, _loader, { signal }) =>
-                new Promise<void>((_, reject) =>
-                    signal.addEventListener('abort', () =>
-                        reject(new Error('upload_import_started')),
-                    ),
-                ),
-        );
-        const { result } = renderGenerateSite();
-        let promise: Promise<void> = Promise.resolve();
-        await act(async () => {
-            promise = result.current.generate(model, fileSource);
-        });
-        await act(() => result.current.cancelImport());
-        // cancelled as a running import, whose end is still awaited
-        expect(jobsApi.cancelJob).toHaveBeenCalledWith('import', undefined);
-        expect(giveUpWaitingForImportEnd).toHaveBeenCalled();
-        expect(result.current.isGenerating).toBe(true);
-        await act(async () => {
-            failImport(new Error('cancelled_import'));
-            await promise.catch(() => {});
-        });
-        expect(result.current.error).toBeNull();
-        expect(importCatalogModel).not.toHaveBeenCalled();
-    });
-
-    it('still gives up waiting when the cancel request fails', async () => {
-        (jobsApi.cancelJob as jest.Mock).mockRejectedValueOnce(
-            new Error('network'),
-        );
-        const { result } = renderGenerateSite();
-        await act(() => result.current.cancelImport());
-        expect(giveUpWaitingForImportEnd).toHaveBeenCalled();
-    });
-
-    it('translates the error codes', async () => {
-        (importCatalogModel as jest.Mock).mockRejectedValue(
-            new Error('model_archive_too_large'),
-        );
-        const { result } = renderGenerateSite();
-        await act(async () => {
-            await result.current.generate(model, source).catch(() => {});
-        });
-        expect(result.current.error).toBe(
-            'site_wizard_generation_error+{"error":"model_archive_too_large"}',
-        );
     });
 });
