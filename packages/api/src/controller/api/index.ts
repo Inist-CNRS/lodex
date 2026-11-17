@@ -9,6 +9,7 @@ import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
 import annotation from './annotation';
 import breadcrumbs from './breadcrumb';
 import characteristic from './characteristic';
+import clientError, { rateLimitClientErrors } from './clientError';
 import configTenant from './configTenant';
 import dataset from './dataset';
 import dataSource from './dataSource';
@@ -42,6 +43,8 @@ const auth = config.get('auth');
 
 const app = new Koa();
 
+app.use(route.post('/client-errors', rateLimitClientErrors));
+
 app.use(async (ctx: any, next: any) => {
     if (ctx.tenant !== 'admin') {
         // check if tenant exists (already looked up for /instance/ urls)
@@ -61,6 +64,7 @@ app.use(async (ctx: any, next: any) => {
 
 app.use(mount('/login', login));
 app.use(mount('/logout', logoutController));
+app.use(mount('/client-errors', clientError));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));
