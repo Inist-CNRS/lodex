@@ -1,4 +1,9 @@
-import type { ModelLaunchStepType, SiteGenerationStatus } from '@lodex/common';
+import type {
+    ModelLaunchStepType,
+    SiteGenerationPhase,
+    SiteGenerationStatus,
+    SiteWizardChoice,
+} from '@lodex/common';
 import { ObjectId, type Collection, type Db } from 'mongodb';
 import { getCreatedCollection } from './utils';
 
@@ -18,8 +23,18 @@ export type SiteGeneration = {
     _id: ObjectId;
     runId: string;
     status: SiteGenerationStatus;
+    phase: SiteGenerationPhase;
     position: number;
     steps: SiteGenerationStep[];
+    choice?: SiteWizardChoice;
+    importJobId?: string;
+    modelJobId?: string;
+    importedLines?: number;
+    message?: string;
+    // the technical error behind the message, shown on demand
+    detail?: string;
+    themeNotFound?: string;
+    estimate?: { enrichment: number; precomputed: number };
     // publish the site once every step is done
     autoPublish: boolean;
     // the publisher job queued at the end, if any
@@ -31,26 +46,32 @@ export type SiteGeneration = {
     updatedAt: Date;
 };
 
+export type SiteGenerationUpdate = Partial<
+    Omit<
+        SiteGeneration,
+        '_id' | 'runId' | 'version' | 'createdAt' | 'updatedAt'
+    >
+>;
+
 export type SiteGenerationCollection = Collection<SiteGeneration> & {
     findCurrent: () => Promise<SiteGeneration | null>;
-    start: (
-        steps: SiteGenerationStep[],
-        options?: { autoPublish?: boolean },
+    startWizard: (
+        wizard: Pick<SiteGeneration, 'choice' | 'importJobId' | 'estimate'>,
     ) => Promise<SiteGeneration>;
     transition: (
         current: SiteGeneration,
-        update: Partial<
-            Pick<
-                SiteGeneration,
-                | 'status'
-                | 'position'
-                | 'steps'
-                | 'publishJobId'
-                | 'publishError'
-            >
-        >,
+        update: SiteGenerationUpdate,
+        options?: { unset?: (keyof SiteGenerationUpdate)[] },
     ) => Promise<SiteGeneration | null>;
+    // called after every write of the generation (see pushSiteGeneration)
+    onChange?: () => void;
 };
+
+// A generation stored before the wizard phases had none: it was launching
+const withDefaults = (
+    generation: SiteGeneration | null,
+): SiteGeneration | null =>
+    generation && { ...generation, phase: generation.phase ?? 'launch' };
 
 export default async (db: Db): Promise<SiteGenerationCollection> => {
     const collection: Collection<SiteGeneration> = await getCreatedCollection(
@@ -60,21 +81,24 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
 
     const repository = collection as SiteGenerationCollection;
 
-    repository.findCurrent = async () => collection.findOne({});
+    repository.findCurrent = async () =>
+        withDefaults(await collection.findOne({}));
 
-    repository.start = async (steps, { autoPublish = false } = {}) => {
+    repository.startWizard = async ({ choice, importJobId, estimate }) => {
         const now = new Date();
         const generation: Omit<SiteGeneration, '_id'> = {
             runId: new ObjectId().toHexString(),
             status: 'running',
-            position: steps.length
-                ? Math.min(...steps.map((step) => step.position))
-                : 0,
-            steps,
-            autoPublish,
             version: 0,
             createdAt: now,
             updatedAt: now,
+            phase: 'data',
+            position: 0,
+            steps: [],
+            choice,
+            importJobId,
+            estimate,
+            autoPublish: choice?.autoPublish === true,
         };
         // A single atomic operation: the existing document keeps its _id
         // (an _id cannot be replaced), a missing one is created.
@@ -82,22 +106,36 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
             upsert: true,
             returnDocument: 'after',
         });
+        repository.onChange?.();
         return stored as SiteGeneration;
     };
 
-    repository.transition = async (current, update) =>
-        collection.findOneAndUpdate(
-            {
-                _id: current._id,
-                runId: current.runId,
-                version: current.version,
-            },
-            {
-                $set: { ...update, updatedAt: new Date() },
-                $inc: { version: 1 },
-            },
-            { returnDocument: 'after' },
+    // `unset` removes fields (an undefined value would be stored as null)
+    repository.transition = async (current, update, { unset = [] } = {}) => {
+        const updated = withDefaults(
+            await collection.findOneAndUpdate(
+                {
+                    _id: current._id,
+                    runId: current.runId,
+                    version: current.version,
+                },
+                {
+                    $set: { ...update, updatedAt: new Date() },
+                    $inc: { version: 1 },
+                    ...(unset.length && {
+                        $unset: Object.fromEntries(
+                            unset.map((field) => [field, '']),
+                        ),
+                    }),
+                },
+                { returnDocument: 'after' },
+            ),
         );
+        if (updated) {
+            repository.onChange?.();
+        }
+        return updated;
+    };
 
     return repository;
 };

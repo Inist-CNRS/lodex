@@ -19,6 +19,10 @@ import {
     removePrecomputedJobListener,
 } from './services/precomputed/precomputed';
 import { addImportListener, removeImportListener } from './workers/import';
+import {
+    addSiteGenerationListener,
+    removeSiteGenerationListener,
+} from './services/siteGeneration/push';
 import getLogger from './services/logger';
 import {
     mongoDatabasePrefix,
@@ -86,6 +90,7 @@ if (!module.parent) {
         addEnrichmentJobListener(emitPayload);
         addPrecomputedJobListener(emitPayload);
         addImportListener(emitPayload);
+        addSiteGenerationListener(emitPayload);
 
         // without this, every closed socket keeps receiving the notifications
         socket.on('disconnect', () => {
@@ -94,6 +99,7 @@ if (!module.parent) {
             removeEnrichmentJobListener(emitPayload);
             removePrecomputedJobListener(emitPayload);
             removeImportListener(emitPayload);
+            removeSiteGenerationListener(emitPayload);
         });
     });
 

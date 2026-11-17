@@ -42,6 +42,17 @@ const models: CatalogModel[] = [
         theme: 'missing',
         importTypes: ['file', 'url', 'text'],
     },
+    {
+        id: 'e',
+        url: 'http://e.tar',
+        loader: 'le',
+        importTypes: ['file', 'url', 'text'],
+        launchOrder: [
+            { name: 'x', type: 'enrichment', position: 1 },
+            { name: 'y', type: 'enrichment', position: 2 },
+            { name: 'z', type: 'precomputed', position: 1 },
+        ],
+    },
 ];
 
 const themes = [
@@ -549,7 +560,7 @@ describe('SiteWizard', () => {
         expect(generate).toHaveBeenCalledTimes(1);
     });
 
-    it('displays a loader and disables the navigation while generating', async () => {
+    it('displays the steps and hides the navigation while generating', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
@@ -559,44 +570,140 @@ describe('SiteWizard', () => {
             error: null,
         });
         rerender(<SiteWizard open onClose={jest.fn()} />);
-        expect(screen.getByText('site_wizard_generating')).toBeInTheDocument();
+        expect(screen.getByText('site_generation_title')).toBeInTheDocument();
+        expect(
+            screen.getByText('site_generation_step_data'),
+        ).toBeInTheDocument();
+        // the model name comes from the wizard's choice
+        expect(
+            screen.getByText('site_generation_step_model+{"name":"mc_a_name"}'),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText('site_generation_step_settings'),
+        ).toBeInTheDocument();
+        // a model without launch order launches nothing
+        expect(
+            screen.queryByText('site_generation_step_launch'),
+        ).not.toBeInTheDocument();
+        expect(screen.getByText('1/3')).toBeInTheDocument();
         expect(
             screen.queryByRole('tab', { name: 'upload_by_url' }),
         ).not.toBeInTheDocument();
-        expect(button('site_wizard_cancel')).toBeDisabled();
-        expect(button('site_wizard_previous')).toBeDisabled();
-        expect(button('site_wizard_next')).toBeDisabled();
+        // it looks like the progress dialog that follows
         expect(
-            screen.queryByRole('button', { name: 'site_wizard_cancel_import' }),
+            screen.queryByRole('button', { name: 'site_wizard_cancel' }),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByRole('button', { name: 'site_wizard_previous' }),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByRole('button', { name: 'site_wizard_generate' }),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByRole('button', { name: 'site_generation_stop' }),
         ).not.toBeInTheDocument();
     });
 
-    it('offers to cancel the import while waiting for it', async () => {
+    it('announces the launch step of a model with a launch order, with its estimated counts', async () => {
+        const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep('mc_e_title');
+        (useGenerateSite as jest.Mock).mockReturnValue({
+            clearError,
+            generate,
+            isGenerating: true,
+            error: null,
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        expect(
+            screen.getByText('site_generation_step_launch'),
+        ).toBeInTheDocument();
+        expect(screen.getByText('1/4')).toBeInTheDocument();
+        expect(
+            screen.getByText(/site_generation_enrichments\+.*"total":2/),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(/site_generation_precomputed\+.*"total":1/),
+        ).toBeInTheDocument();
+    });
+
+    it('offers to stop the configuration while the file is sent', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
             isGenerating: true,
-            isWaitingForImport: true,
             uploadProgress: null,
             canCancel: true,
             cancelImport,
             error: null,
         });
         rerender(<SiteWizard open onClose={jest.fn()} />);
-        await userEvent.click(button('site_wizard_cancel_import'));
+        expect(
+            screen.queryByRole('button', { name: 'site_wizard_generate' }),
+        ).not.toBeInTheDocument();
+        await userEvent.click(button('site_generation_stop'));
+        // the same confirmation as the stop of the progress dialog
+        expect(
+            screen.getByText('site_generation_stop_title'),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText('site_generation_stop_description'),
+        ).toBeInTheDocument();
+        await userEvent.click(button('cancel'));
+        await waitFor(() =>
+            expect(
+                screen.queryByText('site_generation_stop_title'),
+            ).not.toBeInTheDocument(),
+        );
+        expect(cancelImport).not.toHaveBeenCalled();
+
+        await userEvent.click(button('site_generation_stop'));
+        await userEvent.click(button('confirm'));
         expect(cancelImport).toHaveBeenCalledTimes(1);
+        await waitFor(() =>
+            expect(
+                screen.queryByText('site_generation_stop_title'),
+            ).not.toBeInTheDocument(),
+        );
     });
 
-    it('disables the cancel button while cancelling', async () => {
+    it('closes the stop confirmation once the upload cannot be stopped anymore', async () => {
+        const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        const generating = {
+            clearError,
+            generate,
+            isGenerating: true,
+            uploadProgress: null,
+            canCancel: true,
+            cancelImport,
+            error: null,
+        };
+        (useGenerateSite as jest.Mock).mockReturnValue(generating);
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        await userEvent.click(button('site_generation_stop'));
+        // the import was queued meanwhile
+        (useGenerateSite as jest.Mock).mockReturnValue({
+            ...generating,
+            canCancel: false,
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        await waitFor(() =>
+            expect(
+                screen.queryByText('site_generation_stop_title'),
+            ).not.toBeInTheDocument(),
+        );
+        expect(cancelImport).not.toHaveBeenCalled();
+    });
+
+    it('disables the stop button while cancelling', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
             isGenerating: true,
-            isWaitingForImport: true,
             uploadProgress: null,
             canCancel: true,
             isCancelling: true,
@@ -607,30 +714,25 @@ describe('SiteWizard', () => {
         expect(button('site_wizard_cancelling')).toBeDisabled();
     });
 
-    it('shows the upload progress of a file and offers to cancel it', async () => {
+    it('shows the upload progress of a file on the data step', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep();
         (useGenerateSite as jest.Mock).mockReturnValue({
             clearError,
             generate,
             isGenerating: true,
-            isWaitingForImport: false,
-            uploadProgress: 42,
+            uploadProgress: 45,
             canCancel: true,
             cancelImport,
             error: null,
         });
         rerender(<SiteWizard open onClose={jest.fn()} />);
         expect(
-            screen.getByText('site_wizard_uploading+{"progress":42}'),
+            screen.getByText('site_generation_step_data'),
         ).toBeInTheDocument();
         expect(
-            screen.getByRole('progressbar', {
-                name: 'site_wizard_uploading+{"progress":42}',
-            }),
-        ).toHaveAttribute('aria-valuenow', '42');
-        await userEvent.click(button('site_wizard_cancel_import'));
-        expect(cancelImport).toHaveBeenCalledTimes(1);
+            screen.getByText('site_wizard_uploading+{"progress":45}'),
+        ).toBeInTheDocument();
     });
 
     it('labels the cancel button as the manual configuration on the first step only', async () => {
@@ -657,13 +759,25 @@ describe('SiteWizard', () => {
         ).not.toBeInTheDocument();
     });
 
-    it('closes the wizard when the generation succeeds', async () => {
+    it('hands over to the progress dialog once the upload is queued, keeping its state', async () => {
         generate.mockResolvedValue(undefined);
         const onClose = jest.fn();
-        render(<SiteWizard open onClose={onClose} />);
+        const { rerender } = render(<SiteWizard open onClose={onClose} />);
         await goToThemeStep();
         await generateSite();
-        await waitFor(() => expect(onClose).toHaveBeenCalledWith('generated'));
+        await waitFor(() => expect(onClose).toHaveBeenCalledWith('handedOver'));
+        // reopened on retry: the last step, with the choices kept
+        rerender(<SiteWizard open={false} onClose={onClose} />);
+        rerender(<SiteWizard open onClose={onClose} />);
+        expect(button('site_wizard_generate')).toBeEnabled();
+        expect(button('site_wizard_previous')).toBeEnabled();
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        await userEvent.click(button('site_wizard_previous'));
+        expect(
+            screen.getByRole('tab', { name: 'upload_by_url' }),
+        ).toBeInTheDocument();
+        expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
     });
 
     it('asks for a confirmation before cancelling', async () => {
@@ -764,29 +878,6 @@ describe('SiteWizard', () => {
         await userEvent.click(button('site_wizard_previous'));
         await userEvent.click(button('site_wizard_previous'));
         expect(screen.getByLabelText('name')).toHaveValue('My site');
-    });
-
-    it('hides the technical detail of the error behind an arrow', async () => {
-        generate.mockRejectedValue(new Error('boom'));
-        const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
-        await goToSiteInfoStep();
-        await typeSiteName('My site');
-        await userEvent.click(button('site_wizard_next'));
-        await generateSite();
-        (useGenerateSite as jest.Mock).mockReturnValue({
-            clearError,
-            generate,
-            isGenerating: false,
-            error: 'site_wizard_generation_error+{"error":"import_error_source_unavailable"}',
-            errorDetail: 'Maintenance en cours',
-        });
-        rerender(<SiteWizard open onClose={jest.fn()} />);
-        expect(await screen.findByRole('alert')).toHaveTextContent(
-            'import_error_source_unavailable',
-        );
-        expect(screen.getByText('Maintenance en cours')).not.toBeVisible();
-        await userEvent.click(button('error_detail'));
-        expect(screen.getByText('Maintenance en cours')).toBeVisible();
     });
 
     it('keeps the error displayed on the data step, where a failed import is fixed', async () => {

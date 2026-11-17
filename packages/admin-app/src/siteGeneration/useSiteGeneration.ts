@@ -1,6 +1,12 @@
+import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import type { SiteGenerationView } from '@lodex/common';
+import { io } from 'socket.io-client';
+import {
+    DEFAULT_TENANT,
+    isSiteGenerationActive,
+    type SiteGenerationView,
+} from '@lodex/common';
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import {
     getSiteGeneration,
@@ -28,10 +34,38 @@ export const getRefetchInterval = (
     if (!data || query.state.status === 'error') {
         return REFETCH_INTERVAL;
     }
-    const status = data.generation?.status;
-    return status === 'running' || status === 'publishing' || status === 'error'
+    // a stopping generation ends once its job is done
+    return isSiteGenerationActive(data.generation?.status)
         ? REFETCH_INTERVAL
         : false;
+};
+
+// The server pushes the generation on every change: the dialog does not wait
+// for its next poll, which a task blocking the server would delay (the app
+// bar, pushed as well, would then be ahead of it). To use once.
+export const useSiteGenerationPush = () => {
+    const queryClient = useQueryClient();
+    const isAdmin: boolean = useSelector(fromUser.isAdmin);
+    useEffect(() => {
+        if (!isAdmin) {
+            return;
+        }
+        const socket = io();
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
+        const dbName = sessionStorage.getItem('lodex-dbName');
+        socket.on(
+            `${dbName}_${tenant}-site-generation`,
+            (data: { generation: SiteGenerationView | null }) => {
+                queryClient.setQueryData(
+                    [...SITE_GENERATION_QUERY_KEY, true],
+                    data,
+                );
+            },
+        );
+        return () => {
+            socket.disconnect();
+        };
+    }, [isAdmin, queryClient]);
 };
 
 export const useSiteGeneration = () => {

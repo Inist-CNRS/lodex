@@ -13,6 +13,10 @@ import {
 } from './upload';
 
 jest.mock('../../workers');
+jest.mock('../../services/siteGeneration/wizardGeneration');
+import { startWizardGeneration } from '../../services/siteGeneration/wizardGeneration';
+jest.mock('../../services/siteGeneration/wizardJobs');
+import { failWizardGeneration } from '../../services/siteGeneration/wizardJobs';
 jest.mock('node:crypto', () => ({
     ...jest.requireActual('node:crypto'),
     randomUUID: () => 'uuid',
@@ -533,6 +537,324 @@ describe('upload', () => {
         // without a body, Koa answers 404 although the job is queued
         it('should answer that the import is pending', () => {
             expect(ctx.body).toStrictEqual({ status: 'pending' });
+        });
+    });
+});
+
+describe('upload with site generation', () => {
+    let add: jest.Mock;
+    beforeEach(() => {
+        add = jest.fn();
+        jest.mocked(getOrCreateWorkerQueue).mockReturnValue({
+            add,
+        } as unknown as Queue);
+        jest.mocked(startWizardGeneration).mockReset();
+        jest.mocked(failWizardGeneration).mockClear();
+    });
+
+    const choice = { modelId: 'm', siteName: 'Site' };
+
+    it('uploadUrl starts the generation and queues the job with its run id', async () => {
+        jest.mocked(startWizardGeneration).mockResolvedValue({
+            runId: 'run-1',
+        } as any);
+        const ctx: any = {
+            tenant: 'lodex_test',
+            request: {
+                body: {
+                    url: 'http://host/file.csv',
+                    loaderName: 'csv',
+                    siteGeneration: choice,
+                },
+            },
+        };
+        await uploadUrl(ctx);
+        expect(startWizardGeneration).toHaveBeenCalledWith(ctx, choice, 'uuid');
+        expect(add).toHaveBeenCalledWith(
+            IMPORT,
+            expect.objectContaining({
+                siteGenerationRunId: 'run-1',
+                url: 'http://host/file.csv',
+            }),
+            { jobId: 'uuid' },
+        );
+        expect(ctx.body).toEqual({ status: 'pending' });
+    });
+
+    it('uploadUrl queues nothing when the choice is refused', async () => {
+        jest.mocked(startWizardGeneration).mockResolvedValue({
+            status: 404,
+            error: 'model_not_found',
+        });
+        const ctx: any = {
+            tenant: 'lodex_test',
+            request: {
+                body: {
+                    url: 'http://host/file.csv',
+                    siteGeneration: choice,
+                },
+            },
+        };
+        await uploadUrl(ctx);
+        expect(add).not.toHaveBeenCalled();
+        expect(ctx.status).toBe(404);
+        expect(ctx.body).toEqual({ error: 'model_not_found' });
+    });
+
+    it('uploadUrl keeps only the text fields of the choice', async () => {
+        jest.mocked(startWizardGeneration).mockResolvedValue({
+            runId: 'run-1',
+        } as any);
+        const ctx: any = {
+            tenant: 'lodex_test',
+            request: {
+                body: {
+                    url: 'http://host/file.csv',
+                    siteGeneration: {
+                        modelId: 'm',
+                        siteName: 'Site',
+                        siteDescription: { $ne: null },
+                        theme: 3,
+                        status: 'done',
+                    },
+                },
+            },
+        };
+        await uploadUrl(ctx);
+        expect(startWizardGeneration).toHaveBeenCalledWith(
+            ctx,
+            { modelId: 'm', siteName: 'Site' },
+            'uuid',
+        );
+    });
+
+    it.each([
+        ['an object', { $ne: null }],
+        ['a number', 3],
+        ['missing', undefined],
+    ])(
+        'uploadText refuses a model id that is %s as an unknown model',
+        async (_name, modelId) => {
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: {
+                    body: { text: 'q', siteGeneration: { modelId } },
+                },
+            };
+            await uploadText(ctx);
+            expect(startWizardGeneration).not.toHaveBeenCalled();
+            expect(add).not.toHaveBeenCalled();
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toEqual({ error: 'model_not_found' });
+        },
+    );
+
+    it('uploadUrl without siteGeneration queues the job as before', async () => {
+        const ctx: any = {
+            tenant: 'lodex_test',
+            request: { body: { url: 'http://host/file.csv' } },
+        };
+        await uploadUrl(ctx);
+        expect(startWizardGeneration).not.toHaveBeenCalled();
+        expect(add.mock.calls[0][1]).not.toHaveProperty('siteGenerationRunId');
+    });
+
+    it('uploadText starts the generation and queues the job with its run id', async () => {
+        jest.mocked(startWizardGeneration).mockResolvedValue({
+            runId: 'run-1',
+        } as any);
+        const ctx: any = {
+            tenant: 'lodex_test',
+            request: {
+                body: { text: 'q', loaderName: 'l', siteGeneration: choice },
+            },
+        };
+        await uploadText(ctx);
+        expect(startWizardGeneration).toHaveBeenCalledWith(ctx, choice, 'uuid');
+        expect(add).toHaveBeenCalledWith(
+            IMPORT,
+            expect.objectContaining({ siteGenerationRunId: 'run-1' }),
+            { jobId: 'uuid' },
+        );
+    });
+
+    it('uploadText queues nothing when the choice is refused', async () => {
+        jest.mocked(startWizardGeneration).mockResolvedValue({
+            status: 400,
+            error: 'model_archive_not_tar',
+        });
+        const ctx: any = {
+            tenant: 'lodex_test',
+            request: { body: { text: 'q', siteGeneration: choice } },
+        };
+        await uploadText(ctx);
+        expect(add).not.toHaveBeenCalled();
+        expect(ctx.status).toBe(400);
+    });
+
+    describe('last chunk', () => {
+        const makeCtx = (chunkNumber: number, uploaded: number) =>
+            ({
+                tenant: 'lodex_test',
+                resumable: {
+                    chunkname: 'c',
+                    currentChunkSize: 5,
+                    stream: 's',
+                    filename: 'f',
+                    totalChunks: 2,
+                    totalSize: 10,
+                    extension: 'csv',
+                    customLoader: null,
+                    chunkNumber,
+                    choice: { modelId: 'm', siteName: 'Site' },
+                },
+                isUploadCancelled: jest.fn().mockResolvedValue(false),
+                removeStaleUploadFiles: jest.fn(),
+                checkFileExists: jest.fn().mockResolvedValue(true),
+                saveStreamInFile: jest.fn(),
+                getUploadedFileSize: jest.fn().mockResolvedValue(uploaded),
+                markUploadQueued: jest.fn(),
+                removeUploadChunks: jest.fn(),
+            }) as any;
+
+        it('an intermediate chunk starts nothing', async () => {
+            const ctx = makeCtx(1, 5);
+            await uploadChunkMiddleware(ctx, 'csv');
+            expect(startWizardGeneration).not.toHaveBeenCalled();
+            expect(add).not.toHaveBeenCalled();
+        });
+
+        it('the last chunk starts the generation then queues the job', async () => {
+            jest.mocked(startWizardGeneration).mockResolvedValue({
+                runId: 'run-1',
+            } as any);
+            const ctx = makeCtx(2, 10);
+            await uploadChunkMiddleware(ctx, 'csv');
+            expect(startWizardGeneration).toHaveBeenCalledWith(
+                ctx,
+                { modelId: 'm', siteName: 'Site' },
+                'uuid',
+            );
+            expect(add).toHaveBeenCalledWith(
+                IMPORT,
+                expect.objectContaining({ siteGenerationRunId: 'run-1' }),
+                { jobId: 'uuid' },
+            );
+        });
+
+        it('the last chunk keeps only the text fields of the choice', async () => {
+            jest.mocked(startWizardGeneration).mockResolvedValue({
+                runId: 'run-1',
+            } as any);
+            const ctx = makeCtx(2, 10);
+            // a repeated multipart field comes as an array
+            ctx.resumable.choice = { modelId: 'm', theme: ['a', 'b'] };
+            await uploadChunkMiddleware(ctx, 'csv');
+            expect(startWizardGeneration).toHaveBeenCalledWith(
+                ctx,
+                { modelId: 'm' },
+                'uuid',
+            );
+        });
+
+        it('the last chunk refuses a model id that is not a text', async () => {
+            const ctx = makeCtx(2, 10);
+            ctx.resumable.choice = { modelId: ['a', 'b'] };
+            await uploadChunkMiddleware(ctx, 'csv');
+            expect(startWizardGeneration).not.toHaveBeenCalled();
+            expect(ctx.removeUploadChunks).toHaveBeenCalledWith('f');
+            expect(add).not.toHaveBeenCalled();
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toEqual({ error: 'model_not_found' });
+        });
+
+        it('a refused choice removes the chunks and queues nothing', async () => {
+            jest.mocked(startWizardGeneration).mockResolvedValue({
+                status: 404,
+                error: 'model_not_found',
+            });
+            const ctx = makeCtx(2, 10);
+            await uploadChunkMiddleware(ctx, 'csv');
+            expect(ctx.markUploadQueued).not.toHaveBeenCalled();
+            expect(ctx.removeUploadChunks).toHaveBeenCalledWith('f');
+            expect(add).not.toHaveBeenCalled();
+            expect(ctx.status).toBe(404);
+            expect(ctx.body).toEqual({ error: 'model_not_found' });
+        });
+
+        describe('when queueing the import fails', () => {
+            beforeEach(() => {
+                jest.mocked(startWizardGeneration).mockResolvedValue({
+                    runId: 'run-1',
+                } as any);
+                add.mockRejectedValue(new Error('redis down'));
+            });
+
+            it('uploadUrl fails the generation and rethrows', async () => {
+                const ctx: any = {
+                    tenant: 'lodex_test',
+                    request: {
+                        body: {
+                            url: 'http://host/f.csv',
+                            siteGeneration: choice,
+                        },
+                    },
+                };
+                await expect(uploadUrl(ctx)).rejects.toThrow('redis down');
+                expect(failWizardGeneration).toHaveBeenCalledWith(
+                    ctx,
+                    'run-1',
+                    'redis down',
+                );
+            });
+
+            it('uploadText fails the generation and rethrows', async () => {
+                const ctx: any = {
+                    tenant: 'lodex_test',
+                    request: { body: { text: 'q', siteGeneration: choice } },
+                };
+                await expect(uploadText(ctx)).rejects.toThrow('redis down');
+                expect(failWizardGeneration).toHaveBeenCalledWith(
+                    ctx,
+                    'run-1',
+                    'redis down',
+                );
+            });
+
+            it('without a generation, nothing is failed', async () => {
+                const ctx: any = {
+                    tenant: 'lodex_test',
+                    request: { body: { text: 'q' } },
+                };
+                await expect(uploadText(ctx)).rejects.toThrow('redis down');
+                expect(failWizardGeneration).not.toHaveBeenCalled();
+            });
+
+            it('the last chunk fails the generation and removes the chunks', async () => {
+                const ctx = makeCtx(2, 10);
+                await expect(uploadChunkMiddleware(ctx, 'csv')).rejects.toThrow(
+                    'redis down',
+                );
+                expect(failWizardGeneration).toHaveBeenCalledWith(
+                    ctx,
+                    'run-1',
+                    'redis down',
+                );
+                expect(ctx.removeUploadChunks).toHaveBeenCalledWith('f');
+            });
+        });
+
+        it('the last chunk removes the chunks and answers when the start throws', async () => {
+            jest.mocked(startWizardGeneration).mockRejectedValue(
+                new Error('mongo down'),
+            );
+            const ctx = makeCtx(2, 10);
+            await uploadChunkMiddleware(ctx, 'csv');
+            expect(ctx.removeUploadChunks).toHaveBeenCalledWith('f');
+            expect(ctx.markUploadQueued).not.toHaveBeenCalled();
+            expect(add).not.toHaveBeenCalled();
+            expect(ctx.status).toBe(500);
+            expect(ctx.body).toEqual({ error: 'mongo down' });
         });
     });
 });

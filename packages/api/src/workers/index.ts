@@ -4,6 +4,7 @@ import bullBoard from '../bullBoard';
 import getLogger from '../services/logger';
 import { ENRICHER, processEnrichment, RETRY_ENRICHER } from './enricher';
 import { IMPORT, processImport } from './import';
+import { MODEL_IMPORTER, processModelImport } from './modelImport';
 import { PRECOMPUTER, processPrecomputed } from './precomputer';
 import { processPublication, PUBLISHER } from './publisher';
 
@@ -51,6 +52,9 @@ export const getOrCreateWorkerQueue = (
         }
         if (job.data.jobType === PRECOMPUTER) {
             processPrecomputed(job, done);
+        }
+        if (job.data.jobType === MODEL_IMPORTER) {
+            processModelImport(job, done);
         }
     });
 

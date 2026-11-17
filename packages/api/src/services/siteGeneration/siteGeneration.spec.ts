@@ -13,13 +13,17 @@ import {
     getWaitingJobs,
     queuePublisher,
 } from '../../workers/tools';
+import { MODEL_IMPORTER } from './wizardJobs';
 import { queueEnrichment, queuePrecomputed } from '../launchTasks';
+import { invalidateRepositories } from '../repositoryMiddleware';
 import {
     advanceSiteGeneration,
+    failLostSiteGenerationJob,
     getSiteGenerationView,
     PUBLICATION_LOST,
     refusedDuringSiteGeneration,
     relaunchSiteGeneration,
+    settleStoppingSiteGeneration,
     SITE_GENERATION_MAX_RELAUNCHES,
     stopSiteGeneration,
     type SiteGenerationContext,
@@ -27,6 +31,21 @@ import {
 
 jest.mock('../launchTasks');
 jest.mock('../../workers/tools');
+
+const mockWorkerQueue = { add: jest.fn(), getJob: jest.fn() };
+jest.mock('../../workers', () => ({
+    getOrCreateWorkerQueue: () => mockWorkerQueue,
+}));
+jest.mock('../repositoryMiddleware', () => ({
+    invalidateRepositories: jest.fn(),
+}));
+
+// A job of the queue, as bull gives it
+const queueJob = (state: string, finishedOn?: number) => ({
+    getState: jest.fn(async () => state),
+    remove: jest.fn(),
+    finishedOn,
+});
 
 type Target = {
     _id: string;
@@ -162,11 +181,12 @@ describe('siteGeneration service', () => {
         );
         jest.mocked(getWaitingJobs).mockResolvedValue([]);
         jest.mocked(getActiveJob).mockResolvedValue(undefined);
+        mockWorkerQueue.getJob.mockResolvedValue(null);
         ctx = {
             tenant: 'lodex_test',
             enrichment,
             precomputed,
-            dataset: { removeAttribute: jest.fn() },
+            dataset: { removeAttribute: jest.fn(), drop: jest.fn() },
             dataSource: { removeAttribute: jest.fn() },
             siteGeneration,
         } as unknown as SiteGenerationContext;
@@ -177,6 +197,40 @@ describe('siteGeneration service', () => {
         await siteGeneration.deleteMany({});
     });
 
+    // A generation of the wizard, once in its launch phase
+    const start = async (
+        steps: SiteGenerationStep[],
+        { autoPublish }: { autoPublish?: boolean } = {},
+    ) => {
+        const started = await siteGeneration.startWizard(
+            autoPublish ? { choice: { modelId: 'model', autoPublish } } : {},
+        );
+        return (await siteGeneration.transition(started, {
+            phase: 'launch',
+            position: steps.length
+                ? Math.min(...steps.map((s) => s.position))
+                : 0,
+            steps,
+        }))!;
+    };
+
+    // A generation of the wizard, before its launch phase
+    const startIn = async (
+        phase: 'data' | 'model' | 'settings',
+        update: Parameters<SiteGenerationCollection['transition']>[1] = {},
+    ) => {
+        const started = await siteGeneration.startWizard({
+            choice: { modelId: 'model' },
+            importJobId: 'import-job',
+            estimate: { enrichment: 2, precomputed: 1 },
+        });
+        return (await siteGeneration.transition(started, {
+            phase,
+            ...(phase !== 'data' && { modelJobId: 'model-job' }),
+            ...update,
+        }))!;
+    };
+
     const finishPosition = (position: number) => {
         for (const s of STEPS.filter((s) => s.position === position)) {
             setStatus(s.name, TaskStatus.FINISHED);
@@ -184,8 +238,22 @@ describe('siteGeneration service', () => {
     };
 
     describe('advanceSiteGeneration', () => {
+        it('does nothing before the launch phase', async () => {
+            const started = await siteGeneration.startWizard({});
+            const inModel = await siteGeneration.transition(started, {
+                phase: 'model',
+                steps: STEPS,
+                position: 1,
+            });
+
+            await advanceSiteGeneration(ctx);
+
+            expect(queued()).toEqual([]);
+            expect(await siteGeneration.findCurrent()).toEqual(inModel);
+        });
+
         it('queues the first position once', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
 
             await advanceSiteGeneration(ctx);
             expect(queued()).toEqual([
@@ -205,7 +273,7 @@ describe('siteGeneration service', () => {
         });
 
         it('moves to the next position once all steps are finished, then queues it', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             finishPosition(1);
 
@@ -228,7 +296,7 @@ describe('siteGeneration service', () => {
             jest.mocked(queuePrecomputed).mockImplementation(async (_, id) => {
                 order.push(id);
             });
-            await siteGeneration.start(STEPS.filter((s) => s.position === 3));
+            await start(STEPS.filter((s) => s.position === 3));
 
             await advanceSiteGeneration(ctx);
 
@@ -236,7 +304,7 @@ describe('siteGeneration service', () => {
         });
 
         it('does not move on while a step of the position is not finished', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             setStatus('clusterRameau', TaskStatus.ON_HOLD);
 
@@ -246,7 +314,7 @@ describe('siteGeneration service', () => {
         });
 
         it('counts a finished enrichment with lines in error as finished', async () => {
-            await siteGeneration.start(STEPS.filter((s) => s.position >= 2));
+            await start(STEPS.filter((s) => s.position >= 2));
             await advanceSiteGeneration(ctx);
             setStatus('xml', TaskStatus.FINISHED, {
                 errorCount: 12,
@@ -260,7 +328,7 @@ describe('siteGeneration service', () => {
         it.each([0, 1, 2])(
             'relaunches a step in error with %i attempts and counts the attempt',
             async (attempts) => {
-                const generation = await siteGeneration.start(STEPS);
+                const generation = await start(STEPS);
                 await siteGeneration.transition(generation, {
                     steps: STEPS.map((s) =>
                         s.position === 1
@@ -289,7 +357,7 @@ describe('siteGeneration service', () => {
         );
 
         it('relaunches a canceled step as a step in error', async () => {
-            await siteGeneration.start(STEPS.filter((s) => s.position === 2));
+            await start(STEPS.filter((s) => s.position === 2));
             await advanceSiteGeneration(ctx);
             setStatus('xml', TaskStatus.CANCELED);
 
@@ -302,7 +370,7 @@ describe('siteGeneration service', () => {
         });
 
         it(`puts the generation in error after ${SITE_GENERATION_MAX_RELAUNCHES} attempts`, async () => {
-            const generation = await siteGeneration.start(STEPS);
+            const generation = await start(STEPS);
             await siteGeneration.transition(generation, {
                 steps: STEPS.map((s) =>
                     s.position === 1
@@ -326,7 +394,7 @@ describe('siteGeneration service', () => {
         });
 
         it('treats a deleted target as finished', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             precomputed.targets.delete('clusterRameau-id');
 
@@ -344,7 +412,7 @@ describe('siteGeneration service', () => {
             jest.mocked(queuePrecomputed).mockRejectedValue(
                 new Error('Precomputed "clusterRameau-id" not found'),
             );
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
 
             await expect(advanceSiteGeneration(ctx)).resolves.toBeUndefined();
             expect(
@@ -353,7 +421,7 @@ describe('siteGeneration service', () => {
         });
 
         it('puts a step in error when queuing it fails, so that a later pass relaunches it', async () => {
-            await siteGeneration.start(STEPS.filter((s) => s.position === 2));
+            await start(STEPS.filter((s) => s.position === 2));
             jest.mocked(queueEnrichment).mockRejectedValueOnce(
                 new Error('Redis is down'),
             );
@@ -383,7 +451,7 @@ describe('siteGeneration service', () => {
         });
 
         it('ends the generation as done after the last position', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             for (const position of [1, 2, 3]) {
                 await advanceSiteGeneration(ctx);
                 finishPosition(position);
@@ -395,7 +463,7 @@ describe('siteGeneration service', () => {
         });
 
         it('wants a queued step only while its generation runs it', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             const isStillWanted = jest.mocked(queuePrecomputed).mock.calls[0][2]
                 ?.isStillWanted as () => Promise<boolean>;
@@ -407,7 +475,7 @@ describe('siteGeneration service', () => {
         });
 
         it('no longer wants a step relaunched with another jobId', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             const isStillWanted = jest.mocked(queuePrecomputed).mock.calls[0][2]
                 ?.isStillWanted as () => Promise<boolean>;
@@ -422,7 +490,7 @@ describe('siteGeneration service', () => {
         });
 
         it('stores the jobId given to each queued step', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
 
             await advanceSiteGeneration(ctx);
 
@@ -444,7 +512,7 @@ describe('siteGeneration service', () => {
             setStatus('clusterRameau', TaskStatus.FINISHED, {
                 jobId: 'earlier-run',
             });
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
 
             await advanceSiteGeneration(ctx);
             await advanceSiteGeneration(ctx);
@@ -456,7 +524,7 @@ describe('siteGeneration service', () => {
         });
 
         it('does not relaunch again a step whose relaunch is being queued', async () => {
-            await siteGeneration.start(STEPS.filter((s) => s.position === 2));
+            await start(STEPS.filter((s) => s.position === 2));
             await advanceSiteGeneration(ctx);
             setStatus('xml', TaskStatus.ERROR);
             // the winner has not written PENDING yet
@@ -475,7 +543,7 @@ describe('siteGeneration service', () => {
         });
 
         it('queues each step once when two passes run together', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
 
             await Promise.all([
                 advanceSiteGeneration(ctx),
@@ -508,7 +576,7 @@ describe('siteGeneration service', () => {
 
         it('does nothing without a running generation', async () => {
             await advanceSiteGeneration(ctx);
-            const generation = await siteGeneration.start(STEPS);
+            const generation = await start(STEPS);
             await siteGeneration.transition(generation, { status: 'stopped' });
             await advanceSiteGeneration(ctx);
 
@@ -518,7 +586,7 @@ describe('siteGeneration service', () => {
 
     describe('stopSiteGeneration', () => {
         it('removes the waiting jobs, cancels the targets and stops the generation', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             finishPosition(1);
             await advanceSiteGeneration(ctx);
@@ -554,7 +622,7 @@ describe('siteGeneration service', () => {
         });
 
         it('cancels the active job of a step', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             jest.mocked(getActiveJob).mockResolvedValue({
                 data: { id: 'clusterRameau-id', jobType: 'precomputer' },
@@ -569,7 +637,7 @@ describe('siteGeneration service', () => {
         });
 
         it('cancels a precomputation on hold', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             setStatus('clusterRameau', TaskStatus.ON_HOLD);
 
@@ -581,7 +649,7 @@ describe('siteGeneration service', () => {
         });
 
         it('keeps the status and message of a step in error', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
             await advanceSiteGeneration(ctx);
             setStatus('clusterRameau', TaskStatus.ERROR, { message: 'boom' });
 
@@ -596,7 +664,7 @@ describe('siteGeneration service', () => {
         });
 
         it('stops a generation in error', async () => {
-            const generation = await siteGeneration.start(STEPS);
+            const generation = await start(STEPS);
             await siteGeneration.transition(generation, { status: 'error' });
 
             expect(await stopSiteGeneration(ctx)).toBe(true);
@@ -607,15 +675,344 @@ describe('siteGeneration service', () => {
 
         it('returns false without a running or failed generation', async () => {
             expect(await stopSiteGeneration(ctx)).toBe(false);
-            const generation = await siteGeneration.start(STEPS);
+            const generation = await start(STEPS);
             await siteGeneration.transition(generation, { status: 'done' });
             expect(await stopSiteGeneration(ctx)).toBe(false);
+        });
+
+        it('removes a waiting data import and stops the generation', async () => {
+            await startIn('data');
+            const job = queueJob('waiting');
+            mockWorkerQueue.getJob.mockResolvedValue(job);
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(mockWorkerQueue.getJob).toHaveBeenCalledWith('import-job');
+            expect(job.remove).toHaveBeenCalled();
+            expect(cancelJob).not.toHaveBeenCalled();
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it('cancels an active data import and stops the generation', async () => {
+            await startIn('data');
+            const job = queueJob('active');
+            mockWorkerQueue.getJob.mockResolvedValue(job);
+            jest.mocked(getActiveJob).mockResolvedValue({
+                id: 'import-job',
+                data: { jobType: 'import' },
+            } as any);
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(job.remove).not.toHaveBeenCalled();
+            expect(cancelJob).toHaveBeenCalledWith(ctx, 'import');
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it('does not cancel an import started by hand meanwhile', async () => {
+            await startIn('data');
+            // the import of the generation ended meanwhile
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('active'));
+            jest.mocked(getActiveJob).mockResolvedValue({
+                id: 'manual-import',
+                data: { jobType: 'import' },
+            } as any);
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(cancelJob).not.toHaveBeenCalled();
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it('stops a data phase whose import no longer exists', async () => {
+            await startIn('data');
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(cancelJob).not.toHaveBeenCalled();
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it('stops a data phase in error and empties the dataset', async () => {
+            await startIn('data', { status: 'error', message: 'bad file' });
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(ctx.dataset.drop).toHaveBeenCalled();
+            expect(invalidateRepositories).toHaveBeenCalledWith('lodex_test');
+            expect(cancelJob).not.toHaveBeenCalled();
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it('lets the cancelled import of a running data phase empty the dataset', async () => {
+            await startIn('data');
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('active'));
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(ctx.dataset.drop).not.toHaveBeenCalled();
+        });
+
+        it.each(['model', 'settings'] as const)(
+            'removes a waiting model job in the %s phase',
+            async (phase) => {
+                await startIn(phase);
+                const job = queueJob('waiting');
+                mockWorkerQueue.getJob.mockResolvedValue(job);
+
+                expect(await stopSiteGeneration(ctx)).toBe(true);
+
+                expect(mockWorkerQueue.getJob).toHaveBeenCalledWith(
+                    'model-job',
+                );
+                expect(job.remove).toHaveBeenCalled();
+                expect((await siteGeneration.findCurrent())?.status).toBe(
+                    'stopped',
+                );
+            },
+        );
+
+        it('lets an active model job end the generation, and refuses a second stop', async () => {
+            await startIn('model');
+            const job = queueJob('active');
+            mockWorkerQueue.getJob.mockResolvedValue(job);
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(job.remove).not.toHaveBeenCalled();
+            expect(cancelJob).not.toHaveBeenCalled();
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopping',
+            );
+
+            expect(await stopSiteGeneration(ctx)).toBe(false);
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopping',
+            );
+        });
+
+        it('stops a model phase whose job no longer exists', async () => {
+            await startIn('settings');
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it('stops a model phase in error', async () => {
+            await startIn('model', { status: 'error', message: 'boom' });
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+    });
+
+    describe('settleStoppingSiteGeneration', () => {
+        it.each([
+            ['no longer exists', null],
+            ['completed', 'completed'],
+            ['failed', 'failed'],
+        ])(
+            'stops a stopping generation whose model job %s',
+            async (_name, state) => {
+                await startIn('model', { status: 'stopping' });
+                mockWorkerQueue.getJob.mockResolvedValue(
+                    state ? queueJob(state) : null,
+                );
+
+                await settleStoppingSiteGeneration(ctx);
+
+                expect(mockWorkerQueue.getJob).toHaveBeenCalledWith(
+                    'model-job',
+                );
+                expect((await siteGeneration.findCurrent())?.status).toBe(
+                    'stopped',
+                );
+            },
+        );
+
+        it.each(['active', 'waiting'])(
+            'leaves a stopping generation whose model job is %s',
+            async (state) => {
+                const generation = await startIn('settings', {
+                    status: 'stopping',
+                });
+                mockWorkerQueue.getJob.mockResolvedValue(queueJob(state));
+
+                await settleStoppingSiteGeneration(ctx);
+
+                expect(await siteGeneration.findCurrent()).toEqual(generation);
+            },
+        );
+
+        it.each(['running', 'error', 'done', 'stopped'] as const)(
+            'leaves a %s generation alone',
+            async (status) => {
+                const generation = await startIn('model', { status });
+
+                await settleStoppingSiteGeneration(ctx);
+
+                expect(mockWorkerQueue.getJob).not.toHaveBeenCalled();
+                expect(await siteGeneration.findCurrent()).toEqual(generation);
+            },
+        );
+
+        it('does nothing without a generation', async () => {
+            await settleStoppingSiteGeneration(ctx);
+
+            expect(mockWorkerQueue.getJob).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('failLostSiteGenerationJob', () => {
+        // the generations below were updated well before the grace period
+        let now: Date;
+        beforeEach(() => {
+            now = new Date(Date.now() + 2 * 60_000);
+        });
+        const finishedAgo = (seconds: number) => now.getTime() - seconds * 1000;
+
+        it('leaves a generation updated within the grace period', async () => {
+            // its job may not be queued yet
+            const generation = await startIn('data');
+
+            await failLostSiteGenerationJob(
+                ctx,
+                new Date(generation.updatedAt.getTime() + 10_000),
+            );
+
+            expect(await siteGeneration.findCurrent()).toEqual(generation);
+        });
+
+        it('puts in error a generation updated long ago whose job is missing', async () => {
+            const generation = await startIn('data');
+
+            await failLostSiteGenerationJob(
+                ctx,
+                new Date(generation.updatedAt.getTime() + 2 * 60_000),
+            );
+
+            expect((await siteGeneration.findCurrent())?.status).toBe('error');
+        });
+
+        const cases = [
+            ['data', 'import-job'],
+            ['model', 'model-job'],
+            ['settings', 'model-job'],
+        ] as const;
+
+        it.each(cases)(
+            'puts in error a %s phase whose job no longer exists',
+            async (phase, jobId) => {
+                await startIn(phase);
+
+                await failLostSiteGenerationJob(ctx, now);
+
+                expect(mockWorkerQueue.getJob).toHaveBeenCalledWith(jobId);
+                expect(await siteGeneration.findCurrent()).toEqual(
+                    expect.objectContaining({
+                        status: 'error',
+                        phase,
+                        message: 'site_generation_job_lost',
+                    }),
+                );
+            },
+        );
+
+        it.each(cases)(
+            'puts in error a %s phase whose job ended long ago',
+            async (phase) => {
+                for (const state of ['completed', 'failed']) {
+                    await siteGeneration.deleteMany({});
+                    await startIn(phase);
+                    mockWorkerQueue.getJob.mockResolvedValue(
+                        queueJob(state, finishedAgo(61)),
+                    );
+
+                    await failLostSiteGenerationJob(ctx, now);
+
+                    expect((await siteGeneration.findCurrent())?.status).toBe(
+                        'error',
+                    );
+                }
+            },
+        );
+
+        it.each(['completed', 'failed'])(
+            'leaves a generation whose job is %s within the grace period',
+            async (state) => {
+                // its end hook has not run yet
+                const generation = await startIn('data');
+                mockWorkerQueue.getJob.mockResolvedValue(
+                    queueJob(state, finishedAgo(10)),
+                );
+
+                await failLostSiteGenerationJob(ctx, now);
+
+                expect(await siteGeneration.findCurrent()).toEqual(generation);
+            },
+        );
+
+        it.each(['active', 'waiting', 'delayed', 'paused'])(
+            'leaves a generation whose job is %s',
+            async (state) => {
+                const generation = await startIn('model');
+                mockWorkerQueue.getJob.mockResolvedValue(queueJob(state));
+
+                await failLostSiteGenerationJob(ctx, now);
+
+                expect(await siteGeneration.findCurrent()).toEqual(generation);
+            },
+        );
+
+        it.each(['error', 'stopping', 'done', 'stopped'] as const)(
+            'leaves a %s generation alone',
+            async (status) => {
+                const generation = await startIn('data', { status });
+
+                await failLostSiteGenerationJob(ctx, now);
+
+                expect(mockWorkerQueue.getJob).not.toHaveBeenCalled();
+                expect(await siteGeneration.findCurrent()).toEqual(generation);
+            },
+        );
+
+        it('leaves a launch phase alone', async () => {
+            const generation = await start(STEPS);
+
+            await failLostSiteGenerationJob(ctx, now);
+
+            expect(mockWorkerQueue.getJob).not.toHaveBeenCalled();
+            expect(await siteGeneration.findCurrent()).toEqual(generation);
+        });
+
+        it('does nothing without a generation', async () => {
+            await failLostSiteGenerationJob(ctx, now);
+
+            expect(mockWorkerQueue.getJob).not.toHaveBeenCalled();
         });
     });
 
     describe('relaunchSiteGeneration', () => {
         it('relaunches the steps in error of a failed generation', async () => {
-            const generation = await siteGeneration.start(STEPS);
+            const generation = await start(STEPS);
             await siteGeneration.transition(generation, {
                 status: 'error',
                 steps: STEPS.map((s) =>
@@ -640,8 +1037,57 @@ describe('siteGeneration service', () => {
             expect(current?.steps[0].attempts).toBe(0);
         });
 
+        it('stops a data phase in error and empties the dataset', async () => {
+            await startIn('data', { status: 'error', message: 'bad file' });
+
+            expect(await relaunchSiteGeneration(ctx)).toBe(true);
+
+            expect(ctx.dataset.drop).toHaveBeenCalled();
+            expect(invalidateRepositories).toHaveBeenCalledWith('lodex_test');
+            expect(mockWorkerQueue.add).not.toHaveBeenCalled();
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
+        it.each(['model', 'settings'] as const)(
+            'queues the model job again from the %s phase',
+            async (phase) => {
+                const generation = await startIn(phase, {
+                    status: 'error',
+                    message: 'download failed',
+                });
+
+                expect(await relaunchSiteGeneration(ctx)).toBe(true);
+
+                const current = await siteGeneration.findCurrent();
+                expect(current).toEqual(
+                    expect.objectContaining({
+                        status: 'running',
+                        phase: 'model',
+                    }),
+                );
+                expect(
+                    await siteGeneration.findOne({ _id: generation._id }),
+                ).not.toHaveProperty('message');
+                expect(current?.modelJobId).toEqual(expect.any(String));
+                expect(current?.modelJobId).not.toBe('model-job');
+                expect(mockWorkerQueue.add).toHaveBeenCalledWith(
+                    MODEL_IMPORTER,
+                    {
+                        jobType: MODEL_IMPORTER,
+                        tenant: 'lodex_test',
+                        runId: generation.runId,
+                    },
+                    { jobId: current?.modelJobId, lifo: false },
+                );
+                expect(ctx.dataset.drop).not.toHaveBeenCalled();
+                expect(queued()).toEqual([]);
+            },
+        );
+
         it('returns false when the generation is not in error', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
 
             expect(await relaunchSiteGeneration(ctx)).toBe(false);
             expect(queued()).toEqual([]);
@@ -654,10 +1100,10 @@ describe('siteGeneration service', () => {
             handlerCtx.body = { id };
         });
 
-        it.each(['running', 'error'] as const)(
+        it.each(['running', 'error', 'stopping'] as const)(
             'refuses a launch by hand while the generation is %s',
             async (status) => {
-                const generation = await siteGeneration.start(STEPS);
+                const generation = await start(STEPS);
                 await siteGeneration.transition(generation, { status });
                 const handlerCtx: any = { siteGeneration };
 
@@ -679,7 +1125,7 @@ describe('siteGeneration service', () => {
             'lets a launch by hand through %s',
             async (_name, status) => {
                 if (status) {
-                    const generation = await siteGeneration.start(STEPS);
+                    const generation = await start(STEPS);
                     await siteGeneration.transition(generation, { status });
                 }
                 const handlerCtx: any = { siteGeneration };
@@ -698,7 +1144,7 @@ describe('siteGeneration service', () => {
         });
 
         it('returns the state of each step', async () => {
-            const generation = await siteGeneration.start([
+            const generation = await start([
                 ...STEPS,
                 step('deleted', 'enrichment', 1),
             ]);
@@ -724,6 +1170,11 @@ describe('siteGeneration service', () => {
 
             expect(await getSiteGenerationView(ctx)).toEqual({
                 status: 'error',
+                phase: 'launch',
+                launch: {
+                    enrichment: { done: 1, total: 3, error: 0 },
+                    precomputed: { done: 1, total: 2, error: 1 },
+                },
                 steps: [
                     {
                         name: 'clusterRameau',
@@ -760,8 +1211,86 @@ describe('siteGeneration service', () => {
             });
         });
 
+        it('reads a generation without phase as in its launch phase', async () => {
+            await start(STEPS);
+            await siteGeneration.updateOne({}, { $unset: { phase: '' } });
+
+            expect(await getSiteGenerationView(ctx)).toEqual(
+                expect.objectContaining({ phase: 'launch' }),
+            );
+        });
+
+        it('estimates the counters before the launch phase', async () => {
+            await startIn('model', {
+                importedLines: 12,
+                choice: {
+                    modelId: 'model',
+                    siteName: 'My site',
+                },
+            });
+
+            expect(await getSiteGenerationView(ctx)).toEqual({
+                status: 'running',
+                phase: 'model',
+                modelId: 'model',
+                importedLines: 12,
+                settings: { siteName: true, siteDescription: false },
+                launch: {
+                    enrichment: { done: 0, total: 2, error: 0 },
+                    precomputed: { done: 0, total: 1, error: 0 },
+                },
+                steps: [],
+            });
+        });
+
+        it('has no counters without steps nor estimate', async () => {
+            const started = await siteGeneration.startWizard({});
+
+            expect(await getSiteGenerationView(ctx)).toEqual(
+                expect.objectContaining({ phase: 'data', launch: null }),
+            );
+            await siteGeneration.transition(started, { phase: 'launch' });
+            expect(await getSiteGenerationView(ctx)).toEqual(
+                expect.objectContaining({ phase: 'launch', launch: null }),
+            );
+        });
+
+        it('exposes the message and the theme not found', async () => {
+            await startIn('settings', {
+                status: 'error',
+                message: 'boom',
+                themeNotFound: 'dark',
+            });
+
+            expect(await getSiteGenerationView(ctx)).toEqual(
+                expect.objectContaining({
+                    message: 'boom',
+                    themeNotFound: 'dark',
+                }),
+            );
+        });
+
+        it('counts the steps of the launch phase', async () => {
+            const enrichments = [
+                step('xml', 'enrichment', 1),
+                step('resume', 'enrichment', 1),
+            ];
+            const generation = await start(enrichments);
+            await siteGeneration.transition(generation, {
+                estimate: { enrichment: 5, precomputed: 5 },
+                steps: enrichments.map((s) => ({ ...s, jobId: 'job-1' })),
+            });
+            setStatus('xml', TaskStatus.FINISHED, { jobId: 'job-1' });
+            setStatus('resume', TaskStatus.ERROR, { jobId: 'job-1' });
+
+            expect((await getSiteGenerationView(ctx))?.launch).toEqual({
+                enrichment: { done: 1, total: 2, error: 1 },
+                precomputed: { done: 0, total: 0, error: 0 },
+            });
+        });
+
         it('reads the targets in one query per type', async () => {
-            await siteGeneration.start(STEPS);
+            await start(STEPS);
 
             await getSiteGenerationView(ctx);
 
@@ -787,7 +1316,7 @@ describe('siteGeneration service', () => {
         });
 
         const runToTheEnd = async () => {
-            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+            await start(ONE_STEP, { autoPublish: true });
             await advanceSiteGeneration(ctx);
             finishPosition(1);
             await advanceSiteGeneration(ctx);
@@ -809,8 +1338,24 @@ describe('siteGeneration service', () => {
             );
         });
 
+        it.each([
+            [true, 'publishing'],
+            [false, 'done'],
+        ])(
+            'ends a launch without steps at once (autoPublish %s)',
+            async (autoPublish, status) => {
+                await start([], { autoPublish });
+
+                await advanceSiteGeneration(ctx);
+
+                expect((await siteGeneration.findCurrent())?.status).toBe(
+                    status,
+                );
+            },
+        );
+
         it('does not publish without autoPublish', async () => {
-            await siteGeneration.start(ONE_STEP);
+            await start(ONE_STEP);
             await advanceSiteGeneration(ctx);
             finishPosition(1);
             await advanceSiteGeneration(ctx);
@@ -875,7 +1420,7 @@ describe('siteGeneration service', () => {
         });
 
         it('cancels the publisher job of a lost transition', async () => {
-            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+            await start(ONE_STEP, { autoPublish: true });
             await advanceSiteGeneration(ctx);
             finishPosition(1);
             jest.spyOn(siteGeneration, 'transition').mockResolvedValueOnce(
@@ -919,7 +1464,7 @@ describe('siteGeneration service', () => {
         });
 
         it('does not cancel any publisher job when stopping a running generation', async () => {
-            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+            await start(ONE_STEP, { autoPublish: true });
 
             await stopSiteGeneration(ctx);
 
@@ -927,12 +1472,12 @@ describe('siteGeneration service', () => {
         });
 
         it('shows the publication only with autoPublish', async () => {
-            await siteGeneration.start(ONE_STEP, { autoPublish: true });
+            await start(ONE_STEP, { autoPublish: true });
             expect((await getSiteGenerationView(ctx))?.publication).toEqual({
                 state: 'waiting',
             });
 
-            await siteGeneration.start(ONE_STEP);
+            await start(ONE_STEP);
             expect(
                 (await getSiteGenerationView(ctx))?.publication,
             ).toBeUndefined();

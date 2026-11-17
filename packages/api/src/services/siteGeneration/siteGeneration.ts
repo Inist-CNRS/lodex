@@ -1,11 +1,17 @@
 import { randomUUID } from 'node:crypto';
 
-import { TaskStatus, type SiteGenerationView } from '@lodex/common';
+import {
+    isSiteGenerationActive as isActiveStatus,
+    TaskStatus,
+    type SiteGenerationCounter,
+    type SiteGenerationView,
+} from '@lodex/common';
 import type {
     SiteGeneration,
     SiteGenerationCollection,
     SiteGenerationStep,
 } from '../../models/siteGeneration';
+import { getOrCreateWorkerQueue } from '../../workers';
 import {
     cancelJob,
     cancelPublisherJob,
@@ -20,6 +26,8 @@ import {
     type LaunchContext,
 } from '../launchTasks';
 import getLogger from '../logger';
+import { invalidateRepositories } from '../repositoryMiddleware';
+import { failWizardGeneration, queueModelImport } from './wizardJobs';
 
 // Automatic relaunches of a step in error, after its first run: a step that
 // keeps failing runs 1 + SITE_GENERATION_MAX_RELAUNCHES times, then the
@@ -28,6 +36,8 @@ export const SITE_GENERATION_MAX_RELAUNCHES = 3;
 
 export type SiteGenerationContext = LaunchContext & {
     siteGeneration: SiteGenerationCollection;
+    // dropped when « Réessayer » ends a generation failed in its data phase
+    dataset: LaunchContext['dataset'] & { drop(): Promise<unknown> };
 };
 
 // The publisher job is gone (Bull keeps the last finished jobs only, a
@@ -35,21 +45,25 @@ export type SiteGenerationContext = LaunchContext & {
 // told, an earlier publication may still be online. "Relancer" publishes again.
 export const PUBLICATION_LOST = 'site_generation_publication_lost';
 
+// What reading the generation and its targets needs
+type ReadContext = Pick<
+    SiteGenerationContext,
+    'siteGeneration' | 'enrichment' | 'precomputed'
+>;
+
 type Target = { status?: string; message?: string; jobId?: unknown };
 
 type StepWithTarget = { step: SiteGenerationStep; target: Target | null };
 
-const repositoryOf = (
-    ctx: SiteGenerationContext,
-    type: SiteGenerationStep['type'],
-) => (type === 'precomputed' ? ctx.precomputed : ctx.enrichment);
+const repositoryOf = (ctx: ReadContext, type: SiteGenerationStep['type']) =>
+    type === 'precomputed' ? ctx.precomputed : ctx.enrichment;
 
 // A step is launched once a job has been queued for it (it then has a jobId)
 const isLaunched = (step: SiteGenerationStep) => step.jobId != null;
 
 // One query per type of target, not one per step: the view is polled
 const readTargets = async (
-    ctx: SiteGenerationContext,
+    ctx: ReadContext,
     steps: SiteGenerationStep[],
 ): Promise<StepWithTarget[]> => {
     const targetsByType = await Promise.all(
@@ -247,6 +261,19 @@ const advancePublication = async (
     });
 };
 
+// Every step is done (or the model launches nothing): the generation ends, or
+// publishes the site first
+const endLaunch = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+) => {
+    if (generation.autoPublish) {
+        await startPublication(ctx, generation);
+        return;
+    }
+    await ctx.siteGeneration.transition(generation, { status: 'done' });
+};
+
 const nextPosition = (generation: SiteGeneration) => {
     const positions = generation.steps
         .map((step) => step.position)
@@ -262,7 +289,16 @@ export const advanceSiteGeneration = async (
         await advancePublication(ctx, generation);
         return;
     }
-    if (!generation || generation.status !== 'running') {
+    // Before its launch phase, the job of the wizard drives the generation
+    if (
+        !generation ||
+        generation.status !== 'running' ||
+        generation.phase !== 'launch'
+    ) {
+        return;
+    }
+    if (!generation.steps.length) {
+        await endLaunch(ctx, generation);
         return;
     }
 
@@ -318,14 +354,55 @@ export const advanceSiteGeneration = async (
         const position = nextPosition(generation);
         if (position !== null) {
             await ctx.siteGeneration.transition(generation, { position });
-        } else if (generation.autoPublish) {
-            await startPublication(ctx, generation);
         } else {
-            await ctx.siteGeneration.transition(generation, {
-                status: 'done',
-            });
+            await endLaunch(ctx, generation);
         }
     }
+};
+
+// What a failed import may have left in the dataset (a plain failure does not
+// empty it, unlike a cancellation)
+const dropFailedImport = async (ctx: SiteGenerationContext) => {
+    await ctx.dataset.drop();
+    invalidateRepositories(ctx.tenant);
+};
+
+// The server does not keep the uploaded file: the generation ends, and what
+// the failed import left is removed. The admin goes back to the wizard.
+const relaunchDataPhase = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+) => {
+    const stopped = await ctx.siteGeneration.transition(generation, {
+        status: 'stopped',
+    });
+    if (!stopped) {
+        return false;
+    }
+    await dropFailedImport(ctx);
+    return true;
+};
+
+// The data are kept: the model job runs again, from the model restoration
+const relaunchModelPhase = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+) => {
+    const modelJobId = randomUUID();
+    const relaunched = await ctx.siteGeneration.transition(
+        generation,
+        { status: 'running', phase: 'model', modelJobId },
+        { unset: ['message', 'detail'] },
+    );
+    if (!relaunched) {
+        return false;
+    }
+    try {
+        await queueModelImport(ctx, generation.runId, modelJobId);
+    } catch (e) {
+        await failWizardGeneration(ctx, generation.runId, (e as Error).message);
+    }
+    return true;
 };
 
 export const relaunchSiteGeneration = async (
@@ -338,6 +415,12 @@ export const relaunchSiteGeneration = async (
     // every step was done: only the publication failed
     if (generation.publishJobId) {
         return startPublication(ctx, generation);
+    }
+    if (generation.phase === 'data') {
+        return relaunchDataPhase(ctx, generation);
+    }
+    if (generation.phase !== 'launch') {
+        return relaunchModelPhase(ctx, generation);
     }
 
     const current = await readTargets(
@@ -364,7 +447,8 @@ export const relaunchSiteGeneration = async (
     return true;
 };
 
-// A generation in error still waits for "Relancer" or "Arrêter"
+// A generation in error still waits for "Relancer" or "Arrêter". A
+// generation stopping waits for its model job: it cannot be stopped again.
 const STOPPABLE_STATUSES = ['running', 'publishing', 'error'];
 
 // A task launched by hand gets a jobId of its own: the generation would then
@@ -373,7 +457,7 @@ export const isSiteGenerationActive = async (
     ctx: Pick<SiteGenerationContext, 'siteGeneration'>,
 ) => {
     const generation = await ctx.siteGeneration.findCurrent();
-    return !!generation && STOPPABLE_STATUSES.includes(generation.status);
+    return isActiveStatus(generation?.status);
 };
 
 // Wraps a koa-route handler that launches tasks by hand
@@ -389,22 +473,158 @@ export const refusedDuringSiteGeneration =
         }
         await handler(ctx, ...args);
     };
-// The periodic pass can win the transition first: try again on fresh data
+// The job of the wizard (data import or model), by its bull job id. A job
+// that no longer exists (crash, restart, removed from Redis) gives null.
+const findWizardJob = async (
+    ctx: SiteGenerationContext,
+    jobId: string | undefined,
+) => {
+    if (!jobId) {
+        return null;
+    }
+    const job = await getOrCreateWorkerQueue(ctx.tenant, 1).getJob(jobId);
+    return job ? { job, state: await job.getState() } : null;
+};
+
+type WizardJob = NonNullable<Awaited<ReturnType<typeof findWizardJob>>>;
+
+const NOT_STARTED_STATES = ['waiting', 'delayed', 'paused'];
+
+// A job running or not started yet will still move its generation on
+const isAlive = (found: WizardJob | null) =>
+    !!found &&
+    (found.state === 'active' || NOT_STARTED_STATES.includes(found.state));
+
+// A restoration stopped halfway would leave the instance inconsistent: an
+// active model job ends on its own and turns `stopping` into `stopped`. A job
+// not started yet is removed (it may start meanwhile: it then ends as well).
+const modelPhaseStopStatus = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+): Promise<'stopped' | 'stopping'> => {
+    const found = await findWizardJob(ctx, generation.modelJobId);
+    if (found?.state === 'active') {
+        return 'stopping';
+    }
+    if (found && NOT_STARTED_STATES.includes(found.state)) {
+        try {
+            await found.job.remove();
+        } catch {
+            return 'stopping';
+        }
+    }
+    return 'stopped';
+};
+
+// The import ends the generation as well when cancelled; a stopped generation
+// is left alone by the end of its import
+const stopDataImport = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+) => {
+    const found = await findWizardJob(ctx, generation.importJobId);
+    if (found && NOT_STARTED_STATES.includes(found.state)) {
+        try {
+            await found.job.remove();
+            return;
+        } catch {
+            // started meanwhile: cancelled below
+        }
+    }
+    if (!found || found.state === 'completed' || found.state === 'failed') {
+        return;
+    }
+    // the import may have ended meanwhile, and another one started by hand:
+    // only the generation's own import is cancelled
+    const activeJob = await getActiveJob(ctx.tenant);
+    if (activeJob && String(activeJob.id) === generation.importJobId) {
+        await cancelJob(ctx, 'import');
+    }
+};
+
+// The model job of a generation in `stopping` ends it. A job that died (crash,
+// restart, removed from Redis) never will: the periodic pass ends it instead.
+// Losing the transition is fine (the job, or another pass, won it).
+export const settleStoppingSiteGeneration = async (
+    ctx: SiteGenerationContext,
+): Promise<void> => {
+    const generation = await ctx.siteGeneration.findCurrent();
+    if (generation?.status !== 'stopping') {
+        return;
+    }
+    if (isAlive(await findWizardJob(ctx, generation.modelJobId))) {
+        return;
+    }
+    await ctx.siteGeneration.transition(generation, { status: 'stopped' });
+};
+
+// A job that just ended may not have moved its generation on yet (its end
+// hook runs right after), and a generation just updated may not have queued
+// its job yet: a job is lost only once this delay has passed
+export const SITE_GENERATION_JOB_GRACE_PERIOD = 60_000;
+
+const isLost = (found: WizardJob | null, now: Date) =>
+    !found ||
+    (!isAlive(found) &&
+        (found.job.finishedOn == null ||
+            now.getTime() - found.job.finishedOn >
+                SITE_GENERATION_JOB_GRACE_PERIOD));
+
+// Before the launch phase, the job of the wizard moves the generation on. A
+// job that died (crash, restart, removed from Redis) never will: the periodic
+// pass puts the generation in error, which « Réessayer » or « Arrêter » end.
+// Losing the transition is fine (the job, or another pass, won it).
+export const failLostSiteGenerationJob = async (
+    ctx: SiteGenerationContext,
+    now = new Date(),
+): Promise<void> => {
+    const generation = await ctx.siteGeneration.findCurrent();
+    if (generation?.status !== 'running' || generation.phase === 'launch') {
+        return;
+    }
+    // just started, moved to the model phase or relaunched: its job may not
+    // be queued yet
+    if (
+        now.getTime() - generation.updatedAt.getTime() <
+        SITE_GENERATION_JOB_GRACE_PERIOD
+    ) {
+        return;
+    }
+    const jobId =
+        generation.phase === 'data'
+            ? generation.importJobId
+            : generation.modelJobId;
+    if (!isLost(await findWizardJob(ctx, jobId), now)) {
+        return;
+    }
+    await ctx.siteGeneration.transition(generation, {
+        status: 'error',
+        message: 'site_generation_job_lost',
+    });
+};
+
+// The periodic pass (or the model job) can win the transition first: try
+// again on fresh data
 const STOP_TRIES = 5;
 
 const transitionToStopped = async (
     ctx: SiteGenerationContext,
-): Promise<SiteGeneration | null> => {
+): Promise<{ previous: SiteGeneration; stopped: SiteGeneration } | null> => {
     for (let i = 0; i < STOP_TRIES; i++) {
         const generation = await ctx.siteGeneration.findCurrent();
         if (!generation || !STOPPABLE_STATUSES.includes(generation.status)) {
             return null;
         }
+        const { phase } = generation;
+        const status =
+            phase === 'model' || phase === 'settings'
+                ? await modelPhaseStopStatus(ctx, generation)
+                : 'stopped';
         const stopped = await ctx.siteGeneration.transition(generation, {
-            status: 'stopped',
+            status,
         });
         if (stopped) {
-            return stopped;
+            return { previous: generation, stopped };
         }
     }
     return null;
@@ -413,9 +633,23 @@ const transitionToStopped = async (
 export const stopSiteGeneration = async (
     ctx: SiteGenerationContext,
 ): Promise<boolean> => {
-    const stopped = await transitionToStopped(ctx);
-    if (!stopped) {
+    const transitioned = await transitionToStopped(ctx);
+    if (!transitioned) {
         return false;
+    }
+    const { previous, stopped } = transitioned;
+    if (stopped.phase === 'data') {
+        // a failed import is over: as « Réessayer », drop what it left. A
+        // running one empties the dataset itself once cancelled.
+        if (previous.status === 'error') {
+            await dropFailedImport(ctx);
+            return true;
+        }
+        await stopDataImport(ctx, stopped);
+        return true;
+    }
+    if (stopped.phase !== 'launch') {
+        return true;
     }
 
     // a failed publication has nothing left to cancel
@@ -505,22 +739,74 @@ const toPublicationState = (
     return { state: 'waiting' };
 };
 
+const countSteps = (
+    steps: SiteGenerationView['steps'],
+    type: SiteGenerationStep['type'],
+): SiteGenerationCounter => {
+    const ofType = steps.filter((step) => step.type === type);
+    return {
+        done: ofType.filter((step) => step.state === 'done').length,
+        total: ofType.length,
+        error: ofType.filter((step) => step.state === 'error').length,
+    };
+};
+
+// Real counters in the launch phase; before it, the counts of the model's
+// launch order, as an estimate
+const launchCounters = (
+    generation: SiteGeneration,
+    steps: SiteGenerationView['steps'],
+): SiteGenerationView['launch'] => {
+    if (generation.phase === 'launch') {
+        return steps.length
+            ? {
+                  enrichment: countSteps(steps, 'enrichment'),
+                  precomputed: countSteps(steps, 'precomputed'),
+              }
+            : null;
+    }
+    if (!generation.estimate) {
+        return null;
+    }
+    const estimated = (total: number) => ({ done: 0, total, error: 0 });
+    return {
+        enrichment: estimated(generation.estimate.enrichment),
+        precomputed: estimated(generation.estimate.precomputed),
+    };
+};
+
 export const getSiteGenerationView = async (
-    ctx: SiteGenerationContext,
+    ctx: ReadContext,
 ): Promise<SiteGenerationView | null> => {
     const generation = await ctx.siteGeneration.findCurrent();
     if (!generation) {
         return null;
     }
-    const steps = await readTargets(ctx, generation.steps);
+    const targets = await readTargets(ctx, generation.steps);
+    const steps = targets.map(({ step, target }) => ({
+        name: step.name,
+        type: step.type,
+        position: step.position,
+        ...toState(step, target),
+    }));
+    const { choice, importedLines, message, detail, themeNotFound } =
+        generation;
     return {
         status: generation.status,
-        steps: steps.map(({ step, target }) => ({
-            name: step.name,
-            type: step.type,
-            position: step.position,
-            ...toState(step, target),
-        })),
+        phase: generation.phase,
+        ...(choice && {
+            modelId: choice.modelId,
+            settings: {
+                siteName: !!choice.siteName,
+                siteDescription: !!choice.siteDescription,
+            },
+        }),
+        ...(importedLines != null && { importedLines }),
+        ...(message && { message }),
+        ...(detail && { detail }),
+        ...(themeNotFound && { themeNotFound }),
+        launch: launchCounters(generation, steps),
+        steps,
         ...(generation.autoPublish && {
             publication: toPublicationState(generation),
         }),
