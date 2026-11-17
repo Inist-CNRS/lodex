@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo } from 'react';
+import { reportClientError } from '@lodex/frontend-common/utils/reportClientError';
 
 type ErrorBoundaryProps = {
     children: React.ReactNode;
@@ -20,6 +21,7 @@ export class ErrorBoundary extends Component<
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         console.error(error, errorInfo);
+        reportClientError('react.ErrorBoundary', error);
     }
 
     render() {
