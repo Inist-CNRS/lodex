@@ -40,6 +40,8 @@ const buildGeneration = (
     message?: string,
 ): SiteGenerationView => ({
     status,
+    phase: 'launch',
+    launch: null,
     steps: states.map((state, index) => ({
         name: `step${index}`,
         type: index % 2 ? 'enrichment' : 'precomputed',

@@ -6,7 +6,11 @@ import repositoryMiddleware, {
 import mongoClient from '../mongoClient';
 import { PRECOMPUTED_NO_RESPONSE } from '../../models/precomputed';
 import getLogger from '../logger';
-import { advanceSiteGeneration } from './siteGeneration';
+import {
+    advanceSiteGeneration,
+    failLostSiteGenerationJob,
+    settleStoppingSiteGeneration,
+} from './siteGeneration';
 
 const buildContext = async (tenantName: string): Promise<any> => {
     const ctx: any = { tenant: tenantName };
@@ -28,6 +32,8 @@ export const sweepTenants = async (
                 PRECOMPUTED_NO_RESPONSE,
             );
             await advanceSiteGeneration(ctx);
+            await settleStoppingSiteGeneration(ctx);
+            await failLostSiteGenerationJob(ctx, now);
         } catch (error) {
             getLogger(tenantName).error(
                 `Site generation sweep failed for tenant ${tenantName}`,

@@ -69,16 +69,25 @@ export const catalogModelSchema = z
 export type ModelLaunchStep = z.infer<typeof launchStepSchema>;
 export type CatalogModel = z.infer<typeof catalogModelSchema>;
 
+// The steps of a type in the model's launch order (0 without a launch order)
+export const countLaunchSteps = (
+    model: Pick<CatalogModel, 'launchOrder'>,
+    type: ModelLaunchStepType,
+): number =>
+    model.launchOrder?.filter((step) => step.type === type).length ?? 0;
+
 // given in the site wizard, written into the theme settings with the model;
 // the theme replaces the one of the catalog and of the archive
+export const SITE_INFO_KEYS = ['siteName', 'siteDescription', 'theme'] as const;
+
 export type SiteInfo = {
-    siteName?: string;
-    siteDescription?: string;
-    theme?: string;
+    [key in (typeof SITE_INFO_KEYS)[number]]?: string;
+} & {
     // publish the site once its generation is over
     autoPublish?: boolean;
 };
 
 export const getModelTitleKey = (id: string) => `mc_${id}_title`;
+export const getModelNameKey = (id: string) => `mc_${id}_name`;
 export const getModelDescriptionKey = (id: string) => `mc_${id}_description`;
 export const getModelImportHelpKey = (id: string) => `mc_${id}_import_help`;

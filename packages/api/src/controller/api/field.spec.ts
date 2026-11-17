@@ -19,9 +19,11 @@ import {
     applyConfigTenant,
     applyRecommendedTheme,
     applySiteInfo,
+    restoreFields,
+} from '../../services/modelRestore';
+import {
     exportFields,
     getAllField,
-    importCatalogModel,
     importFields,
     patchField,
     patchOverview,
@@ -30,38 +32,16 @@ import {
     postField,
     removeField,
     reorderField,
-    restoreFields,
     setup,
 } from './field';
 import publishFacets from './publishFacets';
-import config from 'config';
-import {
-    catalogModels,
-    downloadModelArchive,
-} from '../../services/catalogModel';
 import { version } from '../../../../../package.json';
 
 jest.mock('../../services/indexSearchableFields');
-jest.mock('../../services/siteGeneration/siteGeneration', () => ({
-    advanceSiteGeneration: jest.fn().mockResolvedValue(undefined),
-    stopSiteGeneration: jest.fn().mockResolvedValue(false),
-}));
-const {
-    advanceSiteGeneration: mockAdvanceSiteGeneration,
-    stopSiteGeneration: mockStopSiteGeneration,
-} = jest.requireMock('../../services/siteGeneration/siteGeneration');
-jest.mock('../../workers/tools', () => ({
-    ...jest.requireActual('../../workers/tools'),
-    queuePublisher: jest.fn().mockResolvedValue(undefined),
-}));
-const { queuePublisher: mockQueuePublisher } = jest.requireMock(
-    '../../workers/tools',
-);
 jest.mock('../../services/logger', () => {
     const logger = { error: jest.fn(), info: jest.fn(), warn: jest.fn() };
     return () => logger;
 });
-const mockLogger = jest.requireMock('../../services/logger')();
 jest.mock('../../models/themes', () => {
     const themes: Record<string, object> = {
         default: { siteTitle: '', summary: '' },
@@ -207,11 +187,6 @@ describe('field routes', () => {
                 publishFacets,
                 validateField,
                 restoreFields,
-                catalogModels,
-                availableLoaders: config.get('scripts.loaders'),
-                downloadModelArchive,
-                applyRecommendedTheme,
-                applySiteInfo,
             });
         });
 
@@ -229,11 +204,6 @@ describe('field routes', () => {
                 body: { error: 'Boom' },
                 status: 500,
                 restoreFields,
-                catalogModels,
-                availableLoaders: config.get('scripts.loaders'),
-                downloadModelArchive,
-                applyRecommendedTheme,
-                applySiteInfo,
             });
         });
     });
@@ -610,392 +580,6 @@ describe('field routes', () => {
             await applySiteInfo(ctx, { siteName: 'My site' });
 
             expect(await ctx.configTenantCollection.findLast()).toBeNull();
-        });
-    });
-
-    describe('importCatalogModel', () => {
-        const tarModel = {
-            id: 'm',
-            url: 'https://x/m.tar',
-            loader: 'csv',
-            importTypes: ['file'],
-        };
-        const stream = { filename: 'm.tar' };
-        let ctx: any;
-
-        beforeEach(() => {
-            mockAdvanceSiteGeneration.mockClear();
-            mockStopSiteGeneration.mockClear();
-            mockQueuePublisher.mockClear();
-            ctx = {
-                request: { body: { id: 'm' } },
-                catalogModels: [
-                    tarModel,
-                    { ...tarModel, id: 'zip', url: 'https://x/m.zip' },
-                    { ...tarModel, id: 'themed', theme: 'hal-cnrs' },
-                    {
-                        ...tarModel,
-                        id: 'ordered',
-                        launchOrder: [
-                            { name: 'e1', type: 'enrichment', position: 1 },
-                        ],
-                    },
-                ],
-                availableLoaders: ['csv'],
-                downloadModelArchive: jest.fn().mockResolvedValue(stream),
-                restoreFields: jest.fn().mockResolvedValue({}),
-                applyRecommendedTheme: jest.fn().mockResolvedValue({}),
-                applySiteInfo: jest.fn().mockResolvedValue(undefined),
-                enrichment: enrichmentModel,
-                precomputed: precomputedModel,
-                dataSource: { getDataSources: jest.fn().mockResolvedValue([]) },
-                siteGeneration: {
-                    deleteMany: jest.fn().mockResolvedValue(undefined),
-                    start: jest.fn().mockResolvedValue(undefined),
-                },
-            };
-        });
-
-        it('should start the launch steps of the model after restoring', async () => {
-            ctx.request.body = { id: 'ordered' };
-            ctx.enrichment = {
-                findAll: jest
-                    .fn()
-                    .mockResolvedValue([{ _id: 'id1', name: 'e1' }]),
-            };
-            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.siteGeneration.start).toHaveBeenCalledTimes(1);
-            expect(ctx.siteGeneration.start).toHaveBeenCalledWith(
-                [
-                    expect.objectContaining({
-                        type: 'enrichment',
-                        name: 'e1',
-                        targetId: 'id1',
-                    }),
-                ],
-                { autoPublish: false },
-            );
-            expect(ctx.status).toBe(200);
-            // the first position starts without waiting for the periodic pass
-            expect(mockAdvanceSiteGeneration).toHaveBeenCalledWith(ctx);
-            expect(
-                ctx.siteGeneration.start.mock.invocationCallOrder[0],
-            ).toBeLessThan(
-                mockAdvanceSiteGeneration.mock.invocationCallOrder[0],
-            );
-        });
-
-        it.each([true, false])(
-            'should start the generation with autoPublish %s',
-            async (autoPublish) => {
-                ctx.request.body = { id: 'ordered', autoPublish };
-                ctx.enrichment = {
-                    findAll: jest
-                        .fn()
-                        .mockResolvedValue([{ _id: 'id1', name: 'e1' }]),
-                };
-                ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-
-                await importCatalogModel(ctx);
-
-                expect(ctx.siteGeneration.start).toHaveBeenCalledWith(
-                    expect.any(Array),
-                    { autoPublish },
-                );
-                // the generation publishes at its end
-                expect(mockQueuePublisher).not.toHaveBeenCalled();
-            },
-        );
-
-        it.each([
-            [true, 1],
-            [false, 0],
-        ])(
-            'should publish right away without steps when autoPublish is %s',
-            async (autoPublish, calls) => {
-                ctx.request.body = { id: 'ordered', autoPublish };
-                ctx.enrichment = { findAll: jest.fn().mockResolvedValue([]) };
-                ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-
-                await importCatalogModel(ctx);
-
-                expect(mockQueuePublisher).toHaveBeenCalledTimes(calls);
-                expect(ctx.status).toBe(200);
-            },
-        );
-
-        it('should log a failed first pass and still start the generation', async () => {
-            ctx.request.body = { id: 'ordered' };
-            ctx.enrichment = {
-                findAll: jest
-                    .fn()
-                    .mockResolvedValue([{ _id: 'id1', name: 'e1' }]),
-            };
-            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-            mockAdvanceSiteGeneration.mockRejectedValueOnce(new Error('boom'));
-
-            await importCatalogModel(ctx);
-
-            expect(mockLogger.error).toHaveBeenCalledWith(
-                'Site generation advance error',
-                expect.objectContaining({ error: 'boom' }),
-            );
-            expect(ctx.status).toBe(200);
-        });
-
-        it('should not start a generation without steps', async () => {
-            ctx.request.body = { id: 'ordered' };
-            ctx.enrichment = { findAll: jest.fn().mockResolvedValue([]) };
-            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.siteGeneration.start).not.toHaveBeenCalled();
-            expect(mockAdvanceSiteGeneration).not.toHaveBeenCalled();
-            // the generation of an earlier model is not shown anymore
-            expect(ctx.siteGeneration.deleteMany).toHaveBeenCalledWith({});
-        });
-
-        it('should stop the running generation before restoring the model', async () => {
-            ctx.request.body = { id: 'ordered' };
-            ctx.enrichment = { findAll: jest.fn().mockResolvedValue([]) };
-            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-
-            await importCatalogModel(ctx);
-
-            expect(mockStopSiteGeneration).toHaveBeenCalledWith(ctx);
-            expect(
-                mockStopSiteGeneration.mock.invocationCallOrder[0],
-            ).toBeLessThan(ctx.restoreFields.mock.invocationCallOrder[0]);
-        });
-
-        it('should log a failed stop and still import the model', async () => {
-            ctx.request.body = { id: 'ordered' };
-            ctx.enrichment = { findAll: jest.fn().mockResolvedValue([]) };
-            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-            mockStopSiteGeneration.mockRejectedValueOnce(new Error('boom'));
-
-            await importCatalogModel(ctx);
-
-            expect(mockLogger.error).toHaveBeenCalledWith(
-                'Site generation stop error',
-                expect.objectContaining({ error: 'boom' }),
-            );
-            expect(ctx.restoreFields).toHaveBeenCalled();
-            expect(ctx.status).toBe(200);
-        });
-
-        it('should not start a generation when the restoration fails', async () => {
-            ctx.request.body = { id: 'ordered' };
-            ctx.restoreFields.mockRejectedValue(new Error('restore failed'));
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.siteGeneration.start).not.toHaveBeenCalled();
-            expect(ctx.status).toBe(500);
-        });
-
-        it('should log a failed generation start and still import the model', async () => {
-            ctx.request.body = { id: 'ordered' };
-            ctx.enrichment = {
-                findAll: jest
-                    .fn()
-                    .mockResolvedValue([{ _id: 'id1', name: 'e1' }]),
-            };
-            ctx.precomputed = { findAll: jest.fn().mockResolvedValue([]) };
-            ctx.siteGeneration.start.mockRejectedValue(new Error('boom'));
-
-            await importCatalogModel(ctx);
-
-            expect(mockLogger.error).toHaveBeenCalledWith(
-                'Site generation start error',
-                expect.objectContaining({ error: 'boom' }),
-            );
-            expect(ctx.status).toBe(200);
-        });
-
-        it('should return 404 for an unknown model', async () => {
-            ctx.request.body = { id: 'nope' };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.status).toBe(404);
-            expect(ctx.body).toEqual({ error: 'model_not_found' });
-            expect(ctx.downloadModelArchive).not.toHaveBeenCalled();
-        });
-
-        it('should return 400 when the archive is not a tar', async () => {
-            ctx.request.body = { id: 'zip' };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.status).toBe(400);
-            expect(ctx.body).toEqual({ error: 'model_archive_not_tar' });
-            expect(ctx.downloadModelArchive).not.toHaveBeenCalled();
-        });
-
-        it('should restore the downloaded archive without applying a theme', async () => {
-            await importCatalogModel(ctx);
-
-            expect(ctx.downloadModelArchive).toHaveBeenCalledWith(
-                'https://x/m.tar',
-            );
-            expect(ctx.restoreFields).toHaveBeenCalledWith(stream, ctx);
-            expect(ctx.applyRecommendedTheme).not.toHaveBeenCalled();
-            expect(ctx.status).toBe(200);
-            expect(ctx.body).toEqual({
-                message: 'Model imported successfully',
-                themeNotFound: undefined,
-            });
-        });
-
-        it('should apply the recommended theme after restoring', async () => {
-            ctx.request.body = { id: 'themed' };
-            ctx.applyRecommendedTheme.mockResolvedValue({
-                themeNotFound: 'hal-cnrs',
-            });
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
-                ctx,
-                'hal-cnrs',
-            );
-            expect(ctx.restoreFields.mock.invocationCallOrder[0]).toBeLessThan(
-                ctx.applyRecommendedTheme.mock.invocationCallOrder[0],
-            );
-            expect(ctx.status).toBe(200);
-            expect(ctx.body.themeNotFound).toBe('hal-cnrs');
-        });
-
-        it('should apply the site name and description after the recommended theme', async () => {
-            ctx.request.body = {
-                id: 'themed',
-                siteName: 'My site',
-                siteDescription: 'About my site',
-            };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.applySiteInfo).toHaveBeenCalledWith(ctx, {
-                siteName: 'My site',
-                siteDescription: 'About my site',
-            });
-            expect(
-                ctx.applyRecommendedTheme.mock.invocationCallOrder[0],
-            ).toBeLessThan(ctx.applySiteInfo.mock.invocationCallOrder[0]);
-            expect(ctx.status).toBe(200);
-        });
-
-        it('should apply the site name and description after restoring a model without theme', async () => {
-            ctx.request.body = { id: 'm', siteName: 'My site' };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.applySiteInfo).toHaveBeenCalledWith(ctx, {
-                siteName: 'My site',
-                siteDescription: undefined,
-            });
-            expect(ctx.restoreFields.mock.invocationCallOrder[0]).toBeLessThan(
-                ctx.applySiteInfo.mock.invocationCallOrder[0],
-            );
-        });
-
-        it('should log a failed site info write and still import the model', async () => {
-            ctx.request.body = { id: 'm', siteName: 'My site' };
-            ctx.applySiteInfo.mockRejectedValue(new Error('write failed'));
-
-            await importCatalogModel(ctx);
-
-            expect(mockLogger.error).toHaveBeenCalledWith(
-                'Site info write error',
-                expect.objectContaining({ error: 'write failed' }),
-            );
-            expect(ctx.status).toBe(200);
-            expect(ctx.body).toEqual({
-                message: 'Model imported successfully',
-                themeNotFound: undefined,
-            });
-        });
-
-        it('should return the theme of the archive that could not be applied', async () => {
-            ctx.restoreFields.mockResolvedValue({ themeNotFound: 'x' });
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.body.themeNotFound).toBe('x');
-        });
-
-        it('should let the catalog theme result replace the archive themeNotFound', async () => {
-            ctx.request.body = { id: 'themed' };
-            ctx.restoreFields.mockResolvedValue({ themeNotFound: 'x' });
-            ctx.applyRecommendedTheme.mockResolvedValue({});
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.body.themeNotFound).toBeUndefined();
-        });
-
-        it('should apply the chosen theme instead of the recommended one', async () => {
-            ctx.request.body = { id: 'themed', theme: 'nougat' };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.applyRecommendedTheme).toHaveBeenCalledTimes(1);
-            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
-                ctx,
-                'nougat',
-            );
-            expect(ctx.status).toBe(200);
-        });
-
-        it('should apply the chosen theme over the archive one for a model without theme', async () => {
-            ctx.request.body = { id: 'm', theme: 'default' };
-            ctx.restoreFields.mockResolvedValue({ themeNotFound: 'x' });
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
-                ctx,
-                'default',
-            );
-            expect(ctx.body.themeNotFound).toBeUndefined();
-        });
-
-        it('should ignore a chosen theme that is not a theme name', async () => {
-            ctx.request.body = { id: 'themed', theme: { $ne: null } };
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.applyRecommendedTheme).toHaveBeenCalledWith(
-                ctx,
-                'hal-cnrs',
-            );
-        });
-
-        it('should apply the site name and description after the chosen theme', async () => {
-            ctx.request.body = { id: 'm', theme: 'nougat', siteName: 'S' };
-
-            await importCatalogModel(ctx);
-
-            expect(
-                ctx.applyRecommendedTheme.mock.invocationCallOrder[0],
-            ).toBeLessThan(ctx.applySiteInfo.mock.invocationCallOrder[0]);
-        });
-
-        it('should return 502 when the download fails', async () => {
-            ctx.downloadModelArchive.mockRejectedValue(
-                new Error('404 Not Found'),
-            );
-
-            await importCatalogModel(ctx);
-
-            expect(ctx.status).toBe(502);
-            expect(ctx.body).toEqual({ error: '404 Not Found' });
-            expect(ctx.restoreFields).not.toHaveBeenCalled();
         });
     });
 
