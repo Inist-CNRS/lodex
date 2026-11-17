@@ -1629,6 +1629,7 @@
 "site_generation_stop_title"	"Stop the generation?"	"Arrêter la génération ?"
 "site_generation_stop_description"	"The enrichments and precomputations not yet finished will not be run."	"Les enrichissements et précalculs non terminés ne seront pas exécutés."
 "site_generation_stop_publication_description"	"The publication in progress will be cancelled."	"La publication en cours sera annulée."
+"site_generation_stop_failed_publication_description"	"The site will not be published."	"Le site ne sera pas publié."
 "site_generation_stop_support"	"A step is in error. To be unblocked, contact the support: %{email}"	"Une étape est en erreur. Pour être débloqué, contactez le support : %{email}"
 "site_generation_stopping"	"Stopping, this can take a moment…"	"Arrêt en cours, cela peut prendre un moment…"
 "site_generation_action_error"	"The action failed: %{error}"	"L'action a échoué : %{error}"

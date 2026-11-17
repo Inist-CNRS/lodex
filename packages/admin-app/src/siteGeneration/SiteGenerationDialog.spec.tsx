@@ -322,6 +322,25 @@ describe('SiteGenerationDialog', () => {
             );
         });
 
+        it('does not send to the support when only the publication failed', async () => {
+            renderDialog(
+                withPublication(buildGeneration('error', ['done']), {
+                    state: 'error',
+                }),
+            );
+            await userEvent.click(
+                await screen.findByText('site_generation_stop'),
+            );
+            expect(
+                await screen.findByText(
+                    'site_generation_stop_failed_publication_description',
+                ),
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(/site_generation_stop_support/),
+            ).toBeNull();
+        });
+
         it('reloads the publication once published', async () => {
             renderDialog(
                 withPublication(buildGeneration('publishing', ['done']), {

@@ -420,7 +420,13 @@ export const stopSiteGeneration = async (
 
     // a failed publication has nothing left to cancel
     if (stopped.publishJobId) {
-        await cancelPublisherJob(ctx, stopped.publishJobId);
+        try {
+            await cancelPublisherJob(ctx, stopped.publishJobId);
+        } catch (error) {
+            getLogger(ctx.tenant).error(
+                `Site generation: unable to cancel the publication: ${(error as Error).message}`,
+            );
+        }
     }
 
     const launched = await readTargets(ctx, stopped.steps.filter(isLaunched));

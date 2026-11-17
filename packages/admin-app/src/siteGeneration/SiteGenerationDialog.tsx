@@ -96,9 +96,15 @@ export const SiteGenerationDialog = () => {
     const done = generation.steps.filter(
         (step) => step.state === 'done',
     ).length;
-    const hasError =
-        generation.steps.some((step) => step.state === 'error') ||
-        generation.publication?.state === 'error';
+    const hasStepError = generation.steps.some(
+        (step) => step.state === 'error',
+    );
+    const stopDescription =
+        status === 'publishing'
+            ? 'site_generation_stop_publication_description'
+            : generation.publication?.state === 'error' && !hasStepError
+              ? 'site_generation_stop_failed_publication_description'
+              : 'site_generation_stop_description';
     const steps = [...generation.steps].sort((a, b) => a.position - b.position);
 
     const run = async (action: () => Promise<void>) => {
@@ -210,12 +216,8 @@ export const SiteGenerationDialog = () => {
                 title={translate('site_generation_stop_title')}
                 description={
                     <>
-                        {translate(
-                            status === 'publishing'
-                                ? 'site_generation_stop_publication_description'
-                                : 'site_generation_stop_description',
-                        )}
-                        {hasError && (
+                        {translate(stopDescription)}
+                        {hasStepError && (
                             <>
                                 {' '}
                                 <WithEmailLink

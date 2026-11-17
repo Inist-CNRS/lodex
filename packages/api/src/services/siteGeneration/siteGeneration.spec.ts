@@ -905,6 +905,19 @@ describe('siteGeneration service', () => {
             expect(cancelPublisherJob).toHaveBeenCalledWith(ctx, publishJobId);
         });
 
+        it('still stops when the publisher job cannot be cancelled', async () => {
+            await runToTheEnd();
+            (cancelPublisherJob as jest.Mock).mockRejectedValueOnce(
+                new Error('redis down'),
+            );
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
         it('does not cancel any publisher job when stopping a running generation', async () => {
             await siteGeneration.start(ONE_STEP, { autoPublish: true });
 
