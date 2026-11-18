@@ -34,6 +34,7 @@ import updateDocuments from './updateDocuments.js';
 import insertDocuments from './insertDocuments.js';
 import useFieldNames from './useFieldNames.js';
 import config2env from './config2env.js';
+import envExtract from './envExtract.js';
 import semanticMapping from './semanticMapping.js';
 
 const funcs = {
@@ -72,6 +73,7 @@ const funcs = {
     updateDocuments,
     insertDocuments,
     config2env,
+    envExtract,
     semanticMapping,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
