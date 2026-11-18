@@ -56,8 +56,8 @@ export const processImport = (job: any, done: any) => {
             done();
         })
         .catch(async (err: any) => {
-            // the dataset of a cancelled import is dropped, and the wizard
-            // notified, before the queue moves to the next job
+            // the dataset of a cancelled import (except a data add's) is
+            // dropped, and the wizard notified, before the queue moves to the next job
             try {
                 await handleImportError(job, err);
             } catch (e) {
@@ -105,7 +105,8 @@ const startJobImport = async (job: any) => {
 const handleImportError = async (job: any, err: any) => {
     const ctx = await prepareContext({ job });
     const cancelled = err instanceof CancelWorkerError;
-    if (cancelled) {
+    // the import of a data add must not empty the dataset it adds to
+    if (cancelled && !job.data.keepDatasetOnCancel) {
         await ctx.dataset.drop();
         invalidateRepositories(ctx.tenant);
     }
