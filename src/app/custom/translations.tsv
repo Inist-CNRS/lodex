@@ -1599,7 +1599,7 @@ Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_C
 "site_wizard_site_info_title"	"Site name and description"	"Nom et description du site"
 "site_wizard_site_info_hint"	"This information will be shown on the home page and can be changed later"	"Ces informations seront affichées sur la page d'accueil, elles pourront être configurées ultérieurement"
 "site_wizard_publish_title"	"Publication"	"Publication"
-"site_wizard_publish_hint"	"The site can be published as soon as its generation is over, without waiting in front of it"	"Le site peut être publié dès la fin de sa génération, sans avoir à attendre devant"
+"site_wizard_publish_hint"	"By clicking the button below, the publication will start automatically. Once this step is over, you can access the published data by clicking the eye icon."	"En cliquant sur le bouton ci-dessous, la publication sera lancée automatiquement. À l'issue de cette étape, vous pourrez accéder aux données publiées en cliquant sur l'icône de l'œil."
 "site_wizard_auto_publish"	"Publish the site automatically at the end of the generation"	"Publier automatiquement le site à la fin de la génération"
 "site_wizard_theme_title"	"Theme"	"Thème"
 "site_wizard_theme_hint"	"In Lodex, the theme applies the visual identity of an organization, a project... through colors, fonts, icons and a logo."	"Dans Lodex, le thème met en oeuvre une charte graphique garante de l'identité graphique d'un organisme, un projet,... au moyen de couleurs, polices de caractères, icônes, logo."
