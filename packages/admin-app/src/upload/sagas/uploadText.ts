@@ -1,6 +1,7 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { allowUnload, preventUnload } from './unload';
+import { rememberManualImportDismissal } from '../../siteWizard/wizardDismissal';
 import { fromUpload } from '../../selectors';
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetch from '@lodex/frontend-common/fetch/fetch';
@@ -25,7 +26,10 @@ export function* handleUploadText() {
     allowUnload();
     if (error) {
         yield put(uploadError(error));
+        return;
     }
+    // its import is queued (see rememberManualImportDismissal)
+    yield call(rememberManualImportDismissal);
     // Success is dispatched by handleFinishUpload once the import job is done
 }
 

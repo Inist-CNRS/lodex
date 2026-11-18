@@ -8,8 +8,13 @@ import {
     LOAD_PARSING_RESULT_SUCCESS,
 } from '../../parsing';
 import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { handleFinishUpload, handleUploadFile } from './uploadFile';
 import { handleUploadUrl } from './uploadUrl';
+import {
+    forgetManualImportDismissal,
+    rememberManualImportDismissal,
+} from '../../siteWizard/wizardDismissal';
 import { handleUploadText } from './uploadText';
 
 describe('upload', () => {
@@ -72,6 +77,22 @@ describe('upload', () => {
                     'loaderName',
                     'customLoader',
                 ),
+            );
+        });
+
+        // a reload during the import would open the wizard on the empty instance
+        it('should remember the manual import once its file is sent', () => {
+            // @ts-expect-error TS7005
+            saga.next();
+            // @ts-expect-error TS7005
+            saga.next('loaderName');
+            // @ts-expect-error TS7005
+            saga.next('customLoader');
+            // @ts-expect-error TS7005
+            saga.next('token');
+            // @ts-expect-error TS7005
+            expect(saga.next().value).toEqual(
+                call(rememberManualImportDismissal),
             );
         });
 
@@ -151,6 +172,37 @@ describe('upload', () => {
                     }),
                 ),
             );
+        });
+    });
+
+    describe('the manual import dismissal of the wizard', () => {
+        // runs an upload saga until its request answered
+        const runUntilAnswered = (saga: Generator, answer: object) => {
+            let step = saga.next();
+            // the call of fetch, once the selects are answered
+            while (!step.done && (step.value as any)?.payload?.fn !== fetch) {
+                step = saga.next('request');
+            }
+            return saga.next(answer);
+        };
+
+        it.each([
+            ['url', handleUploadUrl],
+            ['text', () => handleUploadText()],
+        ])('should be remembered once the %s is sent', (_, handle) => {
+            expect(runUntilAnswered(handle(), {}).value).toEqual(
+                call(rememberManualImportDismissal),
+            );
+        });
+
+        it.each([
+            ['url', handleUploadUrl],
+            ['text', () => handleUploadText()],
+        ])('should not be remembered when the %s is refused', (_, handle) => {
+            const error = new Error('Boom');
+            const saga = handle();
+            runUntilAnswered(saga, { error });
+            expect(saga.next().done).toBe(true);
         });
     });
 
@@ -265,6 +317,10 @@ describe('upload', () => {
                     success: false,
                     message: 'cancelled_import',
                 }),
+            );
+            // the instance stays empty: the wizard may open by itself again
+            expect(failed.next().value).toEqual(
+                call(forgetManualImportDismissal),
             );
             failed.next();
             expect(failed.next(true).value).toEqual(
