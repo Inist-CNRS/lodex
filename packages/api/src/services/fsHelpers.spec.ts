@@ -1,6 +1,59 @@
-import { clearChunksFactory, getUploadedFileSizeFactory } from './fsHelpers';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import { Readable } from 'stream';
+
+import {
+    clearChunksFactory,
+    getUploadedFileSizeFactory,
+    saveStreamInFile,
+} from './fsHelpers';
 
 describe('fsHelpers', () => {
+    describe('saveStreamInFile', () => {
+        let dir: string;
+        beforeEach(() => {
+            dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lodex-chunk-'));
+        });
+        afterEach(() => {
+            fs.rmSync(dir, { recursive: true, force: true });
+        });
+
+        it('should keep the previous chunk complete while it is being rewritten', async () => {
+            const chunkname = path.join(dir, 'upload.1');
+            fs.writeFileSync(chunkname, 'complete content');
+
+            const slowStream = new Readable({
+                read() {},
+            });
+            const saving = saveStreamInFile(slowStream, chunkname);
+            slowStream.push('complete');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            const sizeDuringWrite = fs.statSync(chunkname).size;
+            slowStream.push(' content');
+            slowStream.push(null);
+            await saving;
+
+            expect(sizeDuringWrite).toBe('complete content'.length);
+            expect(fs.readFileSync(chunkname, 'utf8')).toBe('complete content');
+            expect(fs.readdirSync(dir)).toEqual(['upload.1']);
+        });
+
+        it('should not leave any file when the stream fails', async () => {
+            const chunkname = path.join(dir, 'upload.1');
+            const failingStream = new Readable({
+                read() {
+                    this.destroy(new Error('boom'));
+                },
+            });
+
+            await expect(
+                saveStreamInFile(failingStream, chunkname),
+            ).rejects.toThrow('boom');
+            expect(fs.readdirSync(dir)).toEqual([]);
+        });
+    });
+
     describe('clearChunksFactory', () => {
         it('should call unlinkFile with each chunk', async () => {
             const unlinkFile = jest.fn();

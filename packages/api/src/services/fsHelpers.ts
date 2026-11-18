@@ -1,10 +1,11 @@
+import { randomUUID } from 'crypto';
 import fs, { realpathSync } from 'fs';
 import range from 'lodash/range';
 import rangeRight from 'lodash/rangeRight';
 import MultiStream from 'multistream';
+import { pipeline } from 'stream/promises';
 
 import { composeAsync } from '@lodex/common';
-import safePipe from './safePipe';
 
 export const unlinkFile = (filename: any) =>
     new Promise((resolve: any, reject: any) => {
@@ -18,12 +19,19 @@ export const unlinkFile = (filename: any) =>
         });
     });
 
-export const saveStreamInFile = (stream: any, filename: any) =>
-    new Promise((resolve: any, reject: any) =>
-        safePipe(stream, [fs.createWriteStream(filename)])
-            .on('error', reject)
-            .on('finish', resolve),
-    );
+// Write to a unique temporary file then rename it: a reader (size check, import)
+// never sees a partially written file, even when the same chunk is uploaded twice
+// concurrently (client retry).
+export const saveStreamInFile = async (stream: any, filename: any) => {
+    const tmpFilename = `${filename}.${randomUUID()}.tmp`;
+    try {
+        await pipeline(stream, fs.createWriteStream(tmpFilename));
+        await fs.promises.rename(tmpFilename, filename);
+    } catch (error) {
+        await fs.promises.rm(tmpFilename, { force: true });
+        throw error;
+    }
+};
 export const createWriteStream = (chunkname: any) =>
     fs.createWriteStream(chunkname);
 
