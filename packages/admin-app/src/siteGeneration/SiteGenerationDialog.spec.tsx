@@ -573,6 +573,94 @@ describe('SiteGenerationDialog', () => {
         expect(await screen.findByText('4/4')).toBeInTheDocument();
     });
 
+    it('shows the dataset being saved on the data step, as the app bar', async () => {
+        sessionStorage.setItem('lodex-tenant', 'my-tenant');
+        sessionStorage.setItem('lodex-dbName', 'lodex');
+        renderDialog(
+            buildGeneration({ phase: 'data', importedLines: undefined }),
+            { french: true },
+        );
+        expect(
+            await screen.findByText('Import du jeu de données'),
+        ).toBeInTheDocument();
+        const handler = mockSocketHandlers.get('lodex_my-tenant-progress');
+        expect(handler).toBeDefined();
+
+        act(() =>
+            handler!({
+                type: 'import',
+                status: 'SAVING_DATASET',
+                progress: 1200,
+            }),
+        );
+
+        expect(
+            await screen.findByText(
+                byText('Sauvegarde du jeu de données — 1 200 lignes importées'),
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('follows the import on the data step until it ends', async () => {
+        sessionStorage.setItem('lodex-tenant', 'my-tenant');
+        sessionStorage.setItem('lodex-dbName', 'lodex');
+        renderDialog(
+            buildGeneration({ phase: 'data', importedLines: undefined }),
+            { french: true },
+        );
+        expect(
+            await screen.findByText('Import du jeu de données'),
+        ).toBeInTheDocument();
+        const pushProgress = mockSocketHandlers.get(
+            'lodex_my-tenant-progress',
+        )!;
+        const reconnect = mockSocketHandlers.get('connect')!;
+        const saving = byText(
+            'Sauvegarde du jeu de données — 1 200 lignes importées',
+        );
+        const savingProgress = {
+            type: 'import',
+            status: 'SAVING_DATASET',
+            progress: 1200,
+        };
+
+        act(() => pushProgress({ type: 'import', status: 'INDEXATION' }));
+        expect(await screen.findByText('Indexation...')).toBeInTheDocument();
+
+        act(() => pushProgress({ type: 'import', status: 'PENDING' }));
+        await waitFor(() =>
+            expect(screen.queryByText('Indexation...')).toBeNull(),
+        );
+
+        // a progress missed while disconnected does not stay on screen
+        act(() => pushProgress(savingProgress));
+        expect(await screen.findByText(saving)).toBeInTheDocument();
+        act(() => reconnect(undefined));
+        await waitFor(() => expect(screen.queryByText(saving)).toBeNull());
+    });
+
+    it('shows the final count once the data step is done', async () => {
+        sessionStorage.setItem('lodex-tenant', 'my-tenant');
+        sessionStorage.setItem('lodex-dbName', 'lodex');
+        renderDialog(buildGeneration({ phase: 'model' }), { french: true });
+        expect(
+            await screen.findByText(byText('13 483 lignes importées')),
+        ).toBeInTheDocument();
+
+        act(() =>
+            mockSocketHandlers.get('lodex_my-tenant-progress')!({
+                type: 'import',
+                status: 'SAVING_DATASET',
+                progress: 1200,
+            }),
+        );
+
+        expect(
+            screen.getByText(byText('13 483 lignes importées')),
+        ).toBeInTheDocument();
+        expect(screen.queryByText(/Sauvegarde du jeu de données/)).toBeNull();
+    });
+
     it('listens to the pushes only once an admin is logged in', async () => {
         const { login, unmount } = renderDialog(null, { isLoggedIn: false });
         expect(mockSocket.on).not.toHaveBeenCalled();

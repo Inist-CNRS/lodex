@@ -47,7 +47,7 @@ export const SiteGenerationDialog = () => {
     const queryClient = useQueryClient();
     const { generation, relaunch, stop, isActing, isStopping } =
         useSiteGeneration();
-    useSiteGenerationPush();
+    const importProgress = useSiteGenerationPush();
     const [isStopConfirmOpen, setIsStopConfirmOpen] = useState(false);
     const previousStatus = useRef(generation?.status);
 
@@ -141,11 +141,13 @@ export const SiteGenerationDialog = () => {
             aria-labelledby="site-generation-title"
             PaperProps={WIZARD_DIALOG_PAPER_PROPS}
         >
-            <DialogContent sx={{ px: 0 }}>
+            {/* room for the halo of the running step, which the content clips */}
+            <DialogContent sx={{ px: 1.5, mx: -1.5 }}>
                 <SiteGenerationHeader steps={steps} />
                 <SiteGenerationSteps
                     steps={steps}
                     view={generation}
+                    importProgress={importProgress}
                     onRetry={handleRetry}
                     retryDisabled={isActing || isGenerationStopping}
                 />

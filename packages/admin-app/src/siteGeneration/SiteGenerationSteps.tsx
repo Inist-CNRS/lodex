@@ -5,6 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {
     getModelNameKey,
+    ProgressStatus,
     type SiteGenerationCounter,
     type SiteGenerationStepState,
     type SiteGenerationView,
@@ -13,6 +14,7 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ErrorWithDetail } from '@lodex/frontend-common/components/ErrorWithDetail';
 import { hasTranslation } from '../siteWizard/hasTranslation';
 import type { DisplayedStep } from './displayedSteps';
+import type { ImportProgress } from './useSiteGeneration';
 
 type Translate = ReturnType<typeof useTranslate>['translate'];
 
@@ -23,8 +25,36 @@ const StepIcon = ({ state }: { state: SiteGenerationStepState }) => {
         case 'done':
             return <CheckCircleIcon color="primary" aria-label={state} />;
         case 'running':
+            // a halo spreads from the circle while the step runs
             return (
-                <RadioButtonUncheckedIcon color="primary" aria-label={state} />
+                <Box
+                    sx={{
+                        position: 'relative',
+                        display: 'flex',
+                        '&::after': {
+                            content: '""',
+                            position: 'absolute',
+                            inset: 2,
+                            borderRadius: '50%',
+                            border: '2px solid',
+                            borderColor: 'primary.main',
+                            animation: 'lodex-step-halo 1.6s ease-out infinite',
+                            pointerEvents: 'none',
+                        },
+                        '@keyframes lodex-step-halo': {
+                            from: { transform: 'scale(1)', opacity: 0.6 },
+                            to: { transform: 'scale(1.9)', opacity: 0 },
+                        },
+                        '@media (prefers-reduced-motion: reduce)': {
+                            '&::after': { animation: 'none', opacity: 0 },
+                        },
+                    }}
+                >
+                    <RadioButtonUncheckedIcon
+                        color="primary"
+                        aria-label={state}
+                    />
+                </Box>
             );
         case 'error':
             return <CancelIcon color="warning" aria-label={state} />;
@@ -116,25 +146,32 @@ const useStepContent = (
     step: DisplayedStep,
     view: SiteGenerationView | undefined,
     uploadProgress: number | null | undefined,
+    importProgress: ImportProgress | null | undefined,
 ): StepContent => {
     const { translate, locale } = useTranslate();
+    const importedLines = (lines: number) =>
+        translate('site_generation_imported_lines', {
+            smart_count: lines,
+            count: lines.toLocaleString(locale),
+        });
+    const isRunning = step.state === 'running';
     switch (step.key) {
         case 'data':
             return {
                 title: translate('site_generation_step_data'),
                 description:
-                    step.state === 'running' && uploadProgress != null
+                    isRunning && uploadProgress != null
                         ? translate('site_wizard_uploading', {
                               progress: uploadProgress,
                           })
-                        : view?.importedLines != null
-                          ? translate('site_generation_imported_lines', {
-                                smart_count: view.importedLines,
-                                count: view.importedLines.toLocaleString(
-                                    locale,
-                                ),
-                            })
-                          : undefined,
+                        : isRunning && importProgress
+                          ? importProgress.status ===
+                            ProgressStatus.SAVING_DATASET
+                              ? `${translate(importProgress.status)} — ${importedLines(importProgress.lines)}`
+                              : translate(importProgress.status)
+                          : view?.importedLines != null
+                            ? importedLines(view.importedLines)
+                            : undefined,
             };
         case 'model':
             return {
@@ -218,17 +255,24 @@ const Step = ({
     step,
     view,
     uploadProgress,
+    importProgress,
     onRetry,
     retryDisabled,
 }: {
     step: DisplayedStep;
     view?: SiteGenerationView;
     uploadProgress?: number | null;
+    importProgress?: ImportProgress | null;
     onRetry?: () => void;
     retryDisabled?: boolean;
 }) => {
     const { translate } = useTranslate();
-    const { title, description } = useStepContent(step, view, uploadProgress);
+    const { title, description } = useStepContent(
+        step,
+        view,
+        uploadProgress,
+        importProgress,
+    );
     const errors = getErrorMessages(translate, step, view);
     return (
         <Box component="li" sx={{ display: 'flex', gap: 1.5 }}>
@@ -273,6 +317,8 @@ type SiteGenerationStepsProps = {
     view?: SiteGenerationView;
     // percentage of the file being uploaded, on the running data step
     uploadProgress?: number | null;
+    // lines saved so far, on the running data step
+    importProgress?: ImportProgress | null;
     onRetry?: () => void;
     retryDisabled?: boolean;
 };
@@ -281,6 +327,7 @@ export const SiteGenerationSteps = ({
     steps,
     view,
     uploadProgress,
+    importProgress,
     onRetry,
     retryDisabled,
 }: SiteGenerationStepsProps) => (
@@ -301,6 +348,7 @@ export const SiteGenerationSteps = ({
                 step={step}
                 view={view}
                 uploadProgress={uploadProgress}
+                importProgress={importProgress}
                 onRetry={onRetry}
                 retryDisabled={retryDisabled}
             />
