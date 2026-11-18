@@ -3,6 +3,7 @@ import config from 'config';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import cors from 'kcors';
+import compress from 'koa-compress';
 import koaQs from 'koa-qs';
 import moment from 'moment';
 import { KoaAdapter } from '@bull-board/koa';
@@ -12,6 +13,7 @@ import {
     startCpuLagProfiler,
     stopCpuLagProfiler,
     onBlockedEvent,
+    isProfilerBusy,
 } from './cpuLagProfiler';
 
 // @ts-expect-error TS(2792): Cannot find module
@@ -23,8 +25,8 @@ import Basics from '@ezs/basics';
 import Analytics from '@ezs/analytics';
 import Transformers from '@ezs/transformers';
 import controller from './controller';
+import staticController from './controller/static';
 import testController from './controller/testController';
-import indexSearchableFields from './services/indexSearchableFields';
 import progress from './services/progress';
 import { getOrCreateWorkerQueue } from './workers';
 // @ts-expect-error TS(2792): Cannot find module '@uswitch/koa-prometheus'. Did ... Remove this comment to see the full error message
@@ -35,6 +37,10 @@ import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 import access, { eventAccess } from '@uswitch/koa-access';
 import getLogger, { getHttpLogger } from './services/logger';
 import tenant from './models/tenant';
+import {
+    isSweepingProcess,
+    startSiteGenerationSweep,
+} from './services/siteGeneration/sweep';
 import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '@lodex/common';
@@ -58,6 +64,11 @@ const meters = Meter([], { loadStandards: true, loadDefaults: true });
 if (config.get('blocked.enabled')) {
     blocked(
         (time, stack) => {
+            // Restarting the CPU profiler (every rotation) blocks ~200ms by itself:
+            // not an incident, and it must not trigger a profile dump.
+            if (isProfilerBusy()) {
+                return;
+            }
             const logger = getLogger();
             logger.error(
                 `Blocked for ${time}ms, operation started here:`,
@@ -122,6 +133,13 @@ if (config.get('activateLagCheck')) {
 }
 app.use(cors({ credentials: true }));
 
+// Compresses dynamic responses (HTML, JSON). Front builds are precompressed,
+// koa-compress skips responses that already have a Content-Encoding.
+app.use(compress());
+
+// Static assets first: no tenant, Mongo or Redis lookup for JS/CSS/images
+app.use(mount('/', staticController));
+
 function extractTenantFromUrl(url: any) {
     const match = url.match(/\/instance\/([^/]+)/);
     return match ? match[1].toLowerCase() : null;
@@ -176,6 +194,10 @@ const initQueueAndBullDashboard = async () => {
 
 initQueueAndBullDashboard();
 
+if (process.env.NODE_ENV !== 'test' && isSweepingProcess()) {
+    startSiteGenerationSweep();
+}
+
 // Display It only in development mode or if activateBullDashboard is true
 if (config.get('activateBullDashboard')) {
     app.use(serverAdapter.registerPlugin());
@@ -191,6 +213,10 @@ if (process.env.EXPOSE_TEST_CONTROLLER) {
 
 // worker job
 app.use(async (ctx: any, next: any) => {
+    // ctx.job is only read by mutation routes (publishFacets): skip the Redis call for reads
+    if (ctx.method === 'GET' || ctx.method === 'HEAD') {
+        return await next();
+    }
     try {
         const activeJobs =
             (await getOrCreateWorkerQueue(ctx.tenant, 1).getActive()) || null;
@@ -244,13 +270,6 @@ app.use(function* (this: any, next: any) {
 });
 
 app.use(mount('/', controller));
-
-app.use(async (ctx: any, next: any) => {
-    if (!module.parent) {
-        indexSearchableFields(ctx);
-    }
-    await next();
-});
 
 app.on('uncaughtException', (error: any) => {
     const logger = getLogger();

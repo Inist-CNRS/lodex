@@ -1,5 +1,5 @@
-import transformer from './operations/TRUNCATE_WORDS';
-import dollar from './dollar';
+import transformer from './operations/TRUNCATE_WORDS.js';
+import dollar from './dollar.js';
 
 /**
  * Opération permettant la troncature par nombre de mots

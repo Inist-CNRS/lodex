@@ -115,9 +115,12 @@ export const enrichments = (state: EnrichmentState): Enrichment[] =>
 export const dataPreviewEnrichment = (state: EnrichmentState) =>
     state.dataPreviewEnrichment;
 export const getError = (state: EnrichmentState) => state.error;
+export const isLoadEnrichmentsPending = (state: EnrichmentState) =>
+    Boolean(state.isLoadEnrichmentsPending);
 
 export const selectors = {
     isDataPreviewLoading,
+    isLoadEnrichmentsPending,
     isInitialized,
     enrichments,
     dataPreviewEnrichment,

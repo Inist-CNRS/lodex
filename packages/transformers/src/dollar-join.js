@@ -1,5 +1,5 @@
-import transformer from './operations/JOIN';
-import dollar from './dollar';
+import transformer from './operations/JOIN.js';
+import dollar from './dollar.js';
 
 /**
  * Rassemble les valeurs d'un tableau en une chaîne de caractères

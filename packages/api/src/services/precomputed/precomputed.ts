@@ -72,14 +72,83 @@ export const getPrecomputedDataPreview = async (ctx: any) => {
     return result;
 };
 
+// The callback's jobId is the room of the askForPrecomputed job,
+// `${tenant}-precomputed-job-${job.id}`, and that job's id is the jobId the
+// precomputation carries for its run (see queuePrecomputed)
+export const getAskForPrecomputedJobId = (
+    tenant: unknown,
+    room: unknown,
+): string | undefined => {
+    const prefix = `${tenant}-precomputed-job-`;
+    return typeof room === 'string' &&
+        room.startsWith(prefix) &&
+        room.length > prefix.length
+        ? room.slice(prefix.length)
+        : undefined;
+};
+
+// The answer of a run that was relaunched since (after the response timeout,
+// by the site generation or by hand) must not overwrite the current run. A
+// precomputation or a room without a jobId (older ones) takes any answer.
+export const isSupersededAnswer = (
+    tenant: string,
+    precomputed: { jobId?: unknown },
+    askForPrecomputedJobId: unknown,
+) => {
+    const answerJobId = getAskForPrecomputedJobId(
+        tenant,
+        askForPrecomputedJobId,
+    );
+    return (
+        precomputed.jobId != null &&
+        answerJobId !== undefined &&
+        String(precomputed.jobId) !== answerJobId
+    );
+};
+
+// The jobId the precomputation carries while this job belongs to its current
+// run: the askForPrecomputed job's own id (see queuePrecomputed), or, for a
+// web service answer, the id of the job that asked for it
+const getRunJobId = (ctx: any): string | undefined => {
+    const job = ctx.job;
+    if (job?.data?.action === 'getPrecomputed') {
+        return getAskForPrecomputedJobId(
+            ctx.tenant,
+            job.data.askForPrecomputedJobId,
+        );
+    }
+    const jobId = job?.opts?.jobId ?? job?.id;
+    return jobId === undefined || jobId === null ? undefined : String(jobId);
+};
+
+// Writes the status only while this job belongs to the current run: false
+// when a relaunch superseded it
+const updateStatusOfRun = async (
+    ctx: any,
+    id: unknown,
+    status: string,
+    data?: Record<string, unknown>,
+): Promise<boolean> => {
+    const jobId = getRunJobId(ctx);
+    if (jobId === undefined) {
+        await ctx.precomputed.updateStatus(id, status, data);
+        return true;
+    }
+    return ctx.precomputed.updateStatusOfJob(id, jobId, status, data);
+};
+
 export const getComputedFromWebservice = async (ctx: any) => {
     const tenant = ctx.tenant;
     const { id: precomputedId, callId, askForPrecomputedJobId } = ctx.job.data;
 
     const precomputed = await ctx.precomputed.findOneById(precomputedId);
-    if (!precomputed || precomputed.status === TaskStatus.CANCELED) {
-        // Entry may have been deleted or cancelled before the webservice called us back.
-        // We ignore the reply in that case.
+    if (
+        !precomputed ||
+        precomputed.status === TaskStatus.CANCELED ||
+        isSupersededAnswer(tenant, precomputed, askForPrecomputedJobId)
+    ) {
+        // Entry may have been deleted, cancelled or relaunched before the
+        // webservice called us back. We ignore the reply in that case.
         return;
     }
 
@@ -124,10 +193,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
     }
     progress.setProgress(tenant, 75);
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
-    await ctx.precomputed.updateStatus(
-        precomputedId._id,
-        TaskStatus.IN_PROGRESS,
-    );
+    await updateStatusOfRun(ctx, precomputedId, TaskStatus.IN_PROGRESS);
     let logData = {};
     logData = JSON.stringify({
         level: 'ok',
@@ -185,7 +251,8 @@ export const getComputedFromWebservice = async (ctx: any) => {
                 }
                 if (self.isLast()) {
                     progress.setProgress(tenant, 95);
-                    await ctx.precomputed.updateStatus(
+                    await updateStatusOfRun(
+                        ctx,
                         precomputedId,
                         TaskStatus.FINISHED,
                         { hasData: true },
@@ -263,6 +330,13 @@ export const getFailureFromWebservice = async (ctx: any) => {
             })}`,
         );
     }
+    const precomputed = await ctx.precomputed.findOneById(precomputedId);
+    if (
+        precomputed &&
+        isSupersededAnswer(tenant, precomputed, askForPrecomputedJobId)
+    ) {
+        return;
+    }
     const workerQueue = getOrCreateWorkerQueue(tenant, 1);
     const completedJobs = await workerQueue.getCompleted();
     const job = completedJobs.filter((job: any) => {
@@ -283,10 +357,13 @@ export const getFailureFromWebservice = async (ctx: any) => {
 
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
 
-    await ctx.precomputed.updateStatus(precomputedId, TaskStatus.ERROR, {
-        message: error.message,
-    });
-    await ctx.precomputed.updateStartedAt(precomputedId, null);
+    if (
+        await updateStatusOfRun(ctx, precomputedId, TaskStatus.ERROR, {
+            message: error.message,
+        })
+    ) {
+        await ctx.precomputed.updateStartedAt(precomputedId, null);
+    }
 
     job.progress(100);
     progress.finish(tenant);
@@ -316,13 +393,21 @@ const tryParseJsonString = (str: any) => {
 export const processPrecomputed = async (precomputed: any, ctx: any) => {
     const precomputedId = precomputed._id.toString();
     let logData = {};
-    await ctx.precomputed.updateStatus(
+    const isCurrentRun = await updateStatusOfRun(
+        ctx,
         precomputed._id,
         TaskStatus.IN_PROGRESS,
         {
             hasData: false,
+            sentAt: null,
+            answeredAt: null,
         },
     );
+    if (!isCurrentRun) {
+        // a stalled rerun of a job superseded by a relaunch: the current run
+        // asks the web service, this one must not
+        return;
+    }
     await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
@@ -421,7 +506,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
                 msg = err.sourceError.message.split('\n').shift();
             }
         }
-        await ctx.precomputed.updateStatus(precomputedId, TaskStatus.ERROR, {
+        await updateStatusOfRun(ctx, precomputedId, TaskStatus.ERROR, {
             message: msg,
         });
         throw new Error(msg);
@@ -469,14 +554,15 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
             // for error 404, 5XX, etc.
             responseErrorMessageFull = `${response.status} ${response.statusText}`;
         }
-        await ctx.precomputed.updateStatus(precomputedId, TaskStatus.ERROR, {
+        await updateStatusOfRun(ctx, precomputedId, TaskStatus.ERROR, {
             message: responseErrorMessageFull,
         });
         throw new Error(responseErrorMessageFull);
     }
-    await ctx.precomputed.updateStatus(precomputed._id, TaskStatus.ON_HOLD, {
+    await updateStatusOfRun(ctx, precomputed._id, TaskStatus.ON_HOLD, {
         hasData: false,
         callId: token,
+        sentAt: new Date(),
     });
     logData = JSON.stringify({
         level: 'ok',
@@ -498,20 +584,30 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
     notifyListeners(room, logData);
 };
 
-export const setPrecomputedJobId = async (
-    ctx: any,
-    precomputedID: any,
-    job: any,
-) => {
-    await ctx.precomputed.updateStatus(precomputedID, TaskStatus.PENDING, {
-        hasData: false,
-        jobId: job.id,
-    });
+// A stalled rerun (Bull runs a job again when its lock expires) of a job
+// relaunched or stopped since: the current run, if any, owns the status and
+// the progress
+const isStaleRun = (ctx: any, precomputed: any) => {
+    if (precomputed.status === TaskStatus.CANCELED) {
+        return true;
+    }
+    const runJobId = getRunJobId(ctx);
+    return (
+        precomputed.jobId != null &&
+        runJobId !== undefined &&
+        String(precomputed.jobId) !== runJobId
+    );
 };
 
 export const startAskForPrecomputed = async (ctx: any) => {
     const id = ctx.job?.data?.id;
     const precomputed = await ctx.precomputed.findOneById(id);
+    if (!precomputed || isStaleRun(ctx, precomputed)) {
+        getLogger(ctx.tenant).warn(
+            `Precomputation ${id}: job ${ctx.job?.id} skipped, it is not the current run anymore`,
+        );
+        return;
+    }
     progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
         status: ProgressStatus.PRECOMPUTING,
@@ -548,7 +644,8 @@ export const startGetPrecomputed = async (ctx: any) => {
 
 export const setPrecomputedError = async (ctx: any, err: any) => {
     const id = ctx.job?.data?.id;
-    await ctx.precomputed.updateStatus(
+    const isCurrentRun = await updateStatusOfRun(
+        ctx,
         id,
         err instanceof CancelWorkerError
             ? TaskStatus.CANCELED
@@ -557,6 +654,10 @@ export const setPrecomputedError = async (ctx: any, err: any) => {
             message: err?.message,
         },
     );
+    if (!isCurrentRun) {
+        // the progress and the notifications belong to the current run
+        return;
+    }
     await ctx.precomputed.updateStartedAt(id, null);
 
     const room = `precomputed-job-${ctx.job.id}`;
@@ -602,6 +703,13 @@ export const restorePrecomputed = async (ctx: any) => {
 const LISTENERS: any = [];
 export const addPrecomputedJobListener = (listener: any) => {
     LISTENERS.push(listener);
+};
+
+export const removePrecomputedJobListener = (listener: any) => {
+    const index = LISTENERS.indexOf(listener);
+    if (index !== -1) {
+        LISTENERS.splice(index, 1);
+    }
 };
 
 export const notifyListeners = (room: any, payload: any) => {

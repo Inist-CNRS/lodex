@@ -66,6 +66,7 @@ export default handleActions<PrecomputedState, any>(
             ...state,
             precomputed,
             loading: false,
+            error: null,
         }),
     },
     initialState,

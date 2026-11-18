@@ -1,5 +1,5 @@
-import { transformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation';
+import { transformerWithArg } from './transformer.js';
+import documentationByOperation from './documentationByOperation.js';
 
 export const prefix = (value, str) =>
     typeof value === 'string' ? str.concat(value) : value;

@@ -492,10 +492,10 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
-        // sort by label asc
-        fields: fromFields
-            .getFields(state)
-            .sort((a, b) => a.label.localeCompare(b.label)),
+        // sort by label asc, on a copy: getFields is memoized and shared
+        fields: [...fromFields.getFields(state)].sort((a, b) =>
+            a.label.localeCompare(b.label),
+        ),
     };
 };
 

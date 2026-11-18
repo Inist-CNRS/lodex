@@ -1,5 +1,5 @@
-import transformer from './operations/SPLIT';
-import dollar from './dollar';
+import transformer from './operations/SPLIT.js';
+import dollar from './dollar.js';
 
 /**
  * segmente une chaîne de caractères en tableau

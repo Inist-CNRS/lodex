@@ -30,8 +30,12 @@ export default defineConfig(({ mode }) => {
                         }
                         return 'admin-[name]/index.js';
                     },
-                    chunkFileNames: 'admin-[name]/index.js',
-                    assetFileNames: 'css/admin-[name].[ext]',
+                    // hashed files under chunks/ are served with an immutable cache (see api/src/controller/static.ts)
+                    chunkFileNames: 'chunks/admin-[name]-[hash].js',
+                    assetFileNames: ({ name }) =>
+                        name === 'admin.css'
+                            ? 'css/admin-[name].[ext]'
+                            : 'chunks/admin-[name]-[hash][extname]',
                     manualChunks: undefined,
                 },
                 plugins: [

@@ -7,6 +7,18 @@ describe('Progress', () => {
         progress.initialize('lodex_test');
     });
 
+    it('should stop notifying a removed listener', () => {
+        const other = new Progress();
+        const listener = jest.fn();
+        other.addProgressListener(listener);
+        other.removeProgressListener(listener);
+        other.start('lodex_test', {
+            status: ProgressStatus.STARTING,
+            target: 10,
+        });
+        expect(listener).not.toHaveBeenCalled();
+    });
+
     it('should get default Progress', () => {
         expect(progress.getProgress('lodex_test')).toEqual({
             target: undefined,

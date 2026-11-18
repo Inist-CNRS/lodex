@@ -217,6 +217,14 @@ describe('getPublishedDatasetFilter', () => {
     });
 
     describe('addRegexToFilters', () => {
+        it('should search the match as plain text, not as a regex', () => {
+            expect(
+                addRegexToFilters('a(b', ['field1'])({}).$or[0][
+                    'versions.field1'
+                ].$regex,
+            ).toEqual(/a\(b/);
+        });
+
         it('should add regex filters for each searchablefields to filters', () => {
             const match = 'match';
             const searchableFields = ['field1', 'field2'];

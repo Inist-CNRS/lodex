@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
+import { REPO_ROOT } from '../../paths';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import type Koa from 'koa';
@@ -9,7 +10,7 @@ import config from 'config';
 import { mongoConnectionString } from '../mongoClient';
 import progress from '../progress';
 
-import { ProgressStatus, TaskStatus } from '@lodex/common';
+import { ProgressStatus, TaskStatus, type TaskStatusType } from '@lodex/common';
 import from from 'from';
 import { jobLogger } from '../../workers/tools';
 
@@ -193,7 +194,15 @@ export const getEnrichmentRuleModel = (
             : './subPathSingleValue.txt';
     }
 
-    rule = fs.readFileSync(path.resolve(__dirname, file)).toString();
+    rule = fs
+        .readFileSync(
+            path.resolve(
+                REPO_ROOT,
+                'packages/api/src/services/enrichment',
+                file,
+            ),
+        )
+        .toString();
     rule = rule.replace(/\[\[SOURCE COLUMN\]\]/g, enrichment.sourceColumn);
     rule = rule.replace(/\[\[SUB PATH\]\]/g, enrichment.subPath);
     rule = rule.replace(/\[\[BATCH SIZE\]\]/g, String(BATCH_SIZE));
@@ -287,6 +296,19 @@ const processEzsEnrichment = (
     });
 };
 
+const JOB_ACTIVE_CHECK_INTERVAL = 100;
+const FUSIBLE_CHECK_INTERVAL = 1000;
+
+// Every row is logged into the job (Redis): a large web service output or error
+// (an HTML error page...) would make these logs grow with the dataset
+const MAX_LOGGED_OUTPUT_LENGTH = 200;
+export const truncateLog = (text: unknown) => {
+    const output = String(text);
+    return output.length > MAX_LOGGED_OUTPUT_LENGTH
+        ? `${output.slice(0, MAX_LOGGED_OUTPUT_LENGTH)}… (${output.length} characters)`
+        : output;
+};
+
 const processEnrichmentPipeline = (
     room: any,
     fusible: any,
@@ -305,6 +327,14 @@ const processEnrichmentPipeline = (
             filter,
         };
         let errorCount = 0;
+        let rowCount = 0;
+        const logMemory = (step: string) => {
+            const { rss, heapUsed } = process.memoryUsage();
+            getLogger(ctx.tenant).info(
+                `[memory] enrichment "${enrichment.name}" ${step} rows=${rowCount} rss=${Math.round(rss / 1048576)}MB heapUsed=${Math.round(heapUsed / 1048576)}MB`,
+            );
+        };
+        logMemory('start');
         const script = `
 [use]
 plugin = lodex
@@ -345,6 +375,18 @@ fusible = ${fusible}
 
 [ungroup]
     `;
+        // A breaker stops the pipeline only between two statements: a slow one
+        // (a web service call for a whole batch) would keep the job, and so the
+        // queue, busy until it ends. Stop waiting as soon as the job is
+        // canceled; the breakers still keep its rows out of the database
+        const fusibleCheck = setInterval(async () => {
+            if (!(await checkFusible(fusible))) {
+                clearInterval(fusibleCheck);
+                const error = new CancelWorkerError('Job has been canceled');
+                error.errorCount = errorCount;
+                reject(error);
+            }
+        }, FUSIBLE_CHECK_INTERVAL);
         const input = new PassThrough({ objectMode: true });
         input
             .pipe(
@@ -355,12 +397,21 @@ fusible = ${fusible}
                 ),
             )
             .on('data', async (data: any) => {
-                if (!(await ctx.job?.isActive())) {
+                rowCount += 1;
+                // One Redis call per row floods Redis on big datasets, and the
+                // fusible already stops the pipeline when the job is canceled
+                if (
+                    rowCount % JOB_ACTIVE_CHECK_INTERVAL === 0 &&
+                    !(await ctx.job?.isActive())
+                ) {
                     return reject(
                         new CancelWorkerError('Job has been canceled'),
                     );
                 }
                 progress.incrementProgress(ctx.tenant, 1);
+                if (rowCount % 1000 === 0) {
+                    logMemory('progress');
+                }
                 const { id, value, error } = data;
 
                 let logData;
@@ -368,8 +419,8 @@ fusible = ${fusible}
                     logData = JSON.stringify({
                         level: error ? 'error' : 'info',
                         message: error
-                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
-                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${JSON.stringify(value)})`,
+                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${truncateLog(value)}`
+                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${truncateLog(JSON.stringify(value))})`,
                         timestamp: new Date(),
                         status: TaskStatus.IN_PROGRESS,
                     });
@@ -378,7 +429,7 @@ fusible = ${fusible}
                     errorCount += 1;
                     logData = JSON.stringify({
                         level: 'error',
-                        message: `[Instance: ${ctx.tenant}] ${error ?? 'ID missing for enrichment row'}`,
+                        message: `[Instance: ${ctx.tenant}] ${truncateLog(error ?? 'ID missing for enrichment row')}`,
                         timestamp: new Date(),
                         status: TaskStatus.IN_PROGRESS,
                     });
@@ -386,13 +437,39 @@ fusible = ${fusible}
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
             })
-            .on('end', () => resolve(errorCount))
+            .on('end', () => {
+                clearInterval(fusibleCheck);
+                logMemory('end');
+                resolve(errorCount);
+            })
             .on('error', (error: any) => {
+                clearInterval(fusibleCheck);
+                logMemory('error');
                 error.errorCount = errorCount;
                 reject(error);
             });
         input.end(primer);
     });
+
+// The jobId the enrichment carries while this job is its current run (see
+// queueEnrichmentJob, which gives the Bull job the same id)
+const getRunJobId = (job: any): string | undefined => {
+    const jobId = job?.opts?.jobId ?? job?.id;
+    return jobId === undefined || jobId === null ? undefined : String(jobId);
+};
+
+const updateStatusOfRun = async (
+    ctx: any,
+    id: string,
+    status: TaskStatusType,
+    data?: Record<string, unknown>,
+) => {
+    const jobId = getRunJobId(ctx.job);
+    if (jobId === undefined) {
+        return ctx.enrichment.updateStatus(id, status, data);
+    }
+    return ctx.enrichment.updateStatusOfJob(id, jobId, status, data);
+};
 
 export const processEnrichment = async (
     enrichment: any,
@@ -400,7 +477,12 @@ export const processEnrichment = async (
     ctx: any,
 ) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
-    await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.IN_PROGRESS);
+    await updateStatusOfRun(ctx, enrichment._id, TaskStatus.IN_PROGRESS);
+    // Only now: the admin reloads the enrichments when it gets this message
+    notifyListeners(`${ctx.tenant}-enricher`, {
+        isEnriching: true,
+        success: false,
+    });
     if (enrichment.dataSource && enrichment.dataSource !== DATASET_COLLECTION) {
         await ctx.precomputed.removeResultColumn(
             enrichment.dataSource,
@@ -428,7 +510,7 @@ export const processEnrichment = async (
         throw error;
     }
 
-    await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.FINISHED, {
+    await updateStatusOfRun(ctx, enrichment._id, TaskStatus.FINISHED, {
         errorCount,
     });
     progress.finish(ctx.tenant);
@@ -440,16 +522,6 @@ export const processEnrichment = async (
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-};
-
-export const setEnrichmentJobId = async (
-    ctx: any,
-    enrichmentID: any,
-    job: any,
-) => {
-    await ctx.enrichment.updateStatus(enrichmentID, TaskStatus.PENDING, {
-        jobId: job.id,
-    });
 };
 
 export const startEnrichment = async (ctx: any) => {
@@ -488,7 +560,8 @@ export const startEnrichment = async (ctx: any) => {
 
 export const setEnrichmentError = async (ctx: any, err: any) => {
     const id = ctx.job?.data?.id;
-    await ctx.enrichment.updateStatus(
+    await updateStatusOfRun(
+        ctx,
         id,
         err instanceof CancelWorkerError
             ? TaskStatus.CANCELED
@@ -548,6 +621,13 @@ export const restoreEnrichments = async (ctx: any) => {
 const LISTENERS: any = [];
 export const addEnrichmentJobListener = (listener: any) => {
     LISTENERS.push(listener);
+};
+
+export const removeEnrichmentJobListener = (listener: any) => {
+    const index = LISTENERS.indexOf(listener);
+    if (index !== -1) {
+        LISTENERS.splice(index, 1);
+    }
 };
 
 export const notifyListeners = (room: any, payload: any) => {

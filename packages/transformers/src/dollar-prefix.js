@@ -1,5 +1,5 @@
-import transformer from './operations/PREFIX';
-import dollar from './dollar';
+import transformer from './operations/PREFIX.js';
+import dollar from './dollar.js';
 
 /**
  * préfixer la valeur avec une chaîne de caractères

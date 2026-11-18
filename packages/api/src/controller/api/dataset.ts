@@ -1,7 +1,8 @@
+import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import getLogger from '../../services/logger';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
@@ -30,6 +31,9 @@ export const clearDataset = async (ctx: any) => {
             error,
         });
         ctx.body = { status: 'error', error };
+    } finally {
+        // even after a partial drop: the dropped collections need their indexes back
+        invalidateRepositories(ctx.tenant);
     }
 };
 
@@ -49,14 +53,19 @@ export const getDataset = async (ctx: any) => {
         filterValue,
     } = ctx.query;
     const query = buildQuery(filterBy, filterOperator, filterValue);
-    const count = await ctx.dataset.find(query).count();
-    const datas = await ctx.dataset.findLimitFromSkip(
-        limit ? parseInt(limit, 10) : 10,
-        skip ? parseInt(skip) : 0,
-        query,
-        sortBy,
-        sortDir?.toUpperCase(),
-    );
+    const [count, datas] = await Promise.all([
+        // without a filter, the collection metadata answers without reading documents
+        Object.keys(query).length === 0
+            ? ctx.dataset.estimatedDocumentCount()
+            : ctx.dataset.countDocuments(query),
+        ctx.dataset.findLimitFromSkip(
+            limit ? parseInt(limit, 10) : 10,
+            skip ? parseInt(skip) : 0,
+            query,
+            sortBy,
+            sortDir?.toUpperCase(),
+        ),
+    ]);
     ctx.body = { count, datas };
 };
 
@@ -98,7 +107,7 @@ export const deleteManyDatasetRowByIds = async (ctx: any) => {
             await getOrCreateWorkerQueue(ctx.tenant, 1).add(
                 PUBLISHER, // Name of the job
                 { jobType: PUBLISHER, tenant: ctx.tenant },
-                { jobId: uuid() },
+                { jobId: randomUUID() },
             );
         }
 
@@ -134,7 +143,7 @@ export const deleteManyDatasetRowByFilter = async (ctx: any) => {
             await getOrCreateWorkerQueue(ctx.tenant, 1).add(
                 PUBLISHER, // Name of the job
                 { jobType: PUBLISHER, tenant: ctx.tenant },
-                { jobId: uuid() },
+                { jobId: randomUUID() },
             );
         }
 

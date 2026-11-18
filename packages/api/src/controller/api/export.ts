@@ -11,6 +11,10 @@ import { cleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import { ObjectId } from 'mongodb';
 import getLogger from '../../services/logger';
+import {
+    closeIfHeadersSent,
+    withEmptyFallback,
+} from '../../services/streamHelper';
 
 const baseURL: string = config.has('baseURL')
     ? config.get('baseURL')
@@ -116,20 +120,15 @@ const middlewareScript = (isFormatExporters = false) => {
         const errorHandle = (err: any) => {
             ctx.status = 503;
             ctx.body.destroy();
+            closeIfHeadersSent(ctx);
             input.destroy();
             logger.error('Error with ', ctx.path, ' and', ctx.query, err);
         };
+        // called only when the routine sent no data at all
         const emptyHandle = () => {
-            if (ctx.headerSent === false) {
-                ctx.status = 204;
-                // ctx.body.write('{"total":0}');  JSON is not the only export format
-                logger.error(
-                    'Empty response with ',
-                    ctx.path,
-                    ' and',
-                    ctx.query,
-                );
-            }
+            ctx.status = 204;
+            // ctx.body.write('{"total":0}');  JSON is not the only export format
+            logger.error('Empty response with ', ctx.path, ' and', ctx.query);
         };
         const workers_url = `${workersUrlPrefix}/${exporterName}`;
         logger.debug(
@@ -165,8 +164,8 @@ const middlewareScript = (isFormatExporters = false) => {
                 ),
             )
             .pipe(ezs.catch())
-            .on('finish', emptyHandle)
             .on('error', errorHandle)
+            .pipe(withEmptyFallback(emptyHandle))
             .pipe(ezs.toBuffer());
         input.write(query);
         input.end();

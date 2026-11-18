@@ -1,3 +1,4 @@
+import escapeRegExp from 'lodash/escapeRegExp';
 import compose from 'lodash/flowRight';
 
 export const addMatchToFilters =
@@ -18,7 +19,8 @@ export const addRegexToFilters =
             return filters;
         }
 
-        const regexMatch = new RegExp(match);
+        // the search text is plain text, not a regex: a '(' must not throw
+        const regexMatch = new RegExp(escapeRegExp(match));
 
         return {
             ...filters,

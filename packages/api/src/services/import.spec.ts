@@ -1,10 +1,130 @@
-import { startImport } from './import';
+// @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'.
+import fetch from 'fetch-with-proxy';
+import { PassThrough, Readable } from 'stream';
+import { getStreamFromUrl, startImport } from './import';
 import progress from './progress';
+jest.mock('fetch-with-proxy', () => jest.fn());
+jest.mock('@ezs/core/fusible', () => ({
+    createFusible: jest.fn(async () => 'fusible'),
+    enableFusible: jest.fn(),
+    disableFusible: jest.fn(),
+}));
+import {
+    isUploadCancelled,
+    removeUploadChunks,
+    removeUploadQueuedMarker,
+} from './uploadCancellation';
+jest.mock('./uploadCancellation', () => ({
+    isUploadCancelled: jest.fn(async () => false),
+    removeUploadChunks: jest.fn(),
+    removeUploadQueuedMarker: jest.fn(),
+}));
 jest.mock('./progress', () => ({
     start: jest.fn(),
     finish: jest.fn(),
+    getStatus: jest.fn(() => 'UPLOADING_DATASET'),
     status: 'PENDING',
 }));
+describe('startImport of a cancelled upload', () => {
+    it('reports a cancel and drops the chunks without importing', async () => {
+        (isUploadCancelled as jest.Mock).mockResolvedValueOnce(true);
+        const ctx = {
+            tenant: 'lodex',
+            job: {
+                data: { filename: 'upload/lodex_id', totalChunks: 3 },
+                update: jest.fn(),
+            },
+            mergeChunks: jest.fn(),
+            saveParsedStream: jest.fn(),
+        };
+        await expect(startImport(ctx)).rejects.toThrow('cancelled_import');
+        expect(removeUploadChunks).toHaveBeenCalledWith('upload/lodex_id');
+        expect(removeUploadQueuedMarker).toHaveBeenCalledWith(
+            'upload/lodex_id',
+        );
+        expect(ctx.mergeChunks).not.toHaveBeenCalled();
+        expect(ctx.saveParsedStream).not.toHaveBeenCalled();
+        // the progress no longer shows the end of the upload
+        expect(progress.finish).toHaveBeenCalledWith('lodex');
+    });
+});
+
+describe('startImport of a failing import', () => {
+    it('keeps the error of the import, to explain it', async () => {
+        const error = Object.assign(new Error('Bad Request'), {
+            status: 400,
+        });
+        const ctx = {
+            tenant: 'lodex',
+            job: { data: { text: 'query' }, update: jest.fn() },
+            getLoader: jest.fn(() => (stream: any) => stream),
+            getStreamFromText: jest.fn(() => ({
+                pipe: () => ({ pipe: () => ({ pipe: () => ({}) }) }),
+            })),
+            saveParsedStream: jest.fn().mockRejectedValue(error),
+        };
+        await expect(startImport(ctx)).rejects.toMatchObject({
+            message: 'Error during import: Error: Bad Request',
+            cause: error,
+        });
+    });
+});
+
+describe('getStreamFromUrl', () => {
+    // a node-fetch answer of a failed url
+    const failWith = (body: NodeJS.ReadableStream) =>
+        (fetch as jest.Mock).mockResolvedValueOnce({
+            ok: false,
+            status: 503,
+            statusText: 'Service Unavailable',
+            body,
+        });
+
+    afterEach(() => jest.useRealTimers());
+
+    it('fails with the status and the answer of the url', async () => {
+        failWith(Readable.from(['Maintenance ', 'en cours']));
+        await expect(
+            getStreamFromUrl('http://example.org'),
+        ).rejects.toMatchObject({
+            message: 'Service Unavailable',
+            status: 503,
+            responseText: 'Maintenance en cours',
+        });
+    });
+
+    it('keeps only the start of a long answer', async () => {
+        failWith(Readable.from(['x'.repeat(50_000)]));
+        await expect(
+            getStreamFromUrl('http://example.org'),
+        ).rejects.toMatchObject({
+            responseText: 'x'.repeat(10_000),
+        });
+    });
+
+    it('keeps the status when the answer is cut off', async () => {
+        const body = new PassThrough();
+        failWith(body);
+        body.write('Mainten');
+        setImmediate(() => body.destroy(new Error('socket hang up')));
+        await expect(
+            getStreamFromUrl('http://example.org'),
+        ).rejects.toMatchObject({ status: 503, responseText: 'Mainten' });
+    });
+
+    it('does not wait for an answer that never ends', async () => {
+        jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate'] });
+        const body = new PassThrough();
+        failWith(body);
+        body.write('Mainten');
+        const failure = expect(
+            getStreamFromUrl('http://example.org'),
+        ).rejects.toMatchObject({ status: 503, responseText: 'Mainten' });
+        await jest.advanceTimersByTimeAsync(5_000);
+        await failure;
+    });
+});
+
 describe.skip('import', () => {
     describe('startImport with file and automatic loader', () => {
         const stream = {

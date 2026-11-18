@@ -48,7 +48,10 @@ export const withInitialDataHoc = (
             const { loadPublication, loadParsingResult, isLoading, ...props } =
                 this.props;
 
-            if (isLoading) {
+            // Data is reloaded on each route mount to stay fresh, but once the
+            // admin is initialized the page renders right away with the current
+            // data instead of waiting for the 6 requests (and remounting).
+            if (isLoading && !this.props.isInitialized) {
                 return <LinearProgress />;
             }
 

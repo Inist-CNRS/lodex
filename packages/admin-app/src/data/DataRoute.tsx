@@ -2,12 +2,12 @@ import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
 import ParsingResult from '../parsing/ParsingResult';
-import { fromParsing, fromPublication } from '../selectors';
+import { fromParsing, fromPublication, fromUpload } from '../selectors';
 import Upload from '../upload/Upload';
 import { preLoadLoaders } from '../loader';
 import withInitialData from '../withInitialData';
 import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import {
     Redirect,
     Route,
@@ -19,17 +19,23 @@ import {
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { PreComputationSelector } from './PreComputationSelector';
 import { useFetchPrecomputations } from './useFetchPrecomputations';
+import { SiteWizardContext } from '../siteWizard/SiteWizardContext';
+import { ImportInProgress } from './ImportInProgress';
 
 interface DataRouteComponentProps {
     canUploadFile: boolean;
+    isUploading: boolean;
     hasPublishedDataset: boolean;
 }
 
 export const DataRouteComponent = ({
     canUploadFile,
+    isUploading,
 }: DataRouteComponentProps) => {
     const { translate } = useTranslate();
     const { pathname, search } = useLocation();
+
+    const { openWizard } = useContext(SiteWizardContext);
 
     const { path } = useRouteMatch();
     const history = useHistory();
@@ -69,9 +75,20 @@ export const DataRouteComponent = ({
     const { isPrecomputationsLoading, precomputations, precomputationsError } =
         useFetchPrecomputations();
 
+    if (canUploadFile && isUploading) {
+        // No data yet but an import is running: don't show the upload form again
+        return <ImportInProgress />;
+    }
+
     if (canUploadFile) {
-        // @ts-expect-error TS2322
-        return <Upload className="admin" isFirstFile={canUploadFile} />;
+        return (
+            <Upload
+                // @ts-expect-error TS2322
+                className="admin"
+                isFirstFile={canUploadFile}
+                onOpenWizard={openWizard}
+            />
+        );
     }
 
     if (!pathname.endsWith('dataset') && !pathname.endsWith('precomputation')) {
@@ -152,6 +169,7 @@ export const DataRouteComponent = ({
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     canUploadFile: fromParsing.canUpload(state),
+    isUploading: fromUpload.isUploadPending(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

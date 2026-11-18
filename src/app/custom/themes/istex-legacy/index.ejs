@@ -15,7 +15,6 @@
         <link rel="stylesheet" href="<%= lodex.base.href %>/styles/font-awesome.min.css"/>
         <link rel="stylesheet" href="<%= theme.current.href %>/css/style.css" />
         <link rel="stylesheet" href="<%= theme.current.href %>/css/istex.css"/>
-        <link rel="stylesheet" href="<%= lodex.base.href %>/css/front-LeafletMap.css"/>
 
         <title></title>
         <style><%= theme.cssVariable %></style>
@@ -96,7 +95,7 @@
             </a>
             <div id="pageText" class="pageHead-texte">
                 <div id="pageTitle">
-                        <%= custom.title %>
+                        <%# configurations saved before the rename store `title` %><%= 'title' in custom ? custom.title : custom.siteTitle %>
                 </div>
                 <p id="pageSubTitle" class="text-center">
                     <%= custom.summary %>

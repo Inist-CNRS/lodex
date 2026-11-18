@@ -3,7 +3,6 @@ import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
-import { v1 as uuid } from 'uuid';
 import config from 'config';
 import mount from 'koa-mount';
 
@@ -11,11 +10,12 @@ import { getLocale, TaskStatus } from '@lodex/common';
 import asyncBusboy from '@recuperateur/async-busboy';
 import type { PreComputation } from '../../models/precomputed';
 import {
-    getPrecomputedDataPreview,
-    setPrecomputedJobId,
-} from '../../services/precomputed/precomputed';
+    queuePrecomputed,
+    type LaunchContext,
+} from '../../services/launchTasks';
+import { refusedDuringSiteGeneration } from '../../services/siteGeneration/siteGeneration';
+import { getPrecomputedDataPreview } from '../../services/precomputed/precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
-import { getOrCreateWorkerQueue } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
 import { cancelJob } from '../../workers/tools';
 import { buildQuery } from './buildQuery';
@@ -141,44 +141,10 @@ export const precomputedAction = async (
         return;
     }
 
-    if (action === 'launch') {
-        await getOrCreateWorkerQueue(ctx.tenant, 1)
-            .add(
-                PRECOMPUTER, // Name of the job
-                {
-                    id,
-                    jobType: PRECOMPUTER,
-                    action: 'askForPrecomputed',
-                    tenant: ctx.tenant,
-                    subLabel: precomputed.name,
-                },
-                { jobId: uuid() },
-            )
-            .then((job: any) => {
-                setPrecomputedJobId(ctx, id, job);
-            });
-        ctx.body = {
-            status: 'pending',
-        };
-    }
-
-    if (action === 'relaunch') {
-        await ctx.dataset.removeAttribute(precomputed.name);
-        await getOrCreateWorkerQueue(ctx.tenant, 1)
-            .add(
-                PRECOMPUTER, // Name of the job
-                {
-                    id,
-                    jobType: PRECOMPUTER,
-                    action: 'askForPrecomputed',
-                    tenant: ctx.tenant,
-                    subLabel: precomputed.name,
-                },
-                { jobId: uuid() },
-            )
-            .then((job: any) => {
-                setPrecomputedJobId(ctx, id, job);
-            });
+    if (action === 'launch' || action === 'relaunch') {
+        await queuePrecomputed(ctx as unknown as LaunchContext, id, {
+            relaunch: action === 'relaunch',
+        });
         ctx.body = {
             status: 'pending',
         };
@@ -499,8 +465,9 @@ app.use(route.post('/', postPrecomputed));
 app.use(route.put('/:id', putPrecomputed));
 // @ts-expect-error TS2345
 app.use(route.delete('/:id', deletePrecomputed));
-// @ts-expect-error TS2345
-app.use(route.post('/:action/:id', precomputedAction));
+app.use(
+    route.post('/:action/:id', refusedDuringSiteGeneration(precomputedAction)),
+);
 // @ts-expect-error TS2345
 app.use(route.post('/preview', precomputedDataPreview));
 

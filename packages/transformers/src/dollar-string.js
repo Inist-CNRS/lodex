@@ -1,5 +1,5 @@
-import transformer from './operations/STRING';
-import dollar from './dollar';
+import transformer from './operations/STRING.js';
+import dollar from './dollar.js';
 
 /**
  * transforme la valeur en chaîne de caractères

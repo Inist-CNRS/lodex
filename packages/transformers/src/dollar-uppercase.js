@@ -1,5 +1,5 @@
-import transformer from './operations/UPPERCASE';
-import dollar from './dollar';
+import transformer from './operations/UPPERCASE.js';
+import dollar from './dollar.js';
 
 /**
  * mettre la chaîne en majuscules

@@ -146,6 +146,7 @@ module.exports = {
         {
             displayName: 'transformers',
             rootDir: `${__dirname}/packages/transformers`,
+            transform,
             testMatch: [
                 '/**/*.spec.js',
                 '/**/*.spec.jsx',

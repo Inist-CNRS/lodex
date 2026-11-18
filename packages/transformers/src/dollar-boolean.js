@@ -1,5 +1,5 @@
-import transformer from './operations/BOOLEAN';
-import dollar from './dollar';
+import transformer from './operations/BOOLEAN.js';
+import dollar from './dollar.js';
 
 /**
  * transformer une chaîne de caractères en booléen

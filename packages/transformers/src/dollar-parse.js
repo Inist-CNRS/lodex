@@ -1,5 +1,5 @@
-import transformer from './operations/PARSE';
-import dollar from './dollar';
+import transformer from './operations/PARSE.js';
+import dollar from './dollar.js';
 
 /**
  * Analyser un chaine de caractère comme étant du JSON

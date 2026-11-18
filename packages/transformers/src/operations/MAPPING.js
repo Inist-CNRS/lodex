@@ -1,6 +1,6 @@
 import JSON6 from 'json-6';
-import { transformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation';
+import { transformerWithArg } from './transformer.js';
+import documentationByOperation from './documentationByOperation.js';
 
 export const mapping = (value, input) => {
     const template = typeof input === 'string' ? input : input.toString();

@@ -7,11 +7,20 @@ import {
 } from '@lodex/common';
 import _ from 'lodash';
 import { MongoClient } from 'mongodb';
+import { text } from 'stream/consumers';
+import tar from 'tar-stream';
+import { default as configTenantFactory } from '../../models/configTenant';
 import { default as enrichmentFactory } from '../../models/enrichment';
 import { default as fieldFactory, validateField } from '../../models/field';
 import { default as precomputedFactory } from '../../models/precomputed';
 import { default as publishedDatasetModelFactory } from '../../models/publishedDataset';
 import indexSearchableFields from '../../services/indexSearchableFields';
+import {
+    applyConfigTenant,
+    applyRecommendedTheme,
+    applySiteInfo,
+    restoreFields,
+} from '../../services/modelRestore';
 import {
     exportFields,
     getAllField,
@@ -23,12 +32,47 @@ import {
     postField,
     removeField,
     reorderField,
-    restoreFields,
     setup,
 } from './field';
 import publishFacets from './publishFacets';
+import { version } from '../../../../../package.json';
 
 jest.mock('../../services/indexSearchableFields');
+jest.mock('../../services/logger', () => {
+    const logger = { error: jest.fn(), info: jest.fn(), warn: jest.fn() };
+    return () => logger;
+});
+jest.mock('../../models/themes', () => {
+    const themes: Record<string, object> = {
+        default: { siteTitle: '', summary: '' },
+        istex: {
+            color: 'istex-green',
+            siteTitle: 'exemple : Services',
+            summary: 'exemple : summary',
+        },
+        // an older theme, without the site name and description
+        legacy: { color: 'grey' },
+    };
+    return {
+        getTheme: (name: string) =>
+            themes[name]
+                ? { customTemplateVariables: themes[name] }
+                : undefined,
+    };
+});
+
+const readTarEntries = (stream: any): Promise<Record<string, string>> =>
+    new Promise((resolve, reject) => {
+        const entries: Record<string, string> = {};
+        const extract = tar.extract();
+        extract.on('entry', async (header: any, entry: any, next: any) => {
+            entries[header.name] = await text(entry);
+            next();
+        });
+        extract.on('finish', () => resolve(entries));
+        extract.on('error', reject);
+        stream.pipe(extract);
+    });
 
 describe('field routes', () => {
     const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
@@ -99,6 +143,7 @@ describe('field routes', () => {
                     sortOrder: 'asc',
                 },
                 '5Hvs',
+                false, // created concurrently: shifting positions would race
             ),
             fieldModel.create(
                 {
@@ -122,6 +167,7 @@ describe('field routes', () => {
                     name: 'uri',
                 },
                 'GaV6',
+                false,
             ),
         ]).then((fields: any) =>
             fields.toSorted((a: any, b: any) => {
@@ -192,7 +238,7 @@ describe('field routes', () => {
             expect(ctx.set.mock.calls[0][0]).toBe('Content-disposition');
             expect(
                 ctx.set.mock.calls[0][1].startsWith(
-                    'attachment; filename=instance-name_model_',
+                    `attachment; filename=instance-name_model_v${version}_`,
                 ) && ctx.set.mock.calls[0][1].endsWith('.tar'),
             ).toBeTruthy();
 
@@ -206,6 +252,32 @@ describe('field routes', () => {
             await exportFields(ctx);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(500);
+        });
+
+        it('should export only theme and front from the tenant config', async () => {
+            await db.collection('configTenant').deleteMany({});
+            const configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'istex',
+                front: { multilingual: true },
+                userAuth: { username: 'user', password: 'secret' },
+                enableAutoPublication: true,
+                enrichmentBatchSize: 10,
+            });
+            const exportCtx: any = {
+                set: jest.fn(),
+                tenant: 'instance-name',
+                db,
+                configTenantCollection,
+            };
+
+            await exportFields(exportCtx);
+
+            const entries = await readTarEntries(exportCtx.body);
+            expect(JSON.parse(entries['config/configTenant.json'])).toEqual({
+                theme: 'istex',
+                front: { multilingual: true },
+            });
         });
     });
 
@@ -302,6 +374,20 @@ describe('field routes', () => {
             expect(ctx.body.hasEnrichments).toBe(true);
         });
 
+        it('should return the theme that could not be applied', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+            ctx.restoreFields.mockImplementationOnce(() =>
+                Promise.resolve({ themeNotFound: 'unknown' }),
+            );
+
+            await importFields(asyncBusboyImpl)(ctx);
+
+            // @ts-expect-error TS(2339): Property 'body' does not exist
+            expect(ctx.body.themeNotFound).toBe('unknown');
+        });
+
         it('should return 500 in ctx.status and error message in ctx.body on error', async () => {
             const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
                 files: ['file0'],
@@ -316,6 +402,240 @@ describe('field routes', () => {
             expect(ctx.status).toBe(500);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toBe('Error!');
+        });
+    });
+
+    describe('applyRecommendedTheme', () => {
+        let ctx: any;
+
+        beforeEach(async () => {
+            await db.collection('configTenant').deleteMany({});
+            const configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'default',
+                front: { multilingual: true, theme: { color: 'blue' } },
+                userAuth: { username: 'user', active: true },
+            });
+            ctx = { configTenantCollection };
+        });
+
+        it('should set the theme and its variables and keep the rest of front', async () => {
+            const result = await applyRecommendedTheme(ctx, 'istex');
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'istex',
+                front: {
+                    multilingual: true,
+                    theme: { color: 'istex-green' },
+                },
+                userAuth: { username: 'user', active: true },
+            });
+        });
+
+        it("should keep the archive's variables when it already uses the theme", async () => {
+            // as restored from an archive customizing the istex theme
+            const current = await ctx.configTenantCollection.findLast();
+            await ctx.configTenantCollection.update(current._id, {
+                ...current,
+                theme: 'istex',
+                front: { ...current.front, theme: { color: 'custom' } },
+            });
+
+            const result = await applyRecommendedTheme(ctx, 'istex');
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'istex',
+                front: { multilingual: true, theme: { color: 'custom' } },
+            });
+        });
+
+        it('should do nothing without a configuration', async () => {
+            await db.collection('configTenant').deleteMany({});
+
+            const result = await applyRecommendedTheme(ctx, 'istex');
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toBeNull();
+        });
+
+        it('should not touch the config and report an unknown theme', async () => {
+            const result = await applyRecommendedTheme(ctx, 'unknown');
+
+            expect(result).toEqual({ themeNotFound: 'unknown' });
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: { multilingual: true, theme: { color: 'blue' } },
+            });
+        });
+    });
+
+    describe('applySiteInfo', () => {
+        let ctx: any;
+
+        const createConfig = (theme: string, variables: object) =>
+            ctx.configTenantCollection.create({
+                theme,
+                front: { multilingual: true, theme: variables },
+                userAuth: { username: 'user', active: true },
+            });
+
+        beforeEach(async () => {
+            await db.collection('configTenant').deleteMany({});
+            ctx = { configTenantCollection: await configTenantFactory(db) };
+        });
+
+        it('should write the name and description into the theme variables', async () => {
+            await createConfig('default', { siteTitle: '', color: 'blue' });
+
+            await applySiteInfo(ctx, {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            });
+
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: {
+                    multilingual: true,
+                    theme: {
+                        siteTitle: 'My site',
+                        summary: 'About my site',
+                        color: 'blue',
+                    },
+                },
+                userAuth: { username: 'user', active: true },
+            });
+        });
+
+        it('should write the name into title for a configuration saved before the ISTEX rename', async () => {
+            await createConfig('istex', { title: 'exemple : Services' });
+
+            await applySiteInfo(ctx, { siteName: 'My site' });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme.title).toBe('My site');
+            expect(front.theme).not.toHaveProperty('siteTitle');
+        });
+
+        it('should trim the values and leave the empty ones untouched', async () => {
+            await createConfig('default', {
+                siteTitle: 'Archive title',
+                summary: 'Archive summary',
+            });
+
+            await applySiteInfo(ctx, {
+                siteName: '  ',
+                siteDescription: ' About my site ',
+            });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme).toEqual({
+                siteTitle: 'Archive title',
+                summary: 'About my site',
+            });
+        });
+
+        it("should add the values over the theme's defaults when the configuration has no theme variables yet", async () => {
+            await ctx.configTenantCollection.create({
+                theme: 'default',
+                front: { multilingual: true },
+            });
+
+            await applySiteInfo(ctx, { siteName: 'My site' });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            // the theme settings editor shows every variable of the theme
+            expect(front).toEqual({
+                multilingual: true,
+                theme: { siteTitle: 'My site', summary: '' },
+            });
+        });
+
+        it('should skip the values a theme has no variable for', async () => {
+            await createConfig('legacy', { color: 'grey' });
+
+            await applySiteInfo(ctx, {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme).toEqual({ color: 'grey' });
+        });
+
+        it('should skip a theme unknown to the server', async () => {
+            await createConfig('unknown', { color: 'blue' });
+
+            await applySiteInfo(ctx, {
+                siteName: 'My site',
+                siteDescription: 'About my site',
+            });
+
+            const { front } = await ctx.configTenantCollection.findLast();
+            expect(front.theme).toEqual({ color: 'blue' });
+        });
+
+        it('should do nothing without a configuration', async () => {
+            await applySiteInfo(ctx, { siteName: 'My site' });
+
+            expect(await ctx.configTenantCollection.findLast()).toBeNull();
+        });
+    });
+
+    describe('applyConfigTenant', () => {
+        let ctx: any;
+
+        beforeEach(async () => {
+            await db.collection('configTenant').deleteMany({});
+            const configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'default',
+                front: { multilingual: false, theme: { color: 'blue' } },
+                userAuth: { username: 'user', active: true },
+            });
+            ctx = { configTenantCollection };
+        });
+
+        it('should replace theme and front and keep the other settings', async () => {
+            const result = await applyConfigTenant(ctx, {
+                theme: 'istex',
+                front: { multilingual: true },
+            });
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'istex',
+                front: { multilingual: true },
+                userAuth: { username: 'user', active: true },
+            });
+        });
+
+        it('should keep the current theme and report it when the theme is unknown', async () => {
+            const result = await applyConfigTenant(ctx, {
+                theme: 'unknown',
+                front: { multilingual: true, theme: { color: 'red' } },
+            });
+
+            expect(result).toEqual({ themeNotFound: 'unknown' });
+            const { theme, front } =
+                await ctx.configTenantCollection.findLast();
+            expect(theme).toBe('default');
+            // front.theme holds the theme's template variables: keep the current ones
+            expect(front).toEqual({
+                multilingual: true,
+                theme: { color: 'blue' },
+            });
+        });
+
+        it('should leave the config untouched when the archive has none', async () => {
+            const result = await applyConfigTenant(ctx, undefined);
+
+            expect(result).toEqual({});
+            expect(await ctx.configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: { multilingual: false, theme: { color: 'blue' } },
+            });
         });
     });
 
@@ -532,19 +852,30 @@ describe('field routes', () => {
             });
         });
 
-        it('update the published facets', async () => {
+        it('update the published facets when the field becomes a facet', async () => {
             await publishedDatasetModel.create({});
-            await patchField(ctx, insertedFields[0]._id);
+            const facetCtx = {
+                ...ctx,
+                request: { body: { label, isFacet: true } },
+            };
+            await patchField(facetCtx, insertedFields[0]._id);
             expect(ctx.publishFacets).toHaveBeenCalledWith(
-                ctx,
+                facetCtx,
                 expect.objectContaining([
                     {
                         ...insertedFields[0],
                         label,
+                        isFacet: true,
                     },
                 ]),
                 false,
             );
+        });
+
+        it('should not update the published facets when isFacet does not change', async () => {
+            await publishedDatasetModel.create({});
+            await patchField(ctx, insertedFields[0]._id);
+            expect(ctx.publishFacets).toHaveBeenCalledTimes(0);
         });
 
         it('should not update the published facets if dataset is not published (publishedDataset = 0)', async () => {

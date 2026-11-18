@@ -86,6 +86,7 @@ describe('publishedDataset', () => {
                     resourceUris: ['uri1', 'uri2'],
                 },
                 excludeSubresources: true,
+                projection: { uri: 1, versions: { $slice: -1 } },
             });
         });
 

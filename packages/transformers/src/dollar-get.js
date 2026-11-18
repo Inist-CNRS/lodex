@@ -1,5 +1,5 @@
-import transformer from './operations/GET';
-import dollar from './dollar';
+import transformer from './operations/GET.js';
+import dollar from './dollar.js';
 
 /**
  * Récupère toutes les valeurs correspondant à un chemin (dot path)

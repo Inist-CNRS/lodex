@@ -1,7 +1,7 @@
-import CONCAT from './CONCAT';
-import JOIN from './JOIN';
-import composeTransformers from './composeTransformers';
-import documentationByOperation from './documentationByOperation';
+import CONCAT from './CONCAT.js';
+import JOIN from './JOIN.js';
+import composeTransformers from './composeTransformers.js';
+import documentationByOperation from './documentationByOperation.js';
 
 const transformation = (context, args) =>
     composeTransformers([

@@ -2,6 +2,7 @@ import dump from './dump';
 import createDatasetModel from '../../models/dataset';
 import { MongoClient } from 'mongodb';
 import { Writable } from 'stream';
+import { version } from '../../../../../package.json';
 
 describe('API: Dump', () => {
     const connectionStringURI = process.env.MONGODB_URI_FOR_TESTS as string;
@@ -66,7 +67,7 @@ describe('API: Dump', () => {
         expect(set.mock.calls[0][0]).toBe('Content-disposition');
         expect(
             set.mock.calls[0][1].startsWith(
-                'attachment; filename=instance-name_dataset_',
+                `attachment; filename=instance-name_dataset_v${version}_`,
             ) && set.mock.calls[0][1].endsWith('.jsonl'),
         ).toBeTruthy();
     });

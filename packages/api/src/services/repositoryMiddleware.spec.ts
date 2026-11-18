@@ -1,5 +1,10 @@
 import type Koa from 'koa';
-import { mongoClientFactory } from './repositoryMiddleware';
+import mongoClient, { closeDb } from './mongoClient';
+import {
+    getPrecomputedCollectionForWebHook,
+    invalidateRepositories,
+    mongoClientFactory,
+} from './repositoryMiddleware';
 
 describe('mongoClient middleware', () => {
     it('should add db and collections to ctx', async () => {
@@ -32,7 +37,68 @@ describe('mongoClient middleware', () => {
             'publishedFacet',
             'configTenantCollection',
             'hiddenResource',
+            'siteGeneration',
             'dataSource',
         ]);
+    });
+});
+
+const tenant = 'repository_cache';
+
+describe('repositoryMiddleware cache', () => {
+    afterAll(async () => {
+        const db = await mongoClient(tenant);
+        await db.dropDatabase();
+        await closeDb(tenant);
+    });
+
+    it('should build the repositories once per tenant, and again after invalidation', async () => {
+        const db = await mongoClient(tenant);
+        const listCollections = jest.spyOn(db, 'listCollections');
+        const middleware = mongoClientFactory(async () => db);
+        const next = async () => {};
+
+        const firstCtx: any = { tenant };
+        await middleware(firstCtx, next);
+        const callsAfterFirstRequest = listCollections.mock.calls.length;
+        expect(callsAfterFirstRequest).toBeGreaterThan(0);
+        expect(firstCtx.field).toBeDefined();
+        expect(firstCtx.dataSource).toBeDefined();
+
+        const secondCtx: any = { tenant };
+        await middleware(secondCtx, next);
+        expect(listCollections.mock.calls.length).toBe(callsAfterFirstRequest);
+        expect(secondCtx.field).toBe(firstCtx.field);
+
+        // a dropped collection loses its indexes: invalidation must recreate them
+        await secondCtx.field.drop();
+        invalidateRepositories(tenant);
+        await middleware({ tenant } as any, next);
+        expect(listCollections.mock.calls.length).toBeGreaterThan(
+            callsAfterFirstRequest,
+        );
+        const indexes = await db.collection('field').indexes();
+        expect(indexes.map(({ name }) => name)).toContain('name_1');
+    });
+});
+
+describe('getPrecomputedCollectionForWebHook', () => {
+    const webhookTenant = 'webhook_unknown';
+
+    afterAll(async () => {
+        await closeDb(webhookTenant);
+    });
+
+    it('should not create any collection for the public webhook', async () => {
+        const db = await mongoClient(webhookTenant);
+        const createCollection = jest.spyOn(db, 'createCollection');
+        const listCollections = jest.spyOn(db, 'listCollections');
+
+        const collection =
+            await getPrecomputedCollectionForWebHook(webhookTenant);
+        await collection.markAnswered('0123456789abcdef01234567', 'run-1');
+
+        expect(createCollection).not.toHaveBeenCalled();
+        expect(listCollections).not.toHaveBeenCalled();
     });
 });

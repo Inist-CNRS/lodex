@@ -6,6 +6,7 @@ import {
     readFile,
 } from '../services/fsHelpers';
 import getLogger from '../services/logger';
+import { REPO_ROOT } from '../paths';
 
 const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gim');
 
@@ -22,10 +23,7 @@ export const getScriptsFromHtml = (html) =>
 
 // @ts-expect-error TS7006
 export const getPathname = async (file, tenant) => {
-    const rootDir = path.resolve(
-        __dirname,
-        `../../../../src/app/custom/instance/${tenant}`,
-    );
+    const rootDir = path.join(REPO_ROOT, 'src/app/custom/instance', tenant);
     const absoluteFilename = path.resolve(rootDir, file);
 
     const resolvedPath = getRealPath(absoluteFilename);

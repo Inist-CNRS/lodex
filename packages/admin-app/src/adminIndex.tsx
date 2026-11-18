@@ -21,6 +21,7 @@ import defaultTheme from '../../../src/app/custom/themes/default/defaultTheme';
 import configureStore from '@lodex/frontend-common/configureStore';
 import { I18N } from '@lodex/frontend-common/i18n/I18NContext';
 import phrasesFor from '@lodex/frontend-common/i18n/translations';
+import { installClientErrorReporter } from '@lodex/frontend-common/utils/reportClientError';
 import { default as AnnotationDetail } from './annotations/AnnotationDetail';
 import { default as AnnotationList } from './annotations/AnnotationList';
 import App from './App';
@@ -64,6 +65,7 @@ if (process.env.NODE_ENV === 'e2e') {
     sessionStorage.setItem('lodex-dbName', dbName);
     sessionStorage.setItem('lodex-tenant', tenant);
 }
+installClientErrorReporter();
 
 const queryClient = new QueryClient();
 

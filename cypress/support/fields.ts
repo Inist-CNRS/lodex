@@ -6,9 +6,10 @@ export function setFieldLanguage(fieldName: string, languageCode: string) {
     cy.get('#tab-semantics').click();
     cy.findByLabelText('Language').click();
     cy.get(`[data-value="${languageCode}"]`).click();
+    // wait for the save itself: it can take more than a fixed delay
+    cy.intercept('PATCH', '/api/field/*').as('saveField');
     cy.get('[data-testid="SaveAsIcon"]').click();
-
-    cy.wait(1000);
+    cy.wait('@saveField');
 }
 
 export function createNewField({

@@ -12,6 +12,10 @@
   "configuration": {
     "files": {
       "palette": "nougatTheme.js"
+    },
+    "variables": {
+      "siteTitle": "",
+      "summary": ""
     }
   }
 }

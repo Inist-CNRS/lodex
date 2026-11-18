@@ -1,12 +1,17 @@
 import Queue from 'bull';
 import config from 'config';
 import bullBoard from '../bullBoard';
+import getLogger from '../services/logger';
 import { ENRICHER, processEnrichment, RETRY_ENRICHER } from './enricher';
 import { IMPORT, processImport } from './import';
+import { MODEL_IMPORTER, processModelImport } from './modelImport';
 import { PRECOMPUTER, processPrecomputed } from './precomputer';
 import { processPublication, PUBLISHER } from './publisher';
+import { sweepTenants } from '../services/siteGeneration/sweep';
 
 export const QUEUE_NAME = 'worker';
+
+const STEP_JOB_TYPES = [ENRICHER, RETRY_ENRICHER, PRECOMPUTER];
 
 export class CancelWorkerError extends Error {
     name: any;
@@ -51,7 +56,33 @@ export const getOrCreateWorkerQueue = (
         if (job.data.jobType === PRECOMPUTER) {
             processPrecomputed(job, done);
         }
+        if (job.data.jobType === MODEL_IMPORTER) {
+            processModelImport(job, done);
+        }
     });
+
+    // Bull is silent otherwise: a job whose lock expired ("Missing lock") or
+    // that is run again after stalling must leave a trace
+    const logger = getLogger(queueName);
+    workerQueue.on('error', (error: Error) => {
+        logger.error(`Worker queue error: ${error?.message}`, error);
+    });
+    workerQueue.on('stalled', (job: Queue.Job) => {
+        logger.warn(
+            `Worker job stalled and will run again: ${job?.id} (${job?.data?.jobType})`,
+        );
+    });
+
+    // An enrichment or precomputation ended (by hand or as a step of a site
+    // generation): advance the tenant's generation now rather than on the
+    // next periodic sweep
+    const advanceSiteGeneration = (job: Queue.Job) => {
+        if (STEP_JOB_TYPES.includes(job?.data?.jobType)) {
+            sweepTenants([job.data.tenant]);
+        }
+    };
+    workerQueue.on('completed', advanceSiteGeneration);
+    workerQueue.on('failed', advanceSiteGeneration);
 
     workerQueues[queueName] = workerQueue;
 

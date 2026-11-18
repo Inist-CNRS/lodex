@@ -2,6 +2,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, Divider, IconButton } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
@@ -34,6 +35,7 @@ interface MenuComponentProps {
     importHasEnrichments: boolean;
     importHasPrecomputed: boolean;
     importFailed: boolean;
+    importThemeNotFound: string | null;
     history: object;
 }
 
@@ -50,9 +52,12 @@ const MenuComponent = ({
 
     importFailed,
 
+    importThemeNotFound,
+
     history,
 }: MenuComponentProps) => {
     const { translate } = useTranslate();
+    const queryClient = useQueryClient();
     const [anchorEl, setAnchorEl] = useState(null);
     const [subMenuToShow, setSubMenuToShow] = useState(null);
 
@@ -72,8 +77,22 @@ const MenuComponent = ({
             toast(translate('model_imported_with_success'), {
                 type: 'success',
             });
+            // The model may carry theme + front: drop the cached config so
+            // the config form reloads with the imported values
+            queryClient.resetQueries({ queryKey: ['get-config-tenant'] });
         }
     }, [importSucceeded, importFailed]);
+
+    useEffect(() => {
+        if (importThemeNotFound) {
+            toast(
+                translate('model_import_theme_not_found', {
+                    theme: importThemeNotFound,
+                }),
+                { type: 'warning' },
+            );
+        }
+    }, [importThemeNotFound]);
 
     useEffect(() => {
         if (importHasEnrichments || importHasPrecomputed) {
@@ -275,6 +294,7 @@ const mapStateToProps = (state) => ({
     importHasEnrichments: fromImport.hasEnrichments(state),
     importHasPrecomputed: fromImport.hasPrecomputed(state),
     importFailed: fromImport.hasImportFailed(state),
+    importThemeNotFound: fromImport.getThemeNotFound(state),
 });
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

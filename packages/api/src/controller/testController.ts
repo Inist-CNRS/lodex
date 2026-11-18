@@ -3,6 +3,7 @@ import mount from 'koa-mount';
 import route from 'koa-route';
 import serve from 'koa-static';
 import path from 'path';
+import { REPO_ROOT } from '../paths';
 
 import { DEFAULT_TENANT } from '@lodex/common';
 import bodyParser from 'koa-bodyparser';
@@ -46,9 +47,7 @@ app.use(
     }),
 );
 
-app.use(
-    mount('/external', serve(path.resolve(__dirname, '../../../../external'))),
-);
+app.use(mount('/external', serve(path.join(REPO_ROOT, 'external'))));
 
 app.use(bodyParser());
 

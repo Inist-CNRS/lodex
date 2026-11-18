@@ -7,19 +7,24 @@ import { disableFusible } from '@ezs/core/fusible';
 
 import { ProgressStatus } from '@lodex/common';
 import type Bull from 'bull';
-import getLogger from '../services/logger';
+import getLogger, { parseJobMessage } from '../services/logger';
 import progress from '../services/progress';
 import type { AppContext } from '../services/repositoryMiddleware';
 import { handleEnrichmentError } from './enricher';
 import { notifyListeners } from './import';
+import { PUBLISHER } from './publisher';
 
 export const jobLogger = {
     info: (job: any, message: any) => {
         if (!job) {
             return;
         }
-        const logger = getLogger(job.data.tenant);
-        logger.debug(message);
+        const { level, text } = parseJobMessage(message);
+        // row errors (e.g. "Error enriching #id") must stay visible in production
+        getLogger(job.data.tenant).log(
+            level === 'error' ? 'error' : 'debug',
+            text,
+        );
         job.log(message);
     },
     error: (job: any, message: any) => {
@@ -27,7 +32,7 @@ export const jobLogger = {
             return;
         }
         const logger = getLogger(job.data.tenant);
-        logger.error(message);
+        logger.error(parseJobMessage(message).text);
         job.log(message);
     },
 };
@@ -66,12 +71,19 @@ export const getWaitingJobs = async (tenant: string): Promise<Bull.Job[]> => {
 };
 
 export const cancelJob = async (
-    ctx: AppContext,
+    // Also called outside of a Koa request (site generation)
+    ctx:
+        | AppContext
+        | { tenant: string; precomputed: AppContext['precomputed'] },
     jobType: string,
     subLabel: string | undefined | null = null,
 ) => {
     const activeJob = await getActiveJob(ctx.tenant);
-    if (activeJob?.data?.fusible) {
+    // cancelling an import must not stop another job. Other types are not
+    // compared: a retry enrichment (retry-enricher) is cancelled as enricher
+    const isOtherJobThanImport =
+        jobType === 'import' && activeJob?.data?.jobType !== 'import';
+    if (activeJob?.data?.fusible && !isOtherJobThanImport) {
         await disableFusible(activeJob.data.fusible);
     }
     if (activeJob?.data?.jobType === jobType) {
@@ -129,6 +141,10 @@ export const clearJobs = async (ctx: AppContext) => {
     const activeJobIds = activeJobs.map((job) => job.data.id) || [];
 
     for (const activeJob of activeJobs) {
+        // stops the ezs pipeline (breakers), as cancelJob does
+        if (activeJob.data?.fusible) {
+            await disableFusible(activeJob.data.fusible);
+        }
         if (activeJob.name === 'enricher') {
             await handleEnrichmentError(activeJob, CancelWorkerError);
         }
@@ -139,4 +155,40 @@ export const clearJobs = async (ctx: AppContext) => {
     await ctx.enrichment.cancelByIds([...waitingJobIds, ...activeJobIds]);
 
     progress.finish(ctx.tenant);
+};
+
+export const queuePublisher = (tenant: string, jobId: string) =>
+    getOrCreateWorkerQueue(tenant, 1).add(
+        PUBLISHER,
+        { jobType: PUBLISHER, tenant },
+        { jobId },
+    );
+
+// null once the job is gone: Bull only keeps the last finished jobs
+export const getJobState = async (tenant: string, jobId: string) => {
+    const job = await getOrCreateWorkerQueue(tenant, 1).getJob(jobId);
+    if (!job) {
+        return null;
+    }
+    return { state: await job.getState(), failedReason: job.failedReason };
+};
+
+// Removes a publisher job still waiting, cancels it once running. A finished
+// job is left alone.
+export const cancelPublisherJob = async (
+    ctx: Parameters<typeof cancelJob>[0],
+    jobId: string,
+) => {
+    const job = await getOrCreateWorkerQueue(ctx.tenant, 1).getJob(jobId);
+    if (!job) {
+        return;
+    }
+    if (await job.isActive()) {
+        // concurrency 1: the active publisher job is this one
+        await cancelJob(ctx, PUBLISHER);
+        return;
+    }
+    if ((await job.isWaiting()) || (await job.isDelayed())) {
+        await job.remove();
+    }
 };

@@ -1,5 +1,5 @@
-import transformer from './operations/NUMBER';
-import dollar from './dollar';
+import transformer from './operations/NUMBER.js';
+import dollar from './dollar.js';
 
 /**
  * transformer une chaîne de caractères en nombre

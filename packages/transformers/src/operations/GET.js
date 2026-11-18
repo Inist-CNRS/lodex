@@ -1,7 +1,7 @@
-import _get from 'lodash/get';
-import _flatten from 'lodash/flatten';
-import { transformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation';
+import _get from 'lodash/get.js';
+import _flatten from 'lodash/flatten.js';
+import { transformerWithArg } from './transformer.js';
+import documentationByOperation from './documentationByOperation.js';
 
 export const get = (value, path) => {
     const keys = path.split(';');

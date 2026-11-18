@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import DownloadIcon from '@mui/icons-material/Download';
 import {
+    Button,
     Dialog,
     TextField,
     DialogContent,
@@ -15,7 +17,14 @@ import {
     clearPublished as clearPublishedAction,
 } from '../clear';
 
-import { fromClear, fromPublication } from '../selectors';
+import {
+    fromClear,
+    fromEnrichments,
+    fromPrecomputed,
+    fromPublication,
+    fromSubresources,
+} from '../selectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import fieldApi from '../api/field';
 import { toast, extractTenantFromUrl } from '@lodex/common';
 import { loadField } from '@lodex/frontend-common/fields/reducer';
@@ -23,6 +32,10 @@ import { loadPublication } from '../publication';
 import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { loadSubresources } from '../subresource';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { exportFields as exportFieldsAction } from '@lodex/frontend-common/export-fields';
+import { useGetConfigTenant } from '../configTenant/useGetConfigTenant';
+import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
+import { isThemeCustomized } from '../configTenant/isThemeCustomized';
 
 const TRANSLATION_KEY = new Map([
     ['dataset', 'clear_dataset'],
@@ -42,10 +55,12 @@ interface ClearDialogComponentProps {
     loadField(...args: unknown[]): unknown;
     loadPublication(...args: unknown[]): unknown;
     hasPublishedDataset: boolean;
+    hasModel: boolean;
     loadSubResources(...args: unknown[]): unknown;
+    exportFields(): unknown;
 }
 
-const ClearDialogComponent = (props: ClearDialogComponentProps) => {
+export const ClearDialogComponent = (props: ClearDialogComponentProps) => {
     const { translate } = useTranslate();
     const [validName, setValidName] = React.useState(false);
     const {
@@ -57,9 +72,21 @@ const ClearDialogComponent = (props: ClearDialogComponentProps) => {
         loadField,
         loadSubResources,
         hasPublishedDataset,
+        hasModel,
+        exportFields,
     } = props;
 
     const instanceName = extractTenantFromUrl(window.location.href);
+
+    const isDatasetClear = type === 'dataset';
+    const { data: configTenant } = useGetConfigTenant({
+        enabled: isDatasetClear,
+    });
+    const { data: availableThemes } = useGetAvailableThemes({
+        enabled: isDatasetClear,
+    });
+    const showExport =
+        hasModel || isThemeCustomized(configTenant, availableThemes);
 
     useEffect(() => {
         if (succeeded) {
@@ -158,11 +185,30 @@ const ClearDialogComponent = (props: ClearDialogComponentProps) => {
                     : ''}
             </DialogTitle>
             <DialogContent>
-                <b>
-                    {type === 'model'
-                        ? translate('listen_up_model')
-                        : translate('listen_up')}
-                </b>
+                {isDatasetClear ? (
+                    <>
+                        <b>{translate('listen_up_dataset')}</b>
+                        <p>{translate('listen_up_dataset_details')}</p>
+                        {showExport && (
+                            <>
+                                <p>{translate('listen_up_dataset_export')}</p>
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<DownloadIcon />}
+                                    onClick={() => exportFields()}
+                                >
+                                    {translate('export_fields')}
+                                </Button>
+                            </>
+                        )}
+                    </>
+                ) : (
+                    <b>
+                        {type === 'model'
+                            ? translate('listen_up_model')
+                            : translate('listen_up')}
+                    </b>
+                )}
                 <br />
                 <br />
                 <div>
@@ -190,6 +236,12 @@ const mapStateToProps = (state) => ({
     hasFailed: fromClear.hasClearFailed(state),
     isLoading: fromClear.getIsLoading(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    // what the model export saves; a new model only holds the uri field
+    hasModel:
+        fromFields.getFields(state).some((f) => f.name !== 'uri') ||
+        fromEnrichments.enrichments(state).length > 0 ||
+        fromPrecomputed.precomputed(state).length > 0 ||
+        fromSubresources.getSubresources(state).length > 0,
 });
 
 const mapDispatchToProps = {
@@ -198,6 +250,7 @@ const mapDispatchToProps = {
     loadField: loadField,
     loadPublication: loadPublication,
     loadSubResources: loadSubresources,
+    exportFields: exportFieldsAction,
 };
 
 export default connect(

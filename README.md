@@ -28,6 +28,17 @@ wget https://raw.githubusercontent.com/Inist-CNRS/lodex/refs/tags/v16.10.4/docke
 docker-compose up
 ```
 
+## Development
+
+- In development, sources are used as is, nothing to build: the API runs with `tsx` (`npm run development:backend`), the workers with Node's type stripping (`npm run production:workers`, no watch: restart the container to pick up changes).
+  - Exception: `@ezs/lodex` (`packages/ezsLodex`) is loaded from its compiled `lib/` (git-ignored). The `workers` service builds it before starting (in `docker-compose.dev.yml` and `docker-compose.spec.yml`), so a fresh checkout works. In `docker-compose.dev.yml`, the `api` service also rebuilds it on change (`tsc --watch`): the API picks up the changes, the workers only after a restart.
+- In production, they run with plain `node`:
+  - the API from a bundle built by `npm run build` (`packages/api/build.mjs`, output in `packages/api/dist`), so `npm start` needs a build first;
+  - the workers with Node's type stripping (`node src/index.ts`).
+- Files loaded by name or path at runtime are not bundled and must be valid Node ESM, with `.js` extensions in their relative imports:
+  - ezs plugins loaded with `[use] plugin = ...`, see [packages/transformers](packages/transformers/README.md#développement);
+  - theme palette files (`src/app/custom/themes/*/`): a custom theme whose palette imports `'./colors'` instead of `'./colors.js'` falls back to the default palette (the error is logged at startup).
+
 ## Useful links
 
 - **Data and Model ready to use**: <https://github.com/Inist-CNRS/lodex-use-cases>

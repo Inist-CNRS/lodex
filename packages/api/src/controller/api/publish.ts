@@ -1,20 +1,15 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
 
 import clearPublished from '../../services/clearPublished';
 import getLogger from '../../services/logger';
-import { getOrCreateWorkerQueue } from '../../workers';
-import { PUBLISHER } from '../../workers/publisher';
+import { queuePublisher } from '../../workers/tools';
 
 const app = new Koa();
 
 export const doPublish = async (ctx: any) => {
-    await getOrCreateWorkerQueue(ctx.tenant, 1).add(
-        PUBLISHER, // Name of the job
-        { jobType: PUBLISHER, tenant: ctx.tenant },
-        { jobId: uuid() },
-    );
+    await queuePublisher(ctx.tenant, randomUUID());
     ctx.status = 200;
     ctx.body = {
         status: 'publishing',

@@ -30,6 +30,9 @@ const styles = {
     },
 };
 
+// also used by the site wizard's model catalog
+export { styles as catalogListStyles };
+
 type ListItemComponentProps = {
     selected: boolean;
     comment: string;

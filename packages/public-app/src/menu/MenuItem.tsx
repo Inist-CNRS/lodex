@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash/get';
+import { lazyComponent } from '@lodex/frontend-common/utils/lazyComponent';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { ADMIN_ROLE, extractTenantFromUrl } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { ErrorBoundary } from '../ErrorBoundary';
 import type { ChangeEvent } from 'react';
 
 const styles = stylesToClassname(
@@ -60,24 +61,55 @@ const styles = stylesToClassname(
     'menu-item',
 );
 
+const ImageIcon = ({ src }: { src: string }) => (
+    <img
+        src={src}
+        // @ts-expect-error TS2339
+        className={styles.menuItemIcon}
+        width={50}
+        height={50}
+    />
+);
+
+// The whole icon set is needed since icons are configured by name: keep it out of the main bundle.
+// index.js (and not the package root, resolved to index.es.js) so that the named imports
+// used elsewhere stay tree-shaken in the main bundle while the full set gets its own chunk.
+const MenuFontAwesomeIcon = lazyComponent(
+    async () => {
+        const icons = await import(
+            '@fortawesome/free-solid-svg-icons/index.js'
+        );
+        return {
+            default: ({ name }: { name: string }) => {
+                const faIcon = get(icons, name);
+                // unknown icon name: rendered as an image, as before the lazy loading
+                return faIcon ? (
+                    <FontAwesomeIcon
+                        icon={faIcon}
+                        // @ts-expect-error TS2339
+                        className={styles.menuItemIcon}
+                    />
+                ) : (
+                    <ImageIcon src={name} />
+                );
+            },
+        };
+    },
+    { fallback: null },
+);
+
 // @ts-expect-error TS7006
 const getIcon = (icon) => {
-    const faIcon = get(icons, icon);
-    if (faIcon) {
+    // Font Awesome icon names (faHome), otherwise an image url
+    if (/^fa[A-Z0-9]\w*$/.test(icon)) {
+        // a failed icon chunk must not take down the whole menu
         return (
-            // @ts-expect-error TS2339
-            <FontAwesomeIcon icon={faIcon} className={styles.menuItemIcon} />
+            <ErrorBoundary fallback={null}>
+                <MenuFontAwesomeIcon name={icon} />
+            </ErrorBoundary>
         );
     }
-    return (
-        <img
-            src={icon}
-            // @ts-expect-error TS2339
-            className={styles.menuItemIcon}
-            width={50}
-            height={50}
-        />
-    );
+    return <ImageIcon src={icon} />;
 };
 
 type Role = 'admin' | 'user' | 'not logged';

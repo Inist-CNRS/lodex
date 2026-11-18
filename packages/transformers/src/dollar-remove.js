@@ -1,5 +1,5 @@
-import transformer from './operations/REMOVE';
-import dollar from './dollar';
+import transformer from './operations/REMOVE.js';
+import dollar from './dollar.js';
 
 /**
  * supprimer un élément ou une sous-chaîne

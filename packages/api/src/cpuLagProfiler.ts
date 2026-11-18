@@ -28,6 +28,17 @@ let stopInFlight = false;
 let dumpPending = false;
 let activeOpts: ActiveOpts = DEFAULTS;
 
+// true while the profiler itself blocks the event loop (rotation, dump), until
+// blocked-at has reported that callback: these blocks are not incidents
+let profilerBusy = false;
+const markProfilerBusy = (): void => {
+    profilerBusy = true;
+    setImmediate(() => {
+        profilerBusy = false;
+    });
+};
+export const isProfilerBusy = (): boolean => profilerBusy;
+
 const positive = (value: unknown, fallback: number): number =>
     typeof value === 'number' && Number.isFinite(value) && value > 0
         ? value
@@ -71,6 +82,7 @@ export function startCpuLagProfiler(config: CpuLagProfilerConfig): void {
     startProfiling(activeOpts.samplingIntervalUs);
 
     rotateTimer = setInterval(() => {
+        markProfilerBusy();
         try {
             rotateProfilingWindow(activeOpts.samplingIntervalUs);
         } catch (e) {
@@ -120,6 +132,7 @@ export function onBlockedEvent(): void {
     dumpPending = true; // empêche la rotation de jeter la fenêtre du blocage
     // on sort du contexte du hook async avant de toucher à l'inspector
     setImmediate(() => {
+        markProfilerBusy();
         try {
             dumpProfile(activeOpts.dumpDir, activeOpts.samplingIntervalUs);
         } catch (e) {

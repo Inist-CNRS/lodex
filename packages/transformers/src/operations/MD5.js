@@ -1,6 +1,6 @@
-import { transformer } from './transformer';
+import { transformer } from './transformer.js';
 import md5 from 'md5';
-import documentationByOperation from './documentationByOperation';
+import documentationByOperation from './documentationByOperation.js';
 
 export const MD5 = () => (value) =>
     Array.isArray(value) ? value.map(md5) : md5(value);

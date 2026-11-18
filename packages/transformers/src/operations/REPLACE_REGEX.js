@@ -1,5 +1,5 @@
-import { transformerWithTwoArgs } from './transformer';
-import documentationByOperation from './documentationByOperation';
+import { transformerWithTwoArgs } from './transformer.js';
+import documentationByOperation from './documentationByOperation.js';
 
 export const replace = (value, searchValue, replaceValue) => {
     const template =

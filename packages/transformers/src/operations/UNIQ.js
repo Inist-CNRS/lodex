@@ -1,5 +1,5 @@
-import uniq from 'lodash/uniq';
-import documentationByOperation from './documentationByOperation';
+import uniq from 'lodash/uniq.js';
+import documentationByOperation from './documentationByOperation.js';
 
 export const uniqArray = (value) => {
     if (value === null || typeof value === 'undefined') {

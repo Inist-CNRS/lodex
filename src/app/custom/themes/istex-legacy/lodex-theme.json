@@ -16,7 +16,7 @@
         },
         "variables": {
             "host": "/",
-            "title": "Services",
+            "siteTitle": "Services",
             "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
             "matomoID": "39",
             "matomoHost": "https://piwik2.inist.fr/"

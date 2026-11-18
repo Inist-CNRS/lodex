@@ -12,6 +12,8 @@ export * from './types/dataSource';
 export * from './types/precomputation';
 export * from './types/precomputed';
 export * from './validator/annotation.validator';
+export * from './models/modelCatalog';
+export * from './models/getDisplayableModels';
 
 export * from './externals';
 export * from './getDocumentTransformer';
@@ -25,3 +27,4 @@ export * from './scope';
 export * from './taskStatusType';
 export * from './uris';
 export * from './validateFields';
+export * from './siteGeneration';

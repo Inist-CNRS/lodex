@@ -1,3 +1,4 @@
+import { invalidateRepositories } from '../services/repositoryMiddleware';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
@@ -149,6 +150,7 @@ export const deleteTenant = async (ctx: any) => {
         if (deleteDatabase) {
             const db = await mongoClient(name);
             await db.dropDatabase();
+            invalidateRepositories(name);
         }
         await ctx.tenantCollection.deleteOne(tenantExists);
         // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.

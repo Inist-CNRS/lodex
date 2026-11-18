@@ -8,7 +8,8 @@ describe('hiding null value to user', () => {
     const dataset = 'dataset/simple.csv';
     const model = 'model/simple.json';
 
-    before(() => {
+    // beforeEach, not before: Cypress retries only re-run beforeEach hooks
+    beforeEach(() => {
         teardown();
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
@@ -39,8 +40,8 @@ describe('hiding null value to user', () => {
         cy.get('#tab-display').click();
         cy.contains('Visible').click();
         cy.get('.btn-save').click();
-        // no longer appears ?
-        // cy.get('.go-published-button', { timeout: 1000 }).click();
+        // Wait for the save to complete before logging out
+        cy.get('.wizard').should('not.exist');
 
         logoutAndLoginAs('user');
         menu.openSearchDrawer();

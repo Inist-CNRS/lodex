@@ -6,10 +6,23 @@ debug.enable(String(process.env.DEBUG));
 import app from './app';
 import { Server } from 'socket.io';
 import progress from './services/progress';
-import { addPublisherListener } from './workers/publisher';
-import { addEnrichmentJobListener } from './services/enrichment/enrichment';
-import { addPrecomputedJobListener } from './services/precomputed/precomputed';
-import { addImportListener } from './workers/import';
+import {
+    addPublisherListener,
+    removePublisherListener,
+} from './workers/publisher';
+import {
+    addEnrichmentJobListener,
+    removeEnrichmentJobListener,
+} from './services/enrichment/enrichment';
+import {
+    addPrecomputedJobListener,
+    removePrecomputedJobListener,
+} from './services/precomputed/precomputed';
+import { addImportListener, removeImportListener } from './workers/import';
+import {
+    addSiteGenerationListener,
+    removeSiteGenerationListener,
+} from './services/siteGeneration/push';
 import getLogger from './services/logger';
 import {
     mongoDatabasePrefix,
@@ -77,5 +90,24 @@ if (!module.parent) {
         addEnrichmentJobListener(emitPayload);
         addPrecomputedJobListener(emitPayload);
         addImportListener(emitPayload);
+        addSiteGenerationListener(emitPayload);
+
+        // without this, every closed socket keeps receiving the notifications
+        socket.on('disconnect', () => {
+            progress.removeProgressListener(emitPayload);
+            removePublisherListener(emitPayload);
+            removeEnrichmentJobListener(emitPayload);
+            removePrecomputedJobListener(emitPayload);
+            removeImportListener(emitPayload);
+            removeSiteGenerationListener(emitPayload);
+        });
     });
+
+    const toMB = (bytes: number) => Math.round(bytes / 1024 / 1024);
+    setInterval(() => {
+        const { rss, heapUsed, heapTotal, external } = process.memoryUsage();
+        getLogger().info(
+            `[memory] rss=${toMB(rss)}MB heapUsed=${toMB(heapUsed)}MB heapTotal=${toMB(heapTotal)}MB external=${toMB(external)}MB sockets=${io.engine.clientsCount}`,
+        );
+    }, 60_000).unref();
 }

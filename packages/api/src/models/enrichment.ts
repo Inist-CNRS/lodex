@@ -8,7 +8,13 @@ import {
     type UpdateResult,
     type WithId,
 } from 'mongodb';
-import { castIdsFactory, getCreatedCollection } from './utils';
+import {
+    castIdsFactory,
+    findTaskStatesByIds,
+    getCreatedCollection,
+    jobIdMatches,
+    type TaskState,
+} from './utils';
 
 export type Enrichment = {
     _id?: ObjectId;
@@ -20,19 +26,28 @@ export type Enrichment = {
     createdAt: Date;
     startedAt?: Date;
     finishedAt?: Date;
-    jobId: ObjectId;
+    jobId?: ObjectId | string;
     parameters: Record<string, unknown>;
     result?: Record<string, unknown>;
+    // Error message of the last run
+    message?: string;
 };
 
 export type EnrichmentCollection = {
     findOneById: (id: string) => Promise<Enrichment | null>;
+    findStatesByIds: (ids: string[]) => Promise<TaskState[]>;
     findAll: () => Promise<Enrichment[]>;
     create: (data: Enrichment) => Promise<WithId<Enrichment> | null>;
     delete: (id: string) => Promise<DeleteResult>;
     update: (id: string, data: Enrichment) => Promise<Enrichment>;
     updateStatus: (
         id: string,
+        status: TaskStatusType,
+        data?: Partial<Enrichment>,
+    ) => Promise<void>;
+    updateStatusOfJob: (
+        id: string,
+        jobId: string,
         status: TaskStatusType,
         data?: Partial<Enrichment>,
     ) => Promise<void>;
@@ -94,6 +109,29 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
         );
     };
 
+    // A job writes the status of its enrichment only while the enrichment
+    // still carries its jobId: the stalled rerun of a superseded job (Bull
+    // runs a job again when its lock expires) must not overwrite the status
+    // of the current run. An enrichment without a jobId (written before the
+    // jobId existed) keeps the unconditional write.
+    const updateStatusOfJob = async (
+        id: string,
+        jobId: string,
+        status: TaskStatusType,
+        data: Partial<Enrichment> = {},
+    ) => {
+        await collection.updateOne(
+            {
+                $and: [
+                    // @ts-expect-error TS2345
+                    { $or: [{ _id: new ObjectId(id) }, { _id: id }] },
+                    jobIdMatches(jobId),
+                ],
+            },
+            { $set: { status, ...data } },
+        );
+    };
+
     const cancelByIds = async (ids: string[]) => {
         if (ids.length === 0) {
             return;
@@ -115,11 +153,14 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
 
     return Object.assign(collection, {
         findOneById,
+        findStatesByIds: (ids: string[]) =>
+            findTaskStatesByIds(collection, ids),
         findAll,
         create,
         delete: deleteMethod,
         update,
         updateStatus,
+        updateStatusOfJob,
         castIds,
         cancelByIds,
     });

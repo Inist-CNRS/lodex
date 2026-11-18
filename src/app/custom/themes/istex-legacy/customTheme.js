@@ -1,4 +1,4 @@
-import colorsTheme from './colorsTheme';
+import colorsTheme from './colorsTheme.js';
 
 export default {
     palette: {

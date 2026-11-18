@@ -17,29 +17,40 @@ async function* paginateCursor(
     maxTimeMS?: number,
 ): AsyncGenerator<WithId<Document>> {
     let fetched = 0;
+    // Without an explicit sort, batches are paginated on _id: each batch starts
+    // after the last _id read, instead of skipping (and so re-reading) every
+    // previous document, which made a full pass quadratic.
+    let lastId: WithId<Document>['_id'] | undefined;
     while (fetched < limit) {
         const batchLimit = Math.min(BATCH_SIZE, limit - fetched);
+        const batchFilter: Filter<Document> =
+            !sortOn && lastId !== undefined
+                ? { $and: [filter, { _id: { $gt: lastId } }] }
+                : filter;
         let query = collection.find(
-            filter,
+            batchFilter,
             fields.length > 0 ? { projection } : {},
         );
         if (sortOn) {
             query = query
                 .sort(`versions.${sortOn}`, sortOrder === 'desc' ? -1 : 1)
-                .allowDiskUse();
+                .allowDiskUse()
+                .skip(skip + fetched);
+        } else {
+            query = query
+                .sort({ _id: 1 })
+                .skip(lastId === undefined ? skip : 0);
         }
         if (maxTimeMS) {
             query = query.maxTimeMS(maxTimeMS);
         }
-        const batch = await query
-            .skip(skip + fetched)
-            .limit(batchLimit)
-            .toArray();
+        const batch = await query.limit(batchLimit).toArray();
 
         if (batch.length === 0) break;
         yield* batch;
 
         fetched += batch.length;
+        lastId = batch[batch.length - 1]._id;
         if (batch.length < batchLimit) break;
     }
 }
@@ -86,7 +97,8 @@ export default async function paginateQuery(this: any, data: any, feed: any) {
     );
     const fds = Array.isArray(field) ? field : [field];
     const fields = fds.filter(Boolean) as string[];
-    const limit = Number(this.getParam('limit', data.limit || 1000000));
+    // no default cap: publication and enrichment must read every document
+    const limit = Number(this.getParam('limit', data.limit || Infinity));
     const skip = Number(this.getParam('skip', data.skip || 0));
     const projection = zipObject(
         fields,

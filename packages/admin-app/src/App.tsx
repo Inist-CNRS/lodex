@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import AppBar from './Appbar/AppBar';
 import getTitle from '@lodex/frontend-common/utils/getTitle';
 import { Progress } from './progress/Progress';
+import { SiteGenerationDialog } from './siteGeneration/SiteGenerationDialog';
 import { SidebarContext } from './Sidebar/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';
 import { ToastContainer } from 'react-toastify';
@@ -76,10 +77,17 @@ export const AppComponent = ({ children, tenant }: AppComponentProps) => {
                         draggable
                         pauseOnHover
                         theme="colored"
+                        // wider than the default 320px: errors are long
+                        style={
+                            {
+                                '--toastify-toast-width': '420px',
+                            } as React.CSSProperties
+                        }
                     />
                 </div>
             </div>
             <Progress />
+            <SiteGenerationDialog />
         </SidebarContext.Provider>
     );
 };

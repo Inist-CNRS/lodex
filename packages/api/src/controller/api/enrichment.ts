@@ -1,17 +1,20 @@
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { v1 as uuid } from 'uuid';
 
 import _ from 'lodash';
 import { DATASET_ID } from '../../models/dataSource';
 import {
     createEnrichmentRule,
     getEnrichmentDataPreview,
-    setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
 import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
-import { getOrCreateWorkerQueue } from '../../workers';
+import {
+    queueEnrichment,
+    queueEnrichmentJob,
+    type LaunchContext,
+} from '../../services/launchTasks';
+import { refusedDuringSiteGeneration } from '../../services/siteGeneration/siteGeneration';
 import { ENRICHER, RETRY_ENRICHER } from '../../workers/enricher';
 import { cancelJob, getActiveJob } from '../../workers/tools';
 
@@ -129,44 +132,14 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
     }
 
     if (action === 'launch') {
-        await getOrCreateWorkerQueue(ctx.tenant, 1)
-            .add(
-                ENRICHER, // Name of the job
-                {
-                    id,
-                    jobType: ENRICHER,
-                    tenant: ctx.tenant,
-                },
-                { jobId: uuid() },
-            )
-            .then((job: any) => {
-                setEnrichmentJobId(ctx, id, job);
-            });
+        await queueEnrichment(ctx, id);
         ctx.body = {
             status: 'pending',
         };
     }
 
     if (action === 'relaunch') {
-        const enrichment = await ctx.enrichment.findOneById(id);
-        await ctx.dataSource.removeAttribute(
-            enrichment.dataSource,
-            enrichment.name,
-        );
-
-        await getOrCreateWorkerQueue(ctx.tenant, 1)
-            .add(
-                ENRICHER, // Name of the job
-                {
-                    id,
-                    jobType: ENRICHER,
-                    tenant: ctx.tenant,
-                },
-                { jobId: uuid() },
-            )
-            .then((job: any) => {
-                setEnrichmentJobId(ctx, id, job);
-            });
+        await queueEnrichment(ctx, id, { relaunch: true });
         ctx.body = {
             status: 'pending',
         };
@@ -233,17 +206,13 @@ export const launchAllEnrichment = async (ctx: Koa.Context) => {
         );
 
         for (const enrichment of orderedEnrichments) {
-            await getOrCreateWorkerQueue(ctx.tenant, 1)
-                .add(
-                    ENRICHER, // Name of the job
-                    {
-                        id: enrichment._id,
-                        jobType: ENRICHER,
-                        tenant: ctx.tenant,
-                    },
-                    { jobId: uuid(), lifo: false },
-                )
-                .then((job) => setEnrichmentJobId(ctx, enrichment._id, job));
+            await queueEnrichment(
+                ctx as unknown as LaunchContext,
+                enrichment._id,
+                {
+                    lifo: false,
+                },
+            );
         }
 
         ctx.body = {
@@ -262,19 +231,7 @@ export const launchAllEnrichment = async (ctx: Koa.Context) => {
 };
 
 export const retryEnrichmentOnFailedRow = async (ctx: any, id: any) => {
-    await getOrCreateWorkerQueue(ctx.tenant, 1)
-        .add(
-            RETRY_ENRICHER, // Name of the job
-            {
-                id,
-                jobType: RETRY_ENRICHER,
-                tenant: ctx.tenant,
-            },
-            { jobId: uuid() },
-        )
-        .then((job: any) => {
-            setEnrichmentJobId(ctx, id, job);
-        });
+    await queueEnrichmentJob(ctx, id, RETRY_ENRICHER);
     ctx.body = {
         status: 'pending',
     };
@@ -287,12 +244,21 @@ app.use(setup);
 app.use(route.get('/', getAllEnrichments));
 app.use(route.get('/:id', getEnrichment));
 app.use(koaBodyParser());
-app.use(route.post('/launchAll', launchAllEnrichment));
+app.use(
+    route.post('/launchAll', refusedDuringSiteGeneration(launchAllEnrichment)),
+);
 app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));
-app.use(route.post('/retry/:id', retryEnrichmentOnFailedRow));
-app.use(route.post('/:action/:id', enrichmentAction));
+app.use(
+    route.post(
+        '/retry/:id',
+        refusedDuringSiteGeneration(retryEnrichmentOnFailedRow),
+    ),
+);
+app.use(
+    route.post('/:action/:id', refusedDuringSiteGeneration(enrichmentAction)),
+);
 app.use(route.post('/preview', enrichmentDataPreview));
 
 export default app;

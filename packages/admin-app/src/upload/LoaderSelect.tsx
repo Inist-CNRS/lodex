@@ -59,7 +59,7 @@ const LoaderSelectComponent = ({
                     className="select-loader"
                     label={translate('loader_name')}
                     onChange={(e) => setLoader(e.target.value)}
-                    value={value}
+                    value={value ?? ''}
                     disabled={disabled}
                     variant="standard"
                     InputLabelProps={{ shrink: !!value }}

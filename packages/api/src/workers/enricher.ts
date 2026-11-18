@@ -24,17 +24,14 @@ export const processEnrichment = (
             });
             done();
         })
-        .catch((err: any) => {
-            handleEnrichmentError(job, err);
-            done(err);
-        });
+        // the error is on the enrichment before the job fails: the site
+        // generation advanced on failure must see it
+        .catch((err: any) =>
+            handleEnrichmentError(job, err).finally(() => done(err)),
+        );
 };
 
 const startJobEnrichment = async (job: any, retryFailedOnly: any) => {
-    notifyListeners(`${job.data.tenant}-enricher`, {
-        isEnriching: true,
-        success: false,
-    });
     const ctx = await prepareContext({ job, retryFailedOnly });
     await startEnrichment(ctx);
 };
@@ -43,7 +40,10 @@ export const handleEnrichmentError = async (job: any, err: any) => {
     const ctx = await prepareContext({ job });
     if (err instanceof CancelWorkerError) {
         const enrichment = await ctx.enrichment.findOneById(ctx.job.data.id);
-        ctx.dataset.removeAttribute(enrichment.name);
+        // the enrichment can be deleted while its canceled run ends
+        if (enrichment) {
+            ctx.dataset.removeAttribute(enrichment.name);
+        }
     }
     await setEnrichmentError(ctx, err);
 };

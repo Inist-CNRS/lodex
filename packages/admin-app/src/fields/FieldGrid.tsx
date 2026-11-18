@@ -481,7 +481,6 @@ interface FieldGridComponentProps {
         label: string;
     }[];
     filter?: string;
-    loadField(...args: unknown[]): unknown;
     changePositions(...args: unknown[]): unknown;
     saveFieldFromData(...args: unknown[]): unknown;
     isFieldsLoading?: boolean;
@@ -493,7 +492,6 @@ interface FieldGridComponentProps {
 const FieldGridComponent = ({
     fields,
     filter,
-    loadField,
     changePositions,
     saveFieldFromData,
     isFieldsLoading,
@@ -504,11 +502,9 @@ const FieldGridComponent = ({
     const { translate } = useTranslate();
     const { pathname } = useLocation();
 
+    // no loadField on mount: DisplayRoute (withInitialData) loads the
+    // publication, which already returns every field
     const previousFieldsRef = useRef(fields);
-
-    useEffect(() => {
-        loadField();
-    }, []);
 
     useEffect(() => {
         const previousFields = previousFieldsRef.current;
@@ -580,7 +576,6 @@ const mapStateToProps = (state, { subresourceId, filter }) => ({
 
 export const FieldGrid = compose(
     connect(mapStateToProps, {
-        loadField,
         changePositions,
         saveFieldFromData,
     }),

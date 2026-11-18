@@ -17,12 +17,14 @@ import CancelProcessDialog from './CancelProcessDialog';
 import { publicationCleared } from '../publication';
 import Warning from '@mui/icons-material/Warning';
 import { loadParsingResult } from '../parsing';
+import { importFinished } from '../upload';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { ErrorWithDetail } from '@lodex/frontend-common/components/ErrorWithDetail';
 
 const styles = {
     progress: {
@@ -71,6 +73,7 @@ interface JobProgressComponentProps {
     handlePublishError(...args: unknown[]): unknown;
     handleCancelPublication(...args: unknown[]): unknown;
     loadParsingResult(...args: unknown[]): unknown;
+    importFinished(...args: unknown[]): unknown;
     handleRepublish(...args: unknown[]): unknown;
     finishProgress(...args: unknown[]): unknown;
     loadEnrichments(...args: unknown[]): unknown;
@@ -84,6 +87,7 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
         handlePublishError,
         handleCancelPublication,
         loadParsingResult,
+        importFinished,
         handleRepublish,
         finishProgress,
         loadEnrichments,
@@ -140,6 +144,10 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
         });
 
         socket.on(`${dbName}_${tenant}-import`, (data) => {
+            // before loadParsingResult: the upload saga waits for its result
+            if (!data.isImporting) {
+                importFinished(data);
+            }
             if (!data.isImporting && data.success) {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
@@ -148,9 +156,17 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                 handleRepublish();
             }
             if (data.message && data.message !== 'cancelled_import') {
-                toast(`${translate('error')} : ${data.message}`, {
-                    type: 'error',
-                });
+                // the message explains the error, the detail is on demand
+                toast(
+                    <ErrorWithDetail
+                        message={`${translate('error')} : ${translate(data.message)}`}
+                        detail={[data.apiMessage, data.detail]
+                            .filter(Boolean)
+                            .join('\n\n')}
+                        toggle="link"
+                    />,
+                    { type: 'error' },
+                );
             }
             if (data.message === 'cancelled_import') {
                 loadParsingResult();
@@ -401,6 +417,7 @@ const mapDispatchToProps = {
     handlePublishError: (error) => publishError(error),
     handleCancelPublication: () => publicationCleared(),
     loadParsingResult,
+    importFinished,
     handleRepublish: () => {
         clearPublished();
         publish();

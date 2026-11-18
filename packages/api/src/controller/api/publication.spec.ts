@@ -2,52 +2,40 @@ import publication from './publication';
 
 describe('publication', () => {
     const fields = [{ foo: 'foo', count: 0 }];
-    const characteristics = [{ characteristic1: 'characteristic1_value' }];
+    const lastCharacteristics = { characteristic1: 'characteristic1_value' };
+
+    const buildCtx = (publishedDocument: unknown): any => ({
+        field: {
+            findAll: () => Promise.resolve(fields),
+        },
+        publishedCharacteristic: {
+            findLastVersion: () => Promise.resolve(lastCharacteristics),
+        },
+        publishedDataset: {
+            findOne: () => Promise.resolve(publishedDocument),
+        },
+    });
 
     it('should return the correct status if no dataset has been published', async () => {
-        const ctx = {
-            field: {
-                findAll: () => Promise.resolve(fields),
-            },
-            publishedCharacteristic: {
-                findAllVersions: () => Promise.resolve(characteristics),
-            },
-            publishedDataset: {
-                count: () => Promise.resolve(0),
-                countByFacet: () => 0,
-            },
-        };
+        const ctx = buildCtx(null);
 
         await publication(ctx);
 
-        // @ts-expect-error TS(2304): Cannot find name 'expect'.
         expect(ctx.body).toEqual({
-            characteristics,
+            characteristics: [lastCharacteristics],
             fields,
             published: false,
         });
     });
 
-    it.skip('should return the correct status if a dataset has been published', async () => {
-        const ctx = {
-            field: {
-                findAll: () => Promise.resolve(fields),
-            },
-            publishedCharacteristic: {
-                findAllVersions: () => Promise.resolve(characteristics),
-            },
-            publishedDataset: {
-                count: () => Promise.resolve(100),
-                countByFacet: () => 100,
-            },
-        };
+    it('should return the correct status if a dataset has been published', async () => {
+        const ctx = buildCtx({ _id: 'id' });
 
         await publication(ctx);
 
-        // @ts-expect-error TS(2304): Cannot find name 'expect'.
         expect(ctx.body).toEqual({
-            characteristics,
-            fields: [{ foo: 'foo', count: 100 }],
+            characteristics: [lastCharacteristics],
+            fields,
             published: true,
         });
     });

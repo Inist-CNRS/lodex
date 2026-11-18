@@ -6,8 +6,8 @@ export const openEnrichment = () => {
     cy.waitForNetworkIdle(500);
 };
 
-export const fillAdvancedEnrichment = (name = 'Enrichment') => {
-    const rule = `
+// bySecond: the rows enriched per second
+const advancedRule = (bySecond = 1) => `
 [use]
 plugin = basics
 
@@ -25,8 +25,11 @@ value = get("value.Column 1")
 [debug]
 
 [throttle]
-bySecond = 1
+bySecond = ${bySecond}
 `;
+
+export const fillAdvancedEnrichment = (name = 'Enrichment') => {
+    const rule = advancedRule();
     cy.contains('Add more').click();
     cy.waitForNetworkIdle(500);
     cy.findByLabelText('Name *').type(name);
@@ -36,9 +39,32 @@ bySecond = 1
     cy.contains('Save').click({
         force: true,
     });
-    cy.waitForNetworkIdle(2000);
+    // The toast closes after 5s: check it before waiting for the network, which can take longer
     cy.contains('Enrichment added successfully').should('exist');
+    cy.waitForNetworkIdle(2000);
 };
+
+// Through the API: the form previews the rule, which takes long when it is slow
+export const createEnrichment = (name: string, bySecond = 1) =>
+    cy.window().then((win) => {
+        // the admin token, kept in the local storage by the app
+        const storedState = Object.values(win.localStorage).find((value) =>
+            String(value).includes('"token"'),
+        ) as string;
+        cy.request({
+            method: 'POST',
+            url: '/api/enrichment',
+            headers: {
+                Authorization: `Bearer ${JSON.parse(storedState).user.token}`,
+            },
+            body: {
+                name,
+                advancedMode: true,
+                rule: advancedRule(bySecond),
+                dataSource: 'dataset',
+            },
+        });
+    });
 
 export const updateNameEnrichment = () => {
     cy.findByLabelText('Name *').clear();
@@ -56,7 +82,9 @@ export const runEnrichment = () => {
     cy.contains('Run').click({
         force: true,
     });
-    cy.get('.progress-container').should('be.visible');
+    // the run of a small dataset can end before its progress shows: wait for
+    // its end instead
+    cy.contains('Done').should('be.visible');
     cy.waitForNetworkIdle(500);
 };
 

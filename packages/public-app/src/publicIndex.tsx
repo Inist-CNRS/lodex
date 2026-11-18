@@ -7,10 +7,9 @@ import 'url-api-polyfill';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
-import { getLocale } from '@lodex/common';
 import configureStore from '@lodex/frontend-common/configureStore';
 import { I18N } from '@lodex/frontend-common/i18n/I18NContext';
-import phrasesFor from '@lodex/frontend-common/i18n/translations';
+import { installClientErrorReporter } from '@lodex/frontend-common/utils/reportClientError';
 import LodexThemeProvider from './LodexThemeProvider';
 import reducers from './reducers';
 import Routes from './Routes';
@@ -19,28 +18,25 @@ import sagas from './sagas';
 import 'react-toastify/ReactToastify.css';
 import { AnnotationStorageProvider } from './annotation/annotationStorage';
 
-const locale = getLocale();
-const initialState = {
-    polyglot: {
-        locale,
-        phrases: phrasesFor(locale),
-    },
-};
-
 // @ts-expect-error TS2339
 const tenant = window.__TENANT__;
+// Tab title suffix: the site title set in the theme configuration, else the tenant
+// @ts-expect-error TS2339
+const siteName: string = window.__SITE_TITLE__ || tenant;
 
 const browserHistory = createBrowserHistory({
     basename: `/instance/${tenant}`,
 });
 
 sessionStorage.setItem('lodex-tenant', tenant);
+installClientErrorReporter();
 
 const { store, history } = configureStore(
     reducers,
     sagas,
+    // Rendered by the server, with the translations of the current locale (i18n.phrases)
     // @ts-expect-error TS2339
-    window.__PRELOADED_STATE__ || initialState,
+    window.__PRELOADED_STATE__,
     browserHistory,
 );
 
@@ -53,11 +49,7 @@ root.render(
                 <AnnotationStorageProvider>
                     <Router history={history}>
                         <LodexThemeProvider>
-                            <Routes
-                                history={history}
-                                // @ts-expect-error TS2339
-                                tenant={window.__TENANT__}
-                            />
+                            <Routes history={history} tenant={siteName} />
                         </LodexThemeProvider>
                     </Router>
                 </AnnotationStorageProvider>

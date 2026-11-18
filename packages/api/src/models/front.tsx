@@ -1,10 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 import ejs from 'ejs';
 import { assign, escape } from 'lodash';
+import fs from 'fs';
 import path from 'path';
 import { version } from '../../../../package.json';
 import rootTheme from '../../../../src/app/custom/themes/rootTheme';
+import { getSiteTitleKey } from './siteTitleKey';
 import { getTheme } from './themes';
+import { REPO_ROOT } from '../paths';
 
 const buildCss = ([key, value]: [string, unknown]): unknown[] => {
     if (typeof value === 'object') {
@@ -56,6 +59,30 @@ export const createMuiTheme = (lodexTheme) => {
     return assign(lodexTheme, theme);
 };
 
+// Themes are loaded once at boot: their css variables never change at runtime
+const cssVariables = new WeakMap<object, string>();
+const getCssVariable = (muiTheme: object): string => {
+    if (!cssVariables.has(muiTheme)) {
+        cssVariables.set(
+            muiTheme,
+            buildCssVariable(createMuiTheme(muiTheme).palette),
+        );
+    }
+    return cssVariables.get(muiTheme) as string;
+};
+
+// Compiled templates are cached, and recompiled when the file changes on disk
+// (themes can be edited at runtime). Included partials are not watched.
+const templateMtimes = new Map<string, number>();
+const invalidateChangedTemplate = (file: string) => {
+    // a missing file is reported by ejs.renderFile below
+    const mtimeMs = fs.statSync(file, { throwIfNoEntry: false })?.mtimeMs;
+    if (templateMtimes.get(file) !== mtimeMs) {
+        ejs.clearCache();
+        templateMtimes.set(file, mtimeMs ?? 0);
+    }
+};
+
 /**
  * @param {string} file
  * @param {any} data
@@ -64,9 +91,10 @@ export const createMuiTheme = (lodexTheme) => {
 // @ts-expect-error: TS7006
 const renderTemplate = (file, data) => {
     return new Promise((resolve) => {
+        invalidateChangedTemplate(file);
         ejs.renderFile(file, data, {
             async: true,
-            beautify: true,
+            cache: true,
             root: path.dirname(file),
         })
             .then(resolve)
@@ -97,6 +125,39 @@ const renderTemplate = (file, data) => {
  */
 
 /**
+ * Site title set by the admin in the theme configuration.
+ * The theme's own default is ignored: it is a placeholder ("Titre a modifier...").
+ * Legacy ISTEX configurations store it as `title`.
+ */
+export const getSiteTitle = (
+    themeVariables: Record<string, unknown> = {},
+    tenantVariables: Record<string, unknown> = {},
+): string | null => {
+    const value = tenantVariables[getSiteTitleKey(tenantVariables)];
+    if (typeof value !== 'string' || value === themeVariables.siteTitle) {
+        return null;
+    }
+    return value.trim() || null;
+};
+
+/**
+ * Use the site title as the page <title>, and expose it to the public app
+ * so that the tab titles it sets end with the site title instead of the tenant.
+ */
+export const injectSiteTitle = (html: string, siteTitle: string | null) => {
+    if (!siteTitle) {
+        return html;
+    }
+    // < prevents a "</script>" in the title from closing the script tag
+    const json = JSON.stringify(siteTitle).replace(/</g, '\\u003c');
+    return html.replace(
+        /<title>[\s\S]*?<\/title>/,
+        () =>
+            `<title>${escape(siteTitle)}</title><script>window.__SITE_TITLE__ = ${json};</script>`,
+    );
+};
+
+/**
  * @param {string} themeId
  * @param {RenderData} data
  * @return {Promise<string>}
@@ -111,8 +172,7 @@ export const renderPublic = (themeId, data) => {
             ),
         );
     }
-    const theme = createMuiTheme(lodexTheme.muiTheme);
-    const cssVariable = buildCssVariable(theme.palette);
+    const cssVariable = getCssVariable(lodexTheme.muiTheme);
     let themeFolder = themeId ?? 'default';
     if (!lodexTheme.hasIndex) {
         themeFolder = 'default';
@@ -143,8 +203,15 @@ export const renderPublic = (themeId, data) => {
         recaptchaClientKey: data.recaptchaClientKey,
     };
 
+    const siteTitle = getSiteTitle(
+        lodexTheme.customTemplateVariables,
+        data.customTemplateVariables,
+    );
+
     try {
-        return renderTemplate(lodexTheme.index, extendedData);
+        return renderTemplate(lodexTheme.index, extendedData).then((html) =>
+            injectSiteTitle(html as string, siteTitle),
+        );
     } catch (e) {
         if (themeId !== 'default') {
             return renderPublic('default', data);
@@ -164,8 +231,7 @@ export const renderPublic = (themeId, data) => {
 // @ts-expect-error: TS7006
 export const renderAdmin = (data) => {
     const lodexTheme = getTheme('default');
-    const theme = createMuiTheme(lodexTheme.muiTheme);
-    const cssVariable = buildCssVariable(theme.palette);
+    const cssVariable = getCssVariable(lodexTheme.muiTheme);
 
     const extendedData = {
         isDev: process.env.NODE_ENV === 'development',
@@ -187,7 +253,7 @@ export const renderAdmin = (data) => {
     };
 
     return renderTemplate(
-        path.resolve(__dirname, '../admin.ejs'),
+        path.join(REPO_ROOT, 'packages/api/src/admin.ejs'),
         extendedData,
     );
 };
@@ -198,8 +264,7 @@ export const renderAdmin = (data) => {
  */
 // @ts-expect-error: TS7006
 export const renderRootAdmin = (data) => {
-    const theme = createMuiTheme(rootTheme);
-    const cssVariable = buildCssVariable(theme.palette);
+    const cssVariable = getCssVariable(rootTheme);
 
     const extendedData = {
         isDev: process.env.NODE_ENV === 'development',
@@ -221,7 +286,7 @@ export const renderRootAdmin = (data) => {
     };
 
     return renderTemplate(
-        path.resolve(__dirname, '../../../root-admin-app/index.ejs'),
+        path.join(REPO_ROOT, 'packages/root-admin-app/index.ejs'),
         extendedData,
     );
 };

@@ -1,15 +1,15 @@
+import { invalidateRepositories } from '../../services/repositoryMiddleware';
 import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 import moment from 'moment';
-import streamToString from 'stream-to-string';
 import tar from 'tar-stream';
-import { v1 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto';
+import { version } from '../../../../../package.json';
 
 import { validateField } from '../../models/field';
 import indexSearchableFields from '../../services/indexSearchableFields';
-import { mongoConnectionString } from '../../services/mongoClient';
 import publishFacets from './publishFacets';
 
 import {
@@ -20,157 +20,12 @@ import {
     SCOPE_GRAPHIC,
 } from '@lodex/common';
 import { ObjectId } from 'mongodb';
-import { restoreEnrichments } from '../../services/enrichment/enrichment';
 import generateUid from '../../services/generateUid';
-import { restorePrecomputed } from '../../services/precomputed/precomputed';
-import { restoreModel } from '../../services/restoreModel';
-import { ENRICHER } from '../../workers/enricher';
-import { PRECOMPUTER } from '../../workers/precomputer';
-import { dropJobs } from '../../workers/tools';
+import { CONFIG_TENANT_ENTRY } from '../../services/restoreModel';
+import { restoreFields } from '../../services/modelRestore';
 import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
-
-const sortByFieldUri = (a: any, b: any) =>
-    (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
-
-export const restoreFields = (fileStream: any, ctx: any) => {
-    if (!fileStream.filename.endsWith('.tar')) {
-        return streamToString(fileStream)
-            .then((fieldsString: any) => JSON.parse(fieldsString))
-            .then((fields: any) => {
-                ctx.field
-                    .deleteMany({})
-                    .then(() =>
-                        Promise.all(
-                            fields
-                                .sort(sortByFieldUri)
-                                .map((field: any, index: any) =>
-                                    translateOldField(ctx, field, index),
-                                ),
-                        ),
-                    );
-            });
-    }
-
-    const restoreTask = () => {
-        dropJobs(ctx.tenant, ENRICHER);
-        dropJobs(ctx.tenant, PRECOMPUTER);
-
-        return restoreModel(mongoConnectionString(ctx.tenant), fileStream, [
-            'field',
-            'subresource',
-            'enrichment',
-            'precomputed',
-        ]);
-    };
-
-    return ctx.field
-        .deleteMany({})
-        .then(restoreTask)
-        .then(() =>
-            Promise.all([
-                ctx.field.castIds(),
-                ctx.subresource.castIds(),
-                restoreEnrichments(ctx),
-                restorePrecomputed(ctx),
-            ]),
-        );
-};
-
-export const translateOldField = (ctx: any, oldField: any, index: any) => {
-    const {
-        display_in_home,
-        display_in_resource,
-        display_in_graph,
-        display_in_list,
-        cover,
-        name,
-        ...newField
-    } = oldField;
-    const scope = display_in_graph && !display_in_home ? SCOPE_GRAPHIC : cover;
-    const display =
-        display_in_home || display_in_resource || display_in_graph
-            ? true
-            : false;
-
-    if (display_in_graph && display_in_home) {
-        ctx.field.create(
-            {
-                scope: SCOPE_GRAPHIC,
-                display,
-                ...newField,
-                position: index,
-            },
-            name,
-            false,
-        );
-
-        return ctx.field.create(
-            {
-                scope,
-                display,
-                ...newField,
-                label: newField.label,
-                transformers: [
-                    {
-                        operation: 'VALUE',
-                        args: [
-                            {
-                                name: 'value',
-                                type: 'string',
-                                value: newField.label,
-                            },
-                        ],
-                    },
-                ],
-                format: { name: 'fieldClone', args: { value: name } },
-                position: index + 1,
-            },
-            '',
-            false,
-        );
-    }
-    const uriField = oldField.transformers.find(
-        (transformer: any): any =>
-            transformer && transformer.operation === 'AUTOGENERATE_URI',
-    );
-    if (uriField) {
-        return ctx.field.create(
-            {
-                scope,
-                display,
-                ...newField,
-                position: index,
-                transformers: [
-                    {
-                        operation: 'COLUMN',
-                        args: [
-                            {
-                                name: 'column',
-                                type: 'column',
-                                value: 'uri',
-                            },
-                        ],
-                    },
-                ],
-            },
-            name,
-            false,
-        );
-    }
-
-    return ctx.field.create(
-        {
-            scope,
-            display,
-            ...newField,
-            position: index,
-        },
-        name,
-        false,
-    );
-};
 
 export const setup = async (ctx: any, next: any) => {
     ctx.validateField = validateField;
@@ -210,10 +65,17 @@ export const postField = async (ctx: any) => {
 
 export const patchField = async (ctx: any, id: any) => {
     const newField = transformField(ctx.request.body);
+    // a width or label change must not rebuild the search index nor the facets
+    const previousField = await ctx.field.findOneById(id);
+    const hasChanged = (key: 'searchable' | 'isFacet') =>
+        !previousField ||
+        previousField[key] !== (newField as Record<string, unknown>)[key];
 
     try {
         ctx.body = await ctx.field.updateOneById(id, newField);
-        await indexSearchableFields(ctx);
+        if (hasChanged('searchable')) {
+            await indexSearchableFields(ctx);
+        }
     } catch (error) {
         ctx.status = 403;
         // @ts-expect-error TS(2571): Object is of type 'unknown'.
@@ -221,7 +83,7 @@ export const patchField = async (ctx: any, id: any) => {
         return;
     }
 
-    if ((await ctx.publishedDataset.countAll()) > 0) {
+    if (hasChanged('isFacet') && (await ctx.publishedDataset.countAll()) > 0) {
         await ctx.publishFacets(ctx, [ctx.body], false);
     }
 };
@@ -353,7 +215,7 @@ export const removeField = async (ctx: any, id: any) => {
 };
 
 export const exportFields = async (ctx: any) => {
-    const filename = `${ctx.tenant}_model_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
+    const filename = `${ctx.tenant}_model_v${version}_${moment().format('YYYY-MM-DD-HHmmss')}.tar`;
     ctx.set('Content-disposition', `attachment; filename=${filename}`);
     ctx.set('Content-type', 'application/x-tar');
     try {
@@ -384,6 +246,14 @@ export const exportFields = async (ctx: any) => {
             }
         }
 
+        // Outside dataset/: restoreModel wipes every collection it restores
+        const { theme, front } =
+            (await ctx.configTenantCollection.findLast()) ?? {};
+        await pack.entry(
+            { name: CONFIG_TENANT_ENTRY },
+            JSON.stringify({ theme, front }),
+        );
+
         await pack.finalize();
         ctx.status = 200;
         ctx.body = pack;
@@ -399,7 +269,8 @@ export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
     const fileStream = files[0];
 
     try {
-        await ctx.restoreFields(fileStream, ctx);
+        const { themeNotFound } =
+            (await ctx.restoreFields(fileStream, ctx)) ?? {};
         const enrichments = await ctx.enrichment.findAll();
         const precomputed = await ctx.precomputed.findAll();
 
@@ -407,6 +278,7 @@ export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
             message: 'Model imported successfully',
             hasEnrichments: enrichments?.length > 0,
             hasPrecomputed: precomputed?.length > 0,
+            themeNotFound,
         };
         ctx.status = 200;
     } catch (e) {
@@ -502,7 +374,7 @@ export const duplicateField = async (ctx: any) => {
         await workerQueue.add(
             PUBLISHER, // Name of the job
             { jobType: PUBLISHER, tenant: ctx.tenant },
-            { jobId: uuid() },
+            { jobId: randomUUID() },
         );
         ctx.status = 200;
         ctx.body = newField;
@@ -533,6 +405,9 @@ export const dropFieldCollection = async (ctx: any) => {
             // @ts-expect-error TS(2571): Object is of type 'unknown'.
             error: error.message,
         };
+    } finally {
+        // even after a partial drop: the dropped collections need their indexes back
+        invalidateRepositories(ctx.tenant);
     }
 };
 

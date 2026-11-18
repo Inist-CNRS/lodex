@@ -2,12 +2,7 @@ import { call, race, take, put, select, takeEvery } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'redux-first-history';
 
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
-import {
-    IMPORT_FIELDS,
-    importFieldsError,
-    importFieldsSuccess,
-    importFieldsClosed,
-} from './index';
+import { IMPORT_FIELDS, importFieldsError, importFieldsSuccess } from './index';
 import { loadModelFile } from '@lodex/frontend-common/utils/loadFile';
 
 // @ts-expect-error TS7006
@@ -26,16 +21,17 @@ export function* handleLoadModel(action) {
             return;
         }
 
+        const { hasEnrichments, hasPrecomputed, themeNotFound } =
+            JSON.parse(loadModelFileStatus);
         yield put(
             importFieldsSuccess({
-                hasEnrichments: JSON.parse(loadModelFileStatus).hasEnrichments,
-                hasPrecomputed: JSON.parse(loadModelFileStatus).hasPrecomputed,
+                hasEnrichments,
+                hasPrecomputed,
+                themeNotFound,
             }),
         );
-        yield put(importFieldsClosed());
     } catch (error) {
         yield put(importFieldsError(error));
-        yield put(importFieldsClosed());
     }
 }
 

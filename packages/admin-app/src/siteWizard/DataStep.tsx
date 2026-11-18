@@ -1,0 +1,52 @@
+import { Box, Typography } from '@mui/material';
+import type { FileObject } from 'mui-file-dropzone';
+import { getModelImportHelpKey, type CatalogModel } from '@lodex/common';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import {
+    DatasetSourceInput,
+    type DatasetSourceTab,
+} from '../upload/DatasetSourceInput';
+import { hasTranslation } from './hasTranslation';
+import { ModelLinks } from './ModelLinks';
+import { StepTitle } from './StepTitle';
+
+// the step title, the model links, then how to import the model's data
+const DataStepIntro = ({ model }: { model: CatalogModel }) => {
+    const { translate } = useTranslate();
+    const importHelpKey = getModelImportHelpKey(model.id);
+    return (
+        <Box mb={3}>
+            <StepTitle>{translate('site_wizard_data_title')}</StepTitle>
+            <ModelLinks model={model} />
+            {hasTranslation(importHelpKey) && (
+                <Typography
+                    color="text.secondary"
+                    sx={{ mt: 2, whiteSpace: 'pre-line' }}
+                >
+                    {translate(importHelpKey)}
+                </Typography>
+            )}
+        </Box>
+    );
+};
+
+type DataStepProps = {
+    model?: CatalogModel;
+    tab: DatasetSourceTab;
+    onTabChange: (tab: DatasetSourceTab) => void;
+    files: FileObject[];
+    onFilesChange: (files: FileObject[]) => void;
+    url: string;
+    onUrlChange: (url: string) => void;
+    text: string;
+    onTextChange: (text: string) => void;
+    tabs?: DatasetSourceTab[];
+};
+
+export const DataStep = ({ model, ...inputProps }: DataStepProps) => (
+    <Box>
+        {model && <DataStepIntro model={model} />}
+        {/* The loader comes from the model: hide the "choose the loader" descriptions */}
+        <DatasetSourceInput {...inputProps} hideDescriptions />
+    </Box>
+);

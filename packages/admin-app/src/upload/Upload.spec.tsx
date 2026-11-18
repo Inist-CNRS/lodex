@@ -7,6 +7,11 @@ global.UPLOAD_LIMIT = 1;
 
 import { UploadComponent as Upload, type UploadComponentProps } from './Upload';
 
+jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
+    ...jest.requireActual('@lodex/frontend-common/i18n/I18NContext'),
+    useTranslate: () => ({ translate: (key: string) => `translated:${key}` }),
+}));
+
 describe('<Upload />', () => {
     it('should render the Upload button with no error', () => {
         const props: UploadComponentProps = {
@@ -48,7 +53,8 @@ describe('<Upload />', () => {
         const props = {
             // @ts-expect-error TS7006
             p: { t: (key) => key },
-            error: 'Boom',
+            // the error of a failed import is a translation key
+            error: 'import_error_source_unavailable',
             onFileLoad() {},
             loaders: [],
             history: { location: { pathname: '/data/existing' } },
@@ -60,9 +66,50 @@ describe('<Upload />', () => {
             wrapper.contains(
                 <Alert>
                     <p>Error uploading given file: </p>
-                    <p>{props.error}</p>
+                    <p>translated:import_error_source_unavailable</p>
                 </Alert>,
             ),
         ).toBe(true);
+    });
+
+    describe('onOpenWizard', () => {
+        const baseProps: UploadComponentProps = {
+            error: false,
+            onFileLoad() {},
+            loaders: [],
+            history: {
+                location: { pathname: '/data/existing' },
+                push: () => {},
+            },
+            isFirstFile: true,
+            isUploading: false,
+            url: '',
+            textContent: '',
+            loaderName: '',
+            isUrlValid: false,
+            onChangeUrl() {},
+            onChangeTextContent() {},
+            onChangeLoaderName() {},
+            onUrlUpload() {},
+            onTextUpload() {},
+        };
+
+        it('should not render the wizard button without onOpenWizard', () => {
+            const wrapper = shallow(<Upload {...baseProps} />);
+
+            expect(wrapper.find('.btn-open-site-wizard')).toHaveLength(0);
+        });
+
+        it('should render the wizard button calling onOpenWizard', () => {
+            const onOpenWizard = jest.fn();
+            const wrapper = shallow(
+                <Upload {...baseProps} onOpenWizard={onOpenWizard} />,
+            );
+
+            const button = wrapper.find('.btn-open-site-wizard');
+            expect(button).toHaveLength(1);
+            button.simulate('click');
+            expect(onOpenWizard).toHaveBeenCalledTimes(1);
+        });
     });
 });

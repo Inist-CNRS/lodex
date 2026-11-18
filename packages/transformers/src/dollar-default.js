@@ -1,5 +1,5 @@
-import transformer from './operations/DEFAULT';
-import dollar from './dollar';
+import transformer from './operations/DEFAULT.js';
+import dollar from './dollar.js';
 
 /**
  * donner une valeur par défaut

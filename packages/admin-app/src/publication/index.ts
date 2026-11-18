@@ -65,8 +65,12 @@ export const isPublicationLoading = ({ loading }) => loading;
 // @ts-expect-error TS7031
 export const isInitialized = ({ initialized }) => initialized;
 
+// @ts-expect-error TS7031
+export const hasLoadError = ({ error }) => !!error;
+
 export const selectors = {
     hasPublishedDataset,
     isPublicationLoading,
     isInitialized,
+    hasLoadError,
 };

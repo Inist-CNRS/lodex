@@ -6,11 +6,10 @@ import route from 'koa-route';
 import get from 'lodash/get';
 
 import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
-import tenant from '../../models/tenant';
-import mongoClient from '../../services/mongoClient';
 import annotation from './annotation';
 import breadcrumbs from './breadcrumb';
 import characteristic from './characteristic';
+import clientError, { rateLimitClientErrors } from './clientError';
 import configTenant from './configTenant';
 import dataset from './dataset';
 import dataSource from './dataSource';
@@ -29,6 +28,7 @@ import logoutController from './logout';
 import menu from './menu';
 import parsing from './parsing';
 import precomputed from './precomputed';
+import siteGeneration from './siteGeneration';
 import progress from './progress';
 import publication from './publication';
 import publish from './publish';
@@ -43,12 +43,15 @@ const auth = config.get('auth');
 
 const app = new Koa();
 
+app.use(route.post('/client-errors', rateLimitClientErrors));
+
 app.use(async (ctx: any, next: any) => {
     if (ctx.tenant !== 'admin') {
-        // check if tenant exists
-        const adminDb = await mongoClient('admin');
-        const tenantCollection = await tenant(adminDb);
-        const tenantInDb = await tenantCollection.findOne({ name: ctx.tenant });
+        // check if tenant exists (already looked up for /instance/ urls)
+        const tenantInDb =
+            ctx.tenantInfo?.name === ctx.tenant
+                ? ctx.tenantInfo
+                : await ctx.tenantCollection.findOne({ name: ctx.tenant });
 
         if (!tenantInDb) {
             ctx.status = 404;
@@ -61,6 +64,7 @@ app.use(async (ctx: any, next: any) => {
 
 app.use(mount('/login', login));
 app.use(mount('/logout', logoutController));
+app.use(mount('/client-errors', clientError));
 app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 app.use(route.get('/displayConfig', displayConfig));
@@ -156,6 +160,7 @@ app.use(mount('/subresource', subresource));
 app.use(mount('/enrichment', enrichment));
 app.use(mount('/config-tenant', configTenant));
 app.use(mount('/precomputed', precomputed));
+app.use(mount('/site-generation', siteGeneration));
 app.use(mount('/job', job));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));

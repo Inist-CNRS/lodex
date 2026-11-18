@@ -64,6 +64,9 @@ export const completeFilters = async (filters = {}, ctx: any) => {
     return undefined;
 };
 
+// lists only show the last version of each resource, not its whole history
+const LAST_VERSION_PROJECTION = { uri: 1, versions: { $slice: -1 } };
+
 export const getPage = async (ctx: any) => {
     const {
         page = 0,
@@ -95,45 +98,50 @@ export const getPage = async (ctx: any) => {
         return;
     }
 
-    for (const [facetName, facetValueIds] of Object.entries(
-        facetsWithValueIds,
-    )) {
-        const facetValues = await Promise.all(
-            // @ts-expect-error TS(18046): facetValueIds is of type unknown
-            facetValueIds.map(async (facetValueId: any) => {
-                const facetValue = await ctx.publishedFacet.findOne({
-                    _id: new ObjectId(facetValueId),
-                });
-                return facetValue.value;
-            }),
-        );
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        facets[facetName] = facetValues;
-    }
+    await Promise.all(
+        Object.entries(facetsWithValueIds).map(
+            async ([facetName, facetValueIds]) => {
+                const facetValues = await Promise.all(
+                    // @ts-expect-error TS(18046): facetValueIds is of type unknown
+                    facetValueIds.map(async (facetValueId: any) => {
+                        const facetValue = await ctx.publishedFacet.findOne({
+                            _id: new ObjectId(facetValueId),
+                        });
+                        return facetValue.value;
+                    }),
+                );
+                // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+                facets[facetName] = facetValues;
+            },
+        ),
+    );
 
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
 
-    const searchableFieldNames = await ctx.field.findSearchableNames();
-    const facetFieldNames = await ctx.field.findFacetNames();
+    const [searchableFieldNames, facetFieldNames] = await Promise.all([
+        ctx.field.findSearchableNames(),
+        ctx.field.findFacetNames(),
+    ]);
 
-    const { data, total } = await ctx.publishedDataset.findPage({
-        page: intPage,
-        perPage: intPerPage,
-        sortBy,
-        sortDir,
-        match,
-        facets,
-        filters: completedFilters,
-        invertedFacets,
-        searchableFieldNames,
-        facetFieldNames,
-        excludeSubresources: true,
-    });
-
-    const fullTotal = await ctx.publishedDataset.countAll({
-        excludeSubresources: true,
-    });
+    const [{ data, total }, fullTotal] = await Promise.all([
+        ctx.publishedDataset.findPage({
+            page: intPage,
+            perPage: intPerPage,
+            sortBy,
+            sortDir,
+            match,
+            facets,
+            filters: completedFilters,
+            invertedFacets,
+            searchableFieldNames,
+            facetFieldNames,
+            excludeSubresources: true,
+            // the list only shows the last version
+            projection: LAST_VERSION_PROJECTION,
+        }),
+        ctx.publishedDataset.countAll({ excludeSubresources: true }),
+    ]);
 
     ctx.body = {
         total,
@@ -212,6 +220,7 @@ export const searchByField = async (ctx: Koa.Context) => {
     const [data, total] = await Promise.all([
         ctx.publishedDataset
             .find(searchFilter)
+            .project(LAST_VERSION_PROJECTION)
             .limit(perPage)
             .skip(page * perPage)
             .sort({

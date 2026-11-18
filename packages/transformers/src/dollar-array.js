@@ -1,5 +1,5 @@
-import transformer from './operations/ARRAY';
-import dollar from './dollar';
+import transformer from './operations/ARRAY.js';
+import dollar from './dollar.js';
 
 /**
  * transformer une chaîne de caractères en tableau avec un seul element

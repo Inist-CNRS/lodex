@@ -10,6 +10,10 @@ import Script from '../../services/script';
 import { cleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import getLogger from '../../services/logger';
+import {
+    closeIfHeadersSent,
+    withEmptyFallback,
+} from '../../services/streamHelper';
 
 const baseURL: string = config.has('baseURL')
     ? config.get('baseURL')
@@ -66,19 +70,14 @@ const middlewareScript = async (
         const errorHandle = (err: any) => {
             ctx.status = 503;
             ctx.body.destroy();
+            closeIfHeadersSent(ctx);
             input.destroy();
             logger.error('Error with ', ctx.path, ' and', ctx.query, err);
         };
+        // called only when the routine sent no data at all
         const emptyHandle = () => {
-            if (ctx.headerSent === false) {
-                ctx.body.write('{"total":0}');
-                logger.error(
-                    'Empty response with ',
-                    ctx.path,
-                    ' and',
-                    ctx.query,
-                );
-            }
+            logger.error('Empty response with ', ctx.path, ' and', ctx.query);
+            return '{"total":0}';
         };
         const workers_url = `${config.get('ezs.url')}/routines/${routineName}?${ctx.querystring}`;
         logger.debug(
@@ -116,8 +115,8 @@ const middlewareScript = async (
                 ),
             )
             .pipe(ezs.catch())
-            .on('finish', emptyHandle)
             .on('error', errorHandle)
+            .pipe(withEmptyFallback(emptyHandle))
             .pipe(ezs.toBuffer());
         input.write(query);
         input.end();

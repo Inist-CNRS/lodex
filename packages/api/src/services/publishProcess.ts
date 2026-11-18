@@ -33,7 +33,8 @@ export default (
 ) =>
     new Promise((resolve, reject) => {
         const rules = generateScript(fields);
-        const BATCH_SIZE = 10;
+        // one insertMany round trip per batch: bigger batches, fewer round trips
+        const BATCH_SIZE = 500;
         const script = `
         [use]
 plugin = lodex

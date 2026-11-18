@@ -2,11 +2,7 @@ import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'redux-first-history';
 
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
-import {
-    importFieldsSuccess,
-    importFieldsError,
-    importFieldsClosed,
-} from './index';
+import { importFieldsSuccess, importFieldsError } from './index';
 
 import { loadModelFile } from '@lodex/frontend-common/utils/loadFile';
 
@@ -73,7 +69,9 @@ describe('import model saga', () => {
             expect(value).toEqual(put(importFieldsError(error)));
         });
 
-        it('should put importFieldsClosed after error', () => {
+        // Resetting right after the result made React 18 batch both
+        // updates, so the toasts never saw the error/success state
+        it('should end right after putting importFieldsError', () => {
             // @ts-expect-error TS7005
             saga.next();
             // @ts-expect-error TS7005
@@ -81,8 +79,7 @@ describe('import model saga', () => {
             // @ts-expect-error TS7005
             saga.throw(new Error('Boom'));
             // @ts-expect-error TS7005
-            const { value } = saga.next();
-            expect(value).toEqual(put(importFieldsClosed()));
+            expect(saga.next().done).toBe(true);
         });
 
         it('should put loadFileSuccess with file', () => {
@@ -99,16 +96,29 @@ describe('import model saga', () => {
             );
         });
 
-        it('should put importFieldsClosed after success', () => {
+        it('should put importFieldsSuccess with the theme that could not be applied', () => {
             // @ts-expect-error TS7005
             saga.next();
             // @ts-expect-error TS7005
             saga.next('token');
             // @ts-expect-error TS7005
-            saga.next({ file: 'file' });
+            const { value } = saga.next({
+                loadModelFileStatus: JSON.stringify({ themeNotFound: 'istex' }),
+            });
+            expect(value).toEqual(
+                put(importFieldsSuccess({ themeNotFound: 'istex' })),
+            );
+        });
+
+        it('should end right after putting importFieldsSuccess', () => {
             // @ts-expect-error TS7005
-            const { value } = saga.next();
-            expect(value).toEqual(put(importFieldsClosed()));
+            saga.next();
+            // @ts-expect-error TS7005
+            saga.next('token');
+            // @ts-expect-error TS7005
+            saga.next({ loadModelFileStatus: JSON.stringify({}) });
+            // @ts-expect-error TS7005
+            expect(saga.next().done).toBe(true);
         });
     });
 });

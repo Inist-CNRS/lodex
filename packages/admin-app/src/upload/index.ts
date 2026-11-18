@@ -1,10 +1,12 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
+import { isHttpUrl } from './isHttpUrl';
 
 export const UPLOAD_FILE = 'UPLOAD_FILE';
 export const UPLOAD_URL = 'UPLOAD_URL';
 export const UPLOAD_TEXT = 'UPLOAD_TEXT';
 export const UPLOAD_ERROR = 'UPLOAD_ERROR';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
+export const IMPORT_FINISHED = 'IMPORT_FINISHED';
 export const OPEN_UPLOAD = 'OPEN_UPLOAD';
 export const CLOSE_UPLOAD = 'CLOSE_UPLOAD';
 export const CHANGE_UPLOAD_URL = 'CHANGE_UPLOAD_URL';
@@ -19,6 +21,11 @@ export const uploadUrl = createAction<unknown>(UPLOAD_URL);
 export const uploadText = createAction<unknown>(UPLOAD_TEXT);
 export const uploadSuccess = createAction<void>(UPLOAD_SUCCESS);
 export const uploadError = createAction<Error>(UPLOAD_ERROR);
+// end of the import job, as sent by the `-import` socket event
+export const importFinished = createAction<{
+    success: boolean;
+    message?: string;
+}>(IMPORT_FINISHED);
 export const openUpload = createAction<void>(OPEN_UPLOAD);
 export const closeUpload = createAction<void>(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction<string>(CHANGE_UPLOAD_URL);
@@ -27,9 +34,6 @@ export const changeLoaderName = createAction<string>(CHANGE_LOADER_NAME);
 
 export const upsertCustomLoader = createAction<string>(UPSERT_CUSTOM_LOADER);
 export const deleteCustomLoader = createAction<void>(DELETE_CUSTOM_LOADER);
-
-const validateUrl = (url: string): boolean =>
-    !!(url && (url.startsWith('http://') || url.startsWith('https://')));
 
 type UploadState = {
     error: boolean | string;
@@ -97,7 +101,7 @@ export default handleActions<UploadState, any>(
         ): UploadState => ({
             ...state,
             url,
-            isUrlValid: validateUrl(url),
+            isUrlValid: isHttpUrl(url),
         }),
         CHANGE_UPLOAD_TEXT: (
             state,

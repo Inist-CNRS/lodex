@@ -17,6 +17,34 @@ export const castIdsFactory = (collection: any) => async () => {
     );
 };
 
+export type TaskState = {
+    _id: unknown;
+    status?: string;
+    message?: string;
+    jobId?: string;
+};
+
+// The status fields of the tasks (enrichments, precomputations) with the
+// given ids, in one query. Their ids are ObjectIds, or strings in documents
+// written before castIds.
+export const findTaskStatesByIds = async (
+    collection: Collection<any>,
+    ids: string[],
+): Promise<TaskState[]> => {
+    if (!ids.length) {
+        return [];
+    }
+    const candidates = ids.flatMap((id) =>
+        ObjectId.isValid(id) ? [new ObjectId(id), id] : [id],
+    );
+    return collection
+        .find<TaskState>(
+            { _id: { $in: candidates } },
+            { projection: { status: 1, message: 1, jobId: 1 } },
+        )
+        .toArray();
+};
+
 const checkIfCollectionExists = async (db: Db, collectionName: string) => {
     const found = await db
         .listCollections({ name: collectionName }, { nameOnly: true })
@@ -44,4 +72,14 @@ export const getCreatedCollection = async <Resource extends Document = any>(
         }
     }
     return db.collection<Resource>(collectionName);
+};
+
+// Matches a task that carries the given jobId, or no jobId at all (written
+// before the jobId existed). Without a jobId, matches the latter only.
+export const jobIdMatches = (jobId?: string) => {
+    const legacy = [
+        { jobId: { $exists: false } },
+        { jobId: { $type: 'null' as const } },
+    ];
+    return { $or: jobId ? [{ jobId }, ...legacy] : legacy };
 };

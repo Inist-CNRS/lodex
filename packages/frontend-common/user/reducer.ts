@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { ADMIN_ROLE } from '@lodex/common';
+import { ADMIN_ROLE, type SiteWizardChoice } from '@lodex/common';
 import getQueryString from '../utils/getQueryString';
 
 export const LOGIN = 'LOGIN';
@@ -697,10 +697,12 @@ export const getUploadUrlRequest = (
         url,
         loaderName,
         customLoader = null,
+        siteGeneration,
     }: {
         url: string;
         loaderName: string;
         customLoader?: string | null;
+        siteGeneration?: SiteWizardChoice;
     },
 ) =>
     getRequest(state, {
@@ -710,6 +712,7 @@ export const getUploadUrlRequest = (
             url,
             loaderName,
             customLoader,
+            siteGeneration,
         },
     });
 
@@ -719,10 +722,12 @@ export const getUploadTextRequest = (
         text,
         loaderName,
         customLoader = null,
+        siteGeneration,
     }: {
         text: string;
         loaderName: string;
         customLoader?: string | null;
+        siteGeneration?: SiteWizardChoice;
     },
 ) =>
     getRequest(state, {
@@ -732,7 +737,25 @@ export const getUploadTextRequest = (
             text,
             loaderName,
             customLoader,
+            siteGeneration,
         },
+    });
+
+export const getSiteGenerationRequest = (state: UserState) =>
+    getRequest(state, {
+        url: '/api/site-generation',
+    });
+
+export const getRelaunchSiteGenerationRequest = (state: UserState) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/site-generation/relaunch',
+    });
+
+export const getStopSiteGenerationRequest = (state: UserState) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/site-generation/stop',
     });
 
 export const getUrlRequest = (
@@ -1023,6 +1046,9 @@ export const selectors = {
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUploadTextRequest,
+    getSiteGenerationRequest,
+    getRelaunchSiteGenerationRequest,
+    getStopSiteGenerationRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
     getSparqlRequest,

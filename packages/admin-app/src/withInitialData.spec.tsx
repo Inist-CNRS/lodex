@@ -99,6 +99,15 @@ describe('withInitialData HOC', () => {
         expect(wrapper.find(LinearProgress)).toHaveLength(1);
     });
 
+    it('should keep rendering the page while reloading once initialized', () => {
+        const wrapper = shallow(
+            // @ts-expect-error TS7005
+            <Component {...defaultProps} isLoading isInitialized />,
+        );
+        expect(wrapper.find(ParsingResult)).toHaveLength(1);
+        expect(wrapper.find(LinearProgress)).toHaveLength(0);
+    });
+
     describe('mapStateToProps', () => {
         it('should return isLoading false if loading is always false', () => {
             expect(

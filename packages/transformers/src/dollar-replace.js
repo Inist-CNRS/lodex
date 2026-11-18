@@ -1,5 +1,5 @@
-import transformer from './operations/REPLACE';
-import dollar from './dollar';
+import transformer from './operations/REPLACE.js';
+import dollar from './dollar.js';
 
 /**
  * remplacer une chaîne par une autre

@@ -37,8 +37,12 @@ export default defineConfig(({ mode }) => {
                         }
                         return 'front-[name]/index.js';
                     },
-                    chunkFileNames: 'front-[name]/index.js',
-                    assetFileNames: 'css/front-[name].[ext]',
+                    // hashed files under chunks/ are served with an immutable cache (see api/src/controller/static.ts)
+                    chunkFileNames: 'chunks/front-[name]-[hash].js',
+                    assetFileNames: ({ name }) =>
+                        name === 'public.css'
+                            ? 'css/front-[name].[ext]'
+                            : 'chunks/front-[name]-[hash][extname]',
                 },
                 plugins: [
                     !process.env.CI &&

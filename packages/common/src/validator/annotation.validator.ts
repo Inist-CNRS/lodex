@@ -32,6 +32,26 @@ export type AnnotationStatus =
     | 'rejected'
     | 'parking';
 
+// zod only allows known issue codes: our own code goes in params.code, see toApiErrors
+const addCodedIssue = (
+    refineContext: z.RefinementCtx,
+    code: string,
+    message: string,
+    path: PropertyKey[],
+) =>
+    refineContext.addIssue({ code: 'custom', params: { code }, message, path });
+
+// Stable API error format, independent of the zod issue internals
+export const toApiErrors = (issues: z.core.$ZodIssue[]) =>
+    issues.map((issue) => ({
+        code:
+            issue.code === 'custom' && issue.params?.code
+                ? issue.params.code
+                : issue.code,
+        path: issue.path,
+        message: issue.message,
+    }));
+
 export const annotationCreationSchema = z
     .object({
         resourceUri: z.string(),
@@ -40,32 +60,18 @@ export const annotationCreationSchema = z
         fieldId: z
             .string()
             .trim()
-            .min(1, {
-                message: 'error_required',
-            })
+            .min(1, { error: 'error_required' })
             .optional(),
         comment: z
-            .string({
-                invalid_type_error: 'error_required',
-            })
+            .string({ error: 'error_required' })
             .nullish()
             .transform((value) => value?.trim() ?? ''),
         authorName: z
-            .string({
-                required_error: 'error_required',
-                invalid_type_error: 'error_required',
-            })
+            .string({ error: 'error_required' })
             .trim()
-            .min(1, {
-                message: 'error_required',
-            }),
+            .min(1, { error: 'error_required' }),
         authorEmail: z
-            .union([
-                z.literal(''),
-                z.string().email({
-                    message: 'error_invalid_email',
-                }),
-            ])
+            .union([z.literal(''), z.email({ error: 'error_invalid_email' })])
             .nullish()
             .default(null)
             .transform((value: any) => (value === '' ? null : value)),
@@ -73,19 +79,13 @@ export const annotationCreationSchema = z
         proposedValue: z
             .string()
             .trim()
-            .min(1, {
-                message: 'error_required',
-            })
+            .min(1, { error: 'error_required' })
             .or(
                 z
                     .array(
-                        z.string().trim().min(1, {
-                            message: 'error_required',
-                        }),
+                        z.string().trim().min(1, { error: 'error_required' }),
                     )
-                    .nonempty({
-                        message: 'error_required',
-                    }),
+                    .nonempty({ error: 'error_required' }),
             )
             .nullish()
             .default(null)
@@ -103,16 +103,17 @@ export const annotationCreationSchema = z
         isContributorNamePublic: z.boolean().default(false),
         reCaptchaToken: z.string().nullish().optional(),
     })
-    .superRefine((data: any, refineContext: any) => {
+    .superRefine((data: any, refineContext) => {
         if (
             (data.target === 'title' && data.initialValue) ||
             (data.kind === 'addition' && data.initialValue)
         ) {
-            refineContext.addIssue({
-                code: 'error_empty',
-                message: 'annotation_error_empty_initial_value',
-                path: ['initialValue'],
-            });
+            addCodedIssue(
+                refineContext,
+                'error_empty',
+                'annotation_error_empty_initial_value',
+                ['initialValue'],
+            );
         }
         if (
             [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
@@ -120,37 +121,46 @@ export const annotationCreationSchema = z
             ) &&
             !data.proposedValue?.length
         ) {
-            refineContext.addIssue({
-                code: 'error_required',
-                message: 'annotation_error_required_proposed_value',
-                path: ['proposedValue'],
-            });
+            addCodedIssue(
+                refineContext,
+                'error_required',
+                'annotation_error_required_proposed_value',
+                ['proposedValue'],
+            );
         }
         if (data.kind === ANNOTATION_KIND_REMOVAL && data.proposedValue) {
-            refineContext.addIssue({
-                code: 'error_empty',
-                message: 'annotation_error_empty_proposed_value',
-                path: ['proposedValue'],
-            });
+            addCodedIssue(
+                refineContext,
+                'error_empty',
+                'annotation_error_empty_proposed_value',
+                ['proposedValue'],
+            );
         }
         if (data.target === 'title' && data.kind !== ANNOTATION_KIND_COMMENT) {
-            refineContext.addIssue({
-                code: 'error_invalid',
-                message: 'annotation_error_title_invalid_kind',
-                path: ['kind'],
-            });
+            addCodedIssue(
+                refineContext,
+                'error_invalid',
+                'annotation_error_title_invalid_kind',
+                ['kind'],
+            );
         }
         if (data.target === 'value' && data.kind === ANNOTATION_KIND_COMMENT) {
-            refineContext.addIssue({
-                code: 'error_invalid',
-                message: 'annotation_error_value_invalid_kind',
-                path: ['kind'],
-            });
+            addCodedIssue(
+                refineContext,
+                'error_invalid',
+                'annotation_error_value_invalid_kind',
+                ['kind'],
+            );
         }
     });
 
 const unrefinedAnnotationUpdateSchema = z.object({
-    status: z.enum(statuses),
+    status: z.enum(statuses, {
+        error: (issue) =>
+            issue.input == null
+                ? 'error_required'
+                : 'annotation_error_invalid_status',
+    }),
     internalComment: z.string().trim().optional(),
     adminComment: z
         .string()
@@ -161,13 +171,9 @@ const unrefinedAnnotationUpdateSchema = z.object({
         .union([
             z.literal(''),
             z
-                .string({
-                    required_error: 'error_required',
-                })
+                .string({ error: 'error_required' })
                 .trim()
-                .min(1, {
-                    message: 'error_required',
-                }),
+                .min(1, { error: 'error_required' }),
         ])
         .nullish()
         .default(null)
@@ -175,20 +181,16 @@ const unrefinedAnnotationUpdateSchema = z.object({
 });
 
 export const annotationUpdateSchema =
-    unrefinedAnnotationUpdateSchema.superRefine(
-        (data: any, refineContext: any) => {
-            if (
-                ['validated', 'rejected'].includes(data.status) &&
-                !data.internalComment
-            ) {
-                refineContext.addIssue({
-                    code: 'error_required',
-                    message: 'error_required',
-                    path: ['internalComment'],
-                });
-            }
-        },
-    );
+    unrefinedAnnotationUpdateSchema.superRefine((data: any, refineContext) => {
+        if (
+            ['validated', 'rejected'].includes(data.status) &&
+            !data.internalComment
+        ) {
+            addCodedIssue(refineContext, 'error_required', 'error_required', [
+                'internalComment',
+            ]);
+        }
+    });
 
 const annotationUpdateNullishSchema = z.object(
     Object.entries(unrefinedAnnotationUpdateSchema.shape).reduce(
@@ -239,9 +241,7 @@ const annotationFilterableFields = z
             'field.internalName',
             'field.internalScopes',
         ],
-        {
-            message: 'annotation_query_filter_by_invalid_key',
-        },
+        { error: 'annotation_query_filter_by_invalid_key' },
     )
     .optional();
 
@@ -258,46 +258,32 @@ const annotationSortableFields = z
             'administrator',
             'kind',
         ],
-        {
-            message: 'annotation_query_sortBy_invalid',
-        },
+        { error: 'annotation_query_sortBy_invalid' },
     )
     .default('createdAt');
 
 export const getAnnotationsQuerySchema = z.object({
     page: z.coerce
-        .number({
-            message: 'error_invalid_number',
-        })
-        .min(0, {
-            message: 'error_page_invalid',
-        })
+        .number({ error: 'error_invalid_number' })
+        .min(0, { error: 'error_page_invalid' })
         .optional()
         .default(0),
     perPage: z.coerce
-        .number({
-            message: 'error_invalid_number',
-        })
-        .min(1, {
-            message: 'annotation_query_perPage_length',
-        })
-        .max(100, {
-            message: 'annotation_query_perPage_length',
-        })
+        .number({ error: 'error_invalid_number' })
+        .min(1, { error: 'annotation_query_perPage_length' })
+        .max(100, { error: 'annotation_query_perPage_length' })
         .optional()
         .default(10),
     filterBy: annotationFilterableFields,
     filterOperator: z
         .enum(['contains', 'is', 'after', 'before', 'equals'], {
-            message: 'annotation_query_filter_operator_invalid_key',
+            error: 'annotation_query_filter_operator_invalid_key',
         })
         .optional(),
     filterValue: z.string().optional(),
     sortBy: annotationSortableFields,
     sortDir: z
-        .enum(['asc', 'desc'], {
-            message: 'error_sortDir_invalid',
-        })
+        .enum(['asc', 'desc'], { error: 'error_sortDir_invalid' })
         .default('desc'),
 });
 

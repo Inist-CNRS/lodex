@@ -23,53 +23,40 @@ import Loading from '@lodex/frontend-common/components/Loading';
 import { SaveButton } from '@lodex/frontend-common/components/SaveButton';
 import { TextField } from '@lodex/frontend-common/components/TextField';
 import { ConfigField } from './fields/ConfigField';
-import { useGetAvailableThemes } from './useGetAvailableThemes';
+import {
+    getThemeLabel,
+    useGetAvailableThemes,
+    type AvailableTheme,
+} from './useGetAvailableThemes';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
 
 const configTenantSchema = z.object({
-    config: z.object(
-        {},
-        {
-            message: 'error_invalid_json',
-        },
-    ),
+    config: z.looseObject({}, { error: 'error_invalid_json' }),
     enableAutoPublication: z.boolean(),
     userAuth: z.object({
         active: z.boolean(),
-        password: z.string().min(1, {
-            message: 'error_required',
-        }),
-        username: z.string().min(1, {
-            message: 'error_required',
-        }),
+        password: z.string().min(1, { error: 'error_required' }),
+        username: z.string().min(1, { error: 'error_required' }),
     }),
     contributorAuth: z
         .object({
             active: z.boolean(),
-            password: z.string().min(1, {
-                message: 'error_required',
-            }),
-            username: z.string().min(1, {
-                message: 'error_required',
-            }),
+            password: z.string().min(1, { error: 'error_required' }),
+            username: z.string().min(1, { error: 'error_required' }),
         })
         .optional(),
     antispamFilter: z.discriminatedUnion('active', [
         z.object({
             active: z.literal(true),
             recaptchaClientKey: z
-                .string({ invalid_type_error: 'error_required' })
+                .string({ error: 'error_required' })
                 .trim()
-                .min(1, {
-                    message: 'error_required',
-                }),
+                .min(1, { error: 'error_required' }),
             recaptchaSecretKey: z
-                .string({ invalid_type_error: 'error_required' })
+                .string({ error: 'error_required' })
                 .trim()
-                .min(1, {
-                    message: 'error_required',
-                }),
+                .min(1, { error: 'error_required' }),
         }),
         z.object({
             active: z.literal(false),
@@ -77,32 +64,15 @@ const configTenantSchema = z.object({
             recaptchaSecretKey: z.string().trim().min(0).nullish(),
         }),
     ]),
-    theme: z.string().min(1, {
-        message: 'error_required',
-    }),
-    enrichmentBatchSize: z.coerce.number(),
-    notificationEmail: z
-        .string()
-        .email({
-            message: 'error_invalid_email',
-        })
-        .nullish(),
+    theme: z.string().min(1, { error: 'error_required' }),
+    enrichmentBatchSize: z.coerce.number<number>(),
+    notificationEmail: z.email({ error: 'error_invalid_email' }).nullish(),
 });
 type Config = z.infer<typeof configTenantSchema>;
 
 interface ConfigTenantFormViewProps {
     initialConfig: Config & { _id: string };
-    availableThemes: {
-        defaultVariables: Record<string, string>;
-        description: {
-            [key: string]: string;
-        };
-        name: {
-            en: string;
-            fr: string;
-        };
-        value: string;
-    }[];
+    availableThemes: AvailableTheme[];
     handleCancel(...args: unknown[]): unknown;
     handleSave(...args: unknown[]): unknown;
     isSubmitting?: boolean;
@@ -387,7 +357,8 @@ export const ConfigTenantFormView = ({
                             );
 
                             const configToUpdate =
-                                currentConfig === 'invalid_json'
+                                // ConfigField stores 'invalid_json' when the JSON cannot be parsed
+                                (currentConfig as unknown) === 'invalid_json'
                                     ? config
                                     : currentConfig;
 
@@ -405,7 +376,7 @@ export const ConfigTenantFormView = ({
                     >
                         {availableThemes.map((t) => (
                             <MenuItem key={t.value} value={t.value}>
-                                {t.name[locale]} - {t.description[locale]}
+                                {getThemeLabel(t, locale)}
                             </MenuItem>
                         ))}
                     </Select>
@@ -568,7 +539,7 @@ export const ConfigTenantForm = ({
     return (
         <ConfigTenantFormView
             initialConfig={data}
-            availableThemes={availableThemesResponse.data}
+            availableThemes={availableThemesResponse.data ?? []}
             handleSave={(data) => {
                 handleUpdateConfigTenant(data);
                 // update configTenant in redux store

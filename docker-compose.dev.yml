@@ -104,7 +104,9 @@ services:
             - '31976:31976'
         networks:
             - lodex-net
-        command: npm run production:workers
+        # @ezs/lodex is loaded from its compiled lib/, missing on a fresh checkout.
+        # `;` and not `&&`: a type error in ezsLodex still emits lib/ and must not keep the workers down
+        command: sh -c "(cd packages/ezsLodex && npm run build); npm run production:workers"
         depends_on:
             - mongo
         deploy:

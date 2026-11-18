@@ -6,8 +6,11 @@ import {
     getEnrichmentDataPreview,
     getEnrichmentRuleModel,
     getSourceError,
+    truncateLog,
     processEnrichment,
+    setEnrichmentError,
 } from './enrichment';
+import createEnrichmentModel from '../../models/enrichment';
 import { disableFusible } from '@ezs/core/fusible';
 import { CancelWorkerError } from '../../workers';
 
@@ -486,6 +489,7 @@ describe('enrichment', () => {
                 enrichment: {
                     updateOne: jest.fn(),
                     updateStatus: jest.fn(),
+                    updateStatusOfJob: jest.fn(),
                 },
                 ...mockDb([
                     {
@@ -510,7 +514,119 @@ describe('enrichment', () => {
 
             // THEN
             expect(catchedError).toBeInstanceOf(CancelWorkerError);
+            // the status is written for this job's run only
+            expect(ctx.enrichment.updateStatusOfJob).toHaveBeenCalledWith(
+                undefined,
+                '1',
+                'IN_PROGRESS',
+                undefined,
+            );
+            expect(ctx.enrichment.updateStatus).not.toHaveBeenCalled();
         }, 60000);
+
+        it('should not wait for a slow statement to end when the job is canceled', async () => {
+            await db.collection('dataset').insertMany([
+                { uri: '1', name: 'a' },
+                { uri: '2', name: 'b' },
+            ]);
+            progress.initialize(dbName);
+            let jobFusible: any;
+            // 10 s per row: the breakers alone would wait 20 s
+            const enrichment = {
+                name: 'test',
+                rule: '[use]\nplugin = basics\n[throttle]\nbySecond = 0.1\n',
+            };
+            const ctx = {
+                configTenant: {},
+                tenant: dbName,
+                job: {
+                    id: 1,
+                    log: jest.fn(),
+                    isActive: jest.fn().mockReturnValue(true),
+                    data: { tenant: dbName },
+                    update: jest.fn().mockImplementation(({ fusible }: any) => {
+                        jobFusible = fusible;
+                        return Promise.resolve();
+                    }),
+                },
+                enrichment: {
+                    updateOne: jest.fn(),
+                    updateStatus: jest.fn(),
+                    updateStatusOfJob: jest.fn(),
+                },
+                ...mockDb([]),
+            };
+
+            let catchedError: any;
+            processEnrichment(enrichment, false, ctx).catch(
+                (error) => (catchedError = error),
+            );
+            await waitFor(() => !!jobFusible);
+            // let the rows pass the first breaker and reach the slow statement
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await disableFusible(jobFusible);
+
+            await waitFor(() => !!catchedError, { timeout: 3000 });
+            expect(catchedError).toBeInstanceOf(CancelWorkerError);
+        }, 10000);
+
+        describe('setEnrichmentError', () => {
+            const setup = async () => {
+                const enrichmentModel = await createEnrichmentModel(db);
+                const enrichment = await enrichmentModel.create({
+                    name: 'test',
+                    dataSource: 'dataset',
+                    status: 'PENDING',
+                    parameters: {},
+                    createdAt: new Date(),
+                    // the relaunch queued after the superseded job
+                    jobId: 'current',
+                });
+                const id = enrichment!._id.toString();
+                const runJob = (jobId: string) =>
+                    setEnrichmentError(
+                        {
+                            tenant: dbName,
+                            enrichment: enrichmentModel,
+                            job: {
+                                id: jobId,
+                                opts: { jobId },
+                                log: jest.fn(),
+                                data: { id, tenant: dbName },
+                            },
+                        },
+                        new Error('boom'),
+                    );
+                return { enrichmentModel, id, runJob };
+            };
+
+            it('should not overwrite the status of the current run from a superseded job', async () => {
+                const { enrichmentModel, id, runJob } = await setup();
+
+                await runJob('superseded');
+
+                await expect(
+                    enrichmentModel.findOneById(id),
+                ).resolves.toMatchObject({
+                    status: 'PENDING',
+                    jobId: 'current',
+                });
+            });
+
+            it('should write the error of the current job', async () => {
+                const { enrichmentModel, id, runJob } = await setup();
+
+                await runJob('current');
+
+                await expect(
+                    enrichmentModel.findOneById(id),
+                ).resolves.toMatchObject({
+                    status: 'ERROR',
+                    message: 'boom',
+                    jobId: 'current',
+                });
+            });
+        });
 
         it.skip('should log error when ws is out', async () => {
             // ezs cannot be mock in the same way, one day this test will have to be rewritten differently
@@ -697,5 +813,18 @@ describe('getSourceError', () => {
             message: 'Source error',
         });
         expect(deepestSourceError.sourceChunk).toBe('This chunk');
+    });
+});
+
+describe('truncateLog', () => {
+    it('should keep a short text as is', () => {
+        expect(truncateLog('{"a":1}')).toBe('{"a":1}');
+        expect(truncateLog(undefined)).toBe('undefined');
+    });
+
+    it('should truncate a long text and give its length', () => {
+        expect(truncateLog('x'.repeat(500))).toBe(
+            `${'x'.repeat(200)}… (500 characters)`,
+        );
     });
 });

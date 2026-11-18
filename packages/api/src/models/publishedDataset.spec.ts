@@ -252,6 +252,7 @@ describe('publishedDataset', () => {
         const db = {
             collection: () => ({
                 find,
+                countDocuments: count,
                 createIndex: jest.fn(),
             }),
             listCollections: () => listCollections,
@@ -347,6 +348,7 @@ describe('publishedDataset', () => {
             publishedDatasetCollection = await publishedDataset({
                 collection: () => ({
                     find: emptyFind,
+                    countDocuments: () => 0,
                     createIndex: jest.fn(),
                 }),
                 listCollections: () => listCollections,

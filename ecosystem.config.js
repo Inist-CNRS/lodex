@@ -2,9 +2,14 @@ module.exports = {
     apps: [
         {
             name: 'lodex',
-            script: './src',
+            // compiled by `npm run build` (packages/api/build.mjs)
+            script: './dist/index.js',
             interpreter: 'node',
-            interpreter_args: '--import tsx --max-http-header-size=32768',
+            // On a fatal error (OOM included), a small diagnostic report goes to the same
+            // folder as the CPU lag profiles. To also get a heap snapshot before an OOM
+            // (as big as the heap, never cleaned up), set temporarily
+            // NODE_OPTIONS=--heapsnapshot-near-heap-limit=1 on the container.
+            interpreter_args: `--enable-source-maps --max-http-header-size=32768 --report-on-fatalerror --diagnostic-dir=${require('os').tmpdir()}`,
             exec_mode: 'cluster',
             cwd: './packages/api',
             wait_ready: true,
@@ -17,10 +22,9 @@ module.exports = {
         },
         {
             name: 'worker',
-            script: './src',
+            script: './src/index.ts',
             cwd: './packages/workers',
             interpreter: 'node',
-            interpreter_args: '--import tsx',
             exec_mode: 'fork',
             instances: 1,
             env: {
