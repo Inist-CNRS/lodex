@@ -9,6 +9,15 @@ const expDate = Date.now();
 const auth = config.get('auth');
 
 describe('login', () => {
+    // jwt.sign stamps each token with the current second (iat): the tokens
+    // the tests sign again must get the same one as those of the login
+    beforeEach(() => {
+        jest.spyOn(Date, 'now').mockReturnValue(expDate);
+    });
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
     describe('admin authentication', () => {
         it('should set ctx.status to 401, if ctx.body.username do not match with config', async () => {
             const setCookies = jest.fn();
