@@ -22,6 +22,7 @@ import {
 } from '../../services/fsHelpers';
 import progress from '../../services/progress';
 import {
+    claimUploadImport,
     getUploadDir,
     isUploadCancelled,
     isUploadQueued,
@@ -138,6 +139,7 @@ export const prepareUpload = async (ctx: any, next: any) => {
     ctx.saveStreamInFile = saveStreamInFile;
     ctx.getUploadedFileSize = getUploadedFileSize;
     ctx.isUploadCancelled = isUploadCancelled;
+    ctx.claimUploadImport = claimUploadImport;
     ctx.markUploadCancelled = markUploadCancelled;
     ctx.markUploadQueued = markUploadQueued;
     ctx.isUploadQueued = isUploadQueued;
@@ -256,6 +258,12 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
     }
 
     if (uploadedFileSize >= totalSize) {
+        // another request completing this upload already queues its import
+        if (!(await ctx.claimUploadImport(filename))) {
+            ctx.status = 200;
+            ctx.body = { status: 'pending' };
+            return;
+        }
         let isQueueing = false;
         let refusal: ImportRefusal | undefined;
         try {
@@ -353,40 +361,6 @@ export const cancelUpload = async (ctx: any) => {
     ctx.body = { status: 'cancelled' };
 };
 
-export const checkChunkMiddleware = async (ctx: any, loaderName: any) => {
-    const {
-        resumableChunkNumber,
-        resumableTotalChunks,
-        resumableIdentifier,
-        resumableCurrentChunkSize,
-        resumableFilename,
-    } = ctx.request.query;
-    const chunkNumber = parseInt(resumableChunkNumber, 10);
-    const totalChunks = parseInt(resumableTotalChunks, 10);
-    const currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
-    const filename = `${getUploadDir()}/${ctx.tenant}_${resumableIdentifier}`;
-    const chunkname = `${getUploadDir()}/${ctx.tenant}_${resumableIdentifier}.${resumableChunkNumber}`;
-    const extension = resumableFilename.split('.').pop();
-
-    const exists = await checkFileExists(chunkname, currentChunkSize);
-
-    if (exists && chunkNumber === totalChunks) {
-        await getOrCreateWorkerQueue(ctx.tenant, 1).add(
-            IMPORT, // Name of the job
-            {
-                loaderName,
-                filename,
-                totalChunks,
-                extension,
-                tenant: ctx.tenant,
-                jobType: IMPORT,
-            },
-            { jobId: randomUUID() },
-        );
-    }
-    ctx.status = exists ? 200 : 204;
-};
-
 const app = new Koa();
 
 app.use(prepareUpload);
@@ -404,7 +378,6 @@ app.use(route.post('/cancel', cancelUpload));
 
 app.use(route.post('/:loaderName', parseRequest));
 app.use(route.post('/:loaderName', uploadChunkMiddleware));
-app.use(route.get('/:loaderName', checkChunkMiddleware));
 app.use(route.del('/clear', clearUpload));
 
 export default app;

@@ -161,17 +161,18 @@ describe('loadFile', () => {
         expect(remove).toHaveBeenCalledWith('abort', expect.any(Function));
     });
 
-    it('keeps the default resumable identifier without a signal', () => {
-        loadFile('/api/upload/csv', file, 'token');
+    it('keeps the default resumable identifier without a cancel url', () => {
+        loadFile('/api/upload/csv', file, 'token', null, {
+            signal: new AbortController().signal,
+        });
         const options = (Resumable as unknown as jest.Mock).mock.calls[0][0];
         expect(options.generateUniqueIdentifier).toBeUndefined();
         expect(options.testChunks).toBeUndefined();
     });
 
-    it('gives each cancellable upload a unique identifier', () => {
-        loadFile('/api/upload/csv', file, 'token', null, {
-            signal: new AbortController().signal,
-        });
+    it('gives each dataset upload a unique identifier', () => {
+        // the classic admin upload, without a signal
+        loadDatasetFile(file, 'token', 'csv', null);
         const { generateUniqueIdentifier, testChunks } = (
             Resumable as unknown as jest.Mock
         ).mock.calls[0][0];

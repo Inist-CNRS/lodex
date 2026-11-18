@@ -16,9 +16,10 @@ export type LoadFileOptions = {
 // how long a cancel waits for the server to tell whether it was in time
 const CANCEL_REQUEST_TIMEOUT_MS = 5000;
 
-// unique per cancellable upload: a later upload of the same file never
-// reuses the chunks of a cancelled one. No underscore: the server tells the
-// files of a tenant from another's by it (see removeStaleUploadFiles)
+// unique per dataset upload: a later upload of the same file never reuses
+// the chunks, nor the import claim, of an earlier one. No underscore: the
+// server tells the files of a tenant from another's by it (see
+// removeStaleUploadFiles)
 // @ts-expect-error TS7006
 const generateUploadIdentifier = (file) =>
     [
@@ -70,7 +71,7 @@ export const loadFile = (
             headers,
             multipart: true,
             // the other uploads keep resuming from the chunks already sent
-            ...(signal
+            ...(cancelUrl
                 ? {
                       generateUniqueIdentifier: generateUploadIdentifier,
                       // a unique identifier is never resumed
