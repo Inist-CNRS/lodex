@@ -25,6 +25,8 @@ interface ConfirmPopupProps {
     isOpen: boolean;
     onCancel(...args: unknown[]): unknown;
     isLoading?: boolean;
+    // disables only the confirm button
+    isConfirmDisabled?: boolean;
 }
 
 export const ConfirmPopup = ({
@@ -43,6 +45,8 @@ export const ConfirmPopup = ({
     onCancel,
 
     isLoading = false,
+
+    isConfirmDisabled = false,
 }: ConfirmPopupProps) => {
     return (
         <Dialog maxWidth="xl" open={isOpen} onClose={onCancel}>
@@ -67,7 +71,7 @@ export const ConfirmPopup = ({
                     color="primary"
                     key="confirm"
                     onClick={onConfirm}
-                    disabled={isLoading}
+                    disabled={isLoading || isConfirmDisabled}
                 >
                     {confirmLabel}
                 </Button>

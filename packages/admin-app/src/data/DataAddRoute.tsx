@@ -1,7 +1,7 @@
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
-import Upload from '../upload/Upload';
+import { UploadPage } from '../upload/UploadPage';
 import { fromParsing } from '../selectors';
 import { preLoadLoaders } from '../loader';
 import withInitialData from '../withInitialData';
@@ -13,8 +13,7 @@ interface DataAddRouteComponentProps {
 export const DataAddRouteComponent = ({
     canUploadFile,
 }: DataAddRouteComponentProps) => {
-    // @ts-expect-error TS2322
-    return <Upload className="admin" isFirstFile={canUploadFile} />;
+    return <UploadPage isFirstFile={canUploadFile} />;
 };
 
 // @ts-expect-error TS7006

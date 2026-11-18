@@ -100,6 +100,8 @@ export type DatasetSourceInputProps = {
     hideDescriptions?: boolean;
     // the tabs offered, in this order (all by default)
     tabs?: DatasetSourceTab[];
+    // the translation key of the dropzone text
+    fileTextKey?: string;
     // rendered between the tabs and the form, e.g. an error message
     children?: ReactNode;
 };
@@ -149,6 +151,7 @@ export const DatasetSourceInput = ({
     onTextChange,
     hideDescriptions = false,
     tabs = TABS,
+    fileTextKey = 'import_file_text',
     children,
 }: DatasetSourceInputProps) => {
     const { translate } = useTranslate();
@@ -231,7 +234,7 @@ export const DatasetSourceInput = ({
                                             component="span"
                                             display="block"
                                         >
-                                            {translate('import_file_text')}
+                                            {translate(fileTextKey)}
                                         </Typography>
                                         {hideDescriptions && (
                                             // the dropzone renders its text in a <p>
