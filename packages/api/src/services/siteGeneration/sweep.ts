@@ -1,4 +1,5 @@
 import config from 'config';
+import { ProgressStatus, TaskStatus } from '@lodex/common';
 
 import repositoryMiddleware, {
     getTenantCollection,
@@ -6,6 +7,8 @@ import repositoryMiddleware, {
 import mongoClient from '../mongoClient';
 import { PRECOMPUTED_NO_RESPONSE } from '../../models/precomputed';
 import getLogger from '../logger';
+import progress from '../progress';
+import { notifyListeners } from '../precomputed/precomputed';
 import {
     advanceSiteGeneration,
     failLostSiteGenerationJob,
@@ -18,6 +21,26 @@ const buildContext = async (tenantName: string): Promise<any> => {
     return ctx;
 };
 
+// An expired precomputation only changes in the database: end its progress
+// bar (unless another precomputation still runs) and refresh the admin, as a
+// failure answer of the web service does
+const releasePrecomputing = async (ctx: any) => {
+    const stillRunning =
+        (await ctx.precomputed.countDocuments({
+            status: { $in: [TaskStatus.IN_PROGRESS, TaskStatus.ON_HOLD] },
+        })) > 0;
+    if (
+        !stillRunning &&
+        progress.getStatus(ctx.tenant) === ProgressStatus.PRECOMPUTING
+    ) {
+        progress.finish(ctx.tenant);
+    }
+    notifyListeners(`${ctx.tenant}-precomputer`, {
+        isPrecomputing: stillRunning,
+        success: false,
+    });
+};
+
 export const sweepTenants = async (
     tenants: string[],
     now = new Date(),
@@ -27,10 +50,13 @@ export const sweepTenants = async (
     for (const tenantName of tenants) {
         try {
             const ctx = await createContext(tenantName);
-            await ctx.precomputed.expireUnanswered(
+            const expired = await ctx.precomputed.expireUnanswered(
                 new Date(now.getTime() - timeout),
                 PRECOMPUTED_NO_RESPONSE,
             );
+            if (expired > 0) {
+                await releasePrecomputing(ctx);
+            }
             await advanceSiteGeneration(ctx);
             await settleStoppingSiteGeneration(ctx);
             await failLostSiteGenerationJob(ctx, now);
