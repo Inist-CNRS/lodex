@@ -1,6 +1,13 @@
 import config from 'config';
 import { isSweepingProcess, sweepTenants } from './sweep';
 import { PRECOMPUTED_NO_RESPONSE } from '../../models/precomputed';
+import { ProgressStatus } from '@lodex/common';
+import progress from '../progress';
+import { notifyListeners } from '../precomputed/precomputed';
+
+jest.mock('../precomputed/precomputed', () => ({
+    notifyListeners: jest.fn(),
+}));
 
 jest.mock('./siteGeneration', () => ({
     advanceSiteGeneration: jest.fn(),
@@ -79,6 +86,74 @@ describe('sweepTenants', () => {
             PRECOMPUTED_NO_RESPONSE,
         );
         expect(calls).toEqual(['expire', 'advance']);
+    });
+
+    describe('when precomputations expire', () => {
+        const startPrecomputing = (tenant: string) =>
+            progress.start(tenant, {
+                status: ProgressStatus.PRECOMPUTING,
+                target: 100,
+                type: 'precomputer',
+            });
+        const sweep = (tenant: string, expired: number, pending: number) =>
+            sweepTenants(
+                [tenant],
+                now,
+                () =>
+                    ({
+                        tenant,
+                        precomputed: {
+                            expireUnanswered: async () => expired,
+                            countDocuments: async () => pending,
+                        },
+                    }) as any,
+            );
+
+        beforeEach(() => {
+            (notifyListeners as jest.Mock).mockReset();
+        });
+
+        it('finishes the progress and tells the admin', async () => {
+            startPrecomputing('expired');
+            await sweep('expired', 1, 0);
+            expect(progress.getStatus('expired')).toBe(ProgressStatus.PENDING);
+            expect(notifyListeners).toHaveBeenCalledWith(
+                'expired-precomputer',
+                { isPrecomputing: false, success: false },
+            );
+        });
+
+        it('keeps the progress of a precomputation still running', async () => {
+            startPrecomputing('running');
+            await sweep('running', 1, 1);
+            expect(progress.getStatus('running')).toBe(
+                ProgressStatus.PRECOMPUTING,
+            );
+            expect(notifyListeners).toHaveBeenCalledWith(
+                'running-precomputer',
+                { isPrecomputing: true, success: false },
+            );
+        });
+
+        it('leaves another job progress', async () => {
+            progress.start('publishing', {
+                status: ProgressStatus.PUBLISH_DOCUMENT,
+                target: 100,
+            });
+            await sweep('publishing', 1, 0);
+            expect(progress.getStatus('publishing')).toBe(
+                ProgressStatus.PUBLISH_DOCUMENT,
+            );
+        });
+
+        it('does nothing when none expired', async () => {
+            startPrecomputing('none');
+            await sweep('none', 0, 0);
+            expect(progress.getStatus('none')).toBe(
+                ProgressStatus.PRECOMPUTING,
+            );
+            expect(notifyListeners).not.toHaveBeenCalled();
+        });
     });
 
     it('keeps going when a tenant fails', async () => {
