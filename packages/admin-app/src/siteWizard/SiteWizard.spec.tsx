@@ -2,6 +2,7 @@ import { render, userEvent } from '../test-utils';
 import { screen, waitFor, within } from '@testing-library/react';
 import type { CatalogModel } from '@lodex/common';
 import { useGenerateSite } from './useGenerateSite';
+import { useSiteGeneration } from '../siteGeneration/useSiteGeneration';
 import { SiteWizard } from './SiteWizard';
 import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
 
@@ -72,6 +73,10 @@ jest.mock('./useDisplayableModels', () => ({
     useDisplayableModels: () => models,
 }));
 jest.mock('./useGenerateSite', () => ({ useGenerateSite: jest.fn() }));
+jest.mock('../siteGeneration/useSiteGeneration', () => ({
+    ...jest.requireActual('../siteGeneration/useSiteGeneration'),
+    useSiteGeneration: jest.fn(),
+}));
 jest.mock('../configTenant/useGetAvailableThemes', () => ({
     ...jest.requireActual('../configTenant/useGetAvailableThemes'),
     useGetAvailableThemes: jest.fn(),
@@ -140,6 +145,30 @@ describe('SiteWizard', () => {
             isLoading: false,
             error: null,
         });
+        (useSiteGeneration as jest.Mock).mockReturnValue({
+            generation: undefined,
+        });
+    });
+
+    it('leaves as soon as the progress dialog shows the generation it uploads', async () => {
+        const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
+        await goToThemeStep();
+        (useGenerateSite as jest.Mock).mockReturnValue({
+            clearError,
+            generate,
+            isGenerating: true,
+            error: null,
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        // pushed by the server before the upload request ends
+        (useSiteGeneration as jest.Mock).mockReturnValue({
+            generation: { status: 'running' },
+        });
+        rerender(<SiteWizard open onClose={jest.fn()} />);
+        await waitFor(() =>
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+        );
     });
 
     it('fetches the themes only once opened', () => {
@@ -585,7 +614,8 @@ describe('SiteWizard', () => {
         expect(
             screen.queryByText('site_generation_step_launch'),
         ).not.toBeInTheDocument();
-        expect(screen.getByText('1/3')).toBeInTheDocument();
+        // the pages counter of the wizard is gone: the steps show progress
+        expect(screen.queryByText('1/3')).not.toBeInTheDocument();
         expect(
             screen.queryByRole('tab', { name: 'upload_by_url' }),
         ).not.toBeInTheDocument();
@@ -617,7 +647,6 @@ describe('SiteWizard', () => {
         expect(
             screen.getByText('site_generation_step_launch'),
         ).toBeInTheDocument();
-        expect(screen.getByText('1/4')).toBeInTheDocument();
         expect(
             screen.getByText(/site_generation_enrichments\+.*"total":2/),
         ).toBeInTheDocument();

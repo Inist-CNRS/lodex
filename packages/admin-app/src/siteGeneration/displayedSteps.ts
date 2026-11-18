@@ -67,9 +67,3 @@ export const getDisplayedSteps = (view: SiteGenerationView): DisplayedStep[] =>
         key,
         state: getState(view, key),
     }));
-
-// the 1-based rank of the step in progress (or in error)
-export const getCurrentRank = (steps: DisplayedStep[]): number => {
-    const index = steps.findIndex(({ state }) => state !== 'done');
-    return index === -1 ? steps.length : index + 1;
-};

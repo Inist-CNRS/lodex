@@ -5,6 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {
     getModelNameKey,
+    type ModelLaunchStepType,
     ProgressStatus,
     type SiteGenerationCounter,
     type SiteGenerationStepState,
@@ -108,14 +109,75 @@ const getSettingsDescriptionKey = (
     return 'site_generation_settings_theme';
 };
 
+// next to its counter, the enrichments or precomputations running now: a
+// new name slides in, a dot beats while they run
+const LaunchRunning = ({ names }: { names: string[] }) => {
+    const { translate } = useTranslate();
+    if (!names.length) {
+        return null;
+    }
+    const label = names.join(', ');
+    return (
+        <Box
+            component="span"
+            role="status"
+            sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 1,
+                ml: 1.5,
+                color: 'text.secondary',
+                '@keyframes lodex-launch-beat': {
+                    '0%, 100%': { transform: 'scale(0.7)', opacity: 0.5 },
+                    '50%': { transform: 'scale(1)', opacity: 1 },
+                },
+                '@keyframes lodex-launch-in': {
+                    from: { transform: 'translateY(6px)', opacity: 0 },
+                    to: { transform: 'none', opacity: 1 },
+                },
+                '@media (prefers-reduced-motion: reduce)': {
+                    '& *': { animation: 'none !important' },
+                },
+            }}
+        >
+            <Box
+                component="span"
+                aria-hidden
+                sx={{
+                    width: 8,
+                    height: 8,
+                    flexShrink: 0,
+                    borderRadius: '50%',
+                    bgcolor: 'primary.main',
+                    animation: 'lodex-launch-beat 1.6s ease-in-out infinite',
+                }}
+            />
+            <Box
+                component="span"
+                // a new key replays the slide in
+                key={label}
+                sx={{
+                    animation:
+                        'lodex-launch-in 320ms cubic-bezier(0.2, 0, 0, 1)',
+                }}
+            >
+                {translate('site_generation_launch_running', { names: label })}
+            </Box>
+        </Box>
+    );
+};
+
 const LaunchCounter = ({
     counter,
     countKey,
     errorKey,
+    running,
 }: {
     counter: SiteGenerationCounter;
     countKey: string;
     errorKey: string;
+    // the names of its steps running now
+    running: string[];
 }) => {
     const { translate } = useTranslate();
     if (counter.total === 0) {
@@ -136,6 +198,7 @@ const LaunchCounter = ({
                     </Box>
                 </>
             )}
+            <LaunchRunning names={running} />
         </li>
     );
 };
@@ -191,6 +254,18 @@ const useStepContent = (
             count: lines.toLocaleString(locale),
         });
     const isRunning = step.state === 'running';
+    const getRunningNames = (type: ModelLaunchStepType) =>
+        isRunning && view
+            ? view.steps
+                  .filter(
+                      (launchStep) =>
+                          launchStep.type === type &&
+                          launchStep.state === 'running' &&
+                          // shown with its attempt
+                          !launchStep.retry,
+                  )
+                  .map(({ name }) => name)
+            : [];
     switch (step.key) {
         case 'data':
             return {
@@ -241,11 +316,13 @@ const useStepContent = (
                                     counter={view.launch.enrichment}
                                     countKey="site_generation_enrichments"
                                     errorKey="site_generation_enrichments_error"
+                                    running={getRunningNames('enrichment')}
                                 />
                                 <LaunchCounter
                                     counter={view.launch.precomputed}
                                     countKey="site_generation_precomputed"
                                     errorKey="site_generation_precomputed_error"
+                                    running={getRunningNames('precomputed')}
                                 />
                                 {view.steps.map(
                                     (launchStep) =>
@@ -302,8 +379,40 @@ const getErrorMessages = (
     ];
 };
 
+// the line down to the next step, filled once the step is done: the list
+// shows its own progress, in place
+const Connector = ({ isFilled }: { isFilled: boolean }) => (
+    <Box
+        aria-hidden
+        sx={{
+            flex: 1,
+            width: 2,
+            my: 0.5,
+            borderRadius: 1,
+            bgcolor: 'divider',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::after': {
+                content: '""',
+                position: 'absolute',
+                inset: 0,
+                bgcolor: 'primary.main',
+                transformOrigin: 'top',
+                transform: isFilled ? 'none' : 'scaleY(0)',
+                transition: 'transform 600ms cubic-bezier(0.2, 0, 0, 1)',
+            },
+            '@media (prefers-reduced-motion: reduce)': {
+                '&::after': { transition: 'none' },
+            },
+        }}
+    />
+);
+
 const Step = ({
     step,
+    index,
+    isLast,
+    appear,
     view,
     uploadProgress,
     importProgress,
@@ -311,6 +420,9 @@ const Step = ({
     retryDisabled,
 }: {
     step: DisplayedStep;
+    index: number;
+    isLast: boolean;
+    appear?: boolean;
     view?: SiteGenerationView;
     uploadProgress?: number | null;
     importProgress?: ImportProgress | null;
@@ -326,11 +438,31 @@ const Step = ({
     );
     const errors = getErrorMessages(translate, step, view);
     return (
-        <Box component="li" sx={{ display: 'flex', gap: 1.5 }}>
-            <Box sx={{ flexShrink: 0, height: ICON_SIZE }}>
-                <StepIcon state={step.state} />
+        <Box
+            component="li"
+            sx={{
+                display: 'flex',
+                gap: 1.5,
+                ...(appear && {
+                    // one after the other, from the top
+                    animation: `lodex-step-appear 400ms ${index * 70}ms cubic-bezier(0.2, 0, 0, 1) both`,
+                }),
+            }}
+        >
+            <Box
+                sx={{
+                    flexShrink: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+            >
+                <Box sx={{ height: ICON_SIZE }}>
+                    <StepIcon state={step.state} />
+                </Box>
+                {!isLast && <Connector isFilled={step.state === 'done'} />}
             </Box>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Box sx={{ flex: 1, minWidth: 0, pb: isLast ? 0 : 3 }}>
                 <Typography fontWeight="bold">{title}</Typography>
                 {description && (
                     <Typography component="div" sx={{ mt: 0.5 }}>
@@ -372,10 +504,13 @@ type SiteGenerationStepsProps = {
     importProgress?: ImportProgress | null;
     onRetry?: () => void;
     retryDisabled?: boolean;
+    // the steps come in one after the other: the wizard turns into them
+    appear?: boolean;
 };
 
 export const SiteGenerationSteps = ({
     steps,
+    appear,
     view,
     uploadProgress,
     importProgress,
@@ -388,15 +523,22 @@ export const SiteGenerationSteps = ({
             listStyle: 'none',
             m: 0,
             p: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 3,
+            '@keyframes lodex-step-appear': {
+                from: { transform: 'translateY(12px)', opacity: 0 },
+                to: { transform: 'none', opacity: 1 },
+            },
+            '@media (prefers-reduced-motion: reduce)': {
+                '& > li': { animation: 'none' },
+            },
         }}
     >
-        {steps.map((step) => (
+        {steps.map((step, index) => (
             <Step
                 key={step.key}
                 step={step}
+                index={index}
+                isLast={index === steps.length - 1}
+                appear={appear}
                 view={view}
                 uploadProgress={uploadProgress}
                 importProgress={importProgress}

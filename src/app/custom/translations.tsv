@@ -1637,6 +1637,7 @@ Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_C
 "site_generation_launch_intro"	"Launching"	"Lancement de"
 "site_generation_enrichments"	"%{done}/%{total} enrichment |||| %{done}/%{total} enrichments"	"%{done}/%{total} enrichissement |||| %{done}/%{total} enrichissements"
 "site_generation_precomputed"	"%{done}/%{total} precomputation |||| %{done}/%{total} precomputations"	"%{done}/%{total} précalcul |||| %{done}/%{total} précalculs"
+"site_generation_launch_running"	"In progress: %{names}"	"En cours : %{names}"
 "site_generation_enrichments_error"	"%{smart_count} enrichment in error |||| %{smart_count} enrichments in error"	"%{smart_count} enrichissement en erreur |||| %{smart_count} enrichissements en erreur"
 "site_generation_precomputed_error"	"%{smart_count} precomputation in error |||| %{smart_count} precomputations in error"	"%{smart_count} précalcul en erreur |||| %{smart_count} précalculs en erreur"
 "site_generation_step_retrying"	"%{name}: new attempt (%{attempt}/%{max})"	"%{name} : nouvelle tentative (%{attempt}/%{max})"

@@ -13,7 +13,11 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { FileObject } from 'mui-file-dropzone';
-import { getModelTitleKey, type CatalogModel } from '@lodex/common';
+import {
+    getModelTitleKey,
+    isSiteGenerationActive,
+    type CatalogModel,
+} from '@lodex/common';
 import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
@@ -30,10 +34,14 @@ import { useGetAvailableThemes } from '../configTenant/useGetAvailableThemes';
 import { useDisplayableModels } from './useDisplayableModels';
 import { useGenerateSite } from './useGenerateSite';
 import { getUploadView } from './uploadSteps';
-import { WIZARD_DIALOG_PAPER_PROPS } from './wizardDialogPaper';
+import {
+    GENERATION_DIALOG_PAPER_PROPS,
+    WIZARD_DIALOG_PAPER_PROPS,
+} from './wizardDialogPaper';
 import { getDisplayedSteps } from '../siteGeneration/displayedSteps';
 import { SiteGenerationHeader } from '../siteGeneration/SiteGenerationHeader';
 import { SiteGenerationSteps } from '../siteGeneration/SiteGenerationSteps';
+import { useSiteGeneration } from '../siteGeneration/useSiteGeneration';
 
 type WizardState = {
     modelId: string;
@@ -235,6 +243,9 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     const [userState, setState] = useState<WizardState>(INITIAL_STATE);
     const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
     const [isStopConfirmOpen, setIsStopConfirmOpen] = useState(false);
+    // handed over to the progress dialog: a fade out would show the last
+    // step again (the upload is over) above the progress dialog
+    const [isHandedOver, setIsHandedOver] = useState(false);
     const isSubmittingRef = useRef(false);
 
     const step = STEPS[index];
@@ -254,6 +265,13 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     const uploadSteps = uploadView ? getDisplayedSteps(uploadView) : [];
     // the upload is shown as the progress dialog that follows it
     const isUploadShown = isGenerating && !!model;
+    // The server pushes the generation before the upload request ends: the
+    // progress dialog then opens, and the wizard leaves in the same render.
+    // Left open until the request ends, both backdrops would stack and
+    // darken the page for a moment.
+    const { generation } = useSiteGeneration();
+    const isTakenOver =
+        isGenerating && isSiteGenerationActive(generation?.status);
     // the upload ended (queued, failed or cancelled): nothing to stop
     const isStopConfirmShown = isStopConfirmOpen && canCancel;
 
@@ -279,6 +297,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
             setState(INITIAL_STATE);
         }
         setIsCancelConfirmOpen(false);
+        setIsHandedOver(reason === 'handedOver');
         // the dialog stays open while an error is displayed
         clearError();
         onClose(reason);
@@ -319,15 +338,22 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
     return (
         <Dialog
             // the host keeps it open until it is closed
-            open={open}
+            open={open && !isTakenOver}
             fullWidth
             maxWidth="md"
             // only the cancel buttons close it, after a confirmation
             disableEscapeKeyDown
-            PaperProps={WIZARD_DIALOG_PAPER_PROPS}
+            transitionDuration={
+                isHandedOver || isTakenOver ? { exit: 0 } : undefined
+            }
+            PaperProps={
+                isUploadShown
+                    ? GENERATION_DIALOG_PAPER_PROPS
+                    : WIZARD_DIALOG_PAPER_PROPS
+            }
         >
             {isUploadShown ? (
-                <SiteGenerationHeader steps={uploadSteps} />
+                <SiteGenerationHeader />
             ) : (
                 <DialogTitle
                     component="div"
@@ -394,6 +420,7 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                 {isUploadShown ? (
                     <SiteGenerationSteps
                         steps={uploadSteps}
+                        appear
                         view={uploadView}
                         uploadProgress={uploadProgress}
                     />
