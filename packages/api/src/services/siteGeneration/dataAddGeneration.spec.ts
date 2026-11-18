@@ -12,7 +12,13 @@ jest.mock('./wizardGeneration', () => ({
 
 const launchOrder = [{ name: 'a', type: 'enrichment', position: 0 }];
 const catalogModels = [
-    { id: 'm', loader: 'csv', url: 'https://h/m.tar', launchOrder },
+    {
+        id: 'm',
+        loader: 'csv',
+        importTypes: ['file', 'url'],
+        url: 'https://h/m.tar',
+        launchOrder,
+    },
 ];
 const steps = [{ type: 'enrichment', name: 'a', position: 0 }];
 
@@ -33,26 +39,38 @@ describe('startDataAddGeneration', () => {
         };
     });
     const choice = { relaunch: true, autoPublish: false };
+    const request = { loaderName: 'csv', importType: 'file' as const };
 
     it('refuses a site without memory', async () => {
         ctx.siteModel.findCurrent.mockResolvedValue(null);
-        expect(await startDataAddGeneration(ctx, choice, 'csv', 'j')).toEqual({
-            status: 409,
-            error: 'not_simplified',
-        });
+        expect(await startDataAddGeneration(ctx, choice, request, 'j')).toEqual(
+            {
+                status: 409,
+                error: 'not_simplified',
+            },
+        );
         expect(ctx.siteGeneration.startDataAdd).not.toHaveBeenCalled();
     });
 
     it('refuses a model out of the catalog', async () => {
         ctx.siteModel.findCurrent.mockResolvedValue({ modelId: 'gone' });
-        expect(await startDataAddGeneration(ctx, choice, 'csv', 'j')).toEqual({
-            status: 409,
-            error: 'not_simplified',
-        });
+        expect(await startDataAddGeneration(ctx, choice, request, 'j')).toEqual(
+            {
+                status: 409,
+                error: 'not_simplified',
+            },
+        );
     });
 
     it('refuses another loader than the one of the model', async () => {
-        expect(await startDataAddGeneration(ctx, choice, 'json', 'j')).toEqual({
+        expect(
+            await startDataAddGeneration(
+                ctx,
+                choice,
+                { ...request, loaderName: 'json' },
+                'j',
+            ),
+        ).toEqual({
             status: 400,
             error: 'loader_not_allowed',
         });
@@ -63,7 +81,7 @@ describe('startDataAddGeneration', () => {
         async (status) => {
             ctx.siteGeneration.findCurrent.mockResolvedValue({ status });
             expect(
-                await startDataAddGeneration(ctx, choice, 'csv', 'j'),
+                await startDataAddGeneration(ctx, choice, request, 'j'),
             ).toEqual({ status: 409, error: 'site_generation_in_progress' });
             expect(ctx.siteGeneration.startDataAdd).not.toHaveBeenCalled();
         },
@@ -74,7 +92,7 @@ describe('startDataAddGeneration', () => {
         async (status) => {
             ctx.siteGeneration.findCurrent.mockResolvedValue({ status });
             expect(
-                await startDataAddGeneration(ctx, choice, 'csv', 'j'),
+                await startDataAddGeneration(ctx, choice, request, 'j'),
             ).toEqual({
                 runId: 'run-1',
             });
@@ -82,20 +100,70 @@ describe('startDataAddGeneration', () => {
     );
 
     it('gives the launch steps when relaunching', async () => {
-        await startDataAddGeneration(ctx, choice, 'csv', 'j');
+        await startDataAddGeneration(ctx, choice, request, 'j');
         expect(mockReadLaunchSteps).toHaveBeenCalledWith(ctx, launchOrder);
         expect(ctx.siteGeneration.startDataAdd).toHaveBeenCalledWith({
             importJobId: 'j',
             autoPublish: false,
             steps,
+            estimate: { enrichment: 1, precomputed: 0 },
         });
+    });
+
+    it.each([null, undefined])(
+        'accepts a customLoader of %s',
+        async (customLoader) => {
+            expect(
+                await startDataAddGeneration(
+                    ctx,
+                    choice,
+                    { ...request, customLoader },
+                    'j',
+                ),
+            ).toEqual({ runId: 'run-1' });
+        },
+    );
+
+    it('refuses a custom loader', async () => {
+        expect(
+            await startDataAddGeneration(
+                ctx,
+                choice,
+                { ...request, customLoader: 'x => x' },
+                'j',
+            ),
+        ).toEqual({ status: 400, error: 'loader_not_allowed' });
+        expect(ctx.siteGeneration.startDataAdd).not.toHaveBeenCalled();
+    });
+
+    it('refuses an import type out of the ones of the model', async () => {
+        expect(
+            await startDataAddGeneration(
+                ctx,
+                choice,
+                { ...request, importType: 'text' },
+                'j',
+            ),
+        ).toEqual({ status: 400, error: 'import_type_not_allowed' });
+        expect(ctx.siteGeneration.startDataAdd).not.toHaveBeenCalled();
+    });
+
+    it('accepts another import type of the model', async () => {
+        expect(
+            await startDataAddGeneration(
+                ctx,
+                choice,
+                { ...request, importType: 'url' },
+                'j',
+            ),
+        ).toEqual({ runId: 'run-1' });
     });
 
     it('gives no step without relaunch, and passes autoPublish', async () => {
         const result = await startDataAddGeneration(
             ctx,
             { relaunch: false, autoPublish: true },
-            'csv',
+            request,
             'j',
         );
         expect(mockReadLaunchSteps).not.toHaveBeenCalled();
@@ -103,6 +171,7 @@ describe('startDataAddGeneration', () => {
             importJobId: 'j',
             autoPublish: true,
             steps: [],
+            estimate: undefined,
         });
         expect(result).toEqual({ runId: 'run-1' });
     });

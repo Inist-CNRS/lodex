@@ -213,7 +213,8 @@ describe('siteGeneration model', () => {
                 attempts: 0,
             },
         ];
-        const add = { importJobId: 'job1', autoPublish: true, steps };
+        const estimate = { enrichment: 2, precomputed: 1 };
+        const add = { importJobId: 'job1', autoPublish: true, steps, estimate };
 
         it('creates a running data add generation in the data phase', async () => {
             const started = await siteGeneration.startDataAdd(add);
@@ -233,10 +234,11 @@ describe('siteGeneration model', () => {
             expect(await siteGeneration.findCurrent()).toEqual(started);
         });
 
-        it('stores no estimate when there is no step to relaunch', async () => {
+        it('stores no estimate when the caller gives none', async () => {
             const started = await siteGeneration.startDataAdd({
                 ...add,
                 steps: [],
+                estimate: undefined,
             });
 
             expect(started).not.toHaveProperty('estimate');

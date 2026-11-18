@@ -7,7 +7,6 @@ import type {
 } from '@lodex/common';
 import { ObjectId, type Collection, type Db } from 'mongodb';
 import { getCreatedCollection } from './utils';
-import { countStepsByType } from '../services/siteGeneration/buildLaunchSteps';
 
 export type SiteGenerationStep = {
     name: string;
@@ -68,6 +67,7 @@ export type SiteGenerationCollection = Collection<SiteGeneration> & {
         importJobId: string;
         autoPublish: boolean;
         steps: SiteGenerationStep[];
+        estimate?: SiteGeneration['estimate'];
     }) => Promise<SiteGeneration>;
     transition: (
         current: SiteGeneration,
@@ -129,7 +129,12 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
         });
     };
 
-    repository.startDataAdd = async ({ importJobId, autoPublish, steps }) => {
+    repository.startDataAdd = async ({
+        importJobId,
+        autoPublish,
+        steps,
+        estimate,
+    }) => {
         const now = new Date();
         return replaceCurrent({
             runId: new ObjectId().toHexString(),
@@ -142,10 +147,8 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
             position: 0,
             steps,
             importJobId,
-            // without step to relaunch, there is no launch step to show
-            ...(steps.length > 0 && {
-                estimate: countStepsByType(steps),
-            }),
+            // without estimate, there is no launch step to show
+            ...(estimate && { estimate }),
             autoPublish,
         });
     };

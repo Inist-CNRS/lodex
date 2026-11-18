@@ -250,6 +250,57 @@ describe('onWizardImportEnd', () => {
             );
         });
 
+        it('launches without importedLines when the count fails', async () => {
+            const { ctx, state } = make({ ...addData });
+            ctx.dataset.estimatedDocumentCount.mockRejectedValue(
+                new Error('count boom'),
+            );
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.phase).toBe('launch');
+            expect(state.current.status).toBe('running');
+            expect(state.current.importedLines).toBeUndefined();
+            expect(state.current.position).toBe(1);
+            expect(advanceSiteGeneration).toHaveBeenCalledWith(ctx);
+        });
+
+        it('puts the run in error in its launch phase when the transition fails', async () => {
+            const { ctx, state, transition } = make({ ...addData });
+            transition.mockRejectedValueOnce(new Error('transition boom'));
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current).toMatchObject({
+                status: 'error',
+                phase: 'launch',
+                position: 1,
+                message: 'transition boom',
+            });
+            expect(state.current.steps).toEqual(addData.steps);
+            expect(advanceSiteGeneration).not.toHaveBeenCalled();
+        });
+
+        it('leaves a run stopped meanwhile alone when the transition fails', async () => {
+            const { ctx, state, transition } = make({ ...addData });
+            transition.mockImplementationOnce(async () => {
+                state.current = { ...state.current, status: 'stopping' };
+                throw new Error('transition boom');
+            });
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.status).toBe('stopping');
+            expect(state.current.phase).toBe('data');
+            expect(advanceSiteGeneration).not.toHaveBeenCalled();
+        });
+
+        it('advances without putting the run in error when the transition was committed though it threw', async () => {
+            const { ctx, state, transition } = make({ ...addData });
+            transition.mockImplementationOnce(async () => {
+                state.current = { ...state.current, phase: 'launch' };
+                throw new Error('transition boom');
+            });
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.status).toBe('running');
+            expect(state.current.phase).toBe('launch');
+            expect(advanceSiteGeneration).toHaveBeenCalledWith(ctx);
+        });
+
         it('puts the run in error on failure', async () => {
             const { ctx, state } = make({ ...addData });
             await onWizardImportEnd(ctx, 'run-1', {

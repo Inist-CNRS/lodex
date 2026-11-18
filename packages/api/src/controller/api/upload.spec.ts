@@ -790,7 +790,11 @@ describe('upload with site generation', () => {
             expect(startDataAddGeneration).toHaveBeenCalledWith(
                 ctx,
                 dataAdd,
-                'csv',
+                {
+                    loaderName: 'csv',
+                    importType: 'text',
+                    customLoader: undefined,
+                },
                 'uuid',
             );
             expect(add).toHaveBeenCalledWith(
@@ -821,7 +825,79 @@ describe('upload with site generation', () => {
             expect(startDataAddGeneration).toHaveBeenCalledWith(
                 ctx,
                 { relaunch: true, autoPublish: false },
-                'csv',
+                {
+                    loaderName: 'csv',
+                    importType: 'text',
+                    customLoader: undefined,
+                },
+                'uuid',
+            );
+        });
+
+        it.each([false, true, 'true', 1, [], null, 'x'])(
+            'uploadText takes a dataAdd of %j for a plain import',
+            async (dataAddValue) => {
+                const ctx: any = {
+                    tenant: 'lodex_test',
+                    request: {
+                        body: {
+                            text: 'q',
+                            loaderName: 'csv',
+                            dataAdd: dataAddValue,
+                        },
+                    },
+                };
+                await uploadText(ctx);
+                expect(startDataAddGeneration).not.toHaveBeenCalled();
+                expect(add.mock.calls[0][1]).not.toHaveProperty(
+                    'siteGenerationRunId',
+                );
+            },
+        );
+
+        it('uploadText starts a data add for an empty object', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                runId: 'run-2',
+            });
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: {
+                    body: { text: 'q', loaderName: 'csv', dataAdd: {} },
+                },
+            };
+            await uploadText(ctx);
+            expect(startDataAddGeneration).toHaveBeenCalledWith(
+                ctx,
+                { relaunch: false, autoPublish: false },
+                expect.anything(),
+                'uuid',
+            );
+        });
+
+        it('uploadUrl starts a data add with the url import type and its customLoader', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                runId: 'run-2',
+            });
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: {
+                    body: {
+                        url: 'http://h/data.csv',
+                        loaderName: 'csv',
+                        customLoader: 'x => x',
+                        dataAdd,
+                    },
+                },
+            };
+            await uploadUrl(ctx);
+            expect(startDataAddGeneration).toHaveBeenCalledWith(
+                ctx,
+                dataAdd,
+                {
+                    loaderName: 'csv',
+                    importType: 'url',
+                    customLoader: 'x => x',
+                },
                 'uuid',
             );
         });
@@ -908,7 +984,11 @@ describe('upload with site generation', () => {
                 expect(startDataAddGeneration).toHaveBeenCalledWith(
                     ctx,
                     dataAdd,
-                    'csv',
+                    {
+                        loaderName: 'csv',
+                        importType: 'file',
+                        customLoader: null,
+                    },
                     'uuid',
                 );
                 expect(add).toHaveBeenCalledWith(
@@ -948,7 +1028,11 @@ describe('upload with site generation', () => {
                 expect(startDataAddGeneration).toHaveBeenCalledWith(
                     ctx,
                     { relaunch: true, autoPublish: false },
-                    'csv',
+                    {
+                        loaderName: 'csv',
+                        importType: 'file',
+                        customLoader: null,
+                    },
                     'uuid',
                 );
             });

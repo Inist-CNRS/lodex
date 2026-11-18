@@ -1662,3 +1662,4 @@ Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_C
 "simplified_upload_publish"	"Publish the site after the import"	"Publier le site après l'import"
 "not_simplified"	"This site no longer uses a catalog model: reload the page."	"Ce site n'utilise plus un modèle du catalogue : rechargez la page."
 "loader_not_allowed"	"This loader does not match the site model."	"Ce loader ne correspond pas au modèle du site."
+"import_type_not_allowed"	"This import type does not match the site model."	"Ce type d'import ne correspond pas au modèle du site."

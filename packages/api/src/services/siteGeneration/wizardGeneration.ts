@@ -89,21 +89,70 @@ const advanceNow = async (ctx: any) => {
     }
 };
 
+// The rows are in: whatever fails from here, the generation ends in error in
+// its launch phase, so that « Réessayer » relaunches it and not the import
+const failDataAddLaunch = async (
+    ctx: any,
+    runId: string,
+    steps: SiteGenerationStep[],
+    message: string,
+) => {
+    try {
+        const latest: SiteGeneration | null =
+            await ctx.siteGeneration.findCurrent();
+        // a run stopped meanwhile (« Arrêter ») is left as it is
+        if (latest?.runId !== runId || latest.status !== 'running') {
+            return;
+        }
+        // the transition was committed though it threw: go on
+        if (latest.phase === 'launch') {
+            await advanceNow(ctx);
+            return;
+        }
+        if (latest.phase === 'data') {
+            await ctx.siteGeneration.transition(latest, {
+                status: 'error',
+                phase: 'launch',
+                position: firstPosition(steps),
+                message,
+            });
+        }
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation failure write error', {
+            error: (e as Error).message,
+        });
+    }
+};
+
 // A data add has no model to restore: its steps are already known, the
 // launch phase starts right after the import
 const launchDataAdd = async (ctx: any, current: SiteGeneration) => {
+    const steps = current.steps ?? [];
+    // only informative: a failure of the count does not stop the launch
+    let importedLines: number | undefined;
     try {
-        const importedLines = await ctx.dataset.estimatedDocumentCount();
+        importedLines = await ctx.dataset.estimatedDocumentCount();
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation count error', {
+            error: (e as Error).message,
+        });
+    }
+    try {
         const moved = await ctx.siteGeneration.transition(current, {
             phase: 'launch',
-            importedLines,
-            position: firstPosition(current.steps ?? []),
+            ...(importedLines !== undefined && { importedLines }),
+            position: firstPosition(steps),
         });
         if (!moved) {
             return;
         }
     } catch (e) {
-        await failWizardGeneration(ctx, current.runId, (e as Error).message);
+        await failDataAddLaunch(
+            ctx,
+            current.runId,
+            steps,
+            (e as Error).message,
+        );
         return;
     }
     await advanceNow(ctx);

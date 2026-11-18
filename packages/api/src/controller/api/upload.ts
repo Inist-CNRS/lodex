@@ -7,6 +7,7 @@ import route from 'koa-route';
 
 import config from 'config';
 import {
+    type ModelImportType,
     ProgressStatus,
     SITE_INFO_KEYS,
     type SiteDataAddChoice,
@@ -87,7 +88,14 @@ type ImportRequest = {
     wizard?: unknown;
     dataAdd?: unknown;
     loaderName: string;
+    // the route of the import, and the custom loader it carries
+    importType: ModelImportType;
+    customLoader?: unknown;
 };
+
+// Only an object makes a data add: false, a text... are a plain import
+const isDataAddChoice = (value: unknown) =>
+    typeof value === 'object' && value !== null && !Array.isArray(value);
 
 // Queues an import (of the wizard, of a data add or a manual one). When the
 // request carries the wizard's choice or a data add, the site generation starts first and the import carries its run: a
@@ -97,7 +105,7 @@ type ImportRequest = {
 // then the error goes on.
 const queueImport = async (
     ctx: any,
-    { wizard, dataAdd, loaderName }: ImportRequest,
+    { wizard, dataAdd, loaderName, importType, customLoader }: ImportRequest,
     jobData: Record<string, unknown>,
     beforeQueue?: () => Promise<void>,
 ): Promise<ImportRefusal | undefined> => {
@@ -115,11 +123,11 @@ const queueImport = async (
             return { status: result.status, error: result.error };
         }
         siteGenerationRunId = result.runId;
-    } else if (dataAdd !== undefined && dataAdd !== null) {
+    } else if (isDataAddChoice(dataAdd)) {
         const result = await startDataAddGeneration(
             ctx,
             pickSiteDataAddChoice(dataAdd),
-            loaderName,
+            { loaderName, importType, customLoader },
             importJobId,
         );
         if ('error' in result) {
@@ -309,7 +317,13 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
         try {
             refusal = await queueImport(
                 ctx,
-                { wizard: choice, dataAdd, loaderName },
+                {
+                    wizard: choice,
+                    dataAdd,
+                    loaderName,
+                    importType: 'file',
+                    customLoader,
+                },
                 { filename, totalChunks, extension, customLoader },
                 async () => {
                     // a cancel coming from now on is too late: the import runs
@@ -349,7 +363,13 @@ export const uploadUrl = async (ctx: any) => {
     const [extension] = url.match(/[^.]*$/);
     const refusal = await queueImport(
         ctx,
-        { wizard: siteGeneration, dataAdd, loaderName },
+        {
+            wizard: siteGeneration,
+            dataAdd,
+            loaderName,
+            importType: 'url',
+            customLoader,
+        },
         {
             url,
             extension,
@@ -370,7 +390,13 @@ export const uploadText = async (ctx: any) => {
         ctx.request.body;
     const refusal = await queueImport(
         ctx,
-        { wizard: siteGeneration, dataAdd, loaderName },
+        {
+            wizard: siteGeneration,
+            dataAdd,
+            loaderName,
+            importType: 'text',
+            customLoader,
+        },
         { text, customLoader },
     );
     if (refusal) {

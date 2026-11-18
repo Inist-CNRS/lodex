@@ -452,10 +452,11 @@ export const relaunchSiteGeneration = async (
         attempts: 0,
         jobId: randomUUID(),
     }));
-    const relaunched = await ctx.siteGeneration.transition(generation, {
-        status: 'running',
-        steps,
-    });
+    const relaunched = await ctx.siteGeneration.transition(
+        generation,
+        { status: 'running', steps },
+        { unset: ['message', 'detail'] },
+    );
     if (!relaunched) {
         return false;
     }

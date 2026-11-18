@@ -14,6 +14,7 @@ import {
     queuePublisher,
 } from '../../workers/tools';
 import { MODEL_IMPORTER } from './wizardJobs';
+import { countStepsByType } from './buildLaunchSteps';
 import { queueEnrichment, queuePrecomputed } from '../launchTasks';
 import { invalidateRepositories } from '../repositoryMiddleware';
 import {
@@ -1120,6 +1121,73 @@ describe('siteGeneration service', () => {
             );
         });
 
+        it('relaunches the launch phase of a data add in error before any step was launched', async () => {
+            const started = await siteGeneration.startDataAdd({
+                importJobId: 'import-job',
+                autoPublish: false,
+                steps: STEPS,
+                estimate: countStepsByType(STEPS),
+            });
+            await siteGeneration.transition(started, {
+                status: 'error',
+                phase: 'launch',
+                position: 1,
+                message: 'boom',
+            });
+
+            expect(await relaunchSiteGeneration(ctx)).toBe(true);
+
+            expect(ctx.dataset.drop).not.toHaveBeenCalled();
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'running',
+            );
+            await advanceSiteGeneration(ctx);
+            expect(queued()).toEqual([
+                { id: 'clusterRameau-id', options: { relaunch: true } },
+            ]);
+        });
+
+        it('clears the message of a launch phase in error when relaunching', async () => {
+            const started = await siteGeneration.startDataAdd({
+                importJobId: 'import-job',
+                autoPublish: false,
+                steps: STEPS,
+                estimate: countStepsByType(STEPS),
+            });
+            await siteGeneration.transition(started, {
+                status: 'error',
+                phase: 'launch',
+                position: 1,
+                message: 'boom',
+                detail: 'why',
+            });
+
+            expect(await relaunchSiteGeneration(ctx)).toBe(true);
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('running');
+            expect(current?.message).toBeUndefined();
+            expect(current?.detail).toBeUndefined();
+        });
+
+        it('ends a data add without step relaunched in its launch phase', async () => {
+            const started = await siteGeneration.startDataAdd({
+                importJobId: 'import-job',
+                autoPublish: false,
+                steps: [],
+            });
+            await siteGeneration.transition(started, {
+                status: 'error',
+                phase: 'launch',
+                message: 'boom',
+            });
+
+            expect(await relaunchSiteGeneration(ctx)).toBe(true);
+            await advanceSiteGeneration(ctx);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe('done');
+        });
+
         it.each(['model', 'settings'] as const)(
             'queues the model job again from the %s phase',
             async (phase) => {
@@ -1308,6 +1376,7 @@ describe('siteGeneration service', () => {
                 importJobId: 'job',
                 autoPublish: false,
                 steps: STEPS,
+                estimate: countStepsByType(STEPS),
             });
 
             expect(await getSiteGenerationView(ctx)).toEqual(
