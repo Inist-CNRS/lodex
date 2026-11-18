@@ -451,51 +451,6 @@ describe('field routes', () => {
         });
     });
 
-    describe('dropFieldCollection', () => {
-        it('forgets the model of the wizard', async () => {
-            const ctx: any = {
-                tenant: 'lodex_test',
-                field: {
-                    drop: jest.fn(),
-                    initializeModel: jest.fn(),
-                },
-                subresource: { drop: jest.fn() },
-                siteModel: { forget: jest.fn() },
-                db: {
-                    listCollections: () => ({ toArray: async () => [] }),
-                },
-            };
-
-            await dropFieldCollection(ctx);
-
-            expect(ctx.status).toBe(200);
-            expect(ctx.siteModel.forget).toHaveBeenCalledTimes(1);
-        });
-    });
-
-    describe('dropFieldCollection when forgetting the model fails', () => {
-        it('still answers 200', async () => {
-            const ctx: any = {
-                tenant: 'lodex_test',
-                field: { drop: jest.fn(), initializeModel: jest.fn() },
-                subresource: { drop: jest.fn() },
-                siteModel: {
-                    forget: jest
-                        .fn()
-                        .mockRejectedValue(new Error('mongo down')),
-                },
-                db: {
-                    listCollections: () => ({ toArray: async () => [] }),
-                },
-            };
-
-            await dropFieldCollection(ctx);
-
-            expect(ctx.status).toBe(200);
-            expect(ctx.body).toEqual({ message: 'model_cleared' });
-        });
-    });
-
     describe('applyRecommendedTheme', () => {
         let ctx: any;
 
@@ -628,6 +583,36 @@ describe('field routes', () => {
 
             expect(ctx.status).toBe(400);
             expect(ctx.field.drop).not.toHaveBeenCalled();
+        });
+
+        it('should forget the model of the wizard', async () => {
+            const ctx: any = {
+                ...makeCtx(),
+                tenant: 'lodex_test',
+                siteModel: { forget: jest.fn() },
+            };
+
+            await dropFieldCollection(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.siteModel.forget).toHaveBeenCalledTimes(1);
+        });
+
+        it('should still answer 200 when forgetting the model fails', async () => {
+            const ctx: any = {
+                ...makeCtx(),
+                tenant: 'lodex_test',
+                siteModel: {
+                    forget: jest
+                        .fn()
+                        .mockRejectedValue(new Error('mongo down')),
+                },
+            };
+
+            await dropFieldCollection(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toEqual({ message: 'model_cleared' });
         });
     });
 
