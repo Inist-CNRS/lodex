@@ -22,6 +22,7 @@ import {
     restoreFields,
 } from '../../services/modelRestore';
 import {
+    dropFieldCollection,
     exportFields,
     getAllField,
     importFields,
@@ -284,7 +285,9 @@ describe('field routes', () => {
     describe('importFields', () => {
         const ctx = {
             req: 'request',
+            tenant: 'lodex_test',
             set: jest.fn(),
+            siteModel: { forget: jest.fn() },
             restoreFields: jest
                 .fn()
                 .mockImplementation(() => Promise.resolve('RESTORE OK')),
@@ -292,6 +295,7 @@ describe('field routes', () => {
         beforeEach(() => {
             ctx.restoreFields.mockClear();
             ctx.set.mockClear();
+            ctx.siteModel.forget.mockClear();
 
             // @ts-expect-error TS(2339): Property 'enrichment' does not exist on type '{ re... Remove this comment to see the full error message
             ctx.enrichment = enrichmentModel;
@@ -374,6 +378,34 @@ describe('field routes', () => {
             expect(ctx.body.hasEnrichments).toBe(true);
         });
 
+        it('forgets the model of the wizard before the fields are restored', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+
+            await importFields(asyncBusboyImpl)(ctx);
+
+            expect(ctx.siteModel.forget).toHaveBeenCalledTimes(1);
+            expect(
+                ctx.siteModel.forget.mock.invocationCallOrder[0],
+            ).toBeLessThan(ctx.restoreFields.mock.invocationCallOrder[0]);
+        });
+
+        it('still answers 200 when forgetting the model of the wizard fails', async () => {
+            ctx.siteModel.forget.mockRejectedValueOnce(new Error('mongo down'));
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+
+            await importFields(asyncBusboyImpl)(ctx);
+
+            expect(ctx.siteModel.forget).toHaveBeenCalledTimes(1);
+            expect((ctx as any).status).toBe(200);
+            expect((ctx as any).body.message).toBe(
+                'Model imported successfully',
+            );
+        });
+
         it('should return the theme that could not be applied', async () => {
             const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
                 files: ['file0'],
@@ -402,6 +434,64 @@ describe('field routes', () => {
             expect(ctx.status).toBe(500);
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toBe('Error!');
+        });
+
+        it('forgets the model of the wizard even when the restoration fails', async () => {
+            const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
+                files: ['file0'],
+            }));
+            ctx.restoreFields.mockImplementation(() => {
+                throw new Error('Error!');
+            });
+
+            await importFields(asyncBusboyImpl)(ctx);
+
+            expect(ctx.siteModel.forget).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('dropFieldCollection', () => {
+        it('forgets the model of the wizard', async () => {
+            const ctx: any = {
+                tenant: 'lodex_test',
+                field: {
+                    drop: jest.fn(),
+                    initializeModel: jest.fn(),
+                },
+                subresource: { drop: jest.fn() },
+                siteModel: { forget: jest.fn() },
+                db: {
+                    listCollections: () => ({ toArray: async () => [] }),
+                },
+            };
+
+            await dropFieldCollection(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.siteModel.forget).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('dropFieldCollection when forgetting the model fails', () => {
+        it('still answers 200', async () => {
+            const ctx: any = {
+                tenant: 'lodex_test',
+                field: { drop: jest.fn(), initializeModel: jest.fn() },
+                subresource: { drop: jest.fn() },
+                siteModel: {
+                    forget: jest
+                        .fn()
+                        .mockRejectedValue(new Error('mongo down')),
+                },
+                db: {
+                    listCollections: () => ({ toArray: async () => [] }),
+                },
+            };
+
+            await dropFieldCollection(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toEqual({ message: 'model_cleared' });
         });
     });
 
