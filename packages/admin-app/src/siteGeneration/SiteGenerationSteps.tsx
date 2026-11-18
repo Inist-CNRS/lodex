@@ -184,6 +184,12 @@ const useStepContent = (
             smart_count: lines,
             count: lines.toLocaleString(locale),
         });
+    // a data add reports the whole dataset, not only the lines it imported
+    const datasetLines = (lines: number) =>
+        translate('site_generation_dataset_lines', {
+            smart_count: lines,
+            count: lines.toLocaleString(locale),
+        });
     const isRunning = step.state === 'running';
     switch (step.key) {
         case 'data':
@@ -200,7 +206,9 @@ const useStepContent = (
                               ? `${translate(importProgress.status)} — ${importedLines(importProgress.lines)}`
                               : translate(importProgress.status)
                           : view?.importedLines != null
-                            ? importedLines(view.importedLines)
+                            ? view.kind === 'addData'
+                                ? datasetLines(view.importedLines)
+                                : importedLines(view.importedLines)
                             : undefined,
             };
         case 'model':

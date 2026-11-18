@@ -24,6 +24,7 @@ import { LOAD_PRECOMPUTED } from '../precomputed';
 import { LOAD_PARSING_RESULT } from '../parsing';
 import { LOAD_PUBLICATION } from '../publication';
 import { LOAD_SUBRESOURCES } from '../subresource';
+import { SITE_MODEL_QUERY_KEY } from '../upload/useSiteModel';
 import { hasTranslation } from '../siteWizard/hasTranslation';
 import { SiteGenerationDialog } from './SiteGenerationDialog';
 import { SiteGenerationSteps } from './SiteGenerationSteps';
@@ -463,6 +464,56 @@ describe('SiteGenerationDialog', () => {
         );
     });
 
+    it('relaunches and goes back to the data add page on a retry of a data add import', async () => {
+        renderDialog(
+            buildGeneration({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                status: 'error',
+                phase: 'data',
+                message: 'import_failed',
+            }),
+        );
+        await userEvent.click(await screen.findByText('site_generation_retry'));
+        await waitFor(() =>
+            expect(screen.getByTestId('location')).toHaveTextContent(
+                '/data/add',
+            ),
+        );
+        expect(relaunchSiteGeneration).toHaveBeenCalled();
+        expect(screen.getByTestId('location')).not.toHaveAttribute(
+            'data-state',
+            JSON.stringify({ reopenSiteWizard: true }),
+        );
+    });
+
+    it('counts the lines of the dataset, not the imported ones, for a data add', async () => {
+        renderDialog(
+            buildGeneration({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                phase: 'launch',
+            }),
+        );
+        expect(
+            await screen.findByText(
+                /site_generation_dataset_lines|dans le jeu de données/,
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByText(/site_generation_imported_lines|importées/),
+        ).not.toBeInTheDocument();
+    });
+
+    it('counts the imported lines for the wizard', async () => {
+        renderDialog(buildGeneration({ phase: 'launch' }));
+        expect(
+            await screen.findByText(/site_generation_imported_lines|importées/),
+        ).toBeInTheDocument();
+    });
+
     it('does not reopen the wizard when the relaunch fails', async () => {
         (relaunchSiteGeneration as jest.Mock).mockRejectedValue(
             new Error('boom'),
@@ -554,6 +605,11 @@ describe('SiteGenerationDialog', () => {
         renderDialog(buildGeneration());
         // the model import changes the name, description and theme
         client.setQueryData(['get-config-tenant'], { theme: 'default' });
+        // the wizard writes the memory of the site model
+        client.setQueryData(SITE_MODEL_QUERY_KEY, { siteModel: null });
+        client.setQueryData([...SITE_MODEL_QUERY_KEY, 'launch'], {
+            launch: null,
+        });
         await screen.findByText('site_generation_title');
         await changeGeneration(
             buildGeneration({ status: 'done', phase: 'launch' }),
@@ -563,6 +619,10 @@ describe('SiteGenerationDialog', () => {
         );
         expect(dispatched).toEqual(expect.arrayContaining(RELOADS));
         expect(client.getQueryData(['get-config-tenant'])).toBeUndefined();
+        expect(client.getQueryData(SITE_MODEL_QUERY_KEY)).toBeUndefined();
+        expect(
+            client.getQueryData([...SITE_MODEL_QUERY_KEY, 'launch']),
+        ).toBeUndefined();
         expect(toast).not.toHaveBeenCalled();
     });
 

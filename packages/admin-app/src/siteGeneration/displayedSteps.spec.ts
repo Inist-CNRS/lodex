@@ -20,6 +20,36 @@ const buildView = (
 });
 
 describe('getDisplayedSteps', () => {
+    it('shows the data, launch and publication steps of a data add', () => {
+        const steps = getDisplayedSteps(
+            buildView({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                phase: 'data',
+                publication: { state: 'waiting' },
+            }),
+        );
+        expect(steps.map(({ key }) => key)).toEqual([
+            'data',
+            'launch',
+            'publication',
+        ]);
+    });
+
+    it('shows only the data step of a data add without launch nor publication', () => {
+        const steps = getDisplayedSteps(
+            buildView({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                phase: 'data',
+                launch: null,
+            }),
+        );
+        expect(steps.map(({ key }) => key)).toEqual(['data']);
+    });
+
     it('shows every step of a whole generation, the current one running', () => {
         const steps = getDisplayedSteps(buildView());
         expect(steps).toEqual([
