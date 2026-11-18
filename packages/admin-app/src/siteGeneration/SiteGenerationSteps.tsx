@@ -230,33 +230,36 @@ const useStepContent = (
         case 'launch':
             return {
                 title: translate('site_generation_step_launch'),
-                description: view?.launch && (
-                    <>
-                        {translate('site_generation_launch_intro')}
-                        <Box component="ul" sx={{ m: 0, pl: 3 }}>
-                            <LaunchCounter
-                                counter={view.launch.enrichment}
-                                countKey="site_generation_enrichments"
-                                errorKey="site_generation_enrichments_error"
-                            />
-                            <LaunchCounter
-                                counter={view.launch.precomputed}
-                                countKey="site_generation_precomputed"
-                                errorKey="site_generation_precomputed_error"
-                            />
-                            {view.steps.map(
-                                (launchStep) =>
-                                    launchStep.retry && (
-                                        <LaunchRetry
-                                            key={`${launchStep.type}-${launchStep.name}`}
-                                            name={launchStep.name}
-                                            retry={launchStep.retry}
-                                        />
-                                    ),
-                            )}
-                        </Box>
-                    </>
-                ),
+                description: view?.launch &&
+                    view.launch.enrichment.total +
+                        view.launch.precomputed.total >
+                        0 && (
+                        <>
+                            {translate('site_generation_launch_intro')}
+                            <Box component="ul" sx={{ m: 0, pl: 3 }}>
+                                <LaunchCounter
+                                    counter={view.launch.enrichment}
+                                    countKey="site_generation_enrichments"
+                                    errorKey="site_generation_enrichments_error"
+                                />
+                                <LaunchCounter
+                                    counter={view.launch.precomputed}
+                                    countKey="site_generation_precomputed"
+                                    errorKey="site_generation_precomputed_error"
+                                />
+                                {view.steps.map(
+                                    (launchStep) =>
+                                        launchStep.retry && (
+                                            <LaunchRetry
+                                                key={`${launchStep.type}-${launchStep.name}`}
+                                                name={launchStep.name}
+                                                retry={launchStep.retry}
+                                            />
+                                        ),
+                                )}
+                            </Box>
+                        </>
+                    ),
             };
         case 'publication':
             return { title: translate('site_generation_step_publication') };

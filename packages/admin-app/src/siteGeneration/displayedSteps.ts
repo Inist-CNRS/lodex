@@ -27,7 +27,11 @@ const isShown = (view: SiteGenerationView, key: DisplayedStepKey) => {
         case 'settings':
             return !!view.settings;
         case 'launch':
-            return view.launch !== null;
+            // an error of the launch phase is shown even without steps
+            return (
+                view.launch !== null ||
+                (view.phase === 'launch' && view.status === 'error')
+            );
         case 'publication':
             return !!view.publication;
     }

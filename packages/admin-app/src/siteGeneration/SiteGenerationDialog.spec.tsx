@@ -507,6 +507,44 @@ describe('SiteGenerationDialog', () => {
         ).not.toBeInTheDocument();
     });
 
+    it('shows the error and the retry of a data add in error in its launch phase without steps', async () => {
+        renderDialog(
+            buildGeneration({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                status: 'error',
+                phase: 'launch',
+                steps: [],
+                launch: null,
+                message: 'boom',
+            }),
+        );
+        expect(await screen.findByText('boom')).toBeInTheDocument();
+        expect(screen.getByText('site_generation_retry')).toBeInTheDocument();
+        expect(
+            screen.queryByText(/site_generation_launch_intro|Lancement de/),
+        ).not.toBeInTheDocument();
+    });
+
+    it('shows no launch intro when the counts are unknown', async () => {
+        renderDialog(
+            buildGeneration({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                phase: 'launch',
+                launch: { enrichment: counter(0), precomputed: counter(0) },
+            }),
+        );
+        expect(
+            await screen.findByText('site_generation_step_launch'),
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByText(/site_generation_launch_intro|Lancement de/),
+        ).not.toBeInTheDocument();
+    });
+
     it('counts the imported lines for the wizard', async () => {
         renderDialog(buildGeneration({ phase: 'launch' }));
         expect(

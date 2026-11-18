@@ -30,9 +30,20 @@ describe('getDataAddUploadView', () => {
         expect(view.launch).toBeNull();
     });
 
-    it('has no launch step when the counts are unknown', () => {
+    it('shows the launch step without counts when they are unknown', () => {
         const view = getDataAddUploadView(null, {
             relaunch: true,
+            autoPublish: false,
+        });
+        expect(view.launch).toEqual({
+            enrichment: { done: 0, error: 0, total: 0 },
+            precomputed: { done: 0, error: 0, total: 0 },
+        });
+    });
+
+    it('has no launch step without relaunch when the counts are unknown', () => {
+        const view = getDataAddUploadView(null, {
+            relaunch: false,
             autoPublish: false,
         });
         expect(view.launch).toBeNull();

@@ -50,6 +50,23 @@ describe('getDisplayedSteps', () => {
         expect(steps.map(({ key }) => key)).toEqual(['data']);
     });
 
+    it('shows the launch step of a data add in error in its launch phase without steps', () => {
+        const steps = getDisplayedSteps(
+            buildView({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                phase: 'launch',
+                status: 'error',
+                launch: null,
+            }),
+        );
+        expect(steps).toEqual([
+            { key: 'data', state: 'done' },
+            { key: 'launch', state: 'error' },
+        ]);
+    });
+
     it('shows every step of a whole generation, the current one running', () => {
         const steps = getDisplayedSteps(buildView());
         expect(steps).toEqual([

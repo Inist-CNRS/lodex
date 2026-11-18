@@ -46,7 +46,28 @@ export const getUploadView = (
 });
 
 // the same for a data add: no model nor settings, and a launch only when there
-// are steps to relaunch
+// are steps to relaunch. Unknown counts (null) with a relaunch still show the
+// step, without counts (a counter with no total shows no line).
+// The step may disappear once the server's view takes over if the model has
+// nothing to relaunch (rare: only when reading the counts failed).
+const getDataAddLaunch = (
+    launch: SiteModelLaunchView | null,
+    relaunch: boolean,
+): SiteGenerationView['launch'] => {
+    if (!relaunch) {
+        return null;
+    }
+    if (!launch) {
+        return { enrichment: counter(0), precomputed: counter(0) };
+    }
+    return launch.enrichment + launch.precomputed > 0
+        ? {
+              enrichment: counter(launch.enrichment),
+              precomputed: counter(launch.precomputed),
+          }
+        : null;
+};
+
 export const getDataAddUploadView = (
     launch: SiteModelLaunchView | null,
     { relaunch, autoPublish }: SiteDataAddChoice,
@@ -55,12 +76,6 @@ export const getDataAddUploadView = (
     status: 'running',
     phase: 'data',
     steps: [],
-    launch:
-        relaunch && launch && launch.enrichment + launch.precomputed > 0
-            ? {
-                  enrichment: counter(launch.enrichment),
-                  precomputed: counter(launch.precomputed),
-              }
-            : null,
+    launch: getDataAddLaunch(launch, relaunch),
     ...(autoPublish && { publication: { state: 'waiting' } }),
 });
