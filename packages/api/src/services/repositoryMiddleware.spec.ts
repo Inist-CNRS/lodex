@@ -38,6 +38,7 @@ describe('mongoClient middleware', () => {
             'configTenantCollection',
             'hiddenResource',
             'siteGeneration',
+            'siteModel',
             'dataSource',
         ]);
     });
