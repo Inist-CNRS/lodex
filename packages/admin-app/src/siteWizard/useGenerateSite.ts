@@ -1,8 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { type CatalogModel, type SiteInfo } from '@lodex/common';
+import {
+    type CatalogModel,
+    type SiteDataAddChoice,
+    type SiteInfo,
+} from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { uploadDataset, type DatasetSource } from '../upload/uploadDataset';
+import {
+    uploadDataset,
+    type DatasetSource,
+    type DatasetChoiceOptions,
+} from '../upload/uploadDataset';
 import { allowUnload, preventUnload } from '../upload/sagas/unload';
 import { SITE_GENERATION_QUERY_KEY } from '../siteGeneration/useSiteGeneration';
 import { getErrorDetail } from '../commons/getErrorDetail';
@@ -51,18 +59,18 @@ export const useGenerateSite = () => {
         };
     }, []);
 
-    const generate = useCallback(
+    // the send path shared by the wizard's generation and a data add
+    const send = useCallback(
         async (
             model: CatalogModel,
             source: DatasetSource,
-            siteInfo: SiteInfo = {},
+            uploadOptions: DatasetChoiceOptions,
         ) => {
             setError(null);
             isCancellingRef.current = false;
             setIsCancelling(false);
             setIsGenerating(true);
             try {
-                const choice = { modelId: model.id, ...siteInfo };
                 try {
                     if (source.type === 'file') {
                         // the only source long to upload: show its progress,
@@ -73,7 +81,7 @@ export const useGenerateSite = () => {
                         preventUnload();
                         setUploadProgress(0);
                         await uploadDataset(source, model.loader, {
-                            choice,
+                            ...uploadOptions,
                             signal: uploadAbort.signal,
                             onProgress: (progress) => {
                                 if (isMountedRef.current) {
@@ -84,7 +92,11 @@ export const useGenerateSite = () => {
                             },
                         });
                     } else {
-                        await uploadDataset(source, model.loader, { choice });
+                        await uploadDataset(
+                            source,
+                            model.loader,
+                            uploadOptions,
+                        );
                     }
                 } catch (uploadError) {
                     if (getErrorDetail(uploadError) !== UPLOAD_IMPORT_STARTED) {
@@ -134,6 +146,23 @@ export const useGenerateSite = () => {
         [translate, queryClient],
     );
 
+    const generate = useCallback(
+        (model: CatalogModel, source: DatasetSource, siteInfo: SiteInfo = {}) =>
+            send(model, source, {
+                choice: { modelId: model.id, ...siteInfo },
+            }),
+        [send],
+    );
+
+    const addData = useCallback(
+        (
+            model: CatalogModel,
+            source: DatasetSource,
+            choice: SiteDataAddChoice,
+        ) => send(model, source, { dataAdd: choice }),
+        [send],
+    );
+
     const clearError = useCallback(() => setError(null), []);
 
     // only a file still uploading can be cancelled: loadFile tells the server
@@ -149,6 +178,7 @@ export const useGenerateSite = () => {
 
     return {
         generate,
+        addData,
         isGenerating,
         uploadProgress,
         // during the file upload only

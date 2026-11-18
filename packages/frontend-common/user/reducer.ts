@@ -2,7 +2,11 @@ import omit from 'lodash/omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { ADMIN_ROLE, type SiteWizardChoice } from '@lodex/common';
+import {
+    ADMIN_ROLE,
+    type SiteDataAddChoice,
+    type SiteWizardChoice,
+} from '@lodex/common';
 import getQueryString from '../utils/getQueryString';
 
 export const LOGIN = 'LOGIN';
@@ -698,11 +702,13 @@ export const getUploadUrlRequest = (
         loaderName,
         customLoader = null,
         siteGeneration,
+        dataAdd,
     }: {
         url: string;
         loaderName: string;
         customLoader?: string | null;
         siteGeneration?: SiteWizardChoice;
+        dataAdd?: SiteDataAddChoice;
     },
 ) =>
     getRequest(state, {
@@ -713,6 +719,7 @@ export const getUploadUrlRequest = (
             loaderName,
             customLoader,
             siteGeneration,
+            dataAdd,
         },
     });
 
@@ -723,11 +730,13 @@ export const getUploadTextRequest = (
         loaderName,
         customLoader = null,
         siteGeneration,
+        dataAdd,
     }: {
         text: string;
         loaderName: string;
         customLoader?: string | null;
         siteGeneration?: SiteWizardChoice;
+        dataAdd?: SiteDataAddChoice;
     },
 ) =>
     getRequest(state, {
@@ -738,12 +747,23 @@ export const getUploadTextRequest = (
             loaderName,
             customLoader,
             siteGeneration,
+            dataAdd,
         },
     });
 
 export const getSiteGenerationRequest = (state: UserState) =>
     getRequest(state, {
         url: '/api/site-generation',
+    });
+
+export const getSiteModelRequest = (state: UserState) =>
+    getRequest(state, {
+        url: '/api/site-model',
+    });
+
+export const getSiteModelLaunchRequest = (state: UserState) =>
+    getRequest(state, {
+        url: '/api/site-model/launch',
     });
 
 export const getRelaunchSiteGenerationRequest = (state: UserState) =>
@@ -1047,6 +1067,8 @@ export const selectors = {
     getUploadUrlRequest,
     getUploadTextRequest,
     getSiteGenerationRequest,
+    getSiteModelRequest,
+    getSiteModelLaunchRequest,
     getRelaunchSiteGenerationRequest,
     getStopSiteGenerationRequest,
     getUrlRequest,

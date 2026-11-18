@@ -95,6 +95,43 @@ describe('uploadDataset', () => {
         expect(JSON.parse(request.body).siteGeneration).toEqual(choice);
     });
 
+    it('lets the wizard choice win over a data add with a file', async () => {
+        const file = new File(['a'], 'a.csv');
+        await uploadDataset({ type: 'file', file }, 'csv', {
+            choice: { modelId: 'a' },
+            dataAdd: { relaunch: true, autoPublish: false },
+        } as never);
+        expect((loadDatasetFile as jest.Mock).mock.calls[0][4].query).toEqual({
+            modelId: 'a',
+        });
+    });
+
+    it('sends the data add as query fields with a file', async () => {
+        const file = new File(['a'], 'a.csv');
+        await uploadDataset({ type: 'file', file }, 'csv', {
+            dataAdd: { relaunch: true, autoPublish: false },
+        });
+        expect((loadDatasetFile as jest.Mock).mock.calls[0][4].query).toEqual({
+            dataAdd: 'true',
+            relaunch: 'true',
+            autoPublish: 'false',
+        });
+    });
+
+    it.each([
+        ['url', { type: 'url' as const, url: 'http://x/a.csv' }],
+        ['text', { type: 'text' as const, text: 'a,b' }],
+    ])('sends the data add in the body with a %s', async (_, source) => {
+        await uploadDataset(source, 'csv', {
+            dataAdd: { relaunch: true, autoPublish: false },
+        });
+        const request = (fetch as jest.Mock).mock.calls[0][0];
+        expect(JSON.parse(request.body).dataAdd).toEqual({
+            relaunch: true,
+            autoPublish: false,
+        });
+    });
+
     it('uploads an url', async () => {
         await uploadDataset({ type: 'url', url: 'http://x/a.csv' }, 'csv');
         const request = (fetch as jest.Mock).mock.calls[0][0];
