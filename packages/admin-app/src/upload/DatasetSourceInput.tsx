@@ -71,11 +71,14 @@ const styles = {
             minHeight: '120px',
             display: 'flex',
             flexDirection: 'column',
-            // safe: a content taller than the dropzone scrolls from its top
-            justifyContent: 'safe center',
             padding: '0.5rem 1rem',
             overflowY: 'auto',
         },
+        // centered by auto margins, which fall to zero once the content is
+        // taller than the dropzone: it then scrolls from its top (unlike
+        // justify-content: center, and 'safe center' needs Safari 17.6)
+        '& .dropzoneTextContainer': { mt: 'auto' },
+        '& .dropzone > :last-child': { mb: 'auto' },
         // the file name must fit below the text (13" screens)
         '& .dropzoneText': { my: 1 },
         '& .dropzoneIcon': { width: 36, height: 36 },
@@ -323,6 +326,7 @@ export const DatasetSourceInput = ({
                                     !!url && 'disabledDropzone'
                                 }`}
                                 classes={{
+                                    textContainer: 'dropzoneTextContainer',
                                     text: 'dropzoneText',
                                     icon: 'dropzoneIcon',
                                 }}
