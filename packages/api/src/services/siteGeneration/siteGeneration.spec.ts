@@ -350,6 +350,7 @@ describe('siteGeneration service', () => {
                 const current = await siteGeneration.findCurrent();
                 expect(current?.status).toBe('running');
                 expect(current?.steps[0].attempts).toBe(attempts + 1);
+                expect(current?.steps[0].lastError).toBe('boom');
             },
         );
 
@@ -1284,6 +1285,39 @@ describe('siteGeneration service', () => {
                 enrichment: { done: 1, total: 2, error: 1 },
                 precomputed: { done: 0, total: 0, error: 0 },
             });
+        });
+
+        it('tells which steps are relaunched, and why their last run failed', async () => {
+            const generation = await start(STEPS);
+            await siteGeneration.transition(generation, {
+                steps: STEPS.map((s) =>
+                    s.position === 1 ? { ...s, jobId: 'job-1' } : s,
+                ),
+            });
+            setStatus('clusterRameau', TaskStatus.ERROR, {
+                message: 'boom',
+                jobId: 'job-1',
+            });
+
+            await advanceSiteGeneration(ctx);
+
+            const view = await getSiteGenerationView(ctx);
+            expect(view?.steps[0]).toEqual({
+                name: 'clusterRameau',
+                type: 'precomputed',
+                position: 1,
+                state: 'running',
+                retry: {
+                    attempt: 1,
+                    max: SITE_GENERATION_MAX_RELAUNCHES,
+                    message: 'boom',
+                },
+            });
+
+            setStatus('clusterRameau', TaskStatus.FINISHED);
+            expect(
+                (await getSiteGenerationView(ctx))?.steps[0],
+            ).not.toHaveProperty('retry');
         });
 
         it('reads the targets in one query per type', async () => {

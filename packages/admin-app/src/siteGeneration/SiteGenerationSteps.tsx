@@ -140,6 +140,36 @@ const LaunchCounter = ({
     );
 };
 
+// a launch step relaunched after a failure: which one, its attempt, and why
+// the previous run failed
+const LaunchRetry = ({
+    name,
+    retry,
+}: {
+    name: string;
+    retry: NonNullable<SiteGenerationView['steps'][number]['retry']>;
+}) => {
+    const { translate } = useTranslate();
+    return (
+        <li>
+            {translate('site_generation_step_retrying', {
+                name,
+                attempt: retry.attempt,
+                max: retry.max,
+            })}
+            {retry.message && (
+                <>
+                    {' - '}
+                    <Box component="span" sx={{ color: 'warning.main' }}>
+                        {/* the server sends a translation key, or the raw error */}
+                        {translate(retry.message)}
+                    </Box>
+                </>
+            )}
+        </li>
+    );
+};
+
 type StepContent = { title: string; description?: ReactNode };
 
 const useStepContent = (
@@ -206,6 +236,16 @@ const useStepContent = (
                                 countKey="site_generation_precomputed"
                                 errorKey="site_generation_precomputed_error"
                             />
+                            {view.steps.map(
+                                (launchStep) =>
+                                    launchStep.retry && (
+                                        <LaunchRetry
+                                            key={`${launchStep.type}-${launchStep.name}`}
+                                            name={launchStep.name}
+                                            retry={launchStep.retry}
+                                        />
+                                    ),
+                            )}
                         </Box>
                     </>
                 ),

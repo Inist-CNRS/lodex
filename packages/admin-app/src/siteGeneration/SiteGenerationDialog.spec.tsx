@@ -287,6 +287,36 @@ describe('SiteGenerationDialog', () => {
         ).toBeInTheDocument();
     });
 
+    it('tells which launch steps are tried again, and why', async () => {
+        renderDialog(
+            buildGeneration({
+                phase: 'launch',
+                steps: [
+                    {
+                        name: 'Auteurs',
+                        type: 'enrichment',
+                        position: 1,
+                        state: 'running',
+                        retry: { attempt: 2, max: 3, message: 'timeout' },
+                    },
+                    {
+                        name: 'Résumé',
+                        type: 'enrichment',
+                        position: 1,
+                        state: 'running',
+                    },
+                ],
+            }),
+            { french: true },
+        );
+        expect(
+            await screen.findByText(
+                byText('Auteurs : nouvelle tentative (2/3) - timeout'),
+            ),
+        ).toBeInTheDocument();
+        expect(screen.queryByText(/Résumé : nouvelle tentative/)).toBeNull();
+    });
+
     it('names the model with its short name when it has one', async () => {
         (hasTranslation as jest.Mock).mockImplementation(
             (key: string) => key === 'mc_hal2lodex_name',
