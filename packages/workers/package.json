@@ -3,7 +3,7 @@
     "name": "@lodex/workers",
     "type": "module",
     "description": "Lodex workers",
-    "version": "16.19.0",
+    "version": "16.19.1",
     "main": "./src/index.ts",
     "scripts": {
         "dev": "NODE_CONFIG_DIR=../../config tsx watch src",
