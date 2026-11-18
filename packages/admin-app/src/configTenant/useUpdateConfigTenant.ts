@@ -24,7 +24,8 @@ export function useUpdateConfigTenant() {
                 throw error;
             }
 
-            return response.data;
+            // the API answers with the updated config itself
+            return response;
         },
         onSuccess: (data) => {
             queryClient.setQueryData(['get-config-tenant'], data);

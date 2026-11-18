@@ -117,8 +117,9 @@ export const ClearDialogComponent = (props: ClearDialogComponentProps) => {
     const handleClearModel = async () => {
         const result = await fieldApi.clearModel();
         if (result.message) {
-            // the model clear also resets the theme
-            queryClient.invalidateQueries({ queryKey: ['get-config-tenant'] });
+            // the model clear also resets the theme: back to loading, so an
+            // open settings form starts over from the reset config
+            queryClient.resetQueries({ queryKey: ['get-config-tenant'] });
             if (hasPublishedDataset) {
                 props.clearPublished();
                 props.loadPublication();
