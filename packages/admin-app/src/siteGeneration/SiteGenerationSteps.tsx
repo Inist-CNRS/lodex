@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -437,9 +437,22 @@ const Step = ({
         importProgress,
     );
     const errors = getErrorMessages(translate, step, view);
+    const isRetryShown = step.state === 'error' && !!onRetry;
+    // the dialog keeps one height: on a small screen, a failed last step and
+    // its Retry button can be below the fold
+    const ref = useRef<HTMLLIElement>(null);
+    useEffect(() => {
+        if (isRetryShown) {
+            ref.current?.scrollIntoView?.({
+                block: 'nearest',
+                behavior: 'smooth',
+            });
+        }
+    }, [isRetryShown]);
     return (
         <Box
             component="li"
+            ref={ref}
             sx={{
                 display: 'flex',
                 gap: 1.5,
@@ -479,7 +492,7 @@ const Step = ({
                     </Typography>
                 ))}
             </Box>
-            {step.state === 'error' && onRetry && (
+            {isRetryShown && (
                 <Box sx={{ alignSelf: 'center', flexShrink: 0 }}>
                     <Button
                         variant="contained"

@@ -509,6 +509,23 @@ describe('SiteGenerationDialog', () => {
         expect(screen.getByText('Maintenance en cours')).toBeVisible();
     });
 
+    it('scrolls to the step in error, so that its retry is on screen', async () => {
+        const scrollIntoView = jest.fn();
+        Element.prototype.scrollIntoView = scrollIntoView;
+        renderDialog(
+            buildGeneration({
+                status: 'error',
+                phase: 'data',
+                message: 'import_failed',
+            }),
+        );
+        const retry = await screen.findByText('site_generation_retry');
+        expect(scrollIntoView).toHaveBeenCalledTimes(1);
+        expect(scrollIntoView.mock.contexts[0]).toContainElement(retry);
+        // @ts-expect-error jsdom has no scrollIntoView
+        delete Element.prototype.scrollIntoView;
+    });
+
     it('relaunches and reopens the wizard on a retry of the data import', async () => {
         renderDialog(
             buildGeneration({
