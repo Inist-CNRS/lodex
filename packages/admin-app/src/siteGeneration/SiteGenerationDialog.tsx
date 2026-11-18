@@ -24,7 +24,7 @@ import { getDisplayedSteps } from './displayedSteps';
 import { SiteGenerationHeader } from './SiteGenerationHeader';
 import { SiteGenerationSteps } from './SiteGenerationSteps';
 import { useSiteGeneration, useSiteGenerationPush } from './useSiteGeneration';
-import { WIZARD_DIALOG_PAPER_PROPS } from '../siteWizard/wizardDialogPaper';
+import { GENERATION_DIALOG_PAPER_PROPS } from '../siteWizard/wizardDialogPaper';
 
 const SUPPORT_EMAIL = 'support-lodex@listes.istex.fr';
 
@@ -139,7 +139,7 @@ export const SiteGenerationDialog = () => {
             maxWidth="md"
             disableEscapeKeyDown
             aria-labelledby="site-generation-title"
-            PaperProps={WIZARD_DIALOG_PAPER_PROPS}
+            PaperProps={GENERATION_DIALOG_PAPER_PROPS}
         >
             {/* room for the halo of the running step, which the content clips */}
             <DialogContent sx={{ px: 1.5, mx: -1.5 }}>

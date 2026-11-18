@@ -1,6 +1,14 @@
-// The site wizard and the progress dialog that follows it share one size:
-// nothing jumps from a step to the next, nor when the wizard hands over to the
-// dialog. A long step scrolls.
+// The site wizard keeps one size: nothing jumps from a step to the next.
+// A long step scrolls.
+const WIZARD_DIALOG_HEIGHT = 'min(480px, 90vh)';
+
 export const WIZARD_DIALOG_PAPER_PROPS = {
-    sx: { height: 'min(720px, 90vh)', p: 4 },
+    sx: { height: WIZARD_DIALOG_HEIGHT, p: 4 },
+};
+
+// The progress dialog that follows starts at the wizard's size, but grows
+// with its launch and publication steps, which hold the Retry button when
+// they fail: they must not hide below the fold.
+export const GENERATION_DIALOG_PAPER_PROPS = {
+    sx: { minHeight: WIZARD_DIALOG_HEIGHT, p: 4 },
 };
