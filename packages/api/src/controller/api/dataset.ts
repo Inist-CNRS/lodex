@@ -7,13 +7,16 @@ import getLogger from '../../services/logger';
 import { resetTheme } from '../../services/modelRestore';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
+import { stopImport } from '../../workers/tools';
 import { buildQuery } from './buildQuery';
 
 const app = new Koa();
 
 export const clearDataset = async (ctx: any) => {
     try {
-        // first: a failing reset must not report an error once data is gone
+        // a running import would write the dataset again once dropped
+        await stopImport(ctx);
+        // then: a failing reset must not report an error once data is gone
         await resetTheme(ctx);
         // get all collection names except `configTenant`
         const collectionNames = (

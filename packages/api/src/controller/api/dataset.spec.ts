@@ -1,6 +1,7 @@
 import type { Queue } from 'bull';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { resetTheme } from '../../services/modelRestore';
+import { stopImport } from '../../workers/tools';
 import {
     clearDataset,
     deleteManyDatasetRowByFilter,
@@ -10,6 +11,7 @@ import {
 const tenant = 'lodex_test';
 jest.mock('../../workers');
 jest.mock('../../services/modelRestore', () => ({ resetTheme: jest.fn() }));
+jest.mock('../../workers/tools', () => ({ stopImport: jest.fn() }));
 
 describe('dataset API', () => {
     let workerQueue: Queue | null = null;
@@ -50,6 +52,18 @@ describe('dataset API', () => {
             expect(ctx.db.dropCollection).toHaveBeenCalledTimes(1);
             expect(ctx.db.dropCollection).toHaveBeenCalledWith('dataset');
             expect(ctx.body).toEqual({ status: 'success' });
+        });
+
+        // the import would write the dataset again
+        it('should stop the running import before dropping', async () => {
+            const ctx = makeCtx();
+
+            await clearDataset(ctx);
+
+            expect(stopImport).toHaveBeenCalledWith(ctx);
+            expect(
+                jest.mocked(stopImport).mock.invocationCallOrder[0],
+            ).toBeLessThan(ctx.db.dropCollection.mock.invocationCallOrder[0]);
         });
 
         it('should drop nothing when the theme reset fails', async () => {

@@ -1,7 +1,8 @@
 import { ProgressStatus } from '@lodex/common';
 import progress from '../services/progress';
 import { disableFusible } from '@ezs/core/fusible';
-import { cancelJob, clearJobs } from './tools';
+import { cancelJob, clearJobs, stopImport } from './tools';
+import { cleanWaitingJobsOfType } from './index';
 
 const mockActiveJobs: unknown[] = [];
 
@@ -16,7 +17,15 @@ jest.mock('./index', () => ({
 }));
 jest.mock('@ezs/core/fusible', () => ({ disableFusible: jest.fn() }));
 jest.mock('./enricher', () => ({ handleEnrichmentError: jest.fn() }));
-jest.mock('./import', () => ({ notifyListeners: jest.fn() }));
+const mockImportListeners: ((event: unknown) => void)[] = [];
+jest.mock('./import', () => ({
+    IMPORT: 'import',
+    notifyListeners: jest.fn(),
+    addImportListener: (listener: (event: unknown) => void) =>
+        mockImportListeners.push(listener),
+    removeImportListener: (listener: (event: unknown) => void) =>
+        mockImportListeners.splice(mockImportListeners.indexOf(listener), 1),
+}));
 
 describe('cancelJob', () => {
     const ctx = { tenant: 'tools-spec' } as any;
@@ -72,6 +81,66 @@ describe('cancelJob', () => {
         await cancelJob(ctx, 'import');
 
         expect(moveToFailed).toHaveBeenCalled();
+    });
+});
+
+describe('stopImport', () => {
+    const ctx = { tenant: 'tools-spec' } as any;
+    const endImport = (tenant: string) =>
+        [...mockImportListeners].forEach((listener) =>
+            listener({
+                room: `${tenant}-import`,
+                data: { isImporting: false },
+            }),
+        );
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockActiveJobs.length = 0;
+        mockImportListeners.length = 0;
+    });
+
+    it('cancels the active import and waits for its end', async () => {
+        const moveToFailed = jest.fn();
+        mockActiveJobs.push({ data: { jobType: 'import' }, moveToFailed });
+        let isStopped = false;
+
+        const stopping = stopImport(ctx).then(() => {
+            isStopped = true;
+        });
+        await new Promise(setImmediate);
+        expect(moveToFailed).toHaveBeenCalled();
+        endImport('another-tenant');
+        await new Promise(setImmediate);
+        expect(isStopped).toBe(false);
+
+        endImport(ctx.tenant);
+        await stopping;
+        expect(mockImportListeners).toHaveLength(0);
+    });
+
+    it('stops waiting for an import that does not end', async () => {
+        mockActiveJobs.push({
+            data: { jobType: 'import' },
+            moveToFailed: jest.fn(),
+        });
+
+        await stopImport(ctx, 10);
+
+        expect(mockImportListeners).toHaveLength(0);
+    });
+
+    it('removes the waiting imports and leaves another job alone', async () => {
+        const moveToFailed = jest.fn();
+        mockActiveJobs.push({ data: { jobType: 'enricher' }, moveToFailed });
+
+        await stopImport(ctx);
+
+        expect(cleanWaitingJobsOfType).toHaveBeenCalledWith(
+            ctx.tenant,
+            'import',
+        );
+        expect(moveToFailed).not.toHaveBeenCalled();
     });
 });
 

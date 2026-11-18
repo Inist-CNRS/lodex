@@ -11,7 +11,12 @@ import getLogger, { parseJobMessage } from '../services/logger';
 import progress from '../services/progress';
 import type { AppContext } from '../services/repositoryMiddleware';
 import { handleEnrichmentError } from './enricher';
-import { notifyListeners } from './import';
+import {
+    addImportListener,
+    IMPORT,
+    notifyListeners,
+    removeImportListener,
+} from './import';
 import { PUBLISHER } from './publisher';
 
 export const jobLogger = {
@@ -191,4 +196,40 @@ export const cancelPublisherJob = async (
     if ((await job.isWaiting()) || (await job.isDelayed())) {
         await job.remove();
     }
+};
+
+// Resolves once the import of the tenant notifies its end, which comes after
+// its last write, or after `timeout`.
+// ponytail: an in-process listener, the worker runs in the API process
+// (a single pm2 instance); with several instances, wait on Redis instead
+const waitForImportEnd = (tenant: string, timeout: number) =>
+    new Promise<void>((resolve) => {
+        const end = () => {
+            clearTimeout(timer);
+            removeImportListener(listener);
+            resolve();
+        };
+        const listener = ({ room, data }: any) => {
+            if (room === `${tenant}-import` && !data?.isImporting) {
+                end();
+            }
+        };
+        const timer = setTimeout(end, timeout);
+        addImportListener(listener);
+    });
+
+// Cancels the waiting and running imports, and waits for the running one to
+// stop writing: its writes would recreate what a clear drops
+export const stopImport = async (
+    ctx: Parameters<typeof cancelJob>[0],
+    timeout = 30_000,
+) => {
+    await cleanWaitingJobsOfType(ctx.tenant, IMPORT);
+    const activeJob = await getActiveJob(ctx.tenant);
+    if (activeJob?.data?.jobType !== IMPORT) {
+        return;
+    }
+    const ended = waitForImportEnd(ctx.tenant, timeout);
+    await cancelJob(ctx, IMPORT);
+    await ended;
 };

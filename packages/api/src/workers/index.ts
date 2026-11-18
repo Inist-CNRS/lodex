@@ -104,11 +104,15 @@ export const deleteWorkerQueue = async (queueName: any) => {
 
 export const cleanWaitingJobsOfType = (queueName: any, jobType: any) => {
     const workerQueue = getOrCreateWorkerQueue(queueName, 1);
-    workerQueue.getWaiting().then((jobs: any) => {
-        jobs.filter((job: any) => job.data.jobType === jobType).forEach(
-            (waitingJob: any) => waitingJob.remove(),
+    return workerQueue
+        .getWaiting()
+        .then((jobs: any) =>
+            Promise.all(
+                jobs
+                    .filter((job: any) => job.data.jobType === jobType)
+                    .map((waitingJob: any) => waitingJob.remove()),
+            ),
         );
-    });
 };
 
 export const closeAllWorkerQueues = async () => {
