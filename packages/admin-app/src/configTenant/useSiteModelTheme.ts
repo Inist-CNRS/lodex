@@ -10,13 +10,16 @@ import { SITE_MODEL_QUERY_KEY } from '../upload/useSiteModel';
 // does not load: the server already checked the model is in the catalog with
 // an available loader.
 export const useSiteModelTheme = (): string | undefined => {
-    const { data } = useQuery({
+    const { data, isFetchedAfterMount, isSuccess } = useQuery({
         queryKey: SITE_MODEL_QUERY_KEY,
         queryFn: getSiteModel,
         refetchOnMount: 'always',
         retry: false,
     });
-    const modelId = data?.siteModel?.modelId;
+    // the memory changes outside of this page (manual model import, clear):
+    // a cached value, or one kept after a failed refetch, never decides
+    const modelId =
+        isFetchedAfterMount && isSuccess ? data?.siteModel?.modelId : undefined;
 
     return useMemo(() => {
         if (!modelId) {

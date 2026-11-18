@@ -78,6 +78,43 @@ describe('useSiteModelTheme', () => {
         expect(result.current).toBeUndefined();
     });
 
+    // the memory changes outside of this page (manual model import, clear)
+    describe('with a cached site model', () => {
+        const renderWithCache = () => {
+            const client = new QueryClient({
+                defaultOptions: { queries: { retry: false } },
+            });
+            client.setQueryData(SITE_MODEL_QUERY_KEY, {
+                siteModel: { modelId: 'a' },
+            });
+            const { result } = renderHook(() => useSiteModelTheme(), {
+                wrapper: ({ children }: { children: ReactNode }) => (
+                    <Wrapper store={getStore({})} client={client}>
+                        {children}
+                    </Wrapper>
+                ),
+            });
+            return { result, client };
+        };
+
+        it('ignores the cached model until the request is done', () => {
+            (getSiteModel as jest.Mock).mockReturnValue(new Promise(() => {}));
+            const { result } = renderWithCache();
+            expect(result.current).toBeUndefined();
+        });
+
+        it('ignores the cached model when the request fails', async () => {
+            (getSiteModel as jest.Mock).mockRejectedValue(new Error('boom'));
+            const { result, client } = renderWithCache();
+            await waitFor(() =>
+                expect(client.getQueryState(SITE_MODEL_QUERY_KEY)?.status).toBe(
+                    'error',
+                ),
+            );
+            expect(result.current).toBeUndefined();
+        });
+    });
+
     it('returns undefined when the request fails', async () => {
         (getSiteModel as jest.Mock).mockRejectedValue(new Error('boom'));
         const { result, settled } = renderSiteModelTheme();
