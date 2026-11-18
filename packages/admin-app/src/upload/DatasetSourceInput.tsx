@@ -71,9 +71,18 @@ const styles = {
             minHeight: '120px',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            padding: '0 1rem',
+            // safe: a content taller than the dropzone scrolls from its top
+            justifyContent: 'safe center',
+            padding: '0.5rem 1rem',
+            overflowY: 'auto',
         },
+        // the file name must fit below the text (13" screens)
+        '& .dropzoneText': { my: 1 },
+        '& .dropzoneIcon': { width: 36, height: 36 },
+    },
+    // the chosen file's chip takes the place of the upload icon
+    compactFormWithFile: {
+        '& .dropzoneIcon': { display: 'none' },
     },
     // a query fits on a few lines: smaller than the dropzone and its text
     compactTextInput: {
@@ -257,6 +266,9 @@ export const DatasetSourceInput = ({
                     '& .disabledDropzone': styles.disabledDropzone,
                     '& .dropzonePreview': styles.dropzonePreview,
                     ...(compact ? styles.compactForm : {}),
+                    ...(compact && files.length > 0
+                        ? styles.compactFormWithFile
+                        : {}),
                 }}
             >
                 {/* Display the content of the first tab */}
@@ -310,6 +322,10 @@ export const DatasetSourceInput = ({
                                 dropzoneClass={`dropzone ${
                                     !!url && 'disabledDropzone'
                                 }`}
+                                classes={{
+                                    text: 'dropzoneText',
+                                    icon: 'dropzoneIcon',
+                                }}
                                 showAlerts={['error']}
                                 showPreviewsInDropzone
                                 showFileNamesInPreview
