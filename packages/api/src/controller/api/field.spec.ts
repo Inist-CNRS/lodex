@@ -19,9 +19,11 @@ import {
     applyConfigTenant,
     applyRecommendedTheme,
     applySiteInfo,
+    resetTheme,
     restoreFields,
 } from '../../services/modelRestore';
 import {
+    dropFieldCollection,
     exportFields,
     getAllField,
     importFields,
@@ -468,6 +470,75 @@ describe('field routes', () => {
                 theme: 'default',
                 front: { multilingual: true, theme: { color: 'blue' } },
             });
+        });
+    });
+
+    describe('resetTheme', () => {
+        it('should restore the default theme and its variables and keep the rest', async () => {
+            await db.collection('configTenant').deleteMany({});
+            const configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'istex',
+                front: {
+                    multilingual: true,
+                    theme: { siteTitle: 'Old name', summary: 'Old summary' },
+                },
+                userAuth: { username: 'user', active: true },
+            });
+
+            await resetTheme({ configTenantCollection });
+
+            expect(await configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: {
+                    multilingual: true,
+                    theme: { siteTitle: '', summary: '' },
+                },
+                userAuth: { username: 'user', active: true },
+            });
+        });
+    });
+
+    describe('dropFieldCollection', () => {
+        let configTenantCollection: any;
+        const makeCtx = () => ({
+            field: { drop: jest.fn(), initializeModel: jest.fn() },
+            db: { listCollections: () => ({ toArray: async () => [] }) },
+            configTenantCollection,
+        });
+
+        beforeEach(async () => {
+            await db.collection('configTenant').deleteMany({});
+            configTenantCollection = await configTenantFactory(db);
+            await configTenantCollection.create({
+                theme: 'istex',
+                front: { theme: { siteTitle: 'Old name' } },
+            });
+        });
+
+        it('should clear the model and reset the theme', async () => {
+            const ctx: any = makeCtx();
+
+            await dropFieldCollection(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.field.drop).toHaveBeenCalled();
+            expect(await configTenantCollection.findLast()).toMatchObject({
+                theme: 'default',
+                front: { theme: { siteTitle: '', summary: '' } },
+            });
+        });
+
+        it('should not clear the model when the theme reset fails', async () => {
+            const ctx: any = makeCtx();
+            ctx.configTenantCollection = {
+                findLast: jest.fn().mockRejectedValue(new Error('boom')),
+            };
+
+            await dropFieldCollection(ctx);
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.field.drop).not.toHaveBeenCalled();
         });
     });
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
 import DownloadIcon from '@mui/icons-material/Download';
 import {
     Button,
@@ -62,6 +63,7 @@ interface ClearDialogComponentProps {
 
 export const ClearDialogComponent = (props: ClearDialogComponentProps) => {
     const { translate } = useTranslate();
+    const queryClient = useQueryClient();
     const [validName, setValidName] = React.useState(false);
     const {
         type,
@@ -115,6 +117,9 @@ export const ClearDialogComponent = (props: ClearDialogComponentProps) => {
     const handleClearModel = async () => {
         const result = await fieldApi.clearModel();
         if (result.message) {
+            // the model clear also resets the theme: back to loading, so an
+            // open settings form starts over from the reset config
+            queryClient.resetQueries({ queryKey: ['get-config-tenant'] });
             if (hasPublishedDataset) {
                 props.clearPublished();
                 props.loadPublication();

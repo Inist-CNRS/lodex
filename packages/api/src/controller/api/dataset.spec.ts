@@ -1,12 +1,15 @@
 import type { Queue } from 'bull';
 import { getOrCreateWorkerQueue } from '../../workers';
+import { resetTheme } from '../../services/modelRestore';
 import {
+    clearDataset,
     deleteManyDatasetRowByFilter,
     deleteManyDatasetRowByIds,
 } from './dataset';
 
 const tenant = 'lodex_test';
 jest.mock('../../workers');
+jest.mock('../../services/modelRestore', () => ({ resetTheme: jest.fn() }));
 
 describe('dataset API', () => {
     let workerQueue: Queue | null = null;
@@ -22,6 +25,44 @@ describe('dataset API', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
+    describe('DELETE /dataset', () => {
+        const makeCtx = () => ({
+            tenant,
+            db: {
+                listCollections: () => ({
+                    toArray: async () => [
+                        { name: 'dataset' },
+                        { name: 'configTenant' },
+                    ],
+                }),
+                dropCollection: jest.fn(),
+            },
+            body: undefined as unknown,
+        });
+
+        it('should reset the theme and drop every collection but configTenant', async () => {
+            jest.mocked(resetTheme).mockResolvedValue(undefined);
+            const ctx = makeCtx();
+
+            await clearDataset(ctx);
+
+            expect(resetTheme).toHaveBeenCalledWith(ctx);
+            expect(ctx.db.dropCollection).toHaveBeenCalledTimes(1);
+            expect(ctx.db.dropCollection).toHaveBeenCalledWith('dataset');
+            expect(ctx.body).toEqual({ status: 'success' });
+        });
+
+        it('should drop nothing when the theme reset fails', async () => {
+            jest.mocked(resetTheme).mockRejectedValue(new Error('boom'));
+            const ctx = makeCtx();
+
+            await clearDataset(ctx);
+
+            expect(ctx.db.dropCollection).not.toHaveBeenCalled();
+            expect(ctx.body).toMatchObject({ status: 'error' });
+        });
+    });
+
     describe('DELETE /dataset/batch-delete-id', () => {
         it('should return 400 if ids query parameter is absent', async () => {
             const ctx = {

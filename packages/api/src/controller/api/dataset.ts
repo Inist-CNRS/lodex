@@ -4,6 +4,7 @@ import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 import { randomUUID } from 'node:crypto';
 import getLogger from '../../services/logger';
+import { resetTheme } from '../../services/modelRestore';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
 import { buildQuery } from './buildQuery';
@@ -12,6 +13,8 @@ const app = new Koa();
 
 export const clearDataset = async (ctx: any) => {
     try {
+        // first: a failing reset must not report an error once data is gone
+        await resetTheme(ctx);
         // get all collection names except `configTenant`
         const collectionNames = (
             await ctx.db.listCollections().toArray()
