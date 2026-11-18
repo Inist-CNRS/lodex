@@ -170,10 +170,10 @@ describe('getImportError', () => {
 
     it('should report the statement of the loader that failed on a record', () => {
         // ezs names the statement and the item of the error it wraps
-        const statementError = (
+        const statementError = <T extends { message?: unknown }>(
             func: string,
             index: number,
-            sourceError: Record<string, unknown>,
+            sourceError: T,
         ) => ({
             message: `item #${index} [${func}] <${sourceError.message}>`,
             stack: `Error: item #${index} [${func}]`,
@@ -206,6 +206,26 @@ describe('getImportError', () => {
         expect(getImportError(error)).toEqual({
             code: 'import_error_loader',
             detail: `item #190 [assign]: Cannot read properties of undefined (reading 'split')\n${expression}`,
+        });
+    });
+
+    // the source closed the connection: a retry may work, another loader not
+    it('should not blame the loader for a network error of its fetch', () => {
+        const error = new Error('Error during import: Error: Bad Request', {
+            cause: {
+                message: 'item #1 [URLFetch] <other side closed>',
+                func: 'URLFetch',
+                index: 1,
+                sourceError: {
+                    message: 'other side closed',
+                    code: 'UND_ERR_SOCKET',
+                },
+            },
+        });
+
+        expect(getImportError(error)).toEqual({
+            code: 'import_error_unknown',
+            detail: 'item #1 [URLFetch]: other side closed',
         });
     });
 

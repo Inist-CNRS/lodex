@@ -176,12 +176,13 @@ export const getImportError = (error: ErrorLike): ImportError => {
         sourceError.responseText && toText(sourceError.responseText).trim();
     const code = getCode(sourceError);
     return {
-        // an error unknown thrown by a statement of the loader (not by the
-        // connection to the loader server): the loader does not suit the data
+        // an unknown error of a statement of the loader: the loader does not
+        // suit the data. Not of a network statement (URLConnect to the loader
+        // server, URLFetch, URLStream…): the source or the server failed.
         code:
             code === 'import_error_unknown' &&
             statement &&
-            statement.func !== 'URLConnect'
+            !statement.func?.startsWith('URL')
                 ? 'import_error_loader'
                 : code,
         // the statement and the item explain more than the outer error
