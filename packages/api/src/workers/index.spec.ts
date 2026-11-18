@@ -59,13 +59,18 @@ describe('getOrCreateWorkerQueue', () => {
         );
     });
 
-    it.each(['completed', 'failed'])(
-        'should advance the site generation of the tenant once a step job is %s',
-        (event) => {
+    it.each([
+        ['completed', 'enricher'],
+        ['failed', 'enricher'],
+        ['completed', 'publisher'],
+        ['failed', 'publisher'],
+    ])(
+        'should advance the site generation of the tenant once a step job is %s (%s)',
+        (event, jobType) => {
             getOrCreateWorkerQueue('tenant', 1);
 
             getListener(event)({
-                data: { jobType: 'enricher', tenant: 'demo' },
+                data: { jobType, tenant: 'demo' },
             });
 
             expect(sweepTenants).toHaveBeenCalledWith(['demo']);
@@ -76,7 +81,7 @@ describe('getOrCreateWorkerQueue', () => {
         getOrCreateWorkerQueue('tenant', 1);
 
         getListener('completed')({
-            data: { jobType: 'publisher', tenant: 'demo' },
+            data: { jobType: 'import', tenant: 'demo' },
         });
 
         expect(sweepTenants).not.toHaveBeenCalled();

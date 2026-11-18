@@ -34,6 +34,11 @@ import { failWizardGeneration, queueModelImport } from './wizardJobs';
 // generation goes to error
 export const SITE_GENERATION_MAX_RELAUNCHES = 3;
 
+// A job that just ended may not have moved its generation on yet (its end
+// hook runs right after), and a generation just updated may not have queued
+// its job yet: a job is lost only once this delay has passed
+export const SITE_GENERATION_JOB_GRACE_PERIOD = 60_000;
+
 export type SiteGenerationContext = LaunchContext & {
     siteGeneration: SiteGenerationCollection;
     // dropped when « Réessayer » ends a generation failed in its data phase
@@ -208,31 +213,33 @@ const queueSteps = async (
     }
 };
 
-// Queued before the transition: a pass reading the publishing generation must
-// find its job. The job of a lost transition (stop, other pass) is cancelled,
-// even if the worker already runs it.
+// Queued only once the transition is won: two passes (periodic sweep, end of
+// the last step) can end the launch together, and cancelling the job of the
+// losing one would hit any publisher job, the winner's included. A pass
+// reading the publishing generation before its job is queued waits for it
+// (see advancePublication).
 const startPublication = async (
     ctx: SiteGenerationContext,
     generation: SiteGeneration,
 ): Promise<boolean> => {
     const publishJobId = randomUUID();
-    await queuePublisher(ctx.tenant, publishJobId);
     const publishing = await ctx.siteGeneration.transition(generation, {
         status: 'publishing',
         // an earlier publishError is replaced once this one ends
         publishJobId,
     });
-    if (publishing) {
-        return true;
+    if (!publishing) {
+        return false;
     }
     try {
-        await cancelPublisherJob(ctx, publishJobId);
+        await queuePublisher(ctx.tenant, publishJobId);
     } catch (error) {
-        getLogger(ctx.tenant).error(
-            `Site generation: unable to cancel an unwanted publication: ${(error as Error).message}`,
-        );
+        await ctx.siteGeneration.transition(publishing, {
+            status: 'error',
+            publishError: (error as Error).message,
+        });
     }
-    return false;
+    return true;
 };
 
 const advancePublication = async (
@@ -253,6 +260,13 @@ const advancePublication = async (
     }
     if (job) {
         // waiting or active ("Arrêter" gets out of a job that never ends)
+        return;
+    }
+    // the pass that started the publication may not have queued its job yet
+    if (
+        Date.now() - generation.updatedAt.getTime() <
+        SITE_GENERATION_JOB_GRACE_PERIOD
+    ) {
         return;
     }
     await ctx.siteGeneration.transition(generation, {
@@ -576,11 +590,6 @@ export const settleStoppingSiteGeneration = async (
     }
     await ctx.siteGeneration.transition(generation, { status: 'stopped' });
 };
-
-// A job that just ended may not have moved its generation on yet (its end
-// hook runs right after), and a generation just updated may not have queued
-// its job yet: a job is lost only once this delay has passed
-export const SITE_GENERATION_JOB_GRACE_PERIOD = 60_000;
 
 const isLost = (found: WizardJob | null, now: Date) =>
     !found ||

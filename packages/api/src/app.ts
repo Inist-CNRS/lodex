@@ -46,6 +46,7 @@ import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '@lodex/common';
 import { insertConfigTenant } from './services/configTenant';
 import { tmpdir } from 'node:os';
+import { isAbandonedEzsPipelineError } from './services/abandonedEzsPipeline';
 
 // settings as the same of the ezs server (see workers/index.js)
 ezs.settings.feed.timeout = config.get('ezs.timeout');
@@ -285,6 +286,9 @@ process.on('unhandledRejection', (error: any) => {
 process.on('uncaughtException', (error: any) => {
     const logger = getLogger();
     logger.error('Uncaught Exception', error);
+    if (isAbandonedEzsPipelineError(error)) {
+        return;
+    }
     // state is unknown after an uncaught exception: let pm2 restart the process
     process.exit(1);
 });

@@ -1626,6 +1626,10 @@ describe('siteGeneration service', () => {
         it('puts a vanished publisher job in error, to publish again', async () => {
             await runToTheEnd();
             jest.mocked(getJobState).mockResolvedValue(null);
+            await siteGeneration.updateOne(
+                {},
+                { $set: { updatedAt: new Date(Date.now() - 2 * 60_000) } },
+            );
 
             await advanceSiteGeneration(ctx);
 
@@ -1651,23 +1655,49 @@ describe('siteGeneration service', () => {
             expect(queuePrecomputed).not.toHaveBeenCalled();
         });
 
-        it('cancels the publisher job of a lost transition', async () => {
+        // Cancelling the job of the losing pass would hit any publisher job
+        // (the winner's included): the losing pass must queue none
+        it('queues a single publisher job when two passes end the launch', async () => {
             await start(ONE_STEP, { autoPublish: true });
             await advanceSiteGeneration(ctx);
             finishPosition(1);
-            jest.spyOn(siteGeneration, 'transition').mockResolvedValueOnce(
-                null,
+            const stale = await siteGeneration.findCurrent();
+
+            await advanceSiteGeneration(ctx);
+            jest.spyOn(siteGeneration, 'findCurrent').mockResolvedValueOnce(
+                stale,
             );
+            await advanceSiteGeneration(ctx);
+
+            expect(queuePublisher).toHaveBeenCalledTimes(1);
+            expect(cancelPublisherJob).not.toHaveBeenCalled();
+            expect(queuePublisher).toHaveBeenCalledWith(
+                'lodex_test',
+                (await siteGeneration.findCurrent())?.publishJobId,
+            );
+        });
+
+        it('waits for a publisher job not queued yet', async () => {
+            await runToTheEnd();
+            jest.mocked(getJobState).mockResolvedValue(null);
 
             await advanceSiteGeneration(ctx);
 
-            expect(cancelPublisherJob).toHaveBeenCalledWith(
-                ctx,
-                jest.mocked(queuePublisher).mock.calls[0][1],
-            );
             expect((await siteGeneration.findCurrent())?.status).toBe(
-                'running',
+                'publishing',
             );
+        });
+
+        it('puts the publication in error when its job cannot be queued', async () => {
+            jest.mocked(queuePublisher).mockRejectedValue(
+                new Error('redis down'),
+            );
+
+            await runToTheEnd();
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('error');
+            expect(current?.publishError).toBe('redis down');
         });
 
         it('stops a publication and cancels its job', async () => {
