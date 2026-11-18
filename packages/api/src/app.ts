@@ -281,9 +281,12 @@ process.on('unhandledRejection', (error: any) => {
     logger.error('Uncaught Rejection', error);
 });
 
+// the only uncaughtException listener: loggers must not add one each (one per tenant)
 process.on('uncaughtException', (error: any) => {
     const logger = getLogger();
     logger.error('Uncaught Exception', error);
+    // state is unknown after an uncaught exception: let pm2 restart the process
+    process.exit(1);
 });
 
 export default app;

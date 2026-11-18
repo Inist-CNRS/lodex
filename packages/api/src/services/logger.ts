@@ -119,11 +119,7 @@ const getLogger = (tenant = '_lodex_') => {
 
     const logger = createLogger({
         level: config.get('logger.level'),
-        transports: [
-            new winston.transports.Console({
-                handleExceptions: true,
-            }),
-        ],
+        transports: [new winston.transports.Console()],
         format: lineFormat(tenant),
         silent: config.get('logger.disabled'),
     });
