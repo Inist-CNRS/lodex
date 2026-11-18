@@ -22,7 +22,7 @@ import {
 import { ObjectId } from 'mongodb';
 import generateUid from '../../services/generateUid';
 import { CONFIG_TENANT_ENTRY } from '../../services/restoreModel';
-import { restoreFields } from '../../services/modelRestore';
+import { resetTheme, restoreFields } from '../../services/modelRestore';
 import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
@@ -390,6 +390,8 @@ export const duplicateField = async (ctx: any) => {
 
 export const dropFieldCollection = async (ctx: any) => {
     try {
+        // first: a failing reset must not report an error once the model is gone
+        await resetTheme(ctx);
         // drop field collection except the uri field from scope collection
         await ctx.field.drop();
         await ctx.field.initializeModel();

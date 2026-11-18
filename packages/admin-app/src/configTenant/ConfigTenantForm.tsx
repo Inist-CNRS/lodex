@@ -538,6 +538,9 @@ export const ConfigTenantForm = ({
 
     return (
         <ConfigTenantFormView
+            // the form reads its values once: start it over when the stored
+            // config changes elsewhere (e.g. theme reset by a model clear)
+            key={JSON.stringify(data)}
             initialConfig={data}
             availableThemes={availableThemesResponse.data ?? []}
             handleSave={(data) => {
