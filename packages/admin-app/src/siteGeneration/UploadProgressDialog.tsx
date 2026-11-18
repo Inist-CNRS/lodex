@@ -38,7 +38,7 @@ export const UploadProgressDialog = ({
             disableEscapeKeyDown
             PaperProps={GENERATION_DIALOG_PAPER_PROPS}
         >
-            <SiteGenerationHeader steps={steps} />
+            <SiteGenerationHeader />
             <DialogContent sx={{ px: 1.5, mx: -1.5 }}>
                 <SiteGenerationSteps
                     steps={steps}

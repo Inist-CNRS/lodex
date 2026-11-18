@@ -1,5 +1,5 @@
 import type { SiteGenerationView } from '@lodex/common';
-import { getCurrentRank, getDisplayedSteps } from './displayedSteps';
+import { getDisplayedSteps } from './displayedSteps';
 
 const counter = (total: number) => ({ done: 0, total, error: 0 });
 
@@ -75,7 +75,6 @@ describe('getDisplayedSteps', () => {
             { key: 'settings', state: 'waiting' },
             { key: 'launch', state: 'waiting' },
         ]);
-        expect(getCurrentRank(steps)).toBe(2);
     });
 
     it('starts with the data step running', () => {
@@ -86,7 +85,6 @@ describe('getDisplayedSteps', () => {
             'waiting',
             'waiting',
         ]);
-        expect(getCurrentRank(steps)).toBe(1);
     });
 
     it('leaves out the settings step without settings', () => {
@@ -117,7 +115,6 @@ describe('getDisplayedSteps', () => {
             { key: 'settings', state: 'done' },
             { key: 'launch', state: 'error' },
         ]);
-        expect(getCurrentRank(steps)).toBe(4);
     });
 
     it('ends with every step done', () => {
@@ -125,7 +122,6 @@ describe('getDisplayedSteps', () => {
             buildView({ status: 'done', phase: 'launch' }),
         );
         expect(steps.every(({ state }) => state === 'done')).toBe(true);
-        expect(getCurrentRank(steps)).toBe(4);
     });
 
     it('only shows the launch of a generation without the wizard', () => {
@@ -138,6 +134,5 @@ describe('getDisplayedSteps', () => {
             }),
         );
         expect(steps).toEqual([{ key: 'launch', state: 'running' }]);
-        expect(getCurrentRank(steps)).toBe(1);
     });
 });

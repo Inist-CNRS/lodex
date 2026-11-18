@@ -1,7 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import { DropzoneAreaBase, type FileObject } from 'mui-file-dropzone';
 import {
+    alpha,
     Box,
+    type Theme,
     TextField,
     Grid,
     CircularProgress,
@@ -32,6 +34,52 @@ const styles = {
     tabs: {
         marginBottom: '12px',
         borderBottom: 'solid 1px #00000018',
+    },
+    // a segmented choice: small, framed, the chosen one tinted
+    compactTabs: {
+        alignSelf: 'flex-start',
+        marginBottom: '12px',
+        '& .MuiTabs-root': {
+            minHeight: 0,
+            border: 1,
+            borderColor: 'divider',
+            borderRadius: 1,
+        },
+        '& .MuiTabs-indicator': { display: 'none' },
+        '& .MuiTab-root': {
+            minHeight: 0,
+            py: 0.75,
+            px: 1.75,
+            fontSize: 13,
+        },
+        '& .MuiTab-root + .MuiTab-root': {
+            borderLeft: 1,
+            borderColor: 'divider',
+        },
+        '& .MuiTab-root.Mui-selected': {
+            bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.1),
+        },
+    },
+    // the input takes the height left; a short dialog scrolls below it
+    compactForm: {
+        flex: 1,
+        minHeight: '96px',
+        margin: 0,
+        alignItems: 'stretch',
+        '& .dropzone': {
+            flex: 1,
+            minHeight: '120px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: '0 1rem',
+        },
+    },
+    // a query fits on a few lines: smaller than the dropzone and its text
+    compactTextInput: {
+        width: '100%',
+        flex: 1,
+        minHeight: '96px',
     },
     formDesc: {
         textAlign: 'center' as const,
@@ -104,6 +152,9 @@ export type DatasetSourceInputProps = {
     fileTextKey?: string;
     // rendered between the tabs and the form, e.g. an error message
     children?: ReactNode;
+    // for a dialog with little height: small tabs, and the input fills the
+    // height left by its parent (a flex column)
+    compact?: boolean;
 };
 
 export const getDatasetSource = ({
@@ -153,6 +204,7 @@ export const DatasetSourceInput = ({
     tabs = TABS,
     fileTextKey = 'import_file_text',
     children,
+    compact = false,
 }: DatasetSourceInputProps) => {
     const { translate } = useTranslate();
     const [dropping, setDropping] = useState(false);
@@ -172,13 +224,13 @@ export const DatasetSourceInput = ({
         <>
             {/* Tabs selector use to select the import type, useless for a single one */}
             {tabs.length > 1 && (
-                <Box sx={styles.tabs}>
+                <Box sx={compact ? styles.compactTabs : styles.tabs}>
                     <Tabs
                         value={tab}
                         onChange={(_: unknown, value: DatasetSourceTab) =>
                             onTabChange(value)
                         }
-                        variant="fullWidth"
+                        variant={compact ? 'standard' : 'fullWidth'}
                     >
                         {tabs.map((value) => (
                             <Tab
@@ -204,6 +256,7 @@ export const DatasetSourceInput = ({
                     '& .dropzone': styles.dropzone,
                     '& .disabledDropzone': styles.disabledDropzone,
                     '& .dropzonePreview': styles.dropzonePreview,
+                    ...(compact ? styles.compactForm : {}),
                 }}
             >
                 {/* Display the content of the first tab */}
@@ -313,7 +366,11 @@ export const DatasetSourceInput = ({
                             </p>
                         )}
                         <SourceCodeField
-                            style={styles.textInput}
+                            style={
+                                compact
+                                    ? styles.compactTextInput
+                                    : styles.textInput
+                            }
                             mode="json"
                             // the free input is not always JSON (e.g. a query URL): no syntax error cross
                             setOptions={{ useWorker: false }}

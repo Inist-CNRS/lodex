@@ -298,7 +298,7 @@ describe('SimplifiedUpload', () => {
             canCancel: true,
         });
         renderPage();
-        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+        expect(screen.getByText('site_generation_title')).toBeInTheDocument();
     });
 
     it('goes to the existing data once the add is queued', async () => {

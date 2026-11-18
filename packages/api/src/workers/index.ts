@@ -11,7 +11,9 @@ import { sweepTenants } from '../services/siteGeneration/sweep';
 
 export const QUEUE_NAME = 'worker';
 
-const STEP_JOB_TYPES = [ENRICHER, RETRY_ENRICHER, PRECOMPUTER];
+// the jobs a site generation waits for: the publisher job ends one with
+// autoPublish, which must not stay on screen until the next periodic sweep
+const STEP_JOB_TYPES = [ENRICHER, RETRY_ENRICHER, PRECOMPUTER, PUBLISHER];
 
 export class CancelWorkerError extends Error {
     name: any;
@@ -73,8 +75,8 @@ export const getOrCreateWorkerQueue = (
         );
     });
 
-    // An enrichment or precomputation ended (by hand or as a step of a site
-    // generation): advance the tenant's generation now rather than on the
+    // An enrichment, precomputation or publication ended (by hand or as a
+    // step of a site generation): advance the tenant's generation now rather than on the
     // next periodic sweep
     const advanceSiteGeneration = (job: Queue.Job) => {
         if (STEP_JOB_TYPES.includes(job?.data?.jobType)) {

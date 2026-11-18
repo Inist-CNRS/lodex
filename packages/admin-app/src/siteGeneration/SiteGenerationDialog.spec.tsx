@@ -249,11 +249,11 @@ describe('SiteGenerationDialog', () => {
         expect(
             screen.getByText('La configuration peut prendre du temps'),
         ).toBeInTheDocument();
-        expect(screen.getByText('2/4')).toBeInTheDocument();
-        expect(screen.getByRole('progressbar')).toHaveAttribute(
-            'aria-valuenow',
-            '50',
-        );
+        // the steps show the progress: no pages counter as in the wizard
+        expect(screen.queryByText('2/4')).not.toBeInTheDocument();
+        expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+        expect(screen.getAllByLabelText('done')).toHaveLength(1);
+        expect(screen.getAllByLabelText('running')).toHaveLength(1);
         expect(
             screen.getByText('Import du jeu de données'),
         ).toBeInTheDocument();
@@ -318,6 +318,72 @@ describe('SiteGenerationDialog', () => {
         expect(screen.queryByText(/Résumé : nouvelle tentative/)).toBeNull();
     });
 
+    it('names the launch steps running now, but not those tried again', async () => {
+        renderDialog(
+            buildGeneration({
+                phase: 'launch',
+                steps: [
+                    {
+                        name: 'Auteurs',
+                        type: 'enrichment',
+                        position: 1,
+                        state: 'running',
+                        retry: { attempt: 2, max: 3 },
+                    },
+                    {
+                        name: 'Résumé',
+                        type: 'enrichment',
+                        position: 1,
+                        state: 'running',
+                    },
+                    {
+                        name: 'Cluster',
+                        type: 'precomputed',
+                        position: 1,
+                        state: 'running',
+                    },
+                    {
+                        name: 'Rameau',
+                        type: 'enrichment',
+                        position: 2,
+                        state: 'waiting',
+                    },
+                ],
+            }),
+            { french: true },
+        );
+        // next to the counter of their type
+        expect(
+            (await screen.findByText('En cours : Résumé')).closest('li'),
+        ).toHaveTextContent(/enrichissements/);
+        expect(
+            screen.getByText('En cours : Cluster').closest('li'),
+        ).toHaveTextContent(/précalculs/);
+    });
+
+    it('names no launch step once the launch is over', async () => {
+        renderDialog(
+            buildGeneration({
+                status: 'publishing',
+                phase: 'launch',
+                publication: { state: 'running' },
+                steps: [
+                    {
+                        name: 'Résumé',
+                        type: 'enrichment',
+                        position: 1,
+                        state: 'done',
+                    },
+                ],
+            }),
+            { french: true },
+        );
+        expect(
+            await screen.findByText('Publication du site'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText(/En cours/)).toBeNull();
+    });
+
     it('names the model with its short name when it has one', async () => {
         (hasTranslation as jest.Mock).mockImplementation(
             (key: string) => key === 'mc_hal2lodex_name',
@@ -369,7 +435,7 @@ describe('SiteGenerationDialog', () => {
             ),
         ).toBeInTheDocument();
         expect(screen.getByText(byText('2/3 précalculs'))).toBeInTheDocument();
-        expect(screen.getByText('4/4')).toBeInTheDocument();
+        expect(screen.getAllByLabelText('done')).toHaveLength(3);
         expect(screen.getByText(/lienHAL/)).toBeInTheDocument();
         expect(screen.getByText('Réessayer')).toBeInTheDocument();
     });
@@ -421,7 +487,7 @@ describe('SiteGenerationDialog', () => {
         expect(
             await screen.findByText("L'import des données a échoué."),
         ).toBeInTheDocument();
-        expect(screen.getByText('1/4')).toBeInTheDocument();
+        expect(screen.getByLabelText('error')).toBeInTheDocument();
     });
 
     it('hides the technical detail of a failed data import behind an arrow', async () => {
@@ -441,6 +507,23 @@ describe('SiteGenerationDialog', () => {
             screen.getByRole('button', { name: 'error_detail' }),
         );
         expect(screen.getByText('Maintenance en cours')).toBeVisible();
+    });
+
+    it('scrolls to the step in error, so that its retry is on screen', async () => {
+        const scrollIntoView = jest.fn();
+        Element.prototype.scrollIntoView = scrollIntoView;
+        renderDialog(
+            buildGeneration({
+                status: 'error',
+                phase: 'data',
+                message: 'import_failed',
+            }),
+        );
+        const retry = await screen.findByText('site_generation_retry');
+        expect(scrollIntoView).toHaveBeenCalledTimes(1);
+        expect(scrollIntoView.mock.contexts[0]).toContainElement(retry);
+        // @ts-expect-error jsdom has no scrollIntoView
+        delete Element.prototype.scrollIntoView;
     });
 
     it('relaunches and reopens the wizard on a retry of the data import', async () => {
@@ -686,7 +769,7 @@ describe('SiteGenerationDialog', () => {
         sessionStorage.setItem('lodex-tenant', 'my-tenant');
         sessionStorage.setItem('lodex-dbName', 'lodex');
         renderDialog(buildGeneration({ phase: 'model' }));
-        expect(await screen.findByText('2/4')).toBeInTheDocument();
+        expect(await screen.findAllByLabelText('done')).toHaveLength(1);
         // the next poll would answer late: a task blocks the server
         (getSiteGeneration as jest.Mock).mockReturnValue(new Promise(() => {}));
         const handler = mockSocketHandlers.get(
@@ -698,7 +781,9 @@ describe('SiteGenerationDialog', () => {
             handler!({ generation: buildGeneration({ phase: 'launch' }) }),
         );
 
-        expect(await screen.findByText('4/4')).toBeInTheDocument();
+        await waitFor(() =>
+            expect(screen.getAllByLabelText('done')).toHaveLength(3),
+        );
     });
 
     it('shows the dataset being saved on the data step, as the app bar', async () => {
@@ -813,14 +898,13 @@ describe('SiteGenerationDialog', () => {
                 publication,
             });
 
-        it('shows the publication as a last step, counted', async () => {
+        it('shows the publication as a last step', async () => {
             renderDialog(
                 buildGeneration({ publication: { state: 'waiting' } }),
             );
             expect(
                 await screen.findByText('site_generation_step_publication'),
             ).toBeInTheDocument();
-            expect(screen.getByText('2/5')).toBeInTheDocument();
         });
 
         it('stays open while publishing, the other steps done, and can stop it', async () => {
@@ -828,7 +912,6 @@ describe('SiteGenerationDialog', () => {
             expect(
                 await screen.findByText('site_generation_step_publication'),
             ).toBeInTheDocument();
-            expect(screen.getByText('5/5')).toBeInTheDocument();
             expect(screen.getAllByLabelText('done')).toHaveLength(4);
             expect(
                 getRefetchInterval(

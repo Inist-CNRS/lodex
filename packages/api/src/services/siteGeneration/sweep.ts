@@ -57,7 +57,7 @@ export const sweepTenants = async (
             if (expired > 0) {
                 await releasePrecomputing(ctx);
             }
-            await advanceSiteGeneration(ctx);
+            await advanceSiteGeneration(ctx, now);
             await settleStoppingSiteGeneration(ctx);
             await failLostSiteGenerationJob(ctx, now);
         } catch (error) {

@@ -150,11 +150,14 @@ export const SiteGenerationDialog = () => {
             maxWidth="md"
             disableEscapeKeyDown
             aria-labelledby="site-generation-title"
+            // it takes over from the upload dialog, which shows the same
+            // content at the same place: a fade in would flash
+            transitionDuration={{ enter: 0 }}
             PaperProps={GENERATION_DIALOG_PAPER_PROPS}
         >
+            <SiteGenerationHeader />
             {/* room for the halo of the running step, which the content clips */}
             <DialogContent sx={{ px: 1.5, mx: -1.5 }}>
-                <SiteGenerationHeader steps={steps} />
                 <SiteGenerationSteps
                     steps={steps}
                     view={generation}

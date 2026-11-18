@@ -1627,7 +1627,8 @@ describe('siteGeneration service', () => {
             await runToTheEnd();
             jest.mocked(getJobState).mockResolvedValue(null);
 
-            await advanceSiteGeneration(ctx);
+            // past the grace period given to a job not queued yet
+            await advanceSiteGeneration(ctx, new Date(Date.now() + 2 * 60_000));
 
             const current = await siteGeneration.findCurrent();
             expect(current?.status).toBe('error');
@@ -1651,22 +1652,84 @@ describe('siteGeneration service', () => {
             expect(queuePrecomputed).not.toHaveBeenCalled();
         });
 
-        it('cancels the publisher job of a lost transition', async () => {
+        // Cancelling the job of the losing pass would hit any publisher job
+        // (the winner's included): the losing pass must queue none
+        it('queues a single publisher job when two passes end the launch', async () => {
             await start(ONE_STEP, { autoPublish: true });
             await advanceSiteGeneration(ctx);
             finishPosition(1);
-            jest.spyOn(siteGeneration, 'transition').mockResolvedValueOnce(
-                null,
+            const stale = await siteGeneration.findCurrent();
+
+            await advanceSiteGeneration(ctx);
+            jest.spyOn(siteGeneration, 'findCurrent').mockResolvedValueOnce(
+                stale,
             );
+            await advanceSiteGeneration(ctx);
+
+            expect(queuePublisher).toHaveBeenCalledTimes(1);
+            expect(cancelPublisherJob).not.toHaveBeenCalled();
+            expect(queuePublisher).toHaveBeenCalledWith(
+                'lodex_test',
+                (await siteGeneration.findCurrent())?.publishJobId,
+            );
+        });
+
+        it('waits for a publisher job not queued yet', async () => {
+            await runToTheEnd();
+            jest.mocked(getJobState).mockResolvedValue(null);
 
             await advanceSiteGeneration(ctx);
 
-            expect(cancelPublisherJob).toHaveBeenCalledWith(
-                ctx,
-                jest.mocked(queuePublisher).mock.calls[0][1],
-            );
             expect((await siteGeneration.findCurrent())?.status).toBe(
-                'running',
+                'publishing',
+            );
+        });
+
+        it('puts the publication in error when its job cannot be queued', async () => {
+            jest.mocked(queuePublisher).mockRejectedValue(
+                new Error('redis down'),
+            );
+
+            await expect(runToTheEnd()).rejects.toThrow('redis down');
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('error');
+            expect(current?.publishError).toBe('redis down');
+        });
+
+        it('answers the failure of a relaunched publication that cannot be queued', async () => {
+            await runToTheEnd();
+            mockJob('failed', 'boom');
+            await advanceSiteGeneration(ctx);
+            jest.mocked(queuePublisher).mockRejectedValueOnce(
+                new Error('redis down'),
+            );
+
+            await expect(relaunchSiteGeneration(ctx)).rejects.toThrow(
+                'redis down',
+            );
+
+            expect((await siteGeneration.findCurrent())?.publishError).toBe(
+                'redis down',
+            );
+        });
+
+        // « Arrêter » there finds no job to cancel yet
+        it('cancels its publisher job when stopped before the job is queued', async () => {
+            jest.mocked(queuePublisher).mockImplementationOnce(async () => {
+                await stopSiteGeneration(ctx);
+                return {} as never;
+            });
+
+            await runToTheEnd();
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('stopped');
+            // the stop's own try, then the publication's once its job is in
+            expect(cancelPublisherJob).toHaveBeenCalledTimes(2);
+            expect(cancelPublisherJob).toHaveBeenLastCalledWith(
+                ctx,
+                current?.publishJobId,
             );
         });
 
