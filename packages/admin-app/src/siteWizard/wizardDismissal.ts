@@ -10,7 +10,8 @@ const getKey = () =>
     }`;
 
 // remembers, per instance and browser, that the user chose to configure
-// the site manually: the wizard then no longer opens by itself
+// the site manually (from the wizard or by a manual import): the wizard then
+// no longer opens by itself
 export const isSiteWizardDismissed = (): boolean => {
     try {
         return localStorage.getItem(getKey()) === 'true';

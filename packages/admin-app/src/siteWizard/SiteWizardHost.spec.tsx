@@ -269,6 +269,14 @@ describe('SiteWizardHost', () => {
         ).toBe('true');
     });
 
+    // a reload during the import shows an empty instance again
+    it('remembers that the user imported data manually', () => {
+        renderHost(false, { ...emptyInstance, upload: { status: 'PENDING' } });
+        expect(
+            localStorage.getItem('lodex-site-wizard-dismissed-default'),
+        ).toBe('true');
+    });
+
     it('does not remember a wizard cancelled from a later step', async () => {
         renderHost();
         await userEvent.click(screen.getByText('cancelled'));

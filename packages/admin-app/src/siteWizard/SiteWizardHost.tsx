@@ -10,7 +10,12 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { isSiteGenerationActive, URI_FIELD_NAME } from '@lodex/common';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
-import { fromLoaders, fromParsing, fromPublication } from '../selectors';
+import {
+    fromLoaders,
+    fromParsing,
+    fromPublication,
+    fromUpload,
+} from '../selectors';
 import type { State } from '../reducers';
 import { useSiteGeneration } from '../siteGeneration/useSiteGeneration';
 import { SiteWizard, type SiteWizardCloseReason } from './SiteWizard';
@@ -66,6 +71,8 @@ type SiteWizardHostProps = {
  */
 export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
     const instanceIsEmpty = useSelector(shouldOpenByItself);
+    // only the manual import screen uploads through the store
+    const isManualImportPending = useSelector(fromUpload.isUploadPending);
     const { generation } = useSiteGeneration();
     const [request, setRequest] = useState<WizardRequest>(() =>
         isSiteWizardDismissed() ? 'closed' : 'auto',
@@ -90,6 +97,14 @@ export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
         generation !== undefined &&
         !isGenerationActive &&
         !(hasSeenActiveGeneration.current && generation?.status === 'done');
+
+    // a manual import creates no site generation: the instance looks empty
+    // until its data is saved, and a reload meanwhile would open the wizard
+    useEffect(() => {
+        if (isManualImportPending) {
+            rememberSiteWizardDismissed();
+        }
+    }, [isManualImportPending]);
 
     if (request === 'auto' && active && opensByItself) {
         setRequest('open');
