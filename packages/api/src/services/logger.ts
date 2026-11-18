@@ -43,9 +43,7 @@ const getLogger = (tenant = '_lodex_') => {
 
     const logger = createLogger({
         level: config.get('logger.level'),
-        transports: [
-            new winston.transports.Console(),
-        ],
+        transports: [new winston.transports.Console()],
         format: format.combine(
             format.timestamp(),
             format.colorize(),
