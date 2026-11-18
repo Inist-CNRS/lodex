@@ -17,6 +17,11 @@ const getCancelledMarker = (filename: string) => `${filename}.cancelled`;
 // later is too late, the import runs (and needs the chunks)
 const getQueuedMarker = (filename: string) => `${filename}.queued`;
 
+// created by the first request that completes an upload: the others completing
+// it too (client retries of the last chunks) must not queue a second import of
+// the same chunks
+const getImportClaimMarker = (filename: string) => `${filename}.importing`;
+
 // upload identifiers are unique: chunks and markers older than this belong
 // to uploads that ended long ago (interrupted, failed or cancelled)
 const STALE_UPLOAD_FILE_AGE_MS = 24 * 60 * 60 * 1000;
@@ -33,12 +38,32 @@ export const isUploadCancelled = (filename: string) =>
 export const isUploadQueued = (filename: string) =>
     exists(getQueuedMarker(filename));
 
+// true for the one request that may queue the import ('wx' fails if the
+// marker exists, atomically, even across API processes)
+export const claimUploadImport = (filename: string): Promise<boolean> =>
+    fs.promises
+        .writeFile(getImportClaimMarker(filename), '', { flag: 'wx' })
+        .then(
+            () => true,
+            (error) => {
+                if (error.code === 'EEXIST') {
+                    return false;
+                }
+                throw error;
+            },
+        );
+
 export const markUploadQueued = (filename: string) =>
     fs.promises.writeFile(getQueuedMarker(filename), '');
 
 // once its import ended, a later cancel of the upload has nothing to stop
+// (and its chunks are gone: no request can complete it again)
 export const removeUploadQueuedMarker = (filename: string) =>
-    fs.promises.unlink(getQueuedMarker(filename)).catch(() => {});
+    Promise.all(
+        [getQueuedMarker(filename), getImportClaimMarker(filename)].map(
+            (marker) => fs.promises.unlink(marker).catch(() => {}),
+        ),
+    );
 
 const isChunkOf = (prefix: string, entry: string) =>
     entry.startsWith(prefix) && /^\d+$/.test(entry.slice(prefix.length));
@@ -62,7 +87,7 @@ export const removeUploadChunks = async (filename: string) => {
 // starts with `${tenant}_` leaves one after the prefix, and never matches.
 export const removeStaleUploadFiles = async (dir: string, tenant: string) => {
     const pattern = new RegExp(
-        `^${escapeRegExp(tenant)}_\\d+-[0-9a-zA-Z-]*\\.(cancelled|queued|\\d+)$`,
+        `^${escapeRegExp(tenant)}_\\d+-[0-9a-zA-Z-]*\\.(cancelled|queued|importing|\\d+)$`,
     );
     const entries = await fs.promises.readdir(dir).catch(() => []);
     await Promise.all(

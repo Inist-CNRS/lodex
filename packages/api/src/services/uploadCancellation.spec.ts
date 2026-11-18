@@ -2,6 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import {
+    claimUploadImport,
     isUploadCancelled,
     markUploadCancelled,
     removeStaleUploadFiles,
@@ -47,6 +48,20 @@ describe('uploadCancellation', () => {
         expect(await isUploadQueued(filename)).toBe(false);
     });
 
+    it('lets a single request claim the import of an upload', async () => {
+        const filename = path.join(dir, 'lodex_test_id');
+        const claims = await Promise.all([
+            claimUploadImport(filename),
+            claimUploadImport(filename),
+            claimUploadImport(filename),
+        ]);
+        expect(claims.filter(Boolean)).toHaveLength(1);
+        expect(await claimUploadImport(path.join(dir, 'other'))).toBe(true);
+        // released once the import ended
+        await removeUploadQueuedMarker(filename);
+        expect(await claimUploadImport(filename)).toBe(true);
+    });
+
     it("never removes the files of a tenant whose name extends this one's", async () => {
         const old = DAY_MS + 60_000;
         // the files of a tenant named "a_1-b", which tenant "a" would match
@@ -78,6 +93,7 @@ describe('uploadCancellation', () => {
         write('lodex_test_12-old.1', old);
         write('lodex_test_12-old.cancelled', old);
         write('lodex_test_12-old.queued', old);
+        write('lodex_test_12-old.importing', old);
         write('lodex_test_12-recent.1');
         write('other_12-old.1', old);
         // another tenant whose name starts with this one

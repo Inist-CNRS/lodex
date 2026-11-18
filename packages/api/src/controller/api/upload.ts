@@ -22,6 +22,7 @@ import {
 } from '../../services/fsHelpers';
 import progress from '../../services/progress';
 import {
+    claimUploadImport,
     getUploadDir,
     isUploadCancelled,
     isUploadQueued,
@@ -138,6 +139,7 @@ export const prepareUpload = async (ctx: any, next: any) => {
     ctx.saveStreamInFile = saveStreamInFile;
     ctx.getUploadedFileSize = getUploadedFileSize;
     ctx.isUploadCancelled = isUploadCancelled;
+    ctx.claimUploadImport = claimUploadImport;
     ctx.markUploadCancelled = markUploadCancelled;
     ctx.markUploadQueued = markUploadQueued;
     ctx.isUploadQueued = isUploadQueued;
@@ -256,6 +258,12 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
     }
 
     if (uploadedFileSize >= totalSize) {
+        // another request completing this upload already queues its import
+        if (!(await ctx.claimUploadImport(filename))) {
+            ctx.status = 200;
+            ctx.body = { status: 'pending' };
+            return;
+        }
         let isQueueing = false;
         let refusal: ImportRefusal | undefined;
         try {

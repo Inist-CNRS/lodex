@@ -86,6 +86,7 @@ describe('upload', () => {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
                 markUploadQueued: jest.fn(),
+                claimUploadImport: jest.fn(async () => true),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -143,6 +144,7 @@ describe('upload', () => {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
                 markUploadQueued: jest.fn(),
+                claimUploadImport: jest.fn(async () => true),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => true),
                 saveStreamInFile: jest.fn(),
@@ -208,6 +210,7 @@ describe('upload', () => {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
                 markUploadQueued: jest.fn(),
+                claimUploadImport: jest.fn(async () => true),
                 getUploadedFileSize: jest.fn(() => 10),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -276,6 +279,7 @@ describe('upload', () => {
                 tenant: 'lodex_test',
                 isUploadCancelled: jest.fn(async () => false),
                 markUploadQueued: jest.fn(),
+                claimUploadImport: jest.fn(async () => true),
                 getUploadedFileSize: jest.fn(() => false),
                 checkFileExists: jest.fn().mockImplementation(() => false),
                 saveStreamInFile: jest.fn(),
@@ -332,11 +336,43 @@ describe('upload', () => {
         });
     });
 
+    describe('uploadChunkMiddleware of an upload completed twice', () => {
+        it('does not queue a second import when another request claimed it', async () => {
+            const ctx: any = {
+                tenant: 'lodex_test',
+                isUploadCancelled: jest.fn(async () => false),
+                claimUploadImport: jest.fn(async () => false),
+                markUploadQueued: jest.fn(),
+                removeUploadChunks: jest.fn(),
+                getUploadedFileSize: jest.fn(() => 10),
+                checkFileExists: jest.fn(() => false),
+                saveStreamInFile: jest.fn(),
+                resumable: {
+                    extension: 'extension',
+                    chunkname: 'chunkname',
+                    filename: 'filename',
+                    totalChunks: 1,
+                    totalSize: 10,
+                    currentChunkSize: 10,
+                    stream: 'stream',
+                },
+            };
+            await uploadChunkMiddleware(ctx, 'type');
+            expect(ctx.claimUploadImport).toHaveBeenCalledWith('filename');
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toEqual({ status: 'pending' });
+            expect(ctx.markUploadQueued).not.toHaveBeenCalled();
+            expect(ctx.removeUploadChunks).not.toHaveBeenCalled();
+            expect(getOrCreateWorkerQueue).not.toHaveBeenCalled();
+        });
+    });
+
     describe('uploadChunkMiddleware of a cancelled upload', () => {
         const makeCtx = (isCancelled: jest.Mock) => ({
             tenant: 'lodex_test',
             isUploadCancelled: isCancelled,
             markUploadQueued: jest.fn(),
+            claimUploadImport: jest.fn(async () => true),
             removeUploadChunks: jest.fn(),
             getUploadedFileSize: jest.fn(() => 10),
             checkFileExists: jest.fn(() => false),
@@ -714,6 +750,7 @@ describe('upload with site generation', () => {
                 saveStreamInFile: jest.fn(),
                 getUploadedFileSize: jest.fn().mockResolvedValue(uploaded),
                 markUploadQueued: jest.fn(),
+                claimUploadImport: jest.fn(async () => true),
                 removeUploadChunks: jest.fn(),
             }) as any;
 
