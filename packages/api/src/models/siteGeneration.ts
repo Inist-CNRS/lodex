@@ -1,5 +1,6 @@
 import type {
     ModelLaunchStepType,
+    SiteGenerationKind,
     SiteGenerationPhase,
     SiteGenerationStatus,
     SiteWizardChoice,
@@ -24,6 +25,8 @@ export type SiteGenerationStep = {
 export type SiteGeneration = {
     _id: ObjectId;
     runId: string;
+    // absent = 'wizard'
+    kind?: SiteGenerationKind;
     status: SiteGenerationStatus;
     phase: SiteGenerationPhase;
     position: number;
@@ -60,6 +63,12 @@ export type SiteGenerationCollection = Collection<SiteGeneration> & {
     startWizard: (
         wizard: Pick<SiteGeneration, 'choice' | 'importJobId' | 'estimate'>,
     ) => Promise<SiteGeneration>;
+    startDataAdd: (add: {
+        importJobId: string;
+        autoPublish: boolean;
+        steps: SiteGenerationStep[];
+        estimate?: SiteGeneration['estimate'];
+    }) => Promise<SiteGeneration>;
     transition: (
         current: SiteGeneration,
         update: SiteGenerationUpdate,
@@ -73,7 +82,11 @@ export type SiteGenerationCollection = Collection<SiteGeneration> & {
 const withDefaults = (
     generation: SiteGeneration | null,
 ): SiteGeneration | null =>
-    generation && { ...generation, phase: generation.phase ?? 'launch' };
+    generation && {
+        ...generation,
+        kind: generation.kind ?? 'wizard',
+        phase: generation.phase ?? 'launch',
+    };
 
 export default async (db: Db): Promise<SiteGenerationCollection> => {
     const collection: Collection<SiteGeneration> = await getCreatedCollection(
@@ -86,10 +99,22 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
     repository.findCurrent = async () =>
         withDefaults(await collection.findOne({}));
 
+    // A single atomic operation: the existing document keeps its _id
+    // (an _id cannot be replaced), a missing one is created.
+    const replaceCurrent = async (generation: Omit<SiteGeneration, '_id'>) => {
+        const stored = await collection.findOneAndReplace({}, generation, {
+            upsert: true,
+            returnDocument: 'after',
+        });
+        repository.onChange?.();
+        return stored as SiteGeneration;
+    };
+
     repository.startWizard = async ({ choice, importJobId, estimate }) => {
         const now = new Date();
-        const generation: Omit<SiteGeneration, '_id'> = {
+        return replaceCurrent({
             runId: new ObjectId().toHexString(),
+            kind: 'wizard',
             status: 'running',
             version: 0,
             createdAt: now,
@@ -101,15 +126,31 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
             importJobId,
             estimate,
             autoPublish: choice?.autoPublish === true,
-        };
-        // A single atomic operation: the existing document keeps its _id
-        // (an _id cannot be replaced), a missing one is created.
-        const stored = await collection.findOneAndReplace({}, generation, {
-            upsert: true,
-            returnDocument: 'after',
         });
-        repository.onChange?.();
-        return stored as SiteGeneration;
+    };
+
+    repository.startDataAdd = async ({
+        importJobId,
+        autoPublish,
+        steps,
+        estimate,
+    }) => {
+        const now = new Date();
+        return replaceCurrent({
+            runId: new ObjectId().toHexString(),
+            kind: 'addData',
+            status: 'running',
+            version: 0,
+            createdAt: now,
+            updatedAt: now,
+            phase: 'data',
+            position: 0,
+            steps,
+            importJobId,
+            // without estimate, there is no launch step to show
+            ...(estimate && { estimate }),
+            autoPublish,
+        });
     };
 
     // `unset` removes fields (an undefined value would be stored as null)

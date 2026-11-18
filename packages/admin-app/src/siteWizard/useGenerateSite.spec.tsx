@@ -5,6 +5,7 @@ import { type CatalogModel } from '@lodex/common';
 import { Wrapper, getStore } from '../test-utils';
 import { uploadDataset } from '../upload/uploadDataset';
 import { stopSiteGeneration } from '../api/siteGeneration';
+import { SITE_GENERATION_QUERY_KEY } from '../siteGeneration/useSiteGeneration';
 import { useGenerateSite } from './useGenerateSite';
 
 jest.mock('../upload/uploadDataset', () => ({ uploadDataset: jest.fn() }));
@@ -70,6 +71,26 @@ describe('useGenerateSite', () => {
         );
         expect(result.current.isGenerating).toBe(false);
         expect(result.current.error).toBeNull();
+    });
+
+    it('adds data with the model loader and the data add choice, without choice', async () => {
+        const { result } = renderGenerateSite();
+        const textSource = { type: 'text' as const, text: 'a,b' };
+        await act(() =>
+            result.current.addData(model, textSource, {
+                relaunch: true,
+                autoPublish: true,
+            }),
+        );
+        expect(uploadDataset).toHaveBeenCalledWith(textSource, 'la', {
+            dataAdd: { relaunch: true, autoPublish: true },
+        });
+        expect(
+            (uploadDataset as jest.Mock).mock.calls[0][2],
+        ).not.toHaveProperty('choice');
+        expect(client.invalidateQueries).toHaveBeenCalledWith({
+            queryKey: SITE_GENERATION_QUERY_KEY,
+        });
     });
 
     it('sends only the model id without site info', async () => {

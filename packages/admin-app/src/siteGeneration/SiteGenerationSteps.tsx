@@ -184,6 +184,12 @@ const useStepContent = (
             smart_count: lines,
             count: lines.toLocaleString(locale),
         });
+    // a data add reports the whole dataset, not only the lines it imported
+    const datasetLines = (lines: number) =>
+        translate('site_generation_dataset_lines', {
+            smart_count: lines,
+            count: lines.toLocaleString(locale),
+        });
     const isRunning = step.state === 'running';
     switch (step.key) {
         case 'data':
@@ -200,7 +206,9 @@ const useStepContent = (
                               ? `${translate(importProgress.status)} — ${importedLines(importProgress.lines)}`
                               : translate(importProgress.status)
                           : view?.importedLines != null
-                            ? importedLines(view.importedLines)
+                            ? view.kind === 'addData'
+                                ? datasetLines(view.importedLines)
+                                : importedLines(view.importedLines)
                             : undefined,
             };
         case 'model':
@@ -222,33 +230,36 @@ const useStepContent = (
         case 'launch':
             return {
                 title: translate('site_generation_step_launch'),
-                description: view?.launch && (
-                    <>
-                        {translate('site_generation_launch_intro')}
-                        <Box component="ul" sx={{ m: 0, pl: 3 }}>
-                            <LaunchCounter
-                                counter={view.launch.enrichment}
-                                countKey="site_generation_enrichments"
-                                errorKey="site_generation_enrichments_error"
-                            />
-                            <LaunchCounter
-                                counter={view.launch.precomputed}
-                                countKey="site_generation_precomputed"
-                                errorKey="site_generation_precomputed_error"
-                            />
-                            {view.steps.map(
-                                (launchStep) =>
-                                    launchStep.retry && (
-                                        <LaunchRetry
-                                            key={`${launchStep.type}-${launchStep.name}`}
-                                            name={launchStep.name}
-                                            retry={launchStep.retry}
-                                        />
-                                    ),
-                            )}
-                        </Box>
-                    </>
-                ),
+                description: view?.launch &&
+                    view.launch.enrichment.total +
+                        view.launch.precomputed.total >
+                        0 && (
+                        <>
+                            {translate('site_generation_launch_intro')}
+                            <Box component="ul" sx={{ m: 0, pl: 3 }}>
+                                <LaunchCounter
+                                    counter={view.launch.enrichment}
+                                    countKey="site_generation_enrichments"
+                                    errorKey="site_generation_enrichments_error"
+                                />
+                                <LaunchCounter
+                                    counter={view.launch.precomputed}
+                                    countKey="site_generation_precomputed"
+                                    errorKey="site_generation_precomputed_error"
+                                />
+                                {view.steps.map(
+                                    (launchStep) =>
+                                        launchStep.retry && (
+                                            <LaunchRetry
+                                                key={`${launchStep.type}-${launchStep.name}`}
+                                                name={launchStep.name}
+                                                retry={launchStep.retry}
+                                            />
+                                        ),
+                                )}
+                            </Box>
+                        </>
+                    ),
             };
         case 'publication':
             return { title: translate('site_generation_step_publication') };

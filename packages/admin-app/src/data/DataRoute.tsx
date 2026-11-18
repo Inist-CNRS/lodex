@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import ParsingResult from '../parsing/ParsingResult';
 import { fromParsing, fromPublication, fromUpload } from '../selectors';
-import Upload from '../upload/Upload';
+import { UploadPage } from '../upload/UploadPage';
 import { preLoadLoaders } from '../loader';
 import withInitialData from '../withInitialData';
 import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
@@ -82,12 +82,7 @@ export const DataRouteComponent = ({
 
     if (canUploadFile) {
         return (
-            <Upload
-                // @ts-expect-error TS2322
-                className="admin"
-                isFirstFile={canUploadFile}
-                onOpenWizard={openWizard}
-            />
+            <UploadPage isFirstFile={canUploadFile} onOpenWizard={openWizard} />
         );
     }
 

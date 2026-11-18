@@ -3,9 +3,8 @@ import { render, userEvent } from '../test-utils';
 import { SiteWizardContext } from '../siteWizard/SiteWizardContext';
 import { DataRouteComponent } from './DataRoute';
 
-jest.mock('../upload/Upload', () => ({
-    __esModule: true,
-    default: ({ onOpenWizard }: { onOpenWizard?: () => void }) => (
+jest.mock('../upload/UploadPage', () => ({
+    UploadPage: ({ onOpenWizard }: { onOpenWizard?: () => void }) => (
         <div data-testid="upload">
             {onOpenWizard && (
                 <button onClick={onOpenWizard}>site_wizard_open</button>

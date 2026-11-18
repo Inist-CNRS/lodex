@@ -207,6 +207,123 @@ describe('onWizardImportEnd', () => {
         expect(state.current.modelJobId).toEqual(expect.any(String));
     });
 
+    describe('data add', () => {
+        const addData = {
+            ...running,
+            kind: 'addData',
+            position: 0,
+            steps: [
+                { name: 'b', type: 'precomputed', position: 2 },
+                { name: 'a', type: 'enrichment', position: 1 },
+            ],
+        };
+
+        it('moves to the launch phase at the first position, queues no model job and advances', async () => {
+            const { ctx, state } = make({ ...addData });
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.phase).toBe('launch');
+            expect(state.current.importedLines).toBe(42);
+            expect(state.current.position).toBe(1);
+            expect(state.current.modelJobId).toBeUndefined();
+            expect(mockAdd).not.toHaveBeenCalled();
+            expect(advanceSiteGeneration).toHaveBeenCalledWith(ctx);
+        });
+
+        it('starts at position 0 without any step', async () => {
+            const { ctx, state } = make({ ...addData, steps: [] });
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.phase).toBe('launch');
+            expect(state.current.position).toBe(0);
+            expect(advanceSiteGeneration).toHaveBeenCalledWith(ctx);
+        });
+
+        it('only logs a failure of the advance', async () => {
+            jest.mocked(advanceSiteGeneration).mockRejectedValueOnce(
+                new Error('advance boom'),
+            );
+            const { ctx, state } = make({ ...addData });
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.status).toBe('running');
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                'Site generation advance error',
+                { error: 'advance boom' },
+            );
+        });
+
+        it('launches without importedLines when the count fails', async () => {
+            const { ctx, state } = make({ ...addData });
+            ctx.dataset.estimatedDocumentCount.mockRejectedValue(
+                new Error('count boom'),
+            );
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.phase).toBe('launch');
+            expect(state.current.status).toBe('running');
+            expect(state.current.importedLines).toBeUndefined();
+            expect(state.current.position).toBe(1);
+            expect(advanceSiteGeneration).toHaveBeenCalledWith(ctx);
+        });
+
+        it('puts the run in error in its launch phase when the transition fails', async () => {
+            const { ctx, state, transition } = make({ ...addData });
+            transition.mockRejectedValueOnce(new Error('transition boom'));
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current).toMatchObject({
+                status: 'error',
+                phase: 'launch',
+                position: 1,
+                message: 'transition boom',
+            });
+            expect(state.current.steps).toEqual(addData.steps);
+            expect(advanceSiteGeneration).not.toHaveBeenCalled();
+        });
+
+        it('leaves a run stopped meanwhile alone when the transition fails', async () => {
+            const { ctx, state, transition } = make({ ...addData });
+            transition.mockImplementationOnce(async () => {
+                state.current = { ...state.current, status: 'stopping' };
+                throw new Error('transition boom');
+            });
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.status).toBe('stopping');
+            expect(state.current.phase).toBe('data');
+            expect(advanceSiteGeneration).not.toHaveBeenCalled();
+        });
+
+        it('advances without putting the run in error when the transition was committed though it threw', async () => {
+            const { ctx, state, transition } = make({ ...addData });
+            transition.mockImplementationOnce(async () => {
+                state.current = { ...state.current, phase: 'launch' };
+                throw new Error('transition boom');
+            });
+            await onWizardImportEnd(ctx, 'run-1', { success: true });
+            expect(state.current.status).toBe('running');
+            expect(state.current.phase).toBe('launch');
+            expect(advanceSiteGeneration).toHaveBeenCalledWith(ctx);
+        });
+
+        it('puts the run in error on failure', async () => {
+            const { ctx, state } = make({ ...addData });
+            await onWizardImportEnd(ctx, 'run-1', {
+                success: false,
+                cancelled: false,
+                message: 'import_error_invalid_format',
+            });
+            expect(state.current.status).toBe('error');
+            expect(state.current.message).toBe('import_error_invalid_format');
+            expect(advanceSiteGeneration).not.toHaveBeenCalled();
+        });
+
+        it('stops the run on cancellation', async () => {
+            const { ctx, state } = make({ ...addData });
+            await onWizardImportEnd(ctx, 'run-1', {
+                success: false,
+                cancelled: true,
+                message: 'cancelled_import',
+            });
+            expect(state.current.status).toBe('stopped');
+        });
+    });
+
     it('queues only once for concurrent calls', async () => {
         const { ctx } = make({ ...running });
         await Promise.all([
@@ -340,6 +457,7 @@ describe('importWizardModel', () => {
                 findCurrent: jest.fn(async () => state.current),
                 transition,
             },
+            siteModel: { remember: jest.fn(), forget: jest.fn() },
         };
         return { ctx, state, transition, stopNow };
     };
@@ -394,6 +512,60 @@ describe('importWizardModel', () => {
         expect(transition.mock.invocationCallOrder[0]).toBeLessThan(
             jest.mocked(applySiteInfo).mock.invocationCallOrder[0],
         );
+    });
+
+    it('remembers the restored model before the settings phase', async () => {
+        const { ctx, transition } = make(inModelPhase());
+        await importWizardModel(ctx, 'run-1');
+
+        expect(ctx.siteModel.remember).toHaveBeenCalledTimes(1);
+        expect(ctx.siteModel.remember).toHaveBeenCalledWith('good');
+        const remembered = ctx.siteModel.remember.mock.invocationCallOrder[0];
+        expect(remembered).toBeGreaterThan(
+            jest.mocked(restoreFields).mock.invocationCallOrder[0],
+        );
+        expect(remembered).toBeLessThan(transition.mock.invocationCallOrder[0]);
+    });
+
+    it('forgets the memory before the restoration, even when it fails', async () => {
+        const { ctx } = make(inModelPhase());
+        jest.mocked(restoreFields).mockRejectedValue(new Error('bad archive'));
+        await importWizardModel(ctx, 'run-1');
+        expect(ctx.siteModel.forget).toHaveBeenCalledTimes(1);
+        expect(ctx.siteModel.forget.mock.invocationCallOrder[0]).toBeLessThan(
+            jest.mocked(restoreFields).mock.invocationCallOrder[0],
+        );
+    });
+
+    it('does not forget the memory when the download fails', async () => {
+        const { ctx } = make(inModelPhase());
+        ctx.downloadModelArchive.mockRejectedValue(new Error('offline'));
+        await importWizardModel(ctx, 'run-1');
+        expect(ctx.siteModel.forget).not.toHaveBeenCalled();
+    });
+
+    it('does not remember the model when the download fails', async () => {
+        const { ctx } = make(inModelPhase());
+        ctx.downloadModelArchive.mockRejectedValue(new Error('offline'));
+        await importWizardModel(ctx, 'run-1');
+        expect(ctx.siteModel.remember).not.toHaveBeenCalled();
+    });
+
+    it('remembers only after a successful restore: not when the restoration fails', async () => {
+        const { ctx } = make(inModelPhase());
+        jest.mocked(restoreFields).mockRejectedValue(new Error('bad archive'));
+        await importWizardModel(ctx, 'run-1');
+        expect(ctx.siteModel.remember).not.toHaveBeenCalled();
+    });
+
+    it('does not remember the model when stopped during the download', async () => {
+        const { ctx, stopNow } = make(inModelPhase());
+        ctx.downloadModelArchive.mockImplementation(async () => {
+            stopNow();
+            return stream;
+        });
+        await importWizardModel(ctx, 'run-1');
+        expect(ctx.siteModel.remember).not.toHaveBeenCalled();
     });
 
     // the launch phase then ends it, or publishes the site first

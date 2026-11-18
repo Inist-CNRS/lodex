@@ -3,7 +3,7 @@ import type { ModelLaunchStep } from '@lodex/common';
 import { DATASET_ID } from '../../models/dataSource';
 import type { Enrichment } from '../../models/enrichment';
 import type { PreComputation } from '../../models/precomputed';
-import { buildLaunchSteps } from './buildLaunchSteps';
+import { buildLaunchSteps, firstPosition } from './buildLaunchSteps';
 
 const enrichment = (name: string, extra: Partial<Enrichment> = {}) =>
     ({ _id: new ObjectId(), name, ...extra }) as Enrichment;
@@ -148,5 +148,17 @@ describe('buildLaunchSteps', () => {
                 columnsByDataSource: {},
             }),
         ).toEqual([]);
+    });
+});
+
+describe('firstPosition', () => {
+    it('is the lowest position', () => {
+        expect(
+            firstPosition([{ position: 3 }, { position: 1 }, { position: 2 }]),
+        ).toBe(1);
+    });
+
+    it('is 0 without step', () => {
+        expect(firstPosition([])).toBe(0);
     });
 });

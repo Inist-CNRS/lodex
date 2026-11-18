@@ -1,28 +1,22 @@
 import {
     Alert,
     Box,
-    Chip,
     CircularProgress,
-    MenuItem,
     Select,
     Typography,
 } from '@mui/material';
 import { type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { StepTitle } from './StepTitle';
+import { type AvailableTheme } from '../configTenant/useGetAvailableThemes';
 import {
-    getThemeLabel,
-    type AvailableTheme,
-} from '../configTenant/useGetAvailableThemes';
+    getRecommendedTheme,
+    renderThemeOptions,
+    renderThemeValue,
+} from '../configTenant/recommendedTheme';
 
 // the theme of a new instance, always installed
 const DEFAULT_THEME = 'default';
-
-// only a theme of this instance can be recommended
-const getRecommendedTheme = (
-    model: CatalogModel | undefined,
-    themes: AvailableTheme[],
-) => themes.find(({ value }) => value === model?.theme)?.value;
 
 // the theme applied by the generation until the user picks another one,
 // whatever the theme of the model's archive or of the instance. Without the
@@ -32,7 +26,7 @@ export const getPreselectedTheme = (
     model: CatalogModel | undefined,
     themes: AvailableTheme[] | undefined,
 ) =>
-    (themes ? getRecommendedTheme(model, themes) : model?.theme) ??
+    (themes ? getRecommendedTheme(model?.theme, themes) : model?.theme) ??
     DEFAULT_THEME;
 
 type ThemeStepProps = {
@@ -53,7 +47,7 @@ export const ThemeStep = ({
     onThemeChange,
 }: ThemeStepProps) => {
     const { translate, locale } = useTranslate();
-    const recommended = getRecommendedTheme(model, themes);
+    const recommended = getRecommendedTheme(model?.theme, themes);
     const findTheme = (value: string) =>
         themes.find((available) => available.value === value);
 
@@ -73,31 +67,13 @@ export const ThemeStep = ({
                 <Select
                     value={findTheme(theme) ? theme : ''}
                     onChange={(event) => onThemeChange(event.target.value)}
-                    // the recommended tag is for the list only
-                    renderValue={(value) => {
-                        const selected = findTheme(value);
-                        return selected ? getThemeLabel(selected, locale) : '';
-                    }}
+                    renderValue={renderThemeValue(themes, locale)}
                     inputProps={{
                         'aria-label': translate('site_wizard_theme_title'),
                     }}
                     sx={{ mt: 3, width: 'min(505px, 100%)' }}
                 >
-                    {themes.map((available) => (
-                        <MenuItem key={available.value} value={available.value}>
-                            {getThemeLabel(available, locale)}
-                            {available.value === recommended && (
-                                <Chip
-                                    label={translate(
-                                        'site_wizard_theme_recommended',
-                                    )}
-                                    color="primary"
-                                    size="small"
-                                    sx={{ ml: 1 }}
-                                />
-                            )}
-                        </MenuItem>
-                    ))}
+                    {renderThemeOptions(themes, locale, recommended)}
                 </Select>
             )}
         </Box>

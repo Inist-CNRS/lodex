@@ -19,6 +19,7 @@ import publishedFacet from '../models/publishedFacet';
 import siteGeneration, {
     type SiteGenerationCollection,
 } from '../models/siteGeneration';
+import siteModel, { type SiteModelCollection } from '../models/siteModel';
 import subresource from '../models/subresource';
 import tenant from '../models/tenant';
 import { pushSiteGeneration } from './siteGeneration/push';
@@ -28,6 +29,7 @@ interface CustomContext extends DefaultContext {
     precomputed: PrecomputedCollection;
     enrichment: EnrichmentCollection;
     siteGeneration: SiteGenerationCollection;
+    siteModel: SiteModelCollection;
     // Add other custom context properties here
 }
 
@@ -54,6 +56,7 @@ const createRepositories = async (db: Db, tenantName: string) => {
         configTenantCollection,
         hiddenResourceRepository,
         siteGenerationRepository,
+        siteModelRepository,
     ] = await Promise.all([
         annotation(db),
         dataset(db),
@@ -67,6 +70,7 @@ const createRepositories = async (db: Db, tenantName: string) => {
         configTenant(db),
         hiddenResource(db),
         siteGeneration(db),
+        siteModel(db),
     ]);
 
     const repositories = {
@@ -82,6 +86,7 @@ const createRepositories = async (db: Db, tenantName: string) => {
         configTenantCollection,
         hiddenResource: hiddenResourceRepository,
         siteGeneration: siteGenerationRepository,
+        siteModel: siteModelRepository,
         dataSource: dataSource(datasetRepository, precomputedRepository),
     };
     // the admins see every change of the generation at once

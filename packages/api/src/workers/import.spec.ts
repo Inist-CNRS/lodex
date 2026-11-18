@@ -73,6 +73,23 @@ describe('processImport and the wizard generation', () => {
         expect(events).toEqual(['drop', 'wizard', 'done']);
     });
 
+    it('keeps the dataset of a cancelled data add and still notifies the generation', async () => {
+        mockStartImport.mockRejectedValue(new CancelWorkerError('x'));
+        await run(makeJob({ keepDatasetOnCancel: true }));
+        expect(mockDrop).not.toHaveBeenCalled();
+        expect(mockOnWizardImportEnd).toHaveBeenCalledWith(
+            expect.anything(),
+            'run-1',
+            { success: false, cancelled: true, message: 'cancelled_import' },
+        );
+    });
+
+    it('drops the dataset of a cancelled import without the keep flag', async () => {
+        mockStartImport.mockRejectedValue(new CancelWorkerError('x'));
+        await run(makeJob());
+        expect(mockDrop).toHaveBeenCalledTimes(1);
+    });
+
     it('ends a failed import once even when its error handling fails', async () => {
         const err = new Error('bad file');
         mockStartImport.mockRejectedValue(err);

@@ -26,6 +26,7 @@ import { resetTheme, restoreFields } from '../../services/modelRestore';
 import { transformField } from './field.transformer';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
+import getLogger from '../../services/logger';
 
 export const setup = async (ctx: any, next: any) => {
     ctx.validateField = validateField;
@@ -264,11 +265,23 @@ export const exportFields = async (ctx: any) => {
     }
 };
 
+// a failure to forget the memory must not fail what already succeeded
+const forgetSiteModel = async (ctx: any) => {
+    try {
+        await ctx.siteModel.forget();
+    } catch (error) {
+        getLogger(ctx.tenant).error('Unable to forget the site model', error);
+    }
+};
+
 export const importFields = (asyncBusboyImpl: any) => async (ctx: any) => {
     const { files } = await asyncBusboyImpl(ctx.req);
     const fileStream = files[0];
 
     try {
+        // the site no longer comes from a catalog model, whatever the outcome:
+        // a restore failing halfway leaves a mixed model
+        await forgetSiteModel(ctx);
         const { themeNotFound } =
             (await ctx.restoreFields(fileStream, ctx)) ?? {};
         const enrichments = await ctx.enrichment.findAll();
@@ -399,6 +412,7 @@ export const dropFieldCollection = async (ctx: any) => {
         if (collectionNames.map((c: any) => c.name).includes('subresource')) {
             await ctx.subresource.drop();
         }
+        await forgetSiteModel(ctx);
         ctx.status = 200;
         ctx.body = { message: 'model_cleared' };
     } catch (error) {

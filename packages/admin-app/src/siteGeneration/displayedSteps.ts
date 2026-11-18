@@ -18,14 +18,20 @@ const KEYS: DisplayedStepKey[] = [...PHASES, 'publication'];
 
 const isShown = (view: SiteGenerationView, key: DisplayedStepKey) => {
     switch (key) {
-        // only a generation started by the wizard imports data and a model
+        // a data add imports data, but no model
         case 'data':
+            return view.kind === 'addData' || !!view.modelId;
+        // a data add has no model id
         case 'model':
             return !!view.modelId;
         case 'settings':
             return !!view.settings;
         case 'launch':
-            return view.launch !== null;
+            // an error of the launch phase is shown even without steps
+            return (
+                view.launch !== null ||
+                (view.phase === 'launch' && view.status === 'error')
+            );
         case 'publication':
             return !!view.publication;
     }

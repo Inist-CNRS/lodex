@@ -1,5 +1,5 @@
 import groupBy from 'lodash/groupBy';
-import type { ModelLaunchStep } from '@lodex/common';
+import type { ModelLaunchStep, ModelLaunchStepType } from '@lodex/common';
 import { DATASET_ID } from '../../models/dataSource';
 import type { Enrichment } from '../../models/enrichment';
 import type { PreComputation } from '../../models/precomputed';
@@ -109,3 +109,16 @@ const sortSteps = (steps: SiteGenerationStep[]) =>
             a.position - b.position ||
             Number(b.type === 'precomputed') - Number(a.type === 'precomputed'),
     );
+
+export const countStepsByType = (
+    steps: Pick<SiteGenerationStep, 'type'>[],
+): Record<ModelLaunchStepType, number> => ({
+    enrichment: steps.filter(({ type }) => type === 'enrichment').length,
+    precomputed: steps.filter(({ type }) => type === 'precomputed').length,
+});
+
+// The position the launch phase starts at: the lowest one, 0 without steps
+export const firstPosition = (
+    steps: Pick<SiteGenerationStep, 'position'>[],
+): number =>
+    steps.length ? Math.min(...steps.map(({ position }) => position)) : 0;

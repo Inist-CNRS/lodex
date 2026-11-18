@@ -15,6 +15,8 @@ import {
 jest.mock('../../workers');
 jest.mock('../../services/siteGeneration/wizardGeneration');
 import { startWizardGeneration } from '../../services/siteGeneration/wizardGeneration';
+jest.mock('../../services/siteGeneration/dataAddGeneration');
+import { startDataAddGeneration } from '../../services/siteGeneration/dataAddGeneration';
 jest.mock('../../services/siteGeneration/wizardJobs');
 import { failWizardGeneration } from '../../services/siteGeneration/wizardJobs';
 jest.mock('node:crypto', () => ({
@@ -77,6 +79,50 @@ describe('upload', () => {
                 extension: 'csv',
                 customLoader: null,
             });
+        });
+    });
+
+    describe('parseRequest of a data add', () => {
+        const parse = async (extra: Record<string, string>) => {
+            const ctx: any = {
+                tenant: 'lodex_test',
+                req: 'req',
+                requestToStream: jest.fn().mockResolvedValue({
+                    stream: 'stream',
+                    fields: {
+                        resumableChunkNumber: '2',
+                        resumableIdentifier: 'identifier',
+                        resumableTotalChunks: '2',
+                        resumableTotalSize: '10',
+                        resumableCurrentChunkSize: '5',
+                        resumableFilename: 'data.csv',
+                        ...extra,
+                    },
+                }),
+            };
+            await parseRequest(ctx, null, jest.fn());
+            return ctx;
+        };
+
+        it('reads the data add fields into ctx.resumable.dataAdd', async () => {
+            const ctx = await parse({
+                dataAdd: 'true',
+                relaunch: 'true',
+                autoPublish: 'false',
+            });
+            expect(ctx.resumable.dataAdd).toEqual({
+                relaunch: 'true',
+                autoPublish: 'false',
+            });
+            expect(ctx.resumable.choice).toBeUndefined();
+        });
+
+        it.each([
+            ['missing', {}],
+            ['false', { dataAdd: 'false', relaunch: 'true' }],
+        ])('has no data add when the field is %s', async (_, extra) => {
+            const ctx = await parse(extra);
+            expect(ctx.resumable.dataAdd).toBeUndefined();
         });
     });
 
@@ -586,6 +632,7 @@ describe('upload with site generation', () => {
         } as unknown as Queue);
         jest.mocked(startWizardGeneration).mockReset();
         jest.mocked(failWizardGeneration).mockClear();
+        jest.mocked(startDataAddGeneration).mockReset();
     });
 
     const choice = { modelId: 'm', siteName: 'Site' };
@@ -726,6 +773,285 @@ describe('upload with site generation', () => {
         await uploadText(ctx);
         expect(add).not.toHaveBeenCalled();
         expect(ctx.status).toBe(400);
+    });
+
+    describe('data add', () => {
+        const dataAdd = { relaunch: true, autoPublish: false };
+
+        it('uploadText starts a data add and queues the job with its run id', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                runId: 'run-2',
+            });
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: { body: { text: 'q', loaderName: 'csv', dataAdd } },
+            };
+            await uploadText(ctx);
+            expect(startDataAddGeneration).toHaveBeenCalledWith(
+                ctx,
+                dataAdd,
+                {
+                    loaderName: 'csv',
+                    importType: 'text',
+                    customLoader: undefined,
+                },
+                'uuid',
+            );
+            expect(add).toHaveBeenCalledWith(
+                IMPORT,
+                expect.objectContaining({
+                    siteGenerationRunId: 'run-2',
+                    keepDatasetOnCancel: true,
+                }),
+                { jobId: 'uuid' },
+            );
+        });
+
+        it('uploadText reads the flags as booleans', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                runId: 'run-2',
+            });
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: {
+                    body: {
+                        text: 'q',
+                        loaderName: 'csv',
+                        dataAdd: { relaunch: 'true', autoPublish: 'nope' },
+                    },
+                },
+            };
+            await uploadText(ctx);
+            expect(startDataAddGeneration).toHaveBeenCalledWith(
+                ctx,
+                { relaunch: true, autoPublish: false },
+                {
+                    loaderName: 'csv',
+                    importType: 'text',
+                    customLoader: undefined,
+                },
+                'uuid',
+            );
+        });
+
+        it.each([false, true, 'true', 1, [], null, 'x'])(
+            'uploadText takes a dataAdd of %j for a plain import',
+            async (dataAddValue) => {
+                const ctx: any = {
+                    tenant: 'lodex_test',
+                    request: {
+                        body: {
+                            text: 'q',
+                            loaderName: 'csv',
+                            dataAdd: dataAddValue,
+                        },
+                    },
+                };
+                await uploadText(ctx);
+                expect(startDataAddGeneration).not.toHaveBeenCalled();
+                expect(add.mock.calls[0][1]).not.toHaveProperty(
+                    'siteGenerationRunId',
+                );
+            },
+        );
+
+        it('uploadText starts a data add for an empty object', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                runId: 'run-2',
+            });
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: {
+                    body: { text: 'q', loaderName: 'csv', dataAdd: {} },
+                },
+            };
+            await uploadText(ctx);
+            expect(startDataAddGeneration).toHaveBeenCalledWith(
+                ctx,
+                { relaunch: false, autoPublish: false },
+                expect.anything(),
+                'uuid',
+            );
+        });
+
+        it('uploadUrl starts a data add with the url import type and its customLoader', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                runId: 'run-2',
+            });
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: {
+                    body: {
+                        url: 'http://h/data.csv',
+                        loaderName: 'csv',
+                        customLoader: 'x => x',
+                        dataAdd,
+                    },
+                },
+            };
+            await uploadUrl(ctx);
+            expect(startDataAddGeneration).toHaveBeenCalledWith(
+                ctx,
+                dataAdd,
+                {
+                    loaderName: 'csv',
+                    importType: 'url',
+                    customLoader: 'x => x',
+                },
+                'uuid',
+            );
+        });
+
+        it('uploadText queues nothing when the data add is refused', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                status: 409,
+                error: 'not_simplified',
+            });
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: { body: { text: 'q', loaderName: 'csv', dataAdd } },
+            };
+            await uploadText(ctx);
+            expect(add).not.toHaveBeenCalled();
+            expect(ctx.status).toBe(409);
+            expect(ctx.body).toEqual({ error: 'not_simplified' });
+        });
+
+        it('uploadText without dataAdd nor siteGeneration is a manual import', async () => {
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: { body: { text: 'q', loaderName: 'csv' } },
+            };
+            await uploadText(ctx);
+            expect(startDataAddGeneration).not.toHaveBeenCalled();
+            expect(add.mock.calls[0][1]).not.toHaveProperty(
+                'siteGenerationRunId',
+            );
+            expect(add.mock.calls[0][1]).not.toHaveProperty(
+                'keepDatasetOnCancel',
+            );
+        });
+
+        it('a failing queue puts the data add in error', async () => {
+            jest.mocked(startDataAddGeneration).mockResolvedValue({
+                runId: 'run-2',
+            });
+            add.mockRejectedValue(new Error('redis down'));
+            const ctx: any = {
+                tenant: 'lodex_test',
+                request: { body: { text: 'q', loaderName: 'csv', dataAdd } },
+            };
+            await expect(uploadText(ctx)).rejects.toThrow('redis down');
+            expect(failWizardGeneration).toHaveBeenCalledWith(
+                ctx,
+                'run-2',
+                'redis down',
+            );
+        });
+
+        describe('last chunk', () => {
+            const makeCtx = () =>
+                ({
+                    tenant: 'lodex_test',
+                    resumable: {
+                        chunkname: 'c',
+                        currentChunkSize: 5,
+                        stream: 's',
+                        filename: 'f',
+                        totalChunks: 2,
+                        totalSize: 10,
+                        extension: 'csv',
+                        customLoader: null,
+                        chunkNumber: 2,
+                        dataAdd,
+                    },
+                    isUploadCancelled: jest.fn().mockResolvedValue(false),
+                    removeStaleUploadFiles: jest.fn(),
+                    checkFileExists: jest.fn().mockResolvedValue(true),
+                    saveStreamInFile: jest.fn(),
+                    getUploadedFileSize: jest.fn().mockResolvedValue(10),
+                    claimUploadImport: jest.fn(async () => true),
+                    markUploadQueued: jest.fn(),
+                    removeUploadChunks: jest.fn(),
+                }) as any;
+
+            it('starts the data add then queues the job', async () => {
+                jest.mocked(startDataAddGeneration).mockResolvedValue({
+                    runId: 'run-2',
+                });
+                const ctx = makeCtx();
+                await uploadChunkMiddleware(ctx, 'csv');
+                expect(startDataAddGeneration).toHaveBeenCalledWith(
+                    ctx,
+                    dataAdd,
+                    {
+                        loaderName: 'csv',
+                        importType: 'file',
+                        customLoader: null,
+                    },
+                    'uuid',
+                );
+                expect(add).toHaveBeenCalledWith(
+                    IMPORT,
+                    expect.objectContaining({
+                        siteGenerationRunId: 'run-2',
+                        keepDatasetOnCancel: true,
+                    }),
+                    { jobId: 'uuid' },
+                );
+            });
+
+            it('hands the multipart fields to the data add as booleans', async () => {
+                jest.mocked(startDataAddGeneration).mockResolvedValue({
+                    runId: 'run-2',
+                });
+                const ctx: any = {
+                    ...makeCtx(),
+                    req: 'req',
+                    requestToStream: jest.fn().mockResolvedValue({
+                        stream: 's',
+                        fields: {
+                            resumableChunkNumber: '2',
+                            resumableIdentifier: 'identifier',
+                            resumableTotalChunks: '2',
+                            resumableTotalSize: '10',
+                            resumableCurrentChunkSize: '5',
+                            resumableFilename: 'data.csv',
+                            dataAdd: 'true',
+                            relaunch: 'true',
+                            autoPublish: 'false',
+                        },
+                    }),
+                };
+                await parseRequest(ctx, null, jest.fn());
+                await uploadChunkMiddleware(ctx, 'csv');
+                expect(startDataAddGeneration).toHaveBeenCalledWith(
+                    ctx,
+                    { relaunch: true, autoPublish: false },
+                    {
+                        loaderName: 'csv',
+                        importType: 'file',
+                        customLoader: null,
+                    },
+                    'uuid',
+                );
+            });
+
+            it('a refusal drops the chunks and queues nothing', async () => {
+                jest.mocked(startDataAddGeneration).mockResolvedValue({
+                    status: 409,
+                    error: 'site_generation_in_progress',
+                });
+                const ctx = makeCtx();
+                await uploadChunkMiddleware(ctx, 'csv');
+                expect(add).not.toHaveBeenCalled();
+                expect(ctx.removeUploadChunks).toHaveBeenCalledWith('f');
+                expect(ctx.status).toBe(409);
+                expect(ctx.body).toEqual({
+                    error: 'site_generation_in_progress',
+                });
+            });
+        });
     });
 
     describe('last chunk', () => {

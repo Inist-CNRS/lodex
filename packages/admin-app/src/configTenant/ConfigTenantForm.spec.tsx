@@ -1,9 +1,9 @@
 import { ConfigTenantFormView } from './ConfigTenantForm';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
-import { render } from '../test-utils';
+import { render, userEvent } from '../test-utils';
 
 import configTenant from '../../../../configTenant.json';
-import { fireEvent, waitFor } from '@testing-library/dom';
+import { fireEvent, waitFor, within } from '@testing-library/dom';
 
 // @ts-expect-error TS7006
 function TestConfigTenantFormView(props) {
@@ -149,6 +149,59 @@ describe('ConfigTenantForm', () => {
                 ...configTenant.front,
                 theme: { for: 'nougat' },
             },
+        });
+    });
+
+    describe('recommended theme', () => {
+        const renderWithRecommendedTheme = (recommendedTheme?: string) =>
+            render(
+                <TestConfigTenantFormView
+                    initialConfig={configTenant}
+                    availableThemes={availableThemes}
+                    recommendedTheme={recommendedTheme}
+                    handleCancel={() => {}}
+                    handleSave={() => {}}
+                />,
+            );
+        // the theme input is the hidden native input of the select
+        const themeSelect = (screen: ReturnType<typeof render>) =>
+            screen
+                .getByLabelText('theme')
+                .parentElement!.querySelector<HTMLElement>(
+                    '[role="combobox"]',
+                )!;
+        const openThemes = async (screen: ReturnType<typeof render>) => {
+            await userEvent.click(themeSelect(screen));
+            return within(screen.getByRole('listbox'));
+        };
+
+        it('tags the recommended theme in the list', async () => {
+            const screen = renderWithRecommendedTheme('nougat');
+            const list = await openThemes(screen);
+            expect(
+                list.getByRole('option', { name: /Nougat/ }),
+            ).toHaveTextContent('site_wizard_theme_recommended');
+            expect(
+                list.getByRole('option', { name: /^System/ }),
+            ).not.toHaveTextContent('site_wizard_theme_recommended');
+        });
+
+        it('does not tag the selected value', () => {
+            const screen = renderWithRecommendedTheme('default');
+            expect(themeSelect(screen)).toHaveTextContent(
+                'System - System theme',
+            );
+            expect(themeSelect(screen)).not.toHaveTextContent(
+                'site_wizard_theme_recommended',
+            );
+        });
+
+        it('tags no theme without recommendation', async () => {
+            const screen = renderWithRecommendedTheme();
+            const list = await openThemes(screen);
+            expect(
+                list.queryByText('site_wizard_theme_recommended'),
+            ).not.toBeInTheDocument();
         });
     });
 

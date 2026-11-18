@@ -24,6 +24,7 @@ import { getDisplayedSteps } from './displayedSteps';
 import { SiteGenerationHeader } from './SiteGenerationHeader';
 import { SiteGenerationSteps } from './SiteGenerationSteps';
 import { useSiteGeneration, useSiteGenerationPush } from './useSiteGeneration';
+import { SITE_MODEL_QUERY_KEY } from '../upload/useSiteModel';
 import { GENERATION_DIALOG_PAPER_PROPS } from '../siteWizard/wizardDialogPaper';
 
 const SUPPORT_EMAIL = 'support-lodex@listes.istex.fr';
@@ -75,6 +76,8 @@ export const SiteGenerationDialog = () => {
         dispatch(loadParsingResult());
         // the model import changes the site name, description and theme
         queryClient.resetQueries({ queryKey: ['get-config-tenant'] });
+        // the wizard writes the memory of the site model
+        queryClient.resetQueries({ queryKey: SITE_MODEL_QUERY_KEY });
         if (status === 'done' && generation?.themeNotFound) {
             toast(
                 translate('site_wizard_theme_not_found', {
@@ -118,12 +121,20 @@ export const SiteGenerationDialog = () => {
     };
 
     const handleRetry = async () => {
-        // a failed data import leaves the instance empty: the wizard opens
-        // again, on the data screen, to send the data anew
+        // a failed data import of the wizard leaves the instance empty: the
+        // wizard opens again, on the data screen, to send the data anew. A
+        // failed data add keeps the dataset: back to the data add page
         const isDataRetry = generation.phase === 'data';
+        const retryTarget =
+            generation.kind === 'addData'
+                ? { pathname: '/data/add' }
+                : {
+                      pathname: '/data/existing',
+                      state: { reopenSiteWizard: true },
+                  };
         const isRelaunched = await run(relaunch);
         if (isRelaunched && isDataRetry) {
-            history.push('/data/existing', { reopenSiteWizard: true });
+            history.push(retryTarget.pathname, retryTarget.state);
         }
     };
 

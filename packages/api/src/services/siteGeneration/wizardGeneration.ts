@@ -11,7 +11,7 @@ import type {
     SiteGenerationStep,
     SiteGenerationUpdate,
 } from '../../models/siteGeneration';
-import { buildLaunchSteps } from './buildLaunchSteps';
+import { buildLaunchSteps, firstPosition } from './buildLaunchSteps';
 import {
     applyRecommendedTheme,
     applySiteInfo,
@@ -78,6 +78,86 @@ export type WizardImportOutcome =
           detail?: string;
       };
 
+// Best effort: the periodic pass launches it anyway (it is concurrency safe)
+const advanceNow = async (ctx: any) => {
+    try {
+        await advanceSiteGeneration(ctx);
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation advance error', {
+            error: (e as Error).message,
+        });
+    }
+};
+
+// The rows are in: whatever fails from here, the generation ends in error in
+// its launch phase, so that « Réessayer » relaunches it and not the import
+const failDataAddLaunch = async (
+    ctx: any,
+    runId: string,
+    steps: SiteGenerationStep[],
+    message: string,
+) => {
+    try {
+        const latest: SiteGeneration | null =
+            await ctx.siteGeneration.findCurrent();
+        // a run stopped meanwhile (« Arrêter ») is left as it is
+        if (latest?.runId !== runId || latest.status !== 'running') {
+            return;
+        }
+        // the transition was committed though it threw: go on
+        if (latest.phase === 'launch') {
+            await advanceNow(ctx);
+            return;
+        }
+        if (latest.phase === 'data') {
+            await ctx.siteGeneration.transition(latest, {
+                status: 'error',
+                phase: 'launch',
+                position: firstPosition(steps),
+                message,
+            });
+        }
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation failure write error', {
+            error: (e as Error).message,
+        });
+    }
+};
+
+// A data add has no model to restore: its steps are already known, the
+// launch phase starts right after the import
+const launchDataAdd = async (ctx: any, current: SiteGeneration) => {
+    const steps = current.steps ?? [];
+    // only informative: a failure of the count does not stop the launch
+    let importedLines: number | undefined;
+    try {
+        importedLines = await ctx.dataset.estimatedDocumentCount();
+    } catch (e) {
+        getLogger(ctx.tenant).error('Site generation count error', {
+            error: (e as Error).message,
+        });
+    }
+    try {
+        const moved = await ctx.siteGeneration.transition(current, {
+            phase: 'launch',
+            ...(importedLines !== undefined && { importedLines }),
+            position: firstPosition(steps),
+        });
+        if (!moved) {
+            return;
+        }
+    } catch (e) {
+        await failDataAddLaunch(
+            ctx,
+            current.runId,
+            steps,
+            (e as Error).message,
+        );
+        return;
+    }
+    await advanceNow(ctx);
+};
+
 // The data import of the generation `runId` ended. Only a running generation
 // in its data phase, of that very run, is concerned: a manual import (no
 // runId) or one of an older run leaves the generation alone.
@@ -96,6 +176,11 @@ export const onWizardImportEnd = async (
         current.status !== 'running' ||
         current.phase !== 'data'
     ) {
+        return;
+    }
+
+    if (outcome.success && current.kind === 'addData') {
+        await launchDataAdd(ctx, current);
         return;
     }
 
@@ -160,7 +245,7 @@ const transitionRun = async (
     return null;
 };
 
-const readLaunchSteps = async (
+export const readLaunchSteps = async (
     ctx: any,
     launchOrder: ModelLaunchStep[] | undefined,
 ): Promise<SiteGenerationStep[]> => {
@@ -225,7 +310,10 @@ export const importWizardModel = async (
         if (await settleIfStopping(ctx, runId)) {
             return;
         }
+        // forgotten before: a restore failing halfway leaves a mixed model
+        await ctx.siteModel.forget();
         const restored = (await restoreFields(fileStream, ctx)) ?? {};
+        await ctx.siteModel.remember(modelId);
 
         const inSettings = await transitionRun(ctx, snapshot, {
             phase: 'settings',
@@ -261,9 +349,7 @@ export const importWizardModel = async (
             phase: 'launch',
             ...(themeNotFound && { themeNotFound }),
             steps,
-            position: steps.length
-                ? Math.min(...steps.map((s) => s.position))
-                : 0,
+            position: firstPosition(steps),
         });
         if (!launched) {
             return;
@@ -276,13 +362,6 @@ export const importWizardModel = async (
         return;
     }
 
-    // Launch the first position now rather than at the next periodic pass.
-    // Best effort: that pass launches it anyway (it is concurrency safe).
-    try {
-        await advanceSiteGeneration(ctx);
-    } catch (e) {
-        getLogger(ctx.tenant).error('Site generation advance error', {
-            error: (e as Error).message,
-        });
-    }
+    // Launch the first position now rather than at the next periodic pass
+    await advanceNow(ctx);
 };

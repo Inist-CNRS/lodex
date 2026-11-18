@@ -13,6 +13,8 @@ export const loadLoadersSuccess = createAction(LOAD_LOADERS_SUCCESS);
 const initialState = {
     error: false,
     loading: false,
+    // a load succeeded, whatever its content: the list may legitimately be empty
+    loaded: false,
     loaders: [],
 };
 
@@ -33,6 +35,7 @@ export default handleActions(
             ...state,
             error: false,
             loaders,
+            loaded: true,
             loading: false,
         }),
     },
@@ -44,7 +47,12 @@ export const getLoaders = (state) => state.loaders;
 // @ts-expect-error TS7006
 export const areLoadersLoaded = (state) => getLoaders(state).length > 0;
 
+// the loading is over: loaded (maybe an empty list), or failed
+// @ts-expect-error TS7006
+export const haveLoadersSettled = (state) => !!state.loaded || !!state.error;
+
 export const selectors = {
+    haveLoadersSettled,
     preLoadLoaders,
     areLoadersLoaded,
     getLoaders,

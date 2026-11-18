@@ -19,6 +19,12 @@ export const isSiteGenerationActive = (
 
 export type SiteGenerationPhase = 'data' | 'model' | 'settings' | 'launch';
 
+// wizard: the site is generated from a model; addData: data added to a
+// published site
+export type SiteGenerationKind = 'wizard' | 'addData';
+
+export type SiteDataAddChoice = { relaunch: boolean; autoPublish: boolean };
+
 export type SiteWizardChoice = { modelId: string } & SiteInfo;
 
 export type SiteGenerationCounter = {
@@ -41,6 +47,8 @@ export type SiteGenerationStepView = {
 };
 
 export type SiteGenerationView = {
+    // absent means 'wizard'
+    kind?: SiteGenerationKind;
     status: SiteGenerationStatus;
     phase: SiteGenerationPhase;
     steps: SiteGenerationStepView[];
@@ -57,4 +65,15 @@ export type SiteGenerationView = {
     themeNotFound?: string;
     // only when the site is published at the end of the generation
     publication?: Pick<SiteGenerationStepView, 'state' | 'message'>;
+};
+
+// The catalog model the site was generated from
+export type SiteModelView = {
+    modelId: string;
+};
+
+// How many enrichments and precomputations a relaunch would run
+export type SiteModelLaunchView = {
+    enrichment: number;
+    precomputed: number;
 };

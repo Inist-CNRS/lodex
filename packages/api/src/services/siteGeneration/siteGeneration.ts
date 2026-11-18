@@ -321,7 +321,9 @@ export const advanceSiteGeneration = async (
             .filter(({ target }) => target)
             .map(({ step }) => step);
         await queueSteps(ctx, generation.runId, pickSteps(steps, existing), {
-            relaunch: false,
+            // a data add runs again the steps of a model: their results are
+            // replaced by the ones of the new data
+            relaunch: generation.kind === 'addData',
         });
         return;
     }
@@ -370,8 +372,15 @@ export const advanceSiteGeneration = async (
 };
 
 // What a failed import may have left in the dataset (a plain failure does not
-// empty it, unlike a cancellation)
-const dropFailedImport = async (ctx: SiteGenerationContext) => {
+// empty it, unlike a cancellation). A data add keeps the dataset it was adding
+// to: only the wizard drops.
+const dropFailedImport = async (
+    ctx: SiteGenerationContext,
+    generation: SiteGeneration,
+) => {
+    if (generation.kind === 'addData') {
+        return;
+    }
     await ctx.dataset.drop();
     invalidateRepositories(ctx.tenant);
 };
@@ -388,7 +397,7 @@ const relaunchDataPhase = async (
     if (!stopped) {
         return false;
     }
-    await dropFailedImport(ctx);
+    await dropFailedImport(ctx, generation);
     return true;
 };
 
@@ -443,10 +452,11 @@ export const relaunchSiteGeneration = async (
         attempts: 0,
         jobId: randomUUID(),
     }));
-    const relaunched = await ctx.siteGeneration.transition(generation, {
-        status: 'running',
-        steps,
-    });
+    const relaunched = await ctx.siteGeneration.transition(
+        generation,
+        { status: 'running', steps },
+        { unset: ['message', 'detail'] },
+    );
     if (!relaunched) {
         return false;
     }
@@ -649,9 +659,11 @@ export const stopSiteGeneration = async (
     const { previous, stopped } = transitioned;
     if (stopped.phase === 'data') {
         // a failed import is over: as « Réessayer », drop what it left. A
-        // running one empties the dataset itself once cancelled.
+        // running one is cancelled by its worker, which empties the dataset
+        // unless the import keeps it (a data add: its job carries
+        // keepDatasetOnCancel).
         if (previous.status === 'error') {
-            await dropFailedImport(ctx);
+            await dropFailedImport(ctx, previous);
             return true;
         }
         await stopDataImport(ctx, stopped);
@@ -811,6 +823,7 @@ export const getSiteGenerationView = async (
     const { choice, importedLines, message, detail, themeNotFound } =
         generation;
     return {
+        kind: generation.kind,
         status: generation.status,
         phase: generation.phase,
         ...(choice && {
