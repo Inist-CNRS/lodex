@@ -27,3 +27,11 @@ export const rememberSiteWizardDismissed = () => {
         // without storage, the wizard opens again on the next visit
     }
 };
+
+export const forgetSiteWizardDismissed = () => {
+    try {
+        localStorage.removeItem(getKey());
+    } catch {
+        // without storage, nothing was remembered
+    }
+};

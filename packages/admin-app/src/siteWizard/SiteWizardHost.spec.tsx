@@ -3,6 +3,7 @@ import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { getStore, Wrapper } from '../test-utils';
 import { loadParsingResultSuccess } from '../parsing';
+import { uploadError } from '../upload';
 import { loadPublicationSuccess } from '@lodex/frontend-common/fields/reducer';
 import { SiteWizardContext } from './SiteWizardContext';
 import { MemoryRouter, useHistory, useLocation } from 'react-router-dom';
@@ -272,6 +273,34 @@ describe('SiteWizardHost', () => {
     // a reload during the import shows an empty instance again
     it('remembers that the user imported data manually', () => {
         renderHost(false, { ...emptyInstance, upload: { status: 'PENDING' } });
+        expect(
+            localStorage.getItem('lodex-site-wizard-dismissed-default'),
+        ).toBe('true');
+    });
+
+    // the instance stays empty: the wizard may help again
+    it('forgets a manual import that failed', () => {
+        const store = renderHost(false, {
+            ...emptyInstance,
+            upload: { status: 'PENDING' },
+        });
+        act(() => {
+            store.dispatch(uploadError(new Error('import_error_loader')));
+        });
+        expect(
+            localStorage.getItem('lodex-site-wizard-dismissed-default'),
+        ).toBeNull();
+    });
+
+    it('keeps the choice of the user when a manual import fails', () => {
+        localStorage.setItem('lodex-site-wizard-dismissed-default', 'true');
+        const store = renderHost(false, {
+            ...emptyInstance,
+            upload: { status: 'PENDING' },
+        });
+        act(() => {
+            store.dispatch(uploadError(new Error('import_error_loader')));
+        });
         expect(
             localStorage.getItem('lodex-site-wizard-dismissed-default'),
         ).toBe('true');
