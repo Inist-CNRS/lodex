@@ -1,5 +1,5 @@
 const FRONT_MATTER = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
-const LINE = /^([A-Za-z_][A-Za-z0-9_]*)\s*[:=]\s*(.*)$/;
+const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const unquote = (v) => v.replace(/^(["'])(.*)\1$/, '$2');
 
 /**
@@ -66,12 +66,18 @@ export default function envExtract(data, feed) {
     const env = this.getEnv();
 
     const remaining = block[1].split(/\r?\n/).filter((line) => {
-        const m = line.match(LINE);
-        if (!m || !allow.includes(m[1])) {
+        const separator = line.search(/[:=]/);
+        if (separator === -1) {
             return true;
         }
-        if (overwrite || !(m[1] in env)) {
-            env[m[1]] = unquote(m[2].trim());
+
+        const name = line.slice(0, separator).trim();
+        if (!ENV_NAME.test(name) || !allow.includes(name)) {
+            return true;
+        }
+
+        if (overwrite || !(name in env)) {
+            env[name] = unquote(line.slice(separator + 1).trim());
         }
         return false;
     });
