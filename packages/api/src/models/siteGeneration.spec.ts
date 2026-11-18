@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 import createSiteGenerationModel, {
     type SiteGenerationCollection,
+    type SiteGenerationStep,
 } from './siteGeneration';
 
 describe('siteGeneration model', () => {
@@ -106,6 +107,17 @@ describe('siteGeneration model', () => {
                 ?.phase,
         ).toBe('launch');
     });
+
+    it('reads a generation stored without a kind as a wizard one', async () => {
+        const started = await siteGeneration.startWizard({});
+        await siteGeneration.updateOne(
+            { _id: started._id },
+            { $unset: { kind: '' } },
+        );
+
+        expect((await siteGeneration.findCurrent())?.kind).toBe('wizard');
+    });
+
     it('removes the fields to unset', async () => {
         const started = await siteGeneration.startWizard({});
         const failed = await siteGeneration.transition(started, {
@@ -174,6 +186,72 @@ describe('siteGeneration model', () => {
                 importedLines: 12,
                 version: 1,
             });
+        });
+    });
+
+    describe('startDataAdd', () => {
+        const steps: SiteGenerationStep[] = [
+            {
+                name: 'e1',
+                type: 'enrichment',
+                targetId: 't1',
+                position: 0,
+                attempts: 0,
+            },
+            {
+                name: 'e2',
+                type: 'enrichment',
+                targetId: 't2',
+                position: 1,
+                attempts: 0,
+            },
+            {
+                name: 'p1',
+                type: 'precomputed',
+                targetId: 't3',
+                position: 2,
+                attempts: 0,
+            },
+        ];
+        const add = { importJobId: 'job1', autoPublish: true, steps };
+
+        it('creates a running data add generation in the data phase', async () => {
+            const started = await siteGeneration.startDataAdd(add);
+
+            expect(started).toMatchObject({
+                kind: 'addData',
+                status: 'running',
+                phase: 'data',
+                steps,
+                importJobId: 'job1',
+                autoPublish: true,
+                estimate: { enrichment: 2, precomputed: 1 },
+                position: 0,
+                version: 0,
+            });
+            expect(started).not.toHaveProperty('choice');
+            expect(await siteGeneration.findCurrent()).toEqual(started);
+        });
+
+        it('stores no estimate when there is no step to relaunch', async () => {
+            const started = await siteGeneration.startDataAdd({
+                ...add,
+                steps: [],
+            });
+
+            expect(started).not.toHaveProperty('estimate');
+        });
+
+        it('replaces an existing generation keeping its _id and tells of it', async () => {
+            const previous = await siteGeneration.startWizard({});
+            const onChange = jest.fn();
+            siteGeneration.onChange = onChange;
+            const started = await siteGeneration.startDataAdd(add);
+
+            expect(started._id).toEqual(previous._id);
+            expect(started.runId).not.toBe(previous.runId);
+            expect(await siteGeneration.countDocuments()).toBe(1);
+            expect(onChange).toHaveBeenCalledTimes(1);
         });
     });
 });
