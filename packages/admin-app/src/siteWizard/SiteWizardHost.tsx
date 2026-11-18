@@ -10,18 +10,12 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { isSiteGenerationActive, URI_FIELD_NAME } from '@lodex/common';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
-import {
-    fromLoaders,
-    fromParsing,
-    fromPublication,
-    fromUpload,
-} from '../selectors';
+import { fromLoaders, fromParsing, fromPublication } from '../selectors';
 import type { State } from '../reducers';
 import { useSiteGeneration } from '../siteGeneration/useSiteGeneration';
 import { SiteWizard, type SiteWizardCloseReason } from './SiteWizard';
 import { SiteWizardContext } from './SiteWizardContext';
 import {
-    forgetSiteWizardDismissed,
     isSiteWizardDismissed,
     rememberSiteWizardDismissed,
 } from './wizardDismissal';
@@ -72,13 +66,6 @@ type SiteWizardHostProps = {
  */
 export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
     const instanceIsEmpty = useSelector(shouldOpenByItself);
-    // only the manual import screen uploads through the store; its upload
-    // stays pending until the end of its import
-    const manualImportStatus = useSelector(
-        (state: State) => fromUpload.getUpload(state).status,
-    );
-    // the dismissal remembered for the manual import, not by the user
-    const isDismissedByImport = useRef(false);
     const { generation } = useSiteGeneration();
     const [request, setRequest] = useState<WizardRequest>(() =>
         isSiteWizardDismissed() ? 'closed' : 'auto',
@@ -103,23 +90,6 @@ export const SiteWizardHost = ({ active, children }: SiteWizardHostProps) => {
         generation !== undefined &&
         !isGenerationActive &&
         !(hasSeenActiveGeneration.current && generation?.status === 'done');
-
-    // a manual import creates no site generation: the instance looks empty
-    // until its data is saved, and a reload meanwhile would open the wizard.
-    // A failed or cancelled one leaves the instance empty: the wizard may
-    // open by itself again.
-    useEffect(() => {
-        if (manualImportStatus === 'PENDING' && !isSiteWizardDismissed()) {
-            rememberSiteWizardDismissed();
-            isDismissedByImport.current = true;
-        }
-        if (manualImportStatus === 'ERROR' && isDismissedByImport.current) {
-            forgetSiteWizardDismissed();
-        }
-        if (manualImportStatus !== 'PENDING') {
-            isDismissedByImport.current = false;
-        }
-    }, [manualImportStatus]);
 
     if (request === 'auto' && active && opensByItself) {
         setRequest('open');

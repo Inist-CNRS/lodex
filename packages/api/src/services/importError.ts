@@ -161,6 +161,15 @@ const shorten = (text: string) =>
         ? `${text.slice(0, MAX_API_MESSAGE_LENGTH)}…`
         : text;
 
+// the ezs statements that call a server (URLParse or URLString only parse)
+const NETWORK_STATEMENTS = [
+    'URLConnect',
+    'URLFetch',
+    'URLStream',
+    'URLPagination',
+    'URLRequest',
+];
+
 // the statement the error comes from: the deepest one
 const getFailedStatement = (chain: ErrorLike[]) =>
     chain.findLast(
@@ -177,12 +186,12 @@ export const getImportError = (error: ErrorLike): ImportError => {
     const code = getCode(sourceError);
     return {
         // an unknown error of a statement of the loader: the loader does not
-        // suit the data. Not of a network statement (URLConnect to the loader
-        // server, URLFetch, URLStream…): the source or the server failed.
+        // suit the data. Not of a network statement: the source or the
+        // loader server failed.
         code:
             code === 'import_error_unknown' &&
             statement &&
-            !statement.func?.startsWith('URL')
+            !NETWORK_STATEMENTS.includes(statement.func!)
                 ? 'import_error_loader'
                 : code,
         // the statement and the item explain more than the outer error

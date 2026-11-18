@@ -229,6 +229,20 @@ describe('getImportError', () => {
         });
     });
 
+    // URLParse only parses: it fails on data the loader does not suit
+    it('should blame the loader for a statement that only parses a URL', () => {
+        const error = new Error('Error during import', {
+            cause: {
+                message: 'item #3 [URLParse] <Invalid URL>',
+                func: 'URLParse',
+                index: 3,
+                sourceError: { message: 'Invalid URL' },
+            },
+        });
+
+        expect(getImportError(error).code).toBe('import_error_loader');
+    });
+
     it('should not take an error thrown from a timer for a timeout', () => {
         expect(
             getImportError(
