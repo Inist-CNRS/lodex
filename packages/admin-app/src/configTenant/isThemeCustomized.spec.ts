@@ -49,21 +49,34 @@ describe('isThemeCustomized', () => {
         ).toBe(true);
     });
 
-    it('ignores the site name and description set by the site wizard', () => {
+    it('counts a site name or description as a customization', () => {
         expect(
             isThemeCustomized(
                 {
                     theme: 'default',
-                    front: {
-                        theme: { siteTitle: 'Mon site', summary: 'Desc' },
-                    },
+                    front: { theme: { siteTitle: 'Mon site' } },
                 },
                 themes,
             ),
-        ).toBe(false);
+        ).toBe(true);
+        expect(
+            isThemeCustomized(
+                { theme: 'default', front: { theme: { summary: 'Desc' } } },
+                themes,
+            ),
+        ).toBe(true);
         expect(
             isThemeCustomized(
                 { theme: 'istex', front: { theme: { title: 'Mon site' } } },
+                themes,
+            ),
+        ).toBe(true);
+        expect(
+            isThemeCustomized(
+                {
+                    theme: 'default',
+                    front: { theme: { siteTitle: '', summary: '' } },
+                },
                 themes,
             ),
         ).toBe(false);
