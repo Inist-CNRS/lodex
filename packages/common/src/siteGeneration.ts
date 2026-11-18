@@ -35,6 +35,9 @@ export type SiteGenerationStepView = {
     position: number;
     state: SiteGenerationStepState;
     message?: string;
+    // the automatic relaunch running now (attempt out of max), and why the
+    // previous run failed
+    retry?: { attempt: number; max: number; message?: string };
 };
 
 export type SiteGenerationView = {

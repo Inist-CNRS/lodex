@@ -389,7 +389,8 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
                     </Box>
                 </DialogTitle>
             )}
-            <DialogContent sx={{ px: 0 }}>
+            {/* room for the halo of the running step, which the content clips */}
+            <DialogContent sx={{ px: 1.5, mx: -1.5 }}>
                 {isUploadShown ? (
                     <SiteGenerationSteps
                         steps={uploadSteps}

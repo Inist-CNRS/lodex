@@ -14,6 +14,8 @@ export type SiteGenerationStep = {
     position: number;
     // Automatic relaunches so far (the first run is not counted)
     attempts: number;
+    // Why the run before the last automatic relaunch failed
+    lastError?: string;
     // The jobId of the job queued for this step: the target's status belongs
     // to the step only when the target carries the same jobId
     jobId?: string;

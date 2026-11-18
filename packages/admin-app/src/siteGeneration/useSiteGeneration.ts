@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import {
     DEFAULT_TENANT,
     isSiteGenerationActive,
+    ProgressStatus,
     type SiteGenerationView,
 } from '@lodex/common';
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
@@ -43,9 +44,15 @@ export const getRefetchInterval = (
 // The server pushes the generation on every change: the dialog does not wait
 // for its next poll, which a task blocking the server would delay (the app
 // bar, pushed as well, would then be ahead of it). To use once.
+// Returns the import in progress, as in the app bar, null otherwise.
+export type ImportProgress = { status: string; lines: number };
+
 export const useSiteGenerationPush = () => {
     const queryClient = useQueryClient();
     const isAdmin: boolean = useSelector(fromUser.isAdmin);
+    const [importProgress, setImportProgress] = useState<ImportProgress | null>(
+        null,
+    );
     useEffect(() => {
         if (!isAdmin) {
             return;
@@ -62,10 +69,26 @@ export const useSiteGenerationPush = () => {
                 );
             },
         );
+        // a progress missed while disconnected must not stay on screen: the
+        // next one comes after the reconnection
+        socket.on('connect', () => setImportProgress(null));
+        socket.on(
+            `${dbName}_${tenant}-progress`,
+            (data: { type?: string; status?: string; progress?: number }) => {
+                setImportProgress(
+                    data.type === 'import' &&
+                        data.status &&
+                        data.status !== ProgressStatus.PENDING
+                        ? { status: data.status, lines: data.progress ?? 0 }
+                        : null,
+                );
+            },
+        );
         return () => {
             socket.disconnect();
         };
     }, [isAdmin, queryClient]);
+    return importProgress;
 };
 
 export const useSiteGeneration = () => {

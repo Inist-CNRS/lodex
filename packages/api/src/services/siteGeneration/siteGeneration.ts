@@ -326,7 +326,8 @@ export const advanceSiteGeneration = async (
         return;
     }
 
-    const errors = current.filter(isInError).map(({ step }) => step);
+    const failed = current.filter(isInError);
+    const errors = failed.map(({ step }) => step);
     if (
         errors.some((step) => step.attempts >= SITE_GENERATION_MAX_RELAUNCHES)
     ) {
@@ -335,8 +336,13 @@ export const advanceSiteGeneration = async (
     }
 
     if (errors.length) {
+        // the relaunch clears the target: its error is kept on the step, for
+        // the dialog to tell why the step runs again
         const steps = updateSteps(generation, errors, (step) => ({
             attempts: step.attempts + 1,
+            lastError:
+                failed.find((other) => sameStep(other.step, step))?.target
+                    ?.message ?? '',
             jobId: randomUUID(),
         }));
         const counted = await ctx.siteGeneration.transition(generation, {
@@ -710,7 +716,7 @@ export const stopSiteGeneration = async (
 const toState = (
     step: SiteGenerationStep,
     target: Target | null,
-): Pick<SiteGenerationView['steps'][number], 'state' | 'message'> => {
+): Pick<SiteGenerationView['steps'][number], 'state' | 'message' | 'retry'> => {
     if (!isLaunched(step)) {
         return { state: 'waiting' };
     }
@@ -721,6 +727,16 @@ const toState = (
         return target?.message
             ? { state: 'error', message: target.message }
             : { state: 'error' };
+    }
+    if (step.attempts > 0) {
+        return {
+            state: 'running',
+            retry: {
+                attempt: step.attempts,
+                max: SITE_GENERATION_MAX_RELAUNCHES,
+                ...(step.lastError && { message: step.lastError }),
+            },
+        };
     }
     return { state: 'running' };
 };
