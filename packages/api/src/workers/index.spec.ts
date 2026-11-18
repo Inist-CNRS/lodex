@@ -8,6 +8,11 @@ jest.mock('bull', () =>
     })),
 );
 jest.mock('../bullBoard', () => ({ addDashboardQueue: jest.fn() }));
+const mockProcessPublication = jest.fn();
+jest.mock('./publisher', () => ({
+    PUBLISHER: 'publisher',
+    processPublication: (...args: unknown[]) => mockProcessPublication(...args),
+}));
 jest.mock('../services/siteGeneration/sweep', () => ({
     sweepTenants: jest.fn(),
 }));
@@ -24,7 +29,11 @@ jest.mock('../services/logger', () => {
 
 import getLogger from '../services/logger';
 import { sweepTenants } from '../services/siteGeneration/sweep';
-import { deleteWorkerQueue, getOrCreateWorkerQueue } from './index';
+import {
+    deleteWorkerQueue,
+    getOrCreateWorkerQueue,
+    waitForRunningJob,
+} from './index';
 
 const mockLogger = getLogger('tenant');
 
@@ -85,5 +94,44 @@ describe('getOrCreateWorkerQueue', () => {
         });
 
         expect(sweepTenants).not.toHaveBeenCalled();
+    });
+});
+
+// a clear waits for the running job to stop writing (see stopJobs)
+describe('waitForRunningJob', () => {
+    afterEach(async () => {
+        await deleteWorkerQueue('tenant');
+        jest.clearAllMocks();
+    });
+
+    // runs a publication job until it calls done()
+    const runJob = () => {
+        const queue: any = getOrCreateWorkerQueue('tenant', 1);
+        const processJob = queue.process.mock.calls[0][2];
+        const done = jest.fn();
+        processJob({ data: { jobType: 'publisher', tenant: 'tenant' } }, done);
+        const [, jobDone] = mockProcessPublication.mock.calls[0];
+        return { done, jobDone };
+    };
+
+    it('does not wait without a running job', async () => {
+        await expect(waitForRunningJob('tenant', 10)).resolves.toBe(true);
+    });
+
+    it('waits until the running job calls done', async () => {
+        const { done, jobDone } = runJob();
+        const ended = waitForRunningJob('tenant', 1000);
+
+        jobDone(null, 'result');
+
+        await expect(ended).resolves.toBe(true);
+        expect(done).toHaveBeenCalledWith(null, 'result');
+        await expect(waitForRunningJob('tenant', 10)).resolves.toBe(true);
+    });
+
+    it('stops waiting for a job that does not end', async () => {
+        runJob();
+
+        await expect(waitForRunningJob('tenant', 10)).resolves.toBe(false);
     });
 });

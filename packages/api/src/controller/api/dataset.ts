@@ -7,17 +7,16 @@ import getLogger from '../../services/logger';
 import { resetTheme } from '../../services/modelRestore';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
-import { clearJobs, stopImport } from '../../workers/tools';
+import { stopJobs } from '../../workers/tools';
 import { buildQuery } from './buildQuery';
 
 const app = new Koa();
 
 export const clearDataset = async (ctx: any) => {
     try {
-        // a running import would write the dataset again once dropped
-        await stopImport(ctx);
-        // as would an enrichment, a precomputation or a publication
-        await clearJobs(ctx);
+        // a running job (import, enrichment, precomputation, publication)
+        // would write the dataset again once dropped
+        await stopJobs(ctx);
         // then: a failing reset must not report an error once data is gone
         await resetTheme(ctx);
         // get all collection names except `configTenant`
@@ -38,7 +37,8 @@ export const clearDataset = async (ctx: any) => {
         logger.error(`Clear dataset error`, {
             error,
         });
-        ctx.body = { status: 'error', error };
+        // a translation key when it explains the failure (jobs_still_running)
+        ctx.body = { status: 'error', error: (error as Error).message };
     } finally {
         // even after a partial drop: the dropped collections need their indexes back
         invalidateRepositories(ctx.tenant);

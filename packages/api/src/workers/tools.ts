@@ -2,6 +2,7 @@ import {
     CancelWorkerError,
     cleanWaitingJobsOfType,
     getOrCreateWorkerQueue,
+    waitForRunningJob,
 } from './index';
 import { disableFusible } from '@ezs/core/fusible';
 
@@ -11,13 +12,7 @@ import getLogger, { parseJobMessage } from '../services/logger';
 import progress from '../services/progress';
 import type { AppContext } from '../services/repositoryMiddleware';
 import { handleEnrichmentError } from './enricher';
-import {
-    addImportListener,
-    IMPORT,
-    isImportRunning,
-    notifyListeners,
-    removeImportListener,
-} from './import';
+import { cancelImportJob, IMPORT, notifyListeners } from './import';
 import { PUBLISHER } from './publisher';
 
 export const jobLogger = {
@@ -199,48 +194,19 @@ export const cancelPublisherJob = async (
     }
 };
 
-export const IMPORT_STILL_RUNNING = 'import_still_running';
+export const JOBS_STILL_RUNNING = 'jobs_still_running';
 
-// Resolves true once the import of the tenant notifies its end, which comes
-// after its last write, or false after `timeout`.
-// ponytail: an in-process listener, the worker runs in the API process
-// (a single pm2 instance); with several instances, wait on Redis instead
-const waitForImportEnd = (tenant: string, timeout: number) =>
-    new Promise<boolean>((resolve) => {
-        const end = (ended: boolean) => {
-            clearTimeout(timer);
-            removeImportListener(listener);
-            resolve(ended);
-        };
-        const listener = ({ room, data }: any) => {
-            if (room === `${tenant}-import` && !data?.isImporting) {
-                end(true);
-            }
-        };
-        const timer = setTimeout(() => end(false), timeout);
-        addImportListener(listener);
-    });
-
-// Cancels the waiting and running imports, and waits for the running one to
-// stop writing: its writes would recreate what a clear drops. Throws when it
-// does not stop in time.
-export const stopImport = async (
-    ctx: Parameters<typeof cancelJob>[0],
-    timeout = 30_000,
-) => {
-    await cleanWaitingJobsOfType(ctx.tenant, IMPORT);
+// Cancels the waiting and running jobs of the tenant, and waits for the
+// running one to stop writing: its writes would recreate what a clear drops.
+// Throws when it does not stop in time.
+export const stopJobs = async (ctx: AppContext, timeout = 30_000) => {
     const activeJob = await getActiveJob(ctx.tenant);
-    // checked and listened to in the same tick: the end cannot slip between
-    if (!isImportRunning(ctx.tenant)) {
-        // an import job about to start: stopped before its first write
-        if (activeJob?.data?.jobType === IMPORT) {
-            await cancelJob(ctx, IMPORT);
-        }
-        return;
+    if (activeJob?.data?.jobType === IMPORT) {
+        // its job may not store its fusible yet: clearJobs would miss it
+        await cancelImportJob(activeJob.id);
     }
-    const ended = waitForImportEnd(ctx.tenant, timeout);
-    await cancelJob(ctx, IMPORT);
-    if (!(await ended)) {
-        throw new Error(IMPORT_STILL_RUNNING);
+    await clearJobs(ctx);
+    if (!(await waitForRunningJob(ctx.tenant, timeout))) {
+        throw new Error(JOBS_STILL_RUNNING);
     }
 };
