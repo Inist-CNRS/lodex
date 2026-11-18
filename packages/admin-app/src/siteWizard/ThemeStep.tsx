@@ -2,20 +2,17 @@ import {
     Alert,
     Box,
     CircularProgress,
-    MenuItem,
     Select,
     Typography,
 } from '@mui/material';
 import { type CatalogModel } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { StepTitle } from './StepTitle';
-import {
-    getThemeLabel,
-    type AvailableTheme,
-} from '../configTenant/useGetAvailableThemes';
+import { type AvailableTheme } from '../configTenant/useGetAvailableThemes';
 import {
     getRecommendedTheme,
-    RecommendedThemeChip,
+    renderThemeOptions,
+    renderThemeValue,
 } from '../configTenant/recommendedTheme';
 
 // the theme of a new instance, always installed
@@ -70,24 +67,13 @@ export const ThemeStep = ({
                 <Select
                     value={findTheme(theme) ? theme : ''}
                     onChange={(event) => onThemeChange(event.target.value)}
-                    // the recommended tag is for the list only
-                    renderValue={(value) => {
-                        const selected = findTheme(value);
-                        return selected ? getThemeLabel(selected, locale) : '';
-                    }}
+                    renderValue={renderThemeValue(themes, locale)}
                     inputProps={{
                         'aria-label': translate('site_wizard_theme_title'),
                     }}
                     sx={{ mt: 3, width: 'min(505px, 100%)' }}
                 >
-                    {themes.map((available) => (
-                        <MenuItem key={available.value} value={available.value}>
-                            {getThemeLabel(available, locale)}
-                            {available.value === recommended && (
-                                <RecommendedThemeChip />
-                            )}
-                        </MenuItem>
-                    ))}
+                    {renderThemeOptions(themes, locale, recommended)}
                 </Select>
             )}
         </Box>

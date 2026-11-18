@@ -3,7 +3,6 @@ import {
     Checkbox,
     FormControl,
     FormHelperText,
-    MenuItem,
     Select,
     Stack,
     Tooltip,
@@ -24,11 +23,10 @@ import { SaveButton } from '@lodex/frontend-common/components/SaveButton';
 import { TextField } from '@lodex/frontend-common/components/TextField';
 import { ConfigField } from './fields/ConfigField';
 import {
-    getThemeLabel,
     useGetAvailableThemes,
     type AvailableTheme,
 } from './useGetAvailableThemes';
-import { getRecommendedTheme, RecommendedThemeChip } from './recommendedTheme';
+import { renderThemeOptions, renderThemeValue } from './recommendedTheme';
 import { useSiteModelTheme } from './useSiteModelTheme';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
@@ -354,15 +352,7 @@ export const ConfigTenantFormView = ({
                         inputProps={{
                             'aria-labelledby': 'theme',
                         }}
-                        // the recommended tag is for the list only
-                        renderValue={(value) => {
-                            const selected = availableThemes.find(
-                                (t) => t.value === value,
-                            );
-                            return selected
-                                ? getThemeLabel(selected, locale)
-                                : '';
-                        }}
+                        renderValue={renderThemeValue(availableThemes, locale)}
                         onChange={(event) => {
                             field.handleChange(event.target.value);
 
@@ -388,14 +378,11 @@ export const ConfigTenantFormView = ({
                             form.validateField('config');
                         }}
                     >
-                        {availableThemes.map((t) => (
-                            <MenuItem key={t.value} value={t.value}>
-                                {getThemeLabel(t, locale)}
-                                {t.value === recommendedTheme && (
-                                    <RecommendedThemeChip />
-                                )}
-                            </MenuItem>
-                        ))}
+                        {renderThemeOptions(
+                            availableThemes,
+                            locale,
+                            recommendedTheme,
+                        )}
                     </Select>
                 )}
             </form.Field>
@@ -559,10 +546,7 @@ export const ConfigTenantForm = ({
         <ConfigTenantFormView
             initialConfig={data}
             availableThemes={availableThemesResponse.data ?? []}
-            recommendedTheme={getRecommendedTheme(
-                siteModelTheme,
-                availableThemesResponse.data ?? [],
-            )}
+            recommendedTheme={siteModelTheme}
             handleSave={(data) => {
                 handleUpdateConfigTenant(data);
                 // update configTenant in redux store
