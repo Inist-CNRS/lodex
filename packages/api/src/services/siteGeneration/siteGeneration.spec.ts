@@ -1626,12 +1626,9 @@ describe('siteGeneration service', () => {
         it('puts a vanished publisher job in error, to publish again', async () => {
             await runToTheEnd();
             jest.mocked(getJobState).mockResolvedValue(null);
-            await siteGeneration.updateOne(
-                {},
-                { $set: { updatedAt: new Date(Date.now() - 2 * 60_000) } },
-            );
 
-            await advanceSiteGeneration(ctx);
+            // past the grace period given to a job not queued yet
+            await advanceSiteGeneration(ctx, new Date(Date.now() + 2 * 60_000));
 
             const current = await siteGeneration.findCurrent();
             expect(current?.status).toBe('error');
@@ -1693,11 +1690,47 @@ describe('siteGeneration service', () => {
                 new Error('redis down'),
             );
 
-            await runToTheEnd();
+            await expect(runToTheEnd()).rejects.toThrow('redis down');
 
             const current = await siteGeneration.findCurrent();
             expect(current?.status).toBe('error');
             expect(current?.publishError).toBe('redis down');
+        });
+
+        it('answers the failure of a relaunched publication that cannot be queued', async () => {
+            await runToTheEnd();
+            mockJob('failed', 'boom');
+            await advanceSiteGeneration(ctx);
+            jest.mocked(queuePublisher).mockRejectedValueOnce(
+                new Error('redis down'),
+            );
+
+            await expect(relaunchSiteGeneration(ctx)).rejects.toThrow(
+                'redis down',
+            );
+
+            expect((await siteGeneration.findCurrent())?.publishError).toBe(
+                'redis down',
+            );
+        });
+
+        // « Arrêter » there finds no job to cancel yet
+        it('cancels its publisher job when stopped before the job is queued', async () => {
+            jest.mocked(queuePublisher).mockImplementationOnce(async () => {
+                await stopSiteGeneration(ctx);
+                return {} as never;
+            });
+
+            await runToTheEnd();
+
+            const current = await siteGeneration.findCurrent();
+            expect(current?.status).toBe('stopped');
+            // the stop's own try, then the publication's once its job is in
+            expect(cancelPublisherJob).toHaveBeenCalledTimes(2);
+            expect(cancelPublisherJob).toHaveBeenLastCalledWith(
+                ctx,
+                current?.publishJobId,
+            );
         });
 
         it('stops a publication and cancels its job', async () => {

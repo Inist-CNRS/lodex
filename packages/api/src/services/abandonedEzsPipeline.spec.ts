@@ -11,28 +11,44 @@ ezs.use({
         }
         feed.stop(new Error('other side closed'));
     },
+    // as paginateQuery stalled by the dead pipeline after it
+    abandonedPipelineStall(this: any, _data: any, feed: any) {
+        if (this.isLast()) {
+            return feed.close();
+        }
+        feed.flow(new PassThrough({ objectMode: true }));
+    },
 });
 
-// the error ezs gives for a failed statement, as the late timeout of a
-// stalled one
-const getStatementError = () =>
+// the error ezs gives for a statement of this script
+const getStatementError = (script: string) =>
     new Promise<Error>((resolve) => {
         const input = new PassThrough({ objectMode: true });
         input
-            .pipe(ezs('delegate', { script: '[abandonedPipelineFail]\n' }))
+            .pipe(ezs('delegate', { script }))
             .on('data', () => {})
             .on('error', resolve);
         input.end({});
     });
 
 describe('isAbandonedEzsPipelineError', () => {
-    it('recognizes the error of an ezs statement', async () => {
-        expect(isAbandonedEzsPipelineError(await getStatementError())).toBe(
-            true,
-        );
+    let timeout: number;
+    beforeEach(() => {
+        timeout = ezs.settings.feed.timeout;
+        ezs.settings.feed.timeout = 100;
+    });
+    afterEach(() => {
+        ezs.settings.feed.timeout = timeout;
     });
 
-    it('leaves any other error to stop the process', () => {
+    it('recognizes the timeout of a stalled ezs statement', async () => {
+        const error = await getStatementError('[abandonedPipelineStall]\n');
+        expect(isAbandonedEzsPipelineError(error)).toBe(true);
+    });
+
+    it('leaves any other error to stop the process', async () => {
+        const error = await getStatementError('[abandonedPipelineFail]\n');
+        expect(isAbandonedEzsPipelineError(error)).toBe(false);
         expect(isAbandonedEzsPipelineError(new Error('bug'))).toBe(false);
         expect(isAbandonedEzsPipelineError(undefined)).toBe(false);
         expect(isAbandonedEzsPipelineError(null)).toBe(false);

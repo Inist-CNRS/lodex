@@ -39,6 +39,11 @@ export const SITE_GENERATION_MAX_RELAUNCHES = 3;
 // its job yet: a job is lost only once this delay has passed
 export const SITE_GENERATION_JOB_GRACE_PERIOD = 60_000;
 
+// just moved on: the job of its new state may not be queued yet
+const isInGracePeriod = (generation: SiteGeneration, now: Date) =>
+    now.getTime() - generation.updatedAt.getTime() <
+    SITE_GENERATION_JOB_GRACE_PERIOD;
+
 export type SiteGenerationContext = LaunchContext & {
     siteGeneration: SiteGenerationCollection;
     // dropped when « Réessayer » ends a generation failed in its data phase
@@ -238,6 +243,23 @@ const startPublication = async (
             status: 'error',
             publishError: (error as Error).message,
         });
+        // « Réessayer » must answer its failure
+        throw error;
+    }
+    // « Arrêter » between the transition and the queue found no job to
+    // cancel: cancel this one, by its id (a finished one is left alone)
+    const current = await ctx.siteGeneration.findCurrent();
+    if (
+        current?.status !== 'publishing' ||
+        current.publishJobId !== publishJobId
+    ) {
+        try {
+            await cancelPublisherJob(ctx, publishJobId);
+        } catch (error) {
+            getLogger(ctx.tenant).error(
+                `Site generation: unable to cancel a stopped publication: ${(error as Error).message}`,
+            );
+        }
     }
     return true;
 };
@@ -245,6 +267,7 @@ const startPublication = async (
 const advancePublication = async (
     ctx: SiteGenerationContext,
     generation: SiteGeneration,
+    now: Date,
 ) => {
     const job = await getJobState(ctx.tenant, generation.publishJobId!);
     if (job?.state === 'completed') {
@@ -263,10 +286,7 @@ const advancePublication = async (
         return;
     }
     // the pass that started the publication may not have queued its job yet
-    if (
-        Date.now() - generation.updatedAt.getTime() <
-        SITE_GENERATION_JOB_GRACE_PERIOD
-    ) {
+    if (isInGracePeriod(generation, now)) {
         return;
     }
     await ctx.siteGeneration.transition(generation, {
@@ -297,10 +317,11 @@ const nextPosition = (generation: SiteGeneration) => {
 
 export const advanceSiteGeneration = async (
     ctx: SiteGenerationContext,
+    now = new Date(),
 ): Promise<void> => {
     const generation = await ctx.siteGeneration.findCurrent();
     if (generation?.status === 'publishing') {
-        await advancePublication(ctx, generation);
+        await advancePublication(ctx, generation, now);
         return;
     }
     // Before its launch phase, the job of the wizard drives the generation
@@ -377,7 +398,7 @@ export const advanceSiteGeneration = async (
         if (position !== null) {
             // launch the next steps now rather than on the next pass
             if (await ctx.siteGeneration.transition(generation, { position })) {
-                await advanceSiteGeneration(ctx);
+                await advanceSiteGeneration(ctx, now);
             }
         } else {
             await endLaunch(ctx, generation);
@@ -612,10 +633,7 @@ export const failLostSiteGenerationJob = async (
     }
     // just started, moved to the model phase or relaunched: its job may not
     // be queued yet
-    if (
-        now.getTime() - generation.updatedAt.getTime() <
-        SITE_GENERATION_JOB_GRACE_PERIOD
-    ) {
+    if (isInGracePeriod(generation, now)) {
         return;
     }
     const jobId =
