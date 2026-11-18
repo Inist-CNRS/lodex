@@ -46,8 +46,21 @@ export const applyConfigTenant = async (ctx: any, imported: any) => {
 };
 
 // Same as the admin settings form: switching theme also resets front.theme
-// to the variables of the new theme. When the restored archive already uses
-// that theme, its customized variables are kept.
+// to the variables of the new theme
+const switchTheme = (
+    ctx: any,
+    current: any,
+    theme: string,
+    variables: Record<string, unknown>,
+) =>
+    ctx.configTenantCollection.update(current._id, {
+        ...current,
+        theme,
+        front: { ...current.front, theme: variables },
+    });
+
+// When the restored archive already uses the recommended theme, its
+// customized variables are kept.
 export const applyRecommendedTheme = async (
     ctx: any,
     theme: string,
@@ -62,13 +75,24 @@ export const applyRecommendedTheme = async (
     if (!current || current.theme === theme) {
         return {};
     }
-    await ctx.configTenantCollection.update(current._id, {
-        ...current,
-        theme,
-        front: { ...current.front, theme: themeEntry.customTemplateVariables },
-    });
+    await switchTheme(ctx, current, theme, themeEntry.customTemplateVariables);
 
     return {};
+};
+
+// Back to the default theme with its default variables, dropping the site
+// name and description, once the dataset or the model is cleared
+export const resetTheme = async (ctx: any) => {
+    const current = await ctx.configTenantCollection.findLast();
+    if (!current) {
+        return;
+    }
+    await switchTheme(
+        ctx,
+        current,
+        'default',
+        getTheme('default')?.customTemplateVariables ?? {},
+    );
 };
 
 const trimmedOrUndefined = (value: unknown) =>
