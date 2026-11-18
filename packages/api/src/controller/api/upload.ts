@@ -9,9 +9,11 @@ import config from 'config';
 import {
     ProgressStatus,
     SITE_INFO_KEYS,
+    type SiteDataAddChoice,
     type SiteWizardChoice,
 } from '@lodex/common';
 import { catalogModels } from '../../services/catalogModel';
+import { startDataAddGeneration } from '../../services/siteGeneration/dataAddGeneration';
 import { startWizardGeneration } from '../../services/siteGeneration/wizardGeneration';
 import { failWizardGeneration } from '../../services/siteGeneration/wizardJobs';
 import {
@@ -42,6 +44,8 @@ const finishUploadProgress = (tenant: string) => {
     }
 };
 
+const isTrue = (value: unknown) => value === true || value === 'true';
+
 // Only the fields of the wizard's choice are stored, as texts, and the
 // auto-publish flag (a text in the query of a chunk).
 // Without a text model id, there is no model to find: null.
@@ -57,10 +61,19 @@ const pickSiteWizardChoice = (raw: unknown): SiteWizardChoice | null => {
             choice[key] = value;
         }
     });
-    if (source.autoPublish === true || source.autoPublish === 'true') {
+    if (isTrue(source.autoPublish)) {
         choice.autoPublish = true;
     }
     return choice;
+};
+
+// The data add choice: both flags are booleans, or the texts of a chunk
+const pickSiteDataAddChoice = (raw: unknown): SiteDataAddChoice => {
+    const source = (raw ?? {}) as Record<string, unknown>;
+    return {
+        relaunch: isTrue(source.relaunch),
+        autoPublish: isTrue(source.autoPublish),
+    };
 };
 
 type ImportRefusal = { status: number; error: string };
@@ -70,22 +83,30 @@ const answerRefusal = (ctx: any, { status, error }: ImportRefusal) => {
     ctx.body = { error };
 };
 
-// Queues an import. When the request carries the wizard's choice, the site
-// generation starts first and the import carries its run: a refused choice
-// is returned, and nothing is queued. `beforeQueue` runs once the generation
-// started. If the import cannot be queued, the generation started for it is
-// put in error (it would stay running without any import), then the error
-// goes on.
-const queueWizardImport = async (
+type ImportRequest = {
+    wizard?: unknown;
+    dataAdd?: unknown;
+    loaderName: string;
+};
+
+// Queues an import (of the wizard, of a data add or a manual one). When the
+// request carries the wizard's choice or a data add, the site generation starts first and the import carries its run: a
+// refused choice is returned, and nothing is queued. `beforeQueue` runs once
+// the generation started. If the import cannot be queued, the generation
+// started for it is put in error (it would stay running without any import),
+// then the error goes on.
+const queueImport = async (
     ctx: any,
-    rawChoice: unknown,
+    { wizard, dataAdd, loaderName }: ImportRequest,
     jobData: Record<string, unknown>,
     beforeQueue?: () => Promise<void>,
 ): Promise<ImportRefusal | undefined> => {
     const importJobId = randomUUID();
     let siteGenerationRunId: string | undefined;
-    if (rawChoice !== undefined && rawChoice !== null) {
-        const choice = pickSiteWizardChoice(rawChoice);
+    let isDataAdd = false;
+    // a request with both is a wizard one: the wizard choice wins
+    if (wizard !== undefined && wizard !== null) {
+        const choice = pickSiteWizardChoice(wizard);
         if (!choice) {
             return { status: 404, error: 'model_not_found' };
         }
@@ -94,6 +115,18 @@ const queueWizardImport = async (
             return { status: result.status, error: result.error };
         }
         siteGenerationRunId = result.runId;
+    } else if (dataAdd !== undefined && dataAdd !== null) {
+        const result = await startDataAddGeneration(
+            ctx,
+            pickSiteDataAddChoice(dataAdd),
+            loaderName,
+            importJobId,
+        );
+        if ('error' in result) {
+            return { status: result.status, error: result.error };
+        }
+        siteGenerationRunId = result.runId;
+        isDataAdd = true;
     }
     try {
         await beforeQueue?.();
@@ -101,9 +134,11 @@ const queueWizardImport = async (
             IMPORT, // Name of the job
             {
                 ...jobData,
+                loaderName,
                 tenant: ctx.tenant,
                 jobType: IMPORT,
                 ...(siteGenerationRunId && { siteGenerationRunId }),
+                ...(isDataAdd && { keepDatasetOnCancel: true }),
             },
             { jobId: importJobId },
         );
@@ -174,6 +209,8 @@ export const parseRequest = async (ctx: any, loaderName: any, next: any) => {
         siteDescription,
         theme,
         autoPublish,
+        dataAdd,
+        relaunch,
     } = fields;
 
     const extension = resumableFilename.split('.').pop();
@@ -195,6 +232,8 @@ export const parseRequest = async (ctx: any, loaderName: any, next: any) => {
         choice: modelId
             ? { modelId, siteName, siteDescription, theme, autoPublish }
             : undefined,
+        // the data add choice, only used by the last chunk
+        dataAdd: isTrue(dataAdd) ? { relaunch, autoPublish } : undefined,
     };
     await next();
 };
@@ -210,6 +249,7 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
         extension,
         customLoader,
         choice,
+        dataAdd,
     } = ctx.resumable;
     if (await ctx.isUploadCancelled(filename)) {
         ctx.status = 409;
@@ -267,10 +307,10 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
         let isQueueing = false;
         let refusal: ImportRefusal | undefined;
         try {
-            refusal = await queueWizardImport(
+            refusal = await queueImport(
                 ctx,
-                choice,
-                { loaderName, filename, totalChunks, extension, customLoader },
+                { wizard: choice, dataAdd, loaderName },
+                { filename, totalChunks, extension, customLoader },
                 async () => {
                     // a cancel coming from now on is too late: the import runs
                     isQueueing = true;
@@ -304,14 +344,18 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
 }
 
 export const uploadUrl = async (ctx: any) => {
-    const { url, loaderName, customLoader, siteGeneration } = ctx.request.body;
+    const { url, loaderName, customLoader, siteGeneration, dataAdd } =
+        ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
-    const refusal = await queueWizardImport(ctx, siteGeneration, {
-        loaderName,
-        url,
-        extension,
-        customLoader,
-    });
+    const refusal = await queueImport(
+        ctx,
+        { wizard: siteGeneration, dataAdd, loaderName },
+        {
+            url,
+            extension,
+            customLoader,
+        },
+    );
     if (refusal) {
         answerRefusal(ctx, refusal);
         return;
@@ -322,12 +366,13 @@ export const uploadUrl = async (ctx: any) => {
 };
 
 export const uploadText = async (ctx: any) => {
-    const { text, loaderName, customLoader, siteGeneration } = ctx.request.body;
-    const refusal = await queueWizardImport(ctx, siteGeneration, {
-        loaderName,
-        text,
-        customLoader,
-    });
+    const { text, loaderName, customLoader, siteGeneration, dataAdd } =
+        ctx.request.body;
+    const refusal = await queueImport(
+        ctx,
+        { wizard: siteGeneration, dataAdd, loaderName },
+        { text, customLoader },
+    );
     if (refusal) {
         answerRefusal(ctx, refusal);
         return;
