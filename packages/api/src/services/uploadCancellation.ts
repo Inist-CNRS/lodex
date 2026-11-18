@@ -18,8 +18,9 @@ const getCancelledMarker = (filename: string) => `${filename}.cancelled`;
 const getQueuedMarker = (filename: string) => `${filename}.queued`;
 
 // created by the first request that completes an upload: the others completing
-// it too (client retries of the last chunks) must not queue a second import of
-// the same chunks
+// it too (client retries of the last chunks, even after the import ended) must
+// not queue a second import. Kept until the stale upload files cleanup: the
+// upload identifier is unique, never completed again by another upload.
 const getImportClaimMarker = (filename: string) => `${filename}.importing`;
 
 // upload identifiers are unique: chunks and markers older than this belong
@@ -59,11 +60,7 @@ export const markUploadQueued = (filename: string) =>
 // once its import ended, a later cancel of the upload has nothing to stop
 // (and its chunks are gone: no request can complete it again)
 export const removeUploadQueuedMarker = (filename: string) =>
-    Promise.all(
-        [getQueuedMarker(filename), getImportClaimMarker(filename)].map(
-            (marker) => fs.promises.unlink(marker).catch(() => {}),
-        ),
-    );
+    fs.promises.unlink(getQueuedMarker(filename)).catch(() => {});
 
 const isChunkOf = (prefix: string, entry: string) =>
     entry.startsWith(prefix) && /^\d+$/.test(entry.slice(prefix.length));
@@ -82,12 +79,13 @@ export const removeUploadChunks = async (filename: string) => {
     );
 };
 
-// removes the chunks and markers of a tenant's old cancellable uploads. Their
+// removes the chunks, markers and temporary chunk files (left by a process
+// killed while writing, see saveStreamInFile) of a tenant's old uploads. Their
 // identifier (see loadFile) has no underscore: another tenant whose name
 // starts with `${tenant}_` leaves one after the prefix, and never matches.
 export const removeStaleUploadFiles = async (dir: string, tenant: string) => {
     const pattern = new RegExp(
-        `^${escapeRegExp(tenant)}_\\d+-[0-9a-zA-Z-]*\\.(cancelled|queued|importing|\\d+)$`,
+        `^${escapeRegExp(tenant)}_\\d+-[0-9a-zA-Z-]*\\.(cancelled|queued|importing|\\d+(\\.[0-9a-f-]+\\.tmp)?)$`,
     );
     const entries = await fs.promises.readdir(dir).catch(() => []);
     await Promise.all(

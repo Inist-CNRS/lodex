@@ -57,9 +57,9 @@ describe('uploadCancellation', () => {
         ]);
         expect(claims.filter(Boolean)).toHaveLength(1);
         expect(await claimUploadImport(path.join(dir, 'other'))).toBe(true);
-        // released once the import ended
+        // kept once the import ended: a late retry does not import again
         await removeUploadQueuedMarker(filename);
-        expect(await claimUploadImport(filename)).toBe(true);
+        expect(await claimUploadImport(filename)).toBe(false);
     });
 
     it("never removes the files of a tenant whose name extends this one's", async () => {
@@ -94,6 +94,10 @@ describe('uploadCancellation', () => {
         write('lodex_test_12-old.cancelled', old);
         write('lodex_test_12-old.queued', old);
         write('lodex_test_12-old.importing', old);
+        write(
+            'lodex_test_12-old.2.0b9a6c1e-4f3d-4c2a-9e8b-7d6f5a4b3c2d.tmp',
+            old,
+        );
         write('lodex_test_12-recent.1');
         write('other_12-old.1', old);
         // another tenant whose name starts with this one
