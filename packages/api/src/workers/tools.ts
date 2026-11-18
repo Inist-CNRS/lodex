@@ -14,6 +14,7 @@ import { handleEnrichmentError } from './enricher';
 import {
     addImportListener,
     IMPORT,
+    isImportRunning,
     notifyListeners,
     removeImportListener,
 } from './import';
@@ -198,38 +199,48 @@ export const cancelPublisherJob = async (
     }
 };
 
-// Resolves once the import of the tenant notifies its end, which comes after
-// its last write, or after `timeout`.
+export const IMPORT_STILL_RUNNING = 'import_still_running';
+
+// Resolves true once the import of the tenant notifies its end, which comes
+// after its last write, or false after `timeout`.
 // ponytail: an in-process listener, the worker runs in the API process
 // (a single pm2 instance); with several instances, wait on Redis instead
 const waitForImportEnd = (tenant: string, timeout: number) =>
-    new Promise<void>((resolve) => {
-        const end = () => {
+    new Promise<boolean>((resolve) => {
+        const end = (ended: boolean) => {
             clearTimeout(timer);
             removeImportListener(listener);
-            resolve();
+            resolve(ended);
         };
         const listener = ({ room, data }: any) => {
             if (room === `${tenant}-import` && !data?.isImporting) {
-                end();
+                end(true);
             }
         };
-        const timer = setTimeout(end, timeout);
+        const timer = setTimeout(() => end(false), timeout);
         addImportListener(listener);
     });
 
 // Cancels the waiting and running imports, and waits for the running one to
-// stop writing: its writes would recreate what a clear drops
+// stop writing: its writes would recreate what a clear drops. Throws when it
+// does not stop in time.
 export const stopImport = async (
     ctx: Parameters<typeof cancelJob>[0],
     timeout = 30_000,
 ) => {
     await cleanWaitingJobsOfType(ctx.tenant, IMPORT);
     const activeJob = await getActiveJob(ctx.tenant);
-    if (activeJob?.data?.jobType !== IMPORT) {
+    // checked and listened to in the same tick: the end cannot slip between
+    if (!isImportRunning(ctx.tenant)) {
+        // an import job about to start: stopped before its first write
+        if (activeJob?.data?.jobType === IMPORT) {
+            await cancelJob(ctx, IMPORT);
+        }
         return;
     }
     const ended = waitForImportEnd(ctx.tenant, timeout);
     await cancelJob(ctx, IMPORT);
-    await ended;
+    if (!(await ended)) {
+        throw new Error(IMPORT_STILL_RUNNING);
+    }
 };

@@ -1,7 +1,7 @@
 import type { Queue } from 'bull';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { resetTheme } from '../../services/modelRestore';
-import { stopImport } from '../../workers/tools';
+import { clearJobs, stopImport } from '../../workers/tools';
 import {
     clearDataset,
     deleteManyDatasetRowByFilter,
@@ -11,7 +11,10 @@ import {
 const tenant = 'lodex_test';
 jest.mock('../../workers');
 jest.mock('../../services/modelRestore', () => ({ resetTheme: jest.fn() }));
-jest.mock('../../workers/tools', () => ({ stopImport: jest.fn() }));
+jest.mock('../../workers/tools', () => ({
+    stopImport: jest.fn(),
+    clearJobs: jest.fn(),
+}));
 
 describe('dataset API', () => {
     let workerQueue: Queue | null = null;
@@ -64,6 +67,30 @@ describe('dataset API', () => {
             expect(
                 jest.mocked(stopImport).mock.invocationCallOrder[0],
             ).toBeLessThan(ctx.db.dropCollection.mock.invocationCallOrder[0]);
+        });
+
+        // an enrichment, a precomputation or a publication would too
+        it('should cancel the other jobs before dropping', async () => {
+            const ctx = makeCtx();
+
+            await clearDataset(ctx);
+
+            expect(clearJobs).toHaveBeenCalledWith(ctx);
+            expect(
+                jest.mocked(clearJobs).mock.invocationCallOrder[0],
+            ).toBeLessThan(ctx.db.dropCollection.mock.invocationCallOrder[0]);
+        });
+
+        it('should drop nothing when the import does not stop', async () => {
+            jest.mocked(stopImport).mockRejectedValue(
+                new Error('import_still_running'),
+            );
+            const ctx = makeCtx();
+
+            await clearDataset(ctx);
+
+            expect(ctx.db.dropCollection).not.toHaveBeenCalled();
+            expect(ctx.body).toMatchObject({ status: 'error' });
         });
 
         it('should drop nothing when the theme reset fails', async () => {

@@ -18,8 +18,10 @@ jest.mock('./index', () => ({
 jest.mock('@ezs/core/fusible', () => ({ disableFusible: jest.fn() }));
 jest.mock('./enricher', () => ({ handleEnrichmentError: jest.fn() }));
 const mockImportListeners: ((event: unknown) => void)[] = [];
+let mockIsImportRunning = false;
 jest.mock('./import', () => ({
     IMPORT: 'import',
+    isImportRunning: () => mockIsImportRunning,
     notifyListeners: jest.fn(),
     addImportListener: (listener: (event: unknown) => void) =>
         mockImportListeners.push(listener),
@@ -98,6 +100,7 @@ describe('stopImport', () => {
         jest.clearAllMocks();
         mockActiveJobs.length = 0;
         mockImportListeners.length = 0;
+        mockIsImportRunning = true;
     });
 
     it('cancels the active import and waits for its end', async () => {
@@ -119,18 +122,40 @@ describe('stopImport', () => {
         expect(mockImportListeners).toHaveLength(0);
     });
 
-    it('stops waiting for an import that does not end', async () => {
+    it('fails once an import does not end in time', async () => {
         mockActiveJobs.push({
             data: { jobType: 'import' },
             moveToFailed: jest.fn(),
         });
 
-        await stopImport(ctx, 10);
+        await expect(stopImport(ctx, 10)).rejects.toThrow(
+            'import_still_running',
+        );
+        expect(mockImportListeners).toHaveLength(0);
+    });
+
+    // its job is active, but its pipeline has not written yet
+    it('cancels an import about to start without waiting for it', async () => {
+        mockIsImportRunning = false;
+        const moveToFailed = jest.fn();
+        mockActiveJobs.push({ data: { jobType: 'import' }, moveToFailed });
+
+        await stopImport(ctx);
+
+        expect(moveToFailed).toHaveBeenCalled();
+        expect(mockImportListeners).toHaveLength(0);
+    });
+
+    it('does not wait for an import already ended', async () => {
+        mockIsImportRunning = false;
+
+        await stopImport(ctx);
 
         expect(mockImportListeners).toHaveLength(0);
     });
 
     it('removes the waiting imports and leaves another job alone', async () => {
+        mockIsImportRunning = false;
         const moveToFailed = jest.fn();
         mockActiveJobs.push({ data: { jobType: 'enricher' }, moveToFailed });
 

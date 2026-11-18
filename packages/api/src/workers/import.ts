@@ -24,6 +24,20 @@ import { CancelWorkerError, cleanWaitingJobsOfType } from './index';
 export const IMPORT = 'import';
 const CANCELLED_IMPORT = 'cancelled_import';
 const listeners: any = [];
+// the tenants whose import runs, from its start to its end notification
+const runningImports = new Set<string>();
+
+export const isImportRunning = (tenant: string) => runningImports.has(tenant);
+
+// the import notifications, which also keep runningImports
+const notifyImport = (tenant: string, payload: any) => {
+    if (payload.isImporting) {
+        runningImports.add(tenant);
+    } else {
+        runningImports.delete(tenant);
+    }
+    notifyListeners(`${tenant}-import`, payload);
+};
 
 // What the generation of the wizard learns of the end of its import
 const SUCCESS: WizardImportOutcome = { success: true };
@@ -45,7 +59,7 @@ export const processImport = (job: any, done: any) => {
         .then(async () => {
             job.progress(100);
             const isFailed = await job.isFailed();
-            notifyListeners(`${job.data.tenant}-import`, {
+            notifyImport(job.data.tenant, {
                 isImporting: false,
                 success: !isFailed,
             });
@@ -61,6 +75,8 @@ export const processImport = (job: any, done: any) => {
             try {
                 await handleImportError(job, err);
             } catch (e) {
+                // no end notification: the import is not running anymore
+                runningImports.delete(job.data.tenant);
                 getLogger(job.data.tenant).error(
                     'Import error handling error',
                     {
@@ -94,7 +110,7 @@ const notifyWizard = async (
 };
 
 const startJobImport = async (job: any) => {
-    notifyListeners(`${job.data.tenant}-import`, {
+    notifyImport(job.data.tenant, {
         isImporting: true,
         success: false,
     });
@@ -116,7 +132,7 @@ const handleImportError = async (job: any, err: any) => {
     // an upload cancelled once its import was queued fails the import
     // with a plain error: the generation was stopped all the same
     if (cancelled || err?.message === CANCELLED_IMPORT) {
-        notifyListeners(`${job.data.tenant}-import`, {
+        notifyImport(job.data.tenant, {
             isImporting: false,
             success: false,
             message: CANCELLED_IMPORT,
@@ -126,7 +142,7 @@ const handleImportError = async (job: any, err: any) => {
     }
     // message: what went wrong, for the user
     const { code, detail, apiMessage } = getImportError(err);
-    notifyListeners(`${job.data.tenant}-import`, {
+    notifyImport(job.data.tenant, {
         isImporting: false,
         success: false,
         message: code,

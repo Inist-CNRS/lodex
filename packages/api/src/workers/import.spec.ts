@@ -36,7 +36,7 @@ jest.mock('./index', () => ({
     cleanWaitingJobsOfType: jest.fn(),
 }));
 
-import { processImport } from './import';
+import { isImportRunning, processImport } from './import';
 import { CancelWorkerError } from './index';
 
 const run = (job: any) =>
@@ -105,6 +105,26 @@ describe('processImport and the wizard generation', () => {
         await new Promise((r) => setTimeout(r, 20));
         expect(done).toHaveBeenCalledTimes(1);
         expect(done).toHaveBeenCalledWith(err);
+    });
+
+    // a clear waits for the end of a running import (see stopImport)
+    it('tells whether an import runs, from its start to its end', async () => {
+        let isRunning: boolean | undefined;
+        mockStartImport.mockImplementation(async () => {
+            isRunning = isImportRunning('lodex_test');
+        });
+        await run(makeJob());
+        expect(isRunning).toBe(true);
+        expect(isImportRunning('lodex_test')).toBe(false);
+    });
+
+    it('no longer counts an import whose error handling failed as running', async () => {
+        mockStartImport.mockRejectedValue(new Error('bad file'));
+        mockRepositoryMiddleware
+            .mockResolvedValueOnce(undefined)
+            .mockRejectedValueOnce(new Error('no db'));
+        await run(makeJob());
+        expect(isImportRunning('lodex_test')).toBe(false);
     });
 
     it('notifies the end of a successful import', async () => {
