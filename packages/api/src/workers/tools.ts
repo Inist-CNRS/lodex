@@ -2,6 +2,7 @@ import {
     CancelWorkerError,
     cleanWaitingJobsOfType,
     getOrCreateWorkerQueue,
+    waitForRunningJob,
 } from './index';
 import { disableFusible } from '@ezs/core/fusible';
 
@@ -11,7 +12,7 @@ import getLogger, { parseJobMessage } from '../services/logger';
 import progress from '../services/progress';
 import type { AppContext } from '../services/repositoryMiddleware';
 import { handleEnrichmentError } from './enricher';
-import { notifyListeners } from './import';
+import { cancelImportJob, IMPORT, notifyListeners } from './import';
 import { PUBLISHER } from './publisher';
 
 export const jobLogger = {
@@ -190,5 +191,22 @@ export const cancelPublisherJob = async (
     }
     if ((await job.isWaiting()) || (await job.isDelayed())) {
         await job.remove();
+    }
+};
+
+export const JOBS_STILL_RUNNING = 'jobs_still_running';
+
+// Cancels the waiting and running jobs of the tenant, and waits for the
+// running one to stop writing: its writes would recreate what a clear drops.
+// Throws when it does not stop in time.
+export const stopJobs = async (ctx: AppContext, timeout = 30_000) => {
+    const activeJob = await getActiveJob(ctx.tenant);
+    if (activeJob?.data?.jobType === IMPORT) {
+        // its job may not store its fusible yet: clearJobs would miss it
+        await cancelImportJob(activeJob.id);
+    }
+    await clearJobs(ctx);
+    if (!(await waitForRunningJob(ctx.tenant, timeout))) {
+        throw new Error(JOBS_STILL_RUNNING);
     }
 };

@@ -5,8 +5,11 @@ const mockRepositoryMiddleware = jest.fn();
 jest.mock('../services/siteGeneration/wizardGeneration', () => ({
     onWizardImportEnd: (...args: unknown[]) => mockOnWizardImportEnd(...args),
 }));
+const mockDiscardQueuedImport = jest.fn();
 jest.mock('../services/import', () => ({
     startImport: (...args: unknown[]) => mockStartImport(...args),
+    discardQueuedImport: (...args: unknown[]) =>
+        mockDiscardQueuedImport(...args),
     getLoader: jest.fn(),
     getStreamFromUrl: jest.fn(),
     getCustomLoader: jest.fn(),
@@ -23,6 +26,11 @@ jest.mock('../services/repositoryMiddleware', () => ({
     invalidateRepositories: jest.fn(),
 }));
 jest.mock('../services/fsHelpers', () => ({}));
+jest.mock('@ezs/core/fusible', () => ({
+    createFusible: async () => 'fusible',
+    enableFusible: jest.fn(),
+    disableFusible: jest.fn(),
+}));
 jest.mock('../services/saveParsedStream', () => ({}));
 jest.mock('../services/publishDocuments', () => jest.fn());
 jest.mock('../controller/api/publishFacets', () => jest.fn());
@@ -36,13 +44,15 @@ jest.mock('./index', () => ({
     cleanWaitingJobsOfType: jest.fn(),
 }));
 
-import { processImport } from './import';
+import { cancelImportJob, processImport } from './import';
+import { disableFusible } from '@ezs/core/fusible';
 import { CancelWorkerError } from './index';
 
 const run = (job: any) =>
     new Promise<any>((resolve) => processImport(job, resolve));
 
-const makeJob = (data: object = {}) => ({
+const makeJob = (data: object = {}, id = 1) => ({
+    id,
     data: { tenant: 'lodex_test', siteGenerationRunId: 'run-1', ...data },
     progress: jest.fn(),
     isFailed: jest.fn().mockResolvedValue(false),
@@ -105,6 +115,34 @@ describe('processImport and the wizard generation', () => {
         await new Promise((r) => setTimeout(r, 20));
         expect(done).toHaveBeenCalledTimes(1);
         expect(done).toHaveBeenCalledWith(err);
+    });
+
+    // a clear stops the import before dropping (see stopJobs)
+    it('stops a running import through its fusible', async () => {
+        let fusible: unknown;
+        mockStartImport.mockImplementation(async (_ctx, givenFusible) => {
+            fusible = givenFusible;
+            await cancelImportJob(7);
+        });
+        await run(makeJob({}, 7));
+        expect(fusible).toBe('fusible');
+        expect(disableFusible).toHaveBeenCalledWith('fusible');
+    });
+
+    // its job does not store its fusible yet: the cancel waits for it
+    it('cancels an import before it starts', async () => {
+        await cancelImportJob(8);
+        const err = await run(makeJob({}, 8));
+        expect(err).toBeInstanceOf(CancelWorkerError);
+        expect(mockStartImport).not.toHaveBeenCalled();
+        expect(mockDiscardQueuedImport).toHaveBeenCalled();
+    });
+
+    it('does not cancel another import job', async () => {
+        await cancelImportJob(9);
+        mockStartImport.mockResolvedValue(undefined);
+        await run(makeJob({}, 10));
+        expect(mockStartImport).toHaveBeenCalled();
     });
 
     it('notifies the end of a successful import', async () => {

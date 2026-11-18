@@ -81,7 +81,23 @@ export const getStreamFromText = (text: any) => {
     return Readable.from([text]);
 };
 
-export const startImport = async (ctx: any) => {
+// What a queued import that does not run leaves: the chunks of its upload,
+// and the progress of the upload
+export const discardQueuedImport = async (ctx: any) => {
+    const { filename, totalChunks } = ctx.job?.data || {};
+    if (filename && totalChunks) {
+        await removeUploadChunks(filename);
+        await removeUploadQueuedMarker(filename);
+    }
+    // the progress still shows the end of the upload
+    if (progress.getStatus(ctx.tenant) === ProgressStatus.UPLOADING_DATASET) {
+        progress.finish(ctx.tenant);
+    }
+};
+
+// givenFusible: the one the worker created and enabled, which a cancel
+// disables (see cancelImportJob): it must not be enabled again
+export const startImport = async (ctx: any, givenFusible?: string) => {
     const {
         loaderName,
         url,
@@ -94,17 +110,10 @@ export const startImport = async (ctx: any) => {
     // the upload was cancelled after its import was queued: reported as a
     // cancel, without touching the dataset
     if (filename && totalChunks && (await isUploadCancelled(filename))) {
-        await removeUploadChunks(filename);
-        await removeUploadQueuedMarker(filename);
-        // the progress still shows the end of the upload
-        if (
-            progress.getStatus(ctx.tenant) === ProgressStatus.UPLOADING_DATASET
-        ) {
-            progress.finish(ctx.tenant);
-        }
+        await discardQueuedImport(ctx);
         throw new Error('cancelled_import');
     }
-    const fusible = await createFusible();
+    const fusible = givenFusible ?? (await createFusible());
     try {
         // @ts-expect-error TS(2339): Property 'status' does not exist on type 'Progress... Remove this comment to see the full error message
         if (progress.status !== ProgressStatus.SAVING_DATASET) {
@@ -118,7 +127,9 @@ export const startImport = async (ctx: any) => {
         const parser =
             !loaderName || loaderName === 'automatic' ? extension : loaderName;
 
-        await enableFusible(fusible);
+        if (!givenFusible) {
+            await enableFusible(fusible);
+        }
         ctx.job.update({
             ...ctx.job.data,
             fusible,

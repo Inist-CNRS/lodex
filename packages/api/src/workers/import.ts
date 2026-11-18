@@ -2,6 +2,7 @@ import repositoryMiddleware, {
     invalidateRepositories,
 } from '../services/repositoryMiddleware';
 import {
+    discardQueuedImport,
     startImport,
     getLoader,
     getStreamFromUrl,
@@ -19,11 +20,32 @@ import {
     onWizardImportEnd,
     type WizardImportOutcome,
 } from '../services/siteGeneration/wizardGeneration';
+import {
+    createFusible,
+    disableFusible,
+    enableFusible,
+} from '@ezs/core/fusible';
 import { CancelWorkerError, cleanWaitingJobsOfType } from './index';
 
 export const IMPORT = 'import';
 const CANCELLED_IMPORT = 'cancelled_import';
 const listeners: any = [];
+// the fusible of each running import job, which stops its pipeline, and the
+// import jobs cancelled before it was set: its job only stores it once the
+// import has started (see startImport)
+const importFusibles = new Map<string, string>();
+const importsCancelledBeforeStart = new Set<string>();
+
+// Stops the pipeline of an import job from its first write, even when it has
+// not started yet
+export const cancelImportJob = async (jobId: string | number) => {
+    const fusible = importFusibles.get(String(jobId));
+    if (!fusible) {
+        importsCancelledBeforeStart.add(String(jobId));
+        return;
+    }
+    await disableFusible(fusible);
+};
 
 // What the generation of the wizard learns of the end of its import
 const SUCCESS: WizardImportOutcome = { success: true };
@@ -99,7 +121,23 @@ const startJobImport = async (job: any) => {
         success: false,
     });
     const ctx = await prepareContext({ job });
-    await startImport(ctx);
+    const jobId = String(job.id);
+    const fusible = await createFusible();
+    await enableFusible(fusible);
+    // checked and set in the same tick: a cancel cannot slip between
+    if (importsCancelledBeforeStart.delete(jobId)) {
+        await disableFusible(fusible);
+        await discardQueuedImport(ctx);
+        throw new CancelWorkerError(CANCELLED_IMPORT);
+    }
+    importFusibles.set(jobId, fusible);
+    try {
+        await startImport(ctx, fusible);
+    } finally {
+        importFusibles.delete(jobId);
+        // startImport disables it, except when the upload was cancelled
+        await disableFusible(fusible);
+    }
 };
 
 const handleImportError = async (job: any, err: any) => {

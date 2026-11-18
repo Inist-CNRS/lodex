@@ -53,6 +53,7 @@ interface ClearDialogComponentProps {
     reloadParsing?(...args: unknown[]): unknown;
     isLoading: boolean;
     hasFailed: boolean;
+    clearError?: string;
     loadField(...args: unknown[]): unknown;
     loadPublication(...args: unknown[]): unknown;
     hasPublishedDataset: boolean;
@@ -70,6 +71,7 @@ export const ClearDialogComponent = (props: ClearDialogComponentProps) => {
         onClose,
         isLoading,
         hasFailed,
+        clearError,
         succeeded,
         loadField,
         loadSubResources,
@@ -226,6 +228,11 @@ export const ClearDialogComponent = (props: ClearDialogComponentProps) => {
                         onKeyPress={(e) => handleKeyPress(e, type)}
                         // @ts-expect-error TS2322
                         error={hasFailed && translate('error')}
+                        helperText={
+                            hasFailed && clearError
+                                ? translate(clearError)
+                                : undefined
+                        }
                         variant="standard"
                     />
                 </div>
@@ -239,6 +246,7 @@ export const ClearDialogComponent = (props: ClearDialogComponentProps) => {
 const mapStateToProps = (state) => ({
     succeeded: fromClear.hasClearSucceeded(state),
     hasFailed: fromClear.hasClearFailed(state),
+    clearError: fromClear.getClearError(state),
     isLoading: fromClear.getIsLoading(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
     // what the model export saves; a new model only holds the uri field

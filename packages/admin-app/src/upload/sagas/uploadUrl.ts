@@ -5,6 +5,7 @@ import { fromUpload } from '../../selectors';
 import { UPLOAD_URL, uploadError } from '../index';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { preventUnload, allowUnload } from './unload';
+import { rememberManualImportDismissal } from '../../siteWizard/wizardDismissal';
 
 export function* handleUploadUrl() {
     preventUnload();
@@ -25,7 +26,10 @@ export function* handleUploadUrl() {
     allowUnload();
     if (error) {
         yield put(uploadError(error));
+        return;
     }
+    // its import is queued (see rememberManualImportDismissal)
+    yield call(rememberManualImportDismissal);
     // Success is dispatched by handleFinishUpload once the import job is done
 }
 

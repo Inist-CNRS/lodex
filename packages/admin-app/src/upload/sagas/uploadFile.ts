@@ -11,6 +11,10 @@ import {
     uploadSuccess,
 } from '../index';
 import { preventUnload, allowUnload } from './unload';
+import {
+    forgetManualImportDismissal,
+    rememberManualImportDismissal,
+} from '../../siteWizard/wizardDismissal';
 import { publish as publishAction } from '../../publish';
 import { clearPublished } from '../../clear';
 import {
@@ -39,6 +43,7 @@ export function* handleUploadFile(action) {
             loaderName,
             customLoader,
         );
+        yield call(rememberManualImportDismissal);
         allowUnload();
     } catch (error) {
         console.error(error);
@@ -50,6 +55,10 @@ export function* handleUploadFile(action) {
 export function* handleFinishUpload({
     payload,
 }: ReturnType<typeof importFinished>) {
+    // also after a reload during the import, its upload no longer pending
+    if (!payload.success) {
+        yield call(forgetManualImportDismissal);
+    }
     // @ts-expect-error TS7057
     const isUploadPending = yield select(fromUpload.isUploadPending);
     if (!isUploadPending) {

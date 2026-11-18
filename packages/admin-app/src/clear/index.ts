@@ -57,9 +57,14 @@ export const getIsLoading = (state) => state.loading;
 export const hasClearSucceeded = (state) => state.status === 'success';
 // @ts-expect-error TS7006
 export const hasClearFailed = (state) => state.status === 'error';
+// the translation key the server sent, if any
+// @ts-expect-error TS7006
+export const getClearError = (state): string | undefined =>
+    typeof state.error === 'string' ? state.error : undefined;
 
 export const selectors = {
     getIsLoading,
     hasClearSucceeded,
     hasClearFailed,
+    getClearError,
 };

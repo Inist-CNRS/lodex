@@ -18,8 +18,9 @@ export function* handleClearDatasetRequest() {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error || response.status !== 'success') {
+        // the server explains why, with a translation key (jobs_still_running)
         // @ts-expect-error TS7057
-        return yield put(clearDatasetError(error));
+        return yield put(clearDatasetError(error ?? response.error));
     }
 
     // @ts-expect-error TS7057

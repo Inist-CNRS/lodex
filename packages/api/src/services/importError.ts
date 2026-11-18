@@ -5,6 +5,7 @@ export type ImportErrorCode =
     | 'import_error_source_not_found'
     | 'import_error_source_timeout'
     | 'import_error_invalid_format'
+    | 'import_error_loader'
     | 'import_error_unknown';
 
 export type ImportError = {
@@ -24,6 +25,9 @@ type ErrorLike = {
     code?: string;
     cause?: unknown;
     sourceError?: unknown;
+    // set by ezs on the error of a statement: its name and the item number
+    func?: string;
+    index?: number;
 };
 
 // ponytail: a maintenance page can be a whole HTML page
@@ -54,16 +58,21 @@ const parseSerializedError = (text: unknown): ErrorLike | null => {
     }
 };
 
-// goes down from the import error to the error of the source
-const getSourceError = (error: ErrorLike): ErrorLike => {
+// goes down from the import error to the error of the source, the last one
+const getErrorChain = (error: ErrorLike): ErrorLike[] => {
     // ezs keeps the error of a statement as sourceError
     const inner = error.cause ?? error.sourceError;
     if (inner && typeof inner === 'object') {
-        return getSourceError(inner as ErrorLike);
+        return [error, ...getErrorChain(inner as ErrorLike)];
     }
     const serialized = parseSerializedError(error.responseText);
-    return serialized ? getSourceError(serialized) : error;
+    return serialized ? [error, ...getErrorChain(serialized)] : [error];
 };
+
+// the expression of a loader that threw (an assign value), as V8 shows it:
+// "Lodash:1\n<expression>\n    ^\n\nTypeError: …"
+const getFailedExpression = (stack?: string) =>
+    stack?.match(/^[^\n]+:\d+\n(.+)\n *\^/)?.[1].trim();
 
 const getCode = ({
     status,
@@ -152,13 +161,48 @@ const shorten = (text: string) =>
         ? `${text.slice(0, MAX_API_MESSAGE_LENGTH)}…`
         : text;
 
+// the ezs statements that call a server (URLParse or URLString only parse)
+const NETWORK_STATEMENTS = [
+    'URLConnect',
+    'URLFetch',
+    'URLStream',
+    'URLPagination',
+    'URLRequest',
+];
+
+// the statement the error comes from: the deepest one
+const getFailedStatement = (chain: ErrorLike[]) =>
+    chain.findLast(
+        ({ func, index }) =>
+            typeof func === 'string' && typeof index === 'number',
+    );
+
 export const getImportError = (error: ErrorLike): ImportError => {
-    const sourceError = getSourceError(error);
+    const chain = getErrorChain(error);
+    const sourceError = chain[chain.length - 1];
+    const statement = getFailedStatement(chain);
     const apiMessage =
         sourceError.responseText && toText(sourceError.responseText).trim();
+    const code = getCode(sourceError);
     return {
-        code: getCode(sourceError),
-        detail: getEzsMessageError(String(error.message)),
+        // an unknown error of a statement of the loader: the loader does not
+        // suit the data. Not of a network statement: the source or the
+        // loader server failed.
+        code:
+            code === 'import_error_unknown' &&
+            statement &&
+            !NETWORK_STATEMENTS.includes(statement.func!)
+                ? 'import_error_loader'
+                : code,
+        // the statement and the item explain more than the outer error
+        detail: statement
+            ? [
+                  `item #${statement.index} [${statement.func}]: ${sourceError.message}`,
+                  getFailedExpression(sourceError.stack),
+              ]
+                  .filter(Boolean)
+                  .join('\n')
+            : getEzsMessageError(String(error.message)),
         ...(apiMessage && { apiMessage: shorten(apiMessage) }),
     };
 };

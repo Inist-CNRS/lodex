@@ -1,7 +1,9 @@
 import { ProgressStatus } from '@lodex/common';
 import progress from '../services/progress';
 import { disableFusible } from '@ezs/core/fusible';
-import { cancelJob, clearJobs } from './tools';
+import { cancelJob, clearJobs, stopJobs } from './tools';
+import { waitForRunningJob } from './index';
+import { cancelImportJob } from './import';
 
 const mockActiveJobs: unknown[] = [];
 
@@ -12,11 +14,16 @@ jest.mock('./index', () => ({
         getWaiting: async () => [],
     }),
     cleanWaitingJobsOfType: jest.fn(),
+    waitForRunningJob: jest.fn(),
     CancelWorkerError: class extends Error {},
 }));
 jest.mock('@ezs/core/fusible', () => ({ disableFusible: jest.fn() }));
 jest.mock('./enricher', () => ({ handleEnrichmentError: jest.fn() }));
-jest.mock('./import', () => ({ notifyListeners: jest.fn() }));
+jest.mock('./import', () => ({
+    IMPORT: 'import',
+    notifyListeners: jest.fn(),
+    cancelImportJob: jest.fn(),
+}));
 
 describe('cancelJob', () => {
     const ctx = { tenant: 'tools-spec' } as any;
@@ -72,6 +79,65 @@ describe('cancelJob', () => {
         await cancelJob(ctx, 'import');
 
         expect(moveToFailed).toHaveBeenCalled();
+    });
+});
+
+describe('stopJobs', () => {
+    const ctx = {
+        tenant: 'tools-spec',
+        precomputed: { cancelByIds: jest.fn() },
+        enrichment: { cancelByIds: jest.fn() },
+    } as any;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockActiveJobs.length = 0;
+        jest.mocked(waitForRunningJob).mockResolvedValue(true);
+    });
+
+    it('cancels the running job and waits for it to stop writing', async () => {
+        const moveToFailed = jest.fn();
+        mockActiveJobs.push({
+            name: 'publisher',
+            data: { jobType: 'publisher', fusible: 'fusible' },
+            moveToFailed,
+        });
+
+        await stopJobs(ctx);
+
+        expect(disableFusible).toHaveBeenCalledWith('fusible');
+        expect(moveToFailed).toHaveBeenCalled();
+        expect(waitForRunningJob).toHaveBeenCalledWith(ctx.tenant, 30_000);
+    });
+
+    // its job does not store its fusible before the import starts
+    it('stops an import through its job id', async () => {
+        mockActiveJobs.push({
+            id: 12,
+            data: { jobType: 'import' },
+            moveToFailed: jest.fn(),
+        });
+
+        await stopJobs(ctx);
+
+        expect(cancelImportJob).toHaveBeenCalledWith(12);
+    });
+
+    it('leaves the import cancel to another job', async () => {
+        mockActiveJobs.push({
+            data: { jobType: 'enricher' },
+            moveToFailed: jest.fn(),
+        });
+
+        await stopJobs(ctx);
+
+        expect(cancelImportJob).not.toHaveBeenCalled();
+    });
+
+    it('fails once the running job does not stop in time', async () => {
+        jest.mocked(waitForRunningJob).mockResolvedValue(false);
+
+        await expect(stopJobs(ctx, 10)).rejects.toThrow('jobs_still_running');
     });
 });
 

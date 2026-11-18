@@ -1,6 +1,7 @@
 import type { Queue } from 'bull';
 import { getOrCreateWorkerQueue } from '../../workers';
 import { resetTheme } from '../../services/modelRestore';
+import { stopJobs } from '../../workers/tools';
 import {
     clearDataset,
     deleteManyDatasetRowByFilter,
@@ -10,6 +11,7 @@ import {
 const tenant = 'lodex_test';
 jest.mock('../../workers');
 jest.mock('../../services/modelRestore', () => ({ resetTheme: jest.fn() }));
+jest.mock('../../workers/tools', () => ({ stopJobs: jest.fn() }));
 
 describe('dataset API', () => {
     let workerQueue: Queue | null = null;
@@ -50,6 +52,33 @@ describe('dataset API', () => {
             expect(ctx.db.dropCollection).toHaveBeenCalledTimes(1);
             expect(ctx.db.dropCollection).toHaveBeenCalledWith('dataset');
             expect(ctx.body).toEqual({ status: 'success' });
+        });
+
+        // a running job would write the dataset again
+        it('should stop the jobs before dropping', async () => {
+            const ctx = makeCtx();
+
+            await clearDataset(ctx);
+
+            expect(stopJobs).toHaveBeenCalledWith(ctx);
+            expect(
+                jest.mocked(stopJobs).mock.invocationCallOrder[0],
+            ).toBeLessThan(ctx.db.dropCollection.mock.invocationCallOrder[0]);
+        });
+
+        it('should drop nothing and explain it when a job does not stop', async () => {
+            jest.mocked(stopJobs).mockRejectedValue(
+                new Error('jobs_still_running'),
+            );
+            const ctx = makeCtx();
+
+            await clearDataset(ctx);
+
+            expect(ctx.db.dropCollection).not.toHaveBeenCalled();
+            expect(ctx.body).toEqual({
+                status: 'error',
+                error: 'jobs_still_running',
+            });
         });
 
         it('should drop nothing when the theme reset fails', async () => {

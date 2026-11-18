@@ -26,6 +26,29 @@ export class CancelWorkerError extends Error {
 
 export const workerQueues: any = {};
 
+// the end of the job each queue (a tenant) runs, resolved once the job calls
+// done(): its last write is then behind it, even once cancelled (a cancelled
+// job is moved to failed while its pipeline still runs)
+// ponytail: in-process, the worker runs in the API process (a single pm2
+// instance) with a concurrency of 1; otherwise, wait on Redis instead
+const runningJobs = new Map<string, Promise<void>>();
+
+// true once the running job of the queue, if any, called done(); false after
+// `timeout`
+export const waitForRunningJob = async (queueName: string, timeout: number) => {
+    const running = runningJobs.get(queueName);
+    if (!running) {
+        return true;
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const timedOut = new Promise<boolean>((resolve) => {
+        timer = setTimeout(() => resolve(false), timeout);
+    });
+    const ended = await Promise.race([running.then(() => true), timedOut]);
+    clearTimeout(timer);
+    return ended;
+};
+
 export const getOrCreateWorkerQueue = (
     queueName: any,
     concurrency: any,
@@ -42,7 +65,19 @@ export const getOrCreateWorkerQueue = (
         },
     });
 
-    workerQueue.process('*', concurrency, (job: any, done: any) => {
+    workerQueue.process('*', concurrency, (job: any, jobDone: any) => {
+        let end = () => {};
+        const running = new Promise<void>((resolve) => {
+            end = resolve;
+        });
+        runningJobs.set(queueName, running);
+        const done = (...args: unknown[]) => {
+            if (runningJobs.get(queueName) === running) {
+                runningJobs.delete(queueName);
+            }
+            end();
+            jobDone(...args);
+        };
         if (job.data.jobType === PUBLISHER) {
             processPublication(job, done);
         }
@@ -104,11 +139,18 @@ export const deleteWorkerQueue = async (queueName: any) => {
 
 export const cleanWaitingJobsOfType = (queueName: any, jobType: any) => {
     const workerQueue = getOrCreateWorkerQueue(queueName, 1);
-    workerQueue.getWaiting().then((jobs: any) => {
-        jobs.filter((job: any) => job.data.jobType === jobType).forEach(
-            (waitingJob: any) => waitingJob.remove(),
-        );
-    });
+    return (
+        workerQueue
+            .getWaiting()
+            // a job picked up meanwhile cannot be removed: its cancel stops it
+            .then((jobs: any) =>
+                Promise.allSettled(
+                    jobs
+                        .filter((job: any) => job.data.jobType === jobType)
+                        .map((waitingJob: any) => waitingJob.remove()),
+                ),
+            )
+    );
 };
 
 export const closeAllWorkerQueues = async () => {

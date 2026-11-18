@@ -18,9 +18,11 @@ const themes = [
 const renderDialog = ({
     hasModel = false,
     config = { theme: 'default', front: { theme: {} } },
+    clearError,
 }: {
     hasModel?: boolean;
     config?: object;
+    clearError?: string;
 } = {}) => {
     const client = new QueryClient();
     client.setQueryData(['get-config-tenant'], config);
@@ -32,7 +34,8 @@ const renderDialog = ({
                 type="dataset"
                 succeeded={false}
                 isLoading={false}
-                hasFailed={false}
+                hasFailed={!!clearError}
+                clearError={clearError}
                 hasPublishedDataset={false}
                 hasModel={hasModel}
                 onClose={noop}
@@ -48,6 +51,12 @@ const renderDialog = ({
 };
 
 describe('ClearDialog (dataset)', () => {
+    // e.g. a job that does not stop: a retry later may work
+    it('explains why the clear failed', () => {
+        renderDialog({ clearError: 'jobs_still_running' });
+        expect(screen.getByText('jobs_still_running')).toBeInTheDocument();
+    });
+
     it('hides the export prompt when there is nothing to keep', () => {
         renderDialog();
         expect(screen.queryByText('export_fields')).toBeNull();
