@@ -159,7 +159,8 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                 // the message explains the error, the detail is on demand
                 toast(
                     <ErrorWithDetail
-                        message={`${translate('error')} : ${translate(data.message)}`}
+                        // the red of the toast already says it is an error
+                        message={translate(data.message)}
                         detail={[data.apiMessage, data.detail]
                             .filter(Boolean)
                             .join('\n\n')}

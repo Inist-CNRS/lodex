@@ -168,6 +168,47 @@ describe('getImportError', () => {
         expect(apiMessage).toBe('Broken &#x110000; &#99999999999; page');
     });
 
+    it('should report the statement of the loader that failed on a record', () => {
+        // ezs names the statement and the item of the error it wraps
+        const statementError = (
+            func: string,
+            index: number,
+            sourceError: Record<string, unknown>,
+        ) => ({
+            message: `item #${index} [${func}] <${sourceError.message}>`,
+            stack: `Error: item #${index} [${func}]`,
+            func,
+            index,
+            sourceError,
+        });
+        const expression =
+            '_.chain(self).fix([self.level0_domain_s]).flatMap(item => item.split(",")).value();';
+        const loaderAnswer = JSON.stringify(
+            statementError('delegate', 1, {
+                ...statementError('assign', 190, {
+                    message:
+                        "Cannot read properties of undefined (reading 'split')",
+                    stack: `Lodash:1\n${expression}\n                                     ^\n\nTypeError: Cannot read properties of undefined (reading 'split')\n    at Lodash:1:143`,
+                }),
+            }),
+        );
+        const error = new Error('Error during import: Error: Bad Request', {
+            cause: statementError(
+                'URLConnect',
+                1,
+                Object.assign(new Error('Bad Request'), {
+                    status: 400,
+                    responseText: loaderAnswer,
+                }),
+            ),
+        });
+
+        expect(getImportError(error)).toEqual({
+            code: 'import_error_loader',
+            detail: `item #190 [assign]: Cannot read properties of undefined (reading 'split')\n${expression}`,
+        });
+    });
+
     it('should not take an error thrown from a timer for a timeout', () => {
         expect(
             getImportError(
