@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
 import { Box, Button, Link, Typography } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import type { FileObject } from 'mui-file-dropzone';
 import {
     getModelImportHelpKey,
@@ -127,7 +127,7 @@ export const SimplifiedUpload = ({
                         marginLeft: 4,
                         marginBottom: 2,
                     }}
-                    startIcon={<ArrowBackIcon />}
+                    startIcon={<AutoFixHighIcon />}
                     onClick={onOpenWizard}
                 >
                     {translate('site_wizard_open')}

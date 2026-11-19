@@ -76,4 +76,118 @@ describe('<ParsingResult />', () => {
             expect(datasetApi.getDataColumns).not.toHaveBeenCalled();
         });
     });
+
+    describe('when the enrichments change', () => {
+        const renderWithEnrichments = (
+            enrichments: object[],
+            loadingEnrichments = false,
+        ) => (
+            <MemoryRouter initialEntries={['/data/existing']} initialIndex={0}>
+                <ParsingResultComponent
+                    enrichments={enrichments}
+                    loadingEnrichments={loadingEnrichments}
+                    loadingParsingResult={false}
+                    totalLoadedLines={100}
+                />
+            </MemoryRouter>
+        );
+
+        const mountThenRerender = async (
+            before: [object[], boolean?],
+            after: [object[], boolean?],
+        ) => {
+            const screen = render(renderWithEnrichments(...before));
+            await waitFor(() =>
+                expect(datasetApi.getDataColumns).toHaveBeenCalled(),
+            );
+            (datasetApi.getData as jest.Mock).mockClear();
+            (datasetApi.getDataColumns as jest.Mock).mockClear();
+            screen.rerender(renderWithEnrichments(...after));
+            return screen;
+        };
+
+        it('should refetch the columns and rows when an enrichment ends, as it adds keys without adding lines', async () => {
+            await mountThenRerender(
+                [[{ name: 'enriched', status: 'IN_PROGRESS' }]],
+                [[{ name: 'enriched', status: 'FINISHED' }]],
+            );
+            await waitFor(() =>
+                expect(datasetApi.getDataColumns).toHaveBeenCalledTimes(1),
+            );
+            expect(datasetApi.getData).toHaveBeenCalledTimes(1);
+        });
+
+        it('should not refetch on the first load of the enrichments, as the grid fetched both when it mounted', async () => {
+            await mountThenRerender(
+                [[], true],
+                [[{ name: 'enriched', status: 'FINISHED' }]],
+            );
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            expect(datasetApi.getDataColumns).not.toHaveBeenCalled();
+            expect(datasetApi.getData).not.toHaveBeenCalled();
+        });
+
+        it('should show the rows of the last request when an older one answers last', async () => {
+            const answer = (rows: number, delay: number) => () =>
+                new Promise((resolve) =>
+                    setTimeout(
+                        () =>
+                            resolve({
+                                count: rows,
+                                datas: Array.from({ length: rows }, (_, i) => ({
+                                    _id: `${i}`,
+                                })),
+                            }),
+                        delay,
+                    ),
+                );
+            const screen = render(
+                renderWithEnrichments([
+                    { name: 'enriched', status: 'PENDING' },
+                ]),
+            );
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            // two status changes: the first reload answers after the second
+            (datasetApi.getData as jest.Mock)
+                .mockImplementationOnce(answer(1, 200))
+                .mockImplementationOnce(answer(3, 0));
+            screen.rerender(
+                renderWithEnrichments([
+                    { name: 'enriched', status: 'IN_PROGRESS' },
+                ]),
+            );
+            screen.rerender(
+                renderWithEnrichments([
+                    { name: 'enriched', status: 'FINISHED' },
+                ]),
+            );
+            await new Promise((resolve) => setTimeout(resolve, 300));
+            // the 3 rows of the last reload, not the 1 row of the first one
+            expect(screen.getByRole('grid')).toHaveAttribute(
+                'aria-rowcount',
+                '3',
+            );
+        });
+
+        it('should keep the current columns when their reload fails', async () => {
+            (datasetApi.getDataColumns as jest.Mock)
+                .mockResolvedValueOnce({
+                    columns: [{ key: 'enriched', type: 'string' }],
+                })
+                .mockResolvedValueOnce({ columns: [], error: 'boom' });
+            const screen = await mountThenRerender(
+                [[{ name: 'enriched', status: 'IN_PROGRESS' }]],
+                [[{ name: 'enriched', status: 'FINISHED' }]],
+            );
+            await waitFor(() =>
+                expect(datasetApi.getDataColumns).toHaveBeenCalledTimes(1),
+            );
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            // the checkbox column and the "enriched" column
+            expect(screen.getByRole('grid')).toHaveAttribute(
+                'aria-colcount',
+                '2',
+            );
+        });
+    });
 });

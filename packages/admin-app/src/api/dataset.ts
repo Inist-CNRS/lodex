@@ -73,7 +73,7 @@ const getDataColumns = async (precomputedId?: string) => {
     // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
-            return { columns: [] };
+            return { columns: [], error };
         }
         return response;
     });

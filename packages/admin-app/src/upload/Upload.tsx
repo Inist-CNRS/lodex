@@ -6,7 +6,7 @@ import { type FileObject } from 'mui-file-dropzone';
 import Alert from '@lodex/frontend-common/components/Alert';
 import { Box, Button } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import {
     uploadFile,
@@ -134,7 +134,7 @@ export const UploadComponent = ({
                     color="primary"
                     className="btn-open-site-wizard"
                     sx={styles.wizardButton}
-                    startIcon={<ArrowBackIcon />}
+                    startIcon={<AutoFixHighIcon />}
                     onClick={onOpenWizard}
                 >
                     {translate('site_wizard_open')}
