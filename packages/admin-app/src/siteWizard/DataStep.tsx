@@ -59,7 +59,13 @@ type DataStepProps = {
 export const DataStep = ({ model, ...inputProps }: DataStepProps) => (
     <Box display="flex" flexDirection="column" height="100%">
         {model && <DataStepIntro model={model} />}
-        {/* The loader comes from the model: hide the "choose the loader" descriptions */}
-        <DatasetSourceInput {...inputProps} hideDescriptions compact />
+        {/* The loader comes from the model: hide the "choose the loader"
+            descriptions, and the formats list from the dropzone */}
+        <DatasetSourceInput
+            {...inputProps}
+            hideDescriptions
+            compact
+            fileHintKey="upload_max_size"
+        />
     </Box>
 );

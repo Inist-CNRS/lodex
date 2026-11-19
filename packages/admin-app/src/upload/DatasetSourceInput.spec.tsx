@@ -104,7 +104,7 @@ describe('<DatasetSourceInput />', () => {
                 Node.DOCUMENT_POSITION_FOLLOWING,
         ).toBeTruthy();
         expect(
-            alert.compareDocumentPosition(getByText('import_file_text')) &
+            alert.compareDocumentPosition(getByText('upload_drop_file')) &
                 Node.DOCUMENT_POSITION_FOLLOWING,
         ).toBeTruthy();
     });
