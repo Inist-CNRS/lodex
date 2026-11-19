@@ -11,7 +11,7 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { TaskStatus } from '@lodex/common';
 
@@ -117,11 +117,13 @@ interface ParsingResultComponentProps {
     loadingParsingResult: boolean;
     totalLoadedLines?: number;
     enrichments?: object[];
+    loadingEnrichments?: boolean;
 }
 
 export const ParsingResultComponent = ({
     precomputedId,
     enrichments,
+    loadingEnrichments,
     loadingParsingResult,
     totalLoadedLines,
 }: ParsingResultComponentProps) => {
@@ -297,7 +299,11 @@ export const ParsingResultComponent = ({
     const [sort, setSort] = useState({});
     const [filterModel, setFilterModel] = useState(initialFilterModel);
 
+    // Several reloads can overlap (page change, import, enrichment): only the
+    // last request may update the grid, whatever the order of the responses.
+    const lastDatasetRequest = useRef(0);
     const fetchDataset = useCallback(async () => {
+        const request = ++lastDatasetRequest.current;
         const { count: datasCount, datas } = await datasetApi.getData({
             precomputedId,
             skip,
@@ -305,9 +311,25 @@ export const ParsingResultComponent = ({
             filter: filterModel.items.at(0),
             sort,
         });
+        if (request !== lastDatasetRequest.current) {
+            return;
+        }
         setRowCount(datasCount);
         setDatas(datas);
     }, [skip, limit, filterModel, sort, precomputedId]);
+
+    const lastColumnsRequest = useRef(0);
+    const fetchColumns = useCallback(async () => {
+        const request = ++lastColumnsRequest.current;
+        const { columns, error } =
+            await datasetApi.getDataColumns(precomputedId);
+        // a failed request keeps the current columns instead of emptying the grid
+        if (request !== lastColumnsRequest.current || error) {
+            return false;
+        }
+        setColumns(columns);
+        return true;
+    }, [precomputedId]);
 
     // @ts-expect-error TS7006
     const onPageChange = (page) => {
@@ -334,42 +356,49 @@ export const ParsingResultComponent = ({
     // the first documents, so they are reloaded too: lines saved after the
     // first reload may bring new keys.
     const loadedLines = precomputedId ? undefined : totalLoadedLines;
-    // An enrichment adds keys without adding lines: reload when one changes
-    // status, so its column shows up without reloading the page.
-    const enrichmentsState = precomputedId
-        ? undefined
-        : enrichments
-              // @ts-expect-error TS2339
-              ?.map(({ name, status }) => `${name}:${status}`)
-              .join();
 
     useEffect(() => {
-        const fetchDataColumns = async () => {
-            const { columns } = await datasetApi.getDataColumns(precomputedId);
-            setColumns(columns);
+        fetchColumns().then((updated) => {
             // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
-            handleFilterModelChange(initialFilterModel);
-        };
-        fetchDataColumns();
+            if (updated) handleFilterModelChange(initialFilterModel);
+        });
     }, [
+        fetchColumns,
         handleFilterModelChange,
         initialFilterModel,
-        precomputedId,
         loadedLines,
-        enrichmentsState,
     ]);
 
     useEffect(() => {
         fetchDataset();
-    }, [
-        skip,
-        limit,
-        filterModel,
-        sort,
-        fetchDataset,
-        loadedLines,
-        enrichmentsState,
-    ]);
+    }, [skip, limit, filterModel, sort, fetchDataset, loadedLines]);
+
+    // An enrichment adds keys without adding lines: when one changes status,
+    // reload the columns and rows, keeping the filter and page of the admin.
+    // Not while the enrichments load, and not on their first load: the grid
+    // fetched both when it mounted.
+    const enrichmentsState =
+        precomputedId || loadingEnrichments
+            ? undefined
+            : enrichments
+                  // @ts-expect-error TS2339
+                  ?.map(({ name, status }) => `${name}:${status}`)
+                  .join();
+    const lastEnrichmentsState = useRef<string>();
+    useEffect(() => {
+        if (enrichmentsState === undefined) {
+            return;
+        }
+        const previous = lastEnrichmentsState.current;
+        lastEnrichmentsState.current = enrichmentsState;
+        if (previous === undefined || previous === enrichmentsState) {
+            return;
+        }
+        fetchColumns();
+        fetchDataset();
+        // only a status change reloads, not a new page or filter
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [enrichmentsState]);
 
     // @ts-expect-error TS7006
     const handleSortModelChange = (sortModel) => {
@@ -584,6 +613,7 @@ const mapStateToProps = (state) => ({
     loadingParsingResult: fromParsing.isParsingLoading(state),
     totalLoadedLines: fromParsing.getTotalLoadedLines(state),
     enrichments: fromEnrichments.enrichments(state),
+    loadingEnrichments: fromEnrichments.isLoadEnrichmentsPending(state),
 });
 
 export default connect(mapStateToProps)(ParsingResultComponent);
