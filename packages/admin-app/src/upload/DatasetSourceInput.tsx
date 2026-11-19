@@ -122,10 +122,27 @@ const styles = {
             minHeight: '160px',
             display: 'flex',
             flexDirection: 'column',
+            border: '2px dashed',
+            borderColor: 'grey.400',
+            borderRadius: 2,
+            bgcolor: 'action.hover',
+            '&:hover': { borderColor: 'primary.main' },
         },
         // centered by auto margins, as in compactForm
-        '& .dropzoneTextContainer': { mt: 'auto' },
+        '& .dropzoneTextContainer': {
+            mt: 'auto',
+            display: 'flex',
+            flexDirection: 'column-reverse',
+            alignItems: 'center',
+            gap: 2,
+        },
         '& .dropzone > :last-child': { mb: 'auto' },
+        '& .dropzoneText': { margin: 0 },
+        '& .dropzoneIcon': { width: 56, height: 56, color: 'primary.main' },
+    },
+    browse: {
+        color: 'primary.main',
+        textDecoration: 'underline',
     },
     narrowTextInput: {
         width: '100%',
@@ -231,8 +248,9 @@ export type DatasetSourceInputProps = {
     hideDescriptions?: boolean;
     // the tabs offered, in this order (all by default)
     tabs?: DatasetSourceTab[];
-    // the translation key of the dropzone text
-    fileTextKey?: string;
+    // narrow only: the translation key of the line below the dropzone text
+    // (the accepted formats and the size limit by default)
+    fileHintKey?: string;
     // rendered between the tabs and the form, e.g. an error message
     children?: ReactNode;
     // for a dialog with little height: small tabs, and the input fills the
@@ -287,7 +305,7 @@ export const DatasetSourceInput = ({
     onTextChange,
     hideDescriptions = false,
     tabs = TABS,
-    fileTextKey = 'import_file_text',
+    fileHintKey = 'upload_formats_limit',
     children,
     compact = false,
     narrow = false,
@@ -372,28 +390,59 @@ export const DatasetSourceInput = ({
                                 maxFileSize={UPLOAD_LIMIT * 1024 * 1024 * 1024}
                                 // @ts-expect-error TS2322 --- mui component type only accept string
                                 dropzoneText={
-                                    <>
-                                        <Typography
-                                            variant="h6"
-                                            component="span"
-                                            display="block"
-                                        >
-                                            {translate(fileTextKey)}
-                                        </Typography>
-                                        {hideDescriptions && (
-                                            // the dropzone renders its text in a <p>
+                                    narrow ? (
+                                        <>
                                             <Typography
                                                 component="span"
                                                 display="block"
+                                                fontSize={18}
+                                                fontWeight={600}
                                             >
-                                                {translate(
-                                                    'upload_size_limit',
-                                                    // @ts-expect-error TS2322
-                                                    { limit: UPLOAD_LIMIT },
-                                                )}
+                                                {translate('upload_drop_file')}{' '}
+                                                <Box
+                                                    component="span"
+                                                    sx={styles.browse}
+                                                >
+                                                    {translate('upload_browse')}
+                                                </Box>
                                             </Typography>
-                                        )}
-                                    </>
+                                            <Typography
+                                                component="span"
+                                                display="block"
+                                                fontSize={15}
+                                                color="text.secondary"
+                                                mt={1}
+                                            >
+                                                {translate(fileHintKey, {
+                                                    // @ts-expect-error TS2322
+                                                    limit: UPLOAD_LIMIT,
+                                                })}
+                                            </Typography>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Typography
+                                                variant="h6"
+                                                component="span"
+                                                display="block"
+                                            >
+                                                {translate('import_file_text')}
+                                            </Typography>
+                                            {hideDescriptions && (
+                                                // the dropzone renders its text in a <p>
+                                                <Typography
+                                                    component="span"
+                                                    display="block"
+                                                >
+                                                    {translate(
+                                                        'upload_size_limit',
+                                                        // @ts-expect-error TS2322
+                                                        { limit: UPLOAD_LIMIT },
+                                                    )}
+                                                </Typography>
+                                            )}
+                                        </>
+                                    )
                                 }
                                 dropzoneProps={{
                                     disabled: !!url,

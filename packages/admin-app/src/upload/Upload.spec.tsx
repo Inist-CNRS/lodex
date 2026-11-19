@@ -6,6 +6,7 @@ import Alert from '@lodex/frontend-common/components/Alert';
 global.UPLOAD_LIMIT = 1;
 
 import { UploadComponent as Upload, type UploadComponentProps } from './Upload';
+import { OpenWizardCard } from './importPage';
 
 jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
     ...jest.requireActual('@lodex/frontend-common/i18n/I18NContext'),
@@ -97,7 +98,7 @@ describe('<Upload />', () => {
         it('should not render the wizard button without onOpenWizard', () => {
             const wrapper = shallow(<Upload {...baseProps} />);
 
-            expect(wrapper.find('.btn-open-site-wizard')).toHaveLength(0);
+            expect(wrapper.find(OpenWizardCard)).toHaveLength(0);
         });
 
         it('should render the wizard button calling onOpenWizard', () => {
@@ -106,9 +107,9 @@ describe('<Upload />', () => {
                 <Upload {...baseProps} onOpenWizard={onOpenWizard} />,
             );
 
-            const button = wrapper.find('.btn-open-site-wizard');
-            expect(button).toHaveLength(1);
-            button.simulate('click');
+            const card = wrapper.find(OpenWizardCard);
+            expect(card).toHaveLength(1);
+            card.prop('onOpen')();
             expect(onOpenWizard).toHaveBeenCalledTimes(1);
         });
     });
