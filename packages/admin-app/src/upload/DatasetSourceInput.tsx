@@ -153,6 +153,17 @@ const styles = {
         '& .MuiInputBase-root': { bgcolor: 'background.paper' },
         '& .MuiTextField-root': { maxWidth: 640, textAlign: 'left' },
     },
+    // the wizard has little height: no icon, tighter, centered by auto
+    // margins so that an overflow scrolls from the top (as compactForm)
+    compactUrlPanel: {
+        minHeight: '120px',
+        justifyContent: 'flex-start',
+        gap: 1.5,
+        paddingY: 2,
+        overflowY: 'auto',
+        '& > :first-of-type': { mt: 'auto' },
+        '& > :last-child': { mb: 'auto' },
+    },
     urlIcon: {
         display: 'grid',
         placeItems: 'center',
@@ -425,11 +436,18 @@ export const DatasetSourceInput = ({
                                 {translate('upload_via_url')}
                             </p>
                         )}
-                        {narrow ? (
-                            <Box sx={styles.urlPanel}>
-                                <Box sx={styles.urlIcon}>
-                                    <LinkIcon />
-                                </Box>
+                        {narrow || compact ? (
+                            <Box
+                                sx={{
+                                    ...styles.urlPanel,
+                                    ...(compact ? styles.compactUrlPanel : {}),
+                                }}
+                            >
+                                {!compact && (
+                                    <Box sx={styles.urlIcon}>
+                                        <LinkIcon />
+                                    </Box>
+                                )}
                                 <Typography variant="h6" component="p">
                                     {translate('upload_url_title')}
                                 </Typography>
