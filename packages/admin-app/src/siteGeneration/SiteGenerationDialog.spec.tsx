@@ -312,10 +312,12 @@ describe('SiteGenerationDialog', () => {
         );
         expect(
             await screen.findByText(
-                byText('Auteurs : nouvelle tentative (2/3) - timeout'),
+                byText(
+                    'Enrichissement 1 (Auteurs) : nouvelle tentative (2/3) - timeout',
+                ),
             ),
         ).toBeInTheDocument();
-        expect(screen.queryByText(/Résumé : nouvelle tentative/)).toBeNull();
+        expect(screen.queryByText(/Résumé\) : nouvelle tentative/)).toBeNull();
     });
 
     it('names the launch steps running now, but not those tried again', async () => {
@@ -352,13 +354,15 @@ describe('SiteGenerationDialog', () => {
             }),
             { french: true },
         );
-        // next to the counter of their type
+        // next to the counter of their group
         expect(
-            (await screen.findByText('En cours : Résumé')).closest('li'),
-        ).toHaveTextContent(/enrichissements/);
+            (await screen.findByText('En cours : Enrichissement 2')).closest(
+                'li',
+            ),
+        ).toHaveTextContent(/Enrichissements 2\/3/);
         expect(
-            screen.getByText('En cours : Cluster').closest('li'),
-        ).toHaveTextContent(/précalculs/);
+            screen.getByText('En cours : Précalcul 1').closest('li'),
+        ).toHaveTextContent(/Précalcul 1\/1/);
     });
 
     it('names no launch step once the launch is over', async () => {
@@ -414,14 +418,32 @@ describe('SiteGenerationDialog', () => {
                 status: 'error',
                 phase: 'launch',
                 launch: {
-                    enrichment: counter(7, 2, 1),
-                    precomputed: counter(3, 2),
+                    enrichment: counter(3, 2, 1),
+                    precomputed: counter(1, 1),
                 },
                 steps: [
                     {
+                        name: 'clusterRameau',
+                        type: 'precomputed',
+                        position: 1,
+                        state: 'done',
+                    },
+                    {
+                        name: 'xml',
+                        type: 'enrichment',
+                        position: 2,
+                        state: 'done',
+                    },
+                    {
+                        name: 'resume',
+                        type: 'enrichment',
+                        position: 3,
+                        state: 'done',
+                    },
+                    {
                         name: 'lienHAL',
                         type: 'enrichment',
-                        position: 0,
+                        position: 4,
                         state: 'error',
                         message: 'precomputed_no_response',
                     },
@@ -431,13 +453,206 @@ describe('SiteGenerationDialog', () => {
         );
         expect(
             await screen.findByText(
-                byText('2/7 enrichissements - 1 enrichissement en erreur'),
+                // a step in error was launched: the count does not go back
+                byText('Enrichissements 3/3 - 1 enrichissement en erreur'),
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText(byText('2/3 précalculs'))).toBeInTheDocument();
+        expect(screen.getByText(byText('Précalcul 1/1'))).toBeInTheDocument();
         expect(screen.getAllByLabelText('done')).toHaveLength(3);
-        expect(screen.getByText(/lienHAL/)).toBeInTheDocument();
+        expect(
+            screen.getByText(/^Enrichissement 3 \(lienHAL\) — /),
+        ).toBeInTheDocument();
         expect(screen.getByText('Réessayer')).toBeInTheDocument();
+    });
+
+    const THESES_STEPS: SiteGenerationView['steps'] = [
+        {
+            name: 'xml',
+            type: 'enrichment',
+            position: 2,
+            state: 'done',
+        },
+        {
+            name: 'resume',
+            type: 'enrichment',
+            position: 3,
+            state: 'running',
+        },
+        {
+            name: 'lienHAL',
+            type: 'enrichment',
+            position: 4,
+            state: 'waiting',
+        },
+        {
+            name: 'clusterRameau',
+            type: 'precomputed',
+            position: 1,
+            state: 'done',
+        },
+    ];
+
+    // a label of the theses-fr model for its enrichment resume
+    const withResumeLabel = () => {
+        const key = 'mc_theses-fr_enrichment_resume';
+        (hasTranslation as jest.Mock).mockImplementation(
+            (asked: string) => asked === key,
+        );
+        frenchPhrases[key] = 'Résumé';
+        return () => {
+            delete frenchPhrases[key];
+        };
+    };
+
+    it('shows the precomputation of theses-fr before its enrichments, the running one counted', async () => {
+        renderDialog(
+            buildGeneration({
+                phase: 'launch',
+                modelId: 'theses-fr',
+                steps: THESES_STEPS,
+            }),
+            { french: true },
+        );
+        const precomputed = await screen.findByText(byText('Précalcul 1/1'));
+        const enrichments = screen.getByText(byText('Enrichissements 2/3'));
+        expect(
+            precomputed.compareDocumentPosition(enrichments) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy();
+        expect(
+            screen.getByText('En cours : Enrichissement 2'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText(/resume/)).toBeNull();
+    });
+
+    it('names a launch step with its label for the model', async () => {
+        const removeLabel = withResumeLabel();
+        try {
+            renderDialog(
+                buildGeneration({
+                    phase: 'launch',
+                    modelId: 'theses-fr',
+                    steps: THESES_STEPS,
+                }),
+                { french: true },
+            );
+            expect(
+                await screen.findByText('En cours : Résumé'),
+            ).toBeInTheDocument();
+        } finally {
+            removeLabel();
+        }
+    });
+
+    it('names a launch step of a data add with the label of its model', async () => {
+        const removeLabel = withResumeLabel();
+        try {
+            renderDialog(
+                buildGeneration({
+                    kind: 'addData',
+                    modelId: 'theses-fr',
+                    settings: undefined,
+                    phase: 'launch',
+                    steps: THESES_STEPS,
+                }),
+                { french: true },
+            );
+            expect(
+                await screen.findByText('En cours : Résumé'),
+            ).toBeInTheDocument();
+            expect(screen.queryByText(/Import du modèle/)).toBeNull();
+        } finally {
+            removeLabel();
+        }
+    });
+
+    it('falls back on the rank for a data add without model id', async () => {
+        renderDialog(
+            buildGeneration({
+                kind: 'addData',
+                modelId: undefined,
+                settings: undefined,
+                phase: 'launch',
+                steps: THESES_STEPS,
+            }),
+            { french: true },
+        );
+        expect(
+            await screen.findByText('En cours : Enrichissement 2'),
+        ).toBeInTheDocument();
+    });
+
+    it('gives the technical name of a launch step in error or tried again', async () => {
+        renderDialog(
+            buildGeneration({
+                status: 'error',
+                phase: 'launch',
+                modelId: 'theses-fr',
+                steps: [
+                    {
+                        name: 'xml',
+                        type: 'enrichment',
+                        position: 1,
+                        state: 'done',
+                    },
+                    {
+                        name: 'resume',
+                        type: 'enrichment',
+                        position: 2,
+                        state: 'running',
+                        retry: { attempt: 1, max: 3 },
+                    },
+                    {
+                        name: 'lienHAL',
+                        type: 'enrichment',
+                        position: 3,
+                        state: 'error',
+                        message: 'precomputed_no_response',
+                    },
+                ],
+            }),
+            { french: true },
+        );
+        expect(
+            await screen.findByText(/^Enrichissement 3 \(lienHAL\) — /),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                byText('Enrichissement 2 (resume) : nouvelle tentative (1/3)'),
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('tells a step tried again under the line of its group', async () => {
+        renderDialog(
+            buildGeneration({
+                phase: 'launch',
+                steps: [
+                    {
+                        name: 'clusterRameau',
+                        type: 'precomputed',
+                        position: 1,
+                        state: 'running',
+                        retry: { attempt: 1, max: 3 },
+                    },
+                    {
+                        name: 'xml',
+                        type: 'enrichment',
+                        position: 2,
+                        state: 'waiting',
+                    },
+                ],
+            }),
+            { french: true },
+        );
+        const retry = await screen.findByText(
+            byText('Précalcul 1 (clusterRameau) : nouvelle tentative (1/3)'),
+        );
+        const enrichments = screen.getByText(byText('Enrichissement 0/1'));
+        expect(
+            retry.compareDocumentPosition(enrichments) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy();
     });
 
     it('leaves out a launch counter without anything to launch', async () => {

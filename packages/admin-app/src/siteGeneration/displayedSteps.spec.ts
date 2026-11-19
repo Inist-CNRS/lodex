@@ -1,5 +1,10 @@
-import type { SiteGenerationView } from '@lodex/common';
-import { getDisplayedSteps } from './displayedSteps';
+import type {
+    ModelLaunchStepType,
+    SiteGenerationStepState,
+    SiteGenerationStepView,
+    SiteGenerationView,
+} from '@lodex/common';
+import { getDisplayedSteps, getLaunchGroups } from './displayedSteps';
 
 const counter = (total: number) => ({ done: 0, total, error: 0 });
 
@@ -25,6 +30,23 @@ describe('getDisplayedSteps', () => {
             buildView({
                 kind: 'addData',
                 modelId: undefined,
+                settings: undefined,
+                phase: 'data',
+                publication: { state: 'waiting' },
+            }),
+        );
+        expect(steps.map(({ key }) => key)).toEqual([
+            'data',
+            'launch',
+            'publication',
+        ]);
+    });
+
+    it('shows no model step for a data add with a model id', () => {
+        const steps = getDisplayedSteps(
+            buildView({
+                kind: 'addData',
+                modelId: 'hal2lodex',
                 settings: undefined,
                 phase: 'data',
                 publication: { state: 'waiting' },
@@ -134,5 +156,105 @@ describe('getDisplayedSteps', () => {
             }),
         );
         expect(steps).toEqual([{ key: 'launch', state: 'running' }]);
+    });
+});
+
+const step = (
+    name: string,
+    type: ModelLaunchStepType,
+    position: number,
+    state: SiteGenerationStepState = 'waiting',
+): SiteGenerationStepView => ({ name, type, position, state });
+
+describe('getLaunchGroups', () => {
+    it('has no group without steps', () => {
+        expect(getLaunchGroups([])).toEqual([]);
+    });
+
+    it('puts the precomputation of theses-fr before its enrichments', () => {
+        const groups = getLaunchGroups([
+            step('xml', 'enrichment', 2),
+            step('resume', 'enrichment', 3),
+            step('clusterRameau', 'precomputed', 1),
+        ]);
+        expect(groups.map(({ type }) => type)).toEqual([
+            'precomputed',
+            'enrichment',
+        ]);
+        expect(groups.map(({ total }) => total)).toEqual([1, 2]);
+        expect(groups[1].steps.map(({ name }) => name)).toEqual([
+            'xml',
+            'resume',
+        ]);
+    });
+
+    it('splits the launch into consecutive groups of a type', () => {
+        const groups = getLaunchGroups([
+            step('p1', 'precomputed', 1),
+            step('e1', 'enrichment', 2),
+            step('e2', 'enrichment', 3),
+            step('p2', 'precomputed', 4),
+            step('p3', 'precomputed', 4),
+            step('e3', 'enrichment', 5),
+        ]);
+        expect(groups.map(({ type }) => type)).toEqual([
+            'precomputed',
+            'enrichment',
+            'precomputed',
+            'enrichment',
+        ]);
+        expect(groups.map(({ total }) => total)).toEqual([1, 2, 2, 1]);
+    });
+
+    it('puts a precomputation before an enrichment of the same position', () => {
+        const groups = getLaunchGroups([
+            step('a', 'enrichment', 1, 'done'),
+            step('b', 'enrichment', 2, 'running'),
+            step('x', 'precomputed', 2, 'running'),
+        ]);
+        expect(groups.map(({ type }) => type)).toEqual([
+            'enrichment',
+            'precomputed',
+            'enrichment',
+        ]);
+        expect(
+            groups.map((group) => group.steps.map(({ name }) => name)),
+        ).toEqual([['a'], ['x'], ['b']]);
+        expect(groups.map(({ running }) => running)).toEqual([0, 1, 1]);
+    });
+
+    it('ranks the steps among those of their type over the whole launch', () => {
+        const groups = getLaunchGroups([
+            step('p1', 'precomputed', 1),
+            step('e1', 'enrichment', 2),
+            step('e2', 'enrichment', 3),
+            step('p2', 'precomputed', 4),
+            step('e3', 'enrichment', 5),
+        ]);
+        const ranks = (type: ModelLaunchStepType) =>
+            groups
+                .filter((group) => group.type === type)
+                .flatMap((group) => group.steps.map(({ rank }) => rank));
+        expect(ranks('enrichment')).toEqual([1, 2, 3]);
+        expect(ranks('precomputed')).toEqual([1, 2]);
+    });
+
+    it('counts the running step, a step tried again included, but not one in error', () => {
+        const [group] = getLaunchGroups([
+            step('a', 'enrichment', 1, 'done'),
+            step('b', 'enrichment', 2, 'done'),
+            step('c', 'enrichment', 3, 'error'),
+            {
+                ...step('d', 'enrichment', 4, 'running'),
+                retry: { attempt: 1, max: 3 },
+            },
+            step('e', 'enrichment', 5),
+        ]);
+        expect(group).toMatchObject({
+            total: 5,
+            done: 2,
+            running: 1,
+            error: 1,
+        });
     });
 });

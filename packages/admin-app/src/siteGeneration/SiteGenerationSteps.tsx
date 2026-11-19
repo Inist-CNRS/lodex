@@ -1,20 +1,26 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, type ReactNode } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {
+    getModelLaunchStepLabelKey,
     getModelNameKey,
+    MODEL_LAUNCH_STEP_TYPES,
     type ModelLaunchStepType,
     ProgressStatus,
-    type SiteGenerationCounter,
     type SiteGenerationStepState,
     type SiteGenerationView,
 } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ErrorWithDetail } from '@lodex/frontend-common/components/ErrorWithDetail';
 import { hasTranslation } from '../siteWizard/hasTranslation';
-import type { DisplayedStep } from './displayedSteps';
+import {
+    getLaunchGroups,
+    type DisplayedStep,
+    type LaunchGroup,
+    type RankedLaunchStep,
+} from './displayedSteps';
 import type { ImportProgress } from './useSiteGeneration';
 
 type Translate = ReturnType<typeof useTranslate>['translate'];
@@ -94,6 +100,40 @@ const getModelName = (translate: Translate, modelId?: string) => {
     return hasTranslation(nameKey) ? translate(nameKey) : modelId;
 };
 
+// the label of a launch step for its model when it has one, its rank among
+// the steps of its type otherwise
+const getStepLabel = (
+    translate: Translate,
+    modelId: string | undefined,
+    step: RankedLaunchStep,
+) => {
+    const labelKey =
+        modelId && getModelLaunchStepLabelKey(modelId, step.type, step.name);
+    return labelKey && hasTranslation(labelKey)
+        ? translate(labelKey)
+        : translate(`site_generation_step_fallback_${step.type}`, {
+              rank: step.rank,
+          });
+};
+
+// the label of a launch step, with its name to find it in the model
+const getStepFullLabel = (
+    translate: Translate,
+    modelId: string | undefined,
+    step: RankedLaunchStep,
+) => `${getStepLabel(translate, modelId, step)} (${step.name})`;
+
+// before the launch, its steps are unknown: the counts of the model
+const COUNT_KEYS: Record<ModelLaunchStepType, string> = {
+    enrichment: 'site_generation_enrichments',
+    precomputed: 'site_generation_precomputed',
+};
+
+const ERROR_KEYS: Record<ModelLaunchStepType, string> = {
+    enrichment: 'site_generation_enrichments_error',
+    precomputed: 'site_generation_precomputed_error',
+};
+
 const getSettingsDescriptionKey = (
     settings: SiteGenerationView['settings'],
 ) => {
@@ -167,37 +207,35 @@ const LaunchRunning = ({ names }: { names: string[] }) => {
     );
 };
 
-const LaunchCounter = ({
-    counter,
-    countKey,
-    errorKey,
-    running,
+// a line of the launch: its count, its steps in error, and those running now
+const LaunchLine = ({
+    count,
+    error,
+    type,
+    running = [],
 }: {
-    counter: SiteGenerationCounter;
-    countKey: string;
-    errorKey: string;
-    // the names of its steps running now
-    running: string[];
+    count: string;
+    error: number;
+    type: ModelLaunchStepType;
+    // the labels of its steps running now
+    running?: string[];
 }) => {
     const { translate } = useTranslate();
-    if (counter.total === 0) {
-        return null;
-    }
     return (
         <li>
-            {translate(countKey, {
-                smart_count: counter.total,
-                done: counter.done,
-                total: counter.total,
-            })}
-            {counter.error > 0 && (
-                <>
-                    {' - '}
-                    <Box component="span" sx={{ color: 'warning.main' }}>
-                        {translate(errorKey, { smart_count: counter.error })}
-                    </Box>
-                </>
-            )}
+            <span>
+                {count}
+                {error > 0 && (
+                    <>
+                        {' - '}
+                        <Box component="span" sx={{ color: 'warning.main' }}>
+                            {translate(ERROR_KEYS[type], {
+                                smart_count: error,
+                            })}
+                        </Box>
+                    </>
+                )}
+            </span>
             <LaunchRunning names={running} />
         </li>
     );
@@ -238,6 +276,8 @@ type StepContent = { title: string; description?: ReactNode };
 const useStepContent = (
     step: DisplayedStep,
     view: SiteGenerationView | undefined,
+    // the groups of the launch step, empty for the other steps
+    launchGroups: LaunchGroup[],
     uploadProgress: number | null | undefined,
     importProgress: ImportProgress | null | undefined,
 ): StepContent => {
@@ -254,17 +294,18 @@ const useStepContent = (
             count: lines.toLocaleString(locale),
         });
     const isRunning = step.state === 'running';
-    const getRunningNames = (type: ModelLaunchStepType) =>
-        isRunning && view
-            ? view.steps
+    const getRunningLabels = (group: LaunchGroup) =>
+        isRunning
+            ? group.steps
                   .filter(
                       (launchStep) =>
-                          launchStep.type === type &&
                           launchStep.state === 'running' &&
                           // shown with its attempt
                           !launchStep.retry,
                   )
-                  .map(({ name }) => name)
+                  .map((launchStep) =>
+                      getStepLabel(translate, view?.modelId, launchStep),
+                  )
             : [];
     switch (step.key) {
         case 'data':
@@ -312,28 +353,80 @@ const useStepContent = (
                         <>
                             {translate('site_generation_launch_intro')}
                             <Box component="ul" sx={{ m: 0, pl: 3 }}>
-                                <LaunchCounter
-                                    counter={view.launch.enrichment}
-                                    countKey="site_generation_enrichments"
-                                    errorKey="site_generation_enrichments_error"
-                                    running={getRunningNames('enrichment')}
-                                />
-                                <LaunchCounter
-                                    counter={view.launch.precomputed}
-                                    countKey="site_generation_precomputed"
-                                    errorKey="site_generation_precomputed_error"
-                                    running={getRunningNames('precomputed')}
-                                />
-                                {view.steps.map(
-                                    (launchStep) =>
-                                        launchStep.retry && (
-                                            <LaunchRetry
-                                                key={`${launchStep.type}-${launchStep.name}`}
-                                                name={launchStep.name}
-                                                retry={launchStep.retry}
-                                            />
-                                        ),
-                                )}
+                                {launchGroups.length > 0
+                                    ? launchGroups.map((group) => (
+                                          <Fragment
+                                              key={`${group.type}-${group.steps[0].rank}`}
+                                          >
+                                              <LaunchLine
+                                                  count={translate(
+                                                      `site_generation_launch_group_${group.type}`,
+                                                      {
+                                                          smart_count:
+                                                              group.total,
+                                                          // the steps launched, so that
+                                                          // the count never goes back
+                                                          current:
+                                                              group.done +
+                                                              group.running +
+                                                              group.error,
+                                                          total: group.total,
+                                                      },
+                                                  )}
+                                                  error={group.error}
+                                                  type={group.type}
+                                                  running={getRunningLabels(
+                                                      group,
+                                                  )}
+                                              />
+                                              {/* under the line of its group */}
+                                              {group.steps
+                                                  .filter(
+                                                      (launchStep) =>
+                                                          launchStep.retry,
+                                                  )
+                                                  .map((launchStep) => (
+                                                      <LaunchRetry
+                                                          key={`${launchStep.type}-${launchStep.rank}`}
+                                                          name={getStepFullLabel(
+                                                              translate,
+                                                              view.modelId,
+                                                              launchStep,
+                                                          )}
+                                                          retry={
+                                                              launchStep.retry!
+                                                          }
+                                                      />
+                                                  ))}
+                                          </Fragment>
+                                      ))
+                                    : MODEL_LAUNCH_STEP_TYPES.map(
+                                          (type) =>
+                                              [
+                                                  type,
+                                                  view.launch![type],
+                                              ] as const,
+                                      )
+                                          .filter(
+                                              ([, counter]) =>
+                                                  counter.total > 0,
+                                          )
+                                          .map(([type, counter]) => (
+                                              <LaunchLine
+                                                  key={type}
+                                                  count={translate(
+                                                      COUNT_KEYS[type],
+                                                      {
+                                                          smart_count:
+                                                              counter.total,
+                                                          done: counter.done,
+                                                          total: counter.total,
+                                                      },
+                                                  )}
+                                                  error={counter.error}
+                                                  type={type}
+                                              />
+                                          ))}
                             </Box>
                         </>
                     ),
@@ -351,6 +444,7 @@ const getErrorMessages = (
     translate: Translate,
     step: DisplayedStep,
     view: SiteGenerationView | undefined,
+    launchGroups: LaunchGroup[],
 ): ErrorMessage[] => {
     if (step.state !== 'error' || !view) {
         return [];
@@ -361,13 +455,14 @@ const getErrorMessages = (
     }
     const launchErrors =
         step.key === 'launch'
-            ? view.steps
+            ? launchGroups
+                  .flatMap(({ steps }) => steps)
                   .filter(
                       (launchStep) =>
                           launchStep.state === 'error' && launchStep.message,
                   )
                   .map((launchStep) => ({
-                      message: `${launchStep.name} — ${translate(launchStep.message!)}`,
+                      message: `${getStepFullLabel(translate, view.modelId, launchStep)} — ${translate(launchStep.message!)}`,
                   }))
             : [];
     // the server sends a translation key, or the raw error
@@ -430,13 +525,16 @@ const Step = ({
     retryDisabled?: boolean;
 }) => {
     const { translate } = useTranslate();
+    const launchGroups =
+        step.key === 'launch' && view ? getLaunchGroups(view.steps) : [];
     const { title, description } = useStepContent(
         step,
         view,
+        launchGroups,
         uploadProgress,
         importProgress,
     );
-    const errors = getErrorMessages(translate, step, view);
+    const errors = getErrorMessages(translate, step, view, launchGroups);
     const isRetryShown = step.state === 'error' && !!onRetry;
     // the dialog keeps one height: on a small screen, a failed last step and
     // its Retry button can be below the fold

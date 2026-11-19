@@ -87,6 +87,16 @@ Forbidden (`EnrichissementA` and `EnrichissementB` are both at position 1):
 ]
 ```
 
+### Step labels
+
+While a site is generated, the admin shows each step by a label. A label is optional and specific to a model: add it in `translations.tsv`, in English and in French, under the key `mc_<id>_<type>_<name>`, where `<type>` is `enrichment` or `precomputed` and `<name>` is the `name` of the step. For example:
+
+```tsv
+"mc_hal2lodex_enrichment_KeywordsTeeften"	"English keywords"	"Mots-clés en anglais"
+```
+
+Without a label, a step is shown by its rank among the steps of its type that are launched, in launch order (a step of `launchOrder` missing from the model is skipped, without leaving a gap): "Enrichissement 1", "Enrichissement 2"… "Précalcul 1"… Errors and new attempts always add the name of the step, e.g. "Enrichissement 3 (lienHAL)".
+
 ## Add, update or remove a model
 
 **Add a model**
