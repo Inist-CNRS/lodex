@@ -83,8 +83,5 @@ export default function envExtract(data, feed) {
     });
 
     const rest = text.slice(block[0].length);
-    const header = remaining.some((l) => l.trim())
-        ? `---\n${remaining.join('\n')}\n---\n`
-        : '';
     feed.send(rest);
 }
