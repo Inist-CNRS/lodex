@@ -63,6 +63,7 @@ export const startDataAddGeneration = async (
         ? await readLaunchSteps(ctx, model.launchOrder)
         : [];
     const generation = await ctx.siteGeneration.startDataAdd({
+        modelId: model.id,
         importJobId,
         autoPublish: choice.autoPublish,
         steps,

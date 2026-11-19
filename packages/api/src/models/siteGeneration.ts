@@ -32,6 +32,8 @@ export type SiteGeneration = {
     position: number;
     steps: SiteGenerationStep[];
     choice?: SiteWizardChoice;
+    // the catalog model of a data add (a wizard has it in its choice)
+    modelId?: string;
     importJobId?: string;
     modelJobId?: string;
     importedLines?: number;
@@ -64,6 +66,7 @@ export type SiteGenerationCollection = Collection<SiteGeneration> & {
         wizard: Pick<SiteGeneration, 'choice' | 'importJobId' | 'estimate'>,
     ) => Promise<SiteGeneration>;
     startDataAdd: (add: {
+        modelId: string;
         importJobId: string;
         autoPublish: boolean;
         steps: SiteGenerationStep[];
@@ -130,6 +133,7 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
     };
 
     repository.startDataAdd = async ({
+        modelId,
         importJobId,
         autoPublish,
         steps,
@@ -146,6 +150,7 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
             phase: 'data',
             position: 0,
             steps,
+            modelId,
             importJobId,
             // without estimate, there is no launch step to show
             ...(estimate && { estimate }),

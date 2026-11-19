@@ -849,12 +849,14 @@ export const getSiteGenerationView = async (
     }));
     const { choice, importedLines, message, detail, themeNotFound } =
         generation;
+    // a wizard has its model in its choice, a data add on its own
+    const modelId = generation.modelId ?? choice?.modelId;
     return {
         kind: generation.kind,
         status: generation.status,
         phase: generation.phase,
+        ...(modelId && { modelId }),
         ...(choice && {
-            modelId: choice.modelId,
             settings: {
                 siteName: !!choice.siteName,
                 siteDescription: !!choice.siteDescription,

@@ -103,6 +103,7 @@ describe('startDataAddGeneration', () => {
         await startDataAddGeneration(ctx, choice, request, 'j');
         expect(mockReadLaunchSteps).toHaveBeenCalledWith(ctx, launchOrder);
         expect(ctx.siteGeneration.startDataAdd).toHaveBeenCalledWith({
+            modelId: 'm',
             importJobId: 'j',
             autoPublish: false,
             steps,
@@ -168,6 +169,7 @@ describe('startDataAddGeneration', () => {
         );
         expect(mockReadLaunchSteps).not.toHaveBeenCalled();
         expect(ctx.siteGeneration.startDataAdd).toHaveBeenCalledWith({
+            modelId: 'm',
             importJobId: 'j',
             autoPublish: true,
             steps: [],

@@ -275,6 +275,7 @@ describe('siteGeneration service', () => {
 
         it('queues the first position of a data add as a relaunch', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -293,6 +294,7 @@ describe('siteGeneration service', () => {
 
         it('ends a data add without step', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: [],
@@ -774,6 +776,7 @@ describe('siteGeneration service', () => {
 
         it('stops a data add in error in its data phase and keeps the dataset', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1103,6 +1106,7 @@ describe('siteGeneration service', () => {
 
         it('stops a data add in error in its data phase and keeps the dataset', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1123,6 +1127,7 @@ describe('siteGeneration service', () => {
 
         it('relaunches the launch phase of a data add in error before any step was launched', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1149,6 +1154,7 @@ describe('siteGeneration service', () => {
 
         it('clears the message of a launch phase in error when relaunching', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1172,6 +1178,7 @@ describe('siteGeneration service', () => {
 
         it('ends a data add without step relaunched in its launch phase', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: [],
@@ -1361,6 +1368,7 @@ describe('siteGeneration service', () => {
 
         it('has no launch counters for a data add without step', async () => {
             await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'job',
                 autoPublish: false,
                 steps: [],
@@ -1371,8 +1379,27 @@ describe('siteGeneration service', () => {
             );
         });
 
+        it('gives the model of a data add, without settings', async () => {
+            await siteGeneration.startDataAdd({
+                modelId: 'hal2lodex',
+                importJobId: 'job',
+                autoPublish: false,
+                steps: [],
+            });
+
+            const view = await getSiteGenerationView(ctx);
+            expect(view).toEqual(
+                expect.objectContaining({
+                    kind: 'addData',
+                    modelId: 'hal2lodex',
+                }),
+            );
+            expect(view).not.toHaveProperty('settings');
+        });
+
         it('estimates the counters of a data add with steps', async () => {
             await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1554,6 +1581,7 @@ describe('siteGeneration service', () => {
 
         it('publishes a data add without step when autoPublish is set', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: true,
                 steps: [],
