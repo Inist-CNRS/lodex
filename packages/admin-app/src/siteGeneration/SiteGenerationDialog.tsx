@@ -30,6 +30,16 @@ import type { SiteWizardLocationState } from '../siteWizard/SiteWizardHost';
 
 const SUPPORT_EMAIL = 'support-lodex@listes.istex.fr';
 
+// the import errors that the same data would meet again: the data (or the
+// loader) must change. The others (source unavailable, timeout…) may pass.
+const DATA_ERRORS = [
+    'import_error_no_line',
+    'import_error_invalid_query',
+    'import_error_source_not_found',
+    'import_error_invalid_format',
+    'import_error_loader',
+];
+
 // turns the support email of a translated text into a mailto link
 const WithEmailLink = ({ text }: { text: string }) => {
     const [before, ...rest] = text.split(SUPPORT_EMAIL);
@@ -122,11 +132,10 @@ export const SiteGenerationDialog = () => {
     };
 
     const isDataRetry = generation.phase === 'data';
-    // the loader read no line: sending the same data again would fail again
-    const isNoLineError =
+    const isDataError =
         isDataRetry &&
         generation.kind !== 'addData' &&
-        generation.message === 'import_error_no_line';
+        DATA_ERRORS.includes(generation.message ?? '');
     const handleRetry = async () => {
         // a failed data import of the wizard leaves the instance empty: the
         // wizard, which kept the data, sends them anew in its place, or
@@ -138,7 +147,7 @@ export const SiteGenerationDialog = () => {
                 : {
                       pathname: '/data/existing',
                       state: {
-                          reopenSiteWizard: isNoLineError
+                          reopenSiteWizard: isDataError
                               ? 'changeData'
                               : 'retryImport',
                       } satisfies SiteWizardLocationState,
@@ -175,7 +184,7 @@ export const SiteGenerationDialog = () => {
                     importProgress={importProgress}
                     onRetry={handleRetry}
                     retryLabel={
-                        isNoLineError
+                        isDataError
                             ? 'site_generation_change_data'
                             : 'site_generation_retry'
                     }
