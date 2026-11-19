@@ -26,7 +26,6 @@ export default handleActions(
     {
         LOAD_PUBLICATION: (state) => ({
             ...state,
-            initialized: true,
             error: null,
             loading: true,
         }),
@@ -35,6 +34,9 @@ export default handleActions(
             { payload: { fields, published } },
         ) => ({
             ...state,
+            // set once loaded, not when requested: until then the pages wait
+            // behind withInitialData's progress bar
+            initialized: true,
             error: null,
             loading: false,
             fields,
@@ -45,6 +47,7 @@ export default handleActions(
             // @ts-expect-error TS7031
             error: error.message,
             loading: false,
+            initialized: true,
         }),
         SELECT_FIELD: (state, { payload: name }) => ({
             ...state,

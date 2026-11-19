@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import { SimplifiedUpload } from './SimplifiedUpload';
 import Upload from './Upload';
 import { useSiteModel } from './useSiteModel';
@@ -16,11 +16,8 @@ export const UploadPage = ({ isFirstFile, onOpenWizard }: UploadPageProps) => {
     const { isLoading, siteModel } = useSiteModel();
 
     if (isLoading) {
-        return (
-            <Box display="flex" justifyContent="center" p={4}>
-                <CircularProgress />
-            </Box>
-        );
+        // the same bar as withInitialData: one progress from the page load
+        return <LinearProgress />;
     }
 
     if (siteModel) {

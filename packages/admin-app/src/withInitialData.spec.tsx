@@ -318,5 +318,22 @@ describe('withInitialData HOC', () => {
                 }),
             ).toStrictEqual({ isLoading: false, isInitialized: false });
         });
+
+        it('should be initialized only once every store has loaded', () => {
+            const state = (parsingInitialized: boolean) => ({
+                parsing: {
+                    loading: !parsingInitialized,
+                    initialized: parsingInitialized,
+                },
+                publication: { loading: false, initialized: true },
+                subresource: { loading: false, initialized: true },
+                precomputed: { loading: false, initialized: true },
+                configTenant: { loading: false, initialized: true },
+                enrichment: { loading: false },
+            });
+            // the publication answered first: the data is still unknown
+            expect(mapStateToProps(state(false)).isInitialized).toBe(false);
+            expect(mapStateToProps(state(true)).isInitialized).toBe(true);
+        });
     });
 });

@@ -46,12 +46,12 @@ export default handleActions(
             // Reloads keep it as is, to avoid switching screens.
             allowUpload: state.initialized && state.allowUpload,
             loading: true,
-            initialized: true,
         }),
         // @ts-expect-error TS7006
         LOAD_PARSING_RESULT_ERROR: (state, { payload }) => ({
             ...state,
             loading: false,
+            initialized: true,
             allowUpload: true,
             error: payload,
         }),
@@ -60,6 +60,9 @@ export default handleActions(
             ...payload,
             allowUpload: payload.totalLoadedLines === 0,
             loading: false,
+            // set once loaded, not when requested: until then the pages wait
+            // behind withInitialData's progress bar
+            initialized: true,
         }),
         RELOAD_PARSING_RESULT: (state) => ({
             ...state,

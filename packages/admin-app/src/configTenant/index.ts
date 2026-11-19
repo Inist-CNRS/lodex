@@ -20,18 +20,21 @@ export default handleActions(
         LOAD_CONFIG_TENANT: (state) => ({
             ...state,
             loading: true,
-            initialized: true,
         }),
         // @ts-expect-error TS7006
         LOAD_CONFIG_TENANT_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             loading: false,
+            initialized: true,
         }),
         LOAD_CONFIG_TENANT_SUCCESS: (state, { payload: configTenant }) => ({
             ...state,
             configTenant,
             loading: false,
+            // set once loaded, not when requested: until then the pages wait
+            // behind withInitialData's progress bar
+            initialized: true,
         }),
     },
     initialState,
