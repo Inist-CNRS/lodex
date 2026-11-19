@@ -76,4 +76,25 @@ describe('<ParsingResult />', () => {
             expect(datasetApi.getDataColumns).not.toHaveBeenCalled();
         });
     });
+
+    it('should refetch the columns when an enrichment ends, as it adds keys without adding lines', async () => {
+        const renderWithStatus = (status: string) => (
+            <MemoryRouter initialEntries={['/data/existing']} initialIndex={0}>
+                <ParsingResultComponent
+                    enrichments={[{ name: 'enriched', status }]}
+                    loadingParsingResult={false}
+                    totalLoadedLines={100}
+                />
+            </MemoryRouter>
+        );
+        const screen = render(renderWithStatus('IN_PROGRESS'));
+        await waitFor(() =>
+            expect(datasetApi.getDataColumns).toHaveBeenCalled(),
+        );
+        (datasetApi.getDataColumns as jest.Mock).mockClear();
+        screen.rerender(renderWithStatus('FINISHED'));
+        await waitFor(() =>
+            expect(datasetApi.getDataColumns).toHaveBeenCalledTimes(1),
+        );
+    });
 });

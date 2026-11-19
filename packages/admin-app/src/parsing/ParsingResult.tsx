@@ -334,6 +334,14 @@ export const ParsingResultComponent = ({
     // the first documents, so they are reloaded too: lines saved after the
     // first reload may bring new keys.
     const loadedLines = precomputedId ? undefined : totalLoadedLines;
+    // An enrichment adds keys without adding lines: reload when one changes
+    // status, so its column shows up without reloading the page.
+    const enrichmentsState = precomputedId
+        ? undefined
+        : enrichments
+              // @ts-expect-error TS2339
+              ?.map(({ name, status }) => `${name}:${status}`)
+              .join();
 
     useEffect(() => {
         const fetchDataColumns = async () => {
@@ -348,11 +356,20 @@ export const ParsingResultComponent = ({
         initialFilterModel,
         precomputedId,
         loadedLines,
+        enrichmentsState,
     ]);
 
     useEffect(() => {
         fetchDataset();
-    }, [skip, limit, filterModel, sort, fetchDataset, loadedLines]);
+    }, [
+        skip,
+        limit,
+        filterModel,
+        sort,
+        fetchDataset,
+        loadedLines,
+        enrichmentsState,
+    ]);
 
     // @ts-expect-error TS7006
     const handleSortModelChange = (sortModel) => {
