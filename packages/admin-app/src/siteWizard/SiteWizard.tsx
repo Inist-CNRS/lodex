@@ -1,4 +1,4 @@
-import { useRef, useState, type ComponentType } from 'react';
+import { useLayoutEffect, useRef, useState, type ComponentType } from 'react';
 import {
     Box,
     Button,
@@ -214,12 +214,18 @@ const FIRST_STEP_WITH_ERROR = STEPS.indexOf(dataStep);
 // generation. The wizard keeps its choices, for a retry of the data import.
 export type SiteWizardCloseReason = 'handedOver' | 'dismissed' | 'cancelled';
 
+// why the progress dialog reopens the wizard after a failed data import:
+// send the same data again, or change them (the loader read no line)
+export type SiteWizardReopen = 'retryImport' | 'changeData';
+
 type SiteWizardProps = {
     open: boolean;
     onClose: (reason: SiteWizardCloseReason) => void;
+    // a new count for each reopen
+    reopen?: { action: SiteWizardReopen; count: number };
 };
 
-export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
+export const SiteWizard = ({ open, onClose, reopen }: SiteWizardProps) => {
     const { translate } = useTranslate();
     const models = useDisplayableModels();
     const {
@@ -327,6 +333,19 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
         }
     };
 
+    // before the paint: a retry shows the upload at once, where the progress
+    // dialog was, and not the last step
+    const handleGenerateRef = useRef(handleGenerate);
+    handleGenerateRef.current = handleGenerate;
+    useLayoutEffect(() => {
+        if (reopen?.action === 'retryImport') {
+            handleGenerateRef.current();
+        }
+        if (reopen?.action === 'changeData') {
+            setIndex(STEPS.indexOf(dataStep));
+        }
+    }, [reopen?.action, reopen?.count]);
+
     const handleNext = () => {
         if (isLastStep) {
             handleGenerate();
@@ -344,7 +363,14 @@ export const SiteWizard = ({ open, onClose }: SiteWizardProps) => {
             // only the cancel buttons close it, after a confirmation
             disableEscapeKeyDown
             transitionDuration={
-                isHandedOver || isTakenOver ? { exit: 0 } : undefined
+                isHandedOver || isTakenOver
+                    ? // a retry takes over from the progress dialog
+                      {
+                          exit: 0,
+                          enter:
+                              reopen?.action === 'retryImport' ? 0 : undefined,
+                      }
+                    : undefined
             }
             PaperProps={
                 isUploadShown

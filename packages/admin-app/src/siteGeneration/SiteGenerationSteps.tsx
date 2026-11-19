@@ -417,6 +417,7 @@ const Step = ({
     uploadProgress,
     importProgress,
     onRetry,
+    retryLabel = 'site_generation_retry',
     retryDisabled,
 }: {
     step: DisplayedStep;
@@ -427,6 +428,7 @@ const Step = ({
     uploadProgress?: number | null;
     importProgress?: ImportProgress | null;
     onRetry?: () => void;
+    retryLabel?: string;
     retryDisabled?: boolean;
 }) => {
     const { translate } = useTranslate();
@@ -500,7 +502,7 @@ const Step = ({
                         onClick={onRetry}
                         disabled={retryDisabled}
                     >
-                        {translate('site_generation_retry')}
+                        {translate(retryLabel)}
                     </Button>
                 </Box>
             )}
@@ -516,6 +518,8 @@ type SiteGenerationStepsProps = {
     // lines saved so far, on the running data step
     importProgress?: ImportProgress | null;
     onRetry?: () => void;
+    // the translation key of the retry button
+    retryLabel?: string;
     retryDisabled?: boolean;
     // the steps come in one after the other: the wizard turns into them
     appear?: boolean;
@@ -528,6 +532,7 @@ export const SiteGenerationSteps = ({
     uploadProgress,
     importProgress,
     onRetry,
+    retryLabel,
     retryDisabled,
 }: SiteGenerationStepsProps) => (
     <Box
@@ -556,6 +561,7 @@ export const SiteGenerationSteps = ({
                 uploadProgress={uploadProgress}
                 importProgress={importProgress}
                 onRetry={onRetry}
+                retryLabel={retryLabel}
                 retryDisabled={retryDisabled}
             />
         ))}

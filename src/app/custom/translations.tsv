@@ -1648,6 +1648,7 @@ Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_C
 "site_generation_step_publication"	"Publishing the site"	"Publication du site"
 "site_generation_publication_lost"	"The publication did not end: publish the site again"	"La publication n'a pas abouti : relancez-la"
 "site_generation_retry"	"Retry"	"Réessayer"
+"site_generation_change_data"	"Change the data"	"Modifier les données"
 "site_generation_stop"	"Stop the configuration"	"Arrêter la configuration"
 "site_generation_stop_title"	"Stop the configuration?"	"Arrêter la configuration ?"
 "site_generation_stop_description"	"The steps not yet finished will not be run: the site stays as it is."	"Les étapes non terminées ne seront pas exécutées : le site reste en l'état."

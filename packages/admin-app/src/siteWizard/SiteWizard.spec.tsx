@@ -926,4 +926,43 @@ describe('SiteWizard', () => {
         await userEvent.click(button('site_wizard_previous'));
         expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
+
+    it('sends the same data again when reopened for a retry of the import', async () => {
+        generate.mockResolvedValue(undefined);
+        const onClose = jest.fn();
+        const { rerender } = render(<SiteWizard open onClose={onClose} />);
+        await goToThemeStep();
+        await generateSite();
+        await waitFor(() => expect(onClose).toHaveBeenCalledWith('handedOver'));
+        rerender(<SiteWizard open={false} onClose={onClose} />);
+        rerender(
+            <SiteWizard
+                open
+                onClose={onClose}
+                reopen={{ action: 'retryImport', count: 1 }}
+            />,
+        );
+        await waitFor(() => expect(generate).toHaveBeenCalledTimes(2));
+        expect(generate.mock.calls[1]).toEqual(generate.mock.calls[0]);
+    });
+
+    it('opens on the data step when reopened to change the data', async () => {
+        generate.mockResolvedValue(undefined);
+        const onClose = jest.fn();
+        const { rerender } = render(<SiteWizard open onClose={onClose} />);
+        await goToThemeStep();
+        await generateSite();
+        await waitFor(() => expect(onClose).toHaveBeenCalledWith('handedOver'));
+        rerender(<SiteWizard open={false} onClose={onClose} />);
+        rerender(
+            <SiteWizard
+                open
+                onClose={onClose}
+                reopen={{ action: 'changeData', count: 1 }}
+            />,
+        );
+        expect(screen.getByText('2/5')).toBeInTheDocument();
+        expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
+        expect(generate).toHaveBeenCalledTimes(1);
+    });
 });

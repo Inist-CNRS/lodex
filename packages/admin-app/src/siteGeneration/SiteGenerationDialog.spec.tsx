@@ -543,8 +543,31 @@ describe('SiteGenerationDialog', () => {
         expect(relaunchSiteGeneration).toHaveBeenCalled();
         expect(screen.getByTestId('location')).toHaveAttribute(
             'data-state',
-            JSON.stringify({ reopenSiteWizard: true }),
+            JSON.stringify({ reopenSiteWizard: 'retryImport' }),
         );
+    });
+
+    it('offers to change the data when the loader read no line', async () => {
+        renderDialog(
+            buildGeneration({
+                status: 'error',
+                phase: 'data',
+                message: 'import_error_no_line',
+            }),
+        );
+        expect(
+            screen.queryByText('site_generation_retry'),
+        ).not.toBeInTheDocument();
+        await userEvent.click(
+            await screen.findByText('site_generation_change_data'),
+        );
+        await waitFor(() =>
+            expect(screen.getByTestId('location')).toHaveAttribute(
+                'data-state',
+                JSON.stringify({ reopenSiteWizard: 'changeData' }),
+            ),
+        );
+        expect(relaunchSiteGeneration).toHaveBeenCalled();
     });
 
     it('relaunches and goes back to the data add page on a retry of a data add import', async () => {
@@ -567,7 +590,7 @@ describe('SiteGenerationDialog', () => {
         expect(relaunchSiteGeneration).toHaveBeenCalled();
         expect(screen.getByTestId('location')).not.toHaveAttribute(
             'data-state',
-            JSON.stringify({ reopenSiteWizard: true }),
+            JSON.stringify({ reopenSiteWizard: 'retryImport' }),
         );
     });
 
