@@ -4,6 +4,7 @@ import {
     createFusible,
     enableFusible,
     disableFusible,
+    checkFusible,
 } from '@ezs/core/fusible';
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
@@ -181,7 +182,9 @@ export const startImport = async (ctx: any, givenFusible?: string) => {
             .pipe(ezs('breaker', { fusible }));
 
         await ctx.saveParsedStream(ctx, outputStream);
-        if (readLines === 0) {
+        // a cancel (cancelJob, stopJobs) cuts the stream without an error:
+        // its import is failed already, not for a lack of lines
+        if (readLines === 0 && (await checkFusible(fusible))) {
             throw Object.assign(new Error('The loader read no line'), {
                 code: 'import_error_no_line',
             });

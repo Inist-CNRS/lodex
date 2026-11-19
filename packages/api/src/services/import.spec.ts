@@ -11,6 +11,7 @@ jest.mock('@ezs/core/fusible', () => ({
     watchFusible: jest.fn(async () => () => {}),
     checkFusible: jest.fn(async () => true),
 }));
+import { checkFusible } from '@ezs/core/fusible';
 import {
     isUploadCancelled,
     removeUploadChunks,
@@ -101,6 +102,16 @@ describe('startImport of a loader', () => {
 
     it('succeeds when it reads a line', async () => {
         await expect(importLines([{ uri: 'uid:/1' }])).resolves.toBe(undefined);
+    });
+
+    it('does not blame the loader when the import was cancelled', async () => {
+        // cancelJob disabled the fusible: the breakers cut the stream
+        (checkFusible as jest.Mock).mockResolvedValue(false);
+        try {
+            await expect(importLines([])).resolves.toBe(undefined);
+        } finally {
+            (checkFusible as jest.Mock).mockResolvedValue(true);
+        }
     });
 });
 
