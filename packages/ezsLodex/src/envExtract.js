@@ -1,16 +1,16 @@
 const FRONT_MATTER = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
-const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const LINE = /^([A-Za-z_][A-Za-z0-9_]*)[ \t]*[:=](.*)$/;
 const unquote = (v) => v.replace(/^(["'])(.*)\1$/, '$2');
 
 /**
  * Take a `String` starting with a front matter block (delimited by `---`),
  * copy the allowed `NAME: value` (or `NAME=value`) pairs into the environment,
- * and throw the text without those pairs.
+ * and throw the text without the front matter.
  *
  * Only the front matter at the very beginning of the text is parsed: the rest
- * of the text is never modified. If there is no front matter, the text is
- * thrown unchanged. Lines of the block that are not allowed (or not a
- * `NAME: value` pair) are kept in the front matter.
+ * of the text is never modified. The whole front matter is removed, even the
+ * lines that are not allowed (they are ignored). If there is no front matter,
+ * the text is thrown unchanged.
  *
  * Input:
  *
@@ -65,21 +65,14 @@ export default function envExtract(data, feed) {
     const overwrite = this.getParam('overwrite', false);
     const env = this.getEnv();
 
-    const remaining = block[1].split(/\r?\n/).filter((line) => {
-        const separator = line.search(/[:=]/);
-        if (separator === -1) {
-            return true;
+    block[1].split(/\r?\n/).forEach((line) => {
+        const m = line.match(LINE);
+        if (!m || !allow.includes(m[1])) {
+            return;
         }
-
-        const name = line.slice(0, separator).trim();
-        if (!ENV_NAME.test(name) || !allow.includes(name)) {
-            return true;
+        if (overwrite || !(m[1] in env)) {
+            env[m[1]] = unquote(m[2].trim());
         }
-
-        if (overwrite || !(name in env)) {
-            env[name] = unquote(line.slice(separator + 1).trim());
-        }
-        return false;
     });
 
     const rest = text.slice(block[0].length);
