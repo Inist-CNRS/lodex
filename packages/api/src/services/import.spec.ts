@@ -8,6 +8,8 @@ jest.mock('@ezs/core/fusible', () => ({
     createFusible: jest.fn(async () => 'fusible'),
     enableFusible: jest.fn(),
     disableFusible: jest.fn(),
+    watchFusible: jest.fn(async () => () => {}),
+    checkFusible: jest.fn(async () => true),
 }));
 import {
     isUploadCancelled,
@@ -59,7 +61,9 @@ describe('startImport of a failing import', () => {
             job: { data: { text: 'query' }, update: jest.fn() },
             getLoader: jest.fn(() => (stream: any) => stream),
             getStreamFromText: jest.fn(() => ({
-                pipe: () => ({ pipe: () => ({ pipe: () => ({}) }) }),
+                pipe: () => ({
+                    pipe: () => ({ pipe: () => ({ pipe: () => ({}) }) }),
+                }),
             })),
             saveParsedStream: jest.fn().mockRejectedValue(error),
         };
@@ -67,6 +71,36 @@ describe('startImport of a failing import', () => {
             message: 'Error during import: Error: Bad Request',
             cause: error,
         });
+    });
+});
+
+describe('startImport of a loader', () => {
+    const importLines = (lines: object[]) =>
+        startImport({
+            tenant: 'lodex',
+            job: { data: { text: 'query' }, update: jest.fn() },
+            getLoader: jest.fn(() => () => Readable.from(lines)),
+            getStreamFromText: jest.fn(() => Readable.from(['query'])),
+            saveParsedStream: jest.fn(
+                (_ctx: any, stream: any) =>
+                    new Promise((resolve, reject) => {
+                        stream
+                            .on('data', () => {})
+                            .on('end', resolve)
+                            .on('error', reject);
+                    }),
+            ),
+            dataset: { indexColumns: jest.fn() },
+        });
+
+    it('fails when it reads no line: it may not suit the data', async () => {
+        await expect(importLines([])).rejects.toMatchObject({
+            cause: { code: 'import_error_no_line' },
+        });
+    });
+
+    it('succeeds when it reads a line', async () => {
+        await expect(importLines([{ uri: 'uid:/1' }])).resolves.toBe(undefined);
     });
 });
 

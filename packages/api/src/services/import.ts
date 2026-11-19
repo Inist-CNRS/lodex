@@ -164,11 +164,28 @@ export const startImport = async (ctx: any, givenFusible?: string) => {
         }
         const inputStream = stream.pipe(ezs('breaker', { fusible }));
         const parsedStream = parseStream(inputStream);
+        // a loader can read data of another format without failing: it then
+        // reads no line, and the import must fail
+        let readLines = 0;
         const outputStream = parsedStream
             .pipe(ezs('assign', { path: '_lodexPublished', value: false }))
+            .pipe(
+                ezs(function countLine(this: any, data: any, feed: any) {
+                    if (this.isLast()) {
+                        return feed.close();
+                    }
+                    readLines += 1;
+                    return feed.send(data);
+                }),
+            )
             .pipe(ezs('breaker', { fusible }));
 
         await ctx.saveParsedStream(ctx, outputStream);
+        if (readLines === 0) {
+            throw Object.assign(new Error('The loader read no line'), {
+                code: 'import_error_no_line',
+            });
+        }
         progress.start(ctx.tenant, {
             status: ProgressStatus.INDEXATION,
             type: 'import',

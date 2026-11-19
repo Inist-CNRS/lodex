@@ -1620,6 +1620,7 @@ Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_C
 "import_error_loader"	"The loader may not suit this data."	"Le loader ne convient peut-être pas à ces données."
 "import_error_no_line"	"No line was imported: the data may not match the loader of the model."	"Aucune ligne n'a été importée : les données ne correspondent peut-être pas au loader du modèle."
 "import_error_unknown"	"The data import failed."	"L'import des données a échoué."
+"publish_error_no_line"	"The dataset is empty: there is nothing to publish."	"Le jeu de données est vide : il n'y a rien à publier."
 "site_wizard_theme_not_found"	"The theme %{theme} is not available: the current theme is kept."	"Le thème %{theme} n'est pas disponible : le thème actuel est conservé."
 "site_wizard_open"	"Generate the site from a model"	"Générer le site à partir d'un modèle"
 "upload_size_limit"	"(maximum size: %{limit} GB)"	"(taille maximum : %{limit} Go)"

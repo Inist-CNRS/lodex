@@ -6,6 +6,7 @@ export type ImportErrorCode =
     | 'import_error_source_timeout'
     | 'import_error_invalid_format'
     | 'import_error_loader'
+    | 'import_error_no_line'
     | 'import_error_unknown';
 
 export type ImportError = {
@@ -80,6 +81,10 @@ const getCode = ({
     code,
     stack,
 }: ErrorLike): ImportErrorCode => {
+    // set by startImport when the loader read no line
+    if (code === 'import_error_no_line') {
+        return code;
+    }
     if (status === 400) {
         return 'import_error_invalid_query';
     }
