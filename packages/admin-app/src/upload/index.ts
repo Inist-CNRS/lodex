@@ -52,7 +52,8 @@ export const defaultState: UploadState = {
     open: false,
     isUrlValid: false,
     url: '',
-    loaderName: null,
+    // the loader guessed from the file extension, the usual choice
+    loaderName: 'automatic',
     customLoader: null,
 };
 

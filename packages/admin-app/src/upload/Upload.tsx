@@ -4,9 +4,18 @@ import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { type FileObject } from 'mui-file-dropzone';
 import Alert from '@lodex/frontend-common/components/Alert';
-import { Box, Button } from '@mui/material';
+import {
+    alpha,
+    Box,
+    Button,
+    ButtonBase,
+    Divider,
+    type Theme,
+    Typography,
+} from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import {
     uploadFile,
@@ -28,23 +37,53 @@ import {
 } from './DatasetSourceInput';
 
 const styles = {
-    button: {
-        marginLeft: 4,
-        marginRight: 4,
-        alignSelf: 'center',
-        alignItems: 'flex-start',
-    },
-    wizardButton: {
-        alignSelf: 'flex-start',
-        textDecoration: 'underline',
-        marginLeft: 4,
-        marginBottom: 2,
-    },
+    // fills the page height, the input taking what is left; a short window
+    // scrolls the page instead
     container: {
         width: '100%',
+        minHeight: '100%',
+        paddingX: 5,
+        paddingY: 4,
         display: 'flex',
         flexDirection: 'column',
-        marginTop: '24px',
+        gap: 3,
+    },
+    actions: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: 1,
+    },
+    // the main action: large, and tinted even while disabled so it is seen
+    // before a source is chosen
+    uploadButton: {
+        marginLeft: 'auto',
+        paddingX: 4,
+        '&.Mui-disabled': {
+            color: 'common.white',
+            bgcolor: (theme: Theme) => alpha(theme.palette.primary.main, 0.4),
+        },
+    },
+    wizardCard: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        padding: 2,
+        textAlign: 'left',
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 2,
+        '&:hover': { borderColor: 'primary.main' },
+    },
+    wizardIcon: {
+        display: 'grid',
+        placeItems: 'center',
+        flex: 'none',
+        width: 40,
+        height: 40,
+        borderRadius: 2,
+        color: 'primary.main',
+        bgcolor: 'action.hover',
     },
 };
 
@@ -128,19 +167,17 @@ export const UploadComponent = ({
     };
     return (
         <Box sx={styles.container}>
-            {onOpenWizard && (
-                <Button
-                    variant="text"
-                    color="primary"
-                    className="btn-open-site-wizard"
-                    sx={styles.wizardButton}
-                    startIcon={<ArrowBackIcon />}
-                    onClick={onOpenWizard}
-                >
-                    {translate('site_wizard_open')}
-                </Button>
-            )}
+            <Box>
+                <Typography variant="h5" component="h1">
+                    {translate('upload_title')}
+                </Typography>
+                <Typography color="text.secondary">
+                    {translate('upload_subtitle')}
+                </Typography>
+            </Box>
             <DatasetSourceInput
+                narrow
+                hideDescriptions
                 tab={tab}
                 onTabChange={setTab}
                 files={files}
@@ -161,38 +198,62 @@ export const UploadComponent = ({
                         {/* a failed import sends a translation key */}
                         <p>{translate(String(error))}</p>
                     </Alert>
-                ) : (
-                    <span />
-                )}
+                ) : null}
             </DatasetSourceInput>
 
-            <LoaderSelect
-                loaders={loaders}
-                setLoader={onChangeLoaderName}
-                value={loaderName}
-                disabled={
-                    files.length === 0 &&
-                    (!url || !isUrlValid) &&
-                    (!textContent || textContent === '')
-                }
-            />
-            <Button
-                variant="contained"
-                color="primary"
-                className="btn-upload-dataset"
-                sx={styles.button}
-                disabled={
-                    isUploading ||
-                    (files.length === 0 &&
-                        (!url || !isUrlValid) &&
-                        (!textContent || textContent === '')) ||
-                    !loaderName
-                }
-                onClick={handleSubmit}
-                startIcon={<PublishIcon />}
-            >
-                {translate('upload_data')}
-            </Button>
+            <Box sx={styles.actions}>
+                <LoaderSelect
+                    loaders={loaders}
+                    setLoader={onChangeLoaderName}
+                    value={loaderName}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className="btn-upload-dataset"
+                    size="large"
+                    sx={styles.uploadButton}
+                    disabled={
+                        isUploading ||
+                        (files.length === 0 &&
+                            (!url || !isUrlValid) &&
+                            (!textContent || textContent === '')) ||
+                        !loaderName
+                    }
+                    onClick={handleSubmit}
+                    startIcon={<PublishIcon />}
+                >
+                    {translate('upload_data')}
+                </Button>
+            </Box>
+
+            {onOpenWizard && (
+                <>
+                    <Divider>
+                        <Typography variant="body2" color="text.secondary">
+                            {translate('or')}
+                        </Typography>
+                    </Divider>
+                    <ButtonBase
+                        className="btn-open-site-wizard"
+                        sx={styles.wizardCard}
+                        onClick={onOpenWizard}
+                    >
+                        <Box sx={styles.wizardIcon}>
+                            <AutoFixHighIcon />
+                        </Box>
+                        <Box flex={1}>
+                            <Typography fontWeight={500}>
+                                {translate('site_wizard_open')}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                {translate('site_wizard_open_desc')}
+                            </Typography>
+                        </Box>
+                        <ChevronRightIcon color="primary" />
+                    </ButtonBase>
+                </>
+            )}
 
             <ConfirmPopup
                 cancelLabel={translate('Cancel')}

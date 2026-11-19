@@ -3,6 +3,7 @@ import { DropzoneAreaBase, type FileObject } from 'mui-file-dropzone';
 import {
     alpha,
     Box,
+    InputAdornment,
     type Theme,
     TextField,
     Grid,
@@ -14,6 +15,7 @@ import {
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import LinkIcon from '@mui/icons-material/Link';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { toast } from '@lodex/common';
 import SourceCodeField from '@lodex/frontend-common/components/SourceCodeField';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
@@ -109,6 +111,64 @@ const styles = {
         backgroundColor: 'var(--contrast-main)',
         color: 'var(--primary-secondary)',
     },
+    // a narrow column: the input takes its whole width, and the height left
+    // by its parent (a flex column), the same from a tab to the other
+    narrowForm: {
+        flex: 1,
+        margin: 0,
+        alignItems: 'stretch',
+        '& .dropzone': {
+            flex: 1,
+            minHeight: '160px',
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        // centered by auto margins, as in compactForm
+        '& .dropzoneTextContainer': { mt: 'auto' },
+        '& .dropzone > :last-child': { mb: 'auto' },
+    },
+    narrowTextInput: {
+        width: '100%',
+        flex: 1,
+        minHeight: '160px',
+    },
+    // the url field framed like the dropzone, so the height stays the same
+    // from a tab to the other
+    urlPanel: {
+        flex: 1,
+        minHeight: '160px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        // centered like the dropzone text, so a tall panel does not look empty
+        alignItems: 'center',
+        textAlign: 'center',
+        gap: 2,
+        paddingX: 4,
+        paddingY: 3,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 1,
+        bgcolor: 'action.hover',
+        '& .MuiInputBase-root': { bgcolor: 'background.paper' },
+        '& .MuiTextField-root': { maxWidth: 640, textAlign: 'left' },
+    },
+    urlIcon: {
+        display: 'grid',
+        placeItems: 'center',
+        width: 56,
+        height: 56,
+        borderRadius: '50%',
+        color: 'primary.main',
+        bgcolor: 'background.paper',
+        '& svg': { fontSize: 32 },
+    },
+    urlValid: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 0.5,
+        color: 'success.main',
+    },
     dropzone: {
         minHeight: '220px',
         padding: '0 1rem',
@@ -167,6 +227,8 @@ export type DatasetSourceInputProps = {
     // for a dialog with little height: small tabs, and the input fills the
     // height left by its parent (a flex column)
     compact?: boolean;
+    // for a narrow column: small tabs, and the input takes the column width
+    narrow?: boolean;
 };
 
 export const getDatasetSource = ({
@@ -217,7 +279,9 @@ export const DatasetSourceInput = ({
     fileTextKey = 'import_file_text',
     children,
     compact = false,
+    narrow = false,
 }: DatasetSourceInputProps) => {
+    const smallTabs = compact || narrow;
     const { translate } = useTranslate();
     const [dropping, setDropping] = useState(false);
     const isUrlValid = isHttpUrl(url);
@@ -236,13 +300,13 @@ export const DatasetSourceInput = ({
         <>
             {/* Tabs selector use to select the import type, useless for a single one */}
             {tabs.length > 1 && (
-                <Box sx={compact ? styles.compactTabs : styles.tabs}>
+                <Box sx={smallTabs ? styles.compactTabs : styles.tabs}>
                     <Tabs
                         value={tab}
                         onChange={(_: unknown, value: DatasetSourceTab) =>
                             onTabChange(value)
                         }
-                        variant={compact ? 'standard' : 'fullWidth'}
+                        variant={smallTabs ? 'standard' : 'fullWidth'}
                     >
                         {tabs.map((value) => (
                             <Tab
@@ -268,6 +332,7 @@ export const DatasetSourceInput = ({
                     '& .dropzone': styles.dropzone,
                     '& .disabledDropzone': styles.disabledDropzone,
                     '& .dropzonePreview': styles.dropzonePreview,
+                    ...(narrow ? styles.narrowForm : {}),
                     ...(compact ? styles.compactForm : {}),
                     ...(compact && files.length > 0
                         ? styles.compactFormWithFile
@@ -360,20 +425,68 @@ export const DatasetSourceInput = ({
                                 {translate('upload_via_url')}
                             </p>
                         )}
-                        <TextField
-                            fullWidth
-                            sx={styles.input}
-                            value={url}
-                            onChange={(e) => onUrlChange(e.target.value)}
-                            placeholder="URL"
-                            error={!!url && !isUrlValid}
-                            helperText={
-                                url && !isUrlValid && translate('invalid_url')
-                            }
-                            disabled={!!files.length}
-                            label={translate('use_url')}
-                            variant="standard"
-                        />
+                        {narrow ? (
+                            <Box sx={styles.urlPanel}>
+                                <Box sx={styles.urlIcon}>
+                                    <LinkIcon />
+                                </Box>
+                                <Typography variant="h6" component="p">
+                                    {translate('upload_url_title')}
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    value={url}
+                                    onChange={(e) =>
+                                        onUrlChange(e.target.value)
+                                    }
+                                    placeholder="https://"
+                                    error={!!url && !isUrlValid}
+                                    helperText={
+                                        // a space keeps the line when empty: the
+                                        // centered field does not move on typing
+                                        !url ? (
+                                            ' '
+                                        ) : isUrlValid ? (
+                                            <Box
+                                                component="span"
+                                                sx={styles.urlValid}
+                                            >
+                                                <CheckCircleIcon fontSize="inherit" />
+                                                {translate('upload_url_valid')}
+                                            </Box>
+                                        ) : (
+                                            translate('invalid_url')
+                                        )
+                                    }
+                                    disabled={!!files.length}
+                                    label={translate('use_url')}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <LinkIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Box>
+                        ) : (
+                            <TextField
+                                fullWidth
+                                sx={styles.input}
+                                value={url}
+                                onChange={(e) => onUrlChange(e.target.value)}
+                                placeholder="URL"
+                                error={!!url && !isUrlValid}
+                                helperText={
+                                    url &&
+                                    !isUrlValid &&
+                                    translate('invalid_url')
+                                }
+                                disabled={!!files.length}
+                                label={translate('use_url')}
+                                variant="standard"
+                            />
+                        )}
                     </>
                 ) : null}
 
@@ -389,7 +502,9 @@ export const DatasetSourceInput = ({
                             style={
                                 compact
                                     ? styles.compactTextInput
-                                    : styles.textInput
+                                    : narrow
+                                      ? styles.narrowTextInput
+                                      : styles.textInput
                             }
                             mode="json"
                             // the free input is not always JSON (e.g. a query URL): no syntax error cross
