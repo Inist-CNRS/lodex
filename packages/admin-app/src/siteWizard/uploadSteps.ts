@@ -5,6 +5,7 @@ import {
     type SiteDataAddChoice,
     type SiteGenerationView,
     type SiteModelLaunchView,
+    toWaitingLaunchSteps,
 } from '@lodex/common';
 
 type SiteInfoChoice = {
@@ -33,7 +34,7 @@ export const getUploadView = (
     kind: 'wizard',
     status: 'running',
     phase: 'data',
-    steps: [],
+    steps: toWaitingLaunchSteps(model.launchOrder ?? []),
     modelId: model.id,
     settings: { siteName: !!siteName, siteDescription: !!siteDescription },
     launch: model.launchOrder
@@ -75,7 +76,7 @@ export const getDataAddUploadView = (
     kind: 'addData',
     status: 'running',
     phase: 'data',
-    steps: [],
+    steps: relaunch && launch ? toWaitingLaunchSteps(launch.steps) : [],
     launch: getDataAddLaunch(launch, relaunch),
     ...(autoPublish && { publication: { state: 'waiting' } }),
 });

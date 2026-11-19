@@ -1427,6 +1427,58 @@ describe('siteGeneration service', () => {
             );
         });
 
+        it('shows the planned launch steps, waiting and in run order, before the launch phase', async () => {
+            const started = await siteGeneration.startWizard({
+                choice: { modelId: 'model' },
+                importJobId: 'import-job',
+                estimate: { enrichment: 1, precomputed: 1 },
+                plannedSteps: [
+                    { name: 'xml', type: 'enrichment', position: 2 },
+                    { name: 'cluster', type: 'precomputed', position: 1 },
+                ],
+            });
+            await siteGeneration.transition(started, {
+                phase: 'model',
+                modelJobId: 'model-job',
+            });
+
+            expect((await getSiteGenerationView(ctx))?.steps).toEqual([
+                {
+                    name: 'cluster',
+                    type: 'precomputed',
+                    position: 1,
+                    state: 'waiting',
+                },
+                {
+                    name: 'xml',
+                    type: 'enrichment',
+                    position: 2,
+                    state: 'waiting',
+                },
+            ]);
+        });
+
+        it('shows the steps of the site, not the planned ones, in the launch phase', async () => {
+            const started = await siteGeneration.startWizard({
+                choice: { modelId: 'model' },
+                importJobId: 'import-job',
+                plannedSteps: [
+                    { name: 'gone', type: 'enrichment', position: 1 },
+                ],
+            });
+            await siteGeneration.transition(started, {
+                phase: 'launch',
+                modelJobId: 'model-job',
+                steps: STEPS,
+            });
+
+            expect(
+                (await getSiteGenerationView(ctx))?.steps.map(
+                    ({ name }) => name,
+                ),
+            ).toEqual(STEPS.map(({ name }) => name));
+        });
+
         it('estimates the counters before the launch phase', async () => {
             await startIn('model', {
                 importedLines: 12,

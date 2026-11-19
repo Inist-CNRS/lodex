@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import {
     isSiteGenerationActive as isActiveStatus,
+    toWaitingLaunchSteps,
     TaskStatus,
     type SiteGenerationCounter,
     type SiteGenerationView,
@@ -841,12 +842,17 @@ export const getSiteGenerationView = async (
         return null;
     }
     const targets = await readTargets(ctx, generation.steps);
-    const steps = targets.map(({ step, target }) => ({
-        name: step.name,
-        type: step.type,
-        position: step.position,
-        ...toState(step, target),
-    }));
+    // before the launch, the steps of the site are unknown: those planned
+    // by the model wait
+    const steps =
+        generation.phase !== 'launch' && generation.plannedSteps
+            ? toWaitingLaunchSteps(generation.plannedSteps)
+            : targets.map(({ step, target }) => ({
+                  name: step.name,
+                  type: step.type,
+                  position: step.position,
+                  ...toState(step, target),
+              }));
     const { choice, importedLines, message, detail, themeNotFound } =
         generation;
     // a wizard has its model in its choice, a data add on its own

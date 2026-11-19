@@ -1,4 +1,5 @@
 import type {
+    ModelLaunchStep,
     ModelLaunchStepType,
     SiteGenerationKind,
     SiteGenerationPhase,
@@ -42,6 +43,9 @@ export type SiteGeneration = {
     detail?: string;
     themeNotFound?: string;
     estimate?: { enrichment: number; precomputed: number };
+    // the launch order of the wizard's model, shown until the launch reads
+    // the steps of the site
+    plannedSteps?: ModelLaunchStep[];
     // publish the site once every step is done
     autoPublish: boolean;
     // the publisher job queued at the end, if any
@@ -63,7 +67,10 @@ export type SiteGenerationUpdate = Partial<
 export type SiteGenerationCollection = Collection<SiteGeneration> & {
     findCurrent: () => Promise<SiteGeneration | null>;
     startWizard: (
-        wizard: Pick<SiteGeneration, 'choice' | 'importJobId' | 'estimate'>,
+        wizard: Pick<
+            SiteGeneration,
+            'choice' | 'importJobId' | 'estimate' | 'plannedSteps'
+        >,
     ) => Promise<SiteGeneration>;
     startDataAdd: (add: {
         modelId: string;
@@ -113,7 +120,12 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
         return stored as SiteGeneration;
     };
 
-    repository.startWizard = async ({ choice, importJobId, estimate }) => {
+    repository.startWizard = async ({
+        choice,
+        importJobId,
+        estimate,
+        plannedSteps,
+    }) => {
         const now = new Date();
         return replaceCurrent({
             runId: new ObjectId().toHexString(),
@@ -128,6 +140,7 @@ export default async (db: Db): Promise<SiteGenerationCollection> => {
             choice,
             importJobId,
             estimate,
+            ...(plannedSteps && { plannedSteps }),
             autoPublish: choice?.autoPublish === true,
         });
     };
