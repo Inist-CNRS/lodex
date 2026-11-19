@@ -99,6 +99,7 @@ const styles = {
         // the file name must fit below the text (13" screens)
         '& .dropzoneText': { my: 1 },
         '& .dropzoneIcon': { width: 36, height: 36, color: 'primary.main' },
+        '& .droppingLoader': { minHeight: '120px', ...dropzoneFrame },
     },
     // the chosen file's chip takes the place of the upload icon
     compactFormWithFile: {
@@ -122,6 +123,7 @@ const styles = {
         margin: '0 10%',
     },
     loader: {
+        flex: 1,
         minHeight: '220px',
         backgroundColor: 'var(--contrast-main)',
         color: 'var(--primary-secondary)',
@@ -137,8 +139,11 @@ const styles = {
             minHeight: '160px',
             display: 'flex',
             flexDirection: 'column',
+            padding: '0 1rem',
             ...dropzoneFrame,
         },
+        // the file inspection takes the dropzone's place, at its size
+        '& .droppingLoader': { minHeight: '160px', ...dropzoneFrame },
         // centered by auto margins, as in compactForm
         '& .dropzoneTextContainer': { mt: 'auto', ...iconAboveText, gap: 2 },
         '& .dropzone > :last-child': { mb: 'auto' },
@@ -183,7 +188,7 @@ const styles = {
         gap: 1.5,
         paddingY: 2,
         overflowY: 'auto',
-        '& > :first-of-type': { mt: 'auto' },
+        '& > :first-child': { mt: 'auto' },
         '& > :last-child': { mb: 'auto' },
     },
     urlIcon: {
@@ -225,6 +230,7 @@ type DroppingLoaderProps = {
 const DroppingLoader = ({ text }: DroppingLoaderProps) => {
     return (
         <Grid
+            className="droppingLoader"
             sx={styles.loader}
             container
             direction="column"

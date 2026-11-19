@@ -1621,7 +1621,7 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "site_wizard_theme_not_found"	"The theme %{theme} is not available: the current theme is kept."	"Le thème %{theme} n'est pas disponible : le thème actuel est conservé."
 "site_wizard_open"	"Generate the site from a model"	"Générer le site à partir d'un modèle"
 "upload_title"	"Import data"	"Importer des données"
-"upload_subtitle"	"Add a file, a URL or paste content. The automatic loader reads the format from the file extension."	"Ajoutez un fichier, une URL ou collez du contenu. Le loader automatique déduit le format de l'extension du fichier."
+"upload_subtitle"	"Add a file, a URL or paste content. For a file, the automatic loader reads the format from its extension."	"Ajoutez un fichier, une URL ou collez du contenu. Pour un fichier, le loader automatique déduit le format de son extension."
 "site_wizard_open_desc"	"A ready-to-use model configures the site and imports your data in one go."	"Un modèle prêt à l'emploi configure le site et importe vos données en une fois."
 "upload_url_title"	"Import a file available online"	"Importer un fichier accessible en ligne"
 "upload_url_valid"	"Valid URL: the Lodex server will download the file"	"URL valide : le serveur Lodex téléchargera le fichier"

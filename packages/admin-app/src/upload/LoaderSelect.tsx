@@ -9,14 +9,17 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 type LoaderSelectComponentProps = {
     loaders: Array<{ name: string }>;
-    value: string;
+    value: string | null;
     setLoader: (loaderName: string) => void;
+    // the automatic loader reads the file extension
+    allowAutomatic?: boolean;
 };
 
 const LoaderSelectComponent = ({
     loaders,
     value,
     setLoader,
+    allowAutomatic = true,
 }: LoaderSelectComponentProps) => {
     const { translate } = useTranslate();
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
@@ -49,13 +52,15 @@ const LoaderSelectComponent = ({
                 value={value ?? ''}
                 InputLabelProps={{ shrink: !!value }}
             >
-                <MenuItem
-                    className="select-loader-item"
-                    key={'automatic'}
-                    value={'automatic'}
-                >
-                    {translate('automatic-loader')}
-                </MenuItem>
+                {allowAutomatic && (
+                    <MenuItem
+                        className="select-loader-item"
+                        key={'automatic'}
+                        value={'automatic'}
+                    >
+                        {translate('automatic-loader')}
+                    </MenuItem>
+                )}
                 {loaders
                     .sort((x, y) =>
                         translate(x.name).localeCompare(translate(y.name)),
@@ -102,7 +107,7 @@ const LoaderSelectComponent = ({
                 actions={actions}
                 loaders={loaders}
                 setLoader={setLoader}
-                value={value}
+                value={value ?? ''}
             />
             <CustomLoader
                 isOpen={openCustomLoadersDialog}

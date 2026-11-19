@@ -7,6 +7,8 @@ global.UPLOAD_LIMIT = 1;
 
 import { UploadComponent as Upload, type UploadComponentProps } from './Upload';
 import { OpenWizardCard } from './importPage';
+import { DatasetSourceInput } from './DatasetSourceInput';
+import LoaderSelect from './LoaderSelect';
 
 jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
     ...jest.requireActual('@lodex/frontend-common/i18n/I18NContext'),
@@ -94,6 +96,27 @@ describe('<Upload />', () => {
             onUrlUpload() {},
             onTextUpload() {},
         };
+
+        it('should require a real loader for a text, the automatic one needing a file extension', () => {
+            const wrapper = shallow(
+                <Upload
+                    {...baseProps}
+                    loaderName="automatic"
+                    textContent="a,b"
+                />,
+            );
+            const uploadButton = () => wrapper.find('.btn-upload-dataset');
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('text');
+
+            expect(uploadButton().prop('disabled')).toBe(true);
+            expect(wrapper.find(LoaderSelect).prop('value')).toBeNull();
+            expect(wrapper.find(LoaderSelect).prop('allowAutomatic')).toBe(
+                false,
+            );
+
+            wrapper.setProps({ loaderName: 'csv' });
+            expect(uploadButton().prop('disabled')).toBe(false);
+        });
 
         it('should not render the wizard button without onOpenWizard', () => {
             const wrapper = shallow(<Upload {...baseProps} />);

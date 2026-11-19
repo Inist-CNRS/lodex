@@ -83,6 +83,18 @@ describe('withInitialData HOC', () => {
         expect(defaultProps.loadConfigTenant).not.toHaveBeenCalled();
     });
 
+    it('should not restart a first load still running when onlyLoadIfNotInitialized is true', () => {
+        const Component = withInitialDataHoc(ParsingResult, true);
+        shallow(
+            // @ts-expect-error TS7005
+            <Component {...defaultProps} isLoading isInitialized={false} />,
+        );
+        // @ts-expect-error TS7005
+        expect(defaultProps.loadParsingResult).not.toHaveBeenCalled();
+        // @ts-expect-error TS7005
+        expect(defaultProps.loadConfigTenant).not.toHaveBeenCalled();
+    });
+
     it('should render ParsingResult when isLoading is false', () => {
         const wrapper = shallow(
             // @ts-expect-error TS7005

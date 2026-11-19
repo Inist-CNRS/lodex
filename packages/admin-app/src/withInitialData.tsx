@@ -33,7 +33,11 @@ export const withInitialDataHoc = (
 ) =>
     class HocComponent extends Component<WithInitialDataHocProps> {
         UNSAFE_componentWillMount() {
-            if (this.props.isInitialized && onlyLoadIfNotInitialized) {
+            // a first load still running would be cancelled and restarted
+            if (
+                onlyLoadIfNotInitialized &&
+                (this.props.isInitialized || this.props.isLoading)
+            ) {
                 return;
             }
             this.props.loadPublication();
