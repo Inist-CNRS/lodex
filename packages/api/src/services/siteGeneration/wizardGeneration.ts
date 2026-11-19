@@ -189,6 +189,16 @@ export const onWizardImportEnd = async (
         try {
             const modelJobId = randomUUID();
             const importedLines = await ctx.dataset.estimatedDocumentCount();
+            // a loader can read data of another format without failing, and
+            // a site without a line cannot be published
+            if (importedLines === 0) {
+                await ctx.siteGeneration.transition(current, {
+                    status: 'error',
+                    message: 'import_error_no_line',
+                    importedLines,
+                });
+                return;
+            }
             const moved = await ctx.siteGeneration.transition(current, {
                 phase: 'model',
                 modelJobId,

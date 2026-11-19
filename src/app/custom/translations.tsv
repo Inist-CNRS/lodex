@@ -1618,6 +1618,7 @@ Ex : https://api.openalex.org/works?filter=publication_year:2025&api_key=VOTRE_C
 "import_error_source_timeout"	"The data source takes too long to answer. Try again later."	"La source de données met trop de temps à répondre. Réessayez plus tard."
 "import_error_invalid_format"	"The data does not match the format expected by the model."	"Les données ne correspondent pas au format attendu par le modèle."
 "import_error_loader"	"The loader may not suit this data."	"Le loader ne convient peut-être pas à ces données."
+"import_error_no_line"	"No line was imported: the data may not match the loader of the model."	"Aucune ligne n'a été importée : les données ne correspondent peut-être pas au loader du modèle."
 "import_error_unknown"	"The data import failed."	"L'import des données a échoué."
 "site_wizard_theme_not_found"	"The theme %{theme} is not available: the current theme is kept."	"Le thème %{theme} n'est pas disponible : le thème actuel est conservé."
 "site_wizard_open"	"Generate the site from a model"	"Générer le site à partir d'un modèle"

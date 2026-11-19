@@ -207,6 +207,16 @@ describe('onWizardImportEnd', () => {
         expect(state.current.modelJobId).toEqual(expect.any(String));
     });
 
+    it('puts the run in error when the import read no line', async () => {
+        const { ctx, state } = make({ ...running });
+        ctx.dataset.estimatedDocumentCount.mockResolvedValue(0);
+        await onWizardImportEnd(ctx, 'run-1', { success: true });
+        expect(state.current.status).toBe('error');
+        expect(state.current.phase).toBe('data');
+        expect(state.current.message).toBe('import_error_no_line');
+        expect(mockAdd).not.toHaveBeenCalled();
+    });
+
     describe('data add', () => {
         const addData = {
             ...running,
