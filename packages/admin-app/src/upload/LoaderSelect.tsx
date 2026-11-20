@@ -1,29 +1,25 @@
 import { useState } from 'react';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import { Box, Button, MenuItem, TextField } from '@mui/material';
+import TuneIcon from '@mui/icons-material/Tune';
+import { Box, Button, IconButton, MenuItem, TextField } from '@mui/material';
 import ListDialog from './ListDialog';
 import CustomLoader from './CustomLoader';
 import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
-const styles = {
-    disableUppercase: {
-        textTransform: 'initial',
-    },
-};
-
 type LoaderSelectComponentProps = {
     loaders: Array<{ name: string }>;
-    value: string;
+    value: string | null;
     setLoader: (loaderName: string) => void;
-    disabled?: boolean;
+    // the automatic loader reads the file extension
+    allowAutomatic?: boolean;
 };
 
 const LoaderSelectComponent = ({
     loaders,
     value,
     setLoader,
-    disabled,
+    allowAutomatic = true,
 }: LoaderSelectComponentProps) => {
     const { translate } = useTranslate();
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
@@ -45,25 +41,18 @@ const LoaderSelectComponent = ({
     ];
 
     return (
-        <Box>
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                marginBottom="10px"
-                marginTop="60px"
+        <Box display="flex" alignItems="center" gap={1}>
+            <TextField
+                select
+                size="small"
+                sx={{ minWidth: 220 }}
+                className="select-loader"
+                label={translate('loader_name')}
+                onChange={(e) => setLoader(e.target.value)}
+                value={value ?? ''}
+                InputLabelProps={{ shrink: !!value }}
             >
-                <TextField
-                    select
-                    sx={{ minWidth: 200 }}
-                    className="select-loader"
-                    label={translate('loader_name')}
-                    onChange={(e) => setLoader(e.target.value)}
-                    value={value ?? ''}
-                    disabled={disabled}
-                    variant="standard"
-                    InputLabelProps={{ shrink: !!value }}
-                >
+                {allowAutomatic && (
                     <MenuItem
                         className="select-loader-item"
                         key={'automatic'}
@@ -71,63 +60,55 @@ const LoaderSelectComponent = ({
                     >
                         {translate('automatic-loader')}
                     </MenuItem>
-                    {loaders
-                        .sort((x, y) =>
-                            translate(x.name).localeCompare(translate(y.name)),
-                        )
-                        .map((loader) => (
-                            <MenuItem
-                                className="select-loader-item"
-                                key={loader.name}
-                                value={loader.name}
-                            >
-                                {translate(loader.name)}
-                            </MenuItem>
-                        ))}
-                    {value === 'custom-loader' && (
+                )}
+                {loaders
+                    .sort((x, y) =>
+                        translate(x.name).localeCompare(translate(y.name)),
+                    )
+                    .map((loader) => (
                         <MenuItem
                             className="select-loader-item"
-                            key={'custom-loader'}
-                            value={'custom-loader'}
+                            key={loader.name}
+                            value={loader.name}
                         >
-                            {translate('custom-loader')}
+                            {translate(loader.name)}
                         </MenuItem>
-                    )}
-                </TextField>
-                <Box mt="10px" ml="10px">
-                    <Button
-                        variant="contained"
-                        className="open-loaders"
-                        color="primary"
-                        onClick={handleOpen}
-                        disabled={disabled}
+                    ))}
+                {value === 'custom-loader' && (
+                    <MenuItem
+                        className="select-loader-item"
+                        key={'custom-loader'}
+                        value={'custom-loader'}
                     >
-                        <ListAltIcon fontSize="small" />
-                    </Button>
-                </Box>
-            </Box>
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                marginBottom="48px"
+                        {translate('custom-loader')}
+                    </MenuItem>
+                )}
+            </TextField>
+            <IconButton
+                className="open-loaders"
+                color="primary"
+                onClick={handleOpen}
+                aria-label={translate('supported_format_list')}
             >
-                <Button
-                    sx={styles.disableUppercase}
-                    color="primary"
-                    onClick={() => setOpenCustomLoadersDialog(true)}
-                    disabled={disabled || !value || value === 'automatic'}
-                >
-                    {translate(`add-custom-loader`)}
-                </Button>
-            </Box>
+                <ListAltIcon />
+            </IconButton>
+            <Button
+                color="primary"
+                startIcon={<TuneIcon />}
+                onClick={() => setOpenCustomLoadersDialog(true)}
+                // the automatic loader has no script to start from
+                disabled={!value || value === 'automatic'}
+            >
+                {translate(`add-custom-loader`)}
+            </Button>
             <ListDialog
                 open={openLoadersDialog}
                 handleClose={handleClose}
                 actions={actions}
                 loaders={loaders}
                 setLoader={setLoader}
-                value={value}
+                value={value ?? ''}
+                allowAutomatic={allowAutomatic}
             />
             <CustomLoader
                 isOpen={openCustomLoadersDialog}

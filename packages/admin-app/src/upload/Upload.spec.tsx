@@ -6,6 +6,9 @@ import Alert from '@lodex/frontend-common/components/Alert';
 global.UPLOAD_LIMIT = 1;
 
 import { UploadComponent as Upload, type UploadComponentProps } from './Upload';
+import { OpenWizardCard } from './importPage';
+import { DatasetSourceInput } from './DatasetSourceInput';
+import LoaderSelect from './LoaderSelect';
 
 jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
     ...jest.requireActual('@lodex/frontend-common/i18n/I18NContext'),
@@ -94,10 +97,56 @@ describe('<Upload />', () => {
             onTextUpload() {},
         };
 
+        it('should require a real loader for a text, the automatic one needing a file extension', () => {
+            const wrapper = shallow(
+                <Upload
+                    {...baseProps}
+                    loaderName="automatic"
+                    textContent="a,b"
+                />,
+            );
+            const uploadButton = () => wrapper.find('.btn-upload-dataset');
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('text');
+
+            expect(uploadButton().prop('disabled')).toBe(true);
+            expect(wrapper.find(LoaderSelect).prop('value')).toBeNull();
+            expect(wrapper.find(LoaderSelect).prop('allowAutomatic')).toBe(
+                false,
+            );
+
+            wrapper.setProps({ loaderName: 'csv' });
+            expect(uploadButton().prop('disabled')).toBe(false);
+        });
+
+        it('should keep the automatic loader for a URL ending with a known extension only', () => {
+            const props = {
+                ...baseProps,
+                loaders: [{ name: 'csv' }],
+                loaderName: 'automatic',
+                isUrlValid: true,
+            };
+            const wrapper = shallow(
+                <Upload {...props} url="https://example.org/data.csv" />,
+            );
+            const uploadButton = () => wrapper.find('.btn-upload-dataset');
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('url');
+
+            expect(uploadButton().prop('disabled')).toBe(false);
+            expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
+
+            wrapper.setProps({
+                url: 'https://api.openalex.org/works?filter=x',
+            });
+            expect(uploadButton().prop('disabled')).toBe(true);
+            expect(wrapper.find(LoaderSelect).prop('allowAutomatic')).toBe(
+                false,
+            );
+        });
+
         it('should not render the wizard button without onOpenWizard', () => {
             const wrapper = shallow(<Upload {...baseProps} />);
 
-            expect(wrapper.find('.btn-open-site-wizard')).toHaveLength(0);
+            expect(wrapper.find(OpenWizardCard)).toHaveLength(0);
         });
 
         it('should render the wizard button calling onOpenWizard', () => {
@@ -106,9 +155,9 @@ describe('<Upload />', () => {
                 <Upload {...baseProps} onOpenWizard={onOpenWizard} />,
             );
 
-            const button = wrapper.find('.btn-open-site-wizard');
-            expect(button).toHaveLength(1);
-            button.simulate('click');
+            const card = wrapper.find(OpenWizardCard);
+            expect(card).toHaveLength(1);
+            card.prop('onOpen')();
             expect(onOpenWizard).toHaveBeenCalledTimes(1);
         });
     });

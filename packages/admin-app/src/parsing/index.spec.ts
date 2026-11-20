@@ -57,6 +57,7 @@ describe('parsing reducer', () => {
         expect(state).toEqual({
             ...defaultState,
             loading: false,
+            initialized: true,
             allowUpload: true,
             error: 'foo',
         });
@@ -71,6 +72,7 @@ describe('parsing reducer', () => {
             ...defaultState,
             allowUpload: false,
             loading: false,
+            initialized: true,
             parsing: true,
         });
     });

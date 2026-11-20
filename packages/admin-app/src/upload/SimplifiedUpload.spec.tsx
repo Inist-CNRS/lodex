@@ -139,17 +139,16 @@ describe('SimplifiedUpload', () => {
         renderPage({ model: { ...model, importTypes: ['file'] } });
         expect(screen.queryByText('loader_select')).not.toBeInTheDocument();
         expect(screen.queryByText(/loader/i)).not.toBeInTheDocument();
-        expect(
-            screen.getByText('import_dataset_file_text'),
-        ).toBeInTheDocument();
-        expect(screen.getByText(/upload_size_limit/)).toBeInTheDocument();
+        expect(screen.getByText('upload_drop_file')).toBeInTheDocument();
+        // the model sets the loader: the size limit only, not the formats
+        expect(screen.getByText(/upload_max_size/)).toBeInTheDocument();
     });
 
     it('keeps the button back to the wizard', async () => {
         const onOpenWizard = jest.fn();
         renderPage({ onOpenWizard });
         await userEvent.click(
-            screen.getByRole('button', { name: 'site_wizard_open' }),
+            screen.getByRole('button', { name: /site_wizard_open/ }),
         );
         expect(onOpenWizard).toHaveBeenCalled();
     });

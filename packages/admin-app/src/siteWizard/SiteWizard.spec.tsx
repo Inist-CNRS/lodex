@@ -246,7 +246,7 @@ describe('SiteWizard', () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep('mc_b_title');
         expect(screen.queryByRole('tab')).not.toBeInTheDocument();
-        expect(screen.queryByText('import_file_text')).not.toBeInTheDocument();
+        expect(screen.queryByText('upload_drop_file')).not.toBeInTheDocument();
         expect(screen.queryByLabelText('use_url')).not.toBeInTheDocument();
     });
 

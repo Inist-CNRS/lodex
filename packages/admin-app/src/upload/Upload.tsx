@@ -4,9 +4,8 @@ import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { type FileObject } from 'mui-file-dropzone';
 import Alert from '@lodex/frontend-common/components/Alert';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import {
     uploadFile,
@@ -26,27 +25,7 @@ import {
     DatasetSourceInput,
     type DatasetSourceTab,
 } from './DatasetSourceInput';
-
-const styles = {
-    button: {
-        marginLeft: 4,
-        marginRight: 4,
-        alignSelf: 'center',
-        alignItems: 'flex-start',
-    },
-    wizardButton: {
-        alignSelf: 'flex-start',
-        textDecoration: 'underline',
-        marginLeft: 4,
-        marginBottom: 2,
-    },
-    container: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        marginTop: '24px',
-    },
-};
+import { importPageStyles as styles, OpenWizardCard } from './importPage';
 
 export type UploadComponentProps = {
     history: {
@@ -92,6 +71,14 @@ export const UploadComponent = ({
     const [tab, setTab] = useState<DatasetSourceTab>('file');
     const [files, setFiles] = useState<FileObject[]>([]);
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
+    // the automatic loader takes the format from the extension, as the server
+    // does (what follows the last dot): a text has none, nor an API query
+    const allowAutomatic =
+        tab === 'file' ||
+        (tab === 'url' &&
+            loaders.some(({ name }) => name === url.split('.').pop()));
+    const loader =
+        loaderName === 'automatic' && !allowAutomatic ? null : loaderName;
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
@@ -128,19 +115,17 @@ export const UploadComponent = ({
     };
     return (
         <Box sx={styles.container}>
-            {onOpenWizard && (
-                <Button
-                    variant="text"
-                    color="primary"
-                    className="btn-open-site-wizard"
-                    sx={styles.wizardButton}
-                    startIcon={<AutoFixHighIcon />}
-                    onClick={onOpenWizard}
-                >
-                    {translate('site_wizard_open')}
-                </Button>
-            )}
+            <Box>
+                <Typography variant="h5" component="h1">
+                    {translate('upload_title')}
+                </Typography>
+                <Typography color="text.secondary">
+                    {translate('upload_subtitle')}
+                </Typography>
+            </Box>
             <DatasetSourceInput
+                narrow
+                hideDescriptions
                 tab={tab}
                 onTabChange={setTab}
                 files={files}
@@ -161,38 +146,37 @@ export const UploadComponent = ({
                         {/* a failed import sends a translation key */}
                         <p>{translate(String(error))}</p>
                     </Alert>
-                ) : (
-                    <span />
-                )}
+                ) : null}
             </DatasetSourceInput>
 
-            <LoaderSelect
-                loaders={loaders}
-                setLoader={onChangeLoaderName}
-                value={loaderName}
-                disabled={
-                    files.length === 0 &&
-                    (!url || !isUrlValid) &&
-                    (!textContent || textContent === '')
-                }
-            />
-            <Button
-                variant="contained"
-                color="primary"
-                className="btn-upload-dataset"
-                sx={styles.button}
-                disabled={
-                    isUploading ||
-                    (files.length === 0 &&
-                        (!url || !isUrlValid) &&
-                        (!textContent || textContent === '')) ||
-                    !loaderName
-                }
-                onClick={handleSubmit}
-                startIcon={<PublishIcon />}
-            >
-                {translate('upload_data')}
-            </Button>
+            <Box sx={styles.actions}>
+                <LoaderSelect
+                    loaders={loaders}
+                    setLoader={onChangeLoaderName}
+                    value={loader}
+                    allowAutomatic={allowAutomatic}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className="btn-upload-dataset"
+                    size="large"
+                    sx={styles.uploadButton}
+                    disabled={
+                        isUploading ||
+                        (files.length === 0 &&
+                            (!url || !isUrlValid) &&
+                            (!textContent || textContent === '')) ||
+                        !loader
+                    }
+                    onClick={handleSubmit}
+                    startIcon={<PublishIcon />}
+                >
+                    {translate('upload_data')}
+                </Button>
+            </Box>
+
+            {onOpenWizard && <OpenWizardCard onOpen={onOpenWizard} />}
 
             <ConfirmPopup
                 cancelLabel={translate('Cancel')}

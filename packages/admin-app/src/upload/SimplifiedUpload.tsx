@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
 import { Box, Button, Link, Typography } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import type { FileObject } from 'mui-file-dropzone';
 import {
     getModelImportHelpKey,
@@ -22,6 +21,7 @@ import {
     getDatasetSource,
     type DatasetSourceTab,
 } from './DatasetSourceInput';
+import { importPageStyles, OpenWizardCard } from './importPage';
 import { SimplifiedUploadConfirm } from './SimplifiedUploadConfirm';
 import { useSiteModelLaunch } from './useSiteModelLaunch';
 
@@ -108,32 +108,11 @@ export const SimplifiedUpload = ({
     };
 
     return (
-        <Box
-            sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                marginTop: '24px',
-            }}
-        >
-            {onOpenWizard && (
-                <Button
-                    variant="text"
-                    color="primary"
-                    className="btn-open-site-wizard"
-                    sx={{
-                        alignSelf: 'flex-start',
-                        textDecoration: 'underline',
-                        marginLeft: 4,
-                        marginBottom: 2,
-                    }}
-                    startIcon={<AutoFixHighIcon />}
-                    onClick={onOpenWizard}
-                >
-                    {translate('site_wizard_open')}
-                </Button>
-            )}
-            <Box mx="10%" mb={2}>
+        <Box sx={importPageStyles.container}>
+            <Box>
+                <Typography variant="h5" component="h1">
+                    {translate('upload_title')}
+                </Typography>
                 <Typography color="text.secondary">
                     {renderBold(
                         translate(
@@ -158,13 +137,15 @@ export const SimplifiedUpload = ({
                 {hasTranslation(importHelpKey) && (
                     <Typography
                         color="text.secondary"
-                        sx={{ mt: 2, whiteSpace: 'pre-line' }}
+                        sx={{ mt: 1, whiteSpace: 'pre-line' }}
                     >
                         {translate(importHelpKey)}
                     </Typography>
                 )}
             </Box>
             <DatasetSourceInput
+                narrow
+                hideDescriptions
                 tab={tab}
                 onTabChange={(value) => {
                     clearError();
@@ -177,26 +158,30 @@ export const SimplifiedUpload = ({
                 text={text}
                 onTextChange={setText}
                 tabs={model.importTypes}
-                fileTextKey="import_dataset_file_text"
-                hideDescriptions
+                // the model sets the loader: its formats are not the list
+                fileHintKey="upload_max_size"
             >
                 {error && <GenerationError error={error} />}
             </DatasetSourceInput>
-            <Button
-                variant="contained"
-                color="primary"
-                className="btn-upload-dataset"
-                sx={{ alignSelf: 'center', marginTop: 2 }}
-                disabled={isGenerating || !source}
-                onClick={() => {
-                    // the default follows the publication state at that time
-                    setAutoPublish(!!hasPublishedDataset);
-                    setIsConfirmOpen(true);
-                }}
-                startIcon={<PublishIcon />}
-            >
-                {translate('upload_data')}
-            </Button>
+            <Box sx={importPageStyles.actions}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    className="btn-upload-dataset"
+                    sx={importPageStyles.uploadButton}
+                    disabled={isGenerating || !source}
+                    onClick={() => {
+                        // the default follows the publication state at that time
+                        setAutoPublish(!!hasPublishedDataset);
+                        setIsConfirmOpen(true);
+                    }}
+                    startIcon={<PublishIcon />}
+                >
+                    {translate('upload_data')}
+                </Button>
+            </Box>
+            {onOpenWizard && <OpenWizardCard onOpen={onOpenWizard} />}
             <SimplifiedUploadConfirm
                 isOpen={isConfirmOpen}
                 hasData={hasData}

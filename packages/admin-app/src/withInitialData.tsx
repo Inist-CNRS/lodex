@@ -33,7 +33,11 @@ export const withInitialDataHoc = (
 ) =>
     class HocComponent extends Component<WithInitialDataHocProps> {
         UNSAFE_componentWillMount() {
-            if (this.props.isInitialized && onlyLoadIfNotInitialized) {
+            // a first load still running would be cancelled and restarted
+            if (
+                onlyLoadIfNotInitialized &&
+                (this.props.isInitialized || this.props.isLoading)
+            ) {
                 return;
             }
             this.props.loadPublication();
@@ -61,10 +65,12 @@ export const withInitialDataHoc = (
 
 // @ts-expect-error TS7006
 export const mapStateToProps = (state) => ({
+    // every store loaded once: before that, a page would render on defaults
+    // (e.g. the data grid before knowing that there is no data)
     isInitialized:
-        fromParsing.isInitialized(state) ||
-        fromPublication.isInitialized(state) ||
-        fromSubresources.isInitialized(state) ||
+        fromParsing.isInitialized(state) &&
+        fromPublication.isInitialized(state) &&
+        fromSubresources.isInitialized(state) &&
         fromConfigTenant.isInitialized(state),
     isLoading:
         fromParsing.isParsingLoading(state) ||

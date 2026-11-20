@@ -48,17 +48,20 @@ export default handleActions<SubresourceState, any>(
         LOAD_SUBRESOURCES: (state) => ({
             ...state,
             loading: true,
-            initialized: true,
         }),
         LOAD_SUBRESOURCES_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             loading: false,
+            initialized: true,
         }),
         LOAD_SUBRESOURCES_SUCCESS: (state, { payload: subresources }) => ({
             ...state,
             subresources,
             loading: false,
+            // set once loaded, not when requested: until then the pages wait
+            // behind withInitialData's progress bar
+            initialized: true,
         }),
         CREATE_SUBRESOURCE_OPTIMISTIC: (state, { payload: subresource }) => ({
             ...state,

@@ -3,6 +3,7 @@ import { DropzoneAreaBase, type FileObject } from 'mui-file-dropzone';
 import {
     alpha,
     Box,
+    InputAdornment,
     type Theme,
     TextField,
     Grid,
@@ -14,12 +15,27 @@ import {
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import LinkIcon from '@mui/icons-material/Link';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { toast } from '@lodex/common';
 import SourceCodeField from '@lodex/frontend-common/components/SourceCodeField';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import type { DatasetSource } from './uploadDataset';
 import { isHttpUrl } from './isHttpUrl';
+
+// the dropzone look: dashed frame, icon above its text
+const dropzoneFrame = {
+    border: '2px dashed',
+    borderColor: 'grey.400',
+    borderRadius: 2,
+    bgcolor: 'action.hover',
+    '&:hover': { borderColor: 'primary.main' },
+};
+const iconAboveText = {
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    alignItems: 'center',
+};
 
 const styles = {
     input: {
@@ -73,15 +89,17 @@ const styles = {
             flexDirection: 'column',
             padding: '0.5rem 1rem',
             overflowY: 'auto',
+            ...dropzoneFrame,
         },
         // centered by auto margins, which fall to zero once the content is
         // taller than the dropzone: it then scrolls from its top (unlike
         // justify-content: center, and 'safe center' needs Safari 17.6)
-        '& .dropzoneTextContainer': { mt: 'auto' },
+        '& .dropzoneTextContainer': { mt: 'auto', ...iconAboveText, gap: 1 },
         '& .dropzone > :last-child': { mb: 'auto' },
         // the file name must fit below the text (13" screens)
         '& .dropzoneText': { my: 1 },
-        '& .dropzoneIcon': { width: 36, height: 36 },
+        '& .dropzoneIcon': { width: 36, height: 36, color: 'primary.main' },
+        '& .droppingLoader': { minHeight: '120px', ...dropzoneFrame },
     },
     // the chosen file's chip takes the place of the upload icon
     compactFormWithFile: {
@@ -105,9 +123,89 @@ const styles = {
         margin: '0 10%',
     },
     loader: {
+        flex: 1,
         minHeight: '220px',
         backgroundColor: 'var(--contrast-main)',
         color: 'var(--primary-secondary)',
+    },
+    // a narrow column: the input takes its whole width, and the height left
+    // by its parent (a flex column), the same from a tab to the other
+    narrowForm: {
+        flex: 1,
+        margin: 0,
+        alignItems: 'stretch',
+        '& .dropzone': {
+            flex: 1,
+            minHeight: '160px',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '0 1rem',
+            ...dropzoneFrame,
+        },
+        // the file inspection takes the dropzone's place, at its size
+        '& .droppingLoader': { minHeight: '160px', ...dropzoneFrame },
+        // centered by auto margins, as in compactForm
+        '& .dropzoneTextContainer': { mt: 'auto', ...iconAboveText, gap: 2 },
+        '& .dropzone > :last-child': { mb: 'auto' },
+        '& .dropzoneText': { margin: 0 },
+        '& .dropzoneIcon': { width: 56, height: 56, color: 'primary.main' },
+    },
+    browse: {
+        color: 'primary.main',
+        textDecoration: 'underline',
+    },
+    narrowTextInput: {
+        width: '100%',
+        flex: 1,
+        minHeight: '160px',
+    },
+    // the url field framed like the dropzone, so the height stays the same
+    // from a tab to the other
+    urlPanel: {
+        flex: 1,
+        minHeight: '160px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        // centered like the dropzone text, so a tall panel does not look empty
+        alignItems: 'center',
+        textAlign: 'center',
+        gap: 2,
+        paddingX: 4,
+        paddingY: 3,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 1,
+        bgcolor: 'action.hover',
+        '& .MuiInputBase-root': { bgcolor: 'background.paper' },
+        '& .MuiTextField-root': { maxWidth: 640, textAlign: 'left' },
+    },
+    // the wizard has little height: no icon, tighter, centered by auto
+    // margins so that an overflow scrolls from the top (as compactForm)
+    compactUrlPanel: {
+        minHeight: '120px',
+        justifyContent: 'flex-start',
+        gap: 1.5,
+        paddingY: 2,
+        overflowY: 'auto',
+        '& > :first-child': { mt: 'auto' },
+        '& > :last-child': { mb: 'auto' },
+    },
+    urlIcon: {
+        display: 'grid',
+        placeItems: 'center',
+        width: 56,
+        height: 56,
+        borderRadius: '50%',
+        color: 'primary.main',
+        bgcolor: 'background.paper',
+        '& svg': { fontSize: 32 },
+    },
+    urlValid: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 0.5,
+        color: 'success.main',
     },
     dropzone: {
         minHeight: '220px',
@@ -132,6 +230,7 @@ type DroppingLoaderProps = {
 const DroppingLoader = ({ text }: DroppingLoaderProps) => {
     return (
         <Grid
+            className="droppingLoader"
             sx={styles.loader}
             container
             direction="column"
@@ -155,18 +254,20 @@ export type DatasetSourceInputProps = {
     onUrlChange: (url: string) => void;
     text: string;
     onTextChange: (text: string) => void;
-    // hides the per-tab descriptions, which tell the user to choose a loader;
-    // the file size limit is then shown in the dropzone
+    // hides the per-tab descriptions, which tell the user to choose a loader
     hideDescriptions?: boolean;
     // the tabs offered, in this order (all by default)
     tabs?: DatasetSourceTab[];
-    // the translation key of the dropzone text
-    fileTextKey?: string;
+    // the translation key of the line below the dropzone text (the accepted
+    // formats and the size limit by default)
+    fileHintKey?: string;
     // rendered between the tabs and the form, e.g. an error message
     children?: ReactNode;
     // for a dialog with little height: small tabs, and the input fills the
     // height left by its parent (a flex column)
     compact?: boolean;
+    // for a narrow column: small tabs, and the input takes the column width
+    narrow?: boolean;
 };
 
 export const getDatasetSource = ({
@@ -214,10 +315,12 @@ export const DatasetSourceInput = ({
     onTextChange,
     hideDescriptions = false,
     tabs = TABS,
-    fileTextKey = 'import_file_text',
+    fileHintKey = 'upload_formats_limit',
     children,
     compact = false,
+    narrow = false,
 }: DatasetSourceInputProps) => {
+    const smallTabs = compact || narrow;
     const { translate } = useTranslate();
     const [dropping, setDropping] = useState(false);
     const isUrlValid = isHttpUrl(url);
@@ -236,13 +339,13 @@ export const DatasetSourceInput = ({
         <>
             {/* Tabs selector use to select the import type, useless for a single one */}
             {tabs.length > 1 && (
-                <Box sx={compact ? styles.compactTabs : styles.tabs}>
+                <Box sx={smallTabs ? styles.compactTabs : styles.tabs}>
                     <Tabs
                         value={tab}
                         onChange={(_: unknown, value: DatasetSourceTab) =>
                             onTabChange(value)
                         }
-                        variant={compact ? 'standard' : 'fullWidth'}
+                        variant={smallTabs ? 'standard' : 'fullWidth'}
                     >
                         {tabs.map((value) => (
                             <Tab
@@ -268,6 +371,7 @@ export const DatasetSourceInput = ({
                     '& .dropzone': styles.dropzone,
                     '& .disabledDropzone': styles.disabledDropzone,
                     '& .dropzonePreview': styles.dropzonePreview,
+                    ...(narrow ? styles.narrowForm : {}),
                     ...(compact ? styles.compactForm : {}),
                     ...(compact && files.length > 0
                         ? styles.compactFormWithFile
@@ -298,25 +402,31 @@ export const DatasetSourceInput = ({
                                 dropzoneText={
                                     <>
                                         <Typography
-                                            variant="h6"
                                             component="span"
                                             display="block"
+                                            fontSize={compact ? 16 : 18}
+                                            fontWeight={600}
                                         >
-                                            {translate(fileTextKey)}
-                                        </Typography>
-                                        {hideDescriptions && (
-                                            // the dropzone renders its text in a <p>
-                                            <Typography
+                                            {translate('upload_drop_file')}{' '}
+                                            <Box
                                                 component="span"
-                                                display="block"
+                                                sx={styles.browse}
                                             >
-                                                {translate(
-                                                    'upload_size_limit',
-                                                    // @ts-expect-error TS2322
-                                                    { limit: UPLOAD_LIMIT },
-                                                )}
-                                            </Typography>
-                                        )}
+                                                {translate('upload_browse')}
+                                            </Box>
+                                        </Typography>
+                                        <Typography
+                                            component="span"
+                                            display="block"
+                                            fontSize={compact ? 14 : 15}
+                                            color="text.secondary"
+                                            mt={compact ? 0.5 : 1}
+                                        >
+                                            {translate(fileHintKey, {
+                                                // @ts-expect-error TS2322
+                                                limit: UPLOAD_LIMIT,
+                                            })}
+                                        </Typography>
                                     </>
                                 }
                                 dropzoneProps={{
@@ -360,20 +470,75 @@ export const DatasetSourceInput = ({
                                 {translate('upload_via_url')}
                             </p>
                         )}
-                        <TextField
-                            fullWidth
-                            sx={styles.input}
-                            value={url}
-                            onChange={(e) => onUrlChange(e.target.value)}
-                            placeholder="URL"
-                            error={!!url && !isUrlValid}
-                            helperText={
-                                url && !isUrlValid && translate('invalid_url')
-                            }
-                            disabled={!!files.length}
-                            label={translate('use_url')}
-                            variant="standard"
-                        />
+                        {narrow || compact ? (
+                            <Box
+                                sx={{
+                                    ...styles.urlPanel,
+                                    ...(compact ? styles.compactUrlPanel : {}),
+                                }}
+                            >
+                                {!compact && (
+                                    <Box sx={styles.urlIcon}>
+                                        <LinkIcon />
+                                    </Box>
+                                )}
+                                <Typography variant="h6" component="p">
+                                    {translate('upload_url_title')}
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    value={url}
+                                    onChange={(e) =>
+                                        onUrlChange(e.target.value)
+                                    }
+                                    placeholder="https://"
+                                    error={!!url && !isUrlValid}
+                                    helperText={
+                                        // a space keeps the line when empty: the
+                                        // centered field does not move on typing
+                                        !url ? (
+                                            ' '
+                                        ) : isUrlValid ? (
+                                            <Box
+                                                component="span"
+                                                sx={styles.urlValid}
+                                            >
+                                                <CheckCircleIcon fontSize="inherit" />
+                                                {translate('upload_url_valid')}
+                                            </Box>
+                                        ) : (
+                                            translate('invalid_url')
+                                        )
+                                    }
+                                    disabled={!!files.length}
+                                    label={translate('use_url')}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <LinkIcon />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Box>
+                        ) : (
+                            <TextField
+                                fullWidth
+                                sx={styles.input}
+                                value={url}
+                                onChange={(e) => onUrlChange(e.target.value)}
+                                placeholder="URL"
+                                error={!!url && !isUrlValid}
+                                helperText={
+                                    url &&
+                                    !isUrlValid &&
+                                    translate('invalid_url')
+                                }
+                                disabled={!!files.length}
+                                label={translate('use_url')}
+                                variant="standard"
+                            />
+                        )}
                     </>
                 ) : null}
 
@@ -389,7 +554,9 @@ export const DatasetSourceInput = ({
                             style={
                                 compact
                                     ? styles.compactTextInput
-                                    : styles.textInput
+                                    : narrow
+                                      ? styles.narrowTextInput
+                                      : styles.textInput
                             }
                             mode="json"
                             // the free input is not always JSON (e.g. a query URL): no syntax error cross
