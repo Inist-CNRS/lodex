@@ -23,7 +23,14 @@ rank() {
     echo 0
 }
 
-project_id=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json --jq .id)
+# Not "gh project view": it hides the API error behind "unknown owner type"
+project_id=$(gh api graphql -f query='
+    query($owner: String!, $number: Int!) {
+        organization(login: $owner) { projectV2(number: $number) { id } }
+    }' -f owner="$OWNER" -F number="$PROJECT_NUMBER" --jq .data.organization.projectV2.id) || {
+    echo "PROJECT_TOKEN cannot read project $PROJECT_NUMBER of $OWNER (see the error above)" >&2
+    exit 1
+}
 fields=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json)
 status_field_id=$(jq -r '.fields[] | select(.name == "Status") | .id' <<<"$fields")
 status_option_id=$(jq -r --arg n "$TARGET_STATUS" '.fields[] | select(.name == "Status") | .options[] | select(.name == $n) | .id' <<<"$fields")
