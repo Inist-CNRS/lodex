@@ -1,0 +1,27 @@
+name: 'Move the tickets of a pull request on the Project'
+on:
+    pull_request:
+        types: [opened, reopened, ready_for_review, closed]
+
+jobs:
+    move:
+        # Forks have no access to PROJECT_TOKEN. Drafts and PRs closed without merge move nothing.
+        if: >-
+            github.event.pull_request.head.repo.full_name == github.repository &&
+            (github.event.action == 'closed' && github.event.pull_request.merged
+            || github.event.action != 'closed' && !github.event.pull_request.draft)
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Update the Project cards
+              shell: bash
+              env:
+                  # PAT with the "project" scope: the default GITHUB_TOKEN cannot write to an organization Project
+                  GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+                  PR_NUMBER: ${{ github.event.pull_request.number }}
+                  HEAD_REF: ${{ github.event.pull_request.head.ref }}
+                  PR_BODY: ${{ github.event.pull_request.body }}
+                  TARGET_STATUS: ${{ github.event.pull_request.merged && 'To be deployed' || 'Code review' }}
+              run: bash .github/workflows/pr-ticket-status.sh
