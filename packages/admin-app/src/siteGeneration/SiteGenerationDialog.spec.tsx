@@ -51,6 +51,11 @@ const mockSocket = {
     disconnect: jest.fn(),
 };
 jest.mock('socket.io-client', () => ({ io: jest.fn(() => mockSocket) }));
+// a canvas animation, which jsdom does not draw
+jest.mock('./Fireworks', () => ({
+    Fireworks: () => <div data-testid="fireworks" />,
+}));
+const onSuccessClose = jest.fn();
 jest.mock('../siteWizard/hasTranslation', () => ({
     hasTranslation: jest.fn(() => false),
 }));
@@ -180,7 +185,7 @@ describe('SiteGenerationDialog', () => {
         };
         const result = render(
             <>
-                <SiteGenerationDialog />
+                <SiteGenerationDialog onSuccessClose={onSuccessClose} />
                 <LocationDisplay />
             </>,
             {
@@ -759,7 +764,7 @@ describe('SiteGenerationDialog', () => {
         );
     });
 
-    it('reloads the admin data and closes once the generation is done', async () => {
+    it('reloads the admin data and tells the site is configured once the generation is done', async () => {
         renderDialog(buildGeneration());
         // the model import changes the name, description and theme
         client.setQueryData(['get-config-tenant'], { theme: 'default' });
@@ -772,9 +777,16 @@ describe('SiteGenerationDialog', () => {
         await changeGeneration(
             buildGeneration({ status: 'done', phase: 'launch' }),
         );
-        await waitFor(() =>
-            expect(screen.queryByText('site_generation_title')).toBeNull(),
-        );
+        expect(
+            await screen.findByText('site_generation_configured_title'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('site_generation_title')).toBeNull();
+        // every step stays on screen, done
+        expect(screen.getAllByLabelText('done')).toHaveLength(4);
+        // nothing left to stop, and no site to see before its publication
+        expect(screen.queryByText('site_generation_stop')).toBeNull();
+        expect(screen.queryByText('site_generation_view_site')).toBeNull();
+        expect(screen.queryByTestId('fireworks')).toBeNull();
         expect(dispatched).toEqual(expect.arrayContaining(RELOADS));
         expect(client.getQueryData(['get-config-tenant'])).toBeUndefined();
         expect(client.getQueryData(SITE_MODEL_QUERY_KEY)).toBeUndefined();
@@ -782,6 +794,32 @@ describe('SiteGenerationDialog', () => {
             client.getQueryData([...SITE_MODEL_QUERY_KEY, 'launch']),
         ).toBeUndefined();
         expect(toast).not.toHaveBeenCalled();
+    });
+
+    it('closes the configured site popup without a site to see', async () => {
+        renderDialog(buildGeneration());
+        await screen.findByText('site_generation_title');
+        await changeGeneration(
+            buildGeneration({ status: 'done', phase: 'launch' }),
+        );
+        await userEvent.click(await screen.findByText('close'));
+        await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+        expect(onSuccessClose).toHaveBeenCalledWith(false);
+    });
+
+    it('closes at once when a data add is done', async () => {
+        renderDialog(buildGeneration({ kind: 'addData', modelId: undefined }));
+        await screen.findByText('site_generation_title');
+        await changeGeneration(
+            buildGeneration({
+                kind: 'addData',
+                modelId: undefined,
+                status: 'done',
+                phase: 'launch',
+            }),
+        );
+        await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+        expect(dispatched).toEqual(expect.arrayContaining(RELOADS));
     });
 
     it('tells when the theme was not found once the generation is done', async () => {
@@ -999,14 +1037,49 @@ describe('SiteGenerationDialog', () => {
             expect(screen.queryByRole('link')).toBeNull();
         });
 
-        it('reloads the publication once published', async () => {
+        it('reloads the publication and celebrates the site once published', async () => {
+            sessionStorage.setItem('lodex-tenant', 'my-tenant');
             renderDialog(publishing('publishing', { state: 'running' }));
             await screen.findByText('site_generation_title');
             await changeGeneration(publishing('done', { state: 'done' }));
-            await waitFor(() =>
-                expect(screen.queryByText('site_generation_title')).toBeNull(),
-            );
+            expect(
+                await screen.findByText('site_generation_done_title'),
+            ).toBeInTheDocument();
+            expect(screen.getByTestId('fireworks')).toBeInTheDocument();
+            expect(
+                screen.getByText('site_generation_done_hint'),
+            ).toBeInTheDocument();
+            // the admin stays open behind the site
+            const link = screen.getByRole('link', {
+                name: 'site_generation_view_site',
+            });
+            expect(link).toHaveAttribute('href', '/instance/my-tenant');
+            expect(link).toHaveAttribute('target', '_blank');
             expect(dispatched).toEqual(expect.arrayContaining(RELOADS));
+        });
+
+        it('closes the published site popup and tells so', async () => {
+            renderDialog(publishing('publishing', { state: 'running' }));
+            await screen.findByText('site_generation_title');
+            await changeGeneration(publishing('done', { state: 'done' }));
+            await userEvent.click(await screen.findByText('close'));
+            await waitFor(() =>
+                expect(screen.queryByRole('dialog')).toBeNull(),
+            );
+            expect(onSuccessClose).toHaveBeenCalledWith(true);
+        });
+
+        it('tells the popup closed on a site to see, when it leaves for the site', async () => {
+            renderDialog(publishing('publishing', { state: 'running' }));
+            await screen.findByText('site_generation_title');
+            await changeGeneration(publishing('done', { state: 'done' }));
+            await userEvent.click(
+                await screen.findByText('site_generation_view_site'),
+            );
+            await waitFor(() =>
+                expect(screen.queryByRole('dialog')).toBeNull(),
+            );
+            expect(onSuccessClose).toHaveBeenCalledWith(true);
         });
     });
 

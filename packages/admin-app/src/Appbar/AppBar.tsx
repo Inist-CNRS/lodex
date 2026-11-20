@@ -63,6 +63,8 @@ interface AppbarComponentProps {
     isAdmin: boolean;
     hasPublishedDataset?: boolean;
     invalidFields?: object[];
+    // points at the site just generated
+    isPublishedSiteHighlighted?: boolean;
 }
 
 const AppbarComponent = ({
@@ -70,6 +72,7 @@ const AppbarComponent = ({
     isAdmin,
     hasPublishedDataset,
     invalidFields,
+    isPublishedSiteHighlighted,
 }: AppbarComponentProps) => {
     const { translate } = useTranslate();
     const leftElement = (
@@ -113,7 +116,11 @@ const AppbarComponent = ({
             {isAdmin && (
                 <div style={{ display: 'flex' }}>
                     <JobProgress />
-                    {hasPublishedDataset && <GoToPublicationButton />}
+                    {hasPublishedDataset && (
+                        <GoToPublicationButton
+                            isHighlighted={isPublishedSiteHighlighted}
+                        />
+                    )}
                     {/*
                      // @ts-expect-error TS18048 */}
                     {invalidFields.length > 0 && <ValidationButton />}

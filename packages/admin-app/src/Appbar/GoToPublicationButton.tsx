@@ -3,11 +3,33 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DEFAULT_TENANT } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
-const GoToPublicationButtonComponent = () => {
+export const getPublishedSiteUrl = () =>
+    `/instance/${sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT}`;
+
+// the eye stands out in a ringed disc, from which a halo spreads. Without
+// motion, the disc stays.
+const HIGHLIGHT_SX = {
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    outline: '2px solid currentColor',
+    animation: 'lodex-published-halo 1.6s ease-out infinite',
+    '@keyframes lodex-published-halo': {
+        from: { boxShadow: '0 0 0 0 rgba(255, 255, 255, 0.8)' },
+        to: { boxShadow: '0 0 0 16px rgba(255, 255, 255, 0)' },
+    },
+    '@media (prefers-reduced-motion: reduce)': {
+        animation: 'none',
+    },
+};
+
+const GoToPublicationButtonComponent = ({
+    isHighlighted = false,
+}: {
+    // points at the site just generated
+    isHighlighted?: boolean;
+}) => {
     const { translate } = useTranslate();
     const handleGoToPublication = () => {
-        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
-        window.location.replace(window.location.origin + '/instance/' + tenant);
+        window.location.replace(window.location.origin + getPublishedSiteUrl());
     };
 
     return (
@@ -18,6 +40,7 @@ const GoToPublicationButtonComponent = () => {
                     onClick={handleGoToPublication}
                     // @ts-expect-error TS2769
                     color="contrast"
+                    sx={isHighlighted ? HIGHLIGHT_SX : undefined}
                 >
                     <VisibilityIcon sx={{ fontSize: '30px' }} />
                 </IconButton>
@@ -25,7 +48,5 @@ const GoToPublicationButtonComponent = () => {
         </Box>
     );
 };
-
-GoToPublicationButtonComponent.propTypes = {};
 
 export default GoToPublicationButtonComponent;
