@@ -58,7 +58,7 @@ Everything is in `packages/api/src/workers`. Bull 4, not BullMQ. Redis is `REDIS
 -   One queue per tenant with a single processor of concurrency 1 (`workers/index.ts`): **a tenant runs one job at a time**, whatever its type.
 -   The processor dispatches on `job.data.jobType`: `publisher`, `enricher`, `retry-enricher`, `precomputer`, `import`, `model-importer`.
 -   Queues are `lifo`: among the waiting jobs, the newest runs first.
--   A publisher job that starts removes every other waiting publisher job (`cleanWaitingJobsOfType`): one publication is enough. Code that waits for "its" publisher job must cope with that job disappearing.
+-   A publisher or import job that starts removes every other waiting job of its type (`cleanWaitingJobsOfType`): one publication is enough. Code that waits for "its" publisher job must cope with that job disappearing.
 -   Only the last 10 completed and 10 failed jobs are kept: a finished job may already be gone when you look for it.
 -   Jobs are queued by the helpers of `workers/tools.ts` (`queuePublisher`…) and `services/launchTasks.ts` (`queueEnrichment`, `queuePrecomputed`), called from the routes in `controller/api`.
 -   Progress: `services/progress.ts` (in memory, per tenant), pushed over socket.io on `<dbName>_<tenant>-progress`, `-publisher`, `-enricher`, `-precomputer`, `-import`. Job logs go through `jobLogger` (`workers/tools.ts`) and are read with `GET /api/job/:id/logs`.
