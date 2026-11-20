@@ -34,6 +34,24 @@ const loaderServerError = (sourceError: Record<string, unknown>) =>
     });
 
 describe('getImportError', () => {
+    it('should report an import that read no line', () => {
+        expect(
+            getImportError(
+                new Error(
+                    'Error during import: Error: The loader read no line',
+                    {
+                        cause: Object.assign(
+                            new Error('The loader read no line'),
+                            {
+                                code: 'import_error_no_line',
+                            },
+                        ),
+                    },
+                ),
+            ).code,
+        ).toBe('import_error_no_line');
+    });
+
     it('should report an unavailable source with its message, under the loader server error', () => {
         expect(
             getImportError(

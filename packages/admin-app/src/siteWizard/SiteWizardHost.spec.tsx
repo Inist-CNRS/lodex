@@ -21,16 +21,22 @@ jest.mock('./SiteWizard', () => ({
     SiteWizard: ({
         open,
         onClose,
+        reopen,
     }: {
         open: boolean;
         onClose: (reason: string) => void;
+        reopen?: object;
     }) => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         require('react').useEffect(() => {
             mockMounts();
         }, []);
         return (
-            <div data-testid="wizard" data-open={String(open)}>
+            <div
+                data-testid="wizard"
+                data-open={String(open)}
+                data-reopen={JSON.stringify(reopen ?? null)}
+            >
                 <button onClick={() => onClose('dismissed')}>
                     close wizard
                 </button>
@@ -61,7 +67,7 @@ const HistoryProbe = () => {
     );
 };
 
-const REOPEN = { reopenSiteWizard: true };
+const REOPEN = { reopenSiteWizard: 'retryImport' };
 
 // what the progress dialog does on a retry of a failed data import
 const requestReopen = () => act(() => history.push('/data/existing', REOPEN));
@@ -364,5 +370,23 @@ describe('SiteWizardHost', () => {
         await userEvent.click(screen.getByText('open wizard'));
         expect(wizard()).toHaveAttribute('data-open', 'true');
         expect(mockMounts).toHaveBeenCalledTimes(2);
+    });
+
+    it('tells the wizard why it reopens, each time, until it is opened anew', async () => {
+        renderHost(true, withModel);
+        requestReopen();
+        expect(wizard()).toHaveAttribute(
+            'data-reopen',
+            JSON.stringify({ action: 'retryImport', count: 1 }),
+        );
+        act(() =>
+            history.push('/data/existing', { reopenSiteWizard: 'changeData' }),
+        );
+        expect(wizard()).toHaveAttribute(
+            'data-reopen',
+            JSON.stringify({ action: 'changeData', count: 2 }),
+        );
+        await userEvent.click(screen.getByText('open wizard'));
+        expect(wizard()).toHaveAttribute('data-reopen', 'null');
     });
 });

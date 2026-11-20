@@ -136,9 +136,13 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                         type: 'success',
                     });
                 } else {
-                    toast(`${translate('error')} : ${data.message}`, {
-                        type: 'error',
-                    });
+                    // a translation key, or the raw error
+                    toast(
+                        `${translate('error')} : ${translate(data.message)}`,
+                        {
+                            type: 'error',
+                        },
+                    );
                 }
             }
         });

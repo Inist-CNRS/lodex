@@ -55,6 +55,9 @@ export const ModelNestedMenuComponent = React.memo(
 
         const isImportModelDisabled =
             hasPublishedDataset || !hasLoadedDataset || nbFields > 0;
+        // a model without data (an import that read no line) can still be
+        // exported or cleared
+        const isModelActionDisabled = !hasLoadedDataset && nbFields === 0;
 
         return (
             <>
@@ -71,7 +74,7 @@ export const ModelNestedMenuComponent = React.memo(
 
                 <MenuItem
                     onClick={handleExportFieldsClick}
-                    disabled={!hasLoadedDataset}
+                    disabled={isModelActionDisabled}
                 >
                     <ListItemIcon>
                         <AspectRatioIcon />
@@ -81,7 +84,7 @@ export const ModelNestedMenuComponent = React.memo(
 
                 <MenuItem
                     onClick={showModelClearDialog}
-                    disabled={!hasLoadedDataset}
+                    disabled={isModelActionDisabled}
                 >
                     <ListItemIcon>
                         <ClearAllIcon />

@@ -26,8 +26,19 @@ import { SiteGenerationSteps } from './SiteGenerationSteps';
 import { useSiteGeneration, useSiteGenerationPush } from './useSiteGeneration';
 import { SITE_MODEL_QUERY_KEY } from '../upload/useSiteModel';
 import { GENERATION_DIALOG_PAPER_PROPS } from '../siteWizard/wizardDialogPaper';
+import type { SiteWizardLocationState } from '../siteWizard/SiteWizardHost';
 
 const SUPPORT_EMAIL = 'support-lodex@listes.istex.fr';
+
+// the import errors that the same data would meet again: the data (or the
+// loader) must change. The others (source unavailable, timeout…) may pass.
+const DATA_ERRORS = [
+    'import_error_no_line',
+    'import_error_invalid_query',
+    'import_error_source_not_found',
+    'import_error_invalid_format',
+    'import_error_loader',
+];
 
 // turns the support email of a translated text into a mailto link
 const WithEmailLink = ({ text }: { text: string }) => {
@@ -120,17 +131,26 @@ export const SiteGenerationDialog = () => {
         }
     };
 
+    const isDataRetry = generation.phase === 'data';
+    const isDataError =
+        isDataRetry &&
+        generation.kind !== 'addData' &&
+        DATA_ERRORS.includes(generation.message ?? '');
     const handleRetry = async () => {
         // a failed data import of the wizard leaves the instance empty: the
-        // wizard opens again, on the data screen, to send the data anew. A
-        // failed data add keeps the dataset: back to the data add page
-        const isDataRetry = generation.phase === 'data';
+        // wizard, which kept the data, sends them anew in its place, or
+        // opens on its data step to change them. A failed data add keeps the
+        // dataset: back to the data add page
         const retryTarget =
             generation.kind === 'addData'
                 ? { pathname: '/data/add' }
                 : {
                       pathname: '/data/existing',
-                      state: { reopenSiteWizard: true },
+                      state: {
+                          reopenSiteWizard: isDataError
+                              ? 'changeData'
+                              : 'retryImport',
+                      } satisfies SiteWizardLocationState,
                   };
         const isRelaunched = await run(relaunch);
         if (isRelaunched && isDataRetry) {
@@ -163,6 +183,11 @@ export const SiteGenerationDialog = () => {
                     view={generation}
                     importProgress={importProgress}
                     onRetry={handleRetry}
+                    retryLabel={
+                        isDataError
+                            ? 'site_generation_change_data'
+                            : 'site_generation_retry'
+                    }
                     retryDisabled={isActing || isGenerationStopping}
                 />
                 {isGenerationStopping && (

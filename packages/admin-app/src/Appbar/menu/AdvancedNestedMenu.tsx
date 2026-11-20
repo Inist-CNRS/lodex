@@ -45,11 +45,9 @@ export const AdvancedNestedMenuComponent = React.memo(
                     onDone={() => onClose()}
                     disabled={!hasLoadedDataset}
                 />
-                <MenuItem
-                    key="clear_dataset"
-                    onClick={showDatasetClearDialog}
-                    disabled={!hasLoadedDataset}
-                >
+                {/* it also clears the model (enrichments…): an empty
+                    dataset is no reason to disable it */}
+                <MenuItem key="clear_dataset" onClick={showDatasetClearDialog}>
                     <ListItemIcon>
                         <ClearAllIcon />
                     </ListItemIcon>

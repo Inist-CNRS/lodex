@@ -526,26 +526,63 @@ describe('SiteGenerationDialog', () => {
         delete Element.prototype.scrollIntoView;
     });
 
-    it('relaunches and reopens the wizard on a retry of the data import', async () => {
-        renderDialog(
-            buildGeneration({
-                status: 'error',
-                phase: 'data',
-                message: 'import_failed',
-            }),
-        );
-        await userEvent.click(await screen.findByText('site_generation_retry'));
-        await waitFor(() =>
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/data/existing',
-            ),
-        );
-        expect(relaunchSiteGeneration).toHaveBeenCalled();
-        expect(screen.getByTestId('location')).toHaveAttribute(
-            'data-state',
-            JSON.stringify({ reopenSiteWizard: true }),
-        );
-    });
+    it.each(['import_failed', 'import_error_source_timeout'])(
+        'relaunches and reopens the wizard on a retry of the data import (%s)',
+        async (message) => {
+            renderDialog(
+                buildGeneration({
+                    status: 'error',
+                    phase: 'data',
+                    message,
+                }),
+            );
+            await userEvent.click(
+                await screen.findByText('site_generation_retry'),
+            );
+            await waitFor(() =>
+                expect(screen.getByTestId('location')).toHaveTextContent(
+                    '/data/existing',
+                ),
+            );
+            expect(relaunchSiteGeneration).toHaveBeenCalled();
+            expect(screen.getByTestId('location')).toHaveAttribute(
+                'data-state',
+                JSON.stringify({ reopenSiteWizard: 'retryImport' }),
+            );
+        },
+    );
+
+    it.each([
+        'import_error_no_line',
+        'import_error_invalid_query',
+        'import_error_source_not_found',
+        'import_error_invalid_format',
+        'import_error_loader',
+    ])(
+        'offers to change the data on %s: the same data would fail again',
+        async (message) => {
+            renderDialog(
+                buildGeneration({
+                    status: 'error',
+                    phase: 'data',
+                    message,
+                }),
+            );
+            expect(
+                screen.queryByText('site_generation_retry'),
+            ).not.toBeInTheDocument();
+            await userEvent.click(
+                await screen.findByText('site_generation_change_data'),
+            );
+            await waitFor(() =>
+                expect(screen.getByTestId('location')).toHaveAttribute(
+                    'data-state',
+                    JSON.stringify({ reopenSiteWizard: 'changeData' }),
+                ),
+            );
+            expect(relaunchSiteGeneration).toHaveBeenCalled();
+        },
+    );
 
     it('relaunches and goes back to the data add page on a retry of a data add import', async () => {
         renderDialog(
@@ -567,7 +604,7 @@ describe('SiteGenerationDialog', () => {
         expect(relaunchSiteGeneration).toHaveBeenCalled();
         expect(screen.getByTestId('location')).not.toHaveAttribute(
             'data-state',
-            JSON.stringify({ reopenSiteWizard: true }),
+            JSON.stringify({ reopenSiteWizard: 'retryImport' }),
         );
     });
 

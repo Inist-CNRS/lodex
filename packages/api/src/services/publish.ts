@@ -27,6 +27,10 @@ const chainWhileJobIsActive = async (operations: any, ctx: any) => {
 
 export default async (ctx: any) => {
     const count = await ctx.dataset.count({});
+    // an empty dataset (an import that read no line) has nothing to publish
+    if (count === 0) {
+        throw new Error('publish_error_no_line');
+    }
     const fields = await ctx.field.findAll();
     const publishedCount = await ctx.publishedDataset.count();
 
