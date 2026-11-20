@@ -23,17 +23,24 @@ rank() {
     echo 0
 }
 
-# Not "gh project view": it hides the API error behind "unknown owner type"
-project_id=$(gh api graphql -f query='
+# Plain GraphQL, not "gh project": with PROJECT_TOKEN it fails on "unknown owner type"
+project=$(gh api graphql -f query='
     query($owner: String!, $number: Int!) {
-        organization(login: $owner) { projectV2(number: $number) { id } }
-    }' -f owner="$OWNER" -F number="$PROJECT_NUMBER" --jq .data.organization.projectV2.id) || {
+        organization(login: $owner) {
+            projectV2(number: $number) {
+                id
+                field(name: "Status") {
+                    ... on ProjectV2SingleSelectField { id options { id name } }
+                }
+            }
+        }
+    }' -f owner="$OWNER" -F number="$PROJECT_NUMBER" --jq .data.organization.projectV2) || {
     echo "PROJECT_TOKEN cannot read project $PROJECT_NUMBER of $OWNER (see the error above)" >&2
     exit 1
 }
-fields=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json)
-status_field_id=$(jq -r '.fields[] | select(.name == "Status") | .id' <<<"$fields")
-status_option_id=$(jq -r --arg n "$TARGET_STATUS" '.fields[] | select(.name == "Status") | .options[] | select(.name == $n) | .id' <<<"$fields")
+project_id=$(jq -r .id <<<"$project")
+status_field_id=$(jq -r .field.id <<<"$project")
+status_option_id=$(jq -r --arg n "$TARGET_STATUS" '.field.options[] | select(.name == $n) | .id' <<<"$project")
 if [ -z "$status_option_id" ]; then
     echo "Status \"$TARGET_STATUS\" not found in project $PROJECT_NUMBER" >&2
     exit 1
@@ -73,5 +80,11 @@ while read -r number; do
     fi
     echo "#$number: \"$status\" -> \"$TARGET_STATUS\""
     [ "${DRY_RUN:-}" = 1 ] && continue
-    gh project item-edit --project-id "$project_id" --id "$item_id" --field-id "$status_field_id" --single-select-option-id "$status_option_id" >/dev/null
+    gh api graphql -f query='
+        mutation($project: ID!, $item: ID!, $field: ID!, $option: String!) {
+            updateProjectV2ItemFieldValue(input: {
+                projectId: $project, itemId: $item, fieldId: $field,
+                value: { singleSelectOptionId: $option }
+            }) { projectV2Item { id } }
+        }' -f project="$project_id" -f item="$item_id" -f field="$status_field_id" -f option="$status_option_id" >/dev/null
 done <<<"$tickets"
