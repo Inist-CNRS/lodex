@@ -10,6 +10,7 @@ import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import configureStore from '@lodex/frontend-common/configureStore';
 import reducers from '../reducers';
 import { createMemoryHistory } from 'history';
+import { getUserStorageKey } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 // @ts-expect-error TS7017
 global.__DEBUG__ = false;
@@ -58,7 +59,7 @@ jest.mock('@lodex/frontend-common/fetch/fetch', () =>
 describe('useCreateAnnotation', () => {
     beforeEach(() => {
         window.localStorage.setItem(
-            'redux-localstorage',
+            getUserStorageKey(),
             JSON.stringify({ user: { token: 'token' } }),
         );
     });

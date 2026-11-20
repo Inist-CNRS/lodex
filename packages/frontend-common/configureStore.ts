@@ -4,6 +4,7 @@ import persistState, { mergePersistedState } from 'redux-localstorage';
 import adapter from 'redux-localstorage/lib/adapters/localStorage';
 import filter from 'redux-localstorage-filter';
 import { createReduxHistoryContext } from 'redux-first-history';
+import { getUserStorageKey } from './getUserSessionStorageInfo';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -29,6 +30,8 @@ export default function configureStore(reducers, sagas, initialState, history) {
           }
         : pureReducer;
 
+    const userStorageKey = getUserStorageKey();
+
     // @ts-expect-error TS2345
     const reducer = compose(mergePersistedState())(rootReducer);
 
@@ -48,7 +51,7 @@ export default function configureStore(reducers, sagas, initialState, history) {
               (f) => f;
 
     const persistSearchStateEnhancer = persistState(searchStorage);
-    const persistUserStateEnhancer = persistState(userStorage);
+    const persistUserStateEnhancer = persistState(userStorage, userStorageKey);
 
     const store = createStore(
         // @ts-expect-error TS2345

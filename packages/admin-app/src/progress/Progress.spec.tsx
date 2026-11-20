@@ -4,6 +4,9 @@ import { Dialog } from '@mui/material';
 import { ProgressComponent as Progress } from './Progress';
 import { ProgressStatus } from '@lodex/common';
 import { render } from '../test-utils';
+import fetch from '@lodex/frontend-common/fetch/fetch';
+
+jest.mock('@lodex/frontend-common/fetch/fetch');
 
 // @ts-expect-error TS7006
 const identity = (x) => x;
@@ -100,5 +103,42 @@ describe('Progress', () => {
         const screen = render(<Progress {...props} />);
 
         expect(screen.getByText('70 / 100 %')).toBeInTheDocument();
+    });
+});
+
+describe('Progress on load', () => {
+    const fetchMock = fetch as unknown as jest.Mock;
+
+    beforeEach(() => {
+        fetchMock.mockReset();
+    });
+
+    const props = {
+        loadProgress: () => null,
+        clearProgress: () => null,
+        progress: { status: ProgressStatus.PENDING },
+    };
+
+    it('should show a job already running when the page loads', async () => {
+        fetchMock.mockResolvedValue({
+            response: {
+                status: ProgressStatus.INDEXATION,
+                target: 1000,
+                progress: 700,
+                isBackground: false,
+            },
+        });
+        const screen = render(
+            <Progress {...props} progressRequest={{ url: '/api/progress' }} />,
+        );
+
+        expect(await screen.findByText('700 / 1000')).toBeInTheDocument();
+        expect(fetchMock).toHaveBeenCalledWith({ url: '/api/progress' });
+    });
+
+    it('should not ask for the progress when logged out', () => {
+        render(<Progress {...props} />);
+
+        expect(fetchMock).not.toHaveBeenCalled();
     });
 });

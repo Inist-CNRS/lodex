@@ -9,6 +9,7 @@ import { loginSuccess } from '../../user/reducer';
 import { useLogin } from './login';
 
 jest.mock('../../getUserSessionStorageInfo', () => ({
+    ...jest.requireActual('../../getUserSessionStorageInfo'),
     getUserSessionStorageInfo: jest.fn(),
 }));
 
