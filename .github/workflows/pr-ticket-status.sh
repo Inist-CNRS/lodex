@@ -3,7 +3,7 @@
 # ("Code review" when the PR is opened, "To be deployed" when it is merged).
 # A ticket belongs to the PR when its number is in the branch name
 # (anthony/lodex-issue-3825-…, thibault/3852-…) or when the PR closes it
-# (Closes/Fixes/Resolves #3825). The PR itself is moved too if it is a card.
+# (Closes/Fixes/Resolves #3825). Without such a ticket, nothing is done.
 # A card never goes backwards: see STATUS_ORDER.
 # Env: PR_NUMBER, HEAD_REF, PR_BODY, TARGET_STATUS, GH_TOKEN (project write),
 # DRY_RUN=1 to only print.
@@ -22,6 +22,14 @@ rank() {
     done
     echo 0
 }
+
+tickets=$(jq -rn --arg ref "$HEAD_REF" --arg body "${PR_BODY:-}" '
+    ($ref | scan("(?:^|[/-])([0-9]{3,5})(?:-|$)") | .[0]),
+    ($body | scan("(?i)(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?):? +#([0-9]+)") | .[0])' | sort -u)
+if [ -z "$tickets" ]; then
+    echo "No ticket linked to this pull request, nothing to do"
+    exit 0
+fi
 
 # Plain GraphQL, not "gh project": with PROJECT_TOKEN it fails on "unknown owner type"
 project=$(gh api graphql -f query='
@@ -45,13 +53,6 @@ if [ -z "$status_option_id" ]; then
     echo "Status \"$TARGET_STATUS\" not found in project $PROJECT_NUMBER" >&2
     exit 1
 fi
-
-tickets=$({
-    echo "$PR_NUMBER"
-    jq -rn --arg ref "$HEAD_REF" --arg body "${PR_BODY:-}" '
-        ($ref | scan("(?:^|[/-])([0-9]{3,5})(?:-|$)") | .[0]),
-        ($body | scan("(?i)(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?):? +#([0-9]+)") | .[0])'
-} | sort -u)
 
 while read -r number; do
     item=$(gh api graphql -f query='

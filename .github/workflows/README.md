@@ -24,6 +24,7 @@ A plain mention (`#3825`) does not move the ticket. On a release it only fills i
 - A card never goes backwards: `Code review` → `To be deployed` → `To test` → `Testing` → `Done`. A card in `To be fixed` goes back to `Code review` when its fix PR is opened.
 - Draft PRs move nothing until they are marked "Ready for review".
 - A PR closed without merge moves nothing.
+- A PR without a linked ticket does nothing: the job stops before calling the API.
 - A ticket that is not on the board is ignored.
 - PRs from forks are ignored (no access to the token).
 
