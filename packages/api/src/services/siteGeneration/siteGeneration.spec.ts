@@ -10,6 +10,7 @@ import {
     cancelPublisherJob,
     getActiveJob,
     getJobState,
+    getPublisherJobStateSince,
     getWaitingJobs,
     queuePublisher,
 } from '../../workers/tools';
@@ -1621,6 +1622,31 @@ describe('siteGeneration service', () => {
                     publication: { state: 'error', message: 'boom' },
                 }),
             );
+        });
+
+        it('follows the publication that replaced its vanished job', async () => {
+            await runToTheEnd();
+            jest.mocked(getJobState).mockResolvedValue(null);
+            const later = new Date(Date.now() + 2 * 60_000);
+
+            jest.mocked(getPublisherJobStateSince).mockResolvedValueOnce({
+                state: 'active',
+                failedReason: undefined,
+            });
+            await advanceSiteGeneration(ctx, later);
+            const publishing = await siteGeneration.findCurrent();
+            expect(publishing?.status).toBe('publishing');
+            expect(getPublisherJobStateSince).toHaveBeenLastCalledWith(
+                ctx.tenant,
+                publishing?.updatedAt,
+            );
+
+            jest.mocked(getPublisherJobStateSince).mockResolvedValueOnce({
+                state: 'completed',
+                failedReason: undefined,
+            });
+            await advanceSiteGeneration(ctx, later);
+            expect((await siteGeneration.findCurrent())?.status).toBe('done');
         });
 
         it('puts a vanished publisher job in error, to publish again', async () => {
