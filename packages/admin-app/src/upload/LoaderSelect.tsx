@@ -108,6 +108,7 @@ const LoaderSelectComponent = ({
                 loaders={loaders}
                 setLoader={setLoader}
                 value={value ?? ''}
+                allowAutomatic={allowAutomatic}
             />
             <CustomLoader
                 isOpen={openCustomLoadersDialog}

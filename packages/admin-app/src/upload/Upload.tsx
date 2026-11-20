@@ -71,10 +71,14 @@ export const UploadComponent = ({
     const [tab, setTab] = useState<DatasetSourceTab>('file');
     const [files, setFiles] = useState<FileObject[]>([]);
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
-    // the automatic loader reads the file extension, which a text has not,
-    // nor many URLs (an API): they need a loader chosen
+    // the automatic loader takes the format from the extension, as the server
+    // does (what follows the last dot): a text has none, nor an API query
+    const allowAutomatic =
+        tab === 'file' ||
+        (tab === 'url' &&
+            loaders.some(({ name }) => name === url.split('.').pop()));
     const loader =
-        tab !== 'file' && loaderName === 'automatic' ? null : loaderName;
+        loaderName === 'automatic' && !allowAutomatic ? null : loaderName;
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
@@ -150,7 +154,7 @@ export const UploadComponent = ({
                     loaders={loaders}
                     setLoader={onChangeLoaderName}
                     value={loader}
-                    allowAutomatic={tab === 'file'}
+                    allowAutomatic={allowAutomatic}
                 />
                 <Button
                     variant="contained"

@@ -172,6 +172,7 @@ type ListDialogComponentProps = {
     open: boolean;
     handleClose: () => void;
     actions: ReactNode;
+    allowAutomatic?: boolean;
 };
 
 export const ListDialogComponent = ({
@@ -181,6 +182,7 @@ export const ListDialogComponent = ({
     open,
     handleClose,
     actions,
+    allowAutomatic = true,
 }: ListDialogComponentProps) => {
     const { translate } = useTranslate();
     const [filteredLoaders, setFilter] = useState(loaders.map((l) => l.name));
@@ -218,14 +220,16 @@ export const ListDialogComponent = ({
                     setFilter={setFilter}
                 />
                 <List sx={{ height: '70vh' }}>
-                    <ListItemComponent
-                        key={'automatic'}
-                        value={'automatic'}
-                        title={translate('automatic-loader')}
-                        selected={value === 'automatic'}
-                        comment={translate('automatic-loader-comment')}
-                        changeValue={changeValue}
-                    />
+                    {allowAutomatic && (
+                        <ListItemComponent
+                            key={'automatic'}
+                            value={'automatic'}
+                            title={translate('automatic-loader')}
+                            selected={value === 'automatic'}
+                            comment={translate('automatic-loader-comment')}
+                            changeValue={changeValue}
+                        />
+                    )}
                     {loaderNames}
                 </List>
             </DialogContent>

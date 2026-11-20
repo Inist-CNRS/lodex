@@ -118,6 +118,31 @@ describe('<Upload />', () => {
             expect(uploadButton().prop('disabled')).toBe(false);
         });
 
+        it('should keep the automatic loader for a URL ending with a known extension only', () => {
+            const props = {
+                ...baseProps,
+                loaders: [{ name: 'csv' }],
+                loaderName: 'automatic',
+                isUrlValid: true,
+            };
+            const wrapper = shallow(
+                <Upload {...props} url="https://example.org/data.csv" />,
+            );
+            const uploadButton = () => wrapper.find('.btn-upload-dataset');
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('url');
+
+            expect(uploadButton().prop('disabled')).toBe(false);
+            expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
+
+            wrapper.setProps({
+                url: 'https://api.openalex.org/works?filter=x',
+            });
+            expect(uploadButton().prop('disabled')).toBe(true);
+            expect(wrapper.find(LoaderSelect).prop('allowAutomatic')).toBe(
+                false,
+            );
+        });
+
         it('should not render the wizard button without onOpenWizard', () => {
             const wrapper = shallow(<Upload {...baseProps} />);
 
