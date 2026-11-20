@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Dialog,
     LinearProgress,
@@ -13,6 +13,8 @@ import { loadProgress, clearProgress } from './reducer';
 import { DEFAULT_TENANT, ProgressStatus } from '@lodex/common';
 import { io } from 'socket.io-client';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import fetch from '@lodex/frontend-common/fetch/fetch';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 // @ts-expect-error TS7006
 const formatProgress = (progress, target, symbol, label) => {
@@ -64,17 +66,21 @@ interface ProgressComponentProps {
     };
     loadProgress(...args: unknown[]): unknown;
     clearProgress(...args: unknown[]): unknown;
+    // set when logged in
+    progressRequest?: { url: string } | null;
     p?: unknown;
 }
 
 export const ProgressComponent = (props: ProgressComponentProps) => {
     const { translate } = useTranslate();
-    const { clearProgress, loadProgress, progress } = props;
+    const { clearProgress, loadProgress, progress, progressRequest } = props;
 
     const [updatedProgress, setUpdatedProgress] = useState(progress);
     const isOpen =
         updatedProgress.status !== ProgressStatus.PENDING &&
         !updatedProgress.isBackground;
+
+    const socketEventCount = useRef(0);
 
     // @ts-expect-error TS2345
     useEffect(() => {
@@ -82,6 +88,7 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         // log all messages
         socket.on(`${tenant}-progress`, (data) => {
+            socketEventCount.current++;
             setUpdatedProgress(data);
         });
         socket.on(`${tenant}-connect_error`, () => {
@@ -89,6 +96,34 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
         });
         return () => socket.disconnect();
     }, []);
+
+    // the socket only tells what changes: a job already running when the page
+    // loads (or after a new login) would stay hidden until its next event
+    const isLoggedIn = !!progressRequest;
+    useEffect(() => {
+        if (!progressRequest) {
+            return;
+        }
+        let isStale = false;
+        const eventCount = socketEventCount.current;
+        fetch(progressRequest).then(
+            // @ts-expect-error TS7031
+            ({ response }) => {
+                // a socket event received meanwhile is newer
+                if (
+                    response &&
+                    !isStale &&
+                    eventCount === socketEventCount.current
+                ) {
+                    setUpdatedProgress(response);
+                }
+            },
+        );
+        return () => {
+            isStale = true;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoggedIn]);
 
     if (updatedProgress.error) {
         return (
@@ -130,6 +165,9 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     progress: fromProgress.getProgress(state),
+    progressRequest: fromUser.getToken(state)
+        ? fromUser.getProgressRequest(state)
+        : null,
 });
 
 const mapDispatchToProps = {

@@ -9,6 +9,7 @@ import { CreateAnnotationButton } from './CreateAnnotationButton';
 import { useCanAnnotate } from './useCanAnnotate';
 import { fireEvent, waitFor } from '@testing-library/dom';
 import { render } from '../test-utils';
+import { getUserStorageKey } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 const queryClient = new QueryClient();
 
@@ -71,7 +72,7 @@ describe('CreateAnnotationButton', () => {
     beforeEach(() => {
         localStorage.clear();
         window.localStorage.setItem(
-            'redux-localstorage',
+            getUserStorageKey(),
             JSON.stringify({ user: { token: 'token' } }),
         );
         // @ts-expect-error TS2339

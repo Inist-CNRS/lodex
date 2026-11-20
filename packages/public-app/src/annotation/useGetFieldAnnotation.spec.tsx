@@ -5,6 +5,7 @@ import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { AnnotationStorageProvider, getStorageKey } from './annotationStorage';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
+import { getUserStorageKey } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 jest.mock('../../../../packages/common/src/tools/toast');
 
@@ -63,7 +64,7 @@ describe('useGetFieldAnnotation', () => {
         // @ts-expect-error TS2339
         toast.mockClear();
         localStorage.clear();
-        localStorage.setItem('redux-localstorage', '{"user":{}}');
+        localStorage.setItem(getUserStorageKey(), '{"user":{}}');
         const storageKey = getStorageKey();
 
         localStorage.setItem(
