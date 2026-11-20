@@ -18,6 +18,7 @@ import {
     cancelPublisherJob,
     getActiveJob,
     getJobState,
+    getPublisherJobStateSince,
     getWaitingJobs,
     queuePublisher,
 } from '../../workers/tools';
@@ -270,7 +271,12 @@ const advancePublication = async (
     generation: SiteGeneration,
     now: Date,
 ) => {
-    const job = await getJobState(ctx.tenant, generation.publishJobId!);
+    // its own job, else the publication that dropped it from the queue (one
+    // launched by hand meanwhile): the site is published all the same
+    const job =
+        (await getJobState(ctx.tenant, generation.publishJobId!)) ??
+        (await getPublisherJobStateSince(ctx.tenant, generation.updatedAt)) ??
+        null;
     if (job?.state === 'completed') {
         await ctx.siteGeneration.transition(generation, { status: 'done' });
         return;

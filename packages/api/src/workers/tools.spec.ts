@@ -1,17 +1,24 @@
 import { ProgressStatus } from '@lodex/common';
 import progress from '../services/progress';
 import { disableFusible } from '@ezs/core/fusible';
-import { cancelJob, clearJobs, stopJobs } from './tools';
+import {
+    cancelJob,
+    clearJobs,
+    getPublisherJobStateSince,
+    stopJobs,
+} from './tools';
 import { waitForRunningJob } from './index';
 import { cancelImportJob } from './import';
 
 const mockActiveJobs: unknown[] = [];
+const mockJobs: unknown[] = [];
 
 jest.mock('./index', () => ({
     getOrCreateWorkerQueue: () => ({
         getActive: async () => mockActiveJobs,
         getCompleted: async () => [],
         getWaiting: async () => [],
+        getJobs: async () => mockJobs,
     }),
     cleanWaitingJobsOfType: jest.fn(),
     waitForRunningJob: jest.fn(),
@@ -165,5 +172,61 @@ describe('clearJobs', () => {
 
         expect(disableFusible).toHaveBeenCalledWith('fusible');
         expect(moveToFailed).toHaveBeenCalled();
+    });
+});
+
+describe('getPublisherJobStateSince', () => {
+    const since = new Date(1_000);
+    const job = (jobType: string, state: string, times: object) => ({
+        data: { jobType },
+        getState: async () => state,
+        failedReason: state === 'failed' ? 'boom' : undefined,
+        ...times,
+    });
+
+    beforeEach(() => {
+        mockJobs.length = 0;
+    });
+
+    it('ignores the other jobs and the publications started before', async () => {
+        mockJobs.push(
+            job('enricher', 'active', { processedOn: 2_000 }),
+            job('publisher', 'completed', {
+                processedOn: 500,
+                finishedOn: 900,
+            }),
+        );
+        expect(await getPublisherJobStateSince('tools-spec', since)).toBeNull();
+    });
+
+    it('gives the running publication rather than a finished one', async () => {
+        mockJobs.push(
+            job('publisher', 'failed', {
+                processedOn: 1_500,
+                finishedOn: 1_600,
+            }),
+            job('publisher', 'active', { processedOn: 2_000 }),
+        );
+        expect(await getPublisherJobStateSince('tools-spec', since)).toEqual({
+            state: 'active',
+            failedReason: undefined,
+        });
+    });
+
+    it('gives the last finished publication', async () => {
+        mockJobs.push(
+            job('publisher', 'failed', {
+                processedOn: 1_500,
+                finishedOn: 1_600,
+            }),
+            job('publisher', 'completed', {
+                processedOn: 2_000,
+                finishedOn: 2_500,
+            }),
+        );
+        expect(await getPublisherJobStateSince('tools-spec', since)).toEqual({
+            state: 'completed',
+            failedReason: undefined,
+        });
     });
 });

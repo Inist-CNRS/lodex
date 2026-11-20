@@ -174,6 +174,37 @@ export const getJobState = async (tenant: string, jobId: string) => {
     return { state: await job.getState(), failedReason: job.failedReason };
 };
 
+// a job not finished yet comes first
+const startRank = (job: Bull.Job) =>
+    job.finishedOn ? job.processedOn ?? 0 : Number.MAX_SAFE_INTEGER;
+
+// A publisher job that starts drops the waiting ones (one publication is
+// enough): a job dropped this way is replaced by the one that dropped it,
+// started after `since`. The running or waiting one first, else the last
+// started; null without any.
+export const getPublisherJobStateSince = async (
+    tenant: string,
+    since: Date,
+) => {
+    const jobs = await getOrCreateWorkerQueue(tenant, 1).getJobs([
+        'waiting',
+        'active',
+        'completed',
+        'failed',
+    ]);
+    const [job] = jobs
+        .filter(
+            (job) =>
+                job?.data?.jobType === PUBLISHER &&
+                (job.processedOn ?? Infinity) >= since.getTime(),
+        )
+        .sort((a, b) => startRank(b) - startRank(a) || 0);
+    if (!job) {
+        return null;
+    }
+    return { state: await job.getState(), failedReason: job.failedReason };
+};
+
 // Removes a publisher job still waiting, cancels it once running. A finished
 // job is left alone.
 export const cancelPublisherJob = async (
