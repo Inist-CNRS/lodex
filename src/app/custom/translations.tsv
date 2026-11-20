@@ -1637,8 +1637,6 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "site_generation_settings_theme"	"Setting the theme of the site"	"Configuration du thème du site"
 "site_generation_step_launch"	"Launching the enrichments and precomputations"	"Lancement des enrichissements et précalculs"
 "site_generation_launch_intro"	"Launching"	"Lancement de"
-"site_generation_enrichments"	"%{done}/%{total} enrichment |||| %{done}/%{total} enrichments"	"%{done}/%{total} enrichissement |||| %{done}/%{total} enrichissements"
-"site_generation_precomputed"	"%{done}/%{total} precomputation |||| %{done}/%{total} precomputations"	"%{done}/%{total} précalcul |||| %{done}/%{total} précalculs"
 "site_generation_launch_running"	"In progress: %{names}"	"En cours : %{names}"
 "site_generation_enrichments_error"	"%{smart_count} enrichment in error |||| %{smart_count} enrichments in error"	"%{smart_count} enrichissement en erreur |||| %{smart_count} enrichissements en erreur"
 "site_generation_precomputed_error"	"%{smart_count} precomputation in error |||| %{smart_count} precomputations in error"	"%{smart_count} précalcul en erreur |||| %{smart_count} précalculs en erreur"

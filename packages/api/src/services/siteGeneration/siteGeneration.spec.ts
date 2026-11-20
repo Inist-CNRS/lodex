@@ -1427,7 +1427,7 @@ describe('siteGeneration service', () => {
             );
         });
 
-        it('shows the planned launch steps, waiting and in run order, before the launch phase', async () => {
+        it('shows the planned launch steps, waiting, before the launch phase', async () => {
             const started = await siteGeneration.startWizard({
                 choice: { modelId: 'model' },
                 importJobId: 'import-job',
@@ -1444,15 +1444,15 @@ describe('siteGeneration service', () => {
 
             expect((await getSiteGenerationView(ctx))?.steps).toEqual([
                 {
-                    name: 'cluster',
-                    type: 'precomputed',
-                    position: 1,
-                    state: 'waiting',
-                },
-                {
                     name: 'xml',
                     type: 'enrichment',
                     position: 2,
+                    state: 'waiting',
+                },
+                {
+                    name: 'cluster',
+                    type: 'precomputed',
+                    position: 1,
                     state: 'waiting',
                 },
             ]);

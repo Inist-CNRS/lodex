@@ -76,7 +76,8 @@ export const getDataAddUploadView = (
     kind: 'addData',
     status: 'running',
     phase: 'data',
-    steps: relaunch && launch ? toWaitingLaunchSteps(launch.steps) : [],
+    // steps is missing from the response of an older API
+    steps: relaunch && launch ? toWaitingLaunchSteps(launch.steps ?? []) : [],
     launch: getDataAddLaunch(launch, relaunch),
     ...(autoPublish && { publication: { state: 'waiting' } }),
 });

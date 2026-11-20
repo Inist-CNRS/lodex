@@ -95,6 +95,18 @@ const counter = (total: number, done = 0, error = 0) => ({
     error,
 });
 
+const waitingSteps = (
+    type: 'enrichment' | 'precomputed',
+    count: number,
+    position = (index: number) => index + 1,
+) =>
+    Array.from({ length: count }, (_, index) => ({
+        name: `${type}${index + 1}`,
+        type,
+        position: position(index),
+        state: 'waiting' as const,
+    }));
+
 const buildGeneration = (
     overrides: Partial<SiteGenerationView> = {},
 ): SiteGenerationView => ({
@@ -242,7 +254,15 @@ describe('SiteGenerationDialog', () => {
         (hasTranslation as jest.Mock).mockImplementation(
             (key: string) => !!frenchPhrases[key],
         );
-        renderDialog(buildGeneration(), { french: true });
+        renderDialog(
+            buildGeneration({
+                steps: [
+                    ...waitingSteps('precomputed', 3, () => 1),
+                    ...waitingSteps('enrichment', 7),
+                ],
+            }),
+            { french: true },
+        );
         expect(
             await screen.findByText('Configuration du site en cours…'),
         ).toBeInTheDocument();
@@ -278,10 +298,10 @@ describe('SiteGenerationDialog', () => {
             screen.getByText('Lancement des enrichissements et précalculs'),
         ).toBeInTheDocument();
         expect(screen.getByText('Lancement de')).toBeInTheDocument();
+        expect(screen.getByText(byText('Précalculs 0/3'))).toBeInTheDocument();
         expect(
-            screen.getByText(byText('0/7 enrichissements')),
+            screen.getByText(byText('Enrichissements 0/7')),
         ).toBeInTheDocument();
-        expect(screen.getByText(byText('0/3 précalculs'))).toBeInTheDocument();
         expect(screen.queryByText('Réessayer')).toBeNull();
         expect(
             screen.getByText('Arrêter la configuration'),
@@ -655,9 +675,10 @@ describe('SiteGenerationDialog', () => {
         ).toBeTruthy();
     });
 
-    it('leaves out a launch counter without anything to launch', async () => {
+    it('shows no launch line for a type without steps', async () => {
         renderDialog(
             buildGeneration({
+                steps: waitingSteps('enrichment', 2),
                 launch: {
                     enrichment: counter(2),
                     precomputed: counter(0),
@@ -666,9 +687,9 @@ describe('SiteGenerationDialog', () => {
             { french: true },
         );
         expect(
-            await screen.findByText(byText('0/2 enrichissements')),
+            await screen.findByText(byText('Enrichissements 0/2')),
         ).toBeInTheDocument();
-        expect(screen.queryByText(/^\d+\/\d+ précalcul/)).toBeNull();
+        expect(screen.queryByText(/^Précalculs? \d+\/\d+/)).toBeNull();
     });
 
     it.each([

@@ -6,7 +6,6 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import {
     getModelLaunchStepLabelKey,
     getModelNameKey,
-    MODEL_LAUNCH_STEP_TYPES,
     type ModelLaunchStepType,
     ProgressStatus,
     type SiteGenerationStepState,
@@ -122,12 +121,6 @@ const getStepFullLabel = (
     modelId: string | undefined,
     step: RankedLaunchStep,
 ) => `${getStepLabel(translate, modelId, step)} (${step.name})`;
-
-// before the launch, its steps are unknown: the counts of the model
-const COUNT_KEYS: Record<ModelLaunchStepType, string> = {
-    enrichment: 'site_generation_enrichments',
-    precomputed: 'site_generation_precomputed',
-};
 
 const ERROR_KEYS: Record<ModelLaunchStepType, string> = {
     enrichment: 'site_generation_enrichments_error',
@@ -346,90 +339,53 @@ const useStepContent = (
         case 'launch':
             return {
                 title: translate('site_generation_step_launch'),
-                description: view?.launch &&
-                    view.launch.enrichment.total +
-                        view.launch.precomputed.total >
-                        0 && (
-                        <>
-                            {translate('site_generation_launch_intro')}
-                            <Box component="ul" sx={{ m: 0, pl: 3 }}>
-                                {launchGroups.length > 0
-                                    ? launchGroups.map((group) => (
-                                          <Fragment
-                                              key={`${group.type}-${group.steps[0].rank}`}
-                                          >
-                                              <LaunchLine
-                                                  count={translate(
-                                                      `site_generation_launch_group_${group.type}`,
-                                                      {
-                                                          smart_count:
-                                                              group.total,
-                                                          // the steps launched, so that
-                                                          // the count never goes back
-                                                          current:
-                                                              group.done +
-                                                              group.running +
-                                                              group.error,
-                                                          total: group.total,
-                                                      },
-                                                  )}
-                                                  error={group.error}
-                                                  type={group.type}
-                                                  running={getRunningLabels(
-                                                      group,
-                                                  )}
-                                              />
-                                              {/* under the line of its group */}
-                                              {group.steps
-                                                  .filter(
-                                                      (launchStep) =>
-                                                          launchStep.retry,
-                                                  )
-                                                  .map((launchStep) => (
-                                                      <LaunchRetry
-                                                          key={`${launchStep.type}-${launchStep.rank}`}
-                                                          name={getStepFullLabel(
-                                                              translate,
-                                                              view.modelId,
-                                                              launchStep,
-                                                          )}
-                                                          retry={
-                                                              launchStep.retry!
-                                                          }
-                                                      />
-                                                  ))}
-                                          </Fragment>
-                                      ))
-                                    : MODEL_LAUNCH_STEP_TYPES.map(
-                                          (type) =>
-                                              [
-                                                  type,
-                                                  view.launch![type],
-                                              ] as const,
-                                      )
-                                          .filter(
-                                              ([, counter]) =>
-                                                  counter.total > 0,
-                                          )
-                                          .map(([type, counter]) => (
-                                              <LaunchLine
-                                                  key={type}
-                                                  count={translate(
-                                                      COUNT_KEYS[type],
-                                                      {
-                                                          smart_count:
-                                                              counter.total,
-                                                          done: counter.done,
-                                                          total: counter.total,
-                                                      },
-                                                  )}
-                                                  error={counter.error}
-                                                  type={type}
-                                              />
-                                          ))}
-                            </Box>
-                        </>
-                    ),
+                description: launchGroups.length > 0 && (
+                    <>
+                        {translate('site_generation_launch_intro')}
+                        <Box component="ul" sx={{ m: 0, pl: 3 }}>
+                            {launchGroups.map((group) => (
+                                <Fragment
+                                    key={`${group.type}-${group.steps[0].rank}`}
+                                >
+                                    <LaunchLine
+                                        count={translate(
+                                            `site_generation_launch_group_${group.type}`,
+                                            {
+                                                smart_count: group.total,
+                                                // the steps launched, so that
+                                                // the count never goes back
+                                                current:
+                                                    group.done +
+                                                    group.running +
+                                                    group.error,
+                                                total: group.total,
+                                            },
+                                        )}
+                                        error={group.error}
+                                        type={group.type}
+                                        running={getRunningLabels(group)}
+                                    />
+                                    {/* under the line of its group */}
+                                    {group.steps
+                                        .filter(
+                                            (launchStep) => launchStep.retry,
+                                        )
+                                        .map((launchStep) => (
+                                            <LaunchRetry
+                                                key={`${launchStep.type}-${launchStep.rank}`}
+                                                name={getStepFullLabel(
+                                                    translate,
+                                                    view?.modelId,
+                                                    launchStep,
+                                                )}
+                                                retry={launchStep.retry!}
+                                            />
+                                        ))}
+                                </Fragment>
+                            ))}
+                        </Box>
+                    </>
+                ),
             };
         case 'publication':
             return { title: translate('site_generation_step_publication') };

@@ -1,5 +1,4 @@
 import {
-    compareLaunchSteps,
     type ModelLaunchStep,
     type ModelLaunchStepType,
     type SiteInfo,
@@ -84,11 +83,11 @@ export type SiteModelLaunchView = {
     steps: ModelLaunchStep[];
 };
 
-// The launch steps to come, before they run: waiting, in run order
+// The launch steps to come, before they run: waiting (the admin sorts them)
 export const toWaitingLaunchSteps = (
     steps: ModelLaunchStep[],
 ): SiteGenerationStepView[] =>
-    [...steps].sort(compareLaunchSteps).map(({ name, type, position }) => ({
+    steps.map(({ name, type, position }) => ({
         name,
         type,
         position,

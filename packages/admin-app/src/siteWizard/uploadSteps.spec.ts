@@ -1,4 +1,4 @@
-import type { CatalogModel } from '@lodex/common';
+import type { CatalogModel, SiteModelLaunchView } from '@lodex/common';
 import { getDataAddUploadView, getUploadView } from './uploadSteps';
 
 const waiting = (
@@ -10,7 +10,7 @@ const waiting = (
 describe('getUploadView', () => {
     const siteInfo = { siteName: '', siteDescription: '', autoPublish: false };
 
-    it('shows the launch steps of the model, waiting and in run order', () => {
+    it('shows the launch steps of the model, waiting', () => {
         const view = getUploadView(
             {
                 id: 'theses-fr',
@@ -22,8 +22,8 @@ describe('getUploadView', () => {
             siteInfo,
         );
         expect(view.steps).toEqual([
-            waiting('cluster', 'precomputed', 1),
             waiting('xml', 'enrichment', 2),
+            waiting('cluster', 'precomputed', 1),
         ]);
     });
 
@@ -56,11 +56,22 @@ describe('getDataAddUploadView', () => {
         expect(view.launch?.enrichment.total).toBe(3);
         expect(view.launch?.precomputed.total).toBe(0);
         expect(view.steps).toEqual([
+            waiting('c', 'enrichment', 3),
             waiting('a', 'enrichment', 1),
             waiting('b', 'enrichment', 2),
-            waiting('c', 'enrichment', 3),
         ]);
         expect(view.publication).toBeUndefined();
+    });
+
+    it('has no launch steps when the API does not send them', () => {
+        const view = getDataAddUploadView(
+            {
+                enrichment: 1,
+                precomputed: 0,
+            } as SiteModelLaunchView,
+            { relaunch: true, autoPublish: false },
+        );
+        expect(view.steps).toEqual([]);
     });
 
     it('has no launch step without relaunch', () => {
