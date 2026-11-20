@@ -4,10 +4,9 @@ Publishes a dataset (csv, json, xml…) as a website, with a back office to impo
 
 ## Tickets, branches and pull requests
 
--   Branch: `<you>/<ticket number>-<short-description>` (ex: `anthony/3825-fix-import`). No ticket: no number in the branch name.
+-   Branch: `<you>/<ticket number>-<short-description>` (ex: `jane/3825-fix-import`). No ticket: no number in the branch name.
 -   PR description: `Closes #<ticket number>` when the PR finishes the ticket.
 -   The ticket number in the branch name or the `Closes #N` moves the ticket on the [Project board](https://github.com/orgs/Inist-CNRS/projects/15) (see `.github/workflows/README.md`). Never write `Closes #N` / `Fixes #N` for a ticket the PR does not finish, even as an example.
--   PRs of the Marmelab mission target the `marmelab` branch, not `master`.
 -   Commit messages and PR titles follow [Conventional Commits](https://www.conventionalcommits.org): `feat(enrichment): …`, `fix(import): …`, `ci: …`.
 
 ## Commands
