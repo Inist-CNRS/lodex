@@ -1,42 +1,38 @@
 [
     {
-        "id": "theses-fr",
-        "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/theses-fr.tar",
-        "loader": "query-theses-fr-for-model",
-        "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-theses-fr/",
-        "demo": "https://catalogue-modeles.lodex.inist.fr/instance/theses-fr",
-        "importTypes": ["text"],
-        "launchOrder": [
-            { "name": "clusterRameau", "type": "precomputed", "position": 1 },
-            { "name": "xml", "type": "enrichment", "position": 2 },
-            { "name": "resume", "type": "enrichment", "position": 3 },
-            { "name": "resumeEN", "type": "enrichment", "position": 4 },
-            { "name": "langueISO6391", "type": "enrichment", "position": 5 },
-            { "name": "lienHAL", "type": "enrichment", "position": 6 },
-            { "name": "lienDocument", "type": "enrichment", "position": 7 },
-            { "name": "teeft", "type": "enrichment", "position": 8 },
-            {
-                "name": "AccesAuTexteIntegral",
-                "type": "enrichment",
-                "position": 9
-            },
-            { "name": "genre", "type": "enrichment", "position": 10 },
-            { "name": "hasDOI", "type": "enrichment", "position": 11 }
-        ]
-    },
-    {
         "id": "hal2lodex",
         "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/hal2lodex.tar",
         "loader": "csv-hal2lodex",
         "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-hal2lodex/",
         "demo": "https://catalogue-modeles.lodex.inist.fr/instance/hal2lodex",
         "theme": "hal-cnrs",
-        "importTypes": ["file", "url"],
+        "importTypes": ["file", "url", "text"],
         "launchOrder": [
-            { "name": "KeywordsTeeften", "type": "enrichment", "position": 1 },
-            { "name": "KeywordsTeeftfr", "type": "enrichment", "position": 2 },
-            { "name": "OAunpaywallWS", "type": "enrichment", "position": 3 }
+            {
+                "name": "KeywordsTeeften",
+                "type": "enrichment",
+                "position": 1
+            },
+            {
+                "name": "KeywordsTeeftfr",
+                "type": "enrichment",
+                "position": 2
+            },
+            {
+                "name": "OAunpaywallWS",
+                "type": "enrichment",
+                "position": 3
+            }
         ]
+    },
+    {
+        "id": "istexsearch",
+        "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/istexsearch.tar",
+        "loader": "zip",
+        "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-istex-search/",
+        "demo": "https://catalogue-modeles.lodex.inist.fr/instance/open-alex",
+        "theme": "istex",
+        "importTypes": ["file"]
     },
     {
         "id": "openalex",
@@ -48,12 +44,68 @@
         "importTypes": ["text"]
     },
     {
-    "id": "istexsearch",
-    "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/istexsearch.tar",
-    "loader": "zip",
-    "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-istex-search/",
-    "demo": "https://catalogue-modeles.lodex.inist.fr/instance/open-alex",
-    "theme": "istex",
-    "importTypes": ["file"]
+        "id": "theses-fr",
+        "url": "https://raw.githubusercontent.com/Inist-CNRS/lodex/marmelab/src/app/custom/models/archives/theses-fr.tar",
+        "loader": "query-theses-fr-for-model",
+        "doc": "https://www.lodex.fr/docs/documentation/catalogue-des-modeles/modele-theses-fr/",
+        "demo": "https://catalogue-modeles.lodex.inist.fr/instance/theses-fr",
+        "importTypes": ["text"],
+        "launchOrder": [
+            {
+                "name": "clusterRameau",
+                "type": "precomputed",
+                "position": 1
+            },
+            {
+                "name": "xml",
+                "type": "enrichment",
+                "position": 2
+            },
+            {
+                "name": "resume",
+                "type": "enrichment",
+                "position": 3
+            },
+            {
+                "name": "resumeEN",
+                "type": "enrichment",
+                "position": 4
+            },
+            {
+                "name": "langueISO6391",
+                "type": "enrichment",
+                "position": 5
+            },
+            {
+                "name": "lienHAL",
+                "type": "enrichment",
+                "position": 6
+            },
+            {
+                "name": "lienDocument",
+                "type": "enrichment",
+                "position": 7
+            },
+            {
+                "name": "teeft",
+                "type": "enrichment",
+                "position": 8
+            },
+            {
+                "name": "AccesAuTexteIntegral",
+                "type": "enrichment",
+                "position": 9
+            },
+            {
+                "name": "genre",
+                "type": "enrichment",
+                "position": 10
+            },
+            {
+                "name": "hasDOI",
+                "type": "enrichment",
+                "position": 11
+            }
+        ]
     }
 ]
