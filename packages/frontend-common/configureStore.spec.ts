@@ -8,6 +8,8 @@ import userReducer, { loginSuccess, logout } from './user/reducer';
 // @ts-expect-error TS7017
 global.__DEBUG__ = false;
 
+type State = { user: { token: string | null } };
+
 const getStore = (tenant: string) => {
     // @ts-expect-error TS2339
     window.__TENANT__ = tenant;
@@ -35,12 +37,14 @@ describe('configureStore', () => {
 
         // another tab, on another instance of the same domain
         const storeB = getStore('instance-b');
-        expect(storeB.getState().user.token).toBeNull();
+        expect((storeB.getState() as State).user.token).toBeNull();
         storeB.dispatch(logout());
 
         // @ts-expect-error TS2339
         window.__TENANT__ = 'instance-a';
         expect(getUserSessionStorageInfo().token).toBe('token-a');
-        expect(getStore('instance-a').getState().user.token).toBe('token-a');
+        expect((getStore('instance-a').getState() as State).user.token).toBe(
+            'token-a',
+        );
     });
 });
