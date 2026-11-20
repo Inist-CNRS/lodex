@@ -275,6 +275,7 @@ describe('siteGeneration service', () => {
 
         it('queues the first position of a data add as a relaunch', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -293,6 +294,7 @@ describe('siteGeneration service', () => {
 
         it('ends a data add without step', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: [],
@@ -774,6 +776,7 @@ describe('siteGeneration service', () => {
 
         it('stops a data add in error in its data phase and keeps the dataset', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1103,6 +1106,7 @@ describe('siteGeneration service', () => {
 
         it('stops a data add in error in its data phase and keeps the dataset', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1123,6 +1127,7 @@ describe('siteGeneration service', () => {
 
         it('relaunches the launch phase of a data add in error before any step was launched', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1149,6 +1154,7 @@ describe('siteGeneration service', () => {
 
         it('clears the message of a launch phase in error when relaunching', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1172,6 +1178,7 @@ describe('siteGeneration service', () => {
 
         it('ends a data add without step relaunched in its launch phase', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: false,
                 steps: [],
@@ -1361,6 +1368,7 @@ describe('siteGeneration service', () => {
 
         it('has no launch counters for a data add without step', async () => {
             await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'job',
                 autoPublish: false,
                 steps: [],
@@ -1371,8 +1379,27 @@ describe('siteGeneration service', () => {
             );
         });
 
+        it('gives the model of a data add, without settings', async () => {
+            await siteGeneration.startDataAdd({
+                modelId: 'hal2lodex',
+                importJobId: 'job',
+                autoPublish: false,
+                steps: [],
+            });
+
+            const view = await getSiteGenerationView(ctx);
+            expect(view).toEqual(
+                expect.objectContaining({
+                    kind: 'addData',
+                    modelId: 'hal2lodex',
+                }),
+            );
+            expect(view).not.toHaveProperty('settings');
+        });
+
         it('estimates the counters of a data add with steps', async () => {
             await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'job',
                 autoPublish: false,
                 steps: STEPS,
@@ -1398,6 +1425,58 @@ describe('siteGeneration service', () => {
                     },
                 }),
             );
+        });
+
+        it('shows the planned launch steps, waiting, before the launch phase', async () => {
+            const started = await siteGeneration.startWizard({
+                choice: { modelId: 'model' },
+                importJobId: 'import-job',
+                estimate: { enrichment: 1, precomputed: 1 },
+                plannedSteps: [
+                    { name: 'xml', type: 'enrichment', position: 2 },
+                    { name: 'cluster', type: 'precomputed', position: 1 },
+                ],
+            });
+            await siteGeneration.transition(started, {
+                phase: 'model',
+                modelJobId: 'model-job',
+            });
+
+            expect((await getSiteGenerationView(ctx))?.steps).toEqual([
+                {
+                    name: 'xml',
+                    type: 'enrichment',
+                    position: 2,
+                    state: 'waiting',
+                },
+                {
+                    name: 'cluster',
+                    type: 'precomputed',
+                    position: 1,
+                    state: 'waiting',
+                },
+            ]);
+        });
+
+        it('shows the steps of the site, not the planned ones, in the launch phase', async () => {
+            const started = await siteGeneration.startWizard({
+                choice: { modelId: 'model' },
+                importJobId: 'import-job',
+                plannedSteps: [
+                    { name: 'gone', type: 'enrichment', position: 1 },
+                ],
+            });
+            await siteGeneration.transition(started, {
+                phase: 'launch',
+                modelJobId: 'model-job',
+                steps: STEPS,
+            });
+
+            expect(
+                (await getSiteGenerationView(ctx))?.steps.map(
+                    ({ name }) => name,
+                ),
+            ).toEqual(STEPS.map(({ name }) => name));
         });
 
         it('estimates the counters before the launch phase', async () => {
@@ -1554,6 +1633,7 @@ describe('siteGeneration service', () => {
 
         it('publishes a data add without step when autoPublish is set', async () => {
             const started = await siteGeneration.startDataAdd({
+                modelId: 'model',
                 importJobId: 'import-job',
                 autoPublish: true,
                 steps: [],

@@ -634,7 +634,7 @@ describe('SiteWizard', () => {
         ).not.toBeInTheDocument();
     });
 
-    it('announces the launch step of a model with a launch order, with its estimated counts', async () => {
+    it('announces the launch groups of a model with a launch order, in run order', async () => {
         const { rerender } = render(<SiteWizard open onClose={jest.fn()} />);
         await goToThemeStep('mc_e_title');
         (useGenerateSite as jest.Mock).mockReturnValue({
@@ -647,12 +647,17 @@ describe('SiteWizard', () => {
         expect(
             screen.getByText('site_generation_step_launch'),
         ).toBeInTheDocument();
+        // z (precomputed, 1) runs before x (1) and y (2)
+        const precomputed = screen.getByText(
+            /site_generation_launch_group_precomputed\+.*"current":0,"total":1/,
+        );
+        const enrichments = screen.getByText(
+            /site_generation_launch_group_enrichment\+.*"current":0,"total":2/,
+        );
         expect(
-            screen.getByText(/site_generation_enrichments\+.*"total":2/),
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(/site_generation_precomputed\+.*"total":1/),
-        ).toBeInTheDocument();
+            precomputed.compareDocumentPosition(enrichments) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy();
     });
 
     it('offers to stop the configuration while the file is sent', async () => {

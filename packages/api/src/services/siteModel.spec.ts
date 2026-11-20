@@ -75,13 +75,37 @@ describe('getSiteModelLaunchView', () => {
             launchOrder: [],
         });
         (readLaunchSteps as jest.Mock).mockResolvedValue([
-            { type: 'enrichment' },
-            { type: 'precomputed' },
-            { type: 'enrichment' },
+            {
+                name: 'p',
+                type: 'precomputed',
+                position: 1,
+                targetId: 't1',
+                attempts: 0,
+            },
+            {
+                name: 'e1',
+                type: 'enrichment',
+                position: 2,
+                targetId: 't2',
+                attempts: 0,
+            },
+            {
+                name: 'e2',
+                type: 'enrichment',
+                position: 3,
+                targetId: 't3',
+                attempts: 0,
+            },
         ]);
         expect(await getSiteModelLaunchView(ctx)).toEqual({
             enrichment: 2,
             precomputed: 1,
+            // only what the admin shows
+            steps: [
+                { name: 'p', type: 'precomputed', position: 1 },
+                { name: 'e1', type: 'enrichment', position: 2 },
+                { name: 'e2', type: 'enrichment', position: 3 },
+            ],
         });
         expect(readLaunchSteps).toHaveBeenCalledWith(ctx, []);
     });
@@ -93,6 +117,7 @@ describe('getSiteModelLaunchView', () => {
         expect(await getSiteModelLaunchView(ctx)).toEqual({
             enrichment: 0,
             precomputed: 0,
+            steps: [],
         });
     });
 });

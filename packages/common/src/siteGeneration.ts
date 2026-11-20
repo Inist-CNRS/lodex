@@ -1,4 +1,8 @@
-import type { ModelLaunchStepType, SiteInfo } from './models/modelCatalog';
+import {
+    type ModelLaunchStep,
+    type ModelLaunchStepType,
+    type SiteInfo,
+} from './models/modelCatalog';
 
 // publishing: every step is done, the site is being published (autoPublish)
 export type SiteGenerationStatus =
@@ -72,8 +76,20 @@ export type SiteModelView = {
     modelId: string;
 };
 
-// How many enrichments and precomputations a relaunch would run
+// How many enrichments and precomputations a relaunch would run, and which
 export type SiteModelLaunchView = {
     enrichment: number;
     precomputed: number;
+    steps: ModelLaunchStep[];
 };
+
+// The launch steps to come, before they run: waiting (the admin sorts them)
+export const toWaitingLaunchSteps = (
+    steps: ModelLaunchStep[],
+): SiteGenerationStepView[] =>
+    steps.map(({ name, type, position }) => ({
+        name,
+        type,
+        position,
+        state: 'waiting',
+    }));

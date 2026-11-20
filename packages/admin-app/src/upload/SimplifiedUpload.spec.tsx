@@ -33,8 +33,16 @@ const model: CatalogModel = {
     doc: 'http://a.doc',
     importTypes: ['url', 'text', 'file'],
 };
-const launch = { enrichment: 2, precomputed: 1 };
-const noLaunch = { enrichment: 0, precomputed: 0 };
+const launch = {
+    enrichment: 2,
+    precomputed: 1,
+    steps: [
+        { name: 'p', type: 'precomputed' as const, position: 1 },
+        { name: 'e1', type: 'enrichment' as const, position: 2 },
+        { name: 'e2', type: 'enrichment' as const, position: 3 },
+    ],
+};
+const noLaunch = { enrichment: 0, precomputed: 0, steps: [] };
 
 describe('SimplifiedUpload', () => {
     const addData = jest.fn();

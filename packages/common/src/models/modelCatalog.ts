@@ -67,6 +67,15 @@ export const catalogModelSchema = z
     );
 
 export type ModelLaunchStep = z.infer<typeof launchStepSchema>;
+
+// The run order of launch steps: by position, a precomputation before an
+// enrichment of the same position (for a stable sort)
+export const compareLaunchSteps = (
+    a: Pick<ModelLaunchStep, 'position' | 'type'>,
+    b: Pick<ModelLaunchStep, 'position' | 'type'>,
+) =>
+    a.position - b.position ||
+    Number(b.type === 'precomputed') - Number(a.type === 'precomputed');
 export type CatalogModel = z.infer<typeof catalogModelSchema>;
 
 // The steps of a type in the model's launch order (0 without a launch order)
@@ -91,3 +100,9 @@ export const getModelTitleKey = (id: string) => `mc_${id}_title`;
 export const getModelNameKey = (id: string) => `mc_${id}_name`;
 export const getModelDescriptionKey = (id: string) => `mc_${id}_description`;
 export const getModelImportHelpKey = (id: string) => `mc_${id}_import_help`;
+// the label of a launch step for a model (optional, else its rank is shown)
+export const getModelLaunchStepLabelKey = (
+    id: string,
+    type: ModelLaunchStepType,
+    name: string,
+) => `mc_${id}_${type}_${name}`;

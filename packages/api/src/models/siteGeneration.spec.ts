@@ -214,7 +214,13 @@ describe('siteGeneration model', () => {
             },
         ];
         const estimate = { enrichment: 2, precomputed: 1 };
-        const add = { importJobId: 'job1', autoPublish: true, steps, estimate };
+        const add = {
+            importJobId: 'job1',
+            autoPublish: true,
+            steps,
+            estimate,
+            modelId: 'hal2lodex',
+        };
 
         it('creates a running data add generation in the data phase', async () => {
             const started = await siteGeneration.startDataAdd(add);
@@ -227,6 +233,7 @@ describe('siteGeneration model', () => {
                 importJobId: 'job1',
                 autoPublish: true,
                 estimate: { enrichment: 2, precomputed: 1 },
+                modelId: 'hal2lodex',
                 position: 0,
                 version: 0,
             });

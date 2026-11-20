@@ -64,6 +64,7 @@ export const startWizardGeneration = async (
                   precomputed: countLaunchSteps(model, 'precomputed'),
               }
             : undefined,
+        plannedSteps: model.launchOrder,
     });
     return { runId: generation.runId };
 };

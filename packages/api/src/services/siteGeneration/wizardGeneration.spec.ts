@@ -83,6 +83,12 @@ describe('startWizardGeneration', () => {
             choice,
             importJobId: 'job-1',
             estimate: { enrichment: 2, precomputed: 1 },
+            // shown, waiting, until the launch reads the steps of the site
+            plannedSteps: [
+                { name: 'a', type: 'enrichment', position: 0 },
+                { name: 'b', type: 'precomputed', position: 1 },
+                { name: 'c', type: 'enrichment', position: 2 },
+            ],
         });
     });
 

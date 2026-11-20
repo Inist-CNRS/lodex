@@ -37,5 +37,13 @@ export const getSiteModelLaunchView = async (
         return null;
     }
     const steps = await readLaunchSteps(ctx, found.model.launchOrder);
-    return countStepsByType(steps);
+    return {
+        ...countStepsByType(steps),
+        // only what the admin shows
+        steps: steps.map(({ name, type, position }) => ({
+            name,
+            type,
+            position,
+        })),
+    };
 };

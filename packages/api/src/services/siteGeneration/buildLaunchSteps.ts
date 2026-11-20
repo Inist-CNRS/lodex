@@ -1,5 +1,9 @@
 import groupBy from 'lodash/groupBy';
-import type { ModelLaunchStep, ModelLaunchStepType } from '@lodex/common';
+import {
+    compareLaunchSteps,
+    type ModelLaunchStep,
+    type ModelLaunchStepType,
+} from '@lodex/common';
 import { DATASET_ID } from '../../models/dataSource';
 import type { Enrichment } from '../../models/enrichment';
 import type { PreComputation } from '../../models/precomputed';
@@ -104,11 +108,7 @@ export const buildLaunchSteps = (
 
 // Array.prototype.sort is stable: the original order is kept on ties
 const sortSteps = (steps: SiteGenerationStep[]) =>
-    [...steps].sort(
-        (a, b) =>
-            a.position - b.position ||
-            Number(b.type === 'precomputed') - Number(a.type === 'precomputed'),
-    );
+    [...steps].sort(compareLaunchSteps);
 
 export const countStepsByType = (
     steps: Pick<SiteGenerationStep, 'type'>[],
