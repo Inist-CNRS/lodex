@@ -30,17 +30,18 @@ Run from the repository root.
 
 ## Packages
 
-| Package                    | Role                                                                               |
-| -------------------------- | ---------------------------------------------------------------------------------- |
-| `packages/api`             | Koa API, Bull queues and job processors, serves the three apps                     |
-| `packages/workers`         | ezs HTTP server (port 31976): one endpoint per `.ini` script. Not the Bull workers |
-| `packages/ezsLodex`        | `@ezs/lodex`, the Lodex ezs statements (`LodexUpdateDocuments`, `paginateQuery`…)  |
-| `packages/transformers`    | `@ezs/transformers`, ezs statements for the field transformers                     |
-| `packages/common`          | Code shared by the API and the apps (statuses, constants, types)                   |
-| `packages/frontend-common` | Components, state and hooks shared by the apps                                     |
-| `packages/admin-app`       | Back office of one instance (data, enrichments, model, publication)                |
-| `packages/public-app`      | Published website                                                                  |
-| `packages/root-admin-app`  | Management of the instances (tenants)                                              |
+| Package                    | Role                                                                                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/api`             | Koa API, Bull queues and job processors, serves the three apps                                                                          |
+| `packages/workers`         | ezs HTTP server (port 31976): one endpoint per `.ini` script. Not the Bull workers                                                      |
+| `packages/ezsLodex`        | `@ezs/lodex`, the Lodex ezs statements (`LodexUpdateDocuments`, `paginateQuery`…)                                                       |
+| `packages/transformers`    | `@ezs/transformers`, ezs statements for the field transformers                                                                          |
+| `packages/common`          | Code shared by the API and the apps (statuses, constants, types)                                                                        |
+| `packages/frontend-common` | Components, state and hooks shared by the apps                                                                                          |
+| `packages/admin-app`       | Back office of one instance (data, enrichments, model, publication)                                                                     |
+| `packages/public-app`      | Published website                                                                                                                       |
+| `packages/root-admin-app`  | Management of the instances (tenants)                                                                                                   |
+| `packages/@recuperateur`   | Vendored copies of `async-busboy` and `resumablejs` (`file:` dependencies of the root `package.json`), used for the uploads. Not on npm |
 
 `@ezs/lodex` is loaded from its compiled `lib/` (git-ignored): after a change in `packages/ezsLodex`, rebuild it (`cd packages/ezsLodex && npm run build`) and restart the `workers` container. See the "Development" section of `README.md`.
 
@@ -57,7 +58,7 @@ Everything is in `packages/api/src/workers`. Bull 4, not BullMQ. Redis is `REDIS
 -   One queue per tenant with a single processor of concurrency 1 (`workers/index.ts`): **a tenant runs one job at a time**, whatever its type.
 -   The processor dispatches on `job.data.jobType`: `publisher`, `enricher`, `retry-enricher`, `precomputer`, `import`, `model-importer`.
 -   Queues are `lifo`: among the waiting jobs, the newest runs first.
--   A publisher or import job that starts removes every other waiting job of its type (`cleanWaitingJobsOfType`): one publication is enough. Code that waits for "its" publisher job must cope with that job disappearing.
+-   A publisher or import job that starts removes every other waiting job of its type (`cleanWaitingJobsOfType`): one publication is enough. Cancelling the active publisher job removes the waiting publisher jobs too (`cancelJob`). Code that waits for "its" publisher job must cope with that job disappearing.
 -   Only the last 10 completed and 10 failed jobs are kept: a finished job may already be gone when you look for it.
 -   Jobs are queued by the helpers of `workers/tools.ts` (`queuePublisher`…) and `services/launchTasks.ts` (`queueEnrichment`, `queuePrecomputed`), called from the routes in `controller/api`.
 -   Progress: `services/progress.ts` (in memory, per tenant), pushed over socket.io on `<dbName>_<tenant>-progress`, `-publisher`, `-enricher`, `-precomputer`, `-import`. Job logs go through `jobLogger` (`workers/tools.ts`) and are read with `GET /api/job/:id/logs`.
@@ -92,5 +93,5 @@ Same idea, but on the whole dataset and asynchronous (`services/precomputed/prec
 `packages/api/src/services/siteGeneration`: a Mongo document that chains enrichments, precomputed and the publication as ordinary queue jobs (kinds `wizard` and `addData`).
 
 -   Statuses: `running`, `publishing`, `error`, `stopping` (active), `done`, `stopped`.
--   `sweep.ts` advances the generations on each job `completed` / `failed` event and on a timer; a failing step is relaunched up to 3 times.
+-   `sweep.ts` advances the generations on each `completed` / `failed` event of an enrichment, precomputed or publisher job (`STEP_JOB_TYPES` in `workers/index.ts`), and on a timer (`siteGenerationSweepInterval`, 30 s) for everything else, imports included; a failing step is relaunched up to 3 times.
 -   While a generation is active, the launch routes are refused (`refusedDuringSiteGeneration`).
