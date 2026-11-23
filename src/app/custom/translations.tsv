@@ -1701,3 +1701,6 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "similar_max_resources"	"Maximum number of resources"	"Nombre de ressources maximum"
 "similar_min_similarity"	"Minimum similarity degree (0 to 1)"	"Degré de similarité minimum (0 à 1)"
 "similar_show_min_similarity"	"Show the minimum similarity degree"	"Indiquer le degré de similarité minimum en front"
+"similarity_degree"	"Similarity degree: %{similarity}"	"Degré de similarité : %{similarity}"
+"min_similarity_sentence"	"The resources below have a similarity degree of at least"	"Les ressources ci-dessous ont un degré de similarité d'au moins"
+"see_more_result_count"	"More results (%{shown}/%{total})"	"Plus de résultats (%{shown}/%{total})"

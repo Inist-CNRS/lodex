@@ -2,16 +2,30 @@ import { useState } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import memoize from 'lodash/memoize';
 
 import LodexResource from '../../utils/components/LodexResource';
 import injectData from '../../injectData';
 import stylesToClassname from '../../../utils/stylesToClassName';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { formatSimilarity } from './similarity';
 
 const createStyles = memoize((spaceWidth) =>
     stylesToClassname(
         {
+            // same grey as the field label
+            minSimilarity: {
+                color: grey[500],
+                margin: '0 0 1em',
+            },
+            similarity: {
+                marginTop: '1em',
+                color: '#757575',
+                fontSize: '13px',
+                lineHeight: '16px',
+                textAlign: 'left',
+            },
             list: {
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -59,9 +73,11 @@ interface ResourcesGridViewProps {
     spaceWidth: string;
     filterFormatData(...args: unknown[]): unknown;
     allowToLoadMore: boolean;
+    params?: { minSimilarity?: number };
+    showMinSimilarity?: boolean;
 }
 
-const ResourcesGridView = ({
+export const ResourcesGridView = ({
     field: _field,
     data,
     total,
@@ -72,21 +88,47 @@ const ResourcesGridView = ({
     spaceWidth,
     filterFormatData,
     allowToLoadMore,
+    params,
+    showMinSimilarity,
 }: ResourcesGridViewProps) => {
-    const { translate } = useTranslate();
+    const { translate, locale } = useTranslate();
     const [more, setMore] = useState(pageSize);
+
+    const isSimilarityMode = data.some(
+        (entry) =>
+            typeof (entry as { similarity?: unknown }).similarity === 'number',
+    );
 
     const handleMore = () => {
         const newMore = more + pageSize;
         setMore(newMore);
-        filterFormatData({ maxSize: newMore });
+        if (!isSimilarityMode) {
+            filterFormatData({ maxSize: newMore });
+        }
     };
 
     const styles = createStyles(spaceWidth);
-    const filteredData = allowToLoadMore ? data.slice(0, more) : data;
+    const filteredData =
+        isSimilarityMode || allowToLoadMore ? data.slice(0, more) : data;
+    const minSimilarity = params?.minSimilarity;
+    const showSentence =
+        isSimilarityMode &&
+        showMinSimilarity &&
+        typeof minSimilarity === 'number';
+    // Pagination is local in similarity mode: the total is what was received.
+    const showMore = isSimilarityMode
+        ? filteredData.length < data.length
+        : allowToLoadMore && more < total;
 
     return (
         <div>
+            {showSentence && (
+                // @ts-expect-error TS2339
+                <p className={styles.minSimilarity}>
+                    {translate('min_similarity_sentence')}{' '}
+                    <strong>{formatSimilarity(minSimilarity, locale)}</strong>
+                </p>
+            )}
             {/*
             // @ts-expect-error TS2322 */}
             <ul className={styles.list}>
@@ -104,12 +146,30 @@ const ResourcesGridView = ({
                                 titleSize={titleSize}
                                 summarySize={summarySize}
                                 openInNewTab={openInNewTab}
+                                footer={
+                                    typeof (entry as { similarity?: unknown })
+                                        .similarity === 'number' ? (
+                                        // @ts-expect-error TS2322
+                                        <div className={styles.similarity}>
+                                            {translate('similarity_degree', {
+                                                similarity: formatSimilarity(
+                                                    (
+                                                        entry as {
+                                                            similarity: number;
+                                                        }
+                                                    ).similarity,
+                                                    locale,
+                                                ),
+                                            })}
+                                        </div>
+                                    ) : undefined
+                                }
                             />
                         </div>
                     </li>
                 ))}
             </ul>
-            {allowToLoadMore && more < total && (
+            {showMore && (
                 // @ts-expect-error TS2322
                 <div className={styles.button}>
                     <Button
@@ -117,7 +177,12 @@ const ResourcesGridView = ({
                         onClick={handleMore}
                         startIcon={null}
                     >
-                        {translate('see_more_result')}
+                        {isSimilarityMode
+                            ? translate('see_more_result_count', {
+                                  shown: filteredData.length,
+                                  total: data.length,
+                              })
+                            : translate('see_more_result')}
                     </Button>
                 </div>
             )}
