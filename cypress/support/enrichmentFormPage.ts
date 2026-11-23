@@ -4,6 +4,9 @@ export const openEnrichment = () => {
     adminNavigation.goToData();
     cy.get('.sidebar').contains('Enrichment').click({ force: true });
     cy.waitForNetworkIdle(500);
+    // Attendre que les boutons de la toolbar soient visibles et stables
+    cy.contains('Run All', { timeout: 15000 }).should('be.visible');
+    cy.contains('Add more', { timeout: 15000 }).should('be.visible');
 };
 
 export const fillAdvancedEnrichment = (name = 'Enrichment') => {
