@@ -100,8 +100,9 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             );
             const [initialLoadingDone, setInitialLoadingDone] = useState(false);
 
-            const isFormatLoading = useSelector((state: any) =>
-                get(state, 'dataset.formatLoading', false),
+            const isFormatLoading = useSelector(
+                (state: any) =>
+                    !!inputValue && get(state, 'dataset.formatLoading', false),
             );
             const { isFormatLoaded, formatData, formatTotal, formatError } =
                 useMemo(() => {
@@ -216,6 +217,9 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 return <Loading>{translate('loading')}</Loading>;
             }
 
+            const showLoader =
+                !!inputValue && (isAnimationPlaying || isFormatLoading);
+
             return (
                 // @ts-expect-error TS2322
                 <div style={styles.format.container}>
@@ -230,7 +234,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                                 : 'injectDataLoadingEnd',
                         }}
                     ></div>
-                    {isAnimationPlaying || isFormatLoading ? (
+                    {showLoader ? (
                         <CircularProgress
                             sx={styles.format.progress}
                             variant="indeterminate"
