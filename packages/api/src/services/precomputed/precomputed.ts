@@ -1,4 +1,4 @@
-import { ProgressStatus, TaskStatus } from '@lodex/common';
+import { ProgressStatus, sanitizeUris, TaskStatus } from '@lodex/common';
 import streamToPromise from 'stream-to-promise';
 import config from 'config';
 import { unlinkFile } from '../fsHelpers';
@@ -390,6 +390,17 @@ const tryParseJsonString = (str: any) => {
     }
 };
 
+// The id is the uri of the published resource (the import uri, prefixed by
+// `uid:/` at publication), so the results can be joined with publishedDataset.
+export const toPrecomputedEntry = (entry: any, sourceColumns: string[]) => {
+    const columns = sourceColumns.map((column) => entry[column]);
+    return {
+        id: sanitizeUris({ uri: entry.uri }).uri,
+        value: tryParseJsonString(columns.length > 1 ? columns : columns[0]),
+        name: sourceColumns, // special case, see vectors.ini
+    };
+};
+
 export const processPrecomputed = async (precomputed: any, ctx: any) => {
     const precomputedId = precomputed._id.toString();
     let logData = {};
@@ -432,21 +443,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
                 if (self.isLast()) {
                     return feed.close();
                 }
-                const colums: any = [];
-                const columsNames: any = [];
-                precomputed.sourceColumns.map((column: any) => {
-                    colums.push(entry[column]);
-                });
-                precomputed.sourceColumns.map((column: any) => {
-                    columsNames.push(column);
-                });
-                feed.send({
-                    id: entry.uri,
-                    value: tryParseJsonString(
-                        colums.length > 1 ? colums : colums[0],
-                    ),
-                    name: columsNames, // special case, see vectors.ini
-                });
+                feed.send(toPrecomputedEntry(entry, precomputed.sourceColumns));
             }),
         )
         .pipe(
