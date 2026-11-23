@@ -6,6 +6,7 @@ Publishes a dataset (csv, json, xml…) as a website, with a back office to impo
 
 -   Branch: `<you>/<ticket number>-<short-description>` (ex: `jane/3825-fix-import`). No ticket: no number in the branch name.
 -   PR description: `Closes #<ticket number>` when the PR finishes the ticket.
+-   Before opening a PR, check that it is linked to a ticket: its number in the branch name, or `Closes #<ticket number>` in the description. If it is not, ask the author whether that is intended before creating the PR: a PR without a linked ticket moves no card, and adding the link afterwards only counts once the PR is closed and reopened.
 -   The ticket number in the branch name or the `Closes #N` moves the ticket on the [Project board](https://github.com/orgs/Inist-CNRS/projects/15) (see `.github/workflows/README.md`). Never write `Closes #N` / `Fixes #N` for a ticket the PR does not finish, even as an example.
 -   Commit messages and PR titles follow [Conventional Commits](https://www.conventionalcommits.org): `feat(enrichment): …`, `fix(import): …`, `ci: …`.
 
