@@ -264,10 +264,10 @@ describe('SiteGenerationDialog', () => {
             { french: true },
         );
         expect(
-            await screen.findByText('Configuration du site en cours…'),
+            await screen.findByText('Génération du site en cours…'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('La configuration peut prendre du temps'),
+            screen.getByText(/^La génération peut prendre du temps/),
         ).toBeInTheDocument();
         // the steps show the progress: no pages counter as in the wizard
         expect(screen.queryByText('2/4')).not.toBeInTheDocument();
@@ -303,9 +303,7 @@ describe('SiteGenerationDialog', () => {
             screen.getByText(byText('Enrichissements 0/7')),
         ).toBeInTheDocument();
         expect(screen.queryByText('Réessayer')).toBeNull();
-        expect(
-            screen.getByText('Arrêter la configuration'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Arrêter la génération')).toBeInTheDocument();
     });
 
     it('tells which launch steps are tried again, and why', async () => {
@@ -982,7 +980,7 @@ describe('SiteGenerationDialog', () => {
         });
         expect(await screen.findByText(/^Arrêt en cours…/)).toBeInTheDocument();
         expect(
-            screen.getByText('Arrêter la configuration').closest('button'),
+            screen.getByText('Arrêter la génération').closest('button'),
         ).toBeDisabled();
     });
 
