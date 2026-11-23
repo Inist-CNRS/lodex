@@ -323,7 +323,9 @@ describe('SiteWizard', () => {
             screen.getByText('site_wizard_site_info_hint'),
         ).toBeInTheDocument();
         expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue('');
-        expect(screen.getByLabelText('site_wizard_site_subtitle')).toHaveValue('');
+        expect(screen.getByLabelText('site_wizard_site_subtitle')).toHaveValue(
+            '',
+        );
         // both fields are optional
         expect(button('site_wizard_next')).toBeEnabled();
     });
@@ -556,7 +558,9 @@ describe('SiteWizard', () => {
         expect(screen.getByText('2/5')).toBeInTheDocument();
         expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
         await userEvent.click(button('site_wizard_next'));
-        expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue('My site');
+        expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue(
+            'My site',
+        );
     });
 
     it('generates the site with the chosen model, data, name, description and theme, only once', async () => {
@@ -866,7 +870,10 @@ describe('SiteWizard', () => {
         await goToSiteInfoStep();
         clearError.mockClear();
         await typeSiteName('My site');
-        await userEvent.type(screen.getByLabelText('site_wizard_site_subtitle'), 'About');
+        await userEvent.type(
+            screen.getByLabelText('site_wizard_site_subtitle'),
+            'About',
+        );
         expect(clearError).not.toHaveBeenCalled();
     });
 
@@ -911,7 +918,9 @@ describe('SiteWizard', () => {
         );
         await userEvent.click(button('site_wizard_previous'));
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue('My site');
+        expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue(
+            'My site',
+        );
     });
 
     it('keeps the error displayed on the data step, where a failed import is fixed', async () => {
