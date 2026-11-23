@@ -24,7 +24,7 @@ export const SiteInfoStep = ({
             </Typography>
             <TextField
                 fullWidth
-                label={translate('name')}
+                label={translate('site_wizard_site_title')}
                 value={siteName}
                 onChange={(e) => onSiteNameChange(e.target.value)}
                 sx={{ mt: 3 }}
@@ -33,7 +33,7 @@ export const SiteInfoStep = ({
                 fullWidth
                 multiline
                 minRows={2}
-                label={translate('description')}
+                label={translate('site_wizard_site_subtitle')}
                 value={siteDescription}
                 onChange={(e) => onSiteDescriptionChange(e.target.value)}
                 sx={{ mt: 2 }}
