@@ -215,6 +215,11 @@ const styles = {
         opacity: 0.5,
         cursor: 'not-allowed',
     },
+    // ace keeps a placeholder on one line: a long example (a query url) wraps
+    textPlaceholder: {
+        whiteSpace: 'pre-wrap',
+        overflowWrap: 'anywhere',
+    },
     dropzonePreview: {
         justifyContent: 'center',
         '& .MuiGrid-item, & .MuiChip-root': {
@@ -254,6 +259,8 @@ export type DatasetSourceInputProps = {
     onUrlChange: (url: string) => void;
     text: string;
     onTextChange: (text: string) => void;
+    // shown in the free input while it is empty
+    textPlaceholder?: string;
     // hides the per-tab descriptions, which tell the user to choose a loader
     hideDescriptions?: boolean;
     // the tabs offered, in this order (all by default)
@@ -313,6 +320,7 @@ export const DatasetSourceInput = ({
     onUrlChange,
     text,
     onTextChange,
+    textPlaceholder,
     hideDescriptions = false,
     tabs = TABS,
     fileHintKey = 'upload_formats_limit',
@@ -371,6 +379,7 @@ export const DatasetSourceInput = ({
                     '& .dropzone': styles.dropzone,
                     '& .disabledDropzone': styles.disabledDropzone,
                     '& .dropzonePreview': styles.dropzonePreview,
+                    '& .ace_placeholder': styles.textPlaceholder,
                     ...(narrow ? styles.narrowForm : {}),
                     ...(compact ? styles.compactForm : {}),
                     ...(compact && files.length > 0
@@ -561,6 +570,7 @@ export const DatasetSourceInput = ({
                             mode="json"
                             // the free input is not always JSON (e.g. a query URL): no syntax error cross
                             setOptions={{ useWorker: false }}
+                            placeholder={textPlaceholder}
                             input={{
                                 value: text,
                                 onChange: onTextChange,

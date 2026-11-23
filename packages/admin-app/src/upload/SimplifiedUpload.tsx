@@ -6,6 +6,7 @@ import PublishIcon from '@mui/icons-material/Publish';
 import type { FileObject } from 'mui-file-dropzone';
 import {
     getModelImportHelpKey,
+    getModelTextPlaceholderKey,
     getModelNameKey,
     type CatalogModel,
 } from '@lodex/common';
@@ -87,6 +88,7 @@ export const SimplifiedUpload = ({
     const choice = { relaunch: canRelaunch && relaunch, autoPublish };
     const uploadView = getDataAddUploadView(launch, choice);
     const importHelpKey = getModelImportHelpKey(model.id);
+    const textPlaceholderKey = getModelTextPlaceholderKey(model.id);
 
     const handleConfirm = async () => {
         setIsConfirmOpen(false);
@@ -157,6 +159,11 @@ export const SimplifiedUpload = ({
                 onUrlChange={setUrl}
                 text={text}
                 onTextChange={setText}
+                textPlaceholder={
+                    hasTranslation(textPlaceholderKey)
+                        ? translate(textPlaceholderKey)
+                        : undefined
+                }
                 tabs={model.importTypes}
                 // the model sets the loader: its formats are not the list
                 fileHintKey="upload_max_size"

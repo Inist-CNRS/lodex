@@ -1,6 +1,10 @@
 import { alpha, Box, Typography } from '@mui/material';
 import type { FileObject } from 'mui-file-dropzone';
-import { getModelImportHelpKey, type CatalogModel } from '@lodex/common';
+import {
+    getModelImportHelpKey,
+    getModelTextPlaceholderKey,
+    type CatalogModel,
+} from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     DatasetSourceInput,
@@ -56,16 +60,25 @@ type DataStepProps = {
 
 // The wizard has little height (13" screens): the input fills what the
 // intro leaves, and the step scrolls only below its minimum height
-export const DataStep = ({ model, ...inputProps }: DataStepProps) => (
-    <Box display="flex" flexDirection="column" height="100%">
-        {model && <DataStepIntro model={model} />}
-        {/* The loader comes from the model: hide the "choose the loader"
-            descriptions, and the formats list from the dropzone */}
-        <DatasetSourceInput
-            {...inputProps}
-            hideDescriptions
-            compact
-            fileHintKey="upload_max_size"
-        />
-    </Box>
-);
+export const DataStep = ({ model, ...inputProps }: DataStepProps) => {
+    const { translate } = useTranslate();
+    const textPlaceholderKey = model && getModelTextPlaceholderKey(model.id);
+    return (
+        <Box display="flex" flexDirection="column" height="100%">
+            {model && <DataStepIntro model={model} />}
+            {/* The loader comes from the model: hide the "choose the loader"
+                descriptions, and the formats list from the dropzone */}
+            <DatasetSourceInput
+                {...inputProps}
+                textPlaceholder={
+                    textPlaceholderKey && hasTranslation(textPlaceholderKey)
+                        ? translate(textPlaceholderKey)
+                        : undefined
+                }
+                hideDescriptions
+                compact
+                fileHintKey="upload_max_size"
+            />
+        </Box>
+    );
+};

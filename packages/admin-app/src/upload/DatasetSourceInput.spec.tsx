@@ -91,6 +91,18 @@ describe('<DatasetSourceInput />', () => {
         expect(getByText('invalid_url')).toBeTruthy();
     });
 
+    it('should show the placeholder in the empty free input', () => {
+        const { getByText } = render(
+            <DatasetSourceInput
+                {...props}
+                tab="text"
+                textPlaceholder="the placeholder"
+            />,
+        );
+
+        expect(getByText('the placeholder')).toBeTruthy();
+    });
+
     it('should render the alert between the tabs and the form', () => {
         const { getByRole, getByText } = render(
             <DatasetSourceInput {...props}>

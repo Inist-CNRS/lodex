@@ -100,6 +100,9 @@ export const getModelTitleKey = (id: string) => `mc_${id}_title`;
 export const getModelNameKey = (id: string) => `mc_${id}_name`;
 export const getModelDescriptionKey = (id: string) => `mc_${id}_description`;
 export const getModelImportHelpKey = (id: string) => `mc_${id}_import_help`;
+// shown in the free input while it is empty (optional)
+export const getModelTextPlaceholderKey = (id: string) =>
+    `mc_${id}_text_placeholder`;
 // the label of a launch step for a model (optional, else its rank is shown)
 export const getModelLaunchStepLabelKey = (
     id: string,

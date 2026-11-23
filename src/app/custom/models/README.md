@@ -44,6 +44,7 @@ Like precomputers, they are translated in [`src/app/custom/translations.tsv`](..
 -   `mc_<id>_title`: the model name
 -   `mc_<id>_description`: the model description
 -   `mc_<id>_import_help` (optional): help shown above the dataset input of the wizard. Missing in one language: no help.
+-   `mc_<id>_text_placeholder` (optional): example shown in the free input of the wizard while it is empty. Missing in one language: no placeholder.
 
 Each line has three columns separated by tabulations: the key, the English text and the French text, each between double quotes. To break a description or an import help into several lines, press Enter inside the double quotes.
 
