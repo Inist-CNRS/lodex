@@ -20,15 +20,40 @@ previous_tag=${PREVIOUS_TAG:-$(git describe --tags --abbrev=0 "$TAG^")}
 version=${TAG#v}
 echo "Tickets shipped between $previous_tag and $TAG"
 
-project_id=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json --jq .id)
-fields=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json)
-version_field_id=$(jq -r --arg n "$VERSION_FIELD" '.fields[] | select(.name == $n) | .id' <<<"$fields")
-status_field_id=$(jq -r '.fields[] | select(.name == "Status") | .id' <<<"$fields")
-status_option_id=$(jq -r --arg n "$TARGET_STATUS" '.fields[] | select(.name == "Status") | .options[] | select(.name == $n) | .id' <<<"$fields")
+# Plain GraphQL, not "gh project": with PROJECT_TOKEN it fails on "unknown owner type"
+project=$(gh api graphql -f query='
+    query($owner: String!, $number: Int!, $version: String!) {
+        organization(login: $owner) {
+            projectV2(number: $number) {
+                id
+                version: field(name: $version) { ... on ProjectV2Field { id } }
+                status: field(name: "Status") {
+                    ... on ProjectV2SingleSelectField { id options { id name } }
+                }
+            }
+        }
+    }' -f owner="$OWNER" -F number="$PROJECT_NUMBER" -f version="$VERSION_FIELD" --jq .data.organization.projectV2) || {
+    echo "PROJECT_TOKEN cannot read project $PROJECT_NUMBER of $OWNER (see the error above)" >&2
+    exit 1
+}
+project_id=$(jq -r .id <<<"$project")
+version_field_id=$(jq -r '.version.id // empty' <<<"$project")
+status_field_id=$(jq -r .status.id <<<"$project")
+status_option_id=$(jq -r --arg n "$TARGET_STATUS" '.status.options[] | select(.name == $n) | .id' <<<"$project")
 if [ -z "$version_field_id" ] || [ -z "$status_option_id" ]; then
     echo "Field \"$VERSION_FIELD\" or status \"$TARGET_STATUS\" not found in project $PROJECT_NUMBER" >&2
     exit 1
 fi
+
+# set_field <item id> <field id> <text=… | singleSelectOptionId=…>
+set_field() {
+    gh api graphql -f query='
+        mutation($project: ID!, $item: ID!, $field: ID!, $value: ProjectV2FieldValue!) {
+            updateProjectV2ItemFieldValue(input: {
+                projectId: $project, itemId: $item, fieldId: $field, value: $value
+            }) { projectV2Item { id } }
+        }' -f project="$project_id" -f item="$1" -f field="$2" -f "value[${3%%=*}]=${3#*=}" >/dev/null
+}
 
 prs=$(git log --format=%s "$previous_tag..$TAG" |
     sed -nE 's/^Merge pull request #([0-9]+) .*/\1/p; s/.*\(#([0-9]+)\)$/\1/p' | sort -u)
@@ -71,8 +96,8 @@ while read -r number kind; do
     move=$([ "$kind" = move ] && [ "$status" != Testing ] && echo 1 || true)
     echo "#$number ($kind): $VERSION_FIELD = $version, status \"$status\"${move:+ -> \"$TARGET_STATUS\"}"
     [ "${DRY_RUN:-}" = 1 ] && continue
-    gh project item-edit --project-id "$project_id" --id "$item_id" --field-id "$version_field_id" --text "$version" >/dev/null
+    set_field "$item_id" "$version_field_id" text="$version"
     if [ -n "$move" ]; then
-        gh project item-edit --project-id "$project_id" --id "$item_id" --field-id "$status_field_id" --single-select-option-id "$status_option_id" >/dev/null
+        set_field "$item_id" "$status_field_id" singleSelectOptionId="$status_option_id"
     fi
 done <<<"$tickets"
