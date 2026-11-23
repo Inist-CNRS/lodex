@@ -26,6 +26,11 @@ const createStyles = memoize((spaceWidth) =>
                 lineHeight: '16px',
                 textAlign: 'left',
             },
+            button: {
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '1em',
+            },
             list: {
                 display: 'flex',
                 flexWrap: 'wrap',
