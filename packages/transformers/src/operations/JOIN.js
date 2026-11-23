@@ -1,9 +1,12 @@
-import { rawTransformerWithArg } from './transformer.js';
-import documentationByOperation from './documentationByOperation.js';
+import { rawTransformerWithArg } from './transformer';
 
 export const join = (value, separator) => {
     if (!value) {
         return '';
+    }
+
+    if (typeof value === 'string') {
+        return value;
     }
 
     if (!Array.isArray(value)) {
@@ -20,7 +23,6 @@ transformation.getMetas = () => ({
     name: 'JOIN',
     type: 'transform',
     args: [{ name: 'separator', type: 'string' }],
-    docUrl: documentationByOperation['JOIN'],
 });
 
 export default transformation;
