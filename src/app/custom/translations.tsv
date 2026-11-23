@@ -1557,6 +1557,7 @@
 "mc_theses-fr_name"	"Thèses.fr"	"Thèses.fr"
 "mc_theses-fr_description"	"This model builds a LODEX site for exploring and visualizing data on French doctoral theses, defended or in progress, from queries to the theses.fr API. It provides transformations, indicators and visualizations that make it easier to analyze thesis corpora."	"Ce modèle permet de construire un site LODEX d’exploration et de visualisation des données relatives aux thèses de doctorat françaises, soutenues ou en préparation, à partir de requêtes vers l’API de thèses.fr. Il propose des transformations, des indicateurs et des visualisations facilitant l’analyse des corpus de thèses."
 "mc_theses-fr_import_help"	"Paste the URL of your theses.fr query in the input below."	"Copiez-collez l'URL de votre requête theses.fr dans la zone de saisie ci-dessous."
+"mc_theses-fr_text_placeholder"	"E.g.: https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"	"Ex : https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"
 "mc_theses-fr_enrichment_xml"	"Retrieval of XML records"	"Récupération des notices XML"
 "mc_theses-fr_enrichment_resume"	"Retrieval of French abstracts"	"Récupération des résumés en français"
 "mc_theses-fr_enrichment_resumeEN"	"Retrieval of English abstracts"	"Récupération des résumés en anglais"
@@ -1577,6 +1578,7 @@
 "mc_openalex_import_help"	"Paste your OpenAlex query in the input below, then append &api_key= to the end of the URL, followed by your OpenAlex API key.
 E.g.: https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&corpus=all&per_page=10&page=1&api_key=YOUR_API_KEY"	"Copiez-collez votre requête OpenAlex dans la zone de saisie ci-dessous, puis ajoutez &api_key= à la fin de l'URL, suivi de votre clé API OpenAlex.
 Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&corpus=all&per_page=10&page=1&api_key=VOTRE_CLE_API"
+"mc_openalex_text_placeholder"	"E.g.: https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&api_key=YOUR_API_KEY"	"Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&api_key=VOTRE_CLE_API"
 "mc_istexsearch_title"	"ISTEX Search model (under construction)"	"Modèle Istex Search (en construction)"
 "mc_istexsearch_name"	"Istex Search"	"Istex Search"
 "mc_istexsearch_description"	"Test model for importing an archive exported from ISTEX Search."	"Modèle de test pour importer une archive exportée depuis Istex Search."

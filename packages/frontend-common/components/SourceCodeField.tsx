@@ -17,6 +17,7 @@ type SourceCodeFieldProps = {
     width?: string;
     height?: string;
     setOptions?: IAceOptions;
+    placeholder?: string;
 };
 
 export const SourceCodeField = ({
