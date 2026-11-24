@@ -33,6 +33,7 @@ const getCtx = ({ subresources }: any = {}) => ({
     dataset: {
         findLimitFromSkip: 'dataset.findLimitFromSkip()',
         findBy: 'dataset.findBy()',
+        updateMany: jest.fn(),
     },
     subresource: {
         findAll: jest.fn().mockImplementation(() => subresources || []),
@@ -146,6 +147,26 @@ describe('publishDocuments', () => {
 
             it('should call ctx.transformAllDocuments one time (for main resource)', () => {
                 expect(transformAllDocuments).toHaveBeenCalledTimes(0);
+            });
+
+            it('should mark the rows as published once they are', () => {
+                expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
+                    { _lodexPublished: { $ne: true } },
+                    { $set: { _lodexPublished: true } },
+                );
+            });
+
+            it('should not mark the rows of a cancelled publication', async () => {
+                const cancelledCtx = {
+                    ...getCtx(),
+                    job: { ...job, isActive: () => false },
+                };
+                await publishDocumentsFactory({
+                    versionTransformerDecorator,
+                    getDocumentTransformer,
+                    transformAllDocuments,
+                })(cancelledCtx, 'count', fields);
+                expect(cancelledCtx.dataset.updateMany).not.toHaveBeenCalled();
             });
         });
 

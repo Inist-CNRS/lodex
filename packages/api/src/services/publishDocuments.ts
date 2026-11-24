@@ -247,6 +247,16 @@ export const publishDocumentsFactory =
         ctx.job.isActive()
             ? jobLogger.info(ctx.job, 'Documents Indexed')
             : jobLogger.error(ctx.job, 'Indexation cancelled');
+
+        // A published row is marked, so that the next import only publishes
+        // the new ones. Not those of a cancelled publication: it stopped
+        // before its end.
+        if (await ctx.job.isActive()) {
+            await ctx.dataset.updateMany(
+                { _lodexPublished: { $ne: true } },
+                { $set: { _lodexPublished: true } },
+            );
+        }
     };
 
 export default publishDocumentsFactory({

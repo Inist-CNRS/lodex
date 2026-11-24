@@ -10,42 +10,30 @@ export const saveParsedStream = async (ctx: any, parsedStream: any) => {
         return ctx.dataset.count();
     }
 
-    // When dataset is already published
-    // Next imports will "auto-publish" automatically
-    try {
-        await ctx.dataset.updateMany(
-            {},
-            { $set: { _lodexPublished: true } },
-            { multi: true },
-        );
+    await ctx.saveStream(parsedStream, ctx);
 
-        await ctx.publishedDataset.updateMany(
-            {},
-            { $set: { _lodexPublished: true } },
-            { multi: true },
-        );
-
-        await ctx.saveStream(parsedStream, ctx);
-
-        const fields = await ctx.field.findAll();
-        const collectionScopeFields = fields.filter((c: any) =>
-            [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
-        );
-
-        const count = await ctx.dataset.count({
-            _lodexPublished: { $exists: false },
-        });
-
-        await ctx.publishDocuments(ctx, count, collectionScopeFields);
-        await ctx.publishFacets(ctx, fields, false);
-
+    // The import of a site generation does not publish: the generation
+    // publishes at its end, once its enrichments are done. Its rows wait,
+    // unmarked, for that publication or the next one.
+    if (ctx.job?.data?.siteGenerationRunId) {
         return ctx.dataset.count();
-    } catch (error) {
-        await ctx.dataset.deleteOne({ _lodexPublished: { $exists: false } });
-        await ctx.publishedDataset.deleteOne({
-            _lodexPublished: { $exists: false },
-        });
-
-        throw error;
     }
+
+    // When dataset is already published
+    // Next imports will "auto-publish" automatically: every row not
+    // published yet, the ones an earlier import left waiting included.
+    // publishDocuments marks them once they are published.
+    const fields = await ctx.field.findAll();
+    const collectionScopeFields = fields.filter((c: any) =>
+        [SCOPE_COLLECTION, SCOPE_DOCUMENT].includes(c.scope),
+    );
+
+    const count = await ctx.dataset.count({
+        _lodexPublished: { $ne: true },
+    });
+
+    await ctx.publishDocuments(ctx, count, collectionScopeFields);
+    await ctx.publishFacets(ctx, fields, false);
+
+    return ctx.dataset.count();
 };

@@ -91,26 +91,18 @@ describe('saveParsedStream', () => {
             expect(ctx.dataset.deleteOne).not.toHaveBeenCalled();
         });
 
-        it('should have called updateMany on dataset and publishedDataset to set _lodexPublished to true', () => {
-            expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
-                {},
-                { $set: { _lodexPublished: true } },
-                { multi: true },
-            );
-            expect(ctx.publishedDataset.updateMany).toHaveBeenCalledWith(
-                {},
-                { $set: { _lodexPublished: true } },
-                { multi: true },
-            );
+        it('should not mark the rows as published itself: publishDocuments does it once they are', () => {
+            expect(ctx.dataset.updateMany).not.toHaveBeenCalled();
+            expect(ctx.publishedDataset.updateMany).not.toHaveBeenCalled();
         });
 
         it('should have called field.findAll', () => {
             expect(ctx.field.findAll).toHaveBeenCalled();
         });
 
-        it('should have called dataset.count to count unpublished document', () => {
+        it('should count the rows not published yet, the ones of an earlier import included', () => {
             expect(ctx.dataset.count).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
+                _lodexPublished: { $ne: true },
             });
         });
 
@@ -181,26 +173,18 @@ describe('saveParsedStream', () => {
             expect(ctx.publishedDataset.count).toHaveBeenCalled();
         });
 
-        it('should have called updateMany on dataset and publishedDataset to set _lodexPublished to true', () => {
-            expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
-                {},
-                { $set: { _lodexPublished: true } },
-                { multi: true },
-            );
-            expect(ctx.publishedDataset.updateMany).toHaveBeenCalledWith(
-                {},
-                { $set: { _lodexPublished: true } },
-                { multi: true },
-            );
+        it('should not mark the rows as published itself: publishDocuments does it once they are', () => {
+            expect(ctx.dataset.updateMany).not.toHaveBeenCalled();
+            expect(ctx.publishedDataset.updateMany).not.toHaveBeenCalled();
         });
 
         it('should have called field.findAll', () => {
             expect(ctx.field.findAll).toHaveBeenCalled();
         });
 
-        it('should have called dataset.count to count unpublished document', () => {
+        it('should count the rows not published yet, the ones of an earlier import included', () => {
             expect(ctx.dataset.count).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
+                _lodexPublished: { $ne: true },
             });
         });
 
@@ -218,13 +202,46 @@ describe('saveParsedStream', () => {
             expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream', ctx);
         });
 
-        it('should remove all unpublished document from dataset and publishedDataset', () => {
-            expect(ctx.dataset.deleteOne).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
-            });
-            expect(ctx.publishedDataset.deleteOne).toHaveBeenCalledWith({
-                _lodexPublished: { $exists: false },
-            });
+        it('should keep the imported rows: the next publication publishes them', () => {
+            expect(ctx.dataset.deleteOne).not.toHaveBeenCalled();
+            expect(ctx.publishedDataset.deleteOne).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('import of a site generation, on a published dataset', () => {
+        const ctx = {
+            job: { data: { siteGenerationRunId: 'run-1' } },
+            dataset: {
+                count: jest.fn().mockImplementation(() => 'count'),
+                updateMany: jest.fn(),
+            },
+            publishedDataset: {
+                count: jest.fn().mockImplementation(() => 1000),
+                updateMany: jest.fn(),
+            },
+            field: { findAll: jest.fn() },
+            saveStream: jest.fn(),
+            publishDocuments: jest.fn(),
+            publishFacets: jest.fn(),
+        };
+        let result: any;
+
+        beforeAll(async () => {
+            result = await saveParsedStream(ctx, 'parsedStream');
+        });
+
+        it('should save the rows and return their count', () => {
+            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream', ctx);
+            expect(result).toBe('count');
+        });
+
+        it('should not publish: the generation publishes at its end', () => {
+            expect(ctx.publishDocuments).not.toHaveBeenCalled();
+            expect(ctx.publishFacets).not.toHaveBeenCalled();
+        });
+
+        it('should leave the rows unmarked, for the next publication', () => {
+            expect(ctx.dataset.updateMany).not.toHaveBeenCalled();
         });
     });
 });
