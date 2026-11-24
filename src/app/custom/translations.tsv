@@ -440,6 +440,8 @@
 "formatEmphasedNumberDescription"	"This formatting changes the text to bold"	"Ce formatage modifie le texte en gras"
 "formatResourcesGrid"	"Other - Resources Grid"	"Autre - Grille de ressources"
 "formatResourcesGridDescription"	"The resource grid displays a list of resources on the home page with links to these resources. The characteristics displayed for each resource are: the Title and the Description, i.e. the field that has been marked DESCRIPTION in the Syndication box of the display format configuration."	"La grille de ressource permet d’afficher une liste de ressources sur la page d’accueil avec des liens vers ces ressources. Les caractéristiques affichées de chaque ressource sont : le Titre et la Description, c’est à dire le champ qui a reçu le marquage DESCRIPTION dans la case Syndication de la configuration du format d’affichage."
+"formatResourcesAccordion"	"Other - Resources accordion"	"Autre - Ressources en accordéon"
+"formatResourcesAccordionDescription"	"The resources accordion displays a list of resources with links to these resources. Each resource shows its Title on one line and its Description on three lines; an arrow unfolds them."	"Les ressources en accordéon affichent une liste de ressources avec des liens vers ces ressources. Chaque ressource montre son Titre sur une ligne et sa Description sur trois lignes ; une flèche permet de les déplier."
 "direction"	"direction"	"direction"
 "horizontal"	"horizontal"	"horizontal"
 "vertical"	"vertical"	"vertical"
