@@ -35,11 +35,15 @@ describe('Precomputation', () => {
         cy.waitForNetworkIdle(500);
         cy.contains('Precomputed data').click();
         cy.waitForNetworkIdle(500);
-        cy.contains('No rows').should('be.visible');
-        cy.findByLabelText('Select precomputed data').should(
-            'contain',
-            'Statistics (Not started)',
+        // nothing is selected, and a precomputation not run yet cannot be
+        cy.contains('Select precomputed data').should('be.visible');
+        cy.findByLabelText('Select precomputed data').click();
+        cy.findByRole('option', { name: 'Statistics (Not started)' }).should(
+            'have.attr',
+            'aria-disabled',
+            'true',
         );
+        cy.get('body').type('{esc}');
         adminNavigation.goToPreComputation();
         cy.waitForNetworkIdle(500);
         cy.contains('1–1 of 1').should('be.visible');
@@ -61,6 +65,7 @@ describe('Precomputation', () => {
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
         cy.contains('Precomputed data').click();
+        precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.findByLabelText('Select precomputed data').should(
             'contain',
@@ -95,6 +100,7 @@ describe('Precomputation', () => {
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
         cy.contains('Precomputed data').click();
+        precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.contains('1–25 of 30').should('be.visible');
 
@@ -130,6 +136,7 @@ describe('Precomputation', () => {
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
         cy.contains('Precomputed data').click();
+        precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.contains('1–25 of 26').should('be.visible');
     });
@@ -155,6 +162,7 @@ describe('Precomputation', () => {
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
         cy.contains('Precomputed data').click();
+        precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
 
         cy.contains('1–25 of 30').should('be.visible');
@@ -179,6 +187,7 @@ describe('Precomputation', () => {
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
         cy.contains('Precomputed data').click();
+        precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.contains('1–25 of 26').should('be.visible');
     });

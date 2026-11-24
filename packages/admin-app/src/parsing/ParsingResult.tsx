@@ -165,7 +165,7 @@ export const ParsingResultComponent = ({
     // the first documents, so they are reloaded too: lines saved after the
     // first reload may bring new keys.
     const loadedLines = precomputedId ? undefined : totalLoadedLines;
-    const source = [precomputedId ?? null, loadedLines ?? null];
+    const source = precomputedId ?? null;
 
     // Rows and columns are cached by react-query: coming back to a tab, a
     // page or a precomputation shows what was last fetched at once, then
@@ -173,7 +173,7 @@ export const ParsingResultComponent = ({
     // import, enrichment) are deduplicated: only the last one updates the grid.
     const filter = filterModel.items.at(0);
     const datasetQuery = useQuery({
-        queryKey: ['dataset-rows', ...source, { skip, limit, filter, sort }],
+        queryKey: ['dataset-rows', source, { skip, limit, filter, sort }],
         queryFn: () =>
             datasetApi.getData({ precomputedId, skip, limit, filter, sort }),
         keepPreviousData: true,
@@ -190,7 +190,7 @@ export const ParsingResultComponent = ({
     const isRefreshing = loadingParsingResult || datasetQuery.isFetching;
 
     const columnsQuery = useQuery({
-        queryKey: ['dataset-columns', ...source],
+        queryKey: ['dataset-columns', source],
         queryFn: async () => {
             const { columns, error } =
                 await datasetApi.getDataColumns(precomputedId);
@@ -203,6 +203,16 @@ export const ParsingResultComponent = ({
     });
     const columns = useMemo(() => columnsQuery.data ?? [], [columnsQuery.data]);
     const fetchColumns = columnsQuery.refetch;
+
+    // Not a part of the query keys: a line count seen before would bring back
+    // the rows and columns cached for it, older than the ones on screen.
+    const lastLoadedLines = useRef(loadedLines);
+    useEffect(() => {
+        if (lastLoadedLines.current === loadedLines) return;
+        lastLoadedLines.current = loadedLines;
+        fetchColumns();
+        fetchDataset();
+    }, [loadedLines, fetchColumns, fetchDataset]);
 
     const columnsToShow = useMemo(() => {
         const getColumnsToShow = () => {

@@ -193,6 +193,7 @@ describe('Enrichment', () => {
         cy.waitForNetworkIdle(2500);
 
         cy.findByText('Precomputed data').click();
+        precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(2500);
 
         cy.findByText('enrichment').should('be.visible');
