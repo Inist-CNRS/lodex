@@ -262,6 +262,10 @@ describe('Dataset Publication', () => {
             );
 
             cy.get('[data-testid="KeyboardArrowRightIcon"]').click();
+            // wait for the rows of the second page: the grid closes an open
+            // column menu when its rows change
+            cy.contains('26–40 of 40').should('be.visible');
+            cy.get('[data-rowindex=15]').should('not.exist');
 
             datagridFilter('firstName');
             cy.focused().type('Helga');
