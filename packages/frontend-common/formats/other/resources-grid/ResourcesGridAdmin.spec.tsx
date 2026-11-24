@@ -2,7 +2,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TestI18N } from '../../../i18n/I18NContext';
-import ResourcesGridAdmin, { defaultArgs } from './ResourcesGridAdmin';
+import ResourcesGridAdmin, {
+    defaultArgs,
+    toItemsPerRow,
+} from './ResourcesGridAdmin';
 import { precomputed } from './testFixtures';
 
 const similar = precomputed('/api/run/vsimilar-precomputed/');
@@ -222,6 +225,48 @@ describe('ResourcesGridAdmin', () => {
                 pageSize: 9,
                 params: expect.objectContaining({ maxSize: 9 }),
             }),
+        );
+    });
+
+    it('stores the resources per row and drops the old spaceWidth', async () => {
+        const user = userEvent.setup();
+        const onChange = setup(undefined, {
+            ...defaultArgs,
+            spaceWidth: '20%',
+        });
+
+        await user.click(screen.getByLabelText('resources_grid_items_per_row'));
+        await user.click(screen.getByRole('option', { name: '2' }));
+
+        const stored = onChange.mock.lastCall[0];
+        expect(stored.itemsPerRow).toBe(2);
+        expect(stored).not.toHaveProperty('spaceWidth');
+    });
+});
+
+describe('toItemsPerRow', () => {
+    it.each([
+        ['10%', 10],
+        ['20%', 5],
+        ['30%', 3],
+        ['50%', 2],
+        ['80%', 1],
+        ['100%', 1],
+    ])(
+        'converts an old spaceWidth of %s to %i per row',
+        (spaceWidth, count) => {
+            expect(toItemsPerRow({ spaceWidth })).toBe(count);
+        },
+    );
+
+    it('prefers itemsPerRow over spaceWidth', () => {
+        expect(toItemsPerRow({ itemsPerRow: 5, spaceWidth: '50%' })).toBe(5);
+    });
+
+    it('falls back to the default without a valid value', () => {
+        expect(toItemsPerRow({})).toBe(defaultArgs.itemsPerRow);
+        expect(toItemsPerRow({ itemsPerRow: 0, spaceWidth: 'abc' })).toBe(
+            defaultArgs.itemsPerRow,
         );
     });
 });

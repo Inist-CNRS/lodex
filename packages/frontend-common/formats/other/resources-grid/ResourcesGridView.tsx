@@ -10,9 +10,9 @@ import injectData from '../../injectData';
 import stylesToClassname from '../../../utils/stylesToClassName';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { formatSimilarity } from './similarity';
-import { toPageSize } from './ResourcesGridAdmin';
+import { toItemsPerRow, toPageSize } from './ResourcesGridAdmin';
 
-const createStyles = memoize((spaceWidth) =>
+const createStyles = memoize((itemsPerRow: number) =>
     stylesToClassname(
         {
             // same grey as the field label
@@ -52,7 +52,8 @@ const createStyles = memoize((spaceWidth) =>
                     margin: '0',
                 },
                 '@media all and (min-width: 60em)': {
-                    width: `${spaceWidth}`,
+                    // minus the 1% margin on each side
+                    width: `calc(${100 / itemsPerRow}% - 2%)`,
                     margin: '1%',
                 },
             },
@@ -76,7 +77,8 @@ interface ResourcesGridViewProps {
     titleSize: number;
     summarySize: number;
     openInNewTab: boolean;
-    spaceWidth: string;
+    itemsPerRow?: number;
+    spaceWidth?: string;
     filterFormatData(...args: unknown[]): unknown;
     allowToLoadMore: boolean;
     params?: { minSimilarity?: number };
@@ -91,6 +93,7 @@ export const ResourcesGridView = ({
     titleSize,
     summarySize,
     openInNewTab,
+    itemsPerRow,
     spaceWidth,
     filterFormatData,
     allowToLoadMore,
@@ -115,7 +118,7 @@ export const ResourcesGridView = ({
         }
     };
 
-    const styles = createStyles(spaceWidth);
+    const styles = createStyles(toItemsPerRow({ itemsPerRow, spaceWidth }));
     const filteredData =
         isSimilarityMode || allowToLoadMore ? data.slice(0, more) : data;
     const minSimilarity = params?.minSimilarity;
@@ -199,7 +202,7 @@ export const ResourcesGridView = ({
 };
 
 // @ts-expect-error TS7006
-const mapStateToProps = (_, { formatData, spaceWidth }) => {
+const mapStateToProps = (_, { formatData }) => {
     if (!formatData || !formatData.items) {
         return {
             data: [],
@@ -210,7 +213,6 @@ const mapStateToProps = (_, { formatData, spaceWidth }) => {
     return {
         data: formatData.items,
         total: formatData.total,
-        spaceWidth,
     };
 };
 

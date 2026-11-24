@@ -28,7 +28,7 @@ export const toPageSize = (value: unknown): number =>
 export const defaultArgs = {
     allowToLoadMore: true,
     pageSize: 6,
-    spaceWidth: '30%',
+    itemsPerRow: 3,
     titleSize: 100,
     summarySize: 400,
     openInNewTab: false,
@@ -36,6 +36,26 @@ export const defaultArgs = {
         maxSize: 5,
         orderBy: 'value/asc',
     },
+};
+
+export const ITEMS_PER_ROW_CHOICES = [1, 2, 3, 5, 10];
+
+// Fields saved before itemsPerRow store the card width as a percentage
+// (spaceWidth): 30% → 3 per row, 80% → 1.
+export const toItemsPerRow = ({
+    itemsPerRow,
+    spaceWidth,
+}: {
+    itemsPerRow?: unknown;
+    spaceWidth?: unknown;
+}): number => {
+    if (typeof itemsPerRow === 'number' && itemsPerRow >= 1) {
+        return Math.floor(itemsPerRow);
+    }
+    const percent = parseFloat(String(spaceWidth));
+    return percent > 0
+        ? Math.max(1, Math.floor(100 / percent))
+        : defaultArgs.itemsPerRow;
 };
 
 type ResourcesGridArgs = {
@@ -48,6 +68,7 @@ type ResourcesGridArgs = {
         minSimilarity?: number;
     };
     showMinSimilarity?: boolean;
+    itemsPerRow?: number;
     spaceWidth?: string;
     allowToLoadMore?: boolean;
     pageSize?: number;
@@ -86,11 +107,12 @@ const ResourcesGridAdminContent = ({
         );
     }, [storedMinSimilarity]);
 
-    const handleWidth = useCallback(
+    const handleItemsPerRow = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
+            const { spaceWidth: _spaceWidth, ...rest } = args;
             onChange({
-                ...args,
-                spaceWidth: event.target.value,
+                ...rest,
+                itemsPerRow: Number(event.target.value),
             });
         },
         [onChange, args],
@@ -197,7 +219,6 @@ const ResourcesGridAdminContent = ({
     );
 
     const {
-        spaceWidth,
         allowToLoadMore,
         pageSize,
         titleSize,
@@ -212,26 +233,18 @@ const ResourcesGridAdminContent = ({
                 <TextField
                     fullWidth
                     select
-                    label={translate('list_format_select_image_width')}
-                    onChange={handleWidth}
-                    value={spaceWidth || defaultArgs.spaceWidth}
+                    label={translate('resources_grid_items_per_row')}
+                    helperText={translate(
+                        'resources_grid_items_per_row_helper',
+                    )}
+                    onChange={handleItemsPerRow}
+                    value={toItemsPerRow(args)}
                 >
-                    <MenuItem value="10%">{translate('ten_percent')}</MenuItem>
-                    <MenuItem value="20%">
-                        {translate('twenty_percent')}
-                    </MenuItem>
-                    <MenuItem value="30%">
-                        {translate('thirty_percent')}
-                    </MenuItem>
-                    <MenuItem value="50%">
-                        {translate('fifty_percent')}
-                    </MenuItem>
-                    <MenuItem value="80%">
-                        {translate('eighty_percent')}
-                    </MenuItem>
-                    <MenuItem value="100%">
-                        {translate('hundred_percent')}
-                    </MenuItem>
+                    {ITEMS_PER_ROW_CHOICES.map((count) => (
+                        <MenuItem key={count} value={count}>
+                            {count}
+                        </MenuItem>
+                    ))}
                 </TextField>
                 {!isSimilar && (
                     <FormControlLabel
