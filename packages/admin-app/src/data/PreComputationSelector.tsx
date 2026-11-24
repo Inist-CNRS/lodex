@@ -1,5 +1,4 @@
 import { MenuItem, Select } from '@mui/material';
-import { useEffect, useMemo } from 'react';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     FINISHED,
@@ -29,20 +28,6 @@ export const PreComputationSelector = ({
     isLoading,
 }: PreComputationSelectorProps) => {
     const { translate } = useTranslate();
-    const defaultValue = useMemo(() => {
-        if (isLoading || error || !data || data.length === 0) {
-            return null;
-        }
-        return data[0].id;
-    }, [data, error, isLoading]);
-
-    useEffect(() => {
-        if (value !== null) return;
-        if (defaultValue !== null) {
-            onChange(defaultValue);
-        }
-    }, [defaultValue, onChange, value]);
-
     if (isLoading) {
         return <div>{translate('loading')}</div>;
     }
@@ -53,7 +38,6 @@ export const PreComputationSelector = ({
             error={!!error}
             fullWidth
             value={value ?? ''}
-            onChange={(e) => onChange(e.target.value as string)}
             aria-label={translate('select_precomputed_data')}
         >
             {data?.map(
@@ -69,6 +53,9 @@ export const PreComputationSelector = ({
                     <MenuItem
                         key={id}
                         value={id}
+                        // not the Select's onChange: it is not called when the
+                        // item already shown is picked again
+                        onClick={() => onChange(id)}
                         disabled={status !== FINISHED}
                     >
                         {name} ({translate(labelByStatus[status ?? ''])})

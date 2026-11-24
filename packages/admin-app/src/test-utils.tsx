@@ -56,8 +56,12 @@ const customRender = (
     { initialState = {}, ...options } = {},
 ) => {
     const store = getStore(initialState);
+    // created once: a rerender must keep the react-query cache
+    const client = new QueryClient();
     const WrapperWithStore = ({ children }: { children: ReactNode }) => (
-        <Wrapper store={store}>{children}</Wrapper>
+        <Wrapper store={store} client={client}>
+            {children}
+        </Wrapper>
     );
 
     return render(ui, { wrapper: WrapperWithStore, ...options });

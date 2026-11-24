@@ -95,3 +95,13 @@ export const importPrecomputationResultsWithDialog = ({
 export const exportPrecomputationResults = () => {
     cy.findByText('Download data').click();
 };
+
+// On the data page, nothing is selected by default: the results of a
+// precomputation are only loaded once it is chosen.
+export const selectPrecomputedData = (name: string) => {
+    cy.findByLabelText('Select precomputed data').click();
+    // options read "<name> (<status>)"
+    cy.findByRole('option', {
+        name: new RegExp(`^${Cypress._.escapeRegExp(name)} \\(`),
+    }).click();
+};

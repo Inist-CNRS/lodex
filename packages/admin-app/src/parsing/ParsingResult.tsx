@@ -13,6 +13,7 @@ import {
 } from '@mui/x-data-grid';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
+import { useIsFetching, useQuery, useQueryClient } from '@tanstack/react-query';
 import { TaskStatus } from '@lodex/common';
 
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
@@ -112,6 +113,41 @@ const getFiltersOperatorsForType = (type) => {
     }
 };
 
+// Rows already on screen stay readable while they are refreshed: the refresh
+// icon spins instead of the overlay covering the grid. It watches the requests
+// by itself: a render of the whole grid for each of them delays the rows, and
+// closes an open column menu.
+const RefreshButton = ({
+    source,
+    loading,
+    onClick,
+}: {
+    source: string | null;
+    loading: boolean;
+    onClick: () => void;
+}) => {
+    const { translate } = useTranslate();
+    const isFetching = useIsFetching({ queryKey: ['dataset-rows', source] });
+    return (
+        <Tooltip title={translate(`refresh_button`)}>
+            <IconButton onClick={onClick}>
+                <RefreshIcon
+                    sx={
+                        loading || isFetching > 0
+                            ? {
+                                  animation: 'refresh-spin 1s linear infinite',
+                                  '@keyframes refresh-spin': {
+                                      to: { transform: 'rotate(360deg)' },
+                                  },
+                              }
+                            : undefined
+                    }
+                />
+            </IconButton>
+        </Tooltip>
+    );
+};
+
 interface ParsingResultComponentProps {
     precomputedId?: string;
     loadingParsingResult: boolean;
@@ -152,10 +188,77 @@ export const ParsingResultComponent = ({
     const [showMainColumns, setShowMainColumns] = useState(true);
     const [selectedRowIds, setSelectedRowIds] = useState([]);
 
-    const [datas, setDatas] = useState([]);
-    const [columns, setColumns] = useState([]);
     const [toggleDrawer, setToggleDrawer] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
+
+    const [skip, setSkip] = useState(0);
+    const [limit, setLimit] = useState(25);
+    const [sort, setSort] = useState({});
+    const [filterModel, setFilterModel] = useState(initialFilterModel);
+
+    // Follow the main dataset while it is being imported. Columns come from
+    // the first documents, so they are reloaded too: lines saved after the
+    // first reload may bring new keys.
+    const loadedLines = precomputedId ? undefined : totalLoadedLines;
+    const source = precomputedId ?? null;
+
+    // Rows and columns are cached by react-query: coming back to a tab, a
+    // page or a precomputation shows what was last fetched at once, then
+    // refreshes it in the background. Overlapping reloads (page change,
+    // import, enrichment) are deduplicated: only the last one updates the grid.
+    // No refetch when the window gets the focus back: any render of the grid
+    // closes its open column menu.
+    const filter = filterModel.items.at(0);
+    const datasetQuery = useQuery({
+        queryKey: ['dataset-rows', source, { skip, limit, filter, sort }],
+        queryFn: () =>
+            datasetApi.getData({ precomputedId, skip, limit, filter, sort }),
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
+    });
+    const rowCount: number = datasetQuery.data?.count ?? 0;
+    const rows = useMemo(() => {
+        const datas = datasetQuery.data?.datas;
+        if (!Array.isArray(datas)) return [];
+        return datas.map((data) => ({ id: data._id, ...data }));
+    }, [datasetQuery.data]);
+    const refetchDataset = datasetQuery.refetch;
+    // The rows changed (import, enrichment, deletion, edition): what is cached
+    // for the other pages, filters and sorts is out of date, drop it.
+    const queryClient = useQueryClient();
+    const fetchDataset = useCallback(() => {
+        queryClient.removeQueries({
+            queryKey: ['dataset-rows', source],
+            type: 'inactive',
+        });
+        return refetchDataset();
+    }, [queryClient, source, refetchDataset]);
+
+    const columnsQuery = useQuery({
+        queryKey: ['dataset-columns', source],
+        queryFn: async () => {
+            const { columns, error } =
+                await datasetApi.getDataColumns(precomputedId);
+            // a failed request keeps the current columns instead of emptying the grid
+            if (error) throw error;
+            return columns as { key: string; type: string }[];
+        },
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
+        retry: false,
+    });
+    const columns = useMemo(() => columnsQuery.data ?? [], [columnsQuery.data]);
+    const fetchColumns = columnsQuery.refetch;
+
+    // Not a part of the query keys: a line count seen before would bring back
+    // the rows and columns cached for it, older than the ones on screen.
+    const lastLoadedLines = useRef(loadedLines);
+    useEffect(() => {
+        if (lastLoadedLines.current === loadedLines) return;
+        lastLoadedLines.current = loadedLines;
+        fetchColumns();
+        fetchDataset();
+    }, [loadedLines, fetchColumns, fetchDataset]);
 
     const columnsToShow = useMemo(() => {
         const getColumnsToShow = () => {
@@ -287,50 +390,6 @@ export const ParsingResultComponent = ({
         [columns, enrichments],
     );
 
-    const rows = useMemo(() => {
-        if (!datas || !Array.isArray(datas)) return [];
-        // @ts-expect-error TS2339
-        return datas.map((data) => ({ id: data._id, ...data }));
-    }, [datas]);
-
-    const [rowCount, setRowCount] = useState(0);
-    const [skip, setSkip] = useState(0);
-    const [limit, setLimit] = useState(25);
-    const [sort, setSort] = useState({});
-    const [filterModel, setFilterModel] = useState(initialFilterModel);
-
-    // Several reloads can overlap (page change, import, enrichment): only the
-    // last request may update the grid, whatever the order of the responses.
-    const lastDatasetRequest = useRef(0);
-    const fetchDataset = useCallback(async () => {
-        const request = ++lastDatasetRequest.current;
-        const { count: datasCount, datas } = await datasetApi.getData({
-            precomputedId,
-            skip,
-            limit,
-            filter: filterModel.items.at(0),
-            sort,
-        });
-        if (request !== lastDatasetRequest.current) {
-            return;
-        }
-        setRowCount(datasCount);
-        setDatas(datas);
-    }, [skip, limit, filterModel, sort, precomputedId]);
-
-    const lastColumnsRequest = useRef(0);
-    const fetchColumns = useCallback(async () => {
-        const request = ++lastColumnsRequest.current;
-        const { columns, error } =
-            await datasetApi.getDataColumns(precomputedId);
-        // a failed request keeps the current columns instead of emptying the grid
-        if (request !== lastColumnsRequest.current || error) {
-            return false;
-        }
-        setColumns(columns);
-        return true;
-    }, [precomputedId]);
-
     // @ts-expect-error TS7006
     const onPageChange = (page) => {
         setSkip(page * limit);
@@ -349,29 +408,19 @@ export const ParsingResultComponent = ({
     }, []);
 
     const handleFilteredRowsDeleted = useCallback(() => {
-        handleFilterModelChange({ items: [] });
-    }, [handleFilterModelChange]);
-
-    // Follow the main dataset while it is being imported. Columns come from
-    // the first documents, so they are reloaded too: lines saved after the
-    // first reload may bring new keys.
-    const loadedLines = precomputedId ? undefined : totalLoadedLines;
-
-    useEffect(() => {
-        fetchColumns().then((updated) => {
-            // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
-            if (updated) handleFilterModelChange(initialFilterModel);
+        // removing the filter fetches the rows again, under another key
+        queryClient.removeQueries({
+            queryKey: ['dataset-rows', source],
+            type: 'inactive',
         });
-    }, [
-        fetchColumns,
-        handleFilterModelChange,
-        initialFilterModel,
-        loadedLines,
-    ]);
+        handleFilterModelChange({ items: [] });
+    }, [handleFilterModelChange, queryClient, source]);
 
+    // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
+    const hasColumns = columnsQuery.data !== undefined;
     useEffect(() => {
-        fetchDataset();
-    }, [skip, limit, filterModel, sort, fetchDataset, loadedLines]);
+        if (hasColumns) handleFilterModelChange(initialFilterModel);
+    }, [hasColumns, handleFilterModelChange, initialFilterModel]);
 
     // An enrichment adds keys without adding lines: when one changes status,
     // reload the columns and rows, keeping the filter and page of the admin.
@@ -471,11 +520,11 @@ export const ParsingResultComponent = ({
                     </Box>
                 </Box>
                 <Box display="flex">
-                    <Tooltip title={translate(`refresh_button`)}>
-                        <IconButton onClick={() => fetchDataset()}>
-                            <RefreshIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <RefreshButton
+                        source={source}
+                        loading={loadingParsingResult}
+                        onClick={() => fetchDataset()}
+                    />
                     <TableContainer>
                         <Table>
                             <TableBody>
@@ -559,7 +608,7 @@ export const ParsingResultComponent = ({
                 rows={rows}
                 getRowId={(row) => row._id}
                 rowCount={rowCount}
-                loading={loadingParsingResult}
+                loading={datasetQuery.isLoading}
                 pageSize={limit}
                 checkboxSelection
                 paginationMode="server"
@@ -601,6 +650,7 @@ export const ParsingResultComponent = ({
                         cell={selectedCell}
                         precomputedId={precomputedId}
                         setToggleDrawer={setToggleDrawer}
+                        onSaved={fetchDataset}
                     />
                 ) : null}
             </Drawer>

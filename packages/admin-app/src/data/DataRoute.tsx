@@ -45,25 +45,28 @@ export const DataRouteComponent = ({
         return params.get('precomputation');
     }, [search]);
 
-    const setSelectedPrecomputation = (precomputationId: string) => {
-        if (precomputationId === selectedPrecomputation) return;
-        const params = new URLSearchParams(search);
-        if (precomputationId) {
-            params.set('precomputation', precomputationId);
-        } else {
-            params.delete('precomputation');
-        }
-        const newSearch = params.toString();
-        const newPath = `${pathname}${newSearch ? `?${newSearch}` : ''}`;
-        history.replace(newPath);
-    };
-
     const tab = useMemo(() => {
         const activePath: string = pathname.split('/').pop() as string;
         return ['dataset', 'precomputation'].includes(activePath)
             ? activePath
             : 'dataset';
     }, [pathname]);
+
+    // Choosing a precomputation shows it: the selector also works from the
+    // dataset tab, so nothing is loaded before the admin has chosen.
+    const setSelectedPrecomputation = (precomputationId: string) => {
+        const isShown = tab === 'precomputation';
+        if (isShown && precomputationId === selectedPrecomputation) return;
+        const params = new URLSearchParams(search);
+        params.set('precomputation', precomputationId);
+        const location = `${path}/precomputation?${params}`;
+        // from the dataset tab, Back must return to it
+        if (isShown) {
+            history.replace(location);
+        } else {
+            history.push(location);
+        }
+    };
 
     const switchTab = (newTab: string) => {
         if (newTab === tab) return;
@@ -110,9 +113,14 @@ export const DataRouteComponent = ({
                             <Grid item xs={6} alignContent="center">
                                 {translate('precomputed_data')}
                             </Grid>
-                            <Grid item xs={6}>
+                            {/* a click in the selector must not also reach the
+                                tab: it would navigate without the selection */}
+                            <Grid
+                                item
+                                xs={6}
+                                onClick={(event) => event.stopPropagation()}
+                            >
                                 <PreComputationSelector
-                                    disabled={tab !== 'precomputation'}
                                     value={selectedPrecomputation}
                                     onChange={setSelectedPrecomputation}
                                     data={precomputations || []}
@@ -134,9 +142,10 @@ export const DataRouteComponent = ({
                 <Route
                     path={`${path}/precomputation`}
                     exact
-                    component={() =>
+                    render={() =>
                         selectedPrecomputation ? (
                             <ParsingResult
+                                key={selectedPrecomputation}
                                 precomputedId={selectedPrecomputation}
                             />
                         ) : (
@@ -150,7 +159,11 @@ export const DataRouteComponent = ({
                                 }}
                             >
                                 <Typography variant="caption">
-                                    {translate('no_precomputed_data')}
+                                    {translate(
+                                        precomputations.length
+                                            ? 'select_precomputed_data'
+                                            : 'no_precomputed_data',
+                                    )}
                                 </Typography>
                             </Box>
                         )

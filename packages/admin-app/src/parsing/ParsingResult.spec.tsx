@@ -1,6 +1,7 @@
 import { MemoryRouter, Route } from 'react-router-dom';
-import { waitFor } from '@testing-library/react';
-import { render } from '../test-utils';
+import { render as rawRender, waitFor } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
+import { getStore, render, Wrapper } from '../test-utils';
 import { ParsingResultComponent } from './ParsingResult';
 import datasetApi from '../api/dataset';
 
@@ -29,6 +30,43 @@ describe('<ParsingResult />', () => {
         );
         const dataGrid = screen.getByRole('grid');
         expect(dataGrid).toBeInTheDocument();
+    });
+
+    it('should show the cached rows at once when the grid is mounted again', async () => {
+        const client = new QueryClient();
+        const store = getStore();
+        const mountGrid = () =>
+            rawRender(
+                <Wrapper store={store} client={client}>
+                    <ParsingResultComponent
+                        enrichments={[]}
+                        loadingParsingResult={false}
+                        precomputedId="precomputed-id"
+                    />
+                </Wrapper>,
+            );
+        (datasetApi.getData as jest.Mock).mockResolvedValueOnce({
+            count: 2,
+            datas: [{ _id: '0' }, { _id: '1' }],
+        });
+        const firstMount = mountGrid();
+        await waitFor(() =>
+            expect(firstMount.getByRole('grid')).toHaveAttribute(
+                'aria-rowcount',
+                '2',
+            ),
+        );
+        firstMount.unmount();
+
+        // the background refresh never answers: the rows come from the cache
+        (datasetApi.getData as jest.Mock).mockImplementationOnce(
+            () => new Promise(() => {}),
+        );
+        const secondMount = mountGrid();
+        expect(secondMount.getByRole('grid')).toHaveAttribute(
+            'aria-rowcount',
+            '2',
+        );
     });
 
     describe('when the main dataset grows during an import', () => {
