@@ -15,6 +15,10 @@ import {
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { isSimilarResourcesSource, parseSimilarityInput } from './similarity';
 
+// Upper bound of "Maximum number of resources": every resource is loaded in a
+// single call, and the routine clamps to the same value.
+export const MAX_SIMILAR_RESOURCES = 100;
+
 // A page size that is not a positive integer (e.g. an emptied input) falls back to the default.
 export const toPageSize = (value: unknown): number =>
     typeof value === 'number' && Number.isInteger(value) && value > 0
@@ -147,7 +151,7 @@ const ResourcesGridAdminContent = ({
                 'maxResources',
                 Number.isNaN(maxResources) || maxResources < 1
                     ? undefined
-                    : maxResources,
+                    : Math.min(maxResources, MAX_SIMILAR_RESOURCES),
             );
         },
         [setParam],
@@ -285,7 +289,7 @@ const ResourcesGridAdminContent = ({
                         onChange={handleMaxResources}
                         value={args.params?.maxResources ?? ''}
                         type="number"
-                        inputProps={{ min: 1 }}
+                        inputProps={{ min: 1, max: MAX_SIMILAR_RESOURCES }}
                         fullWidth
                     />
                     <TextField

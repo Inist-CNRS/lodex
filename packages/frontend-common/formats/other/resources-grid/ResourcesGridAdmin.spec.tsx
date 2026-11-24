@@ -108,6 +108,14 @@ describe('ResourcesGridAdmin', () => {
         );
     });
 
+    it('caps maxResources at 100', () => {
+        const onChange = setup(similar);
+        fireEvent.change(screen.getByLabelText('similar_max_resources'), {
+            target: { value: '500' },
+        });
+        expect(onChange.mock.calls.at(-1)[0].params.maxResources).toBe(100);
+    });
+
     it.each(['', '1.5', 'abc'])(
         'removes the minimum when the input is %p',
         (text) => {
