@@ -1,9 +1,15 @@
+import { checkFusible } from '@ezs/core/fusible';
 import progress from './progress';
 import {
     versionTransformerDecorator,
     publishDocumentsFactory,
     getFieldsFromSubresourceFields,
 } from './publishDocuments';
+
+jest.mock('@ezs/core/fusible', () => ({
+    ...jest.requireActual('@ezs/core/fusible'),
+    checkFusible: jest.fn(async () => true),
+}));
 
 const fields = [
     {
@@ -33,6 +39,7 @@ const getCtx = ({ subresources }: any = {}) => ({
     dataset: {
         findLimitFromSkip: 'dataset.findLimitFromSkip()',
         findBy: 'dataset.findBy()',
+        updateMany: jest.fn(),
     },
     subresource: {
         findAll: jest.fn().mockImplementation(() => subresources || []),
@@ -146,6 +153,43 @@ describe('publishDocuments', () => {
 
             it('should call ctx.transformAllDocuments one time (for main resource)', () => {
                 expect(transformAllDocuments).toHaveBeenCalledTimes(0);
+            });
+
+            it('should mark the rows as published once they are', () => {
+                expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
+                    { _lodexPublished: { $ne: true } },
+                    { $set: { _lodexPublished: true } },
+                );
+            });
+
+            it('should not mark the rows of a cancelled publication', async () => {
+                const cancelledCtx = {
+                    ...getCtx(),
+                    job: { ...job, isActive: () => false },
+                };
+                await publishDocumentsFactory({
+                    versionTransformerDecorator,
+                    getDocumentTransformer,
+                    transformAllDocuments,
+                })(cancelledCtx, 'count', fields);
+                expect(cancelledCtx.dataset.updateMany).not.toHaveBeenCalled();
+            });
+
+            it('should not mark the rows once the fusible is off, even if the job is still active', async () => {
+                // cancelJob disables the fusible before the job leaves the
+                // active state
+                (checkFusible as jest.Mock).mockResolvedValue(false);
+                const cancelledCtx = getCtx();
+                try {
+                    await publishDocumentsFactory({
+                        versionTransformerDecorator,
+                        getDocumentTransformer,
+                        transformAllDocuments,
+                    })(cancelledCtx, 'count', fields);
+                } finally {
+                    (checkFusible as jest.Mock).mockResolvedValue(true);
+                }
+                expect(cancelledCtx.dataset.updateMany).not.toHaveBeenCalled();
             });
         });
 

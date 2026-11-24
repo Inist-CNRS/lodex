@@ -1,6 +1,6 @@
 import omit from 'lodash/omit';
 import get from 'lodash/get';
-import { createFusible, enableFusible } from '@ezs/core/fusible';
+import { checkFusible, createFusible, enableFusible } from '@ezs/core/fusible';
 
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
@@ -238,15 +238,31 @@ export const publishDocumentsFactory =
             },
         );
 
-        ctx.job.isActive()
-            ? jobLogger.info(ctx.job, 'Documents published')
-            : jobLogger.error(ctx.job, 'Publication cancelled');
+        // cancelJob disables the fusible before it moves the job to failed,
+        // without waiting for it: the job can still be active once the
+        // stream has stopped. The fusible tells the cancellation at once.
+        const isCancelled = async () =>
+            !(await checkFusible(fusible)) || !(await ctx.job.isActive());
+
+        (await isCancelled())
+            ? jobLogger.error(ctx.job, 'Publication cancelled')
+            : jobLogger.info(ctx.job, 'Documents published');
 
         await ctx.publishedDataset.createIndexesAfterInsert();
 
-        ctx.job.isActive()
-            ? jobLogger.info(ctx.job, 'Documents Indexed')
-            : jobLogger.error(ctx.job, 'Indexation cancelled');
+        (await isCancelled())
+            ? jobLogger.error(ctx.job, 'Indexation cancelled')
+            : jobLogger.info(ctx.job, 'Documents Indexed');
+
+        // A published row is marked, so that the next import only publishes
+        // the new ones. Not those of a cancelled publication: it stopped
+        // before its end.
+        if (!(await isCancelled())) {
+            await ctx.dataset.updateMany(
+                { _lodexPublished: { $ne: true } },
+                { $set: { _lodexPublished: true } },
+            );
+        }
     };
 
 export default publishDocumentsFactory({
