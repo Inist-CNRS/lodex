@@ -13,6 +13,7 @@ import {
 } from '@mui/x-data-grid';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
 import { TaskStatus } from '@lodex/common';
 
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
@@ -152,10 +153,56 @@ export const ParsingResultComponent = ({
     const [showMainColumns, setShowMainColumns] = useState(true);
     const [selectedRowIds, setSelectedRowIds] = useState([]);
 
-    const [datas, setDatas] = useState([]);
-    const [columns, setColumns] = useState([]);
     const [toggleDrawer, setToggleDrawer] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
+
+    const [skip, setSkip] = useState(0);
+    const [limit, setLimit] = useState(25);
+    const [sort, setSort] = useState({});
+    const [filterModel, setFilterModel] = useState(initialFilterModel);
+
+    // Follow the main dataset while it is being imported. Columns come from
+    // the first documents, so they are reloaded too: lines saved after the
+    // first reload may bring new keys.
+    const loadedLines = precomputedId ? undefined : totalLoadedLines;
+    const source = [precomputedId ?? null, loadedLines ?? null];
+
+    // Rows and columns are cached by react-query: coming back to a tab, a
+    // page or a precomputation shows what was last fetched at once, then
+    // refreshes it in the background. Overlapping reloads (page change,
+    // import, enrichment) are deduplicated: only the last one updates the grid.
+    const filter = filterModel.items.at(0);
+    const datasetQuery = useQuery({
+        queryKey: ['dataset-rows', ...source, { skip, limit, filter, sort }],
+        queryFn: () =>
+            datasetApi.getData({ precomputedId, skip, limit, filter, sort }),
+        keepPreviousData: true,
+    });
+    const rowCount: number = datasetQuery.data?.count ?? 0;
+    const rows = useMemo(() => {
+        const datas = datasetQuery.data?.datas;
+        if (!Array.isArray(datas)) return [];
+        return datas.map((data) => ({ id: data._id, ...data }));
+    }, [datasetQuery.data]);
+    const fetchDataset = datasetQuery.refetch;
+    // Rows already on screen stay readable while they are refreshed: the
+    // refresh icon spins instead of the overlay covering the grid.
+    const isRefreshing = loadingParsingResult || datasetQuery.isFetching;
+
+    const columnsQuery = useQuery({
+        queryKey: ['dataset-columns', ...source],
+        queryFn: async () => {
+            const { columns, error } =
+                await datasetApi.getDataColumns(precomputedId);
+            // a failed request keeps the current columns instead of emptying the grid
+            if (error) throw error;
+            return columns as { key: string; type: string }[];
+        },
+        keepPreviousData: true,
+        retry: false,
+    });
+    const columns = useMemo(() => columnsQuery.data ?? [], [columnsQuery.data]);
+    const fetchColumns = columnsQuery.refetch;
 
     const columnsToShow = useMemo(() => {
         const getColumnsToShow = () => {
@@ -287,50 +334,6 @@ export const ParsingResultComponent = ({
         [columns, enrichments],
     );
 
-    const rows = useMemo(() => {
-        if (!datas || !Array.isArray(datas)) return [];
-        // @ts-expect-error TS2339
-        return datas.map((data) => ({ id: data._id, ...data }));
-    }, [datas]);
-
-    const [rowCount, setRowCount] = useState(0);
-    const [skip, setSkip] = useState(0);
-    const [limit, setLimit] = useState(25);
-    const [sort, setSort] = useState({});
-    const [filterModel, setFilterModel] = useState(initialFilterModel);
-
-    // Several reloads can overlap (page change, import, enrichment): only the
-    // last request may update the grid, whatever the order of the responses.
-    const lastDatasetRequest = useRef(0);
-    const fetchDataset = useCallback(async () => {
-        const request = ++lastDatasetRequest.current;
-        const { count: datasCount, datas } = await datasetApi.getData({
-            precomputedId,
-            skip,
-            limit,
-            filter: filterModel.items.at(0),
-            sort,
-        });
-        if (request !== lastDatasetRequest.current) {
-            return;
-        }
-        setRowCount(datasCount);
-        setDatas(datas);
-    }, [skip, limit, filterModel, sort, precomputedId]);
-
-    const lastColumnsRequest = useRef(0);
-    const fetchColumns = useCallback(async () => {
-        const request = ++lastColumnsRequest.current;
-        const { columns, error } =
-            await datasetApi.getDataColumns(precomputedId);
-        // a failed request keeps the current columns instead of emptying the grid
-        if (request !== lastColumnsRequest.current || error) {
-            return false;
-        }
-        setColumns(columns);
-        return true;
-    }, [precomputedId]);
-
     // @ts-expect-error TS7006
     const onPageChange = (page) => {
         setSkip(page * limit);
@@ -352,26 +355,11 @@ export const ParsingResultComponent = ({
         handleFilterModelChange({ items: [] });
     }, [handleFilterModelChange]);
 
-    // Follow the main dataset while it is being imported. Columns come from
-    // the first documents, so they are reloaded too: lines saved after the
-    // first reload may bring new keys.
-    const loadedLines = precomputedId ? undefined : totalLoadedLines;
-
+    // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
+    const hasColumns = columnsQuery.data !== undefined;
     useEffect(() => {
-        fetchColumns().then((updated) => {
-            // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
-            if (updated) handleFilterModelChange(initialFilterModel);
-        });
-    }, [
-        fetchColumns,
-        handleFilterModelChange,
-        initialFilterModel,
-        loadedLines,
-    ]);
-
-    useEffect(() => {
-        fetchDataset();
-    }, [skip, limit, filterModel, sort, fetchDataset, loadedLines]);
+        if (hasColumns) handleFilterModelChange(initialFilterModel);
+    }, [hasColumns, handleFilterModelChange, initialFilterModel]);
 
     // An enrichment adds keys without adding lines: when one changes status,
     // reload the columns and rows, keeping the filter and page of the admin.
@@ -473,7 +461,22 @@ export const ParsingResultComponent = ({
                 <Box display="flex">
                     <Tooltip title={translate(`refresh_button`)}>
                         <IconButton onClick={() => fetchDataset()}>
-                            <RefreshIcon />
+                            <RefreshIcon
+                                sx={
+                                    isRefreshing
+                                        ? {
+                                              animation:
+                                                  'refresh-spin 1s linear infinite',
+                                              '@keyframes refresh-spin': {
+                                                  to: {
+                                                      transform:
+                                                          'rotate(360deg)',
+                                                  },
+                                              },
+                                          }
+                                        : undefined
+                                }
+                            />
                         </IconButton>
                     </Tooltip>
                     <TableContainer>
@@ -559,7 +562,7 @@ export const ParsingResultComponent = ({
                 rows={rows}
                 getRowId={(row) => row._id}
                 rowCount={rowCount}
-                loading={loadingParsingResult}
+                loading={isRefreshing && datasetQuery.data === undefined}
                 pageSize={limit}
                 checkboxSelection
                 paginationMode="server"

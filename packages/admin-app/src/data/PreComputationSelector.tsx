@@ -1,5 +1,4 @@
 import { MenuItem, Select } from '@mui/material';
-import { useEffect, useMemo } from 'react';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     FINISHED,
@@ -29,20 +28,6 @@ export const PreComputationSelector = ({
     isLoading,
 }: PreComputationSelectorProps) => {
     const { translate } = useTranslate();
-    const defaultValue = useMemo(() => {
-        if (isLoading || error || !data || data.length === 0) {
-            return null;
-        }
-        return data[0].id;
-    }, [data, error, isLoading]);
-
-    useEffect(() => {
-        if (value !== null) return;
-        if (defaultValue !== null) {
-            onChange(defaultValue);
-        }
-    }, [defaultValue, onChange, value]);
-
     if (isLoading) {
         return <div>{translate('loading')}</div>;
     }

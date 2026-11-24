@@ -112,4 +112,28 @@ describe('PreComputationSelector', () => {
                 : expect(option).not.toHaveAttribute('aria-disabled');
         });
     });
+
+    it('should not select a precomputation by itself, as its results would be loaded for nothing', async () => {
+        const onChange = jest.fn();
+        const screen = render(
+            <PreComputationSelector
+                value={null}
+                onChange={onChange}
+                data={[
+                    {
+                        id: 'precomp1',
+                        name: 'Precomp 1',
+                        status: TaskStatus.FINISHED,
+                    },
+                ]}
+            />,
+        );
+
+        expect(screen.getByRole('combobox')).toBeInTheDocument();
+        expect(onChange).not.toHaveBeenCalled();
+
+        await userEvent.click(screen.getByRole('combobox'));
+        await userEvent.click(screen.getByRole('option'));
+        expect(onChange).toHaveBeenCalledWith('precomp1');
+    });
 });
