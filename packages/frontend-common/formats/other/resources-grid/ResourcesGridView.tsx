@@ -9,8 +9,9 @@ import LodexResource from '../../utils/components/LodexResource';
 import injectData from '../../injectData';
 import stylesToClassname from '../../../utils/stylesToClassName';
 import { useTranslate } from '../../../i18n/I18NContext';
-import { formatSimilarity } from './similarity';
-import { toItemsPerRow, toPageSize } from './ResourcesGridAdmin';
+import { formatSimilarity } from '../resources-common/similarity';
+import { toPageSize } from '../resources-common/pageSize';
+import { toItemsPerRow } from './ResourcesGridAdmin';
 
 const createStyles = memoize((itemsPerRow: number) =>
     stylesToClassname(

@@ -13,21 +13,19 @@ import {
     FormatFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { isSimilarResourcesSource, parseSimilarityInput } from './similarity';
-
-// Upper bound of "Maximum number of resources": every resource is loaded in a
-// single call, and the routine clamps to the same value.
-export const MAX_SIMILAR_RESOURCES = 100;
-
-// A page size that is not a positive integer (e.g. an emptied input) falls back to the default.
-export const toPageSize = (value: unknown): number =>
-    typeof value === 'number' && Number.isInteger(value) && value > 0
-        ? value
-        : defaultArgs.pageSize;
+import {
+    isSimilarResourcesSource,
+    parseSimilarityInput,
+} from '../resources-common/similarity';
+import {
+    DEFAULT_PAGE_SIZE,
+    MAX_SIMILAR_RESOURCES,
+    toPageSize,
+} from '../resources-common/pageSize';
 
 export const defaultArgs = {
     allowToLoadMore: true,
-    pageSize: 6,
+    pageSize: DEFAULT_PAGE_SIZE,
     itemsPerRow: 3,
     spaceWidth: '30%',
     titleSize: 100,

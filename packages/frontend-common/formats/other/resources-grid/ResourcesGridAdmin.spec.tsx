@@ -7,7 +7,7 @@ import ResourcesGridAdmin, {
     toItemsPerRow,
     toSpaceWidth,
 } from './ResourcesGridAdmin';
-import { precomputed } from './testFixtures';
+import { precomputed } from '../resources-common/testFixtures';
 
 const similar = precomputed('/api/run/vsimilar-precomputed/');
 const other = precomputed('/api/run/vsearch-precomputed/');
