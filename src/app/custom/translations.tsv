@@ -1688,7 +1688,7 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "site_generation_action_error"	"The action failed: %{error}"	"L'action a échoué : %{error}"
 "no_site_generation"	"the generation has changed in the meantime (relaunched, stopped or finished)"	"la génération a changé entre-temps (relancée, arrêtée ou terminée)"
 "site_generation_in_progress"	"A site generation is in progress: stop it before launching a task by hand"	"Une génération du site est en cours : arrêtez-la avant de lancer une tâche à la main"
-"site_generation_job_lost"	"The task stopped unexpectedly. Retry or stop the configuration."	"La tâche s'est arrêtée de manière inattendue. Réessayez ou arrêtez la configuration."
+"site_generation_job_lost"	"The task stopped unexpectedly. Retry or stop the configuration."	"La tâche s'est arrêtée de manière inattendue. Réessayez ou arrêtez la génération."
 "site_generation_done_title"	"Your site is ready"	"Votre site est prêt"
 "site_generation_done_subtitle"	"The configuration is complete and the site is published"	"La configuration est terminée et le site est publié"
 "site_generation_done_hint"	"You can get back to your site at any time with the eye icon. To customise it, go to the Display tab."	"Vous retrouverez votre site à tout moment avec l'icône de l'œil. Pour le personnaliser, rendez-vous dans l'onglet Affichage."
