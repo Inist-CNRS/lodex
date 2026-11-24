@@ -33,7 +33,9 @@ describe('Precomputation', () => {
         });
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
-        cy.contains('Precomputed data').click();
+        // not cy.contains: it would click the middle of the whole tab button,
+        // where the selector starts, and open the selector instead
+        cy.findByText('Precomputed data').click();
         cy.waitForNetworkIdle(500);
         // nothing is selected, and a precomputation not run yet cannot be
         cy.contains('Select precomputed data').should('be.visible');
@@ -64,7 +66,7 @@ describe('Precomputation', () => {
         });
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
-        cy.contains('Precomputed data').click();
+        cy.findByText('Precomputed data').click();
         precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.findByLabelText('Select precomputed data').should(
@@ -99,7 +101,7 @@ describe('Precomputation', () => {
         });
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
-        cy.contains('Precomputed data').click();
+        cy.findByText('Precomputed data').click();
         precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.contains('1–25 of 30').should('be.visible');
@@ -135,7 +137,7 @@ describe('Precomputation', () => {
         });
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
-        cy.contains('Precomputed data').click();
+        cy.findByText('Precomputed data').click();
         precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.contains('1–25 of 26').should('be.visible');
@@ -161,7 +163,7 @@ describe('Precomputation', () => {
 
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
-        cy.contains('Precomputed data').click();
+        cy.findByText('Precomputed data').click();
         precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
 
@@ -186,7 +188,7 @@ describe('Precomputation', () => {
 
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
-        cy.contains('Precomputed data').click();
+        cy.findByText('Precomputed data').click();
         precomputation.selectPrecomputedData('Statistics');
         cy.waitForNetworkIdle(500);
         cy.contains('1–25 of 26').should('be.visible');
