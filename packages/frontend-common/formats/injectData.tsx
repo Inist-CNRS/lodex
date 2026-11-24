@@ -99,9 +99,12 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 (state: any) => state.format[props.field.name],
             );
             const [initialLoadingDone, setInitialLoadingDone] = useState(false);
+            const hasInput = !!inputValue;
 
-            const isFormatLoading = useSelector((state: any) =>
-                get(state, 'dataset.formatLoading', false),
+            // Certain format accepte des URLs ou une saise libre (ex: MarkdownView)
+            const isFormatLoading = useSelector(
+                (state: any) =>
+                    hasInput && get(state, 'dataset.formatLoading', false),
             );
             const { isFormatLoaded, formatData, formatTotal, formatError } =
                 useMemo(() => {
@@ -215,22 +218,28 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             if (inputValue && !isLoaded) {
                 return <Loading>{translate('loading')}</Loading>;
             }
+            const showLoader =
+                hasInput && (isAnimationPlaying || isFormatLoading);
 
             return (
                 // @ts-expect-error TS2322
                 <div style={styles.format.container}>
-                    <style>{animationKeyframes}</style>
-                    <div
-                        onAnimationEnd={handleAnimationEnd}
-                        // @ts-expect-error TS2322
-                        style={{
-                            ...styles.format.loading,
-                            animationName: isFormatLoading
-                                ? 'injectDataLoadingStart'
-                                : 'injectDataLoadingEnd',
-                        }}
-                    ></div>
-                    {isAnimationPlaying || isFormatLoading ? (
+                    {hasInput && (
+                        <>
+                            <style>{animationKeyframes}</style>
+                            <div
+                                onAnimationEnd={handleAnimationEnd}
+                                // @ts-expect-error TS2322
+                                style={{
+                                    ...styles.format.loading,
+                                    animationName: isFormatLoading
+                                        ? 'injectDataLoadingStart'
+                                        : 'injectDataLoadingEnd',
+                                }}
+                            ></div>
+                        </>
+                    )}
+                    {showLoader ? (
                         <CircularProgress
                             sx={styles.format.progress}
                             variant="indeterminate"
