@@ -822,6 +822,27 @@ describe('SiteGenerationDialog', () => {
         expect(dispatched).toEqual(expect.arrayContaining(RELOADS));
     });
 
+    it('does not show a generation already done after a data add seen running', async () => {
+        renderDialog(buildGeneration({ kind: 'addData', modelId: undefined }));
+        await screen.findByText('site_generation_title');
+        await changeGeneration(
+            buildGeneration({
+                kind: 'addData',
+                modelId: undefined,
+                status: 'done',
+                phase: 'launch',
+            }),
+        );
+        await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+        // a wizard run of which this tab missed every push
+        await changeGeneration(
+            buildGeneration({ status: 'done', phase: 'launch' }),
+        );
+        // let the query tell its new data
+        await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
+        expect(screen.queryByRole('dialog')).toBeNull();
+    });
+
     it('tells when the theme was not found once the generation is done', async () => {
         renderDialog(buildGeneration());
         await screen.findByText('site_generation_title');

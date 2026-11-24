@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert, Button } from '@mui/material';
@@ -20,6 +21,16 @@ export const SiteReadyAlert = ({ onClose }: { onClose: () => void }) => {
             fromUser.isAdmin(state) &&
             fromPublication.hasPublishedDataset(state),
     );
+    // closed for good once the site goes offline: it must not come back at the
+    // next sign-in or publication. Not while it was never online: the
+    // publication may still be loading when the popup closes
+    const wasSiteOnline = useRef(isSiteOnline);
+    useEffect(() => {
+        if (wasSiteOnline.current && !isSiteOnline) {
+            onClose();
+        }
+        wasSiteOnline.current = isSiteOnline;
+    }, [isSiteOnline, onClose]);
     if (!isSiteOnline) {
         return null;
     }

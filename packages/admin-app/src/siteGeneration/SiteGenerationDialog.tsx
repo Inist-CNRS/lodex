@@ -79,12 +79,13 @@ export const SiteGenerationDialog = ({
     // a generation of the wizard seen running stays on screen once done, to
     // tell so: one already done when the admin opens does not come back.
     // Set while rendering: an effect would close the dialog for a frame.
+    // A data add closes at once: nothing new to tell.
     const [wasSeenRunning, setWasSeenRunning] = useState(false);
-    if (isOpen !== wasSeenRunning && (isOpen || status !== 'done')) {
+    const staysOnceDone = status === 'done' && generation?.kind !== 'addData';
+    if (isOpen !== wasSeenRunning && (isOpen || !staysOnceDone)) {
         setWasSeenRunning(isOpen);
     }
-    const isSuccess =
-        wasSeenRunning && status === 'done' && generation?.kind !== 'addData';
+    const isSuccess = wasSeenRunning && staysOnceDone;
     useEffect(() => {
         if (!isOpen) {
             setIsStopConfirmOpen(false);

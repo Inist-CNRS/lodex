@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { logout } from '@lodex/frontend-common/user/reducer';
 import { getStore, Wrapper } from '../test-utils';
 import { SiteReadyAlert } from './SiteReadyAlert';
 
@@ -40,6 +41,30 @@ describe('SiteReadyAlert', () => {
         expect(
             screen.queryByText('site_generation_online_notice'),
         ).not.toBeInTheDocument();
+    });
+
+    it('closes for good when the admin signs out, not to come back at the next sign-in', () => {
+        const onClose = jest.fn();
+        const store = getStore({ user: ADMIN, publication: PUBLISHED });
+        render(
+            <Wrapper store={store}>
+                <SiteReadyAlert onClose={onClose} />
+            </Wrapper>,
+        );
+        expect(onClose).not.toHaveBeenCalled();
+        act(() => {
+            store.dispatch(logout());
+        });
+        expect(onClose).toHaveBeenCalled();
+    });
+
+    it('does not close while the site was never online', () => {
+        const onClose = jest.fn();
+        renderAlert(
+            { user: ADMIN, publication: { ...PUBLISHED, published: false } },
+            onClose,
+        );
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it('leads to the published site and to its display, and closes', async () => {
