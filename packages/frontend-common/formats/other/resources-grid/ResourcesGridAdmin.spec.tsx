@@ -5,6 +5,7 @@ import { TestI18N } from '../../../i18n/I18NContext';
 import ResourcesGridAdmin, {
     defaultArgs,
     toItemsPerRow,
+    toSpaceWidth,
 } from './ResourcesGridAdmin';
 import { precomputed } from './testFixtures';
 
@@ -228,7 +229,7 @@ describe('ResourcesGridAdmin', () => {
         );
     });
 
-    it('stores the resources per row and drops the old spaceWidth', async () => {
+    it('stores the resources per row with the matching old spaceWidth', async () => {
         const user = userEvent.setup();
         const onChange = setup(undefined, {
             ...defaultArgs,
@@ -238,9 +239,10 @@ describe('ResourcesGridAdmin', () => {
         await user.click(screen.getByLabelText('resources_grid_items_per_row'));
         await user.click(screen.getByRole('option', { name: '2' }));
 
-        const stored = onChange.mock.lastCall[0];
-        expect(stored.itemsPerRow).toBe(2);
-        expect(stored).not.toHaveProperty('spaceWidth');
+        expect(onChange.mock.lastCall[0]).toMatchObject({
+            itemsPerRow: 2,
+            spaceWidth: '50%',
+        });
     });
 });
 
@@ -263,10 +265,39 @@ describe('toItemsPerRow', () => {
         expect(toItemsPerRow({ itemsPerRow: 5, spaceWidth: '50%' })).toBe(5);
     });
 
+    it('reads an itemsPerRow stored as a string', () => {
+        expect(toItemsPerRow({ itemsPerRow: '5' })).toBe(5);
+    });
+
+    it.each([
+        [{ spaceWidth: '15%' }, 5],
+        [{ spaceWidth: '25%' }, 3],
+        [{ itemsPerRow: 4 }, 3],
+        [{ itemsPerRow: 20 }, 10],
+    ])('brings %j down to the menu choice %i', (args, count) => {
+        expect(toItemsPerRow(args)).toBe(count);
+    });
+
     it('falls back to the default without a valid value', () => {
         expect(toItemsPerRow({})).toBe(defaultArgs.itemsPerRow);
         expect(toItemsPerRow({ itemsPerRow: 0, spaceWidth: 'abc' })).toBe(
             defaultArgs.itemsPerRow,
         );
     });
+});
+
+describe('toSpaceWidth', () => {
+    it.each([
+        [1, '100%'],
+        [2, '50%'],
+        [3, '30%'],
+        [5, '20%'],
+        [10, '10%'],
+    ])(
+        'stores %i per row as %s, read back as the same count',
+        (count, width) => {
+            expect(toSpaceWidth(count)).toBe(width);
+            expect(toItemsPerRow({ spaceWidth: width })).toBe(count);
+        },
+    );
 });

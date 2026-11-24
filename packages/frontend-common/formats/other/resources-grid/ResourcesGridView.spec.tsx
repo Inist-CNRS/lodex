@@ -164,4 +164,25 @@ describe('ResourcesGridView', () => {
             expect(filterFormatData).toHaveBeenCalledWith({ maxSize: 6 });
         });
     });
+
+    describe('resources per row', () => {
+        const perRow = () =>
+            screen
+                .getAllByRole('listitem')
+                .map((item) => item.getAttribute('data-items-per-row'));
+
+        it('uses itemsPerRow', () => {
+            setup({ data: makeItems(2, false), total: 2, itemsPerRow: 5 });
+            expect(perRow()).toEqual(['5', '5']);
+        });
+
+        it('converts the old spaceWidth of a field saved before itemsPerRow', () => {
+            setup({
+                data: makeItems(2, false),
+                total: 2,
+                spaceWidth: '20%',
+            });
+            expect(perRow()).toEqual(['5', '5']);
+        });
+    });
 });

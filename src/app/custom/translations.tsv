@@ -348,7 +348,7 @@
 "hundred_percent"	"100 %"	"100 %"
 "list_format_select_image_width"	"Percent of width"	"Pourcentage de la largeur"
 "resources_grid_items_per_row"	"Resources per row"	"Nombre de ressources par ligne"
-"resources_grid_items_per_row_helper"	"On wide screens. Medium screens show 2 per row, mobiles 1."	"Sur grand écran. Les écrans moyens en affichent 2 par ligne, les mobiles 1."
+"resources_grid_items_per_row_helper"	"On wide screens. Medium screens show at most 2 per row, mobiles 1."	"Sur grand écran. Les écrans moyens en affichent 2 par ligne au plus, les mobiles 1."
 "formatTitle"	"Text - Title"	"Texte - Titre"
 "formatTitleDescription"	"This format allows you to style the text, with the choice of Heading 1, Heading 2, Heading 3 and Heading 4 and to choose a font color."	"Ce format permet de styler le texte, aux choix Tire 1, Titre 2, Titre 3 et Titre 4 et de choisir une couleur de police."
 "level1"	"Title 1"	"Titre 1"

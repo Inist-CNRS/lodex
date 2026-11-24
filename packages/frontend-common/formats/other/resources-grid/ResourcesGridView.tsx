@@ -48,7 +48,7 @@ const createStyles = memoize((itemsPerRow: number) =>
                 background: 'white',
                 boxShadow: '0 2px 1px rgba(170, 170, 170, 0.25)',
                 '@media all and (min-width: 40em)': {
-                    width: '50%',
+                    width: itemsPerRow === 1 ? '100%' : '50%',
                     margin: '0',
                 },
                 '@media all and (min-width: 60em)': {

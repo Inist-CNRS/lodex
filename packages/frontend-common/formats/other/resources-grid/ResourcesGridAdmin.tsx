@@ -29,6 +29,7 @@ export const defaultArgs = {
     allowToLoadMore: true,
     pageSize: 6,
     itemsPerRow: 3,
+    spaceWidth: '30%',
     titleSize: 100,
     summarySize: 400,
     openInNewTab: false,
@@ -41,7 +42,8 @@ export const defaultArgs = {
 export const ITEMS_PER_ROW_CHOICES = [1, 2, 3, 5, 10];
 
 // Fields saved before itemsPerRow store the card width as a percentage
-// (spaceWidth): 30% → 3 per row, 80% → 1.
+// (spaceWidth): 30% → 3 per row, 80% → 1. Any other count is brought down
+// to the closest menu choice, so the admin select always shows it.
 export const toItemsPerRow = ({
     itemsPerRow,
     spaceWidth,
@@ -49,14 +51,21 @@ export const toItemsPerRow = ({
     itemsPerRow?: unknown;
     spaceWidth?: unknown;
 }): number => {
-    if (typeof itemsPerRow === 'number' && itemsPerRow >= 1) {
-        return Math.floor(itemsPerRow);
-    }
+    const count = parseFloat(String(itemsPerRow));
     const percent = parseFloat(String(spaceWidth));
-    return percent > 0
-        ? Math.max(1, Math.floor(100 / percent))
-        : defaultArgs.itemsPerRow;
+    const perRow = count >= 1 ? count : percent > 0 ? 100 / percent : NaN;
+    if (!(perRow >= 1)) {
+        return defaultArgs.itemsPerRow;
+    }
+    return (
+        ITEMS_PER_ROW_CHOICES.filter((choice) => choice <= perRow).pop() ?? 1
+    );
 };
+
+// The old percentage for a count (3 → 30%), kept next to itemsPerRow so a
+// Lodex without itemsPerRow still shows the grid it can.
+export const toSpaceWidth = (itemsPerRow: number) =>
+    `${Math.floor(10 / itemsPerRow) * 10}%`;
 
 type ResourcesGridArgs = {
     params?: {
@@ -109,10 +118,11 @@ const ResourcesGridAdminContent = ({
 
     const handleItemsPerRow = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            const { spaceWidth: _spaceWidth, ...rest } = args;
+            const itemsPerRow = Number(event.target.value);
             onChange({
-                ...rest,
-                itemsPerRow: Number(event.target.value),
+                ...args,
+                itemsPerRow,
+                spaceWidth: toSpaceWidth(itemsPerRow),
             });
         },
         [onChange, args],
