@@ -553,7 +553,8 @@ img.nav-bar-icon {
 .resources-grid-list {
     list-style-type: none;
     display: flex;
-    gap: 15px;
+    /* no column gap: the 1% card margins space them, a gap would push the last card of a row to the next */
+    row-gap: 15px;
     padding: 0;
 }
 .resources-grid-item {
@@ -567,8 +568,7 @@ img.nav-bar-icon {
 .lodex-resource-wrapper {
     height: 100%;
 }
-._150t054,
-._1bmd932,
+.resources-grid-item:not([data-items-per-row='1']),
 .lodex-resource-wrapper {
     max-width: 350px !important;
 }

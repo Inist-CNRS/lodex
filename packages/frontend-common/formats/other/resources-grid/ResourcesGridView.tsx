@@ -118,7 +118,8 @@ export const ResourcesGridView = ({
         }
     };
 
-    const styles = createStyles(toItemsPerRow({ itemsPerRow, spaceWidth }));
+    const perRow = toItemsPerRow({ itemsPerRow, spaceWidth });
+    const styles = createStyles(perRow);
     const filteredData =
         isSimilarityMode || allowToLoadMore ? data.slice(0, more) : data;
     const minSimilarity = params?.minSimilarity;
@@ -146,6 +147,8 @@ export const ResourcesGridView = ({
                 {filteredData.map((entry, index) => (
                     <li
                         key={`${index}-resources-grid`}
+                        // stable hook for themes: the generated class names change with the width
+                        data-items-per-row={perRow}
                         // @ts-expect-error TS2322
                         className={styles.item}
                     >
