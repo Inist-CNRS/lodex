@@ -47,8 +47,8 @@ export default async function LodexRunVSearchPrecomputed(
         minValue,
         maxValue,
         maxSize,
-        queryVector = [],
     } = data;
+    let { queryVector = [] } = data;
 
     const fds = Array.isArray(field) ? field : [field];
     const fields = fds.filter(Boolean);
@@ -91,6 +91,22 @@ export default async function LodexRunVSearchPrecomputed(
 
     const collection = db.collection(collectionName);
     unset(filterDocuments, '$text');
+
+    // Similar resources: prefer the vector stored for the referer, built from
+    // the same columns as the vectors it is compared with. Resources the
+    // precomputed did not embed keep the query vector of the routine (title).
+    if (referer) {
+        // ponytail: no index on `id`, collection scan. Fine while the precomputed
+        // is capped by tdmservices.embedding.limit; add an index if that grows
+        const source = await collection.findOne({ id: referer.id });
+        if (
+            Array.isArray(source?.value) &&
+            source.value.length > 0 &&
+            source.value.every((x: unknown) => typeof x === 'number')
+        ) {
+            queryVector = source.value;
+        }
+    }
 
     // define your MongoDB Vector Search index
     // https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-type/?deployment-type=self&interface=driver&language=nodejs
