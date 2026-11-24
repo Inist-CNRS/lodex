@@ -11,24 +11,28 @@ const wrapped = <T extends { message?: unknown }>(
 });
 
 // the error of a loader statement, as the loader server serializes it
-const serialized = (properties: Record<string, unknown>) => {
+const serialized = (
+    properties: Record<string, unknown>,
+    statement = 'URLFetch',
+) => {
     const sourceError: Record<string, unknown> = {
         stack: `Error: ${properties.message}`,
         ...properties,
     };
-    return JSON.stringify(
-        wrapped('delegate', wrapped('URLFetch', sourceError)),
-    );
+    return JSON.stringify(wrapped('delegate', wrapped(statement, sourceError)));
 };
 
 // the error of URLConnect when the loader server fails (400)
-const loaderServerError = (sourceError: Record<string, unknown>) =>
+const loaderServerError = (
+    sourceError: Record<string, unknown>,
+    statement?: string,
+) =>
     new Error('Error during import: Error: Bad Request', {
         cause: wrapped(
             'URLConnect',
             Object.assign(new Error('Bad Request'), {
                 status: 400,
-                responseText: serialized(sourceError),
+                responseText: serialized(sourceError, statement),
             }),
         ),
     });
@@ -67,6 +71,38 @@ describe('getImportError', () => {
             apiMessage: 'Maintenance en cours',
         });
     });
+
+    const openAlexAnswer = {
+        error: 'Invalid query parameters error.',
+        message: 'annee_de_publication is not a valid field.',
+    };
+    it.each([
+        // @ezs/conditor up to 2.14.4: the answer as body only
+        ['OAFetch', { message: 'Bad Request', body: openAlexAnswer }],
+        ['CORHALFetch', { message: 'Bad Request', body: openAlexAnswer }],
+        // later versions: the status and the answer, like @ezs/basics
+        [
+            'OAFetch',
+            {
+                message: 'Bad Request',
+                status: 400,
+                responseText: JSON.stringify(openAlexAnswer),
+                body: openAlexAnswer,
+            },
+        ],
+    ])(
+        'should report the answer of the source of %s for %j',
+        (statement, sourceError) => {
+            expect(
+                getImportError(loaderServerError(sourceError, statement)),
+            ).toEqual({
+                code: 'import_error_invalid_query',
+                detail: 'Error during import: Error: Bad Request',
+                apiMessage:
+                    'Invalid query parameters error.\nannee_de_publication is not a valid field.',
+            });
+        },
+    );
 
     it('should not take the loader server error for an invalid query', () => {
         expect(
@@ -135,7 +171,7 @@ describe('getImportError', () => {
             ),
         ).toMatchObject({
             code: 'import_error_source_not_found',
-            apiMessage: '{"message":"no such dataset"}',
+            apiMessage: 'no such dataset',
         });
     });
 

@@ -1,3 +1,5 @@
+import { STATUS_CODES } from 'node:http';
+
 // the translation keys of the import errors explained to the user
 export type ImportErrorCode =
     | 'import_error_source_unavailable'
@@ -22,6 +24,9 @@ type ErrorLike = {
     stack?: string;
     status?: number;
     responseText?: string;
+    // the parsed answer of the source, set by OAFetch and CORHALFetch
+    // (@ezs/conditor) instead of status and responseText
+    body?: unknown;
     // a system error: ECONNREFUSED, ETIMEDOUT…
     code?: string;
     cause?: unknown;
@@ -70,17 +75,26 @@ const getErrorChain = (error: ErrorLike): ErrorLike[] => {
     return serialized ? [error, ...getErrorChain(serialized)] : [error];
 };
 
+// OAFetch and CORHALFetch throw `new Error(statusText)` with the answer of
+// the source as body: the status is in the message
+const getStatus = ({ status, body, message }: ErrorLike) =>
+    status ??
+    (body !== undefined
+        ? Number(
+              Object.keys(STATUS_CODES).find(
+                  (code) => STATUS_CODES[code] === message,
+              ),
+          ) || undefined
+        : undefined);
+
 // the expression of a loader that threw (an assign value), as V8 shows it:
 // "Lodash:1\n<expression>\n    ^\n\nTypeError: …"
 const getFailedExpression = (stack?: string) =>
     stack?.match(/^[^\n]+:\d+\n(.+)\n *\^/)?.[1].trim();
 
-const getCode = ({
-    status,
-    message,
-    code,
-    stack,
-}: ErrorLike): ImportErrorCode => {
+const getCode = (error: ErrorLike): ImportErrorCode => {
+    const { message, code, stack } = error;
+    const status = getStatus(error);
     // set by startImport when the loader read no line
     if (code === 'import_error_no_line') {
         return code;
@@ -161,6 +175,31 @@ const toText = (answer: string) =>
               .trim()
         : answer;
 
+const parseJson = (text?: string): unknown => {
+    try {
+        return text ? JSON.parse(text) : undefined;
+    } catch {
+        return undefined;
+    }
+};
+
+// @ezs/conditor up to 2.14.4 only sets body; later versions set responseText
+// too, like @ezs/basics. Both give the same message.
+const getAnswer = ({ responseText, body }: ErrorLike) => {
+    const answer = parseJson(responseText) ?? body ?? responseText;
+    if (typeof answer === 'string') {
+        return toText(answer);
+    }
+    // a JSON answer, like { error, message }: its texts
+    const texts =
+        answer && typeof answer === 'object'
+            ? Object.values(answer)
+                  .filter((value) => typeof value === 'string')
+                  .join('\n')
+            : '';
+    return texts || responseText;
+};
+
 const shorten = (text: string) =>
     text.length > MAX_API_MESSAGE_LENGTH
         ? `${text.slice(0, MAX_API_MESSAGE_LENGTH)}…`
@@ -173,6 +212,8 @@ const NETWORK_STATEMENTS = [
     'URLStream',
     'URLPagination',
     'URLRequest',
+    'OAFetch',
+    'CORHALFetch',
 ];
 
 // the statement the error comes from: the deepest one
@@ -186,8 +227,7 @@ export const getImportError = (error: ErrorLike): ImportError => {
     const chain = getErrorChain(error);
     const sourceError = chain[chain.length - 1];
     const statement = getFailedStatement(chain);
-    const apiMessage =
-        sourceError.responseText && toText(sourceError.responseText).trim();
+    const apiMessage = getAnswer(sourceError)?.trim();
     const code = getCode(sourceError);
     return {
         // an unknown error of a statement of the loader: the loader does not
