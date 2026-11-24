@@ -129,6 +129,22 @@ describe('ResourcesGridView', () => {
         });
     });
 
+    it('keeps the grid class names', () => {
+        setup({
+            data: makeItems(7, true),
+            total: 7,
+            showMinSimilarity: true,
+            params: { minSimilarity: 0.5 },
+        });
+        expect(
+            document.querySelector('.resources-grid-minSimilarity'),
+        ).not.toBeNull();
+        expect(
+            document.querySelector('.resources-grid-similarity'),
+        ).not.toBeNull();
+        expect(document.querySelector('.resources-grid-button')).not.toBeNull();
+    });
+
     describe('classic mode', () => {
         it('shows no similarity degree', () => {
             setup({ data: makeItems(2, false), total: 2 });

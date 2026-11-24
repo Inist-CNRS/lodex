@@ -1,38 +1,24 @@
-import { useState } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { Button } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import memoize from 'lodash/memoize';
 
 import LodexResource from '../../utils/components/LodexResource';
 import injectData from '../../injectData';
 import stylesToClassname from '../../../utils/stylesToClassName';
-import { useTranslate } from '../../../i18n/I18NContext';
-import { formatSimilarity } from '../resources-common/similarity';
-import { toPageSize } from '../resources-common/pageSize';
+import {
+    LoadMoreButton,
+    MinSimilaritySentence,
+    SimilarityDegree,
+} from '../resources-common/SimilarityParts';
+import {
+    hasSimilarity,
+    useResourcesPagination,
+} from '../resources-common/useResourcesPagination';
 import { toItemsPerRow } from './ResourcesGridAdmin';
 
 const createStyles = memoize((itemsPerRow: number) =>
     stylesToClassname(
         {
-            // same grey as the field label
-            minSimilarity: {
-                color: grey[500],
-                margin: '0 0 1em',
-            },
-            similarity: {
-                marginTop: '1em',
-                color: '#757575',
-                fontSize: '13px',
-                lineHeight: '16px',
-                textAlign: 'left',
-            },
-            button: {
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: '1em',
-            },
             list: {
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -101,51 +87,29 @@ export const ResourcesGridView = ({
     params,
     showMinSimilarity,
 }: ResourcesGridViewProps) => {
-    const { translate, locale } = useTranslate();
-    // An invalid saved pageSize (null after the input was emptied) would show no card at all.
-    const pageSize = toPageSize(pageSizeArg);
-    const [more, setMore] = useState(pageSize);
-
-    const isSimilarityMode = data.some(
-        (entry) =>
-            typeof (entry as { similarity?: unknown }).similarity === 'number',
-    );
-
-    const handleMore = () => {
-        const newMore = more + pageSize;
-        setMore(newMore);
-        if (!isSimilarityMode) {
-            filterFormatData({ maxSize: newMore });
-        }
-    };
-
+    const { isSimilarityMode, items, showMore, handleMore } =
+        useResourcesPagination({
+            data,
+            total,
+            pageSize: pageSizeArg,
+            allowToLoadMore,
+            filterFormatData,
+        });
     const perRow = toItemsPerRow({ itemsPerRow, spaceWidth });
     const styles = createStyles(perRow);
-    const filteredData =
-        isSimilarityMode || allowToLoadMore ? data.slice(0, more) : data;
-    const minSimilarity = params?.minSimilarity;
-    const showSentence =
-        isSimilarityMode &&
-        showMinSimilarity &&
-        typeof minSimilarity === 'number';
-    // Pagination is local in similarity mode: the total is what was received.
-    const showMore = isSimilarityMode
-        ? filteredData.length < data.length
-        : allowToLoadMore && more < total;
 
     return (
         <div>
-            {showSentence && (
-                // @ts-expect-error TS2339
-                <p className={styles.minSimilarity}>
-                    {translate('min_similarity_sentence')}{' '}
-                    <strong>{formatSimilarity(minSimilarity, locale)}</strong>
-                </p>
-            )}
+            <MinSimilaritySentence
+                classPrefix="resources-grid"
+                isSimilarityMode={isSimilarityMode}
+                show={showMinSimilarity}
+                minSimilarity={params?.minSimilarity}
+            />
             {/*
             // @ts-expect-error TS2322 */}
             <ul className={styles.list}>
-                {filteredData.map((entry, index) => (
+                {items.map((entry, index) => (
                     <li
                         key={`${index}-resources-grid`}
                         // stable hook for themes: the generated class names change with the width
@@ -162,21 +126,11 @@ export const ResourcesGridView = ({
                                 summarySize={summarySize}
                                 openInNewTab={openInNewTab}
                                 footer={
-                                    typeof (entry as { similarity?: unknown })
-                                        .similarity === 'number' ? (
-                                        // @ts-expect-error TS2322
-                                        <div className={styles.similarity}>
-                                            {translate('similarity_degree', {
-                                                similarity: formatSimilarity(
-                                                    (
-                                                        entry as {
-                                                            similarity: number;
-                                                        }
-                                                    ).similarity,
-                                                    locale,
-                                                ),
-                                            })}
-                                        </div>
+                                    hasSimilarity(entry) ? (
+                                        <SimilarityDegree
+                                            classPrefix="resources-grid"
+                                            similarity={entry.similarity}
+                                        />
                                     ) : undefined
                                 }
                             />
@@ -185,21 +139,13 @@ export const ResourcesGridView = ({
                 ))}
             </ul>
             {showMore && (
-                // @ts-expect-error TS2322
-                <div className={styles.button}>
-                    <Button
-                        variant="contained"
-                        onClick={handleMore}
-                        startIcon={null}
-                    >
-                        {isSimilarityMode
-                            ? translate('see_more_result_count', {
-                                  shown: filteredData.length,
-                                  total: data.length,
-                              })
-                            : translate('see_more_result')}
-                    </Button>
-                </div>
+                <LoadMoreButton
+                    classPrefix="resources-grid"
+                    isSimilarityMode={isSimilarityMode}
+                    shown={items.length}
+                    total={data.length}
+                    onClick={handleMore}
+                />
             )}
         </div>
     );
