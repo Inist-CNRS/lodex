@@ -209,6 +209,7 @@ module.exports = {
             'json-optimized',
             'json-lines',
             'query-istex',
+            'question-crossbase',
             'query-conditor',
             'query-conditor-for-halcnrs',
             'query-openalex-for-model',
