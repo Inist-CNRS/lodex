@@ -101,11 +101,27 @@ describe('ResourcesGridAdmin', () => {
                 params: expect.objectContaining({ minSimilarity: 0.5 }),
             }),
         );
+    });
 
-        await user.click(screen.getByLabelText('similar_show_min_similarity'));
+    it('stores showMinSimilarity when a minimum is set', async () => {
+        const onChange = setup(similar, {
+            ...defaultArgs,
+            params: { ...defaultArgs.params, minSimilarity: 0.5 },
+        });
+
+        await userEvent.click(
+            screen.getByLabelText('similar_show_min_similarity'),
+        );
         expect(onChange).toHaveBeenLastCalledWith(
             expect.objectContaining({ showMinSimilarity: true }),
         );
+    });
+
+    it('disables showMinSimilarity without a minimum', () => {
+        setup(similar);
+        expect(
+            screen.getByLabelText('similar_show_min_similarity'),
+        ).toBeDisabled();
     });
 
     it('caps maxResources at 100', () => {

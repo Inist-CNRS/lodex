@@ -308,6 +308,8 @@ const ResourcesGridAdminContent = ({
                             <Checkbox
                                 onChange={toggleShowMinSimilarity}
                                 checked={showMinSimilarity ?? false}
+                                // The sentence only shows an explicit minimum.
+                                disabled={storedMinSimilarity === undefined}
                             />
                         }
                         label={translate('similar_show_min_similarity')}
