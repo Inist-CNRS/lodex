@@ -100,6 +100,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             );
             const [initialLoadingDone, setInitialLoadingDone] = useState(false);
 
+            // Certain format accepte des URLs ou une saise libre (ex: MarkdownView)
             const isFormatLoading = useSelector(
                 (state: any) =>
                     !!inputValue && get(state, 'dataset.formatLoading', false),
