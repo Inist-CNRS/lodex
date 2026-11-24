@@ -100,5 +100,8 @@ export const exportPrecomputationResults = () => {
 // precomputation are only loaded once it is chosen.
 export const selectPrecomputedData = (name: string) => {
     cy.findByLabelText('Select precomputed data').click();
-    cy.findByRole('option', { name: new RegExp(name) }).click();
+    // options read "<name> (<status>)"
+    cy.findByRole('option', {
+        name: new RegExp(`^${Cypress._.escapeRegExp(name)} \\(`),
+    }).click();
 };

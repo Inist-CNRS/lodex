@@ -13,7 +13,7 @@ import {
 } from '@mui/x-data-grid';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import { useQuery } from '@tanstack/react-query';
+import { useIsFetching, useQuery, useQueryClient } from '@tanstack/react-query';
 import { TaskStatus } from '@lodex/common';
 
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
@@ -113,6 +113,41 @@ const getFiltersOperatorsForType = (type) => {
     }
 };
 
+// Rows already on screen stay readable while they are refreshed: the refresh
+// icon spins instead of the overlay covering the grid. It watches the requests
+// by itself: a render of the whole grid for each of them delays the rows, and
+// closes an open column menu.
+const RefreshButton = ({
+    source,
+    loading,
+    onClick,
+}: {
+    source: string | null;
+    loading: boolean;
+    onClick: () => void;
+}) => {
+    const { translate } = useTranslate();
+    const isFetching = useIsFetching({ queryKey: ['dataset-rows', source] });
+    return (
+        <Tooltip title={translate(`refresh_button`)}>
+            <IconButton onClick={onClick}>
+                <RefreshIcon
+                    sx={
+                        loading || isFetching > 0
+                            ? {
+                                  animation: 'refresh-spin 1s linear infinite',
+                                  '@keyframes refresh-spin': {
+                                      to: { transform: 'rotate(360deg)' },
+                                  },
+                              }
+                            : undefined
+                    }
+                />
+            </IconButton>
+        </Tooltip>
+    );
+};
+
 interface ParsingResultComponentProps {
     precomputedId?: string;
     loadingParsingResult: boolean;
@@ -187,10 +222,17 @@ export const ParsingResultComponent = ({
         if (!Array.isArray(datas)) return [];
         return datas.map((data) => ({ id: data._id, ...data }));
     }, [datasetQuery.data]);
-    const fetchDataset = datasetQuery.refetch;
-    // Rows already on screen stay readable while they are refreshed: the
-    // refresh icon spins instead of the overlay covering the grid.
-    const isRefreshing = loadingParsingResult || datasetQuery.isFetching;
+    const refetchDataset = datasetQuery.refetch;
+    // The rows changed (import, enrichment, deletion, edition): what is cached
+    // for the other pages, filters and sorts is out of date, drop it.
+    const queryClient = useQueryClient();
+    const fetchDataset = useCallback(() => {
+        queryClient.removeQueries({
+            queryKey: ['dataset-rows', source],
+            type: 'inactive',
+        });
+        return refetchDataset();
+    }, [queryClient, source, refetchDataset]);
 
     const columnsQuery = useQuery({
         queryKey: ['dataset-columns', source],
@@ -366,8 +408,13 @@ export const ParsingResultComponent = ({
     }, []);
 
     const handleFilteredRowsDeleted = useCallback(() => {
+        // removing the filter fetches the rows again, under another key
+        queryClient.removeQueries({
+            queryKey: ['dataset-rows', source],
+            type: 'inactive',
+        });
         handleFilterModelChange({ items: [] });
-    }, [handleFilterModelChange]);
+    }, [handleFilterModelChange, queryClient, source]);
 
     // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
     const hasColumns = columnsQuery.data !== undefined;
@@ -473,26 +520,11 @@ export const ParsingResultComponent = ({
                     </Box>
                 </Box>
                 <Box display="flex">
-                    <Tooltip title={translate(`refresh_button`)}>
-                        <IconButton onClick={() => fetchDataset()}>
-                            <RefreshIcon
-                                sx={
-                                    isRefreshing
-                                        ? {
-                                              animation:
-                                                  'refresh-spin 1s linear infinite',
-                                              '@keyframes refresh-spin': {
-                                                  to: {
-                                                      transform:
-                                                          'rotate(360deg)',
-                                                  },
-                                              },
-                                          }
-                                        : undefined
-                                }
-                            />
-                        </IconButton>
-                    </Tooltip>
+                    <RefreshButton
+                        source={source}
+                        loading={loadingParsingResult}
+                        onClick={() => fetchDataset()}
+                    />
                     <TableContainer>
                         <Table>
                             <TableBody>
@@ -576,7 +608,7 @@ export const ParsingResultComponent = ({
                 rows={rows}
                 getRowId={(row) => row._id}
                 rowCount={rowCount}
-                loading={isRefreshing && datasetQuery.data === undefined}
+                loading={datasetQuery.isLoading}
                 pageSize={limit}
                 checkboxSelection
                 paginationMode="server"
@@ -618,6 +650,7 @@ export const ParsingResultComponent = ({
                         cell={selectedCell}
                         precomputedId={precomputedId}
                         setToggleDrawer={setToggleDrawer}
+                        onSaved={fetchDataset}
                     />
                 ) : null}
             </Drawer>

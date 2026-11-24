@@ -38,7 +38,6 @@ export const PreComputationSelector = ({
             error={!!error}
             fullWidth
             value={value ?? ''}
-            onChange={(e) => onChange(e.target.value as string)}
             aria-label={translate('select_precomputed_data')}
         >
             {data?.map(
@@ -54,6 +53,9 @@ export const PreComputationSelector = ({
                     <MenuItem
                         key={id}
                         value={id}
+                        // not the Select's onChange: it is not called when the
+                        // item already shown is picked again
+                        onClick={() => onChange(id)}
                         disabled={status !== FINISHED}
                     >
                         {name} ({translate(labelByStatus[status ?? ''])})

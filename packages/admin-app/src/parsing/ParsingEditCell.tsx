@@ -217,12 +217,14 @@ interface ParsingEditCellProps {
     cell: object;
     setToggleDrawer(...args: unknown[]): unknown;
     precomputedId?: string;
+    onSaved?(): unknown;
 }
 
 const ParsingEditCell = ({
     cell,
     setToggleDrawer,
     precomputedId,
+    onSaved,
 }: ParsingEditCellProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
@@ -256,6 +258,7 @@ const ParsingEditCell = ({
             });
             // @ts-expect-error TS2339
             cell.row[cell.field] = valueToSave;
+            onSaved?.();
             toast(translate('dataset_edit_success'), {
                 type: 'success',
             });

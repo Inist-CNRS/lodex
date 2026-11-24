@@ -45,21 +45,28 @@ export const DataRouteComponent = ({
         return params.get('precomputation');
     }, [search]);
 
-    // Choosing a precomputation shows it: the selector also works from the
-    // dataset tab, so nothing is loaded before the admin has chosen.
-    const setSelectedPrecomputation = (precomputationId: string) => {
-        if (precomputationId === selectedPrecomputation) return;
-        const params = new URLSearchParams(search);
-        params.set('precomputation', precomputationId);
-        history.replace(`${path}/precomputation?${params}`);
-    };
-
     const tab = useMemo(() => {
         const activePath: string = pathname.split('/').pop() as string;
         return ['dataset', 'precomputation'].includes(activePath)
             ? activePath
             : 'dataset';
     }, [pathname]);
+
+    // Choosing a precomputation shows it: the selector also works from the
+    // dataset tab, so nothing is loaded before the admin has chosen.
+    const setSelectedPrecomputation = (precomputationId: string) => {
+        const isShown = tab === 'precomputation';
+        if (isShown && precomputationId === selectedPrecomputation) return;
+        const params = new URLSearchParams(search);
+        params.set('precomputation', precomputationId);
+        const location = `${path}/precomputation?${params}`;
+        // from the dataset tab, Back must return to it
+        if (isShown) {
+            history.replace(location);
+        } else {
+            history.push(location);
+        }
+    };
 
     const switchTab = (newTab: string) => {
         if (newTab === tab) return;
