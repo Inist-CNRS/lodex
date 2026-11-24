@@ -16,7 +16,7 @@ type FormatFieldSetProps = {
     id: string;
 };
 
-const FormatFieldSet = ({
+export const FormatFieldSet = ({
     children,
     title,
     defaultExpanded = false,

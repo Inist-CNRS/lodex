@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { isLocalURL, getResourceUri } from '@lodex/common';
 import Link from '../../../components/Link';
 import stylesToClassname from '../../../utils/stylesToClassName';
@@ -51,6 +52,7 @@ interface LodexResourceProps {
     summary?: string;
     summarySize?: number;
     openInNewTab?: boolean;
+    footer?: ReactNode;
 }
 
 // see https://jsonfeed.org/version/1#items
@@ -62,6 +64,7 @@ const LodexResource = ({
     summary: summaryProps = '',
     titleSize = -1,
     summarySize = -1,
+    footer,
 }: LodexResourceProps) => {
     const { translate } = useTranslate();
     const summary = truncateByWords(summaryProps, summarySize);
@@ -79,6 +82,7 @@ const LodexResource = ({
             {/*
              // @ts-expect-error TS2339 */}
             <div className={styles.contentParagraph}>{summary}</div>
+            {footer}
             {/*
              // @ts-expect-error TS2339 */}
             <div className={styles.contentCustomDiv} />

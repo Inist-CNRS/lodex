@@ -2,6 +2,13 @@ import debug from 'debug';
 import zipObject from 'lodash/zipObject.js';
 import unset from 'lodash/unset.js';
 import mongoDatabase from './mongoDatabase.js';
+import { buildVectorSearchPipeline } from './buildVectorSearchPipeline.js';
+import {
+    parseMaxResources,
+    parseMinSimilarity,
+    scoreToSimilarity,
+    similarityToScore,
+} from './similarity.js';
 
 const isIndexExist = false;
 /**
@@ -14,6 +21,11 @@ const isIndexExist = false;
  * @param {string}  [precomputedName] precomputed user name
  * @param {Object}  [valueFieldName=value] field to use as value
  * @param {Object}  [labelFieldName=id] field to use as label
+ * @param {Number}  [limit=10] maximum number of results of the vector search (capped at 10000)
+ * @param {Number}  [minSimilarity] minimum similarity in [0, 1], replaces `threshold` when valid.
+ *                  Like `threshold`, it only applies when the data carries a non-empty `filter`
+ *                  (always the case for vsimilar-precomputed, which filters out the current resource).
+ * @param {Boolean} [withSimilarity=false] add a `similarity` field (in [0, 1]) to each result
  * @returns {Object}
  */
 export default async function LodexRunVSearchPrecomputed(
@@ -102,45 +114,20 @@ export default async function LodexRunVSearchPrecomputed(
         await collection.createSearchIndex(index);
     }
 
-    const postFilter =
-        Object.keys(filterDocuments).length === 0
-            ? {}
-            : {
-                  documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
-                  value: { $gt: threshold },
-              };
-    const aggregatePipeline = [
-        {
-            $vectorSearch: {
-                index: 'vector_index',
-                path: 'value',
-                filter,
-                queryVector,
-                numCandidates: 150,
-                limit: 10,
-            },
-        },
-        {
-            $project: {
-                _id: 0,
-                id: 1,
-                value: {
-                    $meta: 'vectorSearchScore',
-                },
-            },
-        },
-        {
-            $lookup: {
-                from: 'publishedDataset',
-                localField: 'id',
-                foreignField: 'uri',
-                as: 'documents',
-            },
-        },
-        {
-            $match: postFilter,
-        },
-    ];
+    const withSimilarityParam = this.getParam('withSimilarity', false);
+    const withSimilarity =
+        withSimilarityParam === true || withSimilarityParam === 'true';
+    const minSimilarity = parseMinSimilarity(this.getParam('minSimilarity'));
+    const aggregatePipeline = buildVectorSearchPipeline({
+        queryVector,
+        filter,
+        filterDocuments,
+        limit: parseMaxResources(this.getParam('limit')),
+        minScore:
+            minSimilarity === undefined
+                ? threshold
+                : similarityToScore(minSimilarity),
+    });
     debug('ezs:debug')(
         `collection.aggregate(${JSON.stringify(aggregatePipeline)})`,
     );
@@ -154,7 +141,6 @@ export default async function LodexRunVSearchPrecomputed(
     );
 
     const count = await collection
-        // @ts-expect-error TS(2339): Property 'concat' does not exist on type '{}'.
         .aggregate(aggregatePipeline.concat({ $count: 'value' }))
         .toArray();
     if (count.length === 0) {
@@ -167,9 +153,17 @@ export default async function LodexRunVSearchPrecomputed(
         value.push(referer);
     }
 
-    const stream = cursor
+    const paged = cursor
         .skip(Number(skip || 0))
-        .limit(Number(maxSize || 1000000))
+        .limit(Number(maxSize || 1000000));
+    const stream = (
+        withSimilarity
+            ? paged.map((item: any) => ({
+                  ...item,
+                  similarity: scoreToSimilarity(item.value),
+              }))
+            : paged
+    )
         .stream()
         .on('error', (e: any) => feed.stop(e))
         .pipe(ezs('assign', { path, value }));
