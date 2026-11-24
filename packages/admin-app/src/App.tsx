@@ -5,6 +5,7 @@ import AppBar from './Appbar/AppBar';
 import getTitle from '@lodex/frontend-common/utils/getTitle';
 import { Progress } from './progress/Progress';
 import { SiteGenerationDialog } from './siteGeneration/SiteGenerationDialog';
+import { SiteReadyAlert } from './siteGeneration/SiteReadyAlert';
 import { SidebarContext } from './Sidebar/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';
 import { ToastContainer } from 'react-toastify';
@@ -33,6 +34,9 @@ type AppComponentProps = {
 
 export const AppComponent = ({ children, tenant }: AppComponentProps) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    // from the closing of the popup of a generated and published site, until
+    // the admin closes it or reloads
+    const [isSiteReadyNoticeShown, setIsSiteReadyNoticeShown] = useState(false);
     const sidebarContextValue = useMemo(
         () => ({
             open: sidebarOpen,
@@ -56,7 +60,7 @@ export const AppComponent = ({ children, tenant }: AppComponentProps) => {
             {/*
              // @ts-expect-error TS2322 */}
             <div style={styles.layout}>
-                <AppBar />
+                <AppBar isPublishedSiteHighlighted={isSiteReadyNoticeShown} />
                 {/*
                  // @ts-expect-error TS2322 */}
                 <div style={styles.contentLayout}>
@@ -64,6 +68,11 @@ export const AppComponent = ({ children, tenant }: AppComponentProps) => {
                     {/*
                      // @ts-expect-error TS2322 */}
                     <div className="body" style={styles.body}>
+                        {isSiteReadyNoticeShown && (
+                            <SiteReadyAlert
+                                onClose={() => setIsSiteReadyNoticeShown(false)}
+                            />
+                        )}
                         {children}
                     </div>
                     <ToastContainer
@@ -87,7 +96,7 @@ export const AppComponent = ({ children, tenant }: AppComponentProps) => {
                 </div>
             </div>
             <Progress />
-            <SiteGenerationDialog />
+            <SiteGenerationDialog onSuccessClose={setIsSiteReadyNoticeShown} />
         </SidebarContext.Provider>
     );
 };

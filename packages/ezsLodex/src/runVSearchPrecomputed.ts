@@ -2,6 +2,13 @@ import debug from 'debug';
 import zipObject from 'lodash/zipObject.js';
 import unset from 'lodash/unset.js';
 import mongoDatabase from './mongoDatabase.js';
+import { buildVectorSearchPipeline } from './buildVectorSearchPipeline.js';
+import {
+    parseMaxResources,
+    parseMinSimilarity,
+    scoreToSimilarity,
+    similarityToScore,
+} from './similarity.js';
 
 const isIndexExist = false;
 /**
@@ -14,6 +21,11 @@ const isIndexExist = false;
  * @param {string}  [precomputedName] precomputed user name
  * @param {Object}  [valueFieldName=value] field to use as value
  * @param {Object}  [labelFieldName=id] field to use as label
+ * @param {Number}  [limit=10] maximum number of results of the vector search (capped at 10000)
+ * @param {Number}  [minSimilarity] minimum similarity in [0, 1], replaces `threshold` when valid.
+ *                  Like `threshold`, it only applies when the data carries a non-empty `filter`
+ *                  (always the case for vsimilar-precomputed, which filters out the current resource).
+ * @param {Boolean} [withSimilarity=false] add a `similarity` field (in [0, 1]) to each result
  * @returns {Object}
  */
 export default async function LodexRunVSearchPrecomputed(
@@ -80,22 +92,21 @@ export default async function LodexRunVSearchPrecomputed(
     const collection = db.collection(collectionName);
     unset(filterDocuments, '$text');
 
-    // Similar resources: query with the vector already stored for the referer,
-    // so both sides of the comparison are built from the same text
-    if (referer && queryVector.length === 0) {
+    // Similar resources: prefer the vector stored for the referer, built from
+    // the same columns as the vectors it is compared with. Resources the
+    // precomputed did not embed keep the query vector of the routine (title).
+    if (referer) {
         // ponytail: no index on `id`, collection scan. Fine while the precomputed
         // is capped by tdmservices.embedding.limit; add an index if that grows
-        const source = await collection.findOne({
-            id: { $in: [referer.id, referer.id.replace(/^uid:\//, '')] },
-        });
-        if (!source) {
-            return feed.send({ total: 0 });
+        const source = await collection.findOne({ id: referer.id });
+        if (
+            Array.isArray(source?.value) &&
+            source.value.length > 0 &&
+            source.value.every((x: unknown) => typeof x === 'number')
+        ) {
+            queryVector = source.value;
         }
-        queryVector = source.value;
     }
-    // The referer is its own nearest neighbour: it takes one slot before the
-    // post filter removes it
-    const limit = Number(this.getParam('limit', 10)) + (referer ? 1 : 0);
 
     // define your MongoDB Vector Search index
     // https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-type/?deployment-type=self&interface=driver&language=nodejs
@@ -119,58 +130,20 @@ export default async function LodexRunVSearchPrecomputed(
         await collection.createSearchIndex(index);
     }
 
-    const postFilter =
-        Object.keys(filterDocuments).length === 0
-            ? {}
-            : {
-                  documents: { $elemMatch: filterDocuments }, //{ "versions.0.abxD": "2033" }
-                  value: { $gt: threshold },
-              };
-    const aggregatePipeline = [
-        {
-            $vectorSearch: {
-                index: 'vector_index',
-                path: 'value',
-                filter,
-                queryVector,
-                numCandidates: Math.max(150, limit * 10),
-                limit,
-            },
-        },
-        {
-            $project: {
-                _id: 0,
-                // The precomputed stores the dataset uri, the publication
-                // prefixes it (see publishProcess.ts): same rule here
-                id: {
-                    $cond: [
-                        {
-                            $regexMatch: {
-                                input: { $toString: '$id' },
-                                regex: '^(ark|uid):',
-                            },
-                        },
-                        '$id',
-                        { $concat: ['uid:/', { $toString: '$id' }] },
-                    ],
-                },
-                value: {
-                    $meta: 'vectorSearchScore',
-                },
-            },
-        },
-        {
-            $lookup: {
-                from: 'publishedDataset',
-                localField: 'id',
-                foreignField: 'uri',
-                as: 'documents',
-            },
-        },
-        {
-            $match: postFilter,
-        },
-    ];
+    const withSimilarityParam = this.getParam('withSimilarity', false);
+    const withSimilarity =
+        withSimilarityParam === true || withSimilarityParam === 'true';
+    const minSimilarity = parseMinSimilarity(this.getParam('minSimilarity'));
+    const aggregatePipeline = buildVectorSearchPipeline({
+        queryVector,
+        filter,
+        filterDocuments,
+        limit: parseMaxResources(this.getParam('limit')),
+        minScore:
+            minSimilarity === undefined
+                ? threshold
+                : similarityToScore(minSimilarity),
+    });
     debug('ezs:debug')(
         `collection.aggregate(${JSON.stringify(aggregatePipeline)})`,
     );
@@ -184,7 +157,6 @@ export default async function LodexRunVSearchPrecomputed(
     );
 
     const count = await collection
-        // @ts-expect-error TS(2339): Property 'concat' does not exist on type '{}'.
         .aggregate(aggregatePipeline.concat({ $count: 'value' }))
         .toArray();
     if (count.length === 0) {
@@ -197,9 +169,17 @@ export default async function LodexRunVSearchPrecomputed(
         value.push(referer);
     }
 
-    const stream = cursor
+    const paged = cursor
         .skip(Number(skip || 0))
-        .limit(Number(maxSize || 1000000))
+        .limit(Number(maxSize || 1000000));
+    const stream = (
+        withSimilarity
+            ? paged.map((item: any) => ({
+                  ...item,
+                  similarity: scoreToSimilarity(item.value),
+              }))
+            : paged
+    )
         .stream()
         .on('error', (e: any) => feed.stop(e))
         .pipe(ezs('assign', { path, value }));

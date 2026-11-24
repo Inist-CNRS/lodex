@@ -100,7 +100,7 @@ const typeUrl = async (url: string) => {
 };
 
 const typeSiteName = async (name: string) => {
-    await userEvent.type(screen.getByLabelText('name'), name);
+    await userEvent.type(screen.getByLabelText('site_wizard_site_title'), name);
 };
 
 const goToSiteInfoStep = async (title = 'mc_a_title') => {
@@ -305,7 +305,7 @@ describe('SiteWizard', () => {
         expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
     });
 
-    it('goes to the site name and description once the data is given', async () => {
+    it('goes to the theme step after the site title and subtitle', async () => {
         render(<SiteWizard open onClose={jest.fn()} />);
         await goToDataStep();
         expect(button('site_wizard_next')).toBeDisabled();
@@ -322,8 +322,10 @@ describe('SiteWizard', () => {
         expect(
             screen.getByText('site_wizard_site_info_hint'),
         ).toBeInTheDocument();
-        expect(screen.getByLabelText('name')).toHaveValue('');
-        expect(screen.getByLabelText('description')).toHaveValue('');
+        expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue('');
+        expect(screen.getByLabelText('site_wizard_site_subtitle')).toHaveValue(
+            '',
+        );
         // both fields are optional
         expect(button('site_wizard_next')).toBeEnabled();
     });
@@ -556,7 +558,9 @@ describe('SiteWizard', () => {
         expect(screen.getByText('2/5')).toBeInTheDocument();
         expect(screen.getByLabelText('use_url')).toHaveValue('https://x');
         await userEvent.click(button('site_wizard_next'));
-        expect(screen.getByLabelText('name')).toHaveValue('My site');
+        expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue(
+            'My site',
+        );
     });
 
     it('generates the site with the chosen model, data, name, description and theme, only once', async () => {
@@ -564,7 +568,7 @@ describe('SiteWizard', () => {
         await goToSiteInfoStep();
         await typeSiteName('My site');
         await userEvent.type(
-            screen.getByLabelText('description'),
+            screen.getByLabelText('site_wizard_site_subtitle'),
             'About my site',
         );
         await userEvent.click(button('site_wizard_next'));
@@ -866,7 +870,10 @@ describe('SiteWizard', () => {
         await goToSiteInfoStep();
         clearError.mockClear();
         await typeSiteName('My site');
-        await userEvent.type(screen.getByLabelText('description'), 'About');
+        await userEvent.type(
+            screen.getByLabelText('site_wizard_site_subtitle'),
+            'About',
+        );
         expect(clearError).not.toHaveBeenCalled();
     });
 
@@ -911,7 +918,9 @@ describe('SiteWizard', () => {
         );
         await userEvent.click(button('site_wizard_previous'));
         await userEvent.click(button('site_wizard_previous'));
-        expect(screen.getByLabelText('name')).toHaveValue('My site');
+        expect(screen.getByLabelText('site_wizard_site_title')).toHaveValue(
+            'My site',
+        );
     });
 
     it('keeps the error displayed on the data step, where a failed import is fixed', async () => {

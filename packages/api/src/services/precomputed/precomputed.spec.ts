@@ -7,6 +7,7 @@ import {
     processPrecomputed,
     setPrecomputedError,
     startAskForPrecomputed,
+    toPrecomputedEntry,
 } from './precomputed';
 import progress from '../progress';
 
@@ -109,6 +110,54 @@ describe('precomputed', () => {
                     { lol: 'c', simpleValue: 'ploup' },
                 ]),
             );
+        });
+    });
+
+    describe('toPrecomputedEntry', () => {
+        it('identifies the entry by the uri of the published resource', () => {
+            expect(
+                toPrecomputedEntry({ uri: '2013BOR15210', title: 'Plop' }, [
+                    'title',
+                ]),
+            ).toEqual({
+                id: 'uid:/2013BOR15210',
+                value: 'Plop',
+                name: ['title'],
+            });
+        });
+
+        it('keeps an uri already prefixed by uid: or ark:', () => {
+            expect(
+                toPrecomputedEntry({ uri: 'uid:/VEUH4pEaz', title: 'Plop' }, [
+                    'title',
+                ]).id,
+            ).toBe('uid:/VEUH4pEaz');
+            expect(
+                toPrecomputedEntry({ uri: 'ark:/67375/XYZ', title: 'Plop' }, [
+                    'title',
+                ]).id,
+            ).toBe('ark:/67375/XYZ');
+        });
+
+        it('sends the values of several columns as an array', () => {
+            expect(
+                toPrecomputedEntry(
+                    { uri: 'uid:/1', title: 'Plop', subtitle: 'Plip' },
+                    ['title', 'subtitle'],
+                ),
+            ).toEqual({
+                id: 'uid:/1',
+                value: ['Plop', 'Plip'],
+                name: ['title', 'subtitle'],
+            });
+        });
+
+        it('parses a column holding a JSON string', () => {
+            expect(
+                toPrecomputedEntry({ uri: 'uid:/1', authors: '["A","B"]' }, [
+                    'authors',
+                ]).value,
+            ).toEqual(['A', 'B']);
         });
     });
 

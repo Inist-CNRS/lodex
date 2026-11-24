@@ -1,9 +1,29 @@
-import React, { useCallback, type ChangeEvent } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+    type ChangeEvent,
+} from 'react';
+import { useFormContext, useWatch, type Control } from 'react-hook-form';
 import { MenuItem, Checkbox, TextField, FormControlLabel } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import {
+    FormatDefaultParamsFieldSet,
+    FormatFieldSet,
+} from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { isSimilarResourcesSource, parseSimilarityInput } from './similarity';
+
+// Upper bound of "Maximum number of resources": every resource is loaded in a
+// single call, and the routine clamps to the same value.
+export const MAX_SIMILAR_RESOURCES = 100;
+
+// A page size that is not a positive integer (e.g. an emptied input) falls back to the default.
+export const toPageSize = (value: unknown): number =>
+    typeof value === 'number' && Number.isInteger(value) && value > 0
+        ? value
+        : defaultArgs.pageSize;
 
 export const defaultArgs = {
     allowToLoadMore: true,
@@ -24,7 +44,10 @@ type ResourcesGridArgs = {
         maxValue?: number;
         minValue?: number;
         orderBy?: string;
+        maxResources?: number;
+        minSimilarity?: number;
     };
+    showMinSimilarity?: boolean;
     spaceWidth?: string;
     allowToLoadMore?: boolean;
     pageSize?: number;
@@ -38,11 +61,30 @@ type ResourcesGridAdminProps = {
     onChange: (args: ResourcesGridArgs) => void;
 };
 
-const ResourcesGridAdmin = ({
+type ResourcesGridAdminContentProps = ResourcesGridAdminProps & {
+    isSimilar: boolean;
+};
+
+const ResourcesGridAdminContent = ({
     args = defaultArgs,
     onChange,
-}: ResourcesGridAdminProps) => {
+    isSimilar,
+}: ResourcesGridAdminContentProps) => {
     const { translate } = useTranslate();
+    const storedMinSimilarity = args.params?.minSimilarity;
+    const [minSimilarityText, setMinSimilarityText] = useState(
+        storedMinSimilarity?.toString() ?? '',
+    );
+
+    // Resync the text when args change from outside (e.g. the format is reset),
+    // but keep what the admin is typing when it already matches the stored value.
+    useEffect(() => {
+        setMinSimilarityText((text) =>
+            parseSimilarityInput(text) === storedMinSimilarity
+                ? text
+                : storedMinSimilarity?.toString() ?? '',
+        );
+    }, [storedMinSimilarity]);
 
     const handleWidth = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +118,7 @@ const ResourcesGridAdmin = ({
 
     const handlePageSize = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            const pageSize = parseInt(e.target.value, 10);
+            const pageSize = toPageSize(parseInt(e.target.value, 10));
             onChange({
                 ...args,
                 pageSize: pageSize,
@@ -87,6 +129,51 @@ const ResourcesGridAdmin = ({
             });
         },
         [args, onChange],
+    );
+
+    // Sets a numeric key of args.params, or removes it when value is undefined.
+    const setParam = useCallback(
+        (key: 'maxResources' | 'minSimilarity', value?: number) => {
+            const { [key]: _removed, ...params } = args.params ?? {};
+            onChange({
+                ...args,
+                params:
+                    value === undefined ? params : { ...params, [key]: value },
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleMaxResources = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const maxResources = parseInt(event.target.value, 10);
+            setParam(
+                'maxResources',
+                Number.isNaN(maxResources) || maxResources < 1
+                    ? undefined
+                    : Math.min(maxResources, MAX_SIMILAR_RESOURCES),
+            );
+        },
+        [setParam],
+    );
+
+    // The text is kept locally so intermediate input such as "0," can be
+    // typed. An empty or invalid input removes the setting, so what is saved
+    // always matches what the field shows (an invalid field is shown in error).
+    const handleMinSimilarity = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const text = event.target.value;
+            setMinSimilarityText(text);
+            setParam('minSimilarity', parseSimilarityInput(text));
+        },
+        [setParam],
+    );
+
+    const toggleShowMinSimilarity = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({ ...args, showMinSimilarity: event.target.checked });
+        },
+        [onChange, args],
     );
 
     const handleSummarySize = useCallback(
@@ -116,6 +203,7 @@ const ResourcesGridAdmin = ({
         titleSize,
         summarySize,
         openInNewTab,
+        showMinSimilarity,
     } = args;
 
     return (
@@ -145,17 +233,20 @@ const ResourcesGridAdmin = ({
                         {translate('hundred_percent')}
                     </MenuItem>
                 </TextField>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={toggleAllowToLoadMore}
-                            checked={
-                                allowToLoadMore ?? defaultArgs.allowToLoadMore
-                            }
-                        />
-                    }
-                    label={translate('allow_to_load_more')}
-                />
+                {!isSimilar && (
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={toggleAllowToLoadMore}
+                                checked={
+                                    allowToLoadMore ??
+                                    defaultArgs.allowToLoadMore
+                                }
+                            />
+                        }
+                        label={translate('allow_to_load_more')}
+                    />
+                )}
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -187,7 +278,71 @@ const ResourcesGridAdmin = ({
                     fullWidth
                 />
             </FormatDefaultParamsFieldSet>
+            {isSimilar && (
+                <FormatFieldSet
+                    title="similarity_section"
+                    id="format-field-set-similarity"
+                    defaultExpanded
+                >
+                    <TextField
+                        label={translate('similar_max_resources')}
+                        onChange={handleMaxResources}
+                        value={args.params?.maxResources ?? ''}
+                        type="number"
+                        inputProps={{ min: 1, max: MAX_SIMILAR_RESOURCES }}
+                        fullWidth
+                    />
+                    <TextField
+                        label={translate('similar_min_similarity')}
+                        onChange={handleMinSimilarity}
+                        value={minSimilarityText}
+                        error={
+                            minSimilarityText.trim() !== '' &&
+                            parseSimilarityInput(minSimilarityText) ===
+                                undefined
+                        }
+                        fullWidth
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={toggleShowMinSimilarity}
+                                checked={showMinSimilarity ?? false}
+                                // The sentence only shows an explicit minimum.
+                                disabled={storedMinSimilarity === undefined}
+                            />
+                        }
+                        label={translate('similar_show_min_similarity')}
+                    />
+                </FormatFieldSet>
+            )}
         </FormatGroupedFieldSet>
+    );
+};
+
+// useWatch needs a form control: it is only called below, inside a form context.
+const ResourcesGridAdminWithForm = ({
+    control,
+    ...props
+}: ResourcesGridAdminProps & { control: Control }) => {
+    const transformers = useWatch({ control, name: 'transformers' });
+    return (
+        <ResourcesGridAdminContent
+            {...props}
+            isSimilar={isSimilarResourcesSource(transformers)}
+        />
+    );
+};
+
+const ResourcesGridAdmin = (props: ResourcesGridAdminProps) => {
+    const formContext = useFormContext();
+
+    if (!formContext) {
+        return <ResourcesGridAdminContent {...props} isSimilar={false} />;
+    }
+
+    return (
+        <ResourcesGridAdminWithForm {...props} control={formContext.control} />
     );
 };
 

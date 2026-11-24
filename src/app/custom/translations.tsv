@@ -1572,6 +1572,11 @@
 "mc_hal2lodex_title"	"HAL2LODEX model"	"Modèle HAL2LODEX"
 "mc_hal2lodex_name"	"HAL2LODEX"	"HAL2LODEX"
 "mc_hal2lodex_description"	"This model builds a ready-to-use LODEX site for exploring and visualizing bibliographic data from HAL. It can be used and adapted to various HAL data corpora to produce indicators and visualizations, and to monitor or manage the HAL collection."	"Ce modèle permet de construire un site LODEX prêt à l’emploi pour l’exploration et la visualisation de données bibliographiques provenant de HAL. Il peut être utilisé et adapté à différents corpus de données issus de HAL afin de produire et générer des indicateurs, des visualisations et permettre le suivi ou la gestion de la collection HAL."
+"mc_hal2lodex_import_help"	"Retrieve the query available in the HAL2LODEX model documentation, adapt and customize it to your needs, then copy and paste it into the “Web link” or “Free input” tab.
+
+You can also import a CSV file from the “File” tab, provided that it contains at least the same fields as those defined in the query available in the documentation."	"Récupérez la requête disponible dans la documentation du modèle HAL2LODEX, adaptez-la et personnalisez-la à vos besoins, puis copiez-collez-la dans l’onglet « Lien web » ou « Saisie libre ».
+
+Vous pouvez également importer un fichier CSV depuis l’onglet « Fichier », à condition qu’il contienne au moins les mêmes champs que ceux définis dans la requête disponible dans la documentation."
 "mc_openalex_title"	"OpenAlex model"	"Modèle OpenAlex"
 "mc_openalex_name"	"OpenAlex"	"OpenAlex"
 "mc_openalex_description"	"This model builds a LODEX site for exploring bibliographic data from OpenAlex. It can be reused and adapted to explore different OpenAlex datasets or to meet specific bibliometric analysis needs."	"Ce modèle permet de construire un site LODEX d’exploration de données bibliographiques à partir d’OpenAlex. Il peut être réutilisé et adapté pour explorer différents jeux de données OpenAlex ou répondre à des besoins spécifiques d’analyse bibliométrique."
@@ -1684,6 +1689,13 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "no_site_generation"	"the generation has changed in the meantime (relaunched, stopped or finished)"	"la génération a changé entre-temps (relancée, arrêtée ou terminée)"
 "site_generation_in_progress"	"A site generation is in progress: stop it before launching a task by hand"	"Une génération du site est en cours : arrêtez-la avant de lancer une tâche à la main"
 "site_generation_job_lost"	"The task stopped unexpectedly. Retry or stop the configuration."	"La tâche s'est arrêtée de manière inattendue. Réessayez ou arrêtez la configuration."
+"site_generation_done_title"	"Your site is ready"	"Votre site est prêt"
+"site_generation_done_subtitle"	"The configuration is complete and the site is published"	"La configuration est terminée et le site est publié"
+"site_generation_done_hint"	"You can get back to your site at any time with the eye icon. To customise it, go to the Display tab."	"Vous retrouverez votre site à tout moment avec l'icône de l'œil. Pour le personnaliser, rendez-vous dans l'onglet Affichage."
+"site_generation_configured_title"	"Your site is configured"	"Votre site est configuré"
+"site_generation_configured_subtitle"	"The configuration is complete: publish the site to put it online"	"La configuration est terminée : publiez le site pour le mettre en ligne"
+"site_generation_view_site"	"View my site"	"Voir mon site"
+"site_generation_online_notice"	"Your site is online. Customise it in the Display tab."	"Votre site est en ligne. Personnalisez-le dans l'onglet Affichage."
 "simplified_upload_model"	"You are using the **%{name}** model, please only add data matching its dataset:"	"Vous utilisez le modèle **%{name}**, veuillez uniquement ajouter des données qui correspondent au jeu de données :"
 "simplified_upload_model_no_doc"	"You are using the **%{name}** model, please only add data matching its dataset."	"Vous utilisez le modèle **%{name}**, veuillez uniquement ajouter des données qui correspondent au jeu de données."
 "simplified_upload_doc"	"access the documentation"	"accéder à la documentation"
@@ -1692,3 +1704,10 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "not_simplified"	"This site no longer uses a catalog model: reload the page."	"Ce site n'utilise plus un modèle du catalogue : rechargez la page."
 "loader_not_allowed"	"This loader does not match the site model."	"Ce loader ne correspond pas au modèle du site."
 "import_type_not_allowed"	"This import type does not match the site model."	"Ce type d'import ne correspond pas au modèle du site."
+"similarity_section"	"Similarity"	"Similarité"
+"similar_max_resources"	"Maximum number of resources"	"Nombre de ressources maximum"
+"similar_min_similarity"	"Minimum similarity degree (0 to 1)"	"Degré de similarité minimum (0 à 1)"
+"similar_show_min_similarity"	"Show the minimum similarity degree"	"Indiquer le degré de similarité minimum en front"
+"similarity_degree"	"Similarity degree: %{similarity}"	"Degré de similarité : %{similarity}"
+"min_similarity_sentence"	"The resources below have a similarity degree of at least"	"Les ressources ci-dessous ont un degré de similarité d'au moins"
+"see_more_result_count"	"More results (%{shown}/%{total})"	"Plus de résultats (%{shown}/%{total})"

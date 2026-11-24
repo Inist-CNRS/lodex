@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
 import { useHistory } from 'react-router-dom';
 import {
+    Alert,
     Box,
     Button,
     CircularProgress,
@@ -10,6 +11,7 @@ import {
     DialogActions,
     DialogContent,
 } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { isSiteGenerationActive, toast } from '@lodex/common';
 import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { loadField } from '@lodex/frontend-common/fields/reducer';
@@ -20,7 +22,9 @@ import { loadPrecomputed } from '../precomputed';
 import { loadPublication } from '../publication';
 import { loadSubresources } from '../subresource';
 import { getErrorDetail } from '../commons/getErrorDetail';
+import { getPublishedSiteUrl } from '../Appbar/GoToPublicationButton';
 import { getDisplayedSteps } from './displayedSteps';
+import { Fireworks } from './Fireworks';
 import { SiteGenerationHeader } from './SiteGenerationHeader';
 import { SiteGenerationSteps } from './SiteGenerationSteps';
 import { useSiteGeneration, useSiteGenerationPush } from './useSiteGeneration';
@@ -52,7 +56,14 @@ const WithEmailLink = ({ text }: { text: string }) => {
     );
 };
 
-export const SiteGenerationDialog = () => {
+type SiteGenerationDialogProps = {
+    // the popup of a generated site is closed, on a published site or not
+    onSuccessClose?: (isPublished: boolean) => void;
+};
+
+export const SiteGenerationDialog = ({
+    onSuccessClose,
+}: SiteGenerationDialogProps) => {
     const { translate } = useTranslate();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -65,6 +76,16 @@ export const SiteGenerationDialog = () => {
 
     const status = generation?.status;
     const isOpen = isSiteGenerationActive(status);
+    // a generation of the wizard seen running stays on screen once done, to
+    // tell so: one already done when the admin opens does not come back.
+    // Set while rendering: an effect would close the dialog for a frame.
+    // A data add closes at once: nothing new to tell.
+    const [wasSeenRunning, setWasSeenRunning] = useState(false);
+    const staysOnceDone = status === 'done' && generation?.kind !== 'addData';
+    if (isOpen !== wasSeenRunning && (isOpen || !staysOnceDone)) {
+        setWasSeenRunning(isOpen);
+    }
+    const isSuccess = wasSeenRunning && staysOnceDone;
     useEffect(() => {
         if (!isOpen) {
             setIsStopConfirmOpen(false);
@@ -99,7 +120,7 @@ export const SiteGenerationDialog = () => {
         }
     }, [status, generation?.themeNotFound, dispatch, translate, queryClient]);
 
-    if (!generation || !isOpen) {
+    if (!generation || !(isOpen || isSuccess)) {
         return null;
     }
 
@@ -158,6 +179,12 @@ export const SiteGenerationDialog = () => {
         }
     };
 
+    const isPublished = generation.publication?.state === 'done';
+    const handleSuccessClose = () => {
+        setWasSeenRunning(false);
+        onSuccessClose?.(isPublished);
+    };
+
     const handleStop = async () => {
         await run(stop);
         setIsStopConfirmOpen(false);
@@ -175,7 +202,22 @@ export const SiteGenerationDialog = () => {
             transitionDuration={{ enter: 0 }}
             PaperProps={GENERATION_DIALOG_PAPER_PROPS}
         >
-            <SiteGenerationHeader />
+            {isSuccess ? (
+                <SiteGenerationHeader
+                    title={
+                        isPublished
+                            ? 'site_generation_done_title'
+                            : 'site_generation_configured_title'
+                    }
+                    subtitle={
+                        isPublished
+                            ? 'site_generation_done_subtitle'
+                            : 'site_generation_configured_subtitle'
+                    }
+                />
+            ) : (
+                <SiteGenerationHeader />
+            )}
             {/* room for the halo of the running step, which the content clips */}
             <DialogContent sx={{ px: 1.5, mx: -1.5 }}>
                 <SiteGenerationSteps
@@ -190,6 +232,15 @@ export const SiteGenerationDialog = () => {
                     }
                     retryDisabled={isActing || isGenerationStopping}
                 />
+                {isSuccess && isPublished && (
+                    <Alert
+                        severity="success"
+                        icon={<VisibilityIcon fontSize="inherit" />}
+                        sx={{ mt: 3 }}
+                    >
+                        {translate('site_generation_done_hint')}
+                    </Alert>
+                )}
                 {isGenerationStopping && (
                     <Box
                         role="status"
@@ -206,14 +257,36 @@ export const SiteGenerationDialog = () => {
                 )}
             </DialogContent>
             <DialogActions sx={{ px: 0, pb: 0 }}>
-                <Button
-                    color="inherit"
-                    onClick={() => setIsStopConfirmOpen(true)}
-                    disabled={isActing || isGenerationStopping}
-                >
-                    {translate('site_generation_stop')}
-                </Button>
+                {isSuccess ? (
+                    <>
+                        <Button color="inherit" onClick={handleSuccessClose}>
+                            {translate('close')}
+                        </Button>
+                        {isPublished && (
+                            <Button
+                                component="a"
+                                href={getPublishedSiteUrl()}
+                                // the admin stays open behind the site
+                                target="_blank"
+                                rel="noopener"
+                                variant="contained"
+                                onClick={handleSuccessClose}
+                            >
+                                {translate('site_generation_view_site')}
+                            </Button>
+                        )}
+                    </>
+                ) : (
+                    <Button
+                        color="inherit"
+                        onClick={() => setIsStopConfirmOpen(true)}
+                        disabled={isActing || isGenerationStopping}
+                    >
+                        {translate('site_generation_stop')}
+                    </Button>
+                )}
             </DialogActions>
+            {isSuccess && isPublished && <Fireworks />}
             <ConfirmPopup
                 isOpen={isStopConfirmOpen}
                 title={translate('site_generation_stop_title')}
