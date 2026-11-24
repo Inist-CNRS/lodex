@@ -45,6 +45,8 @@ export const buildVectorSearchPipeline = ({
         ...(hasDocumentFilter
             ? [{ $match: { value: { $gte: minScore } } }]
             : []),
+        // Sorted before the $lookup, while rows only carry id and score.
+        { $sort: { value: -1 } },
         {
             $lookup: {
                 from: 'publishedDataset',
@@ -58,6 +60,5 @@ export const buildVectorSearchPipeline = ({
                 ? { documents: { $elemMatch: filterDocuments } }
                 : {},
         },
-        { $sort: { value: -1 } },
     ];
 };

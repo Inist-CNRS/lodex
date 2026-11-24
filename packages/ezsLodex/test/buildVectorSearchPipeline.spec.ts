@@ -41,15 +41,25 @@ describe('buildVectorSearchPipeline', () => {
         expect($vectorSearch.numCandidates).toBe(10000);
     });
 
-    it('always ends with a descending sort on value', () => {
-        const pipeline = buildVectorSearchPipeline({ ...base, limit: 10 });
-        expect(pipeline.at(-1)).toEqual({ $sort: { value: -1 } });
-    });
+    it.each([{ uri: { $ne: 'uid:/a' } }, {}])(
+        'sorts by descending score just before the lookup (filter %j)',
+        (filterDocuments) => {
+            const pipeline = buildVectorSearchPipeline({
+                ...base,
+                filterDocuments,
+                limit: 10,
+            });
+            const lookupIndex = pipeline.findIndex((s: any) => '$lookup' in s);
+            expect(pipeline[lookupIndex - 1]).toEqual({
+                $sort: { value: -1 },
+            });
+        },
+    );
 
     it('keeps a resource exactly at the threshold, before the lookup', () => {
         const pipeline = buildVectorSearchPipeline({ ...base, limit: 10 });
         const lookupIndex = pipeline.findIndex((s: any) => '$lookup' in s);
-        expect((pipeline[lookupIndex - 1] as any).$match).toEqual({
+        expect((pipeline[lookupIndex - 2] as any).$match).toEqual({
             value: { $gte: 0.75 },
         });
         expect((pipeline[lookupIndex + 1] as any).$match).toEqual({
