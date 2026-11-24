@@ -35,8 +35,8 @@ export default async function LodexRunVSearchPrecomputed(
         minValue,
         maxValue,
         maxSize,
-        queryVector = [],
     } = data;
+    let { queryVector = [] } = data;
 
     const fds = Array.isArray(field) ? field : [field];
     const fields = fds.filter(Boolean);
@@ -80,6 +80,23 @@ export default async function LodexRunVSearchPrecomputed(
     const collection = db.collection(collectionName);
     unset(filterDocuments, '$text');
 
+    // Similar resources: query with the vector already stored for the referer,
+    // so both sides of the comparison are built from the same text
+    if (referer && queryVector.length === 0) {
+        // ponytail: no index on `id`, collection scan. Fine while the precomputed
+        // is capped by tdmservices.embedding.limit; add an index if that grows
+        const source = await collection.findOne({
+            id: { $in: [referer.id, referer.id.replace(/^uid:\//, '')] },
+        });
+        if (!source) {
+            return feed.send({ total: 0 });
+        }
+        queryVector = source.value;
+    }
+    // The referer is its own nearest neighbour: it takes one slot before the
+    // post filter removes it
+    const limit = Number(this.getParam('limit', 10)) + (referer ? 1 : 0);
+
     // define your MongoDB Vector Search index
     // https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-type/?deployment-type=self&interface=driver&language=nodejs
     const index = {
@@ -116,14 +133,27 @@ export default async function LodexRunVSearchPrecomputed(
                 path: 'value',
                 filter,
                 queryVector,
-                numCandidates: 150,
-                limit: 10,
+                numCandidates: Math.max(150, limit * 10),
+                limit,
             },
         },
         {
             $project: {
                 _id: 0,
-                id: 1,
+                // The precomputed stores the dataset uri, the publication
+                // prefixes it (see publishProcess.ts): same rule here
+                id: {
+                    $cond: [
+                        {
+                            $regexMatch: {
+                                input: { $toString: '$id' },
+                                regex: '^(ark|uid):',
+                            },
+                        },
+                        '$id',
+                        { $concat: ['uid:/', { $toString: '$id' }] },
+                    ],
+                },
                 value: {
                     $meta: 'vectorSearchScore',
                 },
