@@ -171,12 +171,15 @@ export const ParsingResultComponent = ({
     // page or a precomputation shows what was last fetched at once, then
     // refreshes it in the background. Overlapping reloads (page change,
     // import, enrichment) are deduplicated: only the last one updates the grid.
+    // No refetch when the window gets the focus back: any render of the grid
+    // closes its open column menu.
     const filter = filterModel.items.at(0);
     const datasetQuery = useQuery({
         queryKey: ['dataset-rows', source, { skip, limit, filter, sort }],
         queryFn: () =>
             datasetApi.getData({ precomputedId, skip, limit, filter, sort }),
         keepPreviousData: true,
+        refetchOnWindowFocus: false,
     });
     const rowCount: number = datasetQuery.data?.count ?? 0;
     const rows = useMemo(() => {
@@ -199,6 +202,7 @@ export const ParsingResultComponent = ({
             return columns as { key: string; type: string }[];
         },
         keepPreviousData: true,
+        refetchOnWindowFocus: false,
         retry: false,
     });
     const columns = useMemo(() => columnsQuery.data ?? [], [columnsQuery.data]);
