@@ -1,6 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 // @ts-expect-error TS7016
-import { StyleSheetTestUtils } from 'aphrodite';
+import { StyleSheetServer, StyleSheetTestUtils } from 'aphrodite';
+import userEvent from '@testing-library/user-event';
 
 import { render } from '../test-utils';
 import SearchResult from './SearchResult';
@@ -128,5 +129,66 @@ describe('SearchResult', () => {
         expect(
             screen.container.querySelector('.search-result-link'),
         ).toHaveClass('search-result-activeLink');
+    });
+
+    it('does not close the drawer when the arrow is clicked', async () => {
+        const closeDrawer = jest.fn();
+        const screen = render(
+            <MemoryRouter>
+                <SearchResult
+                    closeDrawer={closeDrawer}
+                    fieldNames={{
+                        title: 'title',
+                        description: 'description',
+                        detail1: 'detail1',
+                        detail2: 'detail2',
+                        detail3: 'detail3',
+                    }}
+                    fields={[
+                        { name: 'title' },
+                        { name: 'description' },
+                        { name: 'detail1' },
+                        { name: 'detail2' },
+                        { name: 'detail3' },
+                    ]}
+                    result={{
+                        uri: 'resource/uri',
+                        title: 'Resource Title',
+                        description: 'Resource Description',
+                        detail1: 'Resource Detail 1',
+                        detail2: 'Resource Detail 2',
+                        detail3: 'Resource Detail 3',
+                    }}
+                />
+            </MemoryRouter>,
+        );
+
+        await userEvent.click(screen.getByRole('button'));
+        expect(closeDrawer).not.toHaveBeenCalled();
+    });
+
+    it('gives a visited result the visited color only, without the link color', () => {
+        localStorage.setItem(
+            'default-viewed-resources',
+            JSON.stringify(['resource/uri']),
+        );
+        const { css } = StyleSheetServer.renderStatic(() =>
+            render(
+                <MemoryRouter>
+                    <SearchResult
+                        closeDrawer={() => {}}
+                        fieldNames={{ title: 'title' }}
+                        fields={[{ name: 'title' }]}
+                        result={{
+                            uri: 'resource/uri',
+                            title: 'Resource Title',
+                        }}
+                    />
+                </MemoryRouter>,
+            ),
+        );
+
+        expect(css.content).toMatch(/\.activeLink_\w+\{/);
+        expect(css.content).not.toContain('color:black !important');
     });
 });
