@@ -1,9 +1,15 @@
+import { checkFusible } from '@ezs/core/fusible';
 import progress from './progress';
 import {
     versionTransformerDecorator,
     publishDocumentsFactory,
     getFieldsFromSubresourceFields,
 } from './publishDocuments';
+
+jest.mock('@ezs/core/fusible', () => ({
+    ...jest.requireActual('@ezs/core/fusible'),
+    checkFusible: jest.fn(async () => true),
+}));
 
 const fields = [
     {
@@ -166,6 +172,23 @@ describe('publishDocuments', () => {
                     getDocumentTransformer,
                     transformAllDocuments,
                 })(cancelledCtx, 'count', fields);
+                expect(cancelledCtx.dataset.updateMany).not.toHaveBeenCalled();
+            });
+
+            it('should not mark the rows once the fusible is off, even if the job is still active', async () => {
+                // cancelJob disables the fusible before the job leaves the
+                // active state
+                (checkFusible as jest.Mock).mockResolvedValue(false);
+                const cancelledCtx = getCtx();
+                try {
+                    await publishDocumentsFactory({
+                        versionTransformerDecorator,
+                        getDocumentTransformer,
+                        transformAllDocuments,
+                    })(cancelledCtx, 'count', fields);
+                } finally {
+                    (checkFusible as jest.Mock).mockResolvedValue(true);
+                }
                 expect(cancelledCtx.dataset.updateMany).not.toHaveBeenCalled();
             });
         });
