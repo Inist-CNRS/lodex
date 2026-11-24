@@ -183,6 +183,9 @@ const parseJson = (text?: string): unknown => {
     }
 };
 
+// the keys of a JSON error answer that say what went wrong
+const ANSWER_KEYS = ['error', 'message', 'detail', 'error_description'];
+
 // @ezs/conditor up to 2.14.4 only sets body; later versions set responseText
 // too, like @ezs/basics. Both give the same message.
 const getAnswer = ({ responseText, body }: ErrorLike) => {
@@ -190,14 +193,14 @@ const getAnswer = ({ responseText, body }: ErrorLike) => {
     if (typeof answer === 'string') {
         return toText(answer);
     }
-    // a JSON answer, like { error, message }: its texts
     const texts =
         answer && typeof answer === 'object'
-            ? Object.values(answer)
+            ? ANSWER_KEYS.map((key) => (answer as Record<string, unknown>)[key])
                   .filter((value) => typeof value === 'string')
                   .join('\n')
             : '';
-    return texts || responseText;
+    // no known key: the whole answer, nested details included
+    return texts || responseText || (answer && JSON.stringify(answer));
 };
 
 const shorten = (text: string) =>

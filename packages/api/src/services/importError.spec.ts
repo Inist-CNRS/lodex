@@ -76,33 +76,65 @@ describe('getImportError', () => {
         error: 'Invalid query parameters error.',
         message: 'annee_de_publication is not a valid field.',
     };
+    // ezs.serializeError keeps only the keys that are error property names
+    const serializedBody = { message: openAlexAnswer.message };
     it.each([
         // @ezs/conditor up to 2.14.4: the answer as body only
-        ['OAFetch', { message: 'Bad Request', body: openAlexAnswer }],
-        ['CORHALFetch', { message: 'Bad Request', body: openAlexAnswer }],
-        // later versions: the status and the answer, like @ezs/basics
+        [
+            'OAFetch',
+            { message: 'Bad Request', body: serializedBody },
+            'annee_de_publication is not a valid field.',
+        ],
+        [
+            'CORHALFetch',
+            { message: 'Bad Request', body: serializedBody },
+            'annee_de_publication is not a valid field.',
+        ],
+        // later versions: the status and the whole answer, like @ezs/basics
         [
             'OAFetch',
             {
                 message: 'Bad Request',
                 status: 400,
                 responseText: JSON.stringify(openAlexAnswer),
-                body: openAlexAnswer,
+                body: serializedBody,
             },
+            'Invalid query parameters error.\nannee_de_publication is not a valid field.',
         ],
     ])(
         'should report the answer of the source of %s for %j',
-        (statement, sourceError) => {
+        (statement, sourceError, apiMessage) => {
             expect(
                 getImportError(loaderServerError(sourceError, statement)),
             ).toEqual({
                 code: 'import_error_invalid_query',
                 detail: 'Error during import: Error: Bad Request',
-                apiMessage:
-                    'Invalid query parameters error.\nannee_de_publication is not a valid field.',
+                apiMessage,
             });
         },
     );
+
+    it.each([
+        [
+            '{"timestamp":"2026-11-24T10:00","status":"400","error":"Bad Request","path":"/works","message":"bad filter"}',
+            'Bad Request\nbad filter',
+        ],
+        // no known key: the whole answer, nested details included
+        [
+            '{"status":"error","errors":[{"message":"field x is invalid"}]}',
+            '{"status":"error","errors":[{"message":"field x is invalid"}]}',
+        ],
+    ])('should report the JSON answer %s as %j', (responseText, apiMessage) => {
+        expect(
+            getImportError(
+                loaderServerError({
+                    message: 'Bad Request',
+                    status: 400,
+                    responseText,
+                }),
+            ).apiMessage,
+        ).toBe(apiMessage);
+    });
 
     it('should not take the loader server error for an invalid query', () => {
         expect(
