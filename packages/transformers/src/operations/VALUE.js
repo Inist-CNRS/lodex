@@ -1,15 +1,17 @@
 import documentationByOperation from './documentationByOperation.js';
 
-const isUndefinedOrEmpty = (value) =>
-    typeof value === 'undefined' || value === '';
+const isUndefinedOrNull = (value) =>
+    typeof value === 'undefined' || value === null;
 
 const transformation = (_, args) => () =>
     new Promise((resolve, reject) => {
         const valueArg = args.find((a) => a.name === 'value');
 
-        if (!valueArg || isUndefinedOrEmpty(valueArg.value)) {
+        if (!valueArg || isUndefinedOrNull(valueArg.value)) {
             return reject(
-                new Error('Invalid Argument for VALUE transformation'),
+                new Error(
+                    'Invalid Argument for VALUE transformation (value is false or null or undefined)',
+                ),
             );
         }
 
