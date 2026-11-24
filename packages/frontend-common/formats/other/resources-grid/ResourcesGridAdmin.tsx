@@ -15,6 +15,12 @@ import {
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { isSimilarResourcesSource, parseSimilarityInput } from './similarity';
 
+// A page size that is not a positive integer (e.g. an emptied input) falls back to the default.
+export const toPageSize = (value: unknown): number =>
+    typeof value === 'number' && Number.isInteger(value) && value > 0
+        ? value
+        : defaultArgs.pageSize;
+
 export const defaultArgs = {
     allowToLoadMore: true,
     pageSize: 6,
@@ -108,7 +114,7 @@ const ResourcesGridAdminContent = ({
 
     const handlePageSize = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            const pageSize = parseInt(e.target.value, 10);
+            const pageSize = toPageSize(parseInt(e.target.value, 10));
             onChange({
                 ...args,
                 pageSize: pageSize,

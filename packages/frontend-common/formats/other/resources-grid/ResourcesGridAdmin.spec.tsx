@@ -173,6 +173,21 @@ describe('ResourcesGridAdmin', () => {
         expect(last.params).not.toHaveProperty('maxResources');
     });
 
+    it('stores the default page size when the input is emptied', () => {
+        const onChange = setup(other);
+        fireEvent.change(screen.getByLabelText('items_per_page'), {
+            target: { value: '' },
+        });
+        expect(onChange).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                pageSize: defaultArgs.pageSize,
+                params: expect.objectContaining({
+                    maxSize: defaultArgs.pageSize,
+                }),
+            }),
+        );
+    });
+
     it('keeps pageSize copied into maxSize', () => {
         const onChange = setup(other);
         fireEvent.change(screen.getByLabelText('items_per_page'), {

@@ -10,6 +10,7 @@ import injectData from '../../injectData';
 import stylesToClassname from '../../../utils/stylesToClassName';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { formatSimilarity } from './similarity';
+import { toPageSize } from './ResourcesGridAdmin';
 
 const createStyles = memoize((spaceWidth) =>
     stylesToClassname(
@@ -86,7 +87,7 @@ export const ResourcesGridView = ({
     field: _field,
     data,
     total,
-    pageSize,
+    pageSize: pageSizeArg,
     titleSize,
     summarySize,
     openInNewTab,
@@ -97,6 +98,8 @@ export const ResourcesGridView = ({
     showMinSimilarity,
 }: ResourcesGridViewProps) => {
     const { translate, locale } = useTranslate();
+    // An invalid saved pageSize (null after the input was emptied) would show no card at all.
+    const pageSize = toPageSize(pageSizeArg);
     const [more, setMore] = useState(pageSize);
 
     const isSimilarityMode = data.some(

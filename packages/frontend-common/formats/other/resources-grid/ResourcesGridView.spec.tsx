@@ -112,6 +112,15 @@ describe('ResourcesGridView', () => {
             }
         });
 
+        it('shows the default page size when pageSize is invalid', () => {
+            setup({
+                data: makeItems(10, true),
+                total: 10,
+                pageSize: null as unknown as number,
+            });
+            expect(cards()).toHaveLength(6);
+        });
+
         it('shows the formatted similarity degree of each item', () => {
             setup({ data: makeItems(2, true), total: 2 });
             const degrees = screen.getAllByText(/similarity_degree/);
@@ -126,6 +135,19 @@ describe('ResourcesGridView', () => {
             expect(
                 screen.queryByText(/similarity_degree/),
             ).not.toBeInTheDocument();
+        });
+
+        it('loads the default page size when pageSize is invalid', async () => {
+            const filterFormatData = setup({
+                data: makeItems(10, false),
+                total: 10,
+                allowToLoadMore: true,
+                pageSize: null as unknown as number,
+            });
+            expect(cards()).toHaveLength(6);
+
+            await userEvent.click(screen.getByRole('button'));
+            expect(filterFormatData).toHaveBeenCalledWith({ maxSize: 12 });
         });
 
         it('keeps the current load more behaviour', async () => {
