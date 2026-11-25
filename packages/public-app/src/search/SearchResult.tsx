@@ -1,62 +1,17 @@
-import { memo, useState, type CSSProperties } from 'react';
+import { memo, type CSSProperties } from 'react';
 import classnames from 'classnames';
 
-import Link from '@lodex/frontend-common/components/Link';
 import { isURL, getResourceUri } from '@lodex/common';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import ExpandableResourceCard, {
+    ellipsis,
+    expandedSx,
+} from '@lodex/frontend-common/formats/utils/components/ExpandableResourceCard';
 import { Box } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useIsVisited } from '../resource/useRememberVisit';
-
-const ellipsis = {
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-};
 
 const styles: Record<string, CSSProperties> = stylesToClassname(
     {
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '1rem',
-            paddingRight: '2.5rem',
-            border: `1px solid var(--neutral-dark-light)`,
-            backgroundColor: 'var(--contrast-main)',
-            ':hover': {
-                backgroundColor: 'var(--neutral-dark-very-light)',
-            },
-            marginBottom: '1rem',
-            position: 'relative',
-        },
-        link: {
-            color: 'black !important',
-            ':hover': {
-                textDecoration: 'none !important',
-                color: 'inherit',
-            },
-            ':focus': {
-                textDecoration: 'none !important',
-                color: 'inherit',
-            },
-        },
-        activeLink: {
-            color: `var(--secondary-main) !important`,
-        },
-        row: {
-            flex: '0 0 auto',
-        },
-        title: {
-            flex: '0 0 auto',
-            fontWeight: 'bold',
-            marginBottom: '.75rem',
-        },
-        description: {
-            flex: '0 0 auto',
-            marginBottom: '.75rem',
-            overflow: 'hidden',
-            transition: '1s',
-        },
         details: {
             display: 'flex',
             flex: '0 0 auto',
@@ -91,7 +46,6 @@ const SearchResult = ({
     closeDrawer,
 }: SearchResultProps) => {
     const isVisited = useIsVisited(result);
-    const [showMore, setShowMore] = useState(false);
     const titleField = fields.find((field) => field.name === fieldNames.title);
     const descriptionField = fields.find(
         (field) => field.name === fieldNames.description,
@@ -115,37 +69,17 @@ const SearchResult = ({
         ? { href: result.uri }
         : { to: getResourceUri(result) };
     return (
-        <Link
+        <ExpandableResourceCard
             {...linkProps}
             routeAware
-            className={classnames(
-                'search-result-link',
-                styles.link,
-                isVisited && styles.activeLink,
-            )}
+            visited={isVisited}
             onClick={closeDrawer}
-        >
-            <div
-                id={`search-result-${result.uri}`}
-                className={classnames('search-result', styles.container)}
-            >
-                {titleField && result[titleField.name] && (
-                    <Box
-                        className={classnames(
-                            'search-result-title',
-                            styles.title,
-                        )}
-                        title={result[titleField.name]}
-                        sx={
-                            showMore
-                                ? { maxHeight: 90000, transition: '1s' }
-                                : { ...ellipsis }
-                        }
-                    >
-                        {result[titleField.name]}
-                    </Box>
-                )}
-                {thirdDetailField && result[thirdDetailField.name] && (
+            domId={`search-result-${result.uri}`}
+            title={titleField && result[titleField.name]}
+            description={descriptionField && result[descriptionField.name]}
+            beforeDescription={
+                thirdDetailField &&
+                result[thirdDetailField.name] && (
                     <div
                         className={classnames(
                             'search-result-detail-third',
@@ -162,31 +96,10 @@ const SearchResult = ({
                             {result[thirdDetailField.name]}
                         </div>
                     </div>
-                )}
-                {descriptionField && result[descriptionField.name] && (
-                    <Box
-                        className={classnames(
-                            'search-result-description',
-                            styles.description,
-                        )}
-                        title={result[descriptionField.name]}
-                        sx={
-                            showMore
-                                ? { maxHeight: 90000, transition: '1s' }
-                                : {
-                                      textOverflow: 'ellipsis',
-                                      transition: '1s',
-                                      maxHeight: 60,
-                                      display: '-webkit-box',
-                                      '-webkit-line-clamp': '3',
-                                      '-webkit-box-orient': 'vertical',
-                                  }
-                        }
-                    >
-                        {result[descriptionField.name]}
-                    </Box>
-                )}
-                {shouldDisplayDetails && (
+                )
+            }
+            afterDescription={(expanded) =>
+                shouldDisplayDetails && (
                     <div
                         className={classnames(
                             'search-result-details',
@@ -200,11 +113,7 @@ const SearchResult = ({
                                     styles.detailsColumn,
                                 )}
                                 title={result[firstDetailField.name]}
-                                sx={
-                                    showMore
-                                        ? { maxHeight: 90000, transition: '1s' }
-                                        : { ...ellipsis }
-                                }
+                                sx={expanded ? expandedSx : ellipsis}
                             >
                                 {result[firstDetailField.name]}
                             </Box>
@@ -217,43 +126,15 @@ const SearchResult = ({
                                         styles.detailsColumn,
                                     )}
                                     title={result[secondDetailField.name]}
-                                    sx={
-                                        showMore
-                                            ? {
-                                                  maxHeight: 90000,
-                                                  transition: '1s',
-                                              }
-                                            : { ...ellipsis }
-                                    }
+                                    sx={expanded ? expandedSx : ellipsis}
                                 >
                                     {result[secondDetailField.name]}
                                 </Box>
                             )}
                     </div>
-                )}
-                <ExpandMoreIcon
-                    fontSize="large"
-                    sx={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        cursor: 'pointer',
-                        transform: showMore ? 'rotate(180deg)' : 'rotate(0deg)',
-                        transition: '0.6s',
-                        padding: '5px',
-                        borderRadius: '50%',
-                        ':hover': {
-                            backgroundColor: 'var(--neutral-dark-very-light)',
-                        },
-                    }}
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        setShowMore(!showMore);
-                    }}
-                />
-            </div>
-        </Link>
+                )
+            }
+        />
     );
 };
 

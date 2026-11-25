@@ -21,6 +21,7 @@ import istexRefbibs from './other/istexRefbibs';
 import istexSummary from './other/istexSummary';
 import json from './other/json';
 import resourcesGrid from './other/resources-grid';
+import resourcesAccordion from './other/resources-accordion';
 import paginatedTable from './other/table/paginated';
 import unpaginatedTable from './other/table/unpaginated';
 import code from './text/code';
@@ -374,6 +375,16 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-grille-de-ressources',
+        isUrlValue: true,
+    },
+    {
+        name: 'formatResourcesAccordion',
+        description: 'formatResourcesAccordionDescription',
+        componentName: 'resourcesAccordion',
+        component: resourcesAccordion,
+        type: 'other',
+        isValueAnnotable: true,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
         isUrlValue: true,
     },
     {

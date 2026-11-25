@@ -1,33 +1,18 @@
-import React, {
-    useCallback,
-    useEffect,
-    useState,
-    type ChangeEvent,
-} from 'react';
-import { useFormContext, useWatch, type Control } from 'react-hook-form';
+import { useCallback, type ChangeEvent } from 'react';
 import { MenuItem, Checkbox, TextField, FormControlLabel } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-import {
-    FormatDefaultParamsFieldSet,
-    FormatFieldSet,
-} from '../../utils/components/field-set/FormatFieldSets';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { isSimilarResourcesSource, parseSimilarityInput } from './similarity';
-
-// Upper bound of "Maximum number of resources": every resource is loaded in a
-// single call, and the routine clamps to the same value.
-export const MAX_SIMILAR_RESOURCES = 100;
-
-// A page size that is not a positive integer (e.g. an emptied input) falls back to the default.
-export const toPageSize = (value: unknown): number =>
-    typeof value === 'number' && Number.isInteger(value) && value > 0
-        ? value
-        : defaultArgs.pageSize;
+import { DEFAULT_PAGE_SIZE } from '../resources-common/pageSize';
+import SimilarityFieldSet from '../resources-common/SimilarityFieldSet';
+import type { ResourcesListArgs } from '../resources-common/types';
+import { useResourcesListHandlers } from '../resources-common/useResourcesListHandlers';
+import withSimilarSource from '../resources-common/withSimilarSource';
 
 export const defaultArgs = {
     allowToLoadMore: true,
-    pageSize: 6,
+    pageSize: DEFAULT_PAGE_SIZE,
     itemsPerRow: 3,
     spaceWidth: '30%',
     titleSize: 100,
@@ -67,23 +52,11 @@ export const toItemsPerRow = ({
 export const toSpaceWidth = (itemsPerRow: number) =>
     `${Math.floor(10 / itemsPerRow) * 10}%`;
 
-type ResourcesGridArgs = {
-    params?: {
-        maxSize?: number;
-        maxValue?: number;
-        minValue?: number;
-        orderBy?: string;
-        maxResources?: number;
-        minSimilarity?: number;
-    };
-    showMinSimilarity?: boolean;
+type ResourcesGridArgs = ResourcesListArgs & {
     itemsPerRow?: number;
     spaceWidth?: string;
-    allowToLoadMore?: boolean;
-    pageSize?: number;
     titleSize?: number;
     summarySize?: number;
-    openInNewTab?: boolean;
 };
 
 type ResourcesGridAdminProps = {
@@ -101,20 +74,8 @@ const ResourcesGridAdminContent = ({
     isSimilar,
 }: ResourcesGridAdminContentProps) => {
     const { translate } = useTranslate();
-    const storedMinSimilarity = args.params?.minSimilarity;
-    const [minSimilarityText, setMinSimilarityText] = useState(
-        storedMinSimilarity?.toString() ?? '',
-    );
-
-    // Resync the text when args change from outside (e.g. the format is reset),
-    // but keep what the admin is typing when it already matches the stored value.
-    useEffect(() => {
-        setMinSimilarityText((text) =>
-            parseSimilarityInput(text) === storedMinSimilarity
-                ? text
-                : storedMinSimilarity?.toString() ?? '',
-        );
-    }, [storedMinSimilarity]);
+    const { toggleAllowToLoadMore, toggleOpenInNewTab, handlePageSize } =
+        useResourcesListHandlers(args, onChange);
 
     const handleItemsPerRow = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -124,86 +85,6 @@ const ResourcesGridAdminContent = ({
                 itemsPerRow,
                 spaceWidth: toSpaceWidth(itemsPerRow),
             });
-        },
-        [onChange, args],
-    );
-
-    const toggleAllowToLoadMore = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            onChange({
-                ...args,
-                allowToLoadMore: event.target.checked,
-            });
-        },
-        [onChange, args],
-    );
-
-    const toggleOpenInNewTab = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            onChange({
-                ...args,
-                openInNewTab: event.target.checked,
-            });
-        },
-        [onChange, args],
-    );
-
-    const handlePageSize = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const pageSize = toPageSize(parseInt(e.target.value, 10));
-            onChange({
-                ...args,
-                pageSize: pageSize,
-                params: {
-                    ...args.params,
-                    maxSize: pageSize,
-                },
-            });
-        },
-        [args, onChange],
-    );
-
-    // Sets a numeric key of args.params, or removes it when value is undefined.
-    const setParam = useCallback(
-        (key: 'maxResources' | 'minSimilarity', value?: number) => {
-            const { [key]: _removed, ...params } = args.params ?? {};
-            onChange({
-                ...args,
-                params:
-                    value === undefined ? params : { ...params, [key]: value },
-            });
-        },
-        [onChange, args],
-    );
-
-    const handleMaxResources = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            const maxResources = parseInt(event.target.value, 10);
-            setParam(
-                'maxResources',
-                Number.isNaN(maxResources) || maxResources < 1
-                    ? undefined
-                    : Math.min(maxResources, MAX_SIMILAR_RESOURCES),
-            );
-        },
-        [setParam],
-    );
-
-    // The text is kept locally so intermediate input such as "0," can be
-    // typed. An empty or invalid input removes the setting, so what is saved
-    // always matches what the field shows (an invalid field is shown in error).
-    const handleMinSimilarity = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            const text = event.target.value;
-            setMinSimilarityText(text);
-            setParam('minSimilarity', parseSimilarityInput(text));
-        },
-        [setParam],
-    );
-
-    const toggleShowMinSimilarity = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            onChange({ ...args, showMinSimilarity: event.target.checked });
         },
         [onChange, args],
     );
@@ -228,14 +109,8 @@ const ResourcesGridAdminContent = ({
         [onChange, args],
     );
 
-    const {
-        allowToLoadMore,
-        pageSize,
-        titleSize,
-        summarySize,
-        openInNewTab,
-        showMinSimilarity,
-    } = args;
+    const { allowToLoadMore, pageSize, titleSize, summarySize, openInNewTab } =
+        args;
 
     return (
         <FormatGroupedFieldSet>
@@ -302,71 +177,10 @@ const ResourcesGridAdminContent = ({
                 />
             </FormatDefaultParamsFieldSet>
             {isSimilar && (
-                <FormatFieldSet
-                    title="similarity_section"
-                    id="format-field-set-similarity"
-                    defaultExpanded
-                >
-                    <TextField
-                        label={translate('similar_max_resources')}
-                        onChange={handleMaxResources}
-                        value={args.params?.maxResources ?? ''}
-                        type="number"
-                        inputProps={{ min: 1, max: MAX_SIMILAR_RESOURCES }}
-                        fullWidth
-                    />
-                    <TextField
-                        label={translate('similar_min_similarity')}
-                        onChange={handleMinSimilarity}
-                        value={minSimilarityText}
-                        error={
-                            minSimilarityText.trim() !== '' &&
-                            parseSimilarityInput(minSimilarityText) ===
-                                undefined
-                        }
-                        fullWidth
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={toggleShowMinSimilarity}
-                                checked={showMinSimilarity ?? false}
-                                // The sentence only shows an explicit minimum.
-                                disabled={storedMinSimilarity === undefined}
-                            />
-                        }
-                        label={translate('similar_show_min_similarity')}
-                    />
-                </FormatFieldSet>
+                <SimilarityFieldSet args={args} onChange={onChange} />
             )}
         </FormatGroupedFieldSet>
     );
 };
 
-// useWatch needs a form control: it is only called below, inside a form context.
-const ResourcesGridAdminWithForm = ({
-    control,
-    ...props
-}: ResourcesGridAdminProps & { control: Control }) => {
-    const transformers = useWatch({ control, name: 'transformers' });
-    return (
-        <ResourcesGridAdminContent
-            {...props}
-            isSimilar={isSimilarResourcesSource(transformers)}
-        />
-    );
-};
-
-const ResourcesGridAdmin = (props: ResourcesGridAdminProps) => {
-    const formContext = useFormContext();
-
-    if (!formContext) {
-        return <ResourcesGridAdminContent {...props} isSimilar={false} />;
-    }
-
-    return (
-        <ResourcesGridAdminWithForm {...props} control={formContext.control} />
-    );
-};
-
-export default ResourcesGridAdmin;
+export default withSimilarSource(ResourcesGridAdminContent);
