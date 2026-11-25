@@ -217,13 +217,13 @@ const styles = {
     },
     // ace keeps a placeholder on one line: a long example (a query url) wraps.
     // ace also shrinks and dims it, and gives it the comment color: hard to
-    // read on the dark editor. The text color, in italics to tell it from a
-    // typed text
+    // read on the dark editor. The text color, slightly dimmed and in
+    // italics to tell it from a typed text
     textPlaceholder: {
         whiteSpace: 'pre-wrap',
         overflowWrap: 'anywhere',
         transform: 'none',
-        opacity: 1,
+        opacity: 0.85,
         color: '#F8F8F2',
         fontStyle: 'italic',
     },
