@@ -232,13 +232,21 @@ export const SiteGenerationDialog = ({
                     }
                     retryDisabled={isActing || isGenerationStopping}
                 />
-                {isSuccess && isPublished && (
+                {isSuccess && (
                     <Alert
                         severity="success"
-                        icon={<VisibilityIcon fontSize="inherit" />}
+                        icon={
+                            isPublished ? (
+                                <VisibilityIcon fontSize="inherit" />
+                            ) : undefined
+                        }
                         sx={{ mt: 3 }}
                     >
-                        {translate('site_generation_done_hint')}
+                        {translate(
+                            isPublished
+                                ? 'site_generation_done_hint'
+                                : 'site_generation_configured_hint',
+                        )}
                     </Alert>
                 )}
                 {isGenerationStopping && (

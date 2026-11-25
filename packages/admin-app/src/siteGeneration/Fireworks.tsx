@@ -10,39 +10,29 @@ type Particle = {
     color: string;
 };
 
-// when each rocket bursts, in ms
-const BURST_DELAYS = [0, 350, 800, 1300, 1800, 2400];
-const PARTICLES_PER_BURST = 60;
-// how many frames of its move a particle leaves behind it
-const TRAIL_LENGTH = 4;
+// The animation, run in a worker from its source text: it must use nothing
+// from outside this function.
+const animateInWorker = () => {
+    // when each rocket bursts, in ms
+    const BURST_DELAYS = [0, 350, 800, 1300, 1800, 2400];
+    const PARTICLES_PER_BURST = 60;
+    // how many frames of its move a particle leaves behind it
+    const TRAIL_LENGTH = 4;
+    // not in the workers of every browser
+    const nextFrame = (callback: () => void) =>
+        self.requestAnimationFrame
+            ? self.requestAnimationFrame(callback)
+            : setTimeout(callback, 16);
 
-// rockets bursting over the whole screen, in the colors of the theme.
-// Nothing for who asked for less motion.
-export const Fireworks = () => {
-    const ref = useRef<HTMLCanvasElement>(null);
-    const { palette } = useTheme();
-    useEffect(() => {
-        const canvas = ref.current;
-        if (
-            !canvas ||
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ) {
-            return;
-        }
+    self.onmessage = ({
+        data: { canvas, colors },
+    }: MessageEvent<{ canvas: OffscreenCanvas; colors: string[] }>) => {
         const context = canvas.getContext('2d');
         if (!context) {
             return;
         }
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        // no white: the popup is white
-        const colors = [
-            palette.primary.main,
-            palette.secondary.main,
-            palette.info.main,
-        ];
         let particles: Particle[] = [];
-        let frame = 0;
+        let isRunning = false;
         let burstCount = 0;
 
         const burst = () => {
@@ -88,18 +78,63 @@ export const Fireworks = () => {
                 context.lineTo(particle.x, particle.y);
                 context.stroke();
             }
-            frame = particles.length ? requestAnimationFrame(tick) : 0;
+            isRunning = particles.length > 0;
+            if (isRunning) {
+                nextFrame(tick);
+            }
         };
 
-        const timers = BURST_DELAYS.map((delay) =>
+        BURST_DELAYS.forEach((delay) =>
             setTimeout(() => {
                 burst();
-                frame ||= requestAnimationFrame(tick);
+                if (!isRunning) {
+                    isRunning = true;
+                    nextFrame(tick);
+                }
             }, delay),
         );
+    };
+};
+
+// rockets bursting over the whole screen, in the colors of the theme.
+// Nothing for who asked for less motion.
+// Drawn in a worker: the end of the generation reloads the whole admin at the
+// same time, which would make the animation stutter on the main thread.
+export const Fireworks = () => {
+    const ref = useRef<HTMLCanvasElement>(null);
+    const { palette } = useTheme();
+    useEffect(() => {
+        const canvas = ref.current;
+        if (
+            !canvas?.transferControlToOffscreen ||
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ) {
+            return;
+        }
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const url = URL.createObjectURL(
+            new Blob([`(${animateInWorker})()`], {
+                type: 'text/javascript',
+            }),
+        );
+        const worker = new Worker(url);
+        const offscreen = canvas.transferControlToOffscreen();
+        worker.postMessage(
+            {
+                canvas: offscreen,
+                // no white: the popup is white
+                colors: [
+                    palette.primary.main,
+                    palette.secondary.main,
+                    palette.info.main,
+                ],
+            },
+            [offscreen],
+        );
         return () => {
-            timers.forEach(clearTimeout);
-            cancelAnimationFrame(frame);
+            worker.terminate();
+            URL.revokeObjectURL(url);
         };
     }, [palette]);
 
