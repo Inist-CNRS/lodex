@@ -87,6 +87,30 @@ describe('cancelJob', () => {
 
         expect(moveToFailed).toHaveBeenCalled();
     });
+
+    // its job data has no fusible yet: its in-memory one stops it
+    it('stops the active import through its in-memory fusible', async () => {
+        mockActiveJobs.push({
+            id: 'import-job',
+            data: { jobType: 'import' },
+            moveToFailed: jest.fn(),
+        });
+
+        await cancelJob(ctx, 'import');
+
+        expect(cancelImportJob).toHaveBeenCalledWith('import-job');
+    });
+
+    it('does not stop an import when cancelling another job', async () => {
+        mockActiveJobs.push({
+            data: { jobType: 'enricher', fusible: 'fusible' },
+            moveToFailed: jest.fn(),
+        });
+
+        await cancelJob(ctx, 'enricher');
+
+        expect(cancelImportJob).not.toHaveBeenCalled();
+    });
 });
 
 describe('stopJobs', () => {

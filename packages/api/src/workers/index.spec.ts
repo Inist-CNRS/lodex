@@ -183,7 +183,20 @@ describe('the jobs run here', () => {
         const done = processJob('stalled-job');
 
         expect(mockProcessPublication).not.toHaveBeenCalled();
-        expect(done).toHaveBeenCalledWith();
+        expect(done).toHaveBeenCalledWith(undefined);
         expect(isJobRunning('stalled-job')).toBe(false);
+    });
+
+    it('ends a job run again after a failed run with the error of that run', () => {
+        // its failure could not be written ("Missing lock"): Bull runs it again
+        processJob('failed-job');
+        const error = new Error('publication failed');
+        mockProcessPublication.mock.calls[0][1](error);
+        mockProcessPublication.mockClear();
+
+        const done = processJob('failed-job');
+
+        expect(mockProcessPublication).not.toHaveBeenCalled();
+        expect(done).toHaveBeenCalledWith(error);
     });
 });

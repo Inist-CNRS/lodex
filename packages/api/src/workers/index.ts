@@ -34,14 +34,14 @@ export const workerQueues: any = {};
 // instance) with a concurrency of 1; otherwise, wait on Redis instead
 const runningJobs = new Map<string, Promise<void>>();
 
-// The jobs this process runs, and the ones it ran to their end. Bull loses the
-// lock of a job whose event loop stays blocked longer than the lock: the job
-// then stalls (back to waiting, run again once its run here ends) or fails,
-// while it still runs here. Every job is queued with a random UUID: an id is
-// never reused, whatever the tenant.
-// ponytail: endedJobIds only grows (one id per job), bound it if it shows
+// The jobs this process runs, and the ones it ran to their end with the error
+// they ended with, if any. Bull loses the lock of a job whose event loop stays
+// blocked longer than the lock: the job then stalls (back to waiting, run
+// again once its run here ends) or fails, while it still runs here. Every job
+// is queued with a random UUID: an id is never reused, whatever the tenant.
+// ponytail: endedJobs only grows (one id per job), bound it if it shows
 const runningJobIds = new Set<string>();
-const endedJobIds = new Set<string>();
+const endedJobs = new Map<string, unknown>();
 
 export const isJobRunning = (jobId: string | undefined) =>
     !!jobId && runningJobIds.has(jobId);
@@ -84,10 +84,11 @@ export const getOrCreateWorkerQueue = (
     workerQueue.process('*', concurrency, (job: any, jobDone: any) => {
         const jobId = String(job.id);
         // Bull runs it again after it stalled: it already ran here to its end
-        // (an import would import everything again)
-        if (endedJobIds.has(jobId)) {
+        // (an import would import everything again). It ends as its run did:
+        // a failed publication must not read as completed.
+        if (endedJobs.has(jobId)) {
             logger.warn(`Worker job already run, not run again: ${jobId}`);
-            jobDone();
+            jobDone(endedJobs.get(jobId));
             return;
         }
         runningJobIds.add(jobId);
@@ -104,7 +105,7 @@ export const getOrCreateWorkerQueue = (
             // again (a queue is named after its tenant)
             bumpDataVersion(queueName);
             runningJobIds.delete(jobId);
-            endedJobIds.add(jobId);
+            endedJobs.set(jobId, args[0] ?? undefined);
             end();
             jobDone(...args);
         };

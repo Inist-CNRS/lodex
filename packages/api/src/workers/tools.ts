@@ -88,6 +88,11 @@ export const cancelJob = async (
         await disableFusible(activeJob.data.fusible);
     }
     if (activeJob?.data?.jobType === jobType) {
+        // the import stores its fusible in its job data once started: its
+        // in-memory one stops it even before that write lands
+        if (jobType === IMPORT) {
+            await cancelImportJob(activeJob!.id);
+        }
         if (jobType === 'publisher') {
             await cleanWaitingJobsOfType(ctx.tenant, activeJob!.data.jobType);
         }

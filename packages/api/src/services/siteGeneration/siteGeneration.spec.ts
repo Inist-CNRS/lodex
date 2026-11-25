@@ -40,6 +40,10 @@ jest.mock('../../workers', () => ({
     getOrCreateWorkerQueue: () => mockWorkerQueue,
     isJobRunning: (jobId?: string) => mockIsJobRunning(jobId),
 }));
+const mockCancelImportJob = jest.fn();
+jest.mock('../../workers/import', () => ({
+    cancelImportJob: (jobId: string) => mockCancelImportJob(jobId),
+}));
 jest.mock('../repositoryMiddleware', () => ({
     invalidateRepositories: jest.fn(),
 }));
@@ -750,6 +754,20 @@ describe('siteGeneration service', () => {
             );
         });
 
+        it('cancels through its fusible an import Bull failed while it still runs here', async () => {
+            // its lock lost, Bull failed it: getActiveJob does not return it
+            await startIn('data');
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+            mockIsJobRunning.mockImplementation((id) => id === 'import-job');
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(mockCancelImportJob).toHaveBeenCalledWith('import-job');
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
         it('does not cancel an import started by hand meanwhile', async () => {
             await startIn('data');
             // the import of the generation ended meanwhile
@@ -840,6 +858,18 @@ describe('siteGeneration service', () => {
                 );
             },
         );
+
+        it('lets a model job Bull failed while it still runs here end the generation', async () => {
+            await startIn('model');
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+            mockIsJobRunning.mockImplementation((id) => id === 'model-job');
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopping',
+            );
+        });
 
         it('lets an active model job end the generation, and refuses a second stop', async () => {
             await startIn('model');
