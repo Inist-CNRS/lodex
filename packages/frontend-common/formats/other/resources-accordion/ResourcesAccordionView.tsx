@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { isLocalURL, getResourceUri } from '@lodex/common';
 
@@ -33,6 +34,8 @@ type Resource = {
     similarity?: number;
 };
 
+type LinkedResource = Resource & { id: string };
+
 interface ResourcesAccordionViewProps {
     data: Resource[];
     total: number;
@@ -54,9 +57,14 @@ export const ResourcesAccordionView = ({
     params,
     showMinSimilarity,
 }: ResourcesAccordionViewProps) => {
+    // A resource without id has no card: leave it out of the counts too.
+    const resources = useMemo(
+        () => data.filter((entry): entry is LinkedResource => !!entry.id),
+        [data],
+    );
     const { isSimilarityMode, items, showMore, handleMore } =
         useResourcesPagination({
-            data,
+            data: resources,
             total,
             pageSize,
             allowToLoadMore,
@@ -73,42 +81,40 @@ export const ResourcesAccordionView = ({
             />
             {/*
             // @ts-expect-error TS2322 */}
-            <div className={styles.list}>
+            <ul className={styles.list}>
                 {items.map((entry, index) => {
                     const { id, url, title, summary } = entry;
-                    if (!id) {
-                        return null;
-                    }
                     return (
-                        <ExpandableResourceCard
-                            // the id keeps a card's unfolded state with its resource;
-                            // the index keeps keys unique if a routine repeats an id
-                            key={`${id}-${index}`}
-                            domId={id}
-                            title={title || 'n/a'}
-                            description={summary}
-                            {...(isLocalURL(id)
-                                ? { to: getResourceUri({ uri: id }) }
-                                : { href: url })}
-                            target={openInNewTab ? '_blank' : undefined}
-                            afterDescription={() =>
-                                hasSimilarity(entry) ? (
-                                    <SimilarityDegree
-                                        classPrefix="resources-accordion"
-                                        similarity={entry.similarity}
-                                    />
-                                ) : null
-                            }
-                        />
+                        // the id keeps a card's unfolded state with its resource;
+                        // the index keeps keys unique if a routine repeats an id
+                        <li key={`${id}-${index}`}>
+                            <ExpandableResourceCard
+                                domId={id}
+                                title={title || 'n/a'}
+                                description={summary}
+                                {...(isLocalURL(id)
+                                    ? { to: getResourceUri({ uri: id }) }
+                                    : { href: url })}
+                                target={openInNewTab ? '_blank' : undefined}
+                                afterDescription={() =>
+                                    hasSimilarity(entry) ? (
+                                        <SimilarityDegree
+                                            classPrefix="resources-accordion"
+                                            similarity={entry.similarity}
+                                        />
+                                    ) : null
+                                }
+                            />
+                        </li>
                     );
                 })}
-            </div>
+            </ul>
             {showMore && (
                 <LoadMoreButton
                     classPrefix="resources-accordion"
                     isSimilarityMode={isSimilarityMode}
                     shown={items.length}
-                    total={data.length}
+                    total={resources.length}
                     onClick={handleMore}
                 />
             )}

@@ -139,6 +139,29 @@ describe('ResourcesAccordionView', () => {
         ).toHaveLength(1);
     });
 
+    it('leaves items without id out of the "see more" count', () => {
+        setup({
+            data: [
+                ...makeItems(8, true),
+                { title: 'no id', similarity: 0.5 },
+                { title: 'no id either', similarity: 0.4 },
+            ],
+            total: 10,
+        });
+        expect(titles()).toHaveLength(3);
+        expect(
+            screen.getByText('see_more_result_count+{"shown":3,"total":8}'),
+        ).toBeInTheDocument();
+    });
+
+    it('renders the resources as a list', () => {
+        setup({ data: makeItems(2, false), total: 2 });
+        expect(screen.getByRole('list')).toHaveClass(
+            'resources-accordion-list',
+        );
+        expect(screen.getAllByRole('listitem')).toHaveLength(2);
+    });
+
     it('does not carry the unfolded state over to another resource', async () => {
         const { rerender } = setup({ data: makeItems(2, false), total: 2 });
         await userEvent.click(screen.getAllByRole('button')[0]);

@@ -1,22 +1,25 @@
 import { MemoryRouter } from 'react-router-dom';
 // @ts-expect-error TS7016
 import { StyleSheetServer, StyleSheetTestUtils } from 'aphrodite';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { TestI18N } from '../../../i18n/I18NContext';
 import ExpandableResourceCard from './ExpandableResourceCard';
 
 const setup = (
     props: Partial<Parameters<typeof ExpandableResourceCard>[0]> = {},
 ) =>
     render(
-        <MemoryRouter>
-            <ExpandableResourceCard
-                to="/uid:/1"
-                title="T"
-                description="D"
-                {...props}
-            />
-        </MemoryRouter>,
+        <TestI18N>
+            <MemoryRouter>
+                <ExpandableResourceCard
+                    to="/uid:/1"
+                    title="T"
+                    description="D"
+                    {...props}
+                />
+            </MemoryRouter>
+        </TestI18N>,
     );
 
 describe('ExpandableResourceCard', () => {
@@ -41,6 +44,47 @@ describe('ExpandableResourceCard', () => {
             screen.getByRole('button', { expanded: true }),
         ).toBeInTheDocument();
         expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it('unfolds from the keyboard without following the link', async () => {
+        const onClick = jest.fn();
+        setup({ onClick });
+        await userEvent.tab();
+        expect(screen.getByRole('link')).toHaveFocus();
+        await userEvent.tab();
+        const arrow = screen.getByRole('button', {
+            name: 'resource_card_expand',
+        });
+        expect(arrow).toHaveFocus();
+
+        await userEvent.keyboard('{Enter}');
+        expect(
+            screen.getByRole('button', {
+                expanded: true,
+                name: 'resource_card_collapse',
+            }),
+        ).toHaveFocus();
+
+        await userEvent.keyboard(' ');
+        expect(
+            screen.getByRole('button', { expanded: false }),
+        ).toBeInTheDocument();
+        expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it('names the link after the title only', () => {
+        setup();
+        expect(screen.getByRole('link', { name: 'T' })).toBeInTheDocument();
+    });
+
+    it('toggles once when the key is held down', () => {
+        setup();
+        const arrow = screen.getByRole('button');
+        fireEvent.keyDown(arrow, { key: 'Enter' });
+        fireEvent.keyDown(arrow, { key: 'Enter', repeat: true });
+        expect(
+            screen.getByRole('button', { expanded: true }),
+        ).toBeInTheDocument();
     });
 
     it('calls onClick when the card is clicked', async () => {

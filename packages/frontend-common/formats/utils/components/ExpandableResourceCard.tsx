@@ -1,10 +1,11 @@
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useId, useState, type CSSProperties, type ReactNode } from 'react';
 import classnames from 'classnames';
 import { Box, type SxProps } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Link from '../../../components/Link';
 import stylesToClassname from '../../../utils/stylesToClassName';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const ellipsis: SxProps = {
     whiteSpace: 'nowrap',
@@ -100,7 +101,9 @@ const ExpandableResourceCard = ({
     beforeDescription,
     afterDescription,
 }: ExpandableResourceCardProps) => {
+    const { translate } = useTranslate();
     const [expanded, setExpanded] = useState(false);
+    const titleId = useId();
 
     return (
         <Link
@@ -114,6 +117,9 @@ const ExpandableResourceCard = ({
                 visited ? styles.activeLink : styles.link,
             )}
             onClick={onClick}
+            // the arrow button is inside the link: name the link after the
+            // title only, not after its whole content with the button label
+            aria-labelledby={title ? titleId : undefined}
         >
             <div
                 id={domId}
@@ -121,6 +127,7 @@ const ExpandableResourceCard = ({
             >
                 {title && (
                     <Box
+                        id={titleId}
                         className={classnames(
                             'search-result-title',
                             styles.title,
@@ -148,8 +155,14 @@ const ExpandableResourceCard = ({
                 <ExpandMoreIcon
                     fontSize="large"
                     role="button"
+                    tabIndex={0}
                     aria-hidden={false}
                     aria-expanded={expanded}
+                    aria-label={translate(
+                        expanded
+                            ? 'resource_card_collapse'
+                            : 'resource_card_expand',
+                    )}
                     sx={{
                         position: 'absolute',
                         top: 0,
@@ -167,6 +180,18 @@ const ExpandableResourceCard = ({
                         event.stopPropagation();
                         event.preventDefault();
                         setExpanded(!expanded);
+                    }}
+                    onKeyDown={(event) => {
+                        if (event.key !== 'Enter' && event.key !== ' ') {
+                            return;
+                        }
+                        // the arrow is inside the link: unfold without following it
+                        event.stopPropagation();
+                        event.preventDefault();
+                        // a held key repeats keydown: toggle once, like a native button
+                        if (!event.repeat) {
+                            setExpanded(!expanded);
+                        }
                     }}
                 />
             </div>
