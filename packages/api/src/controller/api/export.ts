@@ -3,8 +3,8 @@ import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import { PassThrough } from 'stream';
-import cacheControl from 'koa-cache-control';
 import config from 'config';
+import { revalidateUntilDataChanges } from '../../services/dataVersion';
 
 import Script from '../../services/script';
 import { cleanHost } from '@lodex/common';
@@ -177,12 +177,7 @@ export async function getScripts(ctx: any) {
 }
 
 const app = new Koa();
-app.use(
-    cacheControl({
-        public: true,
-        maxAge: config.get('cache.maxAge'),
-    }),
-);
+app.use(revalidateUntilDataChanges);
 
 app.use(async (ctx: any, next: any) => {
     ctx.response.set('Vary', 'X-Lodex-Tenant');
