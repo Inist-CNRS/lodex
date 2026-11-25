@@ -28,6 +28,7 @@ export const toPageSize = (value: unknown): number =>
 export const defaultArgs = {
     allowToLoadMore: true,
     pageSize: 6,
+    itemsPerRow: 3,
     spaceWidth: '30%',
     titleSize: 100,
     summarySize: 400,
@@ -37,6 +38,34 @@ export const defaultArgs = {
         orderBy: 'value/asc',
     },
 };
+
+export const ITEMS_PER_ROW_CHOICES = [1, 2, 3, 5, 10];
+
+// Fields saved before itemsPerRow store the card width as a percentage
+// (spaceWidth): 30% → 3 per row, 80% → 1. Any other count is brought down
+// to the closest menu choice, so the admin select always shows it.
+export const toItemsPerRow = ({
+    itemsPerRow,
+    spaceWidth,
+}: {
+    itemsPerRow?: unknown;
+    spaceWidth?: unknown;
+}): number => {
+    const count = parseFloat(String(itemsPerRow));
+    const percent = parseFloat(String(spaceWidth));
+    const perRow = count >= 1 ? count : percent > 0 ? 100 / percent : NaN;
+    if (!(perRow >= 1)) {
+        return defaultArgs.itemsPerRow;
+    }
+    return (
+        ITEMS_PER_ROW_CHOICES.filter((choice) => choice <= perRow).pop() ?? 1
+    );
+};
+
+// The old percentage for a count (3 → 30%), kept next to itemsPerRow so a
+// Lodex without itemsPerRow still shows the grid it can.
+export const toSpaceWidth = (itemsPerRow: number) =>
+    `${Math.floor(10 / itemsPerRow) * 10}%`;
 
 type ResourcesGridArgs = {
     params?: {
@@ -48,6 +77,7 @@ type ResourcesGridArgs = {
         minSimilarity?: number;
     };
     showMinSimilarity?: boolean;
+    itemsPerRow?: number;
     spaceWidth?: string;
     allowToLoadMore?: boolean;
     pageSize?: number;
@@ -86,11 +116,13 @@ const ResourcesGridAdminContent = ({
         );
     }, [storedMinSimilarity]);
 
-    const handleWidth = useCallback(
+    const handleItemsPerRow = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
+            const itemsPerRow = Number(event.target.value);
             onChange({
                 ...args,
-                spaceWidth: event.target.value,
+                itemsPerRow,
+                spaceWidth: toSpaceWidth(itemsPerRow),
             });
         },
         [onChange, args],
@@ -197,7 +229,6 @@ const ResourcesGridAdminContent = ({
     );
 
     const {
-        spaceWidth,
         allowToLoadMore,
         pageSize,
         titleSize,
@@ -212,26 +243,18 @@ const ResourcesGridAdminContent = ({
                 <TextField
                     fullWidth
                     select
-                    label={translate('list_format_select_image_width')}
-                    onChange={handleWidth}
-                    value={spaceWidth || defaultArgs.spaceWidth}
+                    label={translate('resources_grid_items_per_row')}
+                    helperText={translate(
+                        'resources_grid_items_per_row_helper',
+                    )}
+                    onChange={handleItemsPerRow}
+                    value={toItemsPerRow(args)}
                 >
-                    <MenuItem value="10%">{translate('ten_percent')}</MenuItem>
-                    <MenuItem value="20%">
-                        {translate('twenty_percent')}
-                    </MenuItem>
-                    <MenuItem value="30%">
-                        {translate('thirty_percent')}
-                    </MenuItem>
-                    <MenuItem value="50%">
-                        {translate('fifty_percent')}
-                    </MenuItem>
-                    <MenuItem value="80%">
-                        {translate('eighty_percent')}
-                    </MenuItem>
-                    <MenuItem value="100%">
-                        {translate('hundred_percent')}
-                    </MenuItem>
+                    {ITEMS_PER_ROW_CHOICES.map((count) => (
+                        <MenuItem key={count} value={count}>
+                            {count}
+                        </MenuItem>
+                    ))}
                 </TextField>
                 {!isSimilar && (
                     <FormControlLabel
