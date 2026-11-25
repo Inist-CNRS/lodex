@@ -1,0 +1,485 @@
+/***************************/
+/*div[class*='HomeContentSidebar'] */
+/* fond blanc casse + decor */
+div[class*='HomeContentSidebar'] {
+    background-color: var(--primary-very-light);
+    background-image: url('../img/svgfond.svg');
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    padding: 0 !important;
+    width: 100% !important;
+}
+/*s'il est en fin de home*/
+.dataset-characteristics
+    > div
+    > div.property[class*='HomeContentSidebar']:last-child {
+    margin-bottom: 0rem !important;
+}
+div[class*='HomeContentSidebar'] .MuiBox-root.css-oa9bdm {
+    padding: 0 !important;
+}
+div[class*='HomeContentSidebar']
+    > div.property_value_container
+    > .MuiBox-root.css-oa9bdm
+    > div
+    > div {
+    gap: 3rem;
+}
+/*Home div[class*='HomeContent'] et*/
+/*Home div[class*='HomeSidebar']*/
+div[class*='HomeContentSidebar'] div[class*='designHomeContent'],
+div[class*='HomeSidebar'] {
+    width: auto !important;
+    margin-bottom: 0 !important;
+    padding: 5rem 0 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+/*Home texte principal*/
+/* div[class*='HomeContent']*/
+div[class*='HomeContentSidebar'] div[class*='HomeContent'] {
+    flex: 2;
+    background-color: transparent !important;
+}
+/********************/
+/* home ou resource */
+/* liste en pave    */
+/********************/
+/* ul istex en pave*/
+/* syndication*/
+div[class*='ListePave'] ul,
+ul.resources-grid-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 3rem !important;
+}
+/*reset lodex style*/
+div[class*='ListePave'] li *,
+li.resources-grid-item,
+li.resources-grid-item * {
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    box-shadow: none;
+    border: 0px;
+    text-decoration: none !important;
+}
+div[class*='ListePave'] li,
+li.resources-grid-item {
+    min-width: 300px;
+    max-width: 334px;
+    width: 33%;
+    border-radius: 4px;
+}
+div[class*='ListePave'] li a,
+li.resources-grid-item a {
+    display: block;
+    overflow: hidden;
+}
+[class*='ListePave'] li a > div,
+li.resources-grid-item a > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+/*liste pave general*/
+[class*='ListePave'] li {
+    background-color: var(--primary-very-light);
+    border: 1px solid var(--primary-main);
+    padding: 1.3rem !important;
+    display: flex;
+}
+/* titre du bloc toutes liste */
+[class*='ListePave'] a div[class*='contentTitle'] {
+    flex: 1;
+    font-family: var(--font-titre) !important;
+    font-weight: 700;
+}
+/*********************/
+/* liste pave dans   */
+/* designHomeContent */
+/*********************/
+div[class*='designHomeContent'] [class*='ListePave'] li {
+    background-color: var(--contrast-light);
+    border-color: var(--contrast-light);
+    min-height: 94.1px;
+}
+div[class*='designHomeContent'] [class*='ListePave'] li > div {
+    background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
+        right 0.3rem;
+    width: 100%;
+}
+div[class*='designHomeContent'] [class*='ListePave'] li a > div {
+    padding-right: 0.5rem;
+}
+div[class*='designHomeContent']
+   /* [class*='ListePave']*/
+    div.property_value_container
+    li
+    a
+    div[class*='contentParagraph'] {
+    flex: 2;
+}
+/*titre dans homecontent*/
+div[class*='designHomeContent']
+    div.property_value_container
+    li
+    a
+    div[class*='contentTitle'] {
+    color: var(--primary-main);
+}
+/******************/
+/*  home ISTEX    */
+/* design sidebar */
+/******************/
+div[class*='HomeSidebar'] {
+    align-items: flex-start !important;
+    background-color: var(--primary-main);
+    padding: 3rem 3rem 1.5rem !important;
+    margin: 0 !important;
+    min-width: 280px !important;
+    max-width: 475px !important;
+    flex: 1;
+}
+/*div[class*='HomeSidebar'] champs composant 1er niveau*/
+div[class*='HomeSidebar'] > .property_value_container > div .property {
+    margin-bottom: 1rem;
+}
+/*espace titre-texte*/
+div[class*='HomeSidebar']
+    > .property_value_container
+    > div
+    .property
+    .MuiBox-root {
+    padding: 0 !important;
+}
+div[class*='HomeSidebar'] > .property_value_container > div .property p {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+/*texte en blanc*/
+div[class*='HomeSidebar'] *:not(a, button, svg, [class*='Bouton']) {
+    color: var(--secondary-contrast-text) !important;
+    text-align: left;
+}
+/*Home tools explorter bouton en savoir plus et links sidebar see*/
+/*istex-linksclass.css*/
+/*tools explorer compteur la phrase*/
+div[class*='HomeCompteur'] .MuiBox-root div {
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    line-height: 1.2rem;
+    text-align: left;
+}
+/*compteur nb outils .numberStroke*/
+div[class*='HomeCompteur'] div.content {
+    font-family: var(--font-titre) !important;
+    color: var(--primary-main) !important;
+    -webkit-text-stroke: 1px var(--secondary-contrast-text);
+    padding-right: 5px;
+    padding-left: 5px;
+}
+/*tools explorer img licence*/
+.dataset-characteristics div[class*='HomeSidebar'] img:last-child {
+    filter: opacity(90%);
+}
+/* for home sidebar img */
+.design-filter {
+    filter: opacity(90%);
+}
+
+/*******************/
+/*  design ISTEX   */
+/*   Home bottom   */
+/*    bannieres    */
+/*******************/
+.dataset-characteristics div.property[class*='Banniere'] {
+    position: relative;
+    width: 100% !important;
+}
+/*si elle est en fin de homepage*/
+.dataset-characteristics div.property[class*='Banniere']:last-child {
+    margin: 0 0 !important;
+}
+/*si elle vient après homecontentsidebar*/
+.dataset-characteristics
+    > div
+    > div.property[class*='HomeContentSidebar']
+    + div
+    + div.property[class*='Banniere'] {
+    margin-top: -1.5rem !important;
+}
+div.property[class*='Banniere'] > .property_value_container div.MuiBox-root {
+    padding: 0 0 !important;
+}
+div.property[class*='Banniere']
+    > div.property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    min-height: 20rem;
+    padding: 3rem 3rem 4rem;
+}
+div[class*='Banniere'] div.MuiBox-root > div * {
+    margin: 0 auto;
+    color: var(--secondary-contrast-text);
+    flex: 1;
+}
+
+/*******************/
+/* BanniereSimple  */
+/* img full screen */
+/*******************/
+div[class*='BanniereSimple'] {
+    background-image: var(--banniereSimpleUrl);
+    background-position: center 27%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+div[class*='BanniereSimple'] div.MuiBox-root {
+    max-width: var(--maxWidth);
+    margin: 0 auto !important;
+    padding: 0 0 !important;
+}
+div[class*='BanniereSimple'] div.MuiBox-root > div .property_value_container {
+    max-width: var(--maxWidth) !important;
+    min-width: min-content !important;
+    width: fit-content !important;
+}
+div.property[class*='BanniereSimple']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    flex-direction: column !important;
+    justify-content: space-around;
+}
+/* surtitre dans banniere simple*/
+#content
+    div.property[class*='BanniereSimple']
+    div.property:first-child
+    .property_value
+    * {
+    font-size: 1.2rem !important;
+    font-weight: bold;
+}
+#content div[class*='BanniereSimple'] *:is(h2, h3) {
+    font-size: 2.3rem;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+    color: var(--lime1);
+}
+/* a est un bouton primaire*/
+
+/*******************/
+/* BanniereDouble  */
+/*   img + texte   */
+/*******************/
+div.property[class*='BanniereDouble'] {
+    background-color: var(--primary-main);
+}
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='BanniereDouble']
+    > .property_value_container {
+    display: flex;
+    align-items: center;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0;
+}
+div.property[class*='BanniereDouble']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > span {
+    background-image: var(--banniereDoubleUrl);
+    background-size: cover;
+    background-position: right;
+    background-repeat: no-repeat;
+}
+div.property[class*='BanniereDouble'] > .property_value_container > div > div {
+    display: flex;
+    justify-content: flex-end !important;
+    margin: 0;
+    background-color: transparent;
+}
+/*banniere double le texte*/
+div.property[class*='BanniereDouble']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    background-color: var(--primary-main);
+    flex-direction: column !important;
+    flex-flow: nowrap;
+    margin: 0rem auto 2rem 0rem !important;
+}
+div.property[class*='BanniereDouble']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div
+    > * {
+    max-width: 550px;
+    margin-left: 0;
+}
+div.property[class*='BanniereDouble']
+    .property[class*='DoubleTexte']
+    .property_value
+    * {
+    color: var(--contrast-light) !important;
+}
+div.property[class*='BanniereDouble'] .property_value *:is(h1, h2, h3) {
+    color: var(--contrast-light) !important;
+    margin-bottom: 2rem !important;
+}
+
+/**************/
+/* triptyque */
+/**************/
+div.property[class*='Triptyque'] {
+    position: relative;
+    width: 100%;
+    margin-top: -5rem;
+}
+div.property[class*='Triptyque'] div.MuiBox-root {
+    padding: 0 0;
+    margin: 0;
+}
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='designHomeTriptyque']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    justify-content: center;
+    align-items: stretch;
+}
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque'] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 40px;
+}
+#content
+    div.property[class*='designHomeTriptyque']
+    .property[class*='Triptyque']
+    * {
+    text-align: center !important;
+    justify-content: center !important;
+    color: var(--contrast-light) !important;
+}
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque1'] {
+    background-color: var(--primary-main);
+}
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque2'] {
+    background-color: var(--primary-light);
+}
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque3'] {
+    background-color: var(--primary-lighter);
+}
+
+/*****************/
+/*page resource*/
+/*ex: tools explorer website*/
+/*header-resource-section*/
+/* bloc titre label */
+.designResourceToolsHeader > div.property_label_container span.property_label {
+    color: var(--primary-main) !important;
+    border-bottom: 1px solid var(--primary-main);
+    margin-bottom: 1rem;
+}
+.designResourceToolsHeader h1 {
+    padding-left: 3rem;
+}
+/*.main-resource-section*/
+.main-resource-section > div > div:first-child {
+    justify-content: initial;
+    padding: 0 !important;
+}
+div[class*='ResourceCompose'],
+.main-resource-section div[class*='HomeSidebar'] {
+    padding: 1.5rem 3rem !important;
+    margin-bottom: 0 !important;
+}
+.resource
+    div[class*='HomeSidebar']
+    span.property_label[style*='color: rgb(158, 158, 158)'] {
+    color: inherit !important;
+}
+/*champs composés*/
+div[class*='ResourceCompose'] {
+    background-color: var(--primary-very-light);
+    flex: 2.79;
+}
+/*titre*/
+div[class*='ResourceCompose'] .property_label_container {
+    margin-top: 0rem !important;
+}
+div[class*='ResourceCompose'] .property_value_container > div > div > div {
+    margin-left: 0 !important;
+    border-left: 0px !important;
+    padding: 0 !important;
+    background-color: var(--primary-very-light);
+}
+div[class*='ResourceCompose'] div.property {
+    margin: 0rem auto;
+}
+div[class*='ResourceCompose']
+    .property_value_container
+    .property_value_container {
+    background-color: var(--contrast-main);
+}
+div[class*='ResourceCompose']
+    .property_value_container
+    .property_value_container
+    > .MuiBox-root {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+div[class*='ResourceCompose'] ul,
+div[class*='ResourceCompose'] ol {
+    margin: 0 !important;
+    padding: 8px;
+}
+div[class*='ResourceCompose'] li {
+    display: inline-block;
+    padding: 3px 8px !important;
+}
+div[class*='ResourceCompose'] li p {
+    padding: 0 !important;
+}
+div[class*='ResourceCompose'] li:not(:last-child) > span::after {
+    content: ',';
+}
+
+/*div[class*='ResourceCompose'] > .property_label_container span.property_label:empty {
+    display: none;
+}*/
+div[class*='ResourceCompose'] .property_value_container h2 {
+    margin-top: 0rem !important;
+}
+/*ref bib = .blocExergue*/
+div[class*='Exergue'] {
+    box-shadow: 0px 0px 20px var(--neutral-main);
+    padding: 3rem 3rem;
+    margin: 2rem 0;
+}
+div[class*='Exergue'] p {
+    margin: 0 auto 1.5rem;
+}

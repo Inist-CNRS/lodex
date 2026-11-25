@@ -119,6 +119,7 @@ module.exports = {
         'hal-cnrs',
         'collex-persee',
         'istex',
+        'corpus-istex',
         'istex-legacy',
         'default',
     ],
