@@ -105,6 +105,10 @@ module.exports = {
         },
     },
     timeout: 90000, // 1 minute 30 pour essayer de se connecter à un webservices
+    // URLConnect coupe tout l'échange (réponse comprise) au bout de son timeout : un flux du
+    // service workers (import, export, routine) dure autant que le jeu de données, il n'est
+    // pas limité (le plus long délai d'un timer). L'arrêt passe par le fusible.
+    workersStreamTimeout: 2 ** 31 - 1,
     streaming: true, // Connexion à un web service via un mode streaming ou non
     alternativePrecomputedBaseUrl: process.env.PRECOMPUTED_URL, // if undefined, baseURL is used
     activateBullDashboard: false, // Active la route /bull pour avoir une vision sur toutes les taches de fond

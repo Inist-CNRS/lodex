@@ -101,14 +101,18 @@ describe('startImport of a loader', () => {
     });
 
     it('succeeds when it reads a line', async () => {
-        await expect(importLines([{ uri: 'uid:/1' }])).resolves.toBe(undefined);
+        await expect(importLines([{ uri: 'uid:/1' }])).resolves.toEqual({
+            cancelled: false,
+        });
     });
 
     it('does not blame the loader when the import was cancelled', async () => {
         // cancelJob disabled the fusible: the breakers cut the stream
         (checkFusible as jest.Mock).mockResolvedValue(false);
         try {
-            await expect(importLines([])).resolves.toBe(undefined);
+            await expect(importLines([])).resolves.toEqual({
+                cancelled: true,
+            });
         } finally {
             (checkFusible as jest.Mock).mockResolvedValue(true);
         }

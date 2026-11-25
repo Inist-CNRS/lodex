@@ -64,16 +64,15 @@ const failedImport = (
 export const processImport = (job: any, done: any) => {
     cleanWaitingJobsOfType(job.data.tenant, IMPORT);
     startJobImport(job)
-        .then(async () => {
+        .then(async ({ cancelled }) => {
             job.progress(100);
-            const isFailed = await job.isFailed();
             notifyListeners(`${job.data.tenant}-import`, {
                 isImporting: false,
-                success: !isFailed,
+                success: !cancelled,
             });
             await notifyWizard(
                 job,
-                isFailed ? failedImport('import_failed', false) : SUCCESS,
+                cancelled ? failedImport('import_failed', false) : SUCCESS,
             );
             done();
         })
@@ -132,7 +131,7 @@ const startJobImport = async (job: any) => {
     }
     importFusibles.set(jobId, fusible);
     try {
-        await startImport(ctx, fusible);
+        return await startImport(ctx, fusible);
     } finally {
         importFusibles.delete(jobId);
         // startImport disables it, except when the upload was cancelled

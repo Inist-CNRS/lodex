@@ -12,7 +12,8 @@ import type {
     SiteGenerationCollection,
     SiteGenerationStep,
 } from '../../models/siteGeneration';
-import { getOrCreateWorkerQueue } from '../../workers';
+import { getOrCreateWorkerQueue, isJobRunning } from '../../workers';
+import { cancelImportJob } from '../../workers/import';
 import {
     cancelJob,
     cancelPublisherJob,
@@ -563,6 +564,10 @@ const modelPhaseStopStatus = async (
     ctx: SiteGenerationContext,
     generation: SiteGeneration,
 ): Promise<'stopped' | 'stopping'> => {
+    // Bull may see it failed (its lock lost) while it still runs here
+    if (isJobRunning(generation.modelJobId)) {
+        return 'stopping';
+    }
     const found = await findWizardJob(ctx, generation.modelJobId);
     if (found?.state === 'active') {
         return 'stopping';
@@ -583,6 +588,12 @@ const stopDataImport = async (
     ctx: SiteGenerationContext,
     generation: SiteGeneration,
 ) => {
+    // Bull may see it failed (its lock lost) while it still runs here: its
+    // fusible stops it
+    if (isJobRunning(generation.importJobId)) {
+        await cancelImportJob(generation.importJobId!);
+        return;
+    }
     const found = await findWizardJob(ctx, generation.importJobId);
     if (found && NOT_STARTED_STATES.includes(found.state)) {
         try {
@@ -613,7 +624,10 @@ export const settleStoppingSiteGeneration = async (
     if (generation?.status !== 'stopping') {
         return;
     }
-    if (isAlive(await findWizardJob(ctx, generation.modelJobId))) {
+    if (
+        isJobRunning(generation.modelJobId) ||
+        isAlive(await findWizardJob(ctx, generation.modelJobId))
+    ) {
         return;
     }
     await ctx.siteGeneration.transition(generation, { status: 'stopped' });
@@ -647,9 +661,21 @@ export const failLostSiteGenerationJob = async (
         generation.phase === 'data'
             ? generation.importJobId
             : generation.modelJobId;
-    if (!isLost(await findWizardJob(ctx, jobId), now)) {
+    // Bull may no longer see as running a job this process still runs (its
+    // lock lost): its end moves the generation on
+    if (isJobRunning(jobId)) {
         return;
     }
+    const found = await findWizardJob(ctx, jobId);
+    if (!isLost(found, now)) {
+        return;
+    }
+    getLogger(ctx.tenant).warn(`Site generation job lost: ${jobId}`, {
+        phase: generation.phase,
+        state: found?.state ?? 'missing',
+        failedReason: found?.job.failedReason,
+        finishedOn: found?.job.finishedOn,
+    });
     await ctx.siteGeneration.transition(generation, {
         status: 'error',
         message: 'site_generation_job_lost',

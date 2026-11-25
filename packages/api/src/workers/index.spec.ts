@@ -32,6 +32,7 @@ import { sweepTenants } from '../services/siteGeneration/sweep';
 import {
     deleteWorkerQueue,
     getOrCreateWorkerQueue,
+    isJobRunning,
     waitForRunningJob,
 } from './index';
 
@@ -105,11 +106,18 @@ describe('waitForRunningJob', () => {
     });
 
     // runs a publication job until it calls done()
+    let jobCount = 0;
     const runJob = () => {
         const queue: any = getOrCreateWorkerQueue('tenant', 1);
         const processJob = queue.process.mock.calls[0][2];
         const done = jest.fn();
-        processJob({ data: { jobType: 'publisher', tenant: 'tenant' } }, done);
+        processJob(
+            {
+                id: `job-${++jobCount}`,
+                data: { jobType: 'publisher', tenant: 'tenant' },
+            },
+            done,
+        );
         const [, jobDone] = mockProcessPublication.mock.calls[0];
         return { done, jobDone };
     };
@@ -133,5 +141,62 @@ describe('waitForRunningJob', () => {
         runJob();
 
         await expect(waitForRunningJob('tenant', 10)).resolves.toBe(false);
+    });
+});
+
+// Bull loses the lock of a job whose event loop stays blocked: it then sees it
+// as stalled or failed while it still runs here
+describe('the jobs run here', () => {
+    afterEach(async () => {
+        await deleteWorkerQueue('tenant');
+        jest.clearAllMocks();
+    });
+
+    const processJob = (id: string, done = jest.fn()) => {
+        const queue: any = getOrCreateWorkerQueue('tenant', 1);
+        queue.process.mock.calls[0][2](
+            { id, data: { jobType: 'publisher', tenant: 'tenant' } },
+            done,
+        );
+        return done;
+    };
+
+    it('tells a job is running until it calls done', () => {
+        processJob('running-job');
+        const [, jobDone] = mockProcessPublication.mock.calls[0];
+
+        expect(isJobRunning('running-job')).toBe(true);
+        expect(isJobRunning('other-job')).toBe(false);
+        expect(isJobRunning(undefined)).toBe(false);
+
+        jobDone();
+
+        expect(isJobRunning('running-job')).toBe(false);
+    });
+
+    it('does not run again a job that already ran here to its end', () => {
+        processJob('stalled-job');
+        mockProcessPublication.mock.calls[0][1]();
+        mockProcessPublication.mockClear();
+
+        // Bull runs it again after it stalled
+        const done = processJob('stalled-job');
+
+        expect(mockProcessPublication).not.toHaveBeenCalled();
+        expect(done).toHaveBeenCalledWith(undefined);
+        expect(isJobRunning('stalled-job')).toBe(false);
+    });
+
+    it('ends a job run again after a failed run with the error of that run', () => {
+        // its failure could not be written ("Missing lock"): Bull runs it again
+        processJob('failed-job');
+        const error = new Error('publication failed');
+        mockProcessPublication.mock.calls[0][1](error);
+        mockProcessPublication.mockClear();
+
+        const done = processJob('failed-job');
+
+        expect(mockProcessPublication).not.toHaveBeenCalled();
+        expect(done).toHaveBeenCalledWith(error);
     });
 });

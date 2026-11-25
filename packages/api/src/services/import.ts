@@ -28,7 +28,7 @@ export const getLoader =
                 ezs('URLConnect', {
                     url: `${config.get('ezs.url')}/loaders/${loaderName}?${env2query}`,
                     streaming: config.get('streaming'),
-                    timeout: config.get('timeout'),
+                    timeout: config.get('workersStreamTimeout'),
                     json: false,
                     encoder: 'transit',
                     header: loaderHeader,
@@ -196,6 +196,10 @@ export const startImport = async (ctx: any, givenFusible?: string) => {
             type: 'import',
         });
         await ctx.dataset.indexColumns();
+        // a cancel (cancelJob, stopJobs) disables the fusible. The state of
+        // the job cannot tell: Bull also fails a job that stalled, while it
+        // still runs here
+        return { cancelled: !(await checkFusible(fusible)) };
     } catch (error) {
         const logger = getLogger(ctx.tenant);
         logger.error('Error during import', error);

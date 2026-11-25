@@ -35,8 +35,14 @@ jest.mock('../launchTasks');
 jest.mock('../../workers/tools');
 
 const mockWorkerQueue = { add: jest.fn(), getJob: jest.fn() };
+const mockIsJobRunning = jest.fn((_jobId?: string) => false);
 jest.mock('../../workers', () => ({
     getOrCreateWorkerQueue: () => mockWorkerQueue,
+    isJobRunning: (jobId?: string) => mockIsJobRunning(jobId),
+}));
+const mockCancelImportJob = jest.fn();
+jest.mock('../../workers/import', () => ({
+    cancelImportJob: (jobId: string) => mockCancelImportJob(jobId),
 }));
 jest.mock('../repositoryMiddleware', () => ({
     invalidateRepositories: jest.fn(),
@@ -184,6 +190,7 @@ describe('siteGeneration service', () => {
         jest.mocked(getWaitingJobs).mockResolvedValue([]);
         jest.mocked(getActiveJob).mockResolvedValue(undefined);
         mockWorkerQueue.getJob.mockResolvedValue(null);
+        mockIsJobRunning.mockImplementation(() => false);
         ctx = {
             tenant: 'lodex_test',
             enrichment,
@@ -747,6 +754,20 @@ describe('siteGeneration service', () => {
             );
         });
 
+        it('cancels through its fusible an import Bull failed while it still runs here', async () => {
+            // its lock lost, Bull failed it: getActiveJob does not return it
+            await startIn('data');
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+            mockIsJobRunning.mockImplementation((id) => id === 'import-job');
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect(mockCancelImportJob).toHaveBeenCalledWith('import-job');
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopped',
+            );
+        });
+
         it('does not cancel an import started by hand meanwhile', async () => {
             await startIn('data');
             // the import of the generation ended meanwhile
@@ -838,6 +859,18 @@ describe('siteGeneration service', () => {
             },
         );
 
+        it('lets a model job Bull failed while it still runs here end the generation', async () => {
+            await startIn('model');
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+            mockIsJobRunning.mockImplementation((id) => id === 'model-job');
+
+            expect(await stopSiteGeneration(ctx)).toBe(true);
+
+            expect((await siteGeneration.findCurrent())?.status).toBe(
+                'stopping',
+            );
+        });
+
         it('lets an active model job end the generation, and refuses a second stop', async () => {
             await startIn('model');
             const job = queueJob('active');
@@ -902,6 +935,19 @@ describe('siteGeneration service', () => {
                 );
             },
         );
+
+        it('leaves a stopping generation whose model job still runs here', async () => {
+            // Bull lost its lock and failed it: it still runs
+            const generation = await startIn('model', { status: 'stopping' });
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+            mockIsJobRunning.mockImplementation(
+                (jobId) => jobId === 'model-job',
+            );
+
+            await settleStoppingSiteGeneration(ctx);
+
+            expect(await siteGeneration.findCurrent()).toEqual(generation);
+        });
 
         it.each(['active', 'waiting'])(
             'leaves a stopping generation whose model job is %s',
@@ -1018,6 +1064,22 @@ describe('siteGeneration service', () => {
                 mockWorkerQueue.getJob.mockResolvedValue(
                     queueJob(state, finishedAgo(10)),
                 );
+
+                await failLostSiteGenerationJob(ctx, now);
+
+                expect(await siteGeneration.findCurrent()).toEqual(generation);
+            },
+        );
+
+        it.each(cases)(
+            'leaves a %s phase whose job Bull failed but still runs here',
+            async (phase, jobId) => {
+                // its lock lost: Bull stalled it twice, the import goes on
+                const generation = await startIn(phase);
+                mockWorkerQueue.getJob.mockResolvedValue(
+                    queueJob('failed', finishedAgo(120)),
+                );
+                mockIsJobRunning.mockImplementation((id) => id === jobId);
 
                 await failLostSiteGenerationJob(ctx, now);
 
