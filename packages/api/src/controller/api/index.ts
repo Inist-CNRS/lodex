@@ -6,7 +6,7 @@ import route from 'koa-route';
 import get from 'lodash/get';
 
 import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
-import { bumpDataVersion } from '../../services/dataVersion';
+import { bumpAfterAdminWrite } from '../../services/dataVersion';
 import annotation from './annotation';
 import breadcrumbs from './breadcrumb';
 import characteristic from './characteristic';
@@ -73,19 +73,6 @@ app.use(route.get('/displayConfig', displayConfig));
 app.use(mount('/translations', translate));
 app.use(mount('/themes', themes));
 
-// any write may change what the routines return: the browsers ask for them
-// again (login, logout and client errors above change nothing they return)
-app.use(async (ctx: any, next: any) => {
-    if (ctx.method === 'GET' || ctx.method === 'HEAD') {
-        return next();
-    }
-    try {
-        await next();
-    } finally {
-        bumpDataVersion(ctx.tenant);
-    }
-});
-
 app.use(async (ctx: any, next: any) => {
     const jwtMid = await jwt({
         // @ts-expect-error TS(18046): auth is of type unknown
@@ -122,6 +109,8 @@ app.use(async (ctx: any, next: any) => {
 
     await next();
 });
+
+app.use(bumpAfterAdminWrite);
 
 app.use(mount('/annotation', annotation));
 app.use(mount('/export', exportPublishedDataset));

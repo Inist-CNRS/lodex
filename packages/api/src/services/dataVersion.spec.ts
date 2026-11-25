@@ -1,7 +1,13 @@
 import Koa from 'koa';
 import type { AddressInfo } from 'net';
 import { get, type IncomingMessage, type Server } from 'http';
-import { bumpDataVersion, revalidateUntilDataChanges } from './dataVersion';
+import {
+    bumpAfterAdminWrite,
+    bumpDataVersion,
+    doNotKeep,
+    getDataVersion,
+    revalidateUntilDataChanges,
+} from './dataVersion';
 
 // not fetch: it sends Cache-Control: no-cache along a hand-set If-None-Match,
 // as a forced reload does
@@ -72,5 +78,71 @@ describe('revalidateUntilDataChanges', () => {
         const second = await request(url, etag);
 
         expect(second.statusCode).toBe(304);
+    });
+});
+
+describe('bumpAfterAdminWrite', () => {
+    const bumps = async ({
+        method = 'POST',
+        path = '/field',
+        status = 200,
+        isAdmin = true,
+    }) => {
+        const tenant = `tenant-${Math.random()}`;
+        const ctx: any = { method, path, tenant, state: { isAdmin } };
+        const before = getDataVersion(tenant);
+        await bumpAfterAdminWrite(ctx, async () => {
+            ctx.status = status;
+        });
+        return getDataVersion(tenant) !== before;
+    };
+
+    it('bumps after a successful write of an admin', async () => {
+        expect(await bumps({})).toBe(true);
+        expect(
+            await bumps({ method: 'DELETE', path: '/hiddenResource/x' }),
+        ).toBe(true);
+    });
+
+    it('does not bump for a visitor', async () => {
+        expect(await bumps({ isAdmin: false })).toBe(false);
+    });
+
+    it('does not bump for a rejected or failed write', async () => {
+        expect(await bumps({ status: 400 })).toBe(false);
+        expect(await bumps({ status: 500 })).toBe(false);
+    });
+
+    it('does not bump for a read', async () => {
+        expect(await bumps({ method: 'GET' })).toBe(false);
+        expect(await bumps({ path: '/publishedDataset' })).toBe(false);
+        expect(await bumps({ path: '/publishedDataset/search' })).toBe(false);
+        expect(await bumps({ path: '/enrichment/preview' })).toBe(false);
+        expect(await bumps({ path: '/dataSource/preview' })).toBe(false);
+    });
+});
+
+describe('doNotKeep', () => {
+    it('sends an answer the browser does not store', async () => {
+        const app = new Koa();
+        app.use(async (ctx, next) => {
+            (ctx as any).tenant = 'default';
+            await next();
+        });
+        app.use(revalidateUntilDataChanges);
+        app.use((ctx) => {
+            doNotKeep(ctx);
+            ctx.body = { total: 0 };
+        });
+        const server = app.listen(0);
+        await new Promise((resolve) => server.once('listening', resolve));
+
+        const response = await request(
+            `http://localhost:${(server.address() as AddressInfo).port}`,
+        );
+        await new Promise((resolve) => server.close(resolve));
+
+        expect(response.headers['cache-control']).toBe('no-store');
+        expect(response.headers.etag).toBeUndefined();
     });
 });

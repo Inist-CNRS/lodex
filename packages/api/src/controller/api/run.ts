@@ -4,7 +4,10 @@ import route from 'koa-route';
 import ezs from '@ezs/core';
 import { PassThrough } from 'stream';
 import config from 'config';
-import { revalidateUntilDataChanges } from '../../services/dataVersion';
+import {
+    doNotKeep,
+    revalidateUntilDataChanges,
+} from '../../services/dataVersion';
 
 import Script from '../../services/script';
 import { cleanHost } from '@lodex/common';
@@ -69,6 +72,7 @@ const middlewareScript = async (
         const input = new PassThrough({ objectMode: true });
         const errorHandle = (err: any) => {
             ctx.status = 503;
+            doNotKeep(ctx);
             ctx.body.destroy();
             closeIfHeadersSent(ctx);
             input.destroy();
@@ -76,6 +80,7 @@ const middlewareScript = async (
         };
         // called only when the routine sent no data at all
         const emptyHandle = () => {
+            doNotKeep(ctx);
             logger.error('Empty response with ', ctx.path, ' and', ctx.query);
             return '{"total":0}';
         };
