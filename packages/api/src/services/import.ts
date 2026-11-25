@@ -9,7 +9,7 @@ import {
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
 import progress from './progress';
-import { ProgressStatus } from '@lodex/common';
+import { getLoaderForExtension, ProgressStatus } from '@lodex/common';
 import { Readable } from 'stream';
 import config from 'config';
 import getLogger from './logger';
@@ -126,7 +126,9 @@ export const startImport = async (ctx: any, givenFusible?: string) => {
         }
         const source = url ? url : filename;
         const parser =
-            !loaderName || loaderName === 'automatic' ? extension : loaderName;
+            !loaderName || loaderName === 'automatic'
+                ? getLoaderForExtension(extension)
+                : loaderName;
 
         if (!givenFusible) {
             await enableFusible(fusible);

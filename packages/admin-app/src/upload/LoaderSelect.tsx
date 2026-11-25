@@ -13,6 +13,8 @@ type LoaderSelectComponentProps = {
     setLoader: (loaderName: string) => void;
     // the automatic loader reads the file extension
     allowAutomatic?: boolean;
+    // shown below the select, as an error
+    helperText?: string;
 };
 
 const LoaderSelectComponent = ({
@@ -20,6 +22,7 @@ const LoaderSelectComponent = ({
     value,
     setLoader,
     allowAutomatic = true,
+    helperText,
 }: LoaderSelectComponentProps) => {
     const { translate } = useTranslate();
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
@@ -51,6 +54,8 @@ const LoaderSelectComponent = ({
                 onChange={(e) => setLoader(e.target.value)}
                 value={value ?? ''}
                 InputLabelProps={{ shrink: !!value }}
+                error={!!helperText}
+                helperText={helperText}
             >
                 {allowAutomatic && (
                     <MenuItem

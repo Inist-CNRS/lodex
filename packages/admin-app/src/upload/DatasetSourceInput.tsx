@@ -491,7 +491,12 @@ export const DatasetSourceInput = ({
                                         <LinkIcon />
                                     </Box>
                                 )}
-                                <Typography variant="h6" component="p">
+                                {/* the same text as the dropzone's */}
+                                <Typography
+                                    component="p"
+                                    fontSize={compact ? 16 : 18}
+                                    fontWeight={600}
+                                >
                                     {translate('upload_url_title')}
                                 </Typography>
                                 <TextField

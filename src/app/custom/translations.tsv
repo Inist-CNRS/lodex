@@ -1572,11 +1572,7 @@
 "mc_hal2lodex_title"	"HAL2LODEX model"	"Modèle HAL2LODEX"
 "mc_hal2lodex_name"	"HAL2LODEX"	"HAL2LODEX"
 "mc_hal2lodex_description"	"This model builds a ready-to-use LODEX site for exploring and visualizing bibliographic data from HAL. It can be used and adapted to various HAL data corpora to produce indicators and visualizations, and to monitor or manage the HAL collection."	"Ce modèle permet de construire un site LODEX prêt à l’emploi pour l’exploration et la visualisation de données bibliographiques provenant de HAL. Il peut être utilisé et adapté à différents corpus de données issus de HAL afin de produire et générer des indicateurs, des visualisations et permettre le suivi ou la gestion de la collection HAL."
-"mc_hal2lodex_import_help"	"Retrieve the query available in the HAL2LODEX model documentation, adapt and customize it to your needs, then copy and paste it into the “Web link” or “Free input” tab.
-
-You can also import a CSV file from the “File” tab, provided that it contains at least the same fields as those defined in the query available in the documentation."	"Récupérez la requête disponible dans la documentation du modèle HAL2LODEX, adaptez-la et personnalisez-la à vos besoins, puis copiez-collez-la dans l’onglet « Lien web » ou « Saisie libre ».
-
-Vous pouvez également importer un fichier CSV depuis l’onglet « Fichier », à condition qu’il contienne au moins les mêmes champs que ceux définis dans la requête disponible dans la documentation."
+"mc_hal2lodex_import_help"	"Copy the query from the HAL2LODEX documentation, adapt it, then paste it into the “Web link” or “Text input” tab. A CSV file with the same fields also works, from the “File” tab."	"Copiez la requête de la documentation HAL2LODEX, adaptez-la, puis collez-la dans l’onglet « Lien web » ou « Saisie libre ». Un fichier CSV avec les mêmes champs fonctionne aussi, depuis l’onglet « Fichier »."
 "mc_openalex_title"	"OpenAlex model"	"Modèle OpenAlex"
 "mc_openalex_name"	"OpenAlex"	"OpenAlex"
 "mc_openalex_description"	"This model builds a LODEX site for exploring bibliographic data from OpenAlex. It can be reused and adapted to explore different OpenAlex datasets or to meet specific bibliometric analysis needs."	"Ce modèle permet de construire un site LODEX d’exploration de données bibliographiques à partir d’OpenAlex. Il peut être réutilisé et adapté pour explorer différents jeux de données OpenAlex ou répondre à des besoins spécifiques d’analyse bibliométrique."
@@ -1649,8 +1645,9 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "upload_url_valid"	"Valid URL: the Lodex server will download the file"	"URL valide : le serveur Lodex téléchargera le fichier"
 "upload_drop_file"	"Drag a file here or"	"Glissez un fichier ici ou"
 "upload_browse"	"browse"	"parcourez"
-"upload_formats_limit"	"CSV, TSV, JSON, XML, ODS… · %{limit} GB maximum"	"CSV, TSV, JSON, XML, ODS… · %{limit} Go maximum"
+"upload_formats_limit"	"CSV, TSV, JSON, XML… (%{limit} GB maximum)"	"CSV, TSV, JSON, XML… (%{limit} Go maximum)"
 "upload_max_size"	"%{limit} GB maximum"	"%{limit} Go maximum"
+"loader_unknown_format"	"Unknown format: choose a loader"	"Format non reconnu : choisissez un loader"
 "precomputed_no_response"	"No response from the web service within the allowed time"	"Pas de réponse du web service dans le délai imparti"
 "site_generation_title"	"Configuring the site…"	"Génération du site en cours…"
 "site_generation_subtitle"	"The configuration can take a while"	"La génération peut prendre du temps selon la taille de votre jeu de données ou la nature des traitements appliqués. Vous pouvez fermer votre navigateur et revenir plus tard : la génération se poursuivra en arrière-plan et votre résultat sera disponible à votre retour."

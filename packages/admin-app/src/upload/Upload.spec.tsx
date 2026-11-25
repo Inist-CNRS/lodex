@@ -134,12 +134,47 @@ describe('<Upload />', () => {
             expect(uploadButton().prop('disabled')).toBe(false);
             expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
 
+            // the query string is not part of the extension
+            wrapper.setProps({
+                url: 'https://zenodo.org/records/1/files/data.csv?download=1',
+            });
+            expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
+
             wrapper.setProps({
                 url: 'https://api.openalex.org/works?filter=x',
             });
             expect(uploadButton().prop('disabled')).toBe(true);
             expect(wrapper.find(LoaderSelect).prop('allowAutomatic')).toBe(
                 false,
+            );
+        });
+
+        it('should keep the automatic loader for a file whose extension has a loader only', () => {
+            const wrapper = shallow(
+                <Upload
+                    {...baseProps}
+                    loaders={[{ name: 'json-lines' }]}
+                    loaderName="automatic"
+                />,
+            );
+            const chooseFile = (name: string) =>
+                wrapper.find(DatasetSourceInput).prop('onFilesChange')([
+                    { file: new File(['{}'], name), data: '' },
+                ]);
+
+            chooseFile('data.JSONL');
+            expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
+            expect(
+                wrapper.find(LoaderSelect).prop('helperText'),
+            ).toBeUndefined();
+
+            chooseFile('data.ods');
+            expect(wrapper.find(LoaderSelect).prop('value')).toBeNull();
+            expect(wrapper.find(LoaderSelect).prop('helperText')).toBe(
+                'translated:loader_unknown_format',
+            );
+            expect(wrapper.find('.btn-upload-dataset').prop('disabled')).toBe(
+                true,
             );
         });
 

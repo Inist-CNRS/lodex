@@ -65,15 +65,25 @@ const styles = {
     },
 };
 
-export const OpenWizardCard = ({ onOpen }: { onOpen: () => void }) => {
+// above the import form, the "or" separator goes below the card
+export const OpenWizardCard = ({
+    onOpen,
+    above = false,
+}: {
+    onOpen: () => void;
+    above?: boolean;
+}) => {
     const { translate } = useTranslate();
+    const separator = (
+        <Divider>
+            <Typography variant="body2" color="text.secondary">
+                {translate('or')}
+            </Typography>
+        </Divider>
+    );
     return (
         <>
-            <Divider>
-                <Typography variant="body2" color="text.secondary">
-                    {translate('or')}
-                </Typography>
-            </Divider>
+            {!above && separator}
             <ButtonBase
                 className="btn-open-site-wizard"
                 sx={styles.wizardCard}
@@ -92,6 +102,7 @@ export const OpenWizardCard = ({ onOpen }: { onOpen: () => void }) => {
                 </Box>
                 <ChevronRightIcon color="primary" />
             </ButtonBase>
+            {above && separator}
         </>
     );
 };
