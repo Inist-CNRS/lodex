@@ -215,10 +215,17 @@ const styles = {
         opacity: 0.5,
         cursor: 'not-allowed',
     },
-    // ace keeps a placeholder on one line: a long example (a query url) wraps
+    // ace keeps a placeholder on one line: a long example (a query url) wraps.
+    // ace also shrinks and dims it, and gives it the comment color: hard to
+    // read on the dark editor. The text color, in italics to tell it from a
+    // typed text
     textPlaceholder: {
         whiteSpace: 'pre-wrap',
         overflowWrap: 'anywhere',
+        transform: 'none',
+        opacity: 1,
+        color: '#F8F8F2',
+        fontStyle: 'italic',
     },
     dropzonePreview: {
         justifyContent: 'center',
@@ -379,7 +386,8 @@ export const DatasetSourceInput = ({
                     '& .dropzone': styles.dropzone,
                     '& .disabledDropzone': styles.disabledDropzone,
                     '& .dropzonePreview': styles.dropzonePreview,
-                    '& .ace_placeholder': styles.textPlaceholder,
+                    // more specific than the theme's `.ace-monokai .ace_comment`
+                    '& .ace_editor .ace_placeholder': styles.textPlaceholder,
                     ...(narrow ? styles.narrowForm : {}),
                     ...(compact ? styles.compactForm : {}),
                     ...(compact && files.length > 0
@@ -567,9 +575,9 @@ export const DatasetSourceInput = ({
                                       ? styles.narrowTextInput
                                       : styles.textInput
                             }
-                            mode="json"
-                            // the free input is not always JSON (e.g. a query URL): no syntax error cross
-                            setOptions={{ useWorker: false }}
+                            // the free input is not always JSON: as JSON, the
+                            // "//" of a pasted query URL starts a dim comment
+                            mode="text"
                             placeholder={textPlaceholder}
                             input={{
                                 value: text,
