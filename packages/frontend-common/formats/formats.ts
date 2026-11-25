@@ -384,7 +384,7 @@ export const FORMATS_CATALOG = [
         component: resourcesAccordion,
         type: 'other',
         isValueAnnotable: true,
-        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-ressources-en-accordeon',
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
         isUrlValue: true,
     },
     {
