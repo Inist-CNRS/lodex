@@ -1559,7 +1559,7 @@
 "mc_theses-fr_name"	"Thèses.fr"	"Thèses.fr"
 "mc_theses-fr_description"	"This model builds a LODEX site for exploring and visualizing data on French doctoral theses, defended or in progress, from queries to the theses.fr API. It provides transformations, indicators and visualizations that make it easier to analyze thesis corpora."	"Ce modèle permet de construire un site LODEX d’exploration et de visualisation des données relatives aux thèses de doctorat françaises, soutenues ou en préparation, à partir de requêtes vers l’API de thèses.fr. Il propose des transformations, des indicateurs et des visualisations facilitant l’analyse des corpus de thèses."
 "mc_theses-fr_import_help"	"Paste the URL of your theses.fr query in the input below."	"Copiez-collez l'URL de votre requête theses.fr dans la zone de saisie ci-dessous."
-"mc_theses-fr_text_placeholder"	"E.g.: https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"	"Ex : https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"
+"mc_theses-fr_text_placeholder"	"https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"	"https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"
 "mc_theses-fr_enrichment_xml"	"Retrieval of XML records"	"Récupération des notices XML"
 "mc_theses-fr_enrichment_resume"	"Retrieval of French abstracts"	"Récupération des résumés en français"
 "mc_theses-fr_enrichment_resumeEN"	"Retrieval of English abstracts"	"Récupération des résumés en anglais"
@@ -1579,13 +1579,14 @@
 You can also import a CSV file from the “File” tab, provided that it contains at least the same fields as those defined in the query available in the documentation."	"Récupérez la requête disponible dans la documentation du modèle HAL2LODEX, adaptez-la et personnalisez-la à vos besoins, puis copiez-collez-la dans l’onglet « Lien web » ou « Saisie libre ».
 
 Vous pouvez également importer un fichier CSV depuis l’onglet « Fichier », à condition qu’il contienne au moins les mêmes champs que ceux définis dans la requête disponible dans la documentation."
+"mc_hal2lodex_text_placeholder"	"https://api.archives-ouvertes.fr/search/COLLECTION/?q=*&wt=csv&rows=10000&fl=uri_s,halId_s,docid,docType_s,title_s,…"	"https://api.archives-ouvertes.fr/search/COLLECTION/?q=*&wt=csv&rows=10000&fl=uri_s,halId_s,docid,docType_s,title_s,…"
 "mc_openalex_title"	"OpenAlex model"	"Modèle OpenAlex"
 "mc_openalex_name"	"OpenAlex"	"OpenAlex"
 "mc_openalex_description"	"This model builds a LODEX site for exploring bibliographic data from OpenAlex. It can be reused and adapted to explore different OpenAlex datasets or to meet specific bibliometric analysis needs."	"Ce modèle permet de construire un site LODEX d’exploration de données bibliographiques à partir d’OpenAlex. Il peut être réutilisé et adapté pour explorer différents jeux de données OpenAlex ou répondre à des besoins spécifiques d’analyse bibliométrique."
 "mc_openalex_import_help"	"Paste your OpenAlex query in the input below, then append &api_key= to the end of the URL, followed by your OpenAlex API key.
 E.g.: https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&corpus=all&per_page=10&page=1&api_key=YOUR_API_KEY"	"Copiez-collez votre requête OpenAlex dans la zone de saisie ci-dessous, puis ajoutez &api_key= à la fin de l'URL, suivi de votre clé API OpenAlex.
 Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&corpus=all&per_page=10&page=1&api_key=VOTRE_CLE_API"
-"mc_openalex_text_placeholder"	"E.g.: https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&api_key=YOUR_API_KEY"	"Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&api_key=VOTRE_CLE_API"
+"mc_openalex_text_placeholder"	"https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&api_key=YOUR_API_KEY"	"https://api.openalex.org/works?filter=authorships.institutions.id:I1295345811,publication_year:2005-2025&api_key=VOTRE_CLE_API"
 "mc_istexsearch_title"	"ISTEX Search model (under construction)"	"Modèle Istex Search (en construction)"
 "mc_istexsearch_name"	"Istex Search"	"Istex Search"
 "mc_istexsearch_description"	"Test model for importing an archive exported from ISTEX Search."	"Modèle de test pour importer une archive exportée depuis Istex Search."
