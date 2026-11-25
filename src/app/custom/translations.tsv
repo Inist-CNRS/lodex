@@ -1696,6 +1696,7 @@ Ex : https://api.openalex.org/works?filter=authorships.institutions.id:I12953458
 "site_generation_done_hint"	"You can get back to your site at any time with the eye icon. To customise it, go to the Display tab."	"Vous retrouverez votre site à tout moment avec l'icône de l'œil. Pour le personnaliser, rendez-vous dans l'onglet Affichage."
 "site_generation_configured_title"	"Your site is configured"	"Votre site est configuré"
 "site_generation_configured_subtitle"	"The configuration is complete: publish the site to put it online"	"La configuration est terminée : publiez le site pour le mettre en ligne"
+"site_generation_configured_hint"	"Your data was imported successfully. The site is not online yet: publish it whenever you like with the Publish button."	"Vos données ont bien été importées. Le site n'est pas encore en ligne : publiez-le quand vous le souhaitez avec le bouton Publier."
 "site_generation_view_site"	"View my site"	"Voir mon site"
 "site_generation_online_notice"	"Your site is online. Customise it in the Display tab."	"Votre site est en ligne. Personnalisez-le dans l'onglet Affichage."
 "simplified_upload_model"	"You are using the **%{name}** model, please only add data matching its dataset:"	"Vous utilisez le modèle **%{name}**, veuillez uniquement ajouter des données qui correspondent au jeu de données :"

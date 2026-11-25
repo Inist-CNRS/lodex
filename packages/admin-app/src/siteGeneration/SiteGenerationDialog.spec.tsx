@@ -1015,6 +1015,11 @@ describe('SiteGenerationDialog', () => {
             await screen.findByText('site_generation_configured_title'),
         ).toBeInTheDocument();
         expect(screen.queryByText('site_generation_title')).toBeNull();
+        // the import succeeded: an invitation to publish later
+        expect(
+            screen.getByText('site_generation_configured_hint'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('site_generation_done_hint')).toBeNull();
         // every step stays on screen, done
         expect(screen.getAllByLabelText('done')).toHaveLength(4);
         // nothing left to stop, and no site to see before its publication
