@@ -134,12 +134,82 @@ describe('<Upload />', () => {
             expect(uploadButton().prop('disabled')).toBe(false);
             expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
 
+            // the query string is not part of the extension
+            wrapper.setProps({
+                url: 'https://zenodo.org/records/1/files/data.csv?download=1',
+            });
+            expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
+
             wrapper.setProps({
                 url: 'https://api.openalex.org/works?filter=x',
             });
             expect(uploadButton().prop('disabled')).toBe(true);
             expect(wrapper.find(LoaderSelect).prop('allowAutomatic')).toBe(
                 false,
+            );
+        });
+
+        it('should keep the automatic loader for a file whose extension has a loader only', () => {
+            const wrapper = shallow(
+                <Upload
+                    {...baseProps}
+                    loaders={[{ name: 'json-lines' }]}
+                    loaderName="automatic"
+                />,
+            );
+            const chooseFile = (name: string) =>
+                wrapper.find(DatasetSourceInput).prop('onFilesChange')([
+                    { file: new File(['{}'], name), data: '' },
+                ]);
+
+            chooseFile('data.JSONL');
+            expect(wrapper.find(LoaderSelect).prop('value')).toBe('automatic');
+            expect(
+                wrapper.find(LoaderSelect).prop('helperText'),
+            ).toBeUndefined();
+
+            chooseFile('data.ods');
+            expect(wrapper.find(LoaderSelect).prop('value')).toBeNull();
+            expect(wrapper.find(LoaderSelect).prop('helperText')).toBe(
+                'translated:loader_unknown_format',
+            );
+            expect(wrapper.find('.btn-upload-dataset').prop('disabled')).toBe(
+                true,
+            );
+        });
+
+        it('should only consider the source of the current tab', () => {
+            const wrapper = shallow(
+                <Upload
+                    {...baseProps}
+                    loaders={[{ name: 'csv' }]}
+                    loaderName="automatic"
+                />,
+            );
+            wrapper.find(DatasetSourceInput).prop('onFilesChange')([
+                { file: new File(['a'], 'data.ods'), data: '' },
+            ]);
+            expect(wrapper.find(LoaderSelect).prop('helperText')).toBe(
+                'translated:loader_unknown_format',
+            );
+
+            // the file is not sent from the Web link tab: no source there
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('url');
+            expect(
+                wrapper.find(LoaderSelect).prop('helperText'),
+            ).toBeUndefined();
+            expect(wrapper.find('.btn-upload-dataset').prop('disabled')).toBe(
+                true,
+            );
+
+            // a text has no format: no message, a loader is still required
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('text');
+            wrapper.setProps({ textContent: 'a,b' });
+            expect(
+                wrapper.find(LoaderSelect).prop('helperText'),
+            ).toBeUndefined();
+            expect(wrapper.find('.btn-upload-dataset').prop('disabled')).toBe(
+                true,
             );
         });
 

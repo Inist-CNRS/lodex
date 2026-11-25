@@ -19,6 +19,7 @@ export * from './externals';
 export * from './getDocumentTransformer';
 export * from './getLocale';
 export * from './languages';
+export * from './loaderForExtension';
 export * from './overview';
 export * from './prefixes';
 export * from './progressStatus';

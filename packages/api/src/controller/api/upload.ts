@@ -7,6 +7,7 @@ import route from 'koa-route';
 
 import config from 'config';
 import {
+    getExtension,
     type ModelImportType,
     ProgressStatus,
     SITE_INFO_KEYS,
@@ -221,7 +222,7 @@ export const parseRequest = async (ctx: any, loaderName: any, next: any) => {
         relaunch,
     } = fields;
 
-    const extension = resumableFilename.split('.').pop();
+    const extension = getExtension(resumableFilename);
     const chunkNumber = parseInt(resumableChunkNumber, 10);
 
     const uploadDir = getUploadDir();
@@ -360,7 +361,7 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
 export const uploadUrl = async (ctx: any) => {
     const { url, loaderName, customLoader, siteGeneration, dataAdd } =
         ctx.request.body;
-    const [extension] = url.match(/[^.]*$/);
+    const extension = getExtension(url);
     const refusal = await queueImport(
         ctx,
         {

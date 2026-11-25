@@ -1,7 +1,8 @@
 // The site wizard keeps one size: nothing jumps from a step to the next.
-// A long step scrolls.
+// A long step scrolls. High enough for the data step of a model with a long
+// help text (HAL2LODEX) to show the dropzone text on 1280×720.
 export const WIZARD_DIALOG_PAPER_PROPS = {
-    sx: { height: 'min(480px, 90vh)', p: 4 },
+    sx: { height: 'min(560px, 90vh)', p: 4 },
 };
 
 // The progress dialog keeps one size too, high enough for every step, the

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { type FileObject } from 'mui-file-dropzone';
+import { getExtension, getLoaderForExtension } from '@lodex/common';
 import Alert from '@lodex/frontend-common/components/Alert';
 import { Box, Button, Typography } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
@@ -72,13 +73,26 @@ export const UploadComponent = ({
     const [files, setFiles] = useState<FileObject[]>([]);
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
     // the automatic loader takes the format from the extension, as the server
-    // does (what follows the last dot): a text has none, nor an API query
+    // does: a text has none, nor an API query, and an extension without a
+    // loader must not fail after the upload
+    const hasLoaderForExtension = (source: string) =>
+        loaders.some(
+            (loader) =>
+                loader.name === getLoaderForExtension(getExtension(source)),
+        );
     const allowAutomatic =
-        tab === 'file' ||
-        (tab === 'url' &&
-            loaders.some(({ name }) => name === url.split('.').pop()));
+        (tab === 'file' &&
+            (files.length === 0 ||
+                hasLoaderForExtension(files[0].file.name))) ||
+        (tab === 'url' && hasLoaderForExtension(url));
     const loader =
         loaderName === 'automatic' && !allowAutomatic ? null : loaderName;
+    // the source of the current tab only, as handleConfirm sends it
+    const hasSource = {
+        file: files.length > 0,
+        url: files.length === 0 && !!url && isUrlValid,
+        text: !!textContent,
+    }[tab];
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
@@ -123,6 +137,8 @@ export const UploadComponent = ({
                     {translate('upload_subtitle')}
                 </Typography>
             </Box>
+            {/* the models first: they build the whole site */}
+            {onOpenWizard && <OpenWizardCard above onOpen={onOpenWizard} />}
             <DatasetSourceInput
                 narrow
                 hideDescriptions
@@ -155,6 +171,16 @@ export const UploadComponent = ({
                     setLoader={onChangeLoaderName}
                     value={loader}
                     allowAutomatic={allowAutomatic}
+                    // the automatic loader was refused for the format of a
+                    // file or a URL: say why it is gone (a text has none)
+                    helperText={
+                        tab !== 'text' &&
+                        hasSource &&
+                        loaderName === 'automatic' &&
+                        !loader
+                            ? translate('loader_unknown_format')
+                            : undefined
+                    }
                 />
                 <Button
                     variant="contained"
@@ -162,21 +188,13 @@ export const UploadComponent = ({
                     className="btn-upload-dataset"
                     size="large"
                     sx={styles.uploadButton}
-                    disabled={
-                        isUploading ||
-                        (files.length === 0 &&
-                            (!url || !isUrlValid) &&
-                            (!textContent || textContent === '')) ||
-                        !loader
-                    }
+                    disabled={isUploading || !hasSource || !loader}
                     onClick={handleSubmit}
                     startIcon={<PublishIcon />}
                 >
                     {translate('upload_data')}
                 </Button>
             </Box>
-
-            {onOpenWizard && <OpenWizardCard onOpen={onOpenWizard} />}
 
             <ConfirmPopup
                 cancelLabel={translate('Cancel')}
