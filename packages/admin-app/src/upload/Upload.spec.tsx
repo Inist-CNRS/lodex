@@ -178,6 +178,41 @@ describe('<Upload />', () => {
             );
         });
 
+        it('should only consider the source of the current tab', () => {
+            const wrapper = shallow(
+                <Upload
+                    {...baseProps}
+                    loaders={[{ name: 'csv' }]}
+                    loaderName="automatic"
+                />,
+            );
+            wrapper.find(DatasetSourceInput).prop('onFilesChange')([
+                { file: new File(['a'], 'data.ods'), data: '' },
+            ]);
+            expect(wrapper.find(LoaderSelect).prop('helperText')).toBe(
+                'translated:loader_unknown_format',
+            );
+
+            // the file is not sent from the Web link tab: no source there
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('url');
+            expect(
+                wrapper.find(LoaderSelect).prop('helperText'),
+            ).toBeUndefined();
+            expect(wrapper.find('.btn-upload-dataset').prop('disabled')).toBe(
+                true,
+            );
+
+            // a text has no format: no message, a loader is still required
+            wrapper.find(DatasetSourceInput).prop('onTabChange')('text');
+            wrapper.setProps({ textContent: 'a,b' });
+            expect(
+                wrapper.find(LoaderSelect).prop('helperText'),
+            ).toBeUndefined();
+            expect(wrapper.find('.btn-upload-dataset').prop('disabled')).toBe(
+                true,
+            );
+        });
+
         it('should not render the wizard button without onOpenWizard', () => {
             const wrapper = shallow(<Upload {...baseProps} />);
 

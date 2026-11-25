@@ -87,8 +87,12 @@ export const UploadComponent = ({
         (tab === 'url' && hasLoaderForExtension(url));
     const loader =
         loaderName === 'automatic' && !allowAutomatic ? null : loaderName;
-    const hasSource =
-        files.length > 0 || (!!url && isUrlValid) || !!textContent;
+    // the source of the current tab only, as handleConfirm sends it
+    const hasSource = {
+        file: files.length > 0,
+        url: files.length === 0 && !!url && isUrlValid,
+        text: !!textContent,
+    }[tab];
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
@@ -167,9 +171,13 @@ export const UploadComponent = ({
                     setLoader={onChangeLoaderName}
                     value={loader}
                     allowAutomatic={allowAutomatic}
-                    // the automatic loader was refused: say why it is gone
+                    // the automatic loader was refused for the format of a
+                    // file or a URL: say why it is gone (a text has none)
                     helperText={
-                        hasSource && loaderName === 'automatic' && !loader
+                        tab !== 'text' &&
+                        hasSource &&
+                        loaderName === 'automatic' &&
+                        !loader
                             ? translate('loader_unknown_format')
                             : undefined
                     }
