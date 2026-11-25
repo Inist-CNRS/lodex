@@ -55,8 +55,11 @@ const makeJob = (data: object = {}, id = 1) => ({
     id,
     data: { tenant: 'lodex_test', siteGenerationRunId: 'run-1', ...data },
     progress: jest.fn(),
-    isFailed: jest.fn().mockResolvedValue(false),
+    // Bull's state: never read, Bull also fails a job that stalled
+    isFailed: jest.fn().mockResolvedValue(true),
 });
+
+const IMPORTED = { cancelled: false };
 
 describe('processImport and the wizard generation', () => {
     beforeEach(() => {
@@ -123,6 +126,7 @@ describe('processImport and the wizard generation', () => {
         mockStartImport.mockImplementation(async (_ctx, givenFusible) => {
             fusible = givenFusible;
             await cancelImportJob(7);
+            return { cancelled: true };
         });
         await run(makeJob({}, 7));
         expect(fusible).toBe('fusible');
@@ -140,13 +144,14 @@ describe('processImport and the wizard generation', () => {
 
     it('does not cancel another import job', async () => {
         await cancelImportJob(9);
-        mockStartImport.mockResolvedValue(undefined);
+        mockStartImport.mockResolvedValue(IMPORTED);
         await run(makeJob({}, 10));
         expect(mockStartImport).toHaveBeenCalled();
     });
 
+    // even once Bull failed its job: it stalled while it still ran here
     it('notifies the end of a successful import', async () => {
-        mockStartImport.mockResolvedValue(undefined);
+        mockStartImport.mockResolvedValue(IMPORTED);
         await run(makeJob());
         expect(mockOnWizardImportEnd).toHaveBeenCalledWith(
             expect.anything(),
@@ -197,14 +202,25 @@ describe('processImport and the wizard generation', () => {
         );
     });
 
+    it('notifies the import its fusible cut as failed', async () => {
+        // cancelJob disabled the fusible: the breakers cut the stream
+        mockStartImport.mockResolvedValue({ cancelled: true });
+        await run(makeJob());
+        expect(mockOnWizardImportEnd).toHaveBeenCalledWith(
+            expect.anything(),
+            'run-1',
+            { success: false, cancelled: false, message: 'import_failed' },
+        );
+    });
+
     it('leaves the generation alone for an import without a run', async () => {
-        mockStartImport.mockResolvedValue(undefined);
+        mockStartImport.mockResolvedValue(IMPORTED);
         await run(makeJob({ siteGenerationRunId: undefined }));
         expect(mockOnWizardImportEnd).not.toHaveBeenCalled();
     });
 
     it('does not change the import result when the wizard notification fails', async () => {
-        mockStartImport.mockResolvedValue(undefined);
+        mockStartImport.mockResolvedValue(IMPORTED);
         mockOnWizardImportEnd.mockRejectedValue(new Error('boom'));
         const err = await run(makeJob());
         expect(err).toBeUndefined();

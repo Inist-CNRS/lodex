@@ -35,8 +35,10 @@ jest.mock('../launchTasks');
 jest.mock('../../workers/tools');
 
 const mockWorkerQueue = { add: jest.fn(), getJob: jest.fn() };
+const mockIsJobRunning = jest.fn((_jobId?: string) => false);
 jest.mock('../../workers', () => ({
     getOrCreateWorkerQueue: () => mockWorkerQueue,
+    isJobRunning: (jobId?: string) => mockIsJobRunning(jobId),
 }));
 jest.mock('../repositoryMiddleware', () => ({
     invalidateRepositories: jest.fn(),
@@ -184,6 +186,7 @@ describe('siteGeneration service', () => {
         jest.mocked(getWaitingJobs).mockResolvedValue([]);
         jest.mocked(getActiveJob).mockResolvedValue(undefined);
         mockWorkerQueue.getJob.mockResolvedValue(null);
+        mockIsJobRunning.mockImplementation(() => false);
         ctx = {
             tenant: 'lodex_test',
             enrichment,
@@ -903,6 +906,19 @@ describe('siteGeneration service', () => {
             },
         );
 
+        it('leaves a stopping generation whose model job still runs here', async () => {
+            // Bull lost its lock and failed it: it still runs
+            const generation = await startIn('model', { status: 'stopping' });
+            mockWorkerQueue.getJob.mockResolvedValue(queueJob('failed'));
+            mockIsJobRunning.mockImplementation(
+                (jobId) => jobId === 'model-job',
+            );
+
+            await settleStoppingSiteGeneration(ctx);
+
+            expect(await siteGeneration.findCurrent()).toEqual(generation);
+        });
+
         it.each(['active', 'waiting'])(
             'leaves a stopping generation whose model job is %s',
             async (state) => {
@@ -1018,6 +1034,22 @@ describe('siteGeneration service', () => {
                 mockWorkerQueue.getJob.mockResolvedValue(
                     queueJob(state, finishedAgo(10)),
                 );
+
+                await failLostSiteGenerationJob(ctx, now);
+
+                expect(await siteGeneration.findCurrent()).toEqual(generation);
+            },
+        );
+
+        it.each(cases)(
+            'leaves a %s phase whose job Bull failed but still runs here',
+            async (phase, jobId) => {
+                // its lock lost: Bull stalled it twice, the import goes on
+                const generation = await startIn(phase);
+                mockWorkerQueue.getJob.mockResolvedValue(
+                    queueJob('failed', finishedAgo(120)),
+                );
+                mockIsJobRunning.mockImplementation((id) => id === jobId);
 
                 await failLostSiteGenerationJob(ctx, now);
 

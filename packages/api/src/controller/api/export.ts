@@ -149,7 +149,7 @@ const middlewareScript = (isFormatExporters = false) => {
         ; connect to the ezs server
         [URLConnect]
         url = ${workers_url}
-        timeout = ${config.get('timeout')}
+        timeout = ${config.get('workersStreamTimeout')}
         streaming = ${config.get('streaming')},
         json = false
         encoder = pack
