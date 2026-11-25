@@ -6,6 +6,7 @@ import route from 'koa-route';
 import get from 'lodash/get';
 
 import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
+import { bumpAfterAdminWrite } from '../../services/dataVersion';
 import annotation from './annotation';
 import breadcrumbs from './breadcrumb';
 import characteristic from './characteristic';
@@ -108,6 +109,8 @@ app.use(async (ctx: any, next: any) => {
 
     await next();
 });
+
+app.use(bumpAfterAdminWrite);
 
 app.use(mount('/annotation', annotation));
 app.use(mount('/export', exportPublishedDataset));

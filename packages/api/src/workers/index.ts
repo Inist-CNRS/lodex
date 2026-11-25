@@ -2,6 +2,7 @@ import Queue from 'bull';
 import config from 'config';
 import bullBoard from '../bullBoard';
 import getLogger from '../services/logger';
+import { bumpDataVersion } from '../services/dataVersion';
 import { ENRICHER, processEnrichment, RETRY_ENRICHER } from './enricher';
 import { IMPORT, processImport } from './import';
 import { MODEL_IMPORTER, processModelImport } from './modelImport';
@@ -75,6 +76,9 @@ export const getOrCreateWorkerQueue = (
             if (runningJobs.get(queueName) === running) {
                 runningJobs.delete(queueName);
             }
+            // the job wrote its last data: the browsers ask for the routines
+            // again (a queue is named after its tenant)
+            bumpDataVersion(queueName);
             end();
             jobDone(...args);
         };

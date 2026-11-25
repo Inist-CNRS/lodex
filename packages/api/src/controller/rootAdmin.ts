@@ -1,4 +1,5 @@
 import { invalidateRepositories } from '../services/repositoryMiddleware';
+import { bumpDataVersion } from '../services/dataVersion';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
@@ -110,6 +111,8 @@ const postTenant = async (ctx: any) => {
         await insertConfigTenant(name);
 
         getOrCreateWorkerQueue(name, 1);
+        // a tenant deleted then created again under its name has new data
+        bumpDataVersion(name);
         ctx.body = await getTenants(ctx, { createdAt: -1 });
     }
 };

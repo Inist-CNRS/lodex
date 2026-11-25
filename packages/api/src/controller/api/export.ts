@@ -3,8 +3,11 @@ import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 import { PassThrough } from 'stream';
-import cacheControl from 'koa-cache-control';
 import config from 'config';
+import {
+    doNotKeep,
+    revalidateUntilDataChanges,
+} from '../../services/dataVersion';
 
 import Script from '../../services/script';
 import { cleanHost } from '@lodex/common';
@@ -119,6 +122,7 @@ const middlewareScript = (isFormatExporters = false) => {
         const input = new PassThrough({ objectMode: true });
         const errorHandle = (err: any) => {
             ctx.status = 503;
+            doNotKeep(ctx);
             ctx.body.destroy();
             closeIfHeadersSent(ctx);
             input.destroy();
@@ -127,6 +131,7 @@ const middlewareScript = (isFormatExporters = false) => {
         // called only when the routine sent no data at all
         const emptyHandle = () => {
             ctx.status = 204;
+            doNotKeep(ctx);
             // ctx.body.write('{"total":0}');  JSON is not the only export format
             logger.error('Empty response with ', ctx.path, ' and', ctx.query);
         };
@@ -177,12 +182,7 @@ export async function getScripts(ctx: any) {
 }
 
 const app = new Koa();
-app.use(
-    cacheControl({
-        public: true,
-        maxAge: config.get('cache.maxAge'),
-    }),
-);
+app.use(revalidateUntilDataChanges);
 
 app.use(async (ctx: any, next: any) => {
     ctx.response.set('Vary', 'X-Lodex-Tenant');
