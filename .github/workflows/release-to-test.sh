@@ -63,9 +63,9 @@ tickets=$(for pr in $prs; do
     echo "$pr move" # the PR itself may be a card
     gh pr view "$pr" --repo "$OWNER/$REPO" --json headRefName,body \
         --jq '((.headRefName | scan("(?:^|[/-])([0-9]{3,5})(?:-|$)") | .[0]),
-               (.body // "" | scan("(?i)(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?):? +#([0-9]+)") | .[0])
+               (.body // "" | scan("(?i)(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?):? +#([0-9]+)\\b") | .[0])
                | "\(.) move"),
-              (.body // "" | scan("#([0-9]+)") | .[0] | "\(.) version")'
+              (.body // "" | scan("#([0-9]+)\\b") | .[0] | "\(.) version")'
 done | sort -u | awk '!seen[$1]++') # "move" sorts before "version", so it wins
 
 while read -r number kind; do
@@ -87,7 +87,8 @@ while read -r number kind; do
         }' -f owner="$OWNER" -f repo="$REPO" -F number="$number" \
         --jq ".data.repository.issueOrPullRequest.projectItems.nodes[]? | select(.project.number == $PROJECT_NUMBER) | [.id, (.status.name // \"\")] | @tsv" \
         2>/dev/null || true)
-    [ -z "$item" ] && continue
+    # a number that is not an issue or PR (#99999) answers with the GraphQL error
+    [[ "$item" == PVTI_* ]] || continue
     IFS=$'\t' read -r item_id status <<<"$item"
     if [[ "$status" == Done* ]]; then
         echo "#$number skipped ($status)"
