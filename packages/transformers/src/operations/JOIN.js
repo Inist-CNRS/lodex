@@ -1,17 +1,7 @@
 import { rawTransformerWithArg } from './transformer.js';
-import documentationByOperation from './documentationByOperation.js';
 
-export const join = (value, separator) => {
-    if (!value) {
-        return '';
-    }
-
-    if (!Array.isArray(value)) {
-        throw new Error('Invalid value: need an array');
-    }
-
-    return value.join(separator);
-};
+export const join = (value, separator) =>
+    Array.isArray(value) ? value.join(separator) : value;
 
 const transformation = (_, args) => (value) =>
     rawTransformerWithArg(join, 'separator', value, args);
