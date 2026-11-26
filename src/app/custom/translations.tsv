@@ -585,7 +585,7 @@
 "txt-wos"	"TXT - from Web of Science"	"TXT - du Web of Science"
 "txt-wos-comment"	"Imports records exported from Web of Science in plain text (.txt) format."	"Importe des notices bibliographiques exportées depuis Web of Science au format texte brut (.txt)."
 "automatic-loader"	"AUTO - with filename extension"	"AUTO - avec l'extension du nom de fichier"
-"custom-loader"	"CUSTOM - modified loader"	"CUSTOM - Loader customisé"
+"custom-loader"	"CUSTOM - modified loader"	"CUSTOM - Loader personnalisé"
 "add-custom-loader"	"Customize loader"	"Personnaliser le loader"
 "automatic-loader-comment"	"Defined automatically depending on the file extension"	"Déterminé automatiquement selon l'extension du fichier"
 "allFormat"	"All"	"Tout"
