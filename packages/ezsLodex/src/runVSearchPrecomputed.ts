@@ -144,7 +144,7 @@ export default async function LodexRunVSearchPrecomputed(
                 ? threshold
                 : similarityToScore(minSimilarity),
     });
-    debug('ezs:debug')(
+    debug('ezs:info')(
         `collection.aggregate(${JSON.stringify(aggregatePipeline)})`,
     );
     const cursor = collection.aggregate(

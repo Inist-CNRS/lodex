@@ -51,7 +51,7 @@ export const createFunction = () =>
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
         const queryAggregate = [{ $match: filter }, ...stages];
-        debug('ezs:debug')(
+        debug('ezs:info')(
             `collection.aggregate(${JSON.stringify(queryAggregate)})`,
         );
 
