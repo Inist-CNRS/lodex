@@ -1027,6 +1027,8 @@
 "r-segments-precomputed-nofilter_title"	"segments-precomputed-nofilter"	"segments-precomputed-nofilter"
 "r-values-precomputed-nofilter_description"	"Allows the use of pre-calculated values (id; value). Use for data that cannot be filtered by document."	"Permet l'utilisation de valeurs pré-calculées (id; value). A utiliser pour les données ne pouvants pas être filtrées par documents."
 "r-values-precomputed-nofilter_title"	"values-precomputed-nofilter"	"values-precomputed-nofilter"
+"r-raw-precomputed_description"	"Allows the use of pre-calculated values in raw format."	"Permet l'utilisation de valeurs pré-calculées au format par défaut."
+"r-raw-precomputed_title"	"raw-precomputed"	"raw-precomputed"
 "r-raw-precomputed-nofilter_description"	"Allows the use of pre-calculated values in raw format. Use for data that cannot be filtered by document."	"Permet l'utilisation de valeurs pré-calculées au format par défaut. A utiliser pour les données ne pouvants pas être filtrées par documents."
 "r-raw-precomputed-nofilter_title"	"raw-precomputed-nofilter"	"raw-precomputed-nofilter"
 "r-vsearch-precomputed_description"	"Enables semantic similarity search."	"Permet une recherche par similarité sémantique."

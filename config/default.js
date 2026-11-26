@@ -161,6 +161,7 @@ module.exports = {
             'values-precomputed',
             'values-precomputed-nofilter',
             'raw-precomputed-nofilter',
+            'raw-precomputed',
             'vsearch-precomputed',
             'vanswer-precomputed',
             'vsimilar-precomputed',
