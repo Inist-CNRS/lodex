@@ -1562,8 +1562,10 @@
 "mc_theses-fr_title"	"Thèses.fr model"	"Modèle Thèses.fr"
 "mc_theses-fr_name"	"Thèses.fr"	"Thèses.fr"
 "mc_theses-fr_description"	"This model builds a LODEX site for exploring and visualizing data on French doctoral theses, defended or in progress, from queries to the theses.fr API. It provides transformations, indicators and visualizations that make it easier to analyze thesis corpora."	"Ce modèle permet de construire un site LODEX d’exploration et de visualisation des données relatives aux thèses de doctorat françaises, soutenues ou en préparation, à partir de requêtes vers l’API de thèses.fr. Il propose des transformations, des indicateurs et des visualisations facilitant l’analyse des corpus de thèses."
-"mc_theses-fr_import_help"	"Paste the URL of your theses.fr query in the input below."	"Copiez-collez l'URL de votre requête theses.fr dans la zone de saisie ci-dessous."
-"mc_theses-fr_text_placeholder"	"https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"	"https://theses.fr/api/v1/theses/recherche/?q=intelligence%20artificielle"
+"mc_theses-fr_import_help"	"Paste the URL of your theses.fr query in the input below.
+E.g.: https://theses.fr/api/v1/theses/recherche/?q=complexite%20discursive"	"Copiez-collez l'URL de votre requête theses.fr dans la zone de saisie ci-dessous.
+Ex : https://theses.fr/api/v1/theses/recherche/?q=complexite%20discursive"
+"mc_theses-fr_text_placeholder"	"https://theses.fr/api/v1/theses/recherche/?q=complexite%20discursive"	"https://theses.fr/api/v1/theses/recherche/?q=complexite%20discursive"
 "mc_theses-fr_enrichment_xml"	"Retrieval of XML records"	"Récupération des notices XML"
 "mc_theses-fr_enrichment_resume"	"Retrieval of French abstracts"	"Récupération des résumés en français"
 "mc_theses-fr_enrichment_resumeEN"	"Retrieval of English abstracts"	"Récupération des résumés en anglais"
