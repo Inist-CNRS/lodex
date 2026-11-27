@@ -1,0 +1,303 @@
+/* css presta pour corpus scientifiques */
+/* by Helene Creusot */
+/*novembre 2026*/
+#content .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    background-image: url(../img/hero.svg);
+    -webkit-background-position: center;
+    background-position: top center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 0.2rem;
+    padding: 10rem 1rem;
+}
+#content .hero .property_value_container * {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+/*container h1*/
+#content .hero .property_value_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+#content .hero h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--contrast-main);
+}
+#content .hero .property_value_container .property_value {
+    color: var(--contrast-main);
+    text-align: center !important;
+}
+#content .hero .property_value_container *:not(h1) {
+    font-size: 1rem;
+}
+.hero .heroTexte p {
+    display: inline-flex;
+    line-height: 1.5rem;
+}
+.property_value_container .textEnCapital {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.hero .designButtonPrimary div.property_value p {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 2rem;
+    height: 5rem;
+}
+#content .hero .designButtonPrimary div.property_value a {
+    padding: 16px !important;
+    width: 16rem;
+    font-family: var(--font-titre) !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 120% !important;
+    letter-spacing: -1% !important;
+    background-color: #1A5A71 !important;
+}
+/* mars 2026 */
+hr {
+    line-height: 0;
+    width: 0;
+    position: relative;
+    top: -3rem;
+}
+
+/*systeme detail*/
+:root {
+    --open-size: min(30vw, 300px); /*?????*/
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(max-content, 1fr));
+    grid-template-rows: auto 1fr;
+    column-gap: 0rem;
+    background-color: white;
+}
+details.item {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+    grid-column: 1 / -1;
+    grid-row: 1 / span 6;
+}
+/*correspond a ul*/
+details::details-content {
+    grid-row: 2; /* position sur la seconde ligne */
+    grid-column: 1 / -1;
+}
+details:not([open])::details-content {
+    display: none;
+}
+/*onglets*/
+summary.subitem {
+    grid-row: 1;
+    display: grid;
+    padding: 0.5rem;
+    cursor: pointer;
+    grid-column: var(--n) / span 1;
+    z-index: 1;
+}
+details ul {
+    max-width: 777px !important;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px 20px !important;
+    justify-content: flex-start !important;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--gris2);
+    padding-top: 1rem;
+}
+/* L'élément <summary> quand <details> est [open] */
+details[open] summary {
+    font-weight: bold;
+}
+
+/*les vignettes du corpus*/
+div[class*='designCorpusListe'] ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px 20px !important;
+    justify-content: flex-start !important;
+    margin: 0;
+    padding: 0;
+}
+/*.designCorpusVignette {
+    width: 48%;
+    border: 1px solid var(--gris3);
+    padding: 0 !important;
+    overflow: hidden;
+}*/
+.designCorpusVignette {
+    width: 48%;
+    border: 1px solid var(--gris3);
+    padding: 0 !important;
+    overflow: hidden;
+}
+.designCorpusVignette * {
+    padding: 0 !important;
+}
+.designCorpusVignette a {
+    display: flex !important;
+    flex-direction: column;
+    text-decoration: none !important;
+    max-width: 400px;
+    max-height: 400px;
+}
+.designCorpusVignette a::after {
+    display: none !important;
+}
+.designCorpusVignette a .image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--text-main);
+    flex: 3 3 240px;
+}
+.designCorpusVignette a img {
+    max-width: 420px;
+    height: auto;
+}
+#content .designCorpusVignette a .texte {
+    padding: 20px 20px 10px 20px !important;
+    flex: 1 1 100px;
+}
+#content .designCorpusVignette a .texte strong {
+    font-size: 1.2rem !important;
+}
+.designCorpusVignette a .texte .icon-externe {
+    display: flex;
+    height: 40px;
+    align-items: center;
+}
+.designCorpusVignette a .texte .icon-externe::after {
+    color: black;
+    filter: var(--filtreBleuMain);
+    display: flex;
+    content: url('../img/fleche-petite-droite.png');
+    padding-left: 5px;
+}
+.designCorpusVignette a:hover .texte .icon-externe {
+    color: var(--filtreBleuHoverFocus);
+}
+.designCorpusVignette a:hover .texte .icon-externe {
+    color: var(--filtreBleuHoverFocus);
+}
+/*systeme onglets*/
+/*div.container-onglets {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 20px !important;
+    gap: 0;
+}*/
+div[class*='designCorpusListe'] div.onglets {
+    border-bottom: 2px solid var(--gris2);
+}
+div[class*='designCorpusListe'] div.onglets a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 !important;
+    padding: 10px !important;
+    text-decoration: none;
+}
+/*div[class*="designCorpusListe"] ul {
+    display: none !important;
+}
+div[class*="designCorpusListe"] ul {
+    border: 2px solid red !important;
+    background-color: white;
+}
+div[class*="designCorpusListe"] ul:is(:hover, :focus-within, :active) {
+    display: flex !important;
+}*/
+
+/*class interne*/
+/*div[class*="DisplayNone"] {
+    display: none !important;
+}*/
+/*elements*/
+nav.nav-bar-menu {
+    background-color: var(--contrast-light);
+    box-shadow:
+        0px -5px 4px 1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+/* home page*/
+div[class*='BanniereSimple'] {
+    background-position: center top !important;
+    background-size: 140% !important;
+    margin-bottom: 0 !important;
+}
+div[class*='HomeContentSidebar'] div[class*='HomeContent'] {
+    flex: 3;
+}
+/*designHomeContentSidebar*/
+div[class*='HomeContentSidebar'] {
+    background: none !important;
+}
+div[class*='HomeSidebar'] {
+    /*bg color idem lien vers istex*/
+    background-color: rgba(69, 140, 165, 0.2) !important;
+    justify-content: flex-start !important;
+}
+div[class*='HomeSidebar'] :not(a, button, svg, [class*='Bouton']) {
+    color: var(--text-main) !important;
+}
+/*a en bouton et pas les buttons des labels*/
+div[class*='Button'] div[class*='property_value'] a {
+    min-width: 160px;
+}
+div[class*='HomeSidebar']
+    div[class*='ButtonPrimary']
+    div[class*='property_value']
+    :is(button, a) {
+    background-color: var(--primary-main) !important;
+    color: var(--contrast-light) !important;
+    border: 1px solid var(--primary-main) !important;
+}
+div[class*='HomeSidebar']
+    div[class*='ButtonSecondary']
+    div[class*='property_value']
+    :is(button, a) {
+    background-color: transparent !important;
+    color: var(--primary-main) !important;
+    border: 1px solid var(--primary-main) !important;
+}
+div[class*='HomeSidebar']
+    div[class*='ButtonSecondary']
+    div[class*='property_value']
+    :is(button, a):is(:hover, :focus) {
+    background-color: var(--contrast-light) !important;
+    color: var(--primary-main) !important;
+    border: 1px solid var(--primary-main) !important;
+}
+/*compteur nombre*/
+#content div[class*='HomeCompteur'].format_emphasedNumber .property_value {
+    width: 100%;
+    text-align: center;
+}
+#content div[class*='HomeCompteur'].format_emphasedNumber div.content {
+    font-family: var(--font-titre) !important;
+    color: var(--text-main) !important;
+    -webkit-text-stroke: var(--text-main) 0.5px !important;
+    line-height: normal;
+}
+
+/*droit d'utilisation*/
+#content div[class*='AllElementsCenter'] * {
+    text-align: center !important;
+}

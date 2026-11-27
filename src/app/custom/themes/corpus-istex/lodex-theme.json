@@ -1,0 +1,51 @@
+{
+    "version": "7",
+    "licence": "All Right Reserved",
+    "name": {
+        "fr": "ISTEX",
+        "en": "ISTEX"
+    },
+    "description": {
+        "fr": "Thème CORPUS-ISTEX (restreint)",
+        "en": "CORPUS-ISTEX theme (restricted)"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": "corpusIstexTheme.js"
+        },
+        "variables": {
+            "readme du theme": "",
+            "documentation du theme": "",
+            "host": "/",
+            "title": "Corpus",
+            "summary": "Des corpus de documents scientifiques issus de la bibliothèque ISTEX pour inspirer vos projets de recherche",
+            "matomoID": "",
+            "matomoHost": "https://piwik2.inist.fr/",
+            "info sous-theme": "deux sous-themes existent : a definir. Permet l'ajout d'une css spécifique",
+            "sousTheme": "",
+            "headerMenu": {
+                "link1": {
+                    "name": "",
+                    "url": ""
+                },
+                "link2": {
+                    "name": "",
+                    "url": ""
+                },
+                "link3": {
+                    "name": "",
+                    "url": ""
+                },
+                "link4": {
+                    "name": "",
+                    "url": ""
+                },
+                "link5": {
+                    "name": "",
+                    "url": ""
+                }
+            }
+        }
+    }
+}
