@@ -1,4 +1,3 @@
-@import 'istex-internalclass.css';
 @import 'istex-linksclass.css';
 :root {
     --font-titre: 'Montserrat', Arial, Helvetica, sans-serif;
@@ -231,7 +230,6 @@ footer.site-footer::after {
 #root {
     min-height: 35vh;
     padding: 0 !important;
-    font-family: var(--font-texte) !important;
     font-size: var(--font-size-texte);
     color: var(--text-main);
 }
@@ -242,7 +240,7 @@ footer.site-footer::after {
     padding: 0 10px;
     margin: 0 auto;
 }
-/*theme istex property full size*/
+/*theme istex for .property full size*/
 #content > div.container {
     width: 100%;
     max-width: 100% !important;

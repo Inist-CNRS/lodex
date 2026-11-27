@@ -1,5 +1,69 @@
 /* css presta pour corpus scientifiques */
 /* by Helene Creusot */
+/*novembre 2026*/
+#content .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    background-image: url(../img/hero.svg);
+    -webkit-background-position: center;
+    background-position: top center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 0.2rem;
+    padding: 10rem 1rem;
+}
+#content .hero .property_value_container * {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+/*container h1*/
+#content .hero .property_value_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+#content .hero h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--contrast-main);
+}
+#content .hero .property_value_container .property_value {
+    color: var(--contrast-main);
+    text-align: center !important;
+}
+#content .hero .property_value_container *:not(h1) {
+    font-size: 1rem;
+}
+.hero .heroTexte p {
+    display: inline-flex;
+    line-height: 1.5rem;
+}
+.property_value_container .textEnCapital {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.hero .designButtonPrimary div.property_value p {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 2rem;
+    height: 5rem;
+}
+#content .hero .designButtonPrimary div.property_value a {
+    padding: 16px !important;
+    width: 16rem;
+    font-family: var(--font-titre) !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 120% !important;
+    letter-spacing: -1% !important;
+    background-color: #1A5A71 !important;
+}
 /* mars 2026 */
 hr {
     line-height: 0;
@@ -7,14 +71,10 @@ hr {
     position: relative;
     top: -3rem;
 }
-/** nav pour istex **/
-div[class*="HomeContentSidebar"] div[class*="designHomeContent"],
-div[class*="HomeSidebar"] {
-    justify-content: flex-start !important;
-}
+
 /*systeme detail*/
 :root {
-    --open-size: min(30vw, 300px);/*?????*/
+    --open-size: min(30vw, 300px); /*?????*/
 }
 .grid {
     display: grid;
@@ -42,7 +102,8 @@ details:not([open])::details-content {
 summary.subitem {
     grid-row: 1;
     display: grid;
-    padding: 0.5rem;    cursor: pointer;
+    padding: 0.5rem;
+    cursor: pointer;
     grid-column: var(--n) / span 1;
     z-index: 1;
 }
@@ -64,7 +125,7 @@ details[open] summary {
 }
 
 /*les vignettes du corpus*/
-div[class*="designCorpusListe"] ul {
+div[class*='designCorpusListe'] ul {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -126,7 +187,7 @@ div[class*="designCorpusListe"] ul {
     color: black;
     filter: var(--filtreBleuMain);
     display: flex;
-    content: url("../img/fleche-petite-droite.png");
+    content: url('../img/fleche-petite-droite.png');
     padding-left: 5px;
 }
 .designCorpusVignette a:hover .texte .icon-externe {
@@ -142,10 +203,10 @@ div[class*="designCorpusListe"] ul {
     margin-bottom: 20px !important;
     gap: 0;
 }*/
-div[class*="designCorpusListe"] div.onglets {
+div[class*='designCorpusListe'] div.onglets {
     border-bottom: 2px solid var(--gris2);
 }
-div[class*="designCorpusListe"] div.onglets a {
+div[class*='designCorpusListe'] div.onglets a {
     cursor: pointer;
     display: inline-block;
     margin: 0 !important;
@@ -176,60 +237,60 @@ nav.nav-bar-menu {
         0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 /* home page*/
-div[class*="BanniereSimple"] {
+div[class*='BanniereSimple'] {
     background-position: center top !important;
     background-size: 140% !important;
     margin-bottom: 0 !important;
 }
-div[class*="HomeContentSidebar"] div[class*="HomeContent"] {
+div[class*='HomeContentSidebar'] div[class*='HomeContent'] {
     flex: 3;
 }
 /*designHomeContentSidebar*/
-div[class*="HomeContentSidebar"] {
+div[class*='HomeContentSidebar'] {
     background: none !important;
 }
-div[class*="HomeSidebar"] {
+div[class*='HomeSidebar'] {
     /*bg color idem lien vers istex*/
     background-color: rgba(69, 140, 165, 0.2) !important;
     justify-content: flex-start !important;
 }
-div[class*="HomeSidebar"] :not(a, button, svg, [class*="Bouton"]) {
+div[class*='HomeSidebar'] :not(a, button, svg, [class*='Bouton']) {
     color: var(--text-main) !important;
 }
 /*a en bouton et pas les buttons des labels*/
-div[class*="Button"] div[class*="property_value"] a {
+div[class*='Button'] div[class*='property_value'] a {
     min-width: 160px;
 }
-div[class*="HomeSidebar"]
-    div[class*="ButtonPrimary"]
-    div[class*="property_value"]
+div[class*='HomeSidebar']
+    div[class*='ButtonPrimary']
+    div[class*='property_value']
     :is(button, a) {
     background-color: var(--primary-main) !important;
     color: var(--contrast-light) !important;
     border: 1px solid var(--primary-main) !important;
 }
-div[class*="HomeSidebar"]
-    div[class*="ButtonSecondary"]
-    div[class*="property_value"]
+div[class*='HomeSidebar']
+    div[class*='ButtonSecondary']
+    div[class*='property_value']
     :is(button, a) {
     background-color: transparent !important;
     color: var(--primary-main) !important;
     border: 1px solid var(--primary-main) !important;
 }
-div[class*="HomeSidebar"]
-    div[class*="ButtonSecondary"]
-    div[class*="property_value"]
+div[class*='HomeSidebar']
+    div[class*='ButtonSecondary']
+    div[class*='property_value']
     :is(button, a):is(:hover, :focus) {
     background-color: var(--contrast-light) !important;
     color: var(--primary-main) !important;
     border: 1px solid var(--primary-main) !important;
 }
 /*compteur nombre*/
-#content div[class*="HomeCompteur"].format_emphasedNumber .property_value {
+#content div[class*='HomeCompteur'].format_emphasedNumber .property_value {
     width: 100%;
     text-align: center;
 }
-#content div[class*="HomeCompteur"].format_emphasedNumber div.content {
+#content div[class*='HomeCompteur'].format_emphasedNumber div.content {
     font-family: var(--font-titre) !important;
     color: var(--text-main) !important;
     -webkit-text-stroke: var(--text-main) 0.5px !important;
@@ -237,6 +298,6 @@ div[class*="HomeSidebar"]
 }
 
 /*droit d'utilisation*/
-#content div[class*="AllElementsCenter"] * {
+#content div[class*='AllElementsCenter'] * {
     text-align: center !important;
 }

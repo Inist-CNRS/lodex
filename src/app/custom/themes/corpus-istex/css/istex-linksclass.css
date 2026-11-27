@@ -59,7 +59,7 @@ a:not(:empty):is(:hover, :focus) {
     padding-left: 5px;
 }
 
-div[class*='HomeSidebar']
+div[class*='hero']
     .property
     a:not(
         :empty,
@@ -83,10 +83,10 @@ div[class*='HomeSidebar']
 /***************/
 /* Fond sombre */
 /***************/
-div[class*='HomeSidebar'] a:not(:empty, .property_value) {
+div[class*='hero'] a:not(:empty, .property_value) {
     color: var(--contrast-light);
-}
-div[class*='HomeSidebar']
+ }
+div[class*='hero']
     a:not(:empty, .property_value):is(:hover, :focus, :active) {
     color: var(--contrast-main);
 }
