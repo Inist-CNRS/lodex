@@ -132,6 +132,7 @@ module.exports = {
             'classif-by',
             'close-by',
             'count-all',
+            'carto-all',
             'count-by-fields',
             'count-distinct-by',
             'cross-by',

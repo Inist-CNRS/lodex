@@ -963,6 +963,8 @@
 "r-classif-by_description"	"Is intended for a type of graph allowing to visualize the diachronic evolutions of the weight of themes contained in the documents of a corpus."	"Est destinée à un type de graphique permettant de visualiser les évolutions diachroniques du poids de thématiques contenues dans les documents d’un corpus."
 "r-count-all_title"	"count-all"	"count-all"
 "r-count-all_description"	"Counts the number of documents in the corpus."	"Compte le nombre de documents du corpus."
+"r-carto-all_title"	"carto-all"	"carto-all"
+"r-carto-all_description"	"Counts and lists the distinct values in each field"	"Compte et liste les valeurs distinctes de chaque champs"
 "r-count-by-fields_title"	"count-by-fields"	"count-by-fields"
 "r-count-by-fields_description"	"Counts the number of documents in the corpus for each of the field identifiers declared in the model."	"Compte le nombre de documents du corpus pour chacun des identifiants des champs déclarés dans le modèle."
 "r-count-distinct-by_title"	"count-distinct-by"	"count-distinct-by"
