@@ -1,3 +1,4 @@
+import debug from 'debug';
 import zipObject from 'lodash/zipObject.js';
 import mongoDatabase from './mongoDatabase.js';
 
@@ -87,6 +88,9 @@ async function LodexRunQueryPrecomputed(this: any, data: any, feed: any) {
             },
         });
     }
+    debug('ezs:info')(
+        `collection.aggregate(${JSON.stringify(aggregatePipeline)})`,
+    );
     const cursor = collection.aggregate(
         aggregatePipeline,
         fields.length > 0

@@ -1,9 +1,27 @@
 [
     {
+        "id": "internal-statistics",
+        "url": "ezs:/precomputed/statistics",
+        "code": "https://github.com/Inist-CNRS/lodex/tree/master/packages/workers/src/precomputed/specific/",
+        "type": "internal"
+    },
+    {
         "id": "internal-vectors",
         "url": "ezs:/precomputed/vectors",
-        "code": "https://github.com/Inist-CNRS/lodex/tree/master/packages/workers/src/precomputed",
-        "type": "other"
+        "code": "https://github.com/Inist-CNRS/lodex/tree/master/packages/workers/src/precomputed/specific/",
+        "type": "internal"
+    },
+    {
+        "id": "internal-synthesize",
+        "url": "ezs:/precomputed/synthesize",
+        "code": "https://github.com/Inist-CNRS/lodex/tree/master/packages/workers/src/precomputed/specific/",
+        "type": "internal"
+    },
+    {
+        "id": "internal-echo",
+        "url": "ezs:/precomputed/echo",
+        "code": "https://github.com/Inist-CNRS/lodex/tree/master/packages/workers/src/precomputed/specific/",
+        "type": "internal"
     },
     {
         "id": "post-v1-dataGraph",
@@ -74,12 +92,6 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-clustering%20-%20Cr%C3%A9er%20diff%C3%A9rents%20clusters%20%C3%A0%20partir%20d%27un%20ensemble%20de%20textes%20courts%20ou%20d%27un%20ensemble%20de%20listes%20de%20mots-cl%C3%A9s.#/clustering/post-v1-noise",
         "objectifTDM": "https://services.istex.fr/detection-de-bruit-dun-corpus/",
         "type": "classification"
-    },
-    {
-        "id": "post-v1-statistics",
-        "url": "https://data-computer.services.istex.fr/v1/statistics",
-        "code": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252ftree-segment",
-        "type": "other"
     },
     {
         "id": "post-v1-tag-cloud-en",
